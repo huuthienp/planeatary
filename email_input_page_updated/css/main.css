@@ -1,0 +1,124 @@
+body {
+  font-family: Poppins;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+}
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #02897A;
+  gap: 20px;
+}
+.header .logo {
+  font-weight: Bold;
+  color: #02897A;
+}
+nav ul{
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  gap: 30px;
+}
+nav ul li {
+  display: inline-block;
+}
+.button {
+  cursor: pointer;
+}
+
+.button .signIn {
+  background-color: #02897A;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #ddd;
+  color: #333;
+  font-size: 16px;
+  font-family: Poppins;
+}
+
+.button .signUp {
+  background-color: #02897A;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #02897A;
+  color: white;
+  font-size: 16px;
+  font-family: Poppins;
+}
+.content {
+  display: flex;
+  font-size: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 100px 100px;
+}
+.content .arrow_space {
+  width: 100%;
+}
+.arrow_space .arrow {
+  width: 16px;
+  height: 16px;
+  background-image: url('../images/arrow.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 16px;
+}
+.content .info_space {
+  width: 100%;
+  margin: 0 auto;
+}
+.content .info_space p {
+  color: #02897A;
+}
+.btn_next {
+  display: flex;
+  padding: 100px 100px;
+  justify-content: right;
+}
+.radios {
+  list-style-type: none;
+}
+.btn_next .next {
+  color: white;
+  background-color: #02897A;
+  font-family: Poppins;
+  font-weight: SemiBold;
+  font-size: 16px;
+  text-align: center;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+.header a:link {
+  text-decoration: none;
+  color: black;
+}
+
+.header a:visited {
+  text-decoration: none;
+  color: black;
+}
+
+.button_next a:link {
+  text-decoration: none;
+  color: white;
+}
+.button_next a:visited {
+  text-decoration: none;
+  color: white;
+}

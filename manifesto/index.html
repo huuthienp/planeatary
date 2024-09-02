@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+        <link href="./css/main.css" rel="stylesheet" />
+        <title>start Challenges</title>
+        <script>
+            function Modal(a, b) {
+                // Get the modal
+                var modal = document.querySelector(a);
+                var overlay = document.querySelector(".overlay");
+                modal.classList.remove(b);
+                overlay.classList.remove('hidden');
+            }
+            // When the user clicks on <span> (x), close the modal
+            function Close(a, b) {
+                var modal = document.querySelector(a);
+                var overlay = document.querySelector(".overlay");
+                modal.classList.add(b);
+                overlay.classList.add('hidden');
+            }
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                const modal = document.querySelector(".modal");
+                const modal2 = document.querySelector(".modal2");
+                const overlay = document.querySelector(".overlay");
+                if (event.target == modal) {
+                    modal.classList.add("hidden");
+                    overlay.classList.add("hidden"); 
+                }
+                else if (event.target == modal2) {
+                    modal2.classList.add("hidden2");
+                    overlay.classList.add("hidden"); 
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1 class="logo">planeatary - logo</h1>
+                    <nav>
+                         <ul style="font-family: Poppins;">
+                            <li>Home</li>
+                            <li>
+                                <a href="../question_page1/index.html"><b>Quiz</b></a>
+                            </li>
+                            <li><a href="../manifesto/index.html">Challenges</a></li>
+                            <li>About us</li>
+                        </ul>
+                    </nav>
+                    <div class="button">
+                        <button class="sign-in">Sign In</button>
+                        <span>&ensp;</span>
+                        <button class="sign-up">Sign Up</button>
+                    </div>
+            </div>
+            <div class="subheader">
+                <p>You’ve selected 10 tasks. Start challenge now</p>
+            </div>
+            <div class="button2">
+                <button class="start"><a href="../challenge_page/index.html">Start</a></button>
+            </div>
+            <div class="content">
+                <div class="question">
+                    <ul>
+                        <li><p>Question 1 - 1 points <img src="./images/info.png" onclick="Modal('.modal2', 'hidden2');" width="16px" /></p></li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="16px" />
+                        </li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="16px" />
+                        </li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="16px" />
+                        </li>
+                    </ul>
+                    <ul>
+                        <li><p>Question 1 - 1 points <img src="./images/info.png" onclick="Modal('.modal2', 'hidden2');" width="16px" /></p></li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="16px" />
+                        </li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="16px" />
+                        </li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="16px" />
+                        </li>
+                    </ul>
+                    <ul>
+                        <li><p>Question 1 - 1 points <img src="./images/info.png" onclick="Modal('.modal2', 'hidden2');" width="16px" /></p></li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="16px" />
+                        </li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="16px" />
+                        </li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="16px" />
+                        </li>
+                    </ul>
+                </div>
+                <div class="question">
+                    <ul>
+                        <li><p>Question 1 - 1 points <img src="./images/info.png" onclick="Modal('.modal2', 'hidden2');" width="16px" /></p></li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="16px" />
+                        </li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="16px" />
+                        </li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="16px" />
+                        </li>
+                    </ul>
+                    <ul>
+                        <li><p>Question 2 - 1 points <img src="./images/info.png" onclick="Modal('.modal2', 'hidden2');" width="16px" /></p></li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img class="click" onclick="Modal('.modal', 'hidden');" src="./images/info2.png" width="16px" />
+                        </li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="16px" />
+                        </li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img class="click" onclick="Modal('.modal', 'hidden');" src="./images/info2.png" width="16px" />
+                        </li>
+                    </ul>
+                    <ul>
+                        <li><p>Question 2 - 1 points <img src="./images/info.png" width="16px" /></p></li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img class="click" onclick="Modal('.modal', 'hidden');" src="./images/info2.png" width="16px" />
+                        </li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img class="click" onclick="Modal('.modal', 'hidden');" src="./images/info2.png" width="16px" />
+                        </li>
+                        <li>
+                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
+                            <img class="click" onclick="Modal('.modal', 'hidden');" src="./images/info2.png" width="16px" />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- The Modal -->
+        <section class="overlay hidden">
+                <div class="align">
+                    <div class="modal hidden"> 
+                        <div class="btn">
+                            <button class="close" onclick="Close('.modal', 'hidden');">x</button>
+                        </div>
+                        <div class="modal-content">
+                            <p>Hello world</p>
+                        </div>
+                    </div>
+                    <div class="modal2 hidden2"> 
+                        <div class="btn2">
+                            <button class="close2" onclick="Close('.modal2', 'hidden2');">x</button>
+                        </div>
+                        <div class="modal-content2">
+                            <!--<img src='./images/info.png' />-->
+                        </div>
+                    </div>
+                <div>
+        </section>
+    </body>
+</html>

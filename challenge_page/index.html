@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
+        <link href="./css/main.css" rel="stylesheet" />
+        <title>challenge</title>
+        <script>
+            function Modal() {
+                // Get the modal
+                const modal = document.querySelector(".modal");
+                const overlay = document.querySelector(".overlay");
+                modal.classList.remove("hidden");
+                overlay.classList.remove("hidden");
+            }
+            // When the user clicks on <span> (x), close the modal
+            function Close() {
+                const modal = document.querySelector(".modal");
+                const overlay = document.querySelector(".overlay");
+                modal.classList.add("hidden");
+                overlay.classList.add("hidden");
+            }
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                const modal = document.querySelector(".modal");
+                const overlay = document.querySelector(".overlay");
+                if (event.target == modal) {
+                    modal.classList.add("hidden");
+                    overlay.classList.add("hidden"); 
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1 class="logo">planeatary - logo</h1>
+                <nav>
+                    <ul>
+                        <li>Home</li>
+                        <li><a href="../question_page1/index.html"><b>Quiz</b></a></li>
+                        <li><a href="../manifesto/index.html">Challenge</a></li>
+                        <li>About us</li>
+                    </ul>
+                </nav>
+                <div>
+                    <button class="signIn">Sign In</button>
+                    <span>&ensp;</span>
+                    <button class="signUp">Sign Up</button>
+                </div>
+            </div>
+            <div class="content">
+                <div class="head">
+                    <h1 class="status"><img src="./images/battery.png" width="40px" height="40px"/>CHALLENGE IN PROGRESS</h1>
+                    <p class="suggestion">Please click Done when you complete you tasks</p>
+                </div>
+                <div class="card">
+                    <div class="card_completed">
+                        <span>Read the Food Citizenship manifesto</span>
+                        <img src="./images/info.png" onclick="Modal();" width="16px" height="16px" />
+                        <br /><br />
+                        <span class="completion">completed</span>
+                    </div>
+                    <div class="card_incompleted">
+                        <span>Read the Food Citizenship manifesto</span>
+                        <img src="./images/info.png" onclick="Modal();" width="16px" height="16px" />
+                        <br /><br />
+                        <span class="completion">completed</span>
+                    </div>
+                    <div class="card_completed">
+                        <span>Read the Food Citizenship manifesto</span>
+                        <img src="./images/info.png" onclick="Modal();" width="16px" height="16px" />
+                        <br /><br />
+                        <span class="completion">completed</span>
+                    </div>
+                    <div class="card_completed">
+                        <span>Read the Food Citizenship manifesto</span>
+                        <img src="./images/info.png" onclick="Modal();" width="16px" height="16px" />
+                        <br /><br />
+                        <span class="completion">completed</span>
+                    </div>
+                    <div class="card_completed">
+                        <span>Read the Food Citizenship manifesto</span>
+                        <img src="./images/info.png" onclick="Modal();" width="16px" height="16px" />
+                        <br /><br />
+                        <span class="completion">completed</span>
+                    </div>
+                    <div class="card_completed">
+                        <span>Read the Food Citizenship manifesto</span>
+                        <img src="./images/info.png" onclick="Modal();" width="16px" height="16px" />
+                        <br /><br />
+                        <span class="completion">completed</span>
+                    </div>
+                    <div class="card_completed">
+                        <span>Read the Food Citizenship manifesto</span>
+                        <img src="./images/info.png" onclick="Modal();" width="16px" height="16px" />
+                        <br /><br />
+                        <span class="completion">completed</span>
+                    </div>
+                    <div class="card_completed">
+                        <span>Read the Food Citizenship manifesto</span>
+                        <img src="./images/info.png" onclick="Modal();" width="16px" height="16px" />
+                        <br /><br />
+                        <span class="completion">completed</span>
+                    </div>
+                    <div class="card_completed">
+                        <span>Read the Food Citizenship manifesto</span>
+                        <img src="./images/info.png" onclick="Modal();" width="16px" height="16px" />
+                        <br /><br />
+                        <span class="completion">completed</span>
+                    </div>
+                    <div class="card_completed">
+                        <span>Read the Food Citizenship manifesto</span>
+                        <img src="./images/info.png" onclick="Modal();" width="16px" height="16px" />
+                        <br /><br />
+                        <span class="completion">completed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- The Modal -->
+        <section class="overlay hidden">
+            <div class="mod-box">
+                <div class="modal hidden"> 
+                    <div class="btn">
+                        <button class="close" onclick="Close();">x</button>
+                    </div>
+                    <div class="modal-content">
+                        <p>Hello world</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
