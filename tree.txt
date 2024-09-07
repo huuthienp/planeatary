@@ -1,74 +1,28 @@
 planeatary
 ├── .gitignore
 ├── .nojekyll
+├── challenge_page.html
+├── congrat_page.html
+├── email_input_page_updated.html
+├── flatten.sh
 ├── index.html
+├── manifesto.html
+├── qualtrics.html
+├── question_page1.html
 ├── README.md
+├── result_page.html
+├── style_concat.css
 ├── tree.txt
-│
-├── challenge_page/
-│   ├── index.html
-│   ├── css/
-│   │   └── main.css
-│   └── images/
-│       ├── battery.png
-│       └── info.png
-│
-├── congrat_page/
-│   ├── congrat.html
-│   ├── css/
-│   │   └── main.css
-│   └── images/
-│       └── battery.png
-│
-├── email_input_page_updated/
-│   ├── index.html
-│   ├── css/
-│   │   └── main.css
-│   └── images/
-│       └── arrow.jpg
-│
-├── manifesto/
-│   ├── index.html
-│   ├── css/
-│   │   └── main.css
-│   └── images/
-│       ├── battery.png
-│       ├── info.png
-│       ├── info2.png
-│       └── scenic01.jpg
-│
-├── qualtrics/
-│   ├── index.html
-│   ├── css/
-│   │   └── main.css
-│   └── images/
-│       ├── arrow.jpg
-│       ├── info.png
-│       ├── pop1.png
-│       ├── pop2.png
-│       ├── pop3.png
-│       └── pop4.png
-│
-├── question_page1/
-│   ├── index.html
-│   ├── css/
-│   │   └── main.css
-│   └── images/
-│       ├── arrow.jpg
-│       ├── info.png
-│       ├── pop1.png
-│       ├── pop2.png
-│       ├── pop3.png
-│       └── pop4.png
-│
-├── result_page/
-│   ├── index.html
-│   ├── css/
-│   │   └── style.css
-│   └── images/
-│       ├── circle.png
-│       └── heart.png
-│
-└── welcome_page_updated/
-    └── css/
-        └── main.css
+└── images/
+    ├── arrow.jpg
+    ├── battery.png
+    ├── battery_1.png
+    ├── circle.png
+    ├── heart.png
+    ├── info.png
+    ├── info2.png
+    ├── pop1.png
+    ├── pop2.png
+    ├── pop3.png
+    ├── pop4.png
+    └── scenic01.jpg
