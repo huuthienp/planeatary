@@ -11,22 +11,31 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">planetary - logo</div>
+            <h1 class="logo">planetary - logo</h1>
             <nav>
                 <ul>
                     <li>Home</li>
                     <li><a href="qualtrics.html"><b>Quiz</b></a></li>
                     <li><a href="challenge_page.html">Challenges</a></li>
                     <li>About us</li>
-                    <li><button class="sign-in">Sign In</button></li>
-                    <li><button class="sign-up">Sign Up</button></li>
                 </ul>
             </nav>
+            <div class="button">
+                <button class="signIn">Sign In</button>
+                <span>&ensp;</span>
+                <button class="signUp">Sign Up</button>
+            </div>
         </div>
 
+        <div class="pre-postQ">
+            <button id="preQ">PreQuiz</button>
+            <button id="postQ">PostQuiz</button>
+        </div>
         <div class="result">
-            <h1><img src="images/heart.png"/>CONGRATULATIONS!</h1>
-            <p>You have finished your Quiz and this is the result!</p>
+            <div class="congrats">
+                <h1><img src="images/heart.png"/>CONGRATULATIONS!</h1>
+                <p>You have finished your Quiz and this is the result!</p>
+            </div>
             <div class="score">
                 <div class="circle">
                     <h2>40</h2>
@@ -35,7 +44,7 @@
             </div>
             <p class="next-step">Next step: Select 10 Tasks To Improve Your Scores!</p>
             <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
-            <button class="select-tasks">Select Tasks →</button>
+            <button class="select-tasks"><a href="manifesto.html">Select Tasks →</a></button>
         </div>
         <div class="q">
             <div class="questions">
