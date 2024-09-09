@@ -72,7 +72,7 @@ nav ul li {
 }
 .status {
   display: flex;
-  padding: 10px 360px;
+  justify-content: center;
   color: rgba(33,52,60,1);
   font-weight: Bold;
   font-size: 2em;
@@ -260,8 +260,7 @@ nav ul li {
 
 .subheader {
   display: flex;
-  align-items: center;
-  padding: 20px 420px;
+  justify-content: center;
   font-weight: bold;
 }
 .button2 {
@@ -312,9 +311,8 @@ nav ul li {
   flex-direction: row;
 }
 .q-task {
-  margin: 50px;
-  gap: 50px;
-  padding: 0 50px;
+  margin: 0 auto;
+  gap: 2vw;
 }
 .q-task ul {
   align-items: center;
