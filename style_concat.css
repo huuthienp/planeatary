@@ -23,37 +23,36 @@ body {
   font-weight: Bold;
   color: #02897A;
 }
-nav ul{
+.header nav ul{
   list-style: none;
-  display: flex;
   margin: 0;
   padding: 0;
-  gap: 1vw;
+  display: flex;
+  gap: 0.5vw;
 }
-nav ul li {
+.header nav ul li {
   display: inline-block;
 }
-.button {
+.header .button {
   cursor: pointer;
+  font-size: 1em;
 }
 
-.button .signIn {
+.header .button .signIn {
   background-color: #e1f5f3;
   color: rgb(39, 38, 38);
   border: none;
   padding: 1vh 1.2vw;
   border-radius: 0.5em;
-  font-size: 1em;
   font-family: Poppins;
 }
 
-.button .signUp {
+.header .button .signUp {
   background-color: #02897A;
   color: white;
   border: none;
   padding: 1vh 1vw;
   border-radius: 0.5em;
-  font-size: 1em;
   font-family: Poppins;
 }
 .content {
@@ -67,7 +66,7 @@ nav ul li {
 .content .head {
   width: 100%;
   align-items: center;
-  margin: 50px 0;
+  margin: 5vh 0;
   text-align: center;
 }
 .status {
@@ -115,53 +114,7 @@ nav ul li {
 .mod-box {
   width: 100%;
   height: 100%;
-  justify-content: center;
-  margin-top: 25%;
-  margin-left: 27%;
-}
-.modal {
   position: fixed;
-  width: 40%;
-  align-items: column;
-  justify-content: center;
-  background-color: white;
-  border: 1px solid #888;
-  z-index: 2; /* Sit on top */
-}
-.modal-content p {
-  display: flex;
-  justify-content: center;
-  padding: 0 10px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-}
-.btn {
-  margin-left: 95%;
-}
-.btn .close {
-  background: #aaa;
-  font-size: 10px;
-  font-weight: bold;
-  border-radius: 12px;
-  border: 1px grey;
-}
-.close:hover,
-.close:focus {
-  cursor: pointer;
-}
-.overlay {
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-.hidden {
-  display: none;
 }
 
 .header a:link {
@@ -317,7 +270,7 @@ nav ul li {
 .q-task ul {
   align-items: center;
   list-style: none;
-  padding: 20px;
+  padding: 2vmax;
 }
 
 .task-content img:hover, 
@@ -326,31 +279,29 @@ nav ul li {
 }
 
 .modal {
+  margin: 25vh 25vw;
   position: fixed;
-  width: 350px;
-  align-items: column;
-  justify-content: center;
+  width: 50vw;
+  height: 30vh;
   background-color: white;
-  border-radius: 5px;
+  border-radius: 0.5em;
   z-index: 2; /* Sit on top */
 }
 .modal-content p {
-  display: flex;
-  justify-content: center;
-  padding: 0 10px;
-  border: none;
-  font-size: 16px;
+  text-align: center;
+  font-size: 1em;
 }
 /* The Close Button */
-.btn {
-  margin-left: 90%;
+.modal .btn {
+  display: flex;
+  justify-content: flex-end;
 }
 .btn .close {
   background: #aaa;
-  font-size: 16px;
+  font-size: 1em;
   font-weight: bold;
-  border-radius: 32px;
-  border: 1px grey;
+  border-radius: 0.2em;
+  border: 0.1em grey;
 }
 .close:hover,
 .close:focus {
@@ -378,24 +329,25 @@ nav ul li {
 }
 .modal2 {
   position: fixed;
-  width: 500px;
-  height: 300px;
+  width: 50vw;
+  height: 30vh;
   background-image: url('./images/scenic01.jpg');
   background-repeat: no-repeat;
   background-size: cover;
-  border-radius: 5px;
+  border-radius: 2em;
   z-index: 2; /* Sit on top */
 }
 /* The Close Button */
 .btn2 {
-  margin-left: 95%;
+  display: flex;
+  justify-content: flex-end;
 }
 .btn2 .close2 {
   background: #aaa;
-  font-size: 20px;
+  font-size: 1em;
   font-weight: bold;
-  border-radius: 30px;
-  border: 1px grey;
+  border-radius: 3em;
+  border: 0.1em grey;
 }
 .close2:hover,
 .close2:focus {
@@ -430,9 +382,10 @@ nav ul li {
   margin: 0 auto;
 }
 
-.btn-next {
+.content .btn-next {
   display: flex;
-  align-content: flex-end;
+  width: 100%;
+  justify-content: flex-end;
 }
 .next {
   font-size: 1em;
@@ -442,48 +395,6 @@ nav ul li {
   border: none;
   background-color: #02897A;
   color: white;
-}
-
-.modal {
-  position: absolute;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: center;
-  border-radius: 0.5em;
-  margin: 0 auto;
-  z-index: 2; /* Sit on top */
-}
-
-.btn .close {
-  background: #aaa;
-  font-size: 1em;
-  font-weight: bold;
-  border-radius: 1em;
-  border: 1px grey;
-}
-.close:hover,
-.close:focus {
-  cursor: pointer;
-}
-.hidden {
-  display: none;
-}
-.overlay {
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-.align {
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  margin-top: 20%;
-  margin-left: 40%;
 }
 
 .content {
@@ -527,36 +438,13 @@ nav ul li {
   display: flex;
   align-items: stretch;
   justify-content: space-between;
-  gap: 30px;
+  gap: 5vmax;
 }
 .content .down .section {
   width: 50%;
-  border-right: 3px solid #02897A;;
-  border-bottom: 3px solid #02897A;;
-  border-radius: 15px;
-}
-.btn-next {
-  padding-left: 90%;
-}
-
-.next {
-  font-size: 16px;
-  font-family: 'Poppins', sans-serif;
-  padding: 8px 16px;
-  border-radius: 4px;
-  border: none;
-  background-color: #02897A;
-  color: white;
-}
-
-.modal {
-  position: absolute;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: center;
-  border-radius: 5px;
-  margin: 0 auto;
-  z-index: 2; /* Sit on top */
+  border-right: 0.3em solid #02897A;;
+  border-bottom: 0.3em solid #02897A;;
+  border-radius: 1px;
 }
 
 .btn .close {
@@ -570,26 +458,7 @@ nav ul li {
 .close:focus {
   cursor: pointer;
 }
-.hidden {
-  display: none;
-}
-.overlay {
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-.align {
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  margin-top: 20%;
-  margin-left: 40%;
-}
+
 .next a:link {
   text-decoration: none;
   color: white;
@@ -601,7 +470,6 @@ nav ul li {
 
 .pre-postQ {
   display: flex;
-  height: 5vh;
   justify-content: flex-end;
   margin: 2vh 0;
 }
@@ -610,7 +478,7 @@ nav ul li {
   background-color: #b1d8d3;
   color: rgb(109, 102, 102);
   border: none;
-  padding: 1vh 3vmax;
+  padding: 1vh 1vw;
   border-top-left-radius: 0.5em;
   border-bottom-left-radius: 0.5em;
   font-size: 1em;
@@ -620,7 +488,7 @@ nav ul li {
   background-color: #02897A;
   color: white;
   border: none;
-  padding: 1vh 3vmax;
+  padding: 1vh 1vw;
   border-top-right-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
   font-size: 1em;
@@ -632,7 +500,9 @@ nav ul li {
 }
 .result .congrats {
   width: 100%;
-  height: 10vmax;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 .result img {
     width: 5vmax;
@@ -644,45 +514,43 @@ nav ul li {
 
 .result .score {
     width: 100%;
-    height: 10vmax;
+    display: flex;
     font-weight: bold;
+    justify-content: center;
+    flex-direction: column;
     color: #02897A;
 }
 .score .circle{
-    height: 20vh;
-    justify-content: center;
+    height: 10em;
     background-image: url('./images/circle.png');
     background-repeat: no-repeat;
-    background-size: 20vh;
+    background-size: contain;
     background-position: center;
 }
-.result .score h2 {
-    padding-top: 4vh;
-    font-size: 4vh;
+.score h2 {
+    font-size: 2em;
+    padding: 0.2em 0;
 }
-
-.result .score span {
-    padding-bottom: 2vh;
+.score p {
     font-size: 1em;
-    font-weight: normal;
     color: grey;
-    text-align: center;
+    margin: 0 auto;
 }
 
 .result .next-step {
-    font-size: 2vmax;
+    font-size: 1em;
     color: #02897A;
 }
 
 .result .suggestion {
-  font-size: 1vmax;
+  font-size: 1em;
   color: #666;
 }
 
-.select-tasks {
+.result .select-tasks {
     background-color: #02897A;
     color: white;
-    padding: 1vh 2vw;
+    padding: 2vh 1vw;
     border: none;
     border-radius: 0.5em;
     font-size: 1em;
@@ -744,7 +612,7 @@ nav ul li {
   display: flex;
   justify-content: center;
 }
-.next{
+.button_next .next{
   background-color: #02897A;
   color: white;
   border: none;
