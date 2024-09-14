@@ -258,17 +258,15 @@ body {
 
 .task-content {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding: 2vh 0;
   font-size: 1em;
   flex-direction: row;
 }
 .q-task {
   margin: 0 auto;
-  gap: 2vw;
 }
 .q-task ul {
-  align-items: center;
   list-style: none;
   padding: 2vmax;
 }
@@ -278,8 +276,14 @@ body {
   cursor: pointer;
 }
 
-.modal {
-  margin: 25vh 25vw;
+.align {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.align .modal {
   position: fixed;
   width: 50vw;
   height: 30vh;
@@ -287,9 +291,8 @@ body {
   border-radius: 0.5em;
   z-index: 2; /* Sit on top */
 }
-.modal-content p {
-  text-align: center;
-  font-size: 1em;
+.modal-content img {
+  max-width: 20vw;
 }
 /* The Close Button */
 .modal .btn {
@@ -320,23 +323,16 @@ body {
   overflow: auto; /* Enable scroll if needed */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
-.align {
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  margin-top: 20%;
-  margin-left: 40%;
-}
-.modal2 {
+
+.align .modal2 {
   position: fixed;
   width: 50vw;
   height: 30vh;
-  background-image: url('./images/scenic01.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  border-radius: 2em;
+  background-color: white;
+  border-radius: 0.5em;
   z-index: 2; /* Sit on top */
 }
+
 /* The Close Button */
 .btn2 {
   display: flex;
