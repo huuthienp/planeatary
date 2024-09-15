@@ -96,6 +96,10 @@ body {
   border-radius: 1em;
   text-align: center;
 }
+.content .card_completed:hover,
+.content .card_completed:focus {
+  cursor: pointer;
+}
 .content .card_incompleted {
   padding: 4vh 1vw;
   color: rgb(71, 71, 71);
@@ -103,6 +107,10 @@ body {
   border: none;
   border-radius: 1em;
   text-align: center;
+}
+.content .card_incompleted:hover,
+.content .card_incompleted:focus {
+  cursor: pointer;
 }
 .completion {
   display: flex;
