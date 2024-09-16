@@ -1,138 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
-        <link href="style_concat.css" rel="stylesheet" />
-        <title>PlanEATary Challenges</title>
-        <script>
-            function Modal() {
-                // Get the modal
-                const modal = document.querySelector(".modal");
-                const overlay = document.querySelector(".overlay");
-                modal.classList.remove("hidden");
-                overlay.classList.remove("hidden");
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
+    <link href="style_concat.css" rel="stylesheet" />
+    <title>PlanEATary Challenges</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="logo">planeatary - logo</h1>
+            <nav>
+                <ul>
+                    <li>Home</li>
+                    <li><a href="qualtrics.html"><b>Quiz</b></a></li>
+                    <li><a href="manifesto.html">Challenge</a></li>
+                    <li>About us</li>
+                </ul>
+            </nav>
+            <div class="button">
+                <button class="signIn">Sign In</button>
+                <span>&ensp;</span>
+                <button class="signUp">Sign Up</button>
+            </div>
+        </div>
+        <div class="content">
+            <div class="head">
+                <h1 class="status"><img src="./images/battery.png" width="8%" height="auto"/>CHALLENGE IN PROGRESS</h1>
+                <p class="suggestion">Please click Done when you complete you tasks</p>
+            </div>
+            <div class="card">
+                <!--<div class="card_incompleted">
+                    <span id="task1"></span>
+                    <img src="./images/info.png" onclick="Modal();" width="5%" />
+                    <br /><br />
+                    <span class="completion">&#x2713; Done</span>
+                </div>-->
+            </div>
+        </div>
+    </div>
+    <!-- The Modal -->
+    <section class="overlay hidden">
+        <div class="align">
+            <div class="modal hidden"> 
+                <div class="btn">
+                    <button class="close" onclick="Close();">x</button>
+                </div>
+                <div class="modal-content">
+                    <img />
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        const cardContainer = document.querySelector(".card");
+        document.addEventListener("DOMContentLoaded", function() {
+            let tasks = [];
+            // Check if tasks are stored in localStorage
+            const storedTasks = localStorage.getItem("user");
+            if (storedTasks) {
+                // Parse and use tasks from localStorage
+                tasks = JSON.parse(storedTasks);
+                displayTasks(tasks);
+            } else {
+                // Fetch tasks from 'user.json' and store them in localStorage
+                fetch('user.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        tasks = data.tasks;
+                        localStorage.setItem("user", JSON.stringify(tasks));
+                        displayTasks(tasks);
+                    })
+                    .catch(error => console.error("Error fetching JSON data:", error));
             }
-            // When the user clicks on <span> (x), close the modal
+
+            // Function to display tasks
+            function displayTasks(tasks) {
+                cardContainer.innerHTML = ''; // Clear any existing content
+                tasks.forEach((task, i) => {
+                    const task_card = document.createElement("div");
+                    task_card.classList.add(task.status === "completed" ? "card_completed" : "card_incompleted");
+
+                    const taskName = document.createElement("span");
+                    taskName.id = `task${i}`;
+                    taskName.textContent = task.taskName;
+
+                    const info = document.createElement("img");
+                    info.src = "./images/info.png";
+                    info.style.width = "5%";
+                    info.alt = "Info Icon";
+                    info.addEventListener('click', Modal); // Assuming 'Modal' is defined elsewhere
+
+                    const completion = document.createElement("span");
+                    completion.classList.add("completion");
+                    completion.textContent = task.status;
+
+                    // Event listener to toggle task status
+                    task_card.addEventListener('click', function() {
+                        toggleTaskStatus(i);
+                    });
+
+                    task_card.appendChild(taskName);
+                    task_card.appendChild(info);
+                    task_card.appendChild(completion);
+                    cardContainer.appendChild(task_card);
+                });
+            }
+
+            // Function to toggle task status
+            function toggleTaskStatus(index) {
+                tasks[index].status = tasks[index].status === "completed" ? "Done" : "completed";
+                // Update localStorage
+                localStorage.setItem("user", JSON.stringify(tasks));
+                // Refresh the displayed tasks
+                displayTasks(tasks);
+            }
+        });
+        const modal = document.querySelector(".modal");
+        const overlay = document.querySelector(".overlay");
+        function Modal() {
+            // Get the modal
+            const modal = document.querySelector(".modal");
+            const overlay = document.querySelector(".overlay");
+            modal.classList.remove("hidden");
+            overlay.classList.remove("hidden");
+        }
+        // When the user clicks on <span> (x), close the modal
             function Close() {
                 const modal = document.querySelector(".modal");
                 const overlay = document.querySelector(".overlay");
                 modal.classList.add("hidden");
                 overlay.classList.add("hidden");
             }
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                const modal = document.querySelector(".modal");
-                const overlay = document.querySelector(".overlay");
-                if (event.target == modal) {
-                    modal.classList.add("hidden");
-                    overlay.classList.add("hidden"); 
-                }
+            overlay.onclick = function(event) {
+                modal.classList.add("hidden");
+                overlay.classList.add("hidden"); 
             }
+            cardContainer.onclick = function(event) {
+                const target = event.target;
+                if (target.classList.contains("card_incompleted")) {
+                    target.classList.add("card_completed");
+                    target.classList.remove("card_incompleted");
+                    var word = target.querySelector(".completion");
+                    word.innerHTML = 'Completed';
+                } else if (target.classList.contains("card_completed")) {
+                    target.classList.add("card_incompleted");
+                    target.classList.remove("card_completed");
+                    var word = target.querySelector(".completion");
+                    word.innerHTML = '&#x2713; Done';
+                }
+            };
         </script>
-    </head>
-    <body>
-        <div class="container">
-            <div class="header">
-                <h1 class="logo">planeatary - logo</h1>
-                <nav>
-                    <ul>
-                        <li>Home</li>
-                        <li><a href="qualtrics.html"><b>Quiz</b></a></li>
-                        <li><a href="manifesto.html">Challenge</a></li>
-                        <li>About us</li>
-                    </ul>
-                </nav>
-                <div class="button">
-                    <button class="signIn">Sign In</button>
-                    <span>&ensp;</span>
-                    <button class="signUp">Sign Up</button>
-                </div>
-            </div>
-            <div class="content">
-                <div class="head">
-                    <h1 class="status"><img src="./images/battery.png" width="10%" height="auto"/>CHALLENGE IN PROGRESS</h1>
-                    <p class="suggestion">Please click Done when you complete you tasks</p>
-                </div>
-                <div class="card">
-                    <div class="card_completed">
-                        <span>Read the Food Citizenship manifesto</span>
-                        <img src="./images/info.png" onclick="Modal();" width="5%" />
-                        <br /><br />
-                        <span class="completion">Done</span>
-                    </div>
-                    <div class="card_incompleted">
-                        <span>Read the Food Citizenship manifesto</span>
-                        <img src="./images/info.png" onclick="Modal();" width="5%" />
-                        <br /><br />
-                        <span class="completion">completed</span>
-                    </div>
-                    <div class="card_completed">
-                        <span>Read the Food Citizenship manifesto</span>
-                        <img src="./images/info.png" onclick="Modal();" width="5%" />
-                        <br /><br />
-                        <span class="completion">Done</span>
-                    </div>
-                    <div class="card_incompleted">
-                        <span>Read the Food Citizenship manifesto</span>
-                        <img src="./images/info.png" onclick="Modal();" width="5%" />
-                        <br /><br />
-                        <span class="completion">completed</span>
-                    </div>
-                    <div class="card_completed">
-                        <span>Read the Food Citizenship manifesto</span>
-                        <img src="./images/info.png" onclick="Modal();" width="5%" />
-                        <br /><br />
-                        <span class="completion">completed</span>
-                    </div>
-                    <div class="card_completed">
-                        <span>Read the Food Citizenship manifesto</span>
-                        <img src="./images/info.png" onclick="Modal();" width="5%" />
-                        <br /><br />
-                        <span class="completion">completed</span>
-                    </div>
-                    <div class="card_incompleted">
-                        <span>Read the Food Citizenship manifesto</span>
-                        <img src="./images/info.png" onclick="Modal();" width="5%" />
-                        <br /><br />
-                        <span class="completion">completed</span>
-                    </div>
-                    <div class="card_completed">
-                        <span>Read the Food Citizenship manifesto</span>
-                        <img src="./images/info.png" onclick="Modal();" width="5%" />
-                        <br /><br />
-                        <span class="completion">completed</span>
-                    </div>
-                    <div class="card_completed">
-                        <span>Read the Food Citizenship manifesto</span>
-                        <img src="./images/info.png" onclick="Modal();" width="5%" />
-                        <br /><br />
-                        <span class="completion">completed</span>
-                    </div>
-                    <div class="card_completed">
-                        <span>Read the Food Citizenship manifesto</span>
-                        <img src="./images/info.png" onclick="Modal();" width="5%" />
-                        <br /><br />
-                        <span class="completion">Done</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- The Modal -->
-        <section class="overlay hidden">
-            <div class="align">
-                <div class="modal hidden"> 
-                    <div class="btn">
-                        <button class="close" onclick="Close();">x</button>
-                    </div>
-                    <div class="modal-content">
-                        <p>Hello world</p>
-                    </div>
-                </div>
-            </div>
-        </section>
     </body>
-</html>
-
+    </html>
