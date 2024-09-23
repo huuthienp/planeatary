@@ -96,149 +96,142 @@
                 overlay.classList.add('hidden');
             }
             // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                const modal = document.querySelector(".modal");
-                const overlay = document.querySelector(".overlay");
-                if (event.target == modal) {
-                    modal.classList.add("hidden");
-                    overlay.classList.add("hidden"); 
+            const modal = document.querySelector(".modal");
+            const overlay = document.querySelector(".overlay");
+
+            const good = document.getElementById("good");
+            const bad = document.getElementById("notyet");
+            const QContainer = document.querySelector(".q-task");
+
+            const startButton = document.querySelector(".start");
+
+            document.addEventListener("DOMContentLoaded", function() {
+            let scores = [];
+            let task_counts = 0;
+            const QContainer = document.querySelector(".q-task");
+
+            // Check if scores are stored in localStorage
+            const storedScore = localStorage.getItem("user");
+            if (storedScore) {
+                scores = JSON.parse(storedScore);
+                scores.forEach((score, i) => {
+                        score.tasks.forEach((task, j) => {
+                            if (task.choice === "selected") {
+                                task_counts += 1;
+                            }
+                    });
+                });
+
+                updateStartButton();
+            } else {
+                // Fetch score from 'before_user.json' and store them in localStorage
+                fetch('before_user.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        scores = data.postscore || data.prescore;
+                        localStorage.setItem("user", JSON.stringify(scores));
+                        updateStartButton();
+                    })
+                    .catch(error => console.error("Error fetching JSON data:", error));
+            }
+
+            // Function to update start button state
+            function updateStartButton() {
+                if (task_counts >= 10) {
+                    console.log(`Number of selected tasks: ${task_counts}`);
+                    startButton.style.pointerEvents = "auto";
+                    startButton.style.backgroundColor = "#02897A";
+                } else {
+                    startButton.style.pointerEvents = "none";
+                    startButton.style.backgroundColor = "grey";
                 }
             }
-            const good = document.querySelector("#good");
-            const bad = document.querySelector("#notyet");
-            const QContainer = document.querySelector(".q-task");
-            document.addEventListener("DOMContentLoaded", function() {
-                let scores = [];
-                let tasks = [];
-                // Check if scores are stored in localStorage
-                const storedScore = localStorage.getItem("user");
-                if (storedScore) {
-                    // Parse and use scores from localStorage
-                    scores = JSON.parse(storedScore);
-                    tasks = scores.tasks || [];
-                } else {
-                    // Fetch score from 'before_user.json' and store them in localStorage
-                    fetch('before_user.json')
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.postscore) {
-                                scores = data.postscore;
-                            }
-                            else {
-                                scores = data.prescore;
-                            }
-                            tasks = scores.tasks || [];
-                            localStorage.setItem("user", JSON.stringify(scores));
 
-                        })
-                        .catch(error => console.error("Error fetching JSON data:", error));
-            };
-
-            good.addEventListener('click', function () {
+            function renderTasks(scoreCondition) {
                 QContainer.innerHTML = ''; // Clear any existing content
+
                 scores.forEach((score, i) => {
-                    if (score.score > 3) {
+                    if (scoreCondition(score)) {
                         const q_con = document.createElement("ul");
                         q_con.classList.add("q");
-                
+
                         const question = document.createElement("li");
                         question.id = `q_num${i+1}`;
-                
-                        const q_num = document.createElement("span")
+                        const q_num = document.createElement("span");
                         q_num.textContent = `Question ${i+1} - ${score.score} points`;
-                        
-                        const info = document.createElement("img");
-                        info.src = "./images/info.png";
-                        info.style.width = "5%";
-                        info.alt = "Info Icon";
 
                         q_con.appendChild(question);
                         question.appendChild(q_num);
 
-                        const tasks = score.tasks;
-                        tasks.forEach((task, j) => {
+                        score.tasks.forEach((task, j) => {
                             const q_input = document.createElement("li");
                             const label = document.createElement("label");
                             const input = document.createElement("input");
                             const text = document.createElement("span");
-                            text.innerHTML = task.taskName; 
+                            text.innerHTML = task.taskName;
                             input.type = "checkbox";
-                            label.appendChild(input); 
-                            label.appendChild(text); 
-                            q_input.appendChild(label); 
-                            q_con.appendChild(q_input); 
-                            task.choice = task.choice || "not selected";
+
+                            // Initialize task count based on current selected state
+                            if (task.choice === "selected") {
+                                input.checked = true;
+                            }
+
+                            label.appendChild(input);
+                            label.appendChild(text);
+                            q_input.appendChild(label);
+                            q_con.appendChild(q_input);
+
                             // Event listener to track selection
                             input.addEventListener('change', function() {
                                 if (input.checked) {
-                                    task.choice = "selected"; // Mark task as selected if checked
+                                    task.choice = "selected";
+                                    task_counts += 1;
                                 } else {
-                                    task.choice = "not selected"; // Mark task as not selected if unchecked
+                                    task.choice = "not selected";
+                                    task_counts -= 1;
                                 }
-                                console.log(`Task: ${task.taskName}, Choice: ${task.choice}`); // Debugging
+
+                                // Save updated task state to localStorage
                                 localStorage.setItem("user", JSON.stringify(scores));
+
+                                // Update the start button
+                                updateStartButton();
                             });
                         });
 
-                        info.addEventListener('click', Modal); 
-                        question.appendChild(info);
                         QContainer.appendChild(q_con);
                     }
-                })
+                });
+
+                // Update start button state after rendering tasks
+                updateStartButton();
+            }
+
+            // Load tasks for bad scores on window load
+            window.addEventListener("load", function() {
+                updateStartButton();
+                renderTasks(score => score.score <= 3);
             });
-            bad.addEventListener('click', function () {
-                QContainer.innerHTML = ''; // Clear any existing content
-                scores.forEach((score, i) => {
-                    if (score.score <= 3) {
-                        const q_con = document.createElement("ul");
-                        q_con.classList.add("q");
-                
-                        const question = document.createElement("li");
-                        question.id = `q_num${i+1}`;
-                
-                        const q_num = document.createElement("span")
-                        q_num.textContent = `Question ${i+1} - ${score.score} points`;
-                        const info = document.createElement("img");
-                        info.src = "./images/info.png";
-                        info.style.width = "5%";
-                        info.alt = "Info Icon";
-                        info.addEventListener('click', Modal); 
 
-                        
-                        q_con.appendChild(question);
-                        question.appendChild(q_num);
-
-                        const tasks = score.tasks;
-                        tasks.forEach((task, j) => {
-                            const q_input = document.createElement("li");
-                            const label = document.createElement("label");
-                            const input = document.createElement("input");
-                            const text = document.createElement("span");
-                            text.innerHTML = task.taskName; 
-                            input.type = "checkbox";
-                            label.appendChild(input); 
-                            label.appendChild(text); 
-                            q_input.appendChild(label); 
-                            q_con.appendChild(q_input); 
-                            task.choice = task.choice || "not selected";
-                            // Event listener to track selection
-                            input.addEventListener('change', function() {
-                                if (input.checked) {
-                                    task.choice = "selected"; // Mark task as selected if checked
-                                } else {
-                                    task.choice = "not selected"; // Mark task as not selected if unchecked
-                                }
-                                console.log(`Task: ${task.taskName}, Choice: ${task.choice}`); // Debugging
-                                localStorage.setItem("user", JSON.stringify(scores));
-                            });
-                        });
-
-                        question.appendChild(info);
-                        QContainer.appendChild(q_con);
-                    }
-                })
+            // Event listener for "good" button
+            document.getElementById('good').addEventListener('click', function() {
+                updateStartButton();
+                renderTasks(score => score.score > 3);
             });
-        })
+
+            // Event listener for "bad" button
+            document.getElementById('notyet').addEventListener('click', function() {
+                updateStartButton();
+                renderTasks(score => score.score <= 3);
+            });
+
+            // Attach single click listener for the start button navigation
+            startButton.addEventListener('click', function(event) {
+                if (task_counts >= 10) {
+                    window.location.href = "challenge_page.html";
+                }
+            });
+        });
         </script>
     </body>
 </html>
