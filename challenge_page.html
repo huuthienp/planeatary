@@ -57,65 +57,74 @@
     <script>
         const cardContainer = document.querySelector(".card");
         document.addEventListener("DOMContentLoaded", function() {
-            let tasks = [];
-            // Check if tasks are stored in localStorage
-            const storedTasks = localStorage.getItem("user");
-            if (storedTasks) {
-                // Parse and use tasks from localStorage
-                tasks = JSON.parse(storedTasks);
-                displayTasks(tasks);
-            } else {
-                // Fetch tasks from 'user.json' and store them in localStorage
-                fetch('user.json')
-                    .then(response => response.json())
-                    .then(data => {
-                        tasks = data.tasks;
-                        localStorage.setItem("user", JSON.stringify(tasks));
-                        displayTasks(tasks);
-                    })
-                    .catch(error => console.error("Error fetching JSON data:", error));
-            }
+        let scores = [];
 
-            // Function to display tasks
-            function displayTasks(tasks) {
-                cardContainer.innerHTML = ''; // Clear any existing content
-                tasks.forEach((task, i) => {
-                    const task_card = document.createElement("div");
-                    task_card.classList.add(task.status === "completed" ? "card_completed" : "card_incompleted");
+        // Check if scores are stored in localStorage
+        const storedScore = localStorage.getItem("user");
+        if (storedScore) {
+            // Parse and use scores from localStorage
+            scores = JSON.parse(storedScore);
+            displayTasksFromScores(scores);
+        } else {
+            // Fetch scores from 'before_user.json' and store them in localStorage
+            fetch('before_user.json')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.postscore) {
+                        scores = data.postscore;
+                    } else {
+                        scores = data.prescore;
+                    }
+                    localStorage.setItem("user", JSON.stringify(scores));
+                    displayTasksFromScores(scores);
+                })
+                .catch(error => console.error("Error fetching JSON data:", error));
+        }
+
+        // Function to display tasks
+        function displayTasksFromScores(scores) {
+            cardContainer.innerHTML = ''; // Clear any existing content
+            scores.forEach((scoreObj, i) => {
+                const tasks = scoreObj.tasks;
+                tasks.forEach((task, j) => {
+                    if (task.choice == 'selected') {
+                    const taskCard = document.createElement("div");
+                    taskCard.classList.add(task.status === "Done" ? "card_completed" : "card_incompleted");
 
                     const taskName = document.createElement("span");
-                    taskName.id = `task${i}`;
+                    taskName.id = `task${i}_${j}`;
                     taskName.textContent = task.taskName;
 
                     const info = document.createElement("img");
                     info.src = "./images/info.png";
                     info.style.width = "5%";
                     info.alt = "Info Icon";
-                    info.addEventListener('click', Modal); // Assuming 'Modal' is defined elsewhere
+                    info.addEventListener('click', Modal);
 
                     const completion = document.createElement("span");
                     completion.classList.add("completion");
                     completion.textContent = task.status;
 
                     // Event listener to toggle task status
-                    task_card.addEventListener('click', function() {
-                        toggleTaskStatus(i);
+                    taskCard.addEventListener('click', function() {
+                        toggleTaskStatus(i, j);
                     });
 
-                    task_card.appendChild(taskName);
-                    task_card.appendChild(info);
-                    task_card.appendChild(completion);
-                    cardContainer.appendChild(task_card);
+                    taskCard.appendChild(taskName);
+                    taskCard.appendChild(info);
+                    taskCard.appendChild(completion);
+                    cardContainer.appendChild(taskCard);
+                    }
                 });
-            }
+            });
+        }
 
-            // Function to toggle task status
-            function toggleTaskStatus(index) {
-                tasks[index].status = tasks[index].status === "completed" ? "Done" : "completed";
-                // Update localStorage
-                localStorage.setItem("user", JSON.stringify(tasks));
-                // Refresh the displayed tasks
-                displayTasks(tasks);
+            // Function to toggle task status and update localStorage
+            function toggleTaskStatus(scoreIndex, taskIndex) {
+                const tasks = scores[scoreIndex].tasks;
+                tasks[taskIndex].status = tasks[taskIndex].status === "Done" ? "Completed" : "Done";
+                localStorage.setItem("user", JSON.stringify(scores)); // Update stored scores
+                displayTasksFromScores(scores); // Re-render the tasks
             }
         });
         const modal = document.querySelector(".modal");
@@ -155,3 +164,4 @@
         </script>
     </body>
     </html>
+    
