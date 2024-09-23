@@ -137,7 +137,7 @@
             good.addEventListener('click', function () {
                 QContainer.innerHTML = ''; // Clear any existing content
                 scores.forEach((score, i) => {
-                    if (score.score <= 3) {
+                    if (score.score > 3) {
                         const q_con = document.createElement("ul");
                         q_con.classList.add("q");
                 
@@ -189,7 +189,7 @@
             bad.addEventListener('click', function () {
                 QContainer.innerHTML = ''; // Clear any existing content
                 scores.forEach((score, i) => {
-                    if (score.score > 3) {
+                    if (score.score <= 3) {
                         const q_con = document.createElement("ul");
                         q_con.classList.add("q");
                 
