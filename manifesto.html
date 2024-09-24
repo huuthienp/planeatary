@@ -28,7 +28,7 @@
                     </div>
             </div>
             <div class="subheader">
-                <p id="tentask">You’ve selected 10 tasks. Start challenge now</p>
+                <p id="tentask"></p>
             </div>
             <div class="button2">
                 <button class="start"><a href="challenge_page.html">Start</a></button>
@@ -137,11 +137,16 @@
 
             // Function to update start button state
             function updateStartButton() {
+                persuade = document.getElementById("tentask");
                 if (task_counts >= 10) {
                     console.log(`Number of selected tasks: ${task_counts}`);
+                    persuade.innerHTML = 'You’ve selected 10 tasks. Start challenge now';
+                    persuade.style.color = 'black';
                     startButton.style.pointerEvents = "auto";
                     startButton.style.backgroundColor = "#02897A";
                 } else {
+                    persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
+                    persuade.style.color = 'grey';
                     startButton.style.pointerEvents = "none";
                     startButton.style.backgroundColor = "grey";
                 }
