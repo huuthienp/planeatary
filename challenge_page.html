@@ -29,18 +29,12 @@
         <div class="content">
             <div class="head">
                 <h1 class="status"><img src="./images/battery.png" width="8%" height="auto"/>CHALLENGE IN PROGRESS</h1>
-                <p class="suggestion">Please click Done when you complete you tasks</p>
+                <p class="suggestion">Please click Done when you complete your tasks</p>
             </div>
-            <div class="card">
-                <!--<div class="card_incompleted">
-                    <span id="task1"></span>
-                    <img src="./images/info.png" onclick="Modal();" width="5%" />
-                    <br /><br />
-                    <span class="completion">&#x2713; Done</span>
-                </div>-->
-            </div>
+            <div class="card"></div>
         </div>
     </div>
+
     <!-- The Modal -->
     <section class="overlay hidden">
         <div class="align">
@@ -54,104 +48,141 @@
             </div>
         </div>
     </section>
+
     <script>
+        const content = document.querySelector(".content");
         const cardContainer = document.querySelector(".card");
+        // Create and append the next button
+        const nextContainer = document.createElement("div");
+        nextContainer.classList.add("btn-next");
+        
+        const btn_next = document.createElement("button");
+        btn_next.classList.add("next");
+        btn_next.innerHTML = "Next";
+        btn_next.style.pointerEvents = "none"; // Disable initially
+        btn_next.style.backgroundColor = "grey"; // Disable color initially
+        btn_next.style.cursor = "not-allowed"; // Show disabled cursor
+        
+        nextContainer.appendChild(btn_next);
+        content.appendChild(nextContainer);
+
         document.addEventListener("DOMContentLoaded", function() {
-            let tasks = [];
-            // Check if tasks are stored in localStorage
-            const storedTasks = localStorage.getItem("user");
-            if (storedTasks) {
-                // Parse and use tasks from localStorage
-                tasks = JSON.parse(storedTasks);
-                displayTasks(tasks);
+            let scores = [];
+
+            // Check if scores are stored in localStorage
+            const storedScore = localStorage.getItem("user");
+            if (storedScore) {
+                // Parse and use scores from localStorage
+                scores = JSON.parse(storedScore);
+                displayTasksFromScores(scores);
             } else {
-                // Fetch tasks from 'user.json' and store them in localStorage
-                fetch('user.json')
+                // Fetch scores from 'before_user.json' and store them in localStorage
+                fetch('before_user.json')
                     .then(response => response.json())
                     .then(data => {
-                        tasks = data.tasks;
-                        localStorage.setItem("user", JSON.stringify(tasks));
-                        displayTasks(tasks);
+                        scores = data.postscore || data.prescore;
+                        localStorage.setItem("user", JSON.stringify(scores));
+                        displayTasksFromScores(scores);
                     })
                     .catch(error => console.error("Error fetching JSON data:", error));
             }
 
+
             // Function to display tasks
-            function displayTasks(tasks) {
+            function displayTasksFromScores(scores) {
                 cardContainer.innerHTML = ''; // Clear any existing content
-                tasks.forEach((task, i) => {
-                    const task_card = document.createElement("div");
-                    task_card.classList.add(task.status === "completed" ? "card_completed" : "card_incompleted");
+                scores.forEach((scoreObj, i) => {
+                    const tasks = scoreObj.tasks;
+                    tasks.forEach((task, j) => {
+                        if (task.choice === 'selected') {
+                            const taskCard = document.createElement("div");
+                            taskCard.classList.add(task.status === "Completed" ? "card_completed" : "card_incompleted");
 
-                    const taskName = document.createElement("span");
-                    taskName.id = `task${i}`;
-                    taskName.textContent = task.taskName;
+                            const taskName = document.createElement("span");
+                            taskName.id = `task${i}_${j}`;
+                            taskName.textContent = task.taskName;
 
-                    const info = document.createElement("img");
-                    info.src = "./images/info.png";
-                    info.style.width = "5%";
-                    info.alt = "Info Icon";
-                    info.addEventListener('click', Modal); // Assuming 'Modal' is defined elsewhere
+                            const info = document.createElement("img");
+                            info.src = "./images/info.png";
+                            info.style.width = "5%";
+                            info.alt = "Info Icon";
+                            info.addEventListener('click', function(event) {
+                                event.stopPropagation();
+                                event.preventDefault();
+                                Modal();
+                            });
 
-                    const completion = document.createElement("span");
-                    completion.classList.add("completion");
-                    completion.textContent = task.status;
+                            const completion = document.createElement("span");
+                            completion.classList.add("completion");
+                            completion.textContent = task.status;
 
-                    // Event listener to toggle task status
-                    task_card.addEventListener('click', function() {
-                        toggleTaskStatus(i);
+                            // Event listener to toggle task status
+                            taskCard.addEventListener('click', function() {
+                                toggleTaskStatus(i, j);
+                            });
+
+                            taskCard.appendChild(taskName);
+                            taskCard.appendChild(info);
+                            taskCard.appendChild(completion);
+                            cardContainer.appendChild(taskCard);
+                        }
                     });
-
-                    task_card.appendChild(taskName);
-                    task_card.appendChild(info);
-                    task_card.appendChild(completion);
-                    cardContainer.appendChild(task_card);
                 });
+                updateNextButton(); 
             }
 
-            // Function to toggle task status
-            function toggleTaskStatus(index) {
-                tasks[index].status = tasks[index].status === "completed" ? "Done" : "completed";
-                // Update localStorage
-                localStorage.setItem("user", JSON.stringify(tasks));
-                // Refresh the displayed tasks
-                displayTasks(tasks);
+            // Function to toggle task status and update localStorage
+            function toggleTaskStatus(scoreIndex, taskIndex) {
+                const tasks = scores[scoreIndex].tasks;
+                tasks[taskIndex].status = tasks[taskIndex].status === "Done" ? "Completed" : "Done"; // Toggle between Done and Completed
+                localStorage.setItem("user", JSON.stringify(scores)); // Update stored scores
+                displayTasksFromScores(scores); // Re-render the tasks
             }
+
+            // Function to update the Next button's state
+            function updateNextButton() {
+                let allCompleted = true;
+                scores.forEach((scoreObj) => {
+                    scoreObj.tasks.forEach((task) => {
+                        if (task.choice === "selected" && task.status !== "Completed") {
+                            allCompleted = false; // If any selected task is not "Completed", set false
+                        }
+                    });
+                });
+
+                // Enable or disable the next button based on task completion status
+                if (allCompleted) {
+                    btn_next.style.pointerEvents = "auto"; // Enable the next button
+                    btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
+                    btn_next.style.cursor = "pointer"; 
+                    // Attach click listener to next button
+                    btn_next.addEventListener("click", function() {
+                        if (btn_next.style.pointerEvents === "auto") {
+                            window.location.href = "congrat_page.html"; // Redirect to the congratulations page
+                        }
+                    });
+                } else {
+                    btn_next.style.pointerEvents = "none"; // Disable the next button
+                    btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
+                    btn_next.style.cursor = "not-allowed"; 
+                }
+            }
+
         });
+
+        // Modal logic
         const modal = document.querySelector(".modal");
         const overlay = document.querySelector(".overlay");
+
         function Modal() {
-            // Get the modal
-            const modal = document.querySelector(".modal");
-            const overlay = document.querySelector(".overlay");
             modal.classList.remove("hidden");
             overlay.classList.remove("hidden");
         }
-        // When the user clicks on <span> (x), close the modal
-            function Close() {
-                const modal = document.querySelector(".modal");
-                const overlay = document.querySelector(".overlay");
-                modal.classList.add("hidden");
-                overlay.classList.add("hidden");
-            }
-            overlay.onclick = function(event) {
-                modal.classList.add("hidden");
-                overlay.classList.add("hidden"); 
-            }
-            cardContainer.onclick = function(event) {
-                const target = event.target;
-                if (target.classList.contains("card_incompleted")) {
-                    target.classList.add("card_completed");
-                    target.classList.remove("card_incompleted");
-                    var word = target.querySelector(".completion");
-                    word.innerHTML = 'Completed';
-                } else if (target.classList.contains("card_completed")) {
-                    target.classList.add("card_incompleted");
-                    target.classList.remove("card_completed");
-                    var word = target.querySelector(".completion");
-                    word.innerHTML = '&#x2713; Done';
-                }
-            };
-        </script>
-    </body>
-    </html>
+
+        function Close() {
+            modal.classList.add("hidden");
+            overlay.classList.add("hidden");
+        }
+    </script>
+</body>
+</html>
