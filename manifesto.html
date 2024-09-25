@@ -104,6 +104,8 @@
             const QContainer = document.querySelector(".q-task");
 
             const startButton = document.querySelector(".start");
+            good.style.backgroundColor = '#a9d1cd';
+            bad.style.backgroundColor = '#02897A';
 
             document.addEventListener("DOMContentLoaded", function() {
             let scores = [];
@@ -121,7 +123,6 @@
                             }
                     });
                 });
-
                 updateStartButton();
             } else {
                 // Fetch score from 'before_user.json' and store them in localStorage
@@ -144,11 +145,13 @@
                     persuade.style.color = 'black';
                     startButton.style.pointerEvents = "auto";
                     startButton.style.backgroundColor = "#02897A";
+                    //startButton.style.transition = "all 1s";
                 } else {
                     persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
                     persuade.style.color = 'grey';
                     startButton.style.pointerEvents = "none";
                     startButton.style.backgroundColor = "grey";
+                    //startButton.style.transition = "all 1s";
                 }
             }
 
@@ -222,12 +225,20 @@
             document.getElementById('good').addEventListener('click', function() {
                 updateStartButton();
                 renderTasks(score => score.score > 3);
+                good.style.backgroundColor = '#02897A';
+                good.style.transition = "all 1s";
+                bad.style.backgroundColor = '#a9d1cd';
+                bad.style.transition = "all 1s";
             });
 
             // Event listener for "bad" button
             document.getElementById('notyet').addEventListener('click', function() {
                 updateStartButton();
                 renderTasks(score => score.score <= 3);
+                good.style.backgroundColor = '#a9d1cd';
+                good.style.transition = "all 1s";
+                bad.style.backgroundColor = '#02897A';
+                bad.style.transition = "all 1s";
             });
 
             // Attach single click listener for the start button navigation
