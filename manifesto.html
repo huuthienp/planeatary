@@ -6,36 +6,6 @@
         <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
         <link href="style_concat.css" rel="stylesheet" />
         <title>Start Challenges</title>
-        <script>
-            function Modal(a, b) {
-                // Get the modal
-                var modal = document.querySelector(a);
-                var overlay = document.querySelector(".overlay");
-                modal.classList.remove(b);
-                overlay.classList.remove('hidden');
-            }
-            // When the user clicks on <span> (x), close the modal
-            function Close(a, b) {
-                var modal = document.querySelector(a);
-                var overlay = document.querySelector(".overlay");
-                modal.classList.add(b);
-                overlay.classList.add('hidden');
-            }
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                const modal = document.querySelector(".modal");
-                const modal2 = document.querySelector(".modal2");
-                const overlay = document.querySelector(".overlay");
-                if (event.target == modal) {
-                    modal.classList.add("hidden");
-                    overlay.classList.add("hidden"); 
-                }
-                else if (event.target == modal2) {
-                    modal2.classList.add("hidden2");
-                    overlay.classList.add("hidden"); 
-                }
-            }
-        </script>
     </head>
     <body>
         <div class="container">
@@ -58,7 +28,7 @@
                     </div>
             </div>
             <div class="subheader">
-                <p>You’ve selected 10 tasks. Start challenge now</p>
+                <p id="tentask"></p>
             </div>
             <div class="button2">
                 <button class="start"><a href="challenge_page.html">Start</a></button>
@@ -69,98 +39,30 @@
             </div>
             <div class="task-content">
                 <div class="q-task">
-                    <ul>
-                        <li><p>Question 1 - 1 points <img src="./images/info.png" width="5%" onclick="Modal('.modal2', 'hidden2');" width="5%" /></p></li>
+
+                    <!--<ul id="q2">
                         <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="5%" />
+                            <p>Question <span id="q_num2"></span> - <span id="q_score2"></span><img src="./images/info.png" onclick="Modal();" /></p>
                         </li>
                         <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="5%" />
+                            <lable>
+                                <input  type="checkbox" name="task" value="Living"/> Eat to live or live to eat
+                            </label>
+                            <img src="./images/info2.png" onclick="Modal();" />
                         </li>
                         <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="5%" />
-                        </li>
-                    </ul>
-                    <ul>
-                        <li><p>Question 1 - 1 points <img src="./images/info.png" width="5%" onclick="Modal('.modal2', 'hidden2');" width="5%" /></p></li>
-                        <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="5%" />
+                            <label>
+                                <input  type="checkbox" name="task" value="Blackpink"/> Don't know what to do without you
+                            </label>
+                            <img src="./images/info2.png" onclick="Modal();" />
                         </li>
                         <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="5%" />
+                            <label>
+                                <input  type="checkbox" name="task" value="Deadline"/> Don't do if we can finish by the deadline
+                            </label>
+                            <img src="./images/info2.png" onclick="Modal();" />
                         </li>
-                        <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="5%" />
-                        </li>
-                    </ul>
-                    <ul>
-                        <li><p>Question 1 - 1 points <img src="./images/info.png" width="5%" onclick="Modal('.modal2', 'hidden2');"/></p></li>
-                        <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="5%" />
-                        </li>
-                        <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="5%" />
-                        </li>
-                        <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="5%" />
-                        </li>
-                    </ul>
-                </div>
-                <div class="q-task">
-                    <ul>
-                        <li><p>Question 1 - 1 points <img src="./images/info.png" width="5%" onclick="Modal('.modal2', 'hidden2');" /></p></li>
-                        <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="5%"/>
-                        </li>
-                        <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="5%"/>
-                        </li>
-                        <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="5%"/>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li><p>Question 2 - 1 points <img src="./images/info.png" width="5%" onclick="Modal('.modal2', 'hidden2');"/></p></li>
-                        <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img class="click" onclick="Modal('.modal', 'hidden');" src="./images/info2.png" width="5%"/>
-                        </li>
-                        <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img src="./images/info2.png" onclick="Modal('.modal', 'hidden');" width="5%"/>
-                        </li>
-                        <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img class="click" onclick="Modal('.modal', 'hidden');" src="./images/info2.png" width="5%"/>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li><p>Question 2 - 1 points <img src="./images/info.png" width="5%"/></p></li>
-                        <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img class="click" onclick="Modal('.modal', 'hidden');" src="./images/info2.png" width="5%"/>
-                        </li>
-                        <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img class="click" onclick="Modal('.modal', 'hidden');" src="./images/info2.png" width="5%"/>
-                        </li>
-                        <li>
-                            <input  type="checkbox" name="task" value="1"/> Read the Food Citizenship manifesto
-                            <img class="click" onclick="Modal('.modal', 'hidden');" src="./images/info2.png" width="5%"/>
-                        </li>
-                    </ul>
+                    </ul>-->
                 </div>
             </div>
         </div>
@@ -169,21 +71,183 @@
                 <div class="align">
                     <div class="modal hidden"> 
                         <div class="btn">
-                            <button class="close" onclick="Close('.modal', 'hidden');">x</button>
+                            <button class="close" onclick="Close();">x</button>
                         </div>
                         <div class="modal-content">
-                            <p>Hello world</p>
-                        </div>
-                    </div>
-                    <div class="modal2 hidden2"> 
-                        <div class="btn2">
-                            <button class="close2" onclick="Close('.modal2', 'hidden2');">x</button>
-                        </div>
-                        <div class="modal-content2">
-                            <!--<img src='./images/info.png' />-->
+                            <img />
                         </div>
                     </div>
                 <div>
         </section>
+        <script>
+            function Modal() {
+                // Get the modal
+                var modal = document.querySelector(".modal");
+                var overlay = document.querySelector(".overlay");
+                var info = document.querySelector('.modal-content');
+                modal.classList.remove('hidden');
+                overlay.classList.remove('hidden');
+            }
+            // When the user clicks on <span> (x), close the modal
+            function Close() {
+                var modal = document.querySelector(".modal");
+                var overlay = document.querySelector(".overlay");
+                modal.classList.add("hidden");
+                overlay.classList.add('hidden');
+            }
+            // When the user clicks anywhere outside of the modal, close it
+            const modal = document.querySelector(".modal");
+            const overlay = document.querySelector(".overlay");
+
+            const good = document.getElementById("good");
+            const bad = document.getElementById("notyet");
+            const QContainer = document.querySelector(".q-task");
+
+            const startButton = document.querySelector(".start");
+            good.style.backgroundColor = '#a9d1cd';
+            bad.style.backgroundColor = '#02897A';
+
+            document.addEventListener("DOMContentLoaded", function() {
+            let scores = [];
+            let task_counts = 0;
+            const QContainer = document.querySelector(".q-task");
+
+            // Check if scores are stored in localStorage
+            const storedScore = localStorage.getItem("user");
+            if (storedScore) {
+                scores = JSON.parse(storedScore);
+                scores.forEach((score, i) => {
+                        score.tasks.forEach((task, j) => {
+                            if (task.choice === "selected") {
+                                task_counts += 1;
+                            }
+                    });
+                });
+                updateStartButton();
+            } else {
+                // Fetch score from 'before_user.json' and store them in localStorage
+                fetch('before_user.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        scores = data.postscore || data.prescore;
+                        localStorage.setItem("user", JSON.stringify(scores));
+                        updateStartButton();
+                    })
+                    .catch(error => console.error("Error fetching JSON data:", error));
+            }
+
+            // Function to update start button state
+            function updateStartButton() {
+                persuade = document.getElementById("tentask");
+                if (task_counts >= 10) {
+                    console.log(`Number of selected tasks: ${task_counts}`);
+                    persuade.innerHTML = 'You’ve selected 10 tasks. Start challenge now';
+                    persuade.style.color = 'black';
+                    startButton.style.pointerEvents = "auto";
+                    startButton.style.backgroundColor = "#02897A";
+                    //startButton.style.transition = "all 1s";
+                } else {
+                    persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
+                    persuade.style.color = 'grey';
+                    startButton.style.pointerEvents = "none";
+                    startButton.style.backgroundColor = "grey";
+                    //startButton.style.transition = "all 1s";
+                }
+            }
+
+            function renderTasks(scoreCondition) {
+                QContainer.innerHTML = ''; // Clear any existing content
+
+                scores.forEach((score, i) => {
+                    if (scoreCondition(score)) {
+                        const q_con = document.createElement("ul");
+                        q_con.classList.add("q");
+
+                        const question = document.createElement("li");
+                        question.id = `q_num${i+1}`;
+                        const q_num = document.createElement("span");
+                        q_num.textContent = `Question ${i+1} - ${score.score} points`;
+
+                        q_con.appendChild(question);
+                        question.appendChild(q_num);
+
+                        score.tasks.forEach((task, j) => {
+                            const q_input = document.createElement("li");
+                            const label = document.createElement("label");
+                            const input = document.createElement("input");
+                            const text = document.createElement("span");
+                            text.innerHTML = task.taskName;
+                            input.type = "checkbox";
+
+                            // Initialize task count based on current selected state
+                            if (task.choice === "selected") {
+                                input.checked = true;
+                            }
+
+                            label.appendChild(input);
+                            label.appendChild(text);
+                            q_input.appendChild(label);
+                            q_con.appendChild(q_input);
+
+                            // Event listener to track selection
+                            input.addEventListener('change', function() {
+                                if (input.checked) {
+                                    task.choice = "selected";
+                                    task_counts += 1;
+                                } else {
+                                    task.choice = "not selected";
+                                    task_counts -= 1;
+                                }
+
+                                // Save updated task state to localStorage
+                                localStorage.setItem("user", JSON.stringify(scores));
+
+                                // Update the start button
+                                updateStartButton();
+                            });
+                        });
+
+                        QContainer.appendChild(q_con);
+                    }
+                });
+
+                // Update start button state after rendering tasks
+                updateStartButton();
+            }
+
+            // Load tasks for bad scores on window load
+            window.addEventListener("load", function() {
+                updateStartButton();
+                renderTasks(score => score.score <= 3);
+            });
+
+            // Event listener for "good" button
+            document.getElementById('good').addEventListener('click', function() {
+                updateStartButton();
+                renderTasks(score => score.score > 3);
+                good.style.backgroundColor = '#02897A';
+                good.style.transition = "all 1s";
+                bad.style.backgroundColor = '#a9d1cd';
+                bad.style.transition = "all 1s";
+            });
+
+            // Event listener for "bad" button
+            document.getElementById('notyet').addEventListener('click', function() {
+                updateStartButton();
+                renderTasks(score => score.score <= 3);
+                good.style.backgroundColor = '#a9d1cd';
+                good.style.transition = "all 1s";
+                bad.style.backgroundColor = '#02897A';
+                bad.style.transition = "all 1s";
+            });
+
+            // Attach single click listener for the start button navigation
+            startButton.addEventListener('click', function(event) {
+                if (task_counts >= 10) {
+                    window.location.href = "challenge_page.html";
+                }
+            });
+        });
+        </script>
     </body>
 </html>
