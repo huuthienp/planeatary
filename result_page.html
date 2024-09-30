@@ -9,22 +9,34 @@
     <link href="style_concat.css" rel="stylesheet" />
 </head>
 <body>
+    <!-- Sidebar -->
+    <div id="mySidenav" class="sidenav">
+        <ul>
+            <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="qualtrics.html"><b>Quiz</b></a></li>
+            <li><a href="manifesto.html">Challenge</a></li>
+            <li><!-- <a href="#">About us</a> --></li>
+        </ul>
+    </div>
     <div class="container">
+        <div class="spinner hidden" id="spinner"></div>
         <div class="header">
-            <h1 class="logo">planetary - logo</h1>
-            <nav>
+            <h2 class="logo">planeatary - logo</h2>
+            <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
+            <nav class="forwindow">
                 <ul>
-                    <li>Home</li>
+                    <li><a href="index.html">Home</a></li>
                     <li><a href="qualtrics.html"><b>Quiz</b></a></li>
-                    <li><a href="challenge_page.html">Challenges</a></li>
-                    <li>About us</li>
+                    <li><a href="manifesto.html">Challenge</a></li>
+                    <!-- <li>About us</li> -->
                 </ul>
             </nav>
-            <div class="button">
+            <!-- <div class="button">
                 <button class="signIn">Sign In</button>
                 <span>&ensp;</span>
                 <button class="signUp">Sign Up</button>
-            </div>
+            </div> -->
         </div>
 
         <div class="pre-postQ">
@@ -38,78 +50,136 @@
             </div>
             <div class="score">
                 <div class="circle">
-                    <h2>40</h2>
-                    <span>60 points</span>
+                    <h2 id="curr_score"></h2>
+                    <p id="improved_score"></p>
                 </div>
+                <p class="next-step">Next step: Select 10 Tasks To Improve Your Scores!</p>
+                <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
             </div>
-            <p class="next-step">Next step: Select 10 Tasks To Improve Your Scores!</p>
-            <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
-            <button class="select-tasks"><a href="manifesto.html">Select Tasks →</a></button>
+            <button class="select-tasks">Select Tasks →</button>
         </div>
         <div class="q">
             <div class="questions">
-                <div class="question red">
+                <!-- <div class="question red">
                     <h3>Question 1 - 1 points</h3>
                     <p>When you source & purchase your food, how often do you think about the way it has been produced, grown or raised and whether it is environmentally sustainable?</p>
                     <p><strong>Answer:</strong> Never</p>
                 </div>
-                <div class="question red">
-                    <h3>Question 1 - 2 points</h3>
-                    <p>When you source & purchase your food, how often do you think about the way it has been produced, grown or raised and whether it is environmentally sustainable?</p>
-                    <p><strong>Answer:</strong> Never</p>
-                </div>
+                
                 <div class="question green">
                     <h3>Question 2 - 5 points</h3>
                     <p>When you source & purchase your food, how often do you think about the way it has been produced, grown or raised and whether it is environmentally sustainable?</p>
                     <p><strong>Answer:</strong> Always</p>
-                </div>
-                <div class="question green">
-                    <h3>Question 2 - 4 points</h3>
-                    <p>When you source & purchase your food, how often do you think about the way it has been produced, grown or raised and whether it is environmentally sustainable?</p>
-                    <p><strong>Answer:</strong> Often</p>
-                </div>
-                <div class="question red">
-                    <h3>Question 1 - 1 points</h3>
-                    <p>When you source & purchase your food, how often do you think about the way it has been produced, grown or raised and whether it is environmentally sustainable?</p>
-                    <p><strong>Answer:</strong> Never</p>
-                </div>
-                <div class="question red">
-                    <h3>Question 1 - 2 points</h3>
-                    <p>When you source & purchase your food, how often do you think about the way it has been produced, grown or raised and whether it is environmentally sustainable?</p>
-                    <p><strong>Answer:</strong> Never</p>
-                </div>
-                <div class="question green">
-                    <h3>Question 2 - 5 points</h3>
-                    <p>When you source & purchase your food, how often do you think about the way it has been produced, grown or raised and whether it is environmentally sustainable?</p>
-                    <p><strong>Answer:</strong> Always</p>
-                </div>
-                <div class="question green">
-                    <h3>Question 2 - 4 points</h3>
-                    <p>When you source & purchase your food, how often do you think about the way it has been produced, grown or raised and whether it is environmentally sustainable?</p>
-                    <p><strong>Answer:</strong> Often</p>
-                </div>
-                <div class="question red">
-                    <h3>Question 1 - 1 points</h3>
-                    <p>When you source & purchase your food, how often do you think about the way it has been produced, grown or raised and whether it is environmentally sustainable?</p>
-                    <p><strong>Answer:</strong> Never</p>
-                </div>
-                <div class="question red">
-                    <h3>Question 1 - 2 points</h3>
-                    <p>When you source & purchase your food, how often do you think about the way it has been produced, grown or raised and whether it is environmentally sustainable?</p>
-                    <p><strong>Answer:</strong> Never</p>
-                </div>
-                <div class="question green">
-                    <h3>Question 2 - 5 points</h3>
-                    <p>When you source & purchase your food, how often do you think about the way it has been produced, grown or raised and whether it is environmentally sustainable?</p>
-                    <p><strong>Answer:</strong> Always</p>
-                </div>
-                <div class="question green">
-                    <h3>Question 2 - 4 points</h3>
-                    <p>When you source & purchase your food, how often do you think about the way it has been produced, grown or raised and whether it is environmentally sustainable?</p>
-                    <p><strong>Answer:</strong> Often</p>
-                </div>
+                </div> -->
+                
             </div>
         </div>
     </div>
+    <script>
+        var modal = document.querySelector('.modal');
+        var overlay = document.querySelector(".overlay");
+        const Qbuttoncontainer = document.querySelector(".pre-postQ");
+        const Pre_Q = document.querySelector("#preQ");
+        const Post_Q = document.querySelector("#postQ");
+        const selectButton = document.querySelector(".select-tasks");
+
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "40%";
+            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
+        };
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.body.style.backgroundColor = "white";
+        };
+
+        function Modal(a) {
+            var detail = document.getElementById("detail");
+            detail.src = './images/pop' + a + '.png';
+            modal.classList.remove('hidden');
+            overlay.classList.remove('hidden');
+        };
+
+        function Close() {
+            modal.classList.add('hidden');
+            overlay.classList.add('hidden');
+        };
+        
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const spinner = document.getElementById('spinner');
+            let isLoading = false;
+            const minDisplayTime = 2000; // Minimum time spinner should be visible (2 seconds)
+            let spinnerStartTime;
+            
+            // Function to show the spinner
+            function showSpinner() {
+                console.log("Showing spinner...");
+                spinner.classList.remove('hidden');
+                overlay.classList.remove('hidden');
+                isLoading = true;
+                spinnerStartTime = Date.now();
+            };
+            
+            // Function to hide the spinner
+            function hideSpinner() {
+                const elapsedTime = Date.now() - spinnerStartTime;
+                if (elapsedTime < minDisplayTime) {
+                    // Delay hiding spinner until the minimum display time
+                    setTimeout(() => {
+                        console.log("Hiding spinner after min time...");
+                        spinner.classList.add('hidden');
+                        overlay.classList.add('hidden');
+                        isLoading = false;
+                    }, minDisplayTime - elapsedTime);
+                } else {
+                    console.log("Hiding spinner...");
+                    spinner.classList.add('hidden');
+                    overlay.classList.add('hidden');
+                    isLoading = false;
+                }
+            };
+            
+            let scores = [];
+            let task_counts = 0;
+            const Container = document.querySelector(".q");
+            const question_contain = document.querySelector(".questions");
+
+            // Check if scores are stored in localStorage
+            const storedScore = localStorage.getItem("user");
+            if (storedScore) {
+                scores = JSON.parse(storedScore);
+                scores.forEach((score, i) => {
+                        score.tasks.forEach((task, j) => {
+                            if (task.choice === "selected") {
+                                task_counts += 1;
+                            }
+                    });
+                });
+            } else {
+                // Fetch score from 'before_user.json' and store them in localStorage
+                fetch('before_user.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        scores = data.postscore || data.prescore;
+                        localStorage.setItem("user", JSON.stringify(scores));
+                    })
+                    .catch(error => console.error("Error fetching JSON data:", error));
+            }
+
+            document.getElementById('preQ').addEventListener('click', function() {
+
+            });
+
+            document.getElementById('postQ').addEventListener('click', function() {
+
+            });
+
+            // Attach single click listener for the start button navigation
+            selectButton.addEventListener('click', function(event) {
+                window.location.href = "manifesto.html";
+            });
+        });
+    </script>
 </body>
 </html>

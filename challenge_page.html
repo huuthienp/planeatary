@@ -9,26 +9,39 @@
     <title>PlanEATary Challenges</title>
 </head>
 <body>
+    <!-- Sidebar -->
+    <div id="mySidenav" class="sidenav">
+        <ul>
+            <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="qualtrics.html"><b>Quiz</b></a></li>
+            <li><a href="manifesto.html">Challenge</a></li>
+            <li><!-- <a href="#">About us</a> --></li>
+        </ul>
+    </div>
     <div class="container">
+        <div class="spinner hidden" id="spinner"></div>
         <div class="header">
-            <h1 class="logo">planeatary - logo</h1>
-            <nav>
+            <h2 class="logo">planeatary - logo</h2>
+            <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
+            <nav class="forwindow">
                 <ul>
                     <li>Home</li>
                     <li><a href="qualtrics.html"><b>Quiz</b></a></li>
                     <li><a href="manifesto.html">Challenge</a></li>
-                    <li>About us</li>
+                    <!-- <li>About us</li> -->
                 </ul>
             </nav>
-            <div class="button">
+            <!-- <div class="button">
                 <button class="signIn">Sign In</button>
                 <span>&ensp;</span>
                 <button class="signUp">Sign Up</button>
-            </div>
+            </div> -->
         </div>
         <div class="content">
             <div class="head">
-                <h1 class="status"><img src="./images/battery.png" width="8%" height="auto"/>CHALLENGE IN PROGRESS</h1>
+                <img src="./images/battery.png"/>
+                <h1 class="status">CHALLENGE IN PROGRESS</h1>
                 <p class="suggestion">Please click Done when you complete your tasks</p>
             </div>
             <div class="card"></div>
@@ -50,6 +63,18 @@
     </section>
 
     <script>
+        function openNav() {
+            next = document.querySelector(".next");
+            next.style.cursor = "not-allowed";
+            document.getElementById("mySidenav").style.width = "40%";
+            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
+        };
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.body.style.backgroundColor = "white";
+        };
+
         const content = document.querySelector(".content");
         const cardContainer = document.querySelector(".card");
         // Create and append the next button
@@ -67,15 +92,31 @@
         content.appendChild(nextContainer);
 
         document.addEventListener("DOMContentLoaded", function() {
+            const spinner = document.getElementById('spinner');
+
+            // Function to show the spinner
+            function showSpinner() {
+                console.log("Showing spinner...");
+                spinner.classList.remove('hidden');
+            }
+
+            // Function to hide the spinner
+            function hideSpinner() {
+                spinner.classList.add('hidden');
+            }
+
             let scores = [];
 
             // Check if scores are stored in localStorage
             const storedScore = localStorage.getItem("user");
             if (storedScore) {
+                showSpinner();
                 // Parse and use scores from localStorage
                 scores = JSON.parse(storedScore);
                 displayTasksFromScores(scores);
+                hideSpinner();
             } else {
+                showSpinner();
                 // Fetch scores from 'before_user.json' and store them in localStorage
                 fetch('before_user.json')
                     .then(response => response.json())
@@ -83,8 +124,10 @@
                         scores = data.postscore || data.prescore;
                         localStorage.setItem("user", JSON.stringify(scores));
                         displayTasksFromScores(scores);
+                        hideSpinner();
                     })
                     .catch(error => console.error("Error fetching JSON data:", error));
+                    hideSpinner();
             }
 
 
@@ -170,7 +213,6 @@
 
         });
 
-        // Modal logic
         const modal = document.querySelector(".modal");
         const overlay = document.querySelector(".overlay");
 
