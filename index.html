@@ -8,33 +8,107 @@
         <title>PlanEATary Home</title>
     </head>
     <body>
+        <!-- Sidebar -->
+        <div id="mySidenav" class="sidenav">
+            <ul>
+                <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="qualtrics.html"><b>Quiz</b></a></li>
+                <li><a href="manifesto.html">Challenge</a></li>
+                <li><!-- <a href="#">About us</a> --></li>
+            </ul>
+        </div>
         <div class="container">
+            <div class="spinner hidden" id="spinner"></div>
             <div class="header">
-                <h1 class="logo">planeatary - logo</h1>
-                <nav>
+                <h2 class="logo">planeatary - logo</h2>
+                <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
+                <nav class="forwindow">
                     <ul>
-                        <li>Home</li>
+                        <li><a href="index.html">Home</a></li>
                         <li><a href="qualtrics.html"><b>Quiz</b></a></li>
                         <li><a href="manifesto.html">Challenge</a></li>
-                        <li>About us</li>
+                        <!-- <li>About us</li> -->
                     </ul>
                 </nav>
-                <div class="button">
+                <!-- <div class="button">
                     <button class="signIn">Sign In</button>
                     <span>&ensp;</span>
                     <button class="signUp">Sign Up</button>
-                </div>
+                </div> -->
             </div>
             <div class="welcome-content">
                 <div class="greeting">
                     <h2>WELCOME ....!</h2>
-                    <p>Welcome! This 12-question quiz forms part of a research study, exploring effective approaches to promote healthy and environmentally sustainable food habits. If you would like further information, please review this Explanatory Statement, approved by Monash University's Human Research Ethics Committee. Your email address is collected so that you can receive a copy of your responses, however this will not be used for data analysis and your response is anonymous. By completing the quiz, you are consenting to be part of this research. </p>
-                </div>
+                    <p>Welcome! This 12-question quiz forms part of a research study, exploring effective approaches to promote healthy and environmentally sustainable food habits. If you would like further information, please review this Explanatory Statement, approved by Monash University's Human Research Ethics Committee.</p>
+                    <p>Your email address is collected so that you can receive a copy of your responses, however this will not be used for data analysis and your response is anonymous.</p>
+                    <p>By completing the quiz, you are consenting to be part of this research.</p>
+                    </div>
             </div>
             <div class="button_next">
-                <a href="qualtrics.html"><button class="next">Take the quiz &#8594;</button></a>
+                <a href="qualtrics.html"><button class="next" id="continueButton">Take the quiz &#8594;</button></a>
             </div>
         </div>
+        <script>
+            const greetingDiv = document.getElementById('greeting');
+            const continueButton = document.getElementById('continueButton');
+
+            function openNav() {
+            document.getElementById("mySidenav").style.width = "40%";
+            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
+            };
+
+            function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+                document.body.style.backgroundColor = "white";
+            };
+            
+            document.addEventListener("DOMContentLoaded", function() {
+                const spinner = document.getElementById('spinner');
+
+                // Function to show the spinner
+                function showSpinner() {
+                    console.log("Showing spinner...");
+                    spinner.classList.remove('hidden');
+                }
+
+                // Function to hide the spinner
+                function hideSpinner() {
+                    spinner.classList.add('hidden');
+                }
+
+                // Check for response_id in local storage
+                const responseId = localStorage.getItem('response_id');
+
+                if (responseId) {
+                    // Show a prompt to the user
+                    const userChoice = confirm("Looks like we have recorded your responses. Would you like to continue with existing responses?");
+                    
+                    if (userChoice) {
+                        // User chooses to continue with existing responses
+                        greetingDiv.innerHTML = `<h2>Continuing with existing responses...</h2>`;
+                        continueButton.addEventListener('click', function() {
+                            window.location.href = 'qualtrics.html';
+                        });
+                    } else {
+                        // User chooses to start a new quiz
+                        localStorage.removeItem('response_id'); // Clear the stored response_id
+                        //greetingDiv.innerHTML = `<h2>Starting a new quiz...</h2>`;
+                        continueButton.addEventListener('click', function() {
+                            window.location.href = 'qualtrics.html';
+                        });
+                    }
+                } else {
+                    // If response_id does not exist, show default message
+                    //greetingDiv.innerHTML = `
+                        //<h2>WELCOME ....!</h2>
+                        //<p>Welcome! This 12-question quiz forms part of a research study...</p>
+                    //`;
+                    continueButton.addEventListener('click', function() {
+                        window.location.href = 'qualtrics.html';
+                    });
+                }
+            });
+        </script>
     </body>
 </html>
-

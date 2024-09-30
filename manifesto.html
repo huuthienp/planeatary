@@ -8,24 +8,34 @@
         <title>Start Challenges</title>
     </head>
     <body>
+        <!-- Sidebar -->
+        <div id="mySidenav" class="sidenav">
+            <ul>
+                <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="qualtrics.html"><b>Quiz</b></a></li>
+                <li><a href="manifesto.html">Challenge</a></li>
+                <li><!-- <a href="#">About us</a> --></li>
+            </ul>
+        </div>
         <div class="container">
+            <div class="spinner hidden" id="spinner"></div>
             <div class="header">
-                <h1 class="logo">planeatary - logo</h1>
-                    <nav>
-                         <ul style="font-family: Poppins;">
-                            <li>Home</li>
-                            <li>
-                                <a href="qualtrics.html"><b>Quiz</b></a>
-                            </li>
-                            <li><a href="manifesto.html">Challenge</a></li>
-                            <li>About us</li>
-                        </ul>
-                    </nav>
-                    <div class="button">
-                        <button class="signIn">Sign In</button>
-                        <span>&ensp;</span>
-                        <button class="signUp">Sign Up</button>
-                    </div>
+                <h2 class="logo">planeatary - logo</h2>
+                <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
+                <nav class="forwindow">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="qualtrics.html"><b>Quiz</b></a></li>
+                        <li><a href="manifesto.html">Challenge</a></li>
+                        <!-- <li>About us</li> -->
+                    </ul>
+                </nav>
+                <!-- <div class="button">
+                    <button class="signIn">Sign In</button>
+                    <span>&ensp;</span>
+                    <button class="signUp">Sign Up</button>
+                </div> -->
             </div>
             <div class="subheader">
                 <p id="tentask"></p>
@@ -74,7 +84,7 @@
                             <button class="close" onclick="Close();">x</button>
                         </div>
                         <div class="modal-content">
-                            <img />
+                            <img class="visual_info" />
                         </div>
                     </div>
                 <div>
@@ -95,9 +105,21 @@
                 modal.classList.add("hidden");
                 overlay.classList.add('hidden');
             }
-            // When the user clicks anywhere outside of the modal, close it
+
+            function openNav() {
+            document.getElementById("mySidenav").style.width = "40%";
+            document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+            }
+
+            function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+                document.body.style.backgroundColor = "white";
+            }
+
+
             const modal = document.querySelector(".modal");
             const overlay = document.querySelector(".overlay");
+            const spinner = document.querySelector(".spinner");
 
             const good = document.getElementById("good");
             const bad = document.getElementById("notyet");
@@ -108,39 +130,78 @@
             bad.style.backgroundColor = '#02897A';
 
             document.addEventListener("DOMContentLoaded", function() {
-            let scores = [];
-            let task_counts = 0;
-            const QContainer = document.querySelector(".q-task");
+                const spinner = document.getElementById('spinner');
+                let isLoading = false;
+                const minDisplayTime = 2000; // Minimum time spinner should be visible (2 seconds)
+                let spinnerStartTime;
 
-            // Check if scores are stored in localStorage
-            const storedScore = localStorage.getItem("user");
-            if (storedScore) {
-                scores = JSON.parse(storedScore);
-                scores.forEach((score, i) => {
+                // Function to show the spinner
+                function showSpinner() {
+                    console.log("Showing spinner...");
+                    spinner.classList.remove('hidden');
+                    overlay.classList.remove('hidden');
+                    isLoading = true;
+                    spinnerStartTime = Date.now();
+                };
+                
+                // Function to hide the spinner
+                function hideSpinner() {
+                    const elapsedTime = Date.now() - spinnerStartTime;
+                    if (elapsedTime < minDisplayTime) {
+                        // Delay hiding spinner until the minimum display time
+                        setTimeout(() => {
+                            console.log("Hiding spinner after min time...");
+                            spinner.classList.add('hidden');
+                            overlay.classList.add('hidden');
+                            isLoading = false;
+                        }, minDisplayTime - elapsedTime);
+                    } else {
+                        console.log("Hiding spinner...");
+                        spinner.classList.add('hidden');
+                        overlay.classList.add('hidden');
+                        isLoading = false;
+                    }
+                };
+
+                let scores = [];
+                let task_counts = 0;
+                const QContainer = document.querySelector(".q-task");
+
+                // Check if scores are stored in localStorage
+                const storedScore = localStorage.getItem("user");
+                showSpinner();
+
+                if (storedScore) {
+
+                    scores = JSON.parse(storedScore);
+                    scores.forEach((score, i) => {
                         score.tasks.forEach((task, j) => {
                             if (task.choice === "selected") {
                                 task_counts += 1;
-                            }
-                    });
-                });
-                updateStartButton();
-            } else {
-                // Fetch score from 'before_user.json' and store them in localStorage
-                fetch('before_user.json')
-                    .then(response => response.json())
-                    .then(data => {
-                        scores = data.postscore || data.prescore;
-                        localStorage.setItem("user", JSON.stringify(scores));
+                            };
+                        });
                         updateStartButton();
-                    })
-                    .catch(error => console.error("Error fetching JSON data:", error));
-            }
+                        renderTasks(score => score.score <= 3);
+                    });  
+                    hideSpinner();    
+                } else {            
+                    fetch('before_user.json')
+                        .then(response => response.json())
+                        .then(data => {
+                            scores = data.postscore || data.prescore;
+                            localStorage.setItem("user", JSON.stringify(scores));
+                            updateStartButton();
+                            renderTasks(score => score.score <= 3);
+                        })
+                        .catch(error => console.error("Error fetching JSON data:", error))
+                        .finally(hideSpinner);
+                };
+            
 
             // Function to update start button state
             function updateStartButton() {
                 persuade = document.getElementById("tentask");
                 if (task_counts >= 10) {
-                    console.log(`Number of selected tasks: ${task_counts}`);
                     persuade.innerHTML = 'You’ve selected 10 tasks. Start challenge now';
                     persuade.style.color = 'black';
                     startButton.style.pointerEvents = "auto";
@@ -153,7 +214,7 @@
                     startButton.style.backgroundColor = "grey";
                     //startButton.style.transition = "all 1s";
                 }
-            }
+            };
 
             function renderTasks(scoreCondition) {
                 QContainer.innerHTML = ''; // Clear any existing content
@@ -214,13 +275,6 @@
                 // Update start button state after rendering tasks
                 updateStartButton();
             }
-
-            // Load tasks for bad scores on window load
-            window.addEventListener("load", function() {
-                updateStartButton();
-                renderTasks(score => score.score <= 3);
-            });
-
             // Event listener for "good" button
             document.getElementById('good').addEventListener('click', function() {
                 updateStartButton();

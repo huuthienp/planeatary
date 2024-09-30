@@ -8,28 +8,38 @@
         <title>Congratulations</title>
     </head>
     <body>
+        <!-- Sidebar -->
+        <div id="mySidenav" class="sidenav">
+            <ul>
+                <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="qualtrics.html"><b>Quiz</b></a></li>
+                <li><a href="manifesto.html">Challenge</a></li>
+                <li><!-- <a href="#">About us</a> --></li>
+            </ul>
+        </div>
         <div class="container">
+            <div class="spinner hidden" id="spinner"></div>
             <div class="header">
-                <h1 class="logo">planetary - logo</h1>
-                    <nav>
-                         <ul style="font-family: Poppins;">
-                            <li>Home</li>
-                            <li>
-                                <a href="qualtrics.html"><b>Quiz</b></a>
-                            </li>
-                            <li><a href="manifesto.html">Challenges</a></li>
-                            <li>About us</li>
-                        </ul>
-                    </nav>
-                    <div class="button">
-                        <button class="signIn">Sign In</button>
-                        <span>&ensp;</span>
-                        <button class="signUp">Sign Up</button>
-                    </div>
+                <h2 class="logo">planeatary - logo</h2>
+                <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
+                <nav class="forwindow">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="qualtrics.html"><b>Quiz</b></a></li>
+                        <li><a href="manifesto.html">Challenge</a></li>
+                        <!-- <li>About us</li> -->
+                    </ul>
+                </nav>
+                <!-- <div class="button">
+                    <button class="signIn">Sign In</button>
+                    <span>&ensp;</span>
+                    <button class="signUp">Sign Up</button>
+                </div> -->
             </div>
             <div class="content">
                 <div class="wrap-up">
-                    <img src="images/battery_1.png" width="5%" height="auto"/>
+                    <img src="images/battery_1.png" />
                     <h2>CONGRATULATIONS! YOU’VE COMPLETED YOUR CHALLENGE</h2>
                     <div class="button_take_quiz">
                         <p>Now let’s complete the quiz below to how your scores have improved.</p>
@@ -38,5 +48,8 @@
                 </div>
             </div>
         </div>
+        <script>
+            
+        </script>
     </body>
 </html>
