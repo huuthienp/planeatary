@@ -75,6 +75,16 @@
                 </div>
             </div>
     </section>
-    </body>
+      <script>
+      window.addEventListener("message", (event) => {
+        if (event.origin == "https://uow.au1.qualtrics.com") {
+          Object.entries(JSON.parse(event.data)).forEach(
+            ([key, value]) => {
+              localStorage.setItem(key, value);
+            }
+          );
+        }
+      });
+      </script>
+  </body>
 </html>
-
