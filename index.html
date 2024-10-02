@@ -15,6 +15,7 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="qualtrics.html"><b>Quiz</b></a></li>
                 <li><a href="manifesto.html">Challenge</a></li>
+                <li><a href="result_page.html">Dashboard</a></li>
                 <li><!-- <a href="#">About us</a> --></li>
             </ul>
         </div>
@@ -28,6 +29,7 @@
                         <li><a href="index.html">Home</a></li>
                         <li><a href="qualtrics.html"><b>Quiz</b></a></li>
                         <li><a href="manifesto.html">Challenge</a></li>
+                        <li><a href="result_page.html">Dashboard</a></li>
                         <!-- <li>About us</li> -->
                     </ul>
                 </nav>
@@ -48,10 +50,14 @@
             <div class="button_next">
                 <a href="qualtrics.html"><button class="next" id="continueButton">Take the quiz &#8594;</button></a>
             </div>
+            <div>
+                <div class="overlay hidden"></div>
+            </div>
         </div>
         <script>
             const greetingDiv = document.getElementById('greeting');
             const continueButton = document.getElementById('continueButton');
+            const overlay = document.querySelector(".overlay");
 
             function openNav() {
             document.getElementById("mySidenav").style.width = "40%";
@@ -65,49 +71,147 @@
             
             document.addEventListener("DOMContentLoaded", function() {
                 const spinner = document.getElementById('spinner');
+                const greetingDiv = document.querySelector('.greeting');
+                const continueButton = document.getElementById('continueButton');
 
+                let isLoading = false;
+                const minDisplayTime = 2000; 
+                let spinnerStartTime;
+                
                 // Function to show the spinner
                 function showSpinner() {
-                    console.log("Showing spinner...");
+                    //console.log("Showing spinner...");
                     spinner.classList.remove('hidden');
-                }
-
+                    overlay.classList.remove('hidden');
+                    isLoading = true;
+                    spinnerStartTime = Date.now();
+                };
+                
                 // Function to hide the spinner
                 function hideSpinner() {
-                    spinner.classList.add('hidden');
+                    const elapsedTime = Date.now() - spinnerStartTime;
+                    if (elapsedTime < minDisplayTime) {
+                        // Delay hiding spinner until the minimum display time
+                        setTimeout(() => {
+                            //console.log("Hiding spinner after min time...");
+                            spinner.classList.add('hidden');
+                            overlay.classList.add('hidden');
+                            isLoading = false;
+                        }, minDisplayTime - elapsedTime);
+                    } else {
+                        console.log("Hiding spinner...");
+                        spinner.classList.add('hidden');
+                        overlay.classList.add('hidden');
+                        isLoading = false;
+                    }
+                };
+
+                // fetch response_id from Netlify
+                async function fetchResponseIdFromNetlify() {
+                    try {
+                        showSpinner(); 
+
+                        const response = await fetch('api/fetch-survey-response');
+                        
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch response_id from Netlify');
+                        }
+
+                        const data = await response.json();
+                        const responseId = data.response_id;
+
+                        // Store the response_id in localStorage
+                        localStorage.setItem('response_id', responseId);
+                        hideSpinner(); 
+
+                        return responseId;
+                    } catch (error) {
+                        console.error('Error fetching response_id:', error);
+                        hideSpinner(); 
+                        return null;
+                    }
                 }
 
-                // Check for response_id in local storage
-                const responseId = localStorage.getItem('response_id');
+                //when the user has a response id and choose to proceed with the previous quiz, 
+                //we will need to check the response id with the recorded response in Netlify
 
-                if (responseId) {
-                    // Show a prompt to the user
-                    const userChoice = confirm("Looks like we have recorded your responses. Would you like to continue with existing responses?");
-                    
-                    if (userChoice) {
-                        // User chooses to continue with existing responses
-                        greetingDiv.innerHTML = `<h2>Continuing with existing responses...</h2>`;
-                        continueButton.addEventListener('click', function() {
-                            window.location.href = 'qualtrics.html';
+                //to export the response id to netlify
+                async function exportDataToNetlify(data) {
+                    try {
+                        showSpinner(); 
+                        const response = await fetch('/.netlify/functions/exportData', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(data),
                         });
-                    } else {
-                        // User chooses to start a new quiz
-                        localStorage.removeItem('response_id'); // Clear the stored response_id
-                        //greetingDiv.innerHTML = `<h2>Starting a new quiz...</h2>`;
-                        continueButton.addEventListener('click', function() {
-                            window.location.href = 'qualtrics.html';
-                        });
+
+                        if (!response.ok) {
+                            throw new Error('Failed to export data');
+                            hideSpinner(); 
+                        }
+
+                        const result = await response.json();
+                        console.log(result.message);
+                    } catch (error) {
+                        console.error('Error exporting data:', error);
+                        hideSpinner(); 
                     }
-                } else {
-                    // If response_id does not exist, show default message
-                    //greetingDiv.innerHTML = `
-                        //<h2>WELCOME ....!</h2>
-                        //<p>Welcome! This 12-question quiz forms part of a research study...</p>
-                    //`;
+                }
+
+                //function to recieve the result of checking response id
+                async function checkUserResponseId() {
+                    try {
+                        showSpinner();
+
+                    } catch (error) {
+                        console.error('Error checking response id:', error);
+                        hideSpinner();
+                    }
+                }
+
+                async function checkOrFetchResponseId() {
+                    let responseId = localStorage.getItem('response_id');
+                    if (responseId) {
+                        const userChoice = confirm("Looks like there is your recorded response. Would you like to continue with existing responses?");
+                        
+                        if (userChoice) {
+                            // User chooses to continue with existing responses
+                            exportDataToNetlify(responseId)
+                            continueButton.addEventListener('click', function() {
+                                window.location.href = 'qualtrics.html';
+                            });
+                        } else {
+                            // User chooses to start a new quiz
+                            localStorage.removeItem('response_id');
+                            setupContinueButton();
+                        }
+                    } else {
+                        showSpinner();
+                        // If response_id does not exist
+                        const userAns = confirm("Have you done the pre-quiz?");
+                        if (userAns) {
+                            let userMem = prompt("Please enter your response ID");
+                            if (userMem != null) {
+                                let userID = {
+                                    'responseId': userMem
+                                }
+                                hideSpinner();
+                                exportDataToNetlify(userID);
+                            }
+                        }
+                        responseId = await fetchResponseIdFromNetlify();
+                        setupContinueButton();
+                    }
+                }
+
+                function setupContinueButton() {
                     continueButton.addEventListener('click', function() {
                         window.location.href = 'qualtrics.html';
                     });
                 }
+                checkOrFetchResponseId();
             });
         </script>
     </body>

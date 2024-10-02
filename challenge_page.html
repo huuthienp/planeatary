@@ -16,7 +16,7 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="qualtrics.html"><b>Quiz</b></a></li>
             <li><a href="manifesto.html">Challenge</a></li>
-            <li><!-- <a href="#">About us</a> --></li>
+            <li><a href="result_page.html">Dashboard</a></li>
         </ul>
     </div>
     <div class="container">
@@ -29,6 +29,7 @@
                     <li>Home</li>
                     <li><a href="qualtrics.html"><b>Quiz</b></a></li>
                     <li><a href="manifesto.html">Challenge</a></li>
+                    <li><a href="result_page.html">Dashboard</a></li>
                     <!-- <li>About us</li> -->
                 </ul>
             </nav>
@@ -93,17 +94,37 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             const spinner = document.getElementById('spinner');
+            let isLoading = false;
+            const minDisplayTime = 2000; 
+            let spinnerStartTime;
 
-            // Function to show the spinner
+            /// Function to show the spinner
             function showSpinner() {
-                console.log("Showing spinner...");
-                spinner.classList.remove('hidden');
-            }
-
-            // Function to hide the spinner
-            function hideSpinner() {
-                spinner.classList.add('hidden');
-            }
+                    //console.log("Showing spinner...");
+                    spinner.classList.remove('hidden');
+                    overlay.classList.remove('hidden');
+                    isLoading = true;
+                    spinnerStartTime = Date.now();
+                };
+                
+                // Function to hide the spinner
+                function hideSpinner() {
+                    const elapsedTime = Date.now() - spinnerStartTime;
+                    if (elapsedTime < minDisplayTime) {
+                        // Delay hiding spinner until the minimum display time
+                        setTimeout(() => {
+                            //console.log("Hiding spinner after min time...");
+                            spinner.classList.add('hidden');
+                            overlay.classList.add('hidden');
+                            isLoading = false;
+                        }, minDisplayTime - elapsedTime);
+                    } else {
+                        console.log("Hiding spinner...");
+                        spinner.classList.add('hidden');
+                        overlay.classList.add('hidden');
+                        isLoading = false;
+                    }
+                };
 
             let scores = [];
 
@@ -143,7 +164,7 @@
 
                             const taskName = document.createElement("span");
                             taskName.id = `task${i}_${j}`;
-                            taskName.textContent = task.taskName;
+                            taskName.innerHTML = task.taskName;
 
                             const info = document.createElement("img");
                             info.src = "./images/info.png";
@@ -157,17 +178,29 @@
 
                             const completion = document.createElement("span");
                             completion.classList.add("completion");
-                            completion.textContent = task.status;
+                            completion.innerHTML = task.status;
 
                             // Event listener to toggle task status
                             taskCard.addEventListener('click', function() {
                                 toggleTaskStatus(i, j);
+
                             });
 
                             taskCard.appendChild(taskName);
                             taskCard.appendChild(info);
                             taskCard.appendChild(completion);
                             cardContainer.appendChild(taskCard);
+
+                            // Check the updated task status
+                            if (task.status === "Completed") {
+                                // Add strikethrough effect to the task name
+                                taskName.style.textDecoration = "line-through";
+                            } else {
+
+                                // Remove strikethrough effect from the task name
+                                taskName.style.textDecoration = "none";
+                            }
+
                         }
                     });
                 });
@@ -177,7 +210,7 @@
             // Function to toggle task status and update localStorage
             function toggleTaskStatus(scoreIndex, taskIndex) {
                 const tasks = scores[scoreIndex].tasks;
-                tasks[taskIndex].status = tasks[taskIndex].status === "Done" ? "Completed" : "Done"; // Toggle between Done and Completed
+                tasks[taskIndex].status = tasks[taskIndex].status === "Done" ? "Completed" : "Done"; 
                 localStorage.setItem("user", JSON.stringify(scores)); // Update stored scores
                 displayTasksFromScores(scores); // Re-render the tasks
             }
@@ -201,7 +234,10 @@
                     // Attach click listener to next button
                     btn_next.addEventListener("click", function() {
                         if (btn_next.style.pointerEvents === "auto") {
-                            window.location.href = "congrat_page.html"; // Redirect to the congratulations page
+                            let text = "Would you like to proceed to the post quiz?"
+                            if(confirm(text) == true) {
+                                window.location.href = "congrat_page.html";
+                            }
                         }
                     });
                 } else {

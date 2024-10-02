@@ -15,6 +15,7 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="qualtrics.html"><b>Quiz</b></a></li>
                 <li><a href="manifesto.html">Challenge</a></li>
+                <li><a href="result_page.html">Dashboard</a></li>
                 <li><!-- <a href="#">About us</a> --></li>
             </ul>
         </div>
@@ -28,6 +29,7 @@
                         <li><a href="index.html">Home</a></li>
                         <li><a href="qualtrics.html"><b>Quiz</b></a></li>
                         <li><a href="manifesto.html">Challenge</a></li>
+                        <li><a href="result_page.html">Dashboard</a></li>
                         <!-- <li>About us</li> -->
                     </ul>
                 </nav>
@@ -84,17 +86,37 @@
                             <button class="close" onclick="Close();">x</button>
                         </div>
                         <div class="modal-content">
-                            <img class="visual_info" />
                         </div>
                     </div>
-                <div>
+                </div>
         </section>
         <script>
-            function Modal() {
-                // Get the modal
-                var modal = document.querySelector(".modal");
-                var overlay = document.querySelector(".overlay");
-                var info = document.querySelector('.modal-content');
+            function Modal(source) {
+                const modal = document.querySelector(".modal");
+                const overlay = document.querySelector(".overlay");
+                const modalContent = document.querySelector('.modal-content');
+
+                // Clear any existing content
+                modalContent.innerHTML = '';
+
+                // Create an object element to display the PDF
+                const pdfObject = document.createElement('object');
+                pdfObject.classList.add('visual-info');
+                pdfObject.data = source;
+                pdfObject.type = "application/pdf";
+                pdfObject.width = '100%';
+                pdfObject.height = '100%';
+                pdfObject.style.border = 'none';
+
+                // Optional: Provide a fallback message
+                const fallbackMessage = document.createElement('p');
+                fallbackMessage.innerHTML = 'Your browser does not support PDFs.';
+                pdfObject.appendChild(fallbackMessage);
+
+                // Append the object to the modal content
+                modalContent.appendChild(pdfObject);
+
+                // Show the modal and overlay
                 modal.classList.remove('hidden');
                 overlay.classList.remove('hidden');
             }
@@ -129,15 +151,15 @@
             good.style.backgroundColor = '#a9d1cd';
             bad.style.backgroundColor = '#02897A';
 
-            document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", async function() {
                 const spinner = document.getElementById('spinner');
                 let isLoading = false;
-                const minDisplayTime = 2000; // Minimum time spinner should be visible (2 seconds)
+                const minDisplayTime = 2000; 
                 let spinnerStartTime;
 
                 // Function to show the spinner
                 function showSpinner() {
-                    console.log("Showing spinner...");
+                    //console.log("Showing spinner...");
                     spinner.classList.remove('hidden');
                     overlay.classList.remove('hidden');
                     isLoading = true;
@@ -150,7 +172,7 @@
                     if (elapsedTime < minDisplayTime) {
                         // Delay hiding spinner until the minimum display time
                         setTimeout(() => {
-                            console.log("Hiding spinner after min time...");
+                            //console.log("Hiding spinner after min time...");
                             spinner.classList.add('hidden');
                             overlay.classList.add('hidden');
                             isLoading = false;
@@ -185,16 +207,21 @@
                     });  
                     hideSpinner();    
                 } else {            
-                    fetch('before_user.json')
-                        .then(response => response.json())
-                        .then(data => {
-                            scores = data.postscore || data.prescore;
-                            localStorage.setItem("user", JSON.stringify(scores));
-                            updateStartButton();
-                            renderTasks(score => score.score <= 3);
-                        })
-                        .catch(error => console.error("Error fetching JSON data:", error))
-                        .finally(hideSpinner);
+                    try {
+                        const response = await fetch('before_user.json');
+                        const data = await response.json();
+                        scores = data.postscore || data.prescore;
+                        localStorage.setItem("user", JSON.stringify(scores));
+                        updateStartButton();
+                        renderTasks(score => score.score <= 3);
+                    } catch (error) {
+                        console.error("Error fetching JSON data:", error);
+                        const errorMessage = document.createElement('p');
+                        errorMessage.textContent = "Failed to load tasks. Please try again later.";
+                        document.body.appendChild(errorMessage);
+                    } finally {
+                        hideSpinner();
+                    }
                 };
             
 
@@ -228,9 +255,17 @@
                         question.id = `q_num${i+1}`;
                         const q_num = document.createElement("span");
                         q_num.textContent = `Question ${i+1} - ${score.score} points`;
+                        const q_info = document.createElement("img");
+                        q_info.src = './images/info.png';
+                        q_info.width = '16';
 
                         q_con.appendChild(question);
                         question.appendChild(q_num);
+                        question.appendChild(q_info);
+
+                        q_info.addEventListener('click', function() {
+                            Modal(`./images/Question ${i+1}.pdf`);
+                        });
 
                         score.tasks.forEach((task, j) => {
                             const q_input = document.createElement("li");
@@ -267,9 +302,9 @@
                                 updateStartButton();
                             });
                         });
-
                         QContainer.appendChild(q_con);
                     }
+                    
                 });
 
                 // Update start button state after rendering tasks
