@@ -1,3 +1,6 @@
+# Ignore Node.js manifest
+package.json
+
 # Ignore node_modules directory
 node_modules/
 
@@ -78,3 +81,9 @@ yarn-error.log*
 # Ignore build artifacts
 *.cache
 .cache/
+
+# Ignore Bun lockfile
+bun.lockb
+
+# Local Netlify folder
+.netlify
