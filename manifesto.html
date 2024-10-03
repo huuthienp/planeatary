@@ -51,7 +51,6 @@
             </div>
             <div class="task-content">
                 <div class="q-task">
-
                     <!--<ul id="q2">
                         <li>
                             <p>Question <span id="q_num2"></span> - <span id="q_score2"></span><img src="./images/info.png" onclick="Modal();" /></p>
@@ -120,7 +119,7 @@
                 modal.classList.remove('hidden');
                 overlay.classList.remove('hidden');
             }
-            // When the user clicks on <span> (x), close the modal
+
             function Close() {
                 var modal = document.querySelector(".modal");
                 var overlay = document.querySelector(".overlay");
@@ -143,9 +142,10 @@
             const overlay = document.querySelector(".overlay");
             const spinner = document.querySelector(".spinner");
 
+            const QContainer = document.querySelector(".q-task");
+
             const good = document.getElementById("good");
             const bad = document.getElementById("notyet");
-            const QContainer = document.querySelector(".q-task");
 
             const startButton = document.querySelector(".start");
             good.style.backgroundColor = '#a9d1cd';
@@ -156,6 +156,8 @@
                 let isLoading = false;
                 const minDisplayTime = 2000; 
                 let spinnerStartTime;
+                let scores = [];
+                let task_counts = 0;
 
                 // Function to show the spinner
                 function showSpinner() {
@@ -185,10 +187,7 @@
                     }
                 };
 
-                let scores = [];
-                let task_counts = 0;
-                const QContainer = document.querySelector(".q-task");
-
+                
                 // Check if scores are stored in localStorage
                 const storedScore = localStorage.getItem("user");
                 showSpinner();
@@ -244,64 +243,90 @@
             };
 
             function renderTasks(scoreCondition) {
-                QContainer.innerHTML = ''; // Clear any existing content
+                QContainer.innerHTML = ''; 
 
                 scores.forEach((score, i) => {
                     if (scoreCondition(score)) {
+                        const btnContainer = document.createElement("div");
+                        const q_button = document.createElement("button");    
                         const q_con = document.createElement("ul");
                         q_con.classList.add("q");
+                        
 
-                        const question = document.createElement("li");
-                        question.id = `q_num${i+1}`;
-                        const q_num = document.createElement("span");
-                        q_num.textContent = `Question ${i+1} - ${score.score} points`;
-                        const q_info = document.createElement("img");
-                        q_info.src = './images/info.png';
-                        q_info.width = '16';
+                        btnContainer.classList.add("btn-q");
+                        q_button.classList.add("next");
+                        q_button.textContent = `Question ${i+1}`;
+                        btnContainer.appendChild(q_button);
 
-                        q_con.appendChild(question);
-                        question.appendChild(q_num);
-                        question.appendChild(q_info);
 
-                        q_info.addEventListener('click', function() {
-                            Modal(`./images/Question ${i+1}.pdf`);
-                        });
+                        q_button.addEventListener('click', function () {
 
-                        score.tasks.forEach((task, j) => {
-                            const q_input = document.createElement("li");
-                            const label = document.createElement("label");
-                            const input = document.createElement("input");
-                            const text = document.createElement("span");
-                            text.innerHTML = task.taskName;
-                            input.type = "checkbox";
 
-                            // Initialize task count based on current selected state
-                            if (task.choice === "selected") {
-                                input.checked = true;
-                            }
-
-                            label.appendChild(input);
-                            label.appendChild(text);
-                            q_input.appendChild(label);
-                            q_con.appendChild(q_input);
-
-                            // Event listener to track selection
-                            input.addEventListener('change', function() {
-                                if (input.checked) {
-                                    task.choice = "selected";
-                                    task_counts += 1;
+                            if (q_con.innerHTML === 'none' || q_con.innerHTML === '') {
+                                const question = document.createElement("li");
+                                question.id = `q_num${i+1}`;
+                                const q_num = document.createElement("span");
+                                q_num.textContent = `Question ${i+1} - ${score.score} points`;
+                                const q_info = document.createElement("img");
+                                q_info.src = './images/info.png';
+                                q_info.width = '16';  
+                                if(score.score > 3) {
+                                    q_con.style.boxShadow = '0px 6px 8px 0px rgba(0, 128, 0, 0.5)';
                                 } else {
-                                    task.choice = "not selected";
-                                    task_counts -= 1;
-                                }
+                                    q_con.style.boxShadow = '0px 6px 8px 0px rgba(255, 0, 0, 0.5)';
+                                };
+                                q_con.style.transition = "all 1s";
+                                q_con.appendChild(question);
+                                question.appendChild(q_num);
+                                question.appendChild(q_info);
 
-                                // Save updated task state to localStorage
-                                localStorage.setItem("user", JSON.stringify(scores));
+                                q_info.addEventListener('click', function() {
+                                    Modal(`./images/Question ${i+1}.pdf`);
+                                });
 
-                                // Update the start button
-                                updateStartButton();
-                            });
+                                score.tasks.forEach((task, j) => {
+                                    const q_input = document.createElement("li");
+                                    const label = document.createElement("label");
+                                    const input = document.createElement("input");
+                                    const text = document.createElement("span");
+                                    text.innerHTML = task.taskName;
+                                    input.type = "checkbox";
+
+                                    // Initialize task count based on current selected state
+                                    if (task.choice === "selected") {
+                                        input.checked = true;
+                                    }
+
+                                    label.appendChild(input);
+                                    label.appendChild(text);
+                                    q_input.appendChild(label);
+                                    q_con.appendChild(q_input);
+
+                                    // Event listener to track selection
+                                    input.addEventListener('change', function() {
+                                        if (input.checked) {
+                                            task.choice = "selected";
+                                            task_counts += 1;
+                                        } else {
+                                            task.choice = "not selected";
+                                            task_counts -= 1;
+                                        }
+
+                                        // Save updated task state to localStorage
+                                        localStorage.setItem("user", JSON.stringify(scores));
+
+                                        // Update the start button
+                                        updateStartButton();
+                                    });
+                                    
+                                });
+                            } else {
+                                q_con.style.boxShadow = 'none';
+                                q_con.innerHTML = ''; 
+                            }
+                            
                         });
+                        QContainer.appendChild(btnContainer);
                         QContainer.appendChild(q_con);
                     }
                     
