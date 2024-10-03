@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@netlify/blobs": "^8.0.1",
+    "@netlify/edge-functions": "^2.11.0"
+  }
+}
