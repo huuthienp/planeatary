@@ -273,7 +273,6 @@ body {
     font-family: Poppins;
   }
   
-  
   .button_next a:link {
     text-decoration: none;
     color: white;
@@ -557,6 +556,14 @@ body {
   font-size: 1em;
   flex-direction: row;
 }
+.btn-q {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2vh 0;
+  font-size: 1em;
+}
+
 .q-task {
   margin: 0 auto;
 }
@@ -879,7 +886,8 @@ body {
     justify-content: center;
 }
 .q {
-    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 .question {
     background-color: #fff;
