@@ -23,7 +23,7 @@ export default async (req: Request, context: Context) => {
     const data = await req.json();
 
     // Get the store
-    const store = getStore("Response-Store");
+    const store = getStore(process.env.RESPONSE_STORE_NAME);
 
     // Check for missing keys
     const EXPECTED_KEYS = ["recordedDate", "quizType", "responseId", "respondentEmail"];
