@@ -8,34 +8,14 @@ export default async (req, context) => {
       return new Response("Method not allowed", { status: 405 });
     }
 
-    // Extract quizType from query parameters
-    const url = new URL(req.url.toLowerCase());
-    const quizType = url.searchParams.get("quiztype");
-
-    // Check if quizType is missing
-    if (!quizType) {
-      return new Response("Missing required query parameter: quiztype", { status: 400 });
-    }
-
-    // Convert quizType to lowercase
-    const quizTypeLower = quizType.toLowerCase();
-
     // Determine the survey ID based on quiz type
-    const surveyId = (quizTypeLower === "pre") ? process.env.PRE_QUIZ_ID
-      : (quizTypeLower === "post") ? process.env.POST_QUIZ_ID : "";
-
-    // Validate quiz type
-    if (!surveyId) {
-      const message = `Invalid quiz type: ${quizType}`;
-      return new Response(message, { status: 400 });
-    }
+    const surveyId = process.env.PRE_QUIZ_ID;
 
     // Extract responseId from request body
-    const body = await req.json();
-    const { responseId } = body;
+    const responseId = "R_4EO2OMpi5JAYq0F";
 
     // Check if responseId exists in Netlify Blobs
-    const quizResponses = getStore(surveyId);
+    const quizResponses = getStore("Response-Store");
     const entry = await quizResponses.get(responseId, { consistency: "strong" });
     if (!entry) {
       const message = `Cannot find: ${responseId}`;
@@ -70,4 +50,4 @@ export default async (req, context) => {
   }
 }
 
-export const config = { path: "/api/fetch-response" }
+export const config = { path: "/api/test" }
