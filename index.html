@@ -172,12 +172,14 @@
                 }
 
                 async function checkOrFetchResponseId() {
+                    showSpinner();
                     let responseId = localStorage.getItem('response_id');
                     if (responseId) {
-                        const userChoice = confirm("Looks like there is your recorded response. Would you like to continue with existing responses?");
+                        const userChoice = confirm("Looks like there is your recorded response. Would you like to continue with existing responses? click ok if yes");
                         
                         if (userChoice) {
                             // User chooses to continue with existing responses
+                            hideSpinner();
                             exportDataToNetlify(responseId)
                             continueButton.addEventListener('click', function() {
                                 window.location.href = 'qualtrics.html';
@@ -186,12 +188,13 @@
                             // User chooses to start a new quiz
                             localStorage.removeItem('response_id');
                             setupContinueButton();
+                            hideSpinner();
                         }
                     } else {
-                        showSpinner();
                         // If response_id does not exist
-                        const userAns = confirm("Have you done the pre-quiz?");
+                        const userAns = confirm("Have you done the pre-quiz? click ok if yes");
                         if (userAns) {
+                            const userOption = confirm("Would you like to continue with existing responses? click ok if yes");
                             let userMem = prompt("Please enter your response ID");
                             if (userMem != null) {
                                 let userID = {
@@ -203,6 +206,7 @@
                         }
                         responseId = await fetchResponseIdFromNetlify();
                         setupContinueButton();
+                        hideSpinner();
                     }
                 }
 
