@@ -18,8 +18,10 @@ class CustomResponse extends Response {
 export default async (req, context) => {
   try {
     // Ensure the request method is POST
-    if (req.method !== "POST") {
-      const message = "Method not allowed";
+    const methodUpper = req.method.toUpperCase();
+    if (methodUpper !== "POST") {
+      const message = `Method not allowed: ${methodUpper}`;
+      console.error(message);
       return new CustomResponse(message, 405);
     }
 
@@ -30,6 +32,7 @@ export default async (req, context) => {
     // Check if quizType is missing
     if (!quizType) {
       const message = "Missing required query parameter: quiztype (case-insensitive)";
+      console.error(message);
       return new CustomResponse(message, 400);
     }
 
@@ -43,6 +46,7 @@ export default async (req, context) => {
     // Validate quiz type
     if (!surveyId) {
       const message = `Invalid quiz type: ${quizType}`;
+      console.error(message);
       return new CustomResponse(message, 400);
     }
 
@@ -56,7 +60,7 @@ export default async (req, context) => {
     const quizResponses = getStore(surveyId);
     const entry = await quizResponses.get(responseId, { consistency: "strong" });
     if (!entry) {
-      const message = `Invalid response ID: ${responseId}`;
+      const message = `Invalid response ID: ${responseId} (${quizTypeLower}-quiz)`;
       console.error(message);
       return new CustomResponse(message, 403);
     }
