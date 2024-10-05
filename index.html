@@ -106,27 +106,46 @@
                     }
                 };
 
+                const postResponseId = localStorage.getItem('postResponseId');
+                let url = '/api/fetch-response?quiztype=post';
+                let options = {
+                    method: 'POST',
+                    body: JSON.stringify({ responseId: postResponseId })
+                };               
+
                 // fetch response_id from Netlify
                 async function fetchResponseIdFromNetlify() {
                     try {
                         showSpinner(); 
 
-                        const response = await fetch('api/fetch-survey-response');
+                        let response = await fetch(url, options);
                         
                         if (!response.ok) {
-                            throw new Error('Failed to fetch response_id from Netlify');
+                            const preResponseId = localStorage.getItem('preResponseId');
+                            let url = '/api/fetch-response?quiztype=pre';
+                            let options = {
+                                method: 'POST',
+                                body: JSON.stringify({ responseId: preResponseId })
+                            };
+                            try {
+                                let response = await fetch(url, options);
+                            } catch (error) {
+                                console.error('Error fetching response id:', error);
+                                hideSpinner(); 
+                                return null;
+                            }
+                            throw new Error('Failed to fetch response id from Netlify');
                         }
 
                         const data = await response.json();
-                        const responseId = data.response_id;
 
                         // Store the response_id in localStorage
-                        localStorage.setItem('response_id', responseId);
+                        localStorage.setItem('responseId', responseId);
                         hideSpinner(); 
 
                         return responseId;
                     } catch (error) {
-                        console.error('Error fetching response_id:', error);
+                        console.error('Error fetching response id:', error);
                         hideSpinner(); 
                         return null;
                     }
@@ -173,7 +192,7 @@
 
                 async function checkOrFetchResponseId() {
                     showSpinner();
-                    let responseId = localStorage.getItem('response_id');
+                    let responseId = localStorage.getItem('responseId');
                     if (responseId) {
                         const userChoice = confirm("Looks like there is your recorded response. Would you like to continue with existing responses? click ok if yes");
                         
@@ -186,7 +205,7 @@
                             });
                         } else {
                             // User chooses to start a new quiz
-                            localStorage.removeItem('response_id');
+                            localStorage.removeItem('responseId');
                             setupContinueButton();
                             hideSpinner();
                         }
