@@ -1,11 +1,26 @@
-import axios from 'axios';
+import axios from "axios";
 import { getStore } from "@netlify/blobs";
+
+class CustomResponse extends Response {
+  constructor(message = "Error", status = 500) {
+    const body = JSON.stringify({ message: message });
+    const options = {
+      status: status,
+      headers: { "Content-Type": "application/json" }
+    };
+    super(body, options);
+
+    this.message = message;
+    this.statusCode = status;
+  }
+}
 
 export default async (req, context) => {
   try {
     // Ensure the request method is POST
     if (req.method !== "POST") {
-      return new Response("Method not allowed", { status: 405 });
+      const message = "Method not allowed";
+      return new CustomResponse(message, 405);
     }
 
     // Determine the survey ID based on quiz type
@@ -15,39 +30,47 @@ export default async (req, context) => {
     const responseId = "R_4EO2OMpi5JAYq0F";
 
     // Check if responseId exists in Netlify Blobs
-    const quizResponses = getStore("Response-Store");
+    const quizResponses = getStore(surveyId);
     const entry = await quizResponses.get(responseId, { consistency: "strong" });
     if (!entry) {
-      const message = `Cannot find: ${responseId}`;
+      const message = `Invalid response ID: ${responseId}`;
       console.error(message);
-      return new Response(message, { status: 403 });
+      return new CustomResponse(message, 403);
     }
 
     // Prepare API request to Qualtrics
     const { QDC_ID, Q_API_TOKEN } = process.env;
     const options = {
-      method: 'GET',
+      method: "GET",
       url: `https://${QDC_ID}.qualtrics.com/API/v3/surveys/${surveyId}/responses/${responseId}`,
-      headers: { Accept: 'application/json', 'X-API-TOKEN': Q_API_TOKEN },
+      headers: { Accept: "application/json", "X-API-TOKEN": Q_API_TOKEN },
     };
 
     // Make API request to Qualtrics
     const { data } = await axios.request(options);
 
     // Return successful response
-    return new Response(JSON.stringify(data), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
+    return new CustomResponse(data, 200);
 
   } catch (error) {
     // Handle any errors that occur during the process
-    console.error(error);
-    const message = "Oops!";
-    return new Response(message, { status: 500 }) // Re-throw the error to be handled by the caller
+    if (error.response) {
+      // The request was made and the server responded with a non-2xx status code
+      const message = error.response.data;
+      console.error(message);
+      return new CustomResponse(message, error.response.status);
+    } else if (error.request) {
+      // The request was made but no response was received
+      const message = "No response received";
+      console.error(message);
+      return new CustomResponse(message, 503);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      const message = error.message || error;
+      console.error(message);
+      return new CustomResponse(message);
+    }
   }
 }
 
-export const config = { path: "/api/test" }
+export const config = { path: "/api/test-fetch-response" }
