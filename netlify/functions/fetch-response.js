@@ -33,6 +33,8 @@ export default async (req, context) => {
     // Extract responseId from request body
     const body = await req.json();
     const { responseId } = body;
+    const { QDC_ID, Q_API_TOKEN } = process.env;
+    const qUrl = `https://${QDC_ID}.qualtrics.com/API/v3/surveys/${surveyId}/responses/${responseId}`;
 
     // Check if responseId exists in Netlify Blobs
     const quizResponses = getStore(surveyId);
@@ -44,15 +46,17 @@ export default async (req, context) => {
     }
 
     // Prepare API request to Qualtrics
-    const { QDC_ID, Q_API_TOKEN } = process.env;
+    console.log(responseId);
+    console.log(qUrl);
     const options = {
       method: 'GET',
-      url: `https://${QDC_ID}.qualtrics.com/API/v3/surveys/${surveyId}/responses/${responseId}`,
+      url: qUrl,
       headers: { Accept: 'application/json', 'X-API-TOKEN': Q_API_TOKEN },
     };
 
     // Make API request to Qualtrics
     const { data } = await axios.request(options);
+    console.log(data);
 
     // Return successful response
     return new Response(JSON.stringify(data), {
@@ -64,7 +68,7 @@ export default async (req, context) => {
 
   } catch (error) {
     // Handle any errors that occur during the process
-    console.error(error);
+    // console.error(error);
     const message = "Oops!";
     return new Response(message, { status: 500 }) // Re-throw the error to be handled by the caller
   }
