@@ -1,0 +1,17 @@
+/* /qualtrics-assets/censor-response-id.css */
+
+.censored-container {
+  padding: 2px 4px;
+  cursor: pointer;
+}
+
+.censored-text {
+  color: transparent;
+  text-shadow: 0 0 8px rgba(0,0,0,0.5);
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+.censored-container:hover .censored-text {
+  color: #000;
+  text-shadow: none;
+}
