@@ -40,9 +40,14 @@ export default async (req, context) => {
     const url = new URL(req.url.toLowerCase());
     const quizType = url.searchParams.get('quiztype');
 
-    // Check if quizType is missing
-    if (!quizType) {
-      const message = 'Missing required query parameter: quiztype (case-insensitive)';
+    // Validate quizType
+    if (quizType === null || quizType === undefined) {
+      const message = '?quiztype= missing in URL (case-insensitive)';
+      console.error(message);
+      return new CustomResponse(message, 400);
+
+    } else if (quizType !== 'pre' || quizType !== 'post') {
+      const message = `Invalid quiz type: ${quizType}`;
       console.error(message);
       return new CustomResponse(message, 400);
     }
@@ -51,32 +56,38 @@ export default async (req, context) => {
     const quizTypeLower = quizType.toLowerCase();
 
     // Determine the survey ID based on quiz type
-    const surveyId = (quizTypeLower === 'pre') ? process.env.PRE_QUIZ_ID
-      : (quizTypeLower === 'post') ? process.env.POST_QUIZ_ID : '';
+    const { PRE_QUIZ_ID, POST_QUIZ_ID } = process.env;
 
-    // Validate quiz type
-    if (!surveyId) {
-      const message = `Invalid quiz type: ${quizType}`;
+    const surveyId = (quizTypeLower === 'pre') ? PRE_QUIZ_ID : POST_QUIZ_ID;
+
+    const quizResponses = getStore(surveyId);
+
+    // Extract responseId from request body
+    const body = await req.json(); // error handled below
+
+    const { responseId } = body;
+
+    if (!responseId) {
+      const strBody = JSON.stringify(body);
+      const message = `responseId (case-sensitive) is empty/missing in ${strBody}`;
       console.error(message);
       return new CustomResponse(message, 400);
     }
 
-    // Extract responseId from request body
-    const body = await req.json();
-    const { responseId } = body;
-    const { QDC_ID, Q_API_TOKEN } = process.env;
-    const qUrl = `https://${QDC_ID}.qualtrics.com/API/v3/surveys/${surveyId}/responses/${responseId}`;
-
     // Check if responseId exists in Netlify Blobs
-    const quizResponses = getStore(surveyId);
     const entry = await quizResponses.get(responseId, { consistency: 'strong' });
-    if (!entry) {
-      const message = `Invalid response ID: ${responseId} (${quizTypeLower}-quiz)`;
+
+    if (entry === null) {
+      const message = `${responseId} is not found in ${quizTypeLower}-quiz`;
       console.error(message);
-      return new CustomResponse(message, 403);
+      return new CustomResponse(message, 404);
     }
 
     // Prepare API request to Qualtrics
+    const { QDC_ID, Q_API_TOKEN } = process.env;
+
+    const qUrl = `https://${QDC_ID}.qualtrics.com/API/v3/surveys/${surveyId}/responses/${responseId}`;
+
     const options = {
       method: 'GET',
       url: qUrl,
@@ -85,9 +96,10 @@ export default async (req, context) => {
 
     // Make API request to Qualtrics
     const { data } = await axios.request(options);
+    // axios throws error when status code is not 2xx
 
     // Return successful response
-    return new CustomResponse(data, 200);
+    return new CustomResponse(data); // default status is 200
 
   } catch (error) {
     // Handle any errors that occur during the process
@@ -96,11 +108,20 @@ export default async (req, context) => {
       const message = error.response.data;
       console.error(message);
       return new CustomResponse(message, error.response.status);
+
     } else if (error.request) {
       // The request was made but no response was received
       const message = 'No response received';
       console.error(message);
       return new CustomResponse(message, 503);
+
+    } else if (error instanceof SyntaxError &&
+      error.message.toLowerCase().includes('json')) {
+      // Handle error from req.json()
+      const body = await req.text();
+      const message = `${body} is not valid JSON.`;
+      return new CustomResponse(message, 400);
+
     } else {
       // Something happened in setting up the request that triggered an Error
       const message = error.message || error;
@@ -108,6 +129,8 @@ export default async (req, context) => {
       return new CustomResponse(message, 500);
     }
   }
+  // end of try-catch
 }
+
 
 export const config = { path: '/api/fetch-response' }
