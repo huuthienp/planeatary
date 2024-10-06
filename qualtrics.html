@@ -42,23 +42,24 @@
 
             <div class="content">
                 <iframe class="quiz" src="https://uow.au1.qualtrics.com/jfe/form/SV_8es3au3sYKpwaii" title="Planeatary quiz"></iframe>
-            <div class="btn-next">
-                <a href="result_page.html"><button class="next">Next  &#8594;</button></a>
+                <div class="btn-next">
+                    <a href="result_page.html"><button class="next">Next  &#8594;</button></a>
+                </div>
             </div>
-        </div>
-    <script>
-        function openNav() {
-            next = document.querySelector(".next");
-            next.style.cursor = "not-allowed";
-            document.getElementById("mySidenav").style.width = "40%";
-            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
-        };
-        
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.body.style.backgroundColor = "white";
-        };
+            <script>
+            function openNav() {
+                next = document.querySelector(".next");
+                next.style.cursor = "not-allowed";
+                document.getElementById("mySidenav").style.width = "40%";
+                document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
+            };
 
-    </script>        
-    </body>
+            function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+                document.body.style.backgroundColor = "white";
+            };
+
+            </script>
+            <script src="/listen-to-qualtrics.js" />
+</body>
 </html>
