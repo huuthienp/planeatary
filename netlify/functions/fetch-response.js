@@ -31,7 +31,7 @@ export default async (req, context) => {
     // Ensure the request method is POST
     const methodUpper = req.method.toUpperCase();
     if (methodUpper !== 'POST') {
-      const message = `Method not allowed: ${methodUpper}`;
+      const message = `Method not allowed: ${methodUpper}.`;
       console.error(message);
       return new CustomResponse(message, 405);
     }
@@ -42,12 +42,13 @@ export default async (req, context) => {
 
     // Validate quizType
     if (quizType === null || quizType === undefined) {
-      const message = '?quiztype= missing in URL (case-insensitive)';
+      const message = `${url.href} is missing quiztype (case-insensitive, first occurence).`;
       console.error(message);
       return new CustomResponse(message, 400);
 
-    } else if (quizType !== 'pre' || quizType !== 'post') {
-      const message = `Invalid quiz type: ${quizType}`;
+    } else if (quizType !== 'pre' && quizType !== 'post') {
+      const emptyQuizType = quizType === '';
+      const message = emptyQuizType ? `Empty quiz type.` : `${quizType} is an invalid quiz type.`;
       console.error(message);
       return new CustomResponse(message, 400);
     }
@@ -69,7 +70,7 @@ export default async (req, context) => {
 
     if (!responseId) {
       const strBody = JSON.stringify(body);
-      const message = `responseId (case-sensitive) is empty/missing in ${strBody}`;
+      const message = `${strBody} is missing a responseId (case-sensitive) or has an empty one.`;
       console.error(message);
       return new CustomResponse(message, 400);
     }
@@ -78,7 +79,7 @@ export default async (req, context) => {
     const entry = await quizResponses.get(responseId, { consistency: 'strong' });
 
     if (entry === null) {
-      const message = `${responseId} is not found in ${quizTypeLower}-quiz`;
+      const message = `${responseId} is not found in ${quizTypeLower}-quiz.`;
       console.error(message);
       return new CustomResponse(message, 404);
     }
@@ -111,7 +112,7 @@ export default async (req, context) => {
 
     } else if (error.request) {
       // The request was made but no response was received
-      const message = 'No response received';
+      const message = 'No response from Qualtrics.';
       console.error(message);
       return new CustomResponse(message, 503);
 
