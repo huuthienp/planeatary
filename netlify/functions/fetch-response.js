@@ -1,12 +1,12 @@
-import axios from "axios";
-import { getStore } from "@netlify/blobs";
+import axios from 'axios';
+import { getStore } from '@netlify/blobs';
 
 class CustomResponse extends Response {
-  constructor(message = "Error", status = 500) {
+  constructor(message = 'Error', status = 500) {
     const body = JSON.stringify({ message: message });
     const options = {
       status: status,
-      headers: { "Content-Type": "application/json" }
+      headers: { 'Content-Type': 'application/json' }
     };
     super(body, options);
 
@@ -19,7 +19,7 @@ export default async (req, context) => {
   try {
     // Ensure the request method is POST
     const methodUpper = req.method.toUpperCase();
-    if (methodUpper !== "POST") {
+    if (methodUpper !== 'POST') {
       const message = `Method not allowed: ${methodUpper}`;
       console.error(message);
       return new CustomResponse(message, 405);
@@ -27,11 +27,11 @@ export default async (req, context) => {
 
     // Extract quizType from query parameters
     const url = new URL(req.url.toLowerCase());
-    const quizType = url.searchParams.get("quiztype");
+    const quizType = url.searchParams.get('quiztype');
 
     // Check if quizType is missing
     if (!quizType) {
-      const message = "Missing required query parameter: quiztype (case-insensitive)";
+      const message = 'Missing required query parameter: quiztype (case-insensitive)';
       console.error(message);
       return new CustomResponse(message, 400);
     }
@@ -40,8 +40,8 @@ export default async (req, context) => {
     const quizTypeLower = quizType.toLowerCase();
 
     // Determine the survey ID based on quiz type
-    const surveyId = (quizTypeLower === "pre") ? process.env.PRE_QUIZ_ID
-      : (quizTypeLower === "post") ? process.env.POST_QUIZ_ID : "";
+    const surveyId = (quizTypeLower === 'pre') ? process.env.PRE_QUIZ_ID
+      : (quizTypeLower === 'post') ? process.env.POST_QUIZ_ID : '';
 
     // Validate quiz type
     if (!surveyId) {
@@ -58,7 +58,7 @@ export default async (req, context) => {
 
     // Check if responseId exists in Netlify Blobs
     const quizResponses = getStore(surveyId);
-    const entry = await quizResponses.get(responseId, { consistency: "strong" });
+    const entry = await quizResponses.get(responseId, { consistency: 'strong' });
     if (!entry) {
       const message = `Invalid response ID: ${responseId} (${quizTypeLower}-quiz)`;
       console.error(message);
@@ -67,9 +67,9 @@ export default async (req, context) => {
 
     // Prepare API request to Qualtrics
     const options = {
-      method: "GET",
+      method: 'GET',
       url: qUrl,
-      headers: { Accept: "application/json", "X-API-TOKEN": Q_API_TOKEN },
+      headers: { Accept: 'application/json', 'X-API-TOKEN': Q_API_TOKEN },
     };
 
     // Make API request to Qualtrics
@@ -87,7 +87,7 @@ export default async (req, context) => {
       return new CustomResponse(message, error.response.status);
     } else if (error.request) {
       // The request was made but no response was received
-      const message = "No response received";
+      const message = 'No response received';
       console.error(message);
       return new CustomResponse(message, 503);
     } else {
@@ -99,4 +99,4 @@ export default async (req, context) => {
   }
 }
 
-export const config = { path: "/api/fetch-response" }
+export const config = { path: '/api/fetch-response' }
