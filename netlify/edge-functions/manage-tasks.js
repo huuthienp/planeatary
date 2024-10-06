@@ -30,7 +30,7 @@ export default async (req) => {
 
     if (entry === null) {
       const message = 'Invalid ID.';
-      console.error(message, id);
+      console.error(message);
       return new CustomResponse(message, 403);
     }
 
@@ -90,10 +90,8 @@ export default async (req) => {
     } else if (error instanceof SyntaxError &&
       error.message.toLowerCase().includes('json')) {
       // Handle error from req.json()
-      const strBody = await req.text();
-      const message = strBody.length > 0 ? `Payload is not valid JSON.`
-        : 'Nothing inside request.';
-      console.error(message, '\n', strBody);
+      const message = 'Body is empty or not JSON.'
+      console.error(message);
       return new CustomResponse(message, 400);
 
     } else {

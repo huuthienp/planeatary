@@ -54,7 +54,7 @@ export default async (req) => {
 
     if (entry === null) {
       const message = `Invalid ID for ${quizTypeLower}-quiz.`;
-      console.error(message, id);
+      console.error(message);
       return new CustomResponse(message, 403);
     }
 
