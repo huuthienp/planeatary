@@ -100,6 +100,7 @@ export default async (req, context) => {
     // axios throws error when status code is not 2xx
 
     // Return successful response
+    console.log(`A response is fetched.`);
     return new CustomResponse(data); // default status is 200
 
   } catch (error) {
