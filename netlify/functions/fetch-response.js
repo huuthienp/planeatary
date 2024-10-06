@@ -1,19 +1,30 @@
 import axios from 'axios';
 import { getStore } from '@netlify/blobs';
 
+
 class CustomResponse extends Response {
-  constructor(message = 'Error', status = 500) {
-    const body = JSON.stringify({ message: message });
+  constructor(body = 'Success', status = 200) {
+    const strBody = typeof body === 'string' ? body
+      : JSON.stringify(body);
+
+    let contentType;
+
+    try {
+      JSON.parse(strBody);
+      contentType = 'application/json';
+    } catch {
+      contentType = 'text/plain';
+    }
+
     const options = {
       status: status,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': contentType }
     };
-    super(body, options);
 
-    this.message = message;
-    this.statusCode = status;
+    super(strBody, options);
   }
 }
+
 
 export default async (req, context) => {
   try {
@@ -94,7 +105,7 @@ export default async (req, context) => {
       // Something happened in setting up the request that triggered an Error
       const message = error.message || error;
       console.error(message);
-      return new CustomResponse(message);
+      return new CustomResponse(message, 500);
     }
   }
 }
