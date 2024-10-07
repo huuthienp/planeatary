@@ -106,55 +106,36 @@
                     }
                 }
                 
-                //function to recieve the result of checking response id
-                async function checkUserResponseId() {
-                    try {
-                        showSpinner();
-                        const postResponseId = await localStorage.getItem('postResponseId');
-                        if (!postResponseId) {
-                            const preResponseId = await localStorage.getItem('preResponseId');
-                            if (!preResponseId) {
-                                fetchResponseIdFromNetlify();
-                            }
-                        }
-
-                    } catch (error) {
-                        console.error('Error checking response id:', error);
-                    } finally {
-                        hideSpinner();
-                    }
-                }
-
                 
                 async function fetchResponseIdFromNetlify() {
                     try {
-                        showSpinner();     
-                        
+                        showSpinner();
+
+                        let responseId = null;
                         let response = await fetch('/api/fetch-response?quizType=post', {
                             method: 'GET',
                             headers: {
-                                'Q-RESPONSE-ID': postResponseId, 
+                                'Q-RESPONSE-ID': localStorage.getItem('postResponseId'), 
                                 'Content-Type': 'application/json'
                             }
                         });
                         if (!response.ok) {         
-                            try {
-                                let response = await fetch('/api/fetch-response?quiztype=pre', {
-                                    method: 'GET',
-                                    headers: {
-                                        'Q-RESPONSE-ID': preResponseId, 
-                                        'Content-Type': 'application/json'
-                                    }
-                                });
-                            } catch (error) {
-                                console.error('Error fetching response id:', error);
-                                hideSpinner(); 
-                                return null;
+                            response = await fetch('/api/fetch-response?quizType=pre', {
+                                method: 'GET',
+                                headers: {
+                                    'Q-RESPONSE-ID': localStorage.getItem('preResponseId'), // Include 'preResponseId' from localStorage
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+
+                            // If the second request also fails, throw an error to be caught by the catch block
+                            if (!response.ok) {
+                                throw new Error('Failed to fetch response ID from Netlify');
                             }
-                            throw new Error('Failed to fetch response id from Netlify');
                         }
 
                         const data = await response.json();
+                        responseId = data.responseId;
 
                         // Store the response_id in localStorage
                         localStorage.setItem('responseId', data.responseId);
