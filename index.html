@@ -165,17 +165,17 @@
 
                             // If no valid response ID found or entered, attempt to fetch both pre and post response IDs
                             let fetchedPreResponseId = await fetchResponseIdFromNetlify('pre');
-                            let fetchedPostResponseId = await fetchResponseIdFromNetlify('post');
+                            //let fetchedPostResponseId = await fetchResponseIdFromNetlify('post');
                             // Store fetched response IDs in localStorage if they exist
                             if (fetchedPreResponseId) {
                                 localStorage.setItem('preResponseId', fetchedPreResponseId);
                                 setupContinueButton('qualtrics.html');
                             }
-                            if (fetchedPostResponseId) {
-                                localStorage.setItem('postResponseId', fetchedPostResponseId);
-                                setupContinueButton('qualtrics_post.html');
-                            }
-                            responseId = fetchedPreResponseId || fetchedPostResponseId;
+                            // if (fetchedPostResponseId) {
+                            //     localStorage.setItem('postResponseId', fetchedPostResponseId);
+                            //     setupContinueButton('qualtrics_post.html');
+                            // }
+                            // responseId = fetchedPreResponseId || fetchedPostResponseId;
                             setupContinueButton('qualtrics.html');
                             
                         }   
@@ -197,6 +197,7 @@
                                 'Content-Type': 'application/json',
                                 // If we have an existing preResponseId or postResponseId, include it
                                 //'Q-RESPONSE-ID': localStorage.getItem('preResponseId') || localStorage.getItem('postResponseId') || 'preResponseId',
+
                                 'Q-RESPONSE-ID': 'R_42X3d6pIpOg5YuU',
                             },
                         };
