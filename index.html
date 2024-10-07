@@ -106,6 +106,66 @@
                     }
                 }
                 
+                async function fetchResponseIdFromNetlify() {
+                    try {
+                        showSpinner(); 
+                        
+                        let postResponseId = localStorage.getItem('postResponseId');
+                        let preResponseId = localStorage.getItem('preResponseId');
+
+                        // If neither ID is in localStorage, handle the scenario
+                        if (!postResponseId && !preResponseId) {
+                            alert("No response ID found in local storage. Please start a new quiz.");
+                            hideSpinner();
+                            return null;
+                        }
+
+                        let responseId = null;
+                        let response;
+
+                        // Attempt to fetch the postResponseId if it exists
+                        if (postResponseId) {
+                            response = await fetch('/api/fetch-response?quizType=post', {
+                                method: 'GET',
+                                headers: {
+                                    'Q-RESPONSE-ID': postResponseId,
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+                        }
+
+                        // If the post quiz fetch fails or if postResponseId does not exist, attempt preResponseId
+                        if (!response || !response.ok) {
+                            if (preResponseId) {
+                                response = await fetch('/api/fetch-response?quizType=pre', {
+                                    method: 'GET',
+                                    headers: {
+                                        'Q-RESPONSE-ID': preResponseId,
+                                        'Content-Type': 'application/json'
+                                    }
+                                });
+                            }
+                        }
+
+                        // If both requests fail, handle the error
+                        if (!response || !response.ok) {
+                            throw new Error('Failed to fetch response ID from Netlify');
+                        }
+
+                        // Parse the response and store the responseId
+                        const data = await response.json();
+                        responseId = data.responseId;
+                        localStorage.setItem('responseId', responseId); // Save it to localStorage
+
+                        return responseId; // Return the fetched response ID
+
+                    } catch (error) {
+                        console.error('Error fetching response id:', error);
+                        return null; // Return null to indicate failure
+                    } finally {
+                        hideSpinner(); // Hide the spinner once the fetching process is complete
+                    }
+                }
                 
                 async function fetchResponseIdFromNetlify() {
                     try {
@@ -128,7 +188,6 @@
                                 }
                             });
 
-                            // If the second request also fails, throw an error to be caught by the catch block
                             if (!response.ok) {
                                 throw new Error('Failed to fetch response ID from Netlify');
                             }
@@ -137,7 +196,6 @@
                         const data = await response.json();
                         responseId = data.responseId;
 
-                        // Store the response_id in localStorage
                         localStorage.setItem('responseId', data.responseId);
 
                         return responseId;
@@ -179,40 +237,61 @@
 
 
                 async function checkOrFetchResponseId() {
-                    showSpinner();
-                    let responseId = localStorage.getItem('responseId');
-                    if (responseId) {
-                        const userChoice = confirm("Looks like there is your recorded response. Would you like to continue with existing responses? click ok if yes");
-                        
-                        if (userChoice) {
-                            // User chooses to continue with existing responses
-                            hideSpinner();
-                            exportDataToNetlify(responseId)
-                            continueButton.addEventListener('click', function() {
-                                window.location.href = 'qualtrics.html';
-                            });
+                    try {
+                        showSpinner();
+                        let preResponseId = localStorage.getItem('preResponseId');
+                        let postResponseId = localStorage.getItem('postResponseId');
+                        let responseId = preResponseId || postResponseId
+
+                        if (responseId) {
+                            const userChoice = confirm("Looks like there is your recorded response. Would you like to continue with existing responses? Click OK if yes.");
+                            
+                            if (userChoice) {
+                                // User chooses to continue with existing responses
+                                exportDataToNetlify(responseId);
+                                continueButton.addEventListener('click', function() {
+                                    window.location.href = 'qualtrics.html';
+                                });
+                                return; // Exit the function
+                            } else {
+                                // User chooses to start a new quiz
+                                localStorage.removeItem('preResponseId');
+                                localStorage.removeItem('postResponseId');
+                                setupContinueButton();
+                            }
                         } else {
-                            // User chooses to start a new quiz
-                            localStorage.removeItem('responseId');
-                            setupContinueButton();
-                            hideSpinner();
-                        }
-                    } else {
-                        // If response_id does not exist
-                        const userAns = confirm("Have you done the pre-quiz? click ok if yes");
-                        if (userAns) {
-                            const userOption = confirm("Would you like to continue with existing responses? click ok if yes");
-                            let userMem = prompt("Please enter your response ID");
-                            if (userMem != null) {
-                                let userID = {
-                                    'responseId': userMem
+                            // If no responseId in localStorage, ask the user if they've completed the pre-quiz
+                            const userAns = confirm("Have you done the pre-quiz? Click OK if yes.");
+                            
+                            if (userAns) {
+                                const userOption = confirm("Would you like to continue with existing responses? Click OK if yes.");
+                                
+                                if (userOption) {
+                                    let userMem = prompt("Please enter your response ID:");
+                                    
+                                    if (userMem) {
+                                        responseId = userMem;
+                                        localStorage.setItem('responseId', responseId);
+                                        exportDataToNetlify(responseId);
+                                        setupContinueButton();
+                                        return; // Exit the function
+                                    } else {
+                                        alert("Invalid response ID entered.");
+                                    }
                                 }
-                                hideSpinner();
-                                exportDataToNetlify(userID);
+                            }
+
+                            // No valid response ID found or entered; attempt to fetch a new one
+                            responseId = await fetchResponseIdFromNetlify();
+                            if (responseId) {
+                                localStorage.setItem('responseId', responseId);
                             }
                         }
-                        responseId = await fetchResponseIdFromNetlify();
+                        
                         setupContinueButton();
+                    } catch (error) {
+                        console.error('Error in checkOrFetchResponseId:', error);
+                    } finally {
                         hideSpinner();
                     }
                 }
