@@ -111,22 +111,32 @@
                         showSpinner();
                         let preResponseId = localStorage.getItem('preResponseId');
                         let postResponseId = localStorage.getItem('postResponseId');
-                        let responseId = preResponseId || postResponseId;
                         let quizType = '';
 
-                        if (responseId) {
-                            const userChoice = confirm("Looks like there is your recorded response. Would you like to continue with existing responses? Click OK if yes.");
+                        if (preResponseId) {
+                            let userChoice = confirm("Looks like there is your recorded pre quiz. Would you like to continue with existing responses? Click OK if yes.");
                             
                             if (userChoice) {
-                                // User chooses to continue with existing responses
-                                exportDataToNetlify(responseId);
-                                return; 
+                                setupContinueButton('qualtrics.html');
                             } else {
                                 // User chooses to start a new quiz
                                 localStorage.removeItem('preResponseId');
-                                localStorage.removeItem('postResponseId');
+                                
                                 setupContinueButton('qualtrics.html');
+
                             }
+                        } else if (postResponseId) {
+                            let userChoice = confirm("Looks like there is your recorded post quiz. Would you like to continue with existing responses? Click OK if yes.");
+                            
+                            if (userChoice) {
+                                setupContinueButton('qualtrics_post.html');
+                            } else {
+                                localStorage.removeItem('postResponseId');
+                                
+                                setupContinueButton('qualtrics_post.html');
+
+                            }
+                            
                         } else {
                             // If no responseId in localStorage, ask the user if they've completed the pre-quiz
                             const userAns = confirm("Have you done the quiz? Click OK if yes, cancel if no.");
@@ -199,7 +209,7 @@
                         //if (data) {
                             // Save responseId to localStorage and return it
                             //const responseId = data.responseId;
-                            //localStorage.setItem(quizType === 'pre' ? 'preResponseId' : 'postResponseId', data.);
+                            //localStorage.setItem(quizType === 'pre' ? 'preResponseId' : 'postResponseId', data);
                             //return responseId;
                         // } else {
                         //     throw new Error('No response ID found in the response.');
