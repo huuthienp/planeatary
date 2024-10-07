@@ -109,8 +109,7 @@
                 const postResponseId = localStorage.getItem('postResponseId');
                 let url = '/api/fetch-response?quiztype=post';
                 let options = {
-                    method: 'GET',
-                    body: JSON.stringify({ responseId: postResponseId })
+                    method: 'GET'
                 };               
 
                 // fetch response_id from Netlify
@@ -124,8 +123,7 @@
                             const preResponseId = localStorage.getItem('preResponseId');
                             let url = '/api/fetch-response?quiztype=pre';
                             let options = {
-                                method: 'GET',
-                                body: JSON.stringify({ responseId: preResponseId })
+                                method: 'GET'
                             };
                             try {
                                 let response = await fetch(url, options);
@@ -140,7 +138,7 @@
                         const data = await response.json();
 
                         // Store the response_id in localStorage
-                        localStorage.setItem('responseId', responseId);
+                        localStorage.setItem('responseId', data.responseId);
                         hideSpinner(); 
 
                         return responseId;
@@ -175,7 +173,8 @@
                         console.log(result.message);
                     } catch (error) {
                         console.error('Error exporting data:', error);
-                        hideSpinner(); 
+                    } finally {
+                        hideSpinner();
                     }
                 }
 
@@ -186,6 +185,7 @@
 
                     } catch (error) {
                         console.error('Error checking response id:', error);
+                    } finally {
                         hideSpinner();
                     }
                 }
