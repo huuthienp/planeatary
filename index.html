@@ -213,14 +213,15 @@
                         const data = await response.json();
 
                         // Check if the data contains the responseId
-                        if (data && data.responseId) {
+                        //if (data && data.responseId) {
                             // Save responseId to localStorage and return it
-                            const responseId = data.responseId;
-                            localStorage.setItem(quizType === 'pre' ? 'preResponseId' : 'postResponseId', responseId);
-                            return responseId;
-                        } else {
-                            throw new Error('No response ID found in the response.');
-                        }
+                            //const responseId = data.responseId;
+                            //localStorage.setItem(quizType === 'pre' ? 'preResponseId' : 'postResponseId', responseId);
+                            //return responseId;
+                        //} else {
+                            //throw new Error('No response ID found in the response.');
+                        //}
+                        return data;
                     } catch (error) {
                         console.error('Error fetching response ID from Netlify:', error);
                         return null; 
