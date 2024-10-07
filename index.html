@@ -105,111 +105,108 @@
                         isLoading = false;
                     }
                 }
-                
-                async function fetchResponseIdFromNetlify() {
-                    try {
-                        showSpinner(); 
-                        
-                        let postResponseId = localStorage.getItem('postResponseId');
-                        let preResponseId = localStorage.getItem('preResponseId');
 
-                        // If neither ID is in localStorage, handle the scenario
-                        if (!postResponseId && !preResponseId) {
-                            alert("No response ID found in local storage. Please start a new quiz.");
-                            hideSpinner();
-                            return null;
-                        }
-
-                        let responseId = null;
-                        let response;
-
-                        // Attempt to fetch the postResponseId if it exists
-                        if (postResponseId) {
-                            response = await fetch('/api/fetch-response?quizType=post', {
-                                method: 'GET',
-                                headers: {
-                                    'Q-RESPONSE-ID': postResponseId,
-                                    'Content-Type': 'application/json'
-                                }
-                            });
-                        }
-
-                        // If the post quiz fetch fails or if postResponseId does not exist, attempt preResponseId
-                        if (!response || !response.ok) {
-                            if (preResponseId) {
-                                response = await fetch('/api/fetch-response?quizType=pre', {
-                                    method: 'GET',
-                                    headers: {
-                                        'Q-RESPONSE-ID': preResponseId,
-                                        'Content-Type': 'application/json'
-                                    }
-                                });
-                            }
-                        }
-
-                        // If both requests fail, handle the error
-                        if (!response || !response.ok) {
-                            throw new Error('Failed to fetch response ID from Netlify');
-                        }
-
-                        // Parse the response and store the responseId
-                        const data = await response.json();
-                        responseId = data.responseId;
-                        localStorage.setItem('responseId', responseId); // Save it to localStorage
-
-                        return responseId; // Return the fetched response ID
-
-                    } catch (error) {
-                        console.error('Error fetching response id:', error);
-                        return null; // Return null to indicate failure
-                    } finally {
-                        hideSpinner(); // Hide the spinner once the fetching process is complete
-                    }
-                }
-                
-                async function fetchResponseIdFromNetlify() {
+                async function checkOrFetchResponseId() {
                     try {
                         showSpinner();
+                        let preResponseId = localStorage.getItem('preResponseId');
+                        let postResponseId = localStorage.getItem('postResponseId');
+                        let responseId = preResponseId || postResponseId;
+                        let quizType = '';
 
-                        let responseId = null;
-                        let response = await fetch('/api/fetch-response?quizType=post', {
-                            method: 'GET',
-                            headers: {
-                                'Q-RESPONSE-ID': localStorage.getItem('postResponseId'), 
-                                'Content-Type': 'application/json'
+                        if (responseId) {
+                            const userChoice = confirm("Looks like there is your recorded response. Would you like to continue with existing responses? Click OK if yes.");
+                            
+                            if (userChoice) {
+                                // User chooses to continue with existing responses
+                                exportDataToNetlify(responseId);
+                                continueButton.addEventListener('click', function() {
+                                    window.location.href = 'qualtrics.html';
+                                });
+                                return; // Exit the function
+                            } else {
+                                // User chooses to start a new quiz
+                                localStorage.removeItem('preResponseId');
+                                localStorage.removeItem('postResponseId');
+                                setupContinueButton();
                             }
-                        });
-                        if (!response.ok) {         
-                            response = await fetch('/api/fetch-response?quizType=pre', {
-                                method: 'GET',
-                                headers: {
-                                    'Q-RESPONSE-ID': localStorage.getItem('preResponseId'), // Include 'preResponseId' from localStorage
-                                    'Content-Type': 'application/json'
+                        } else {
+                            // If no responseId in localStorage, ask the user if they've completed the pre-quiz
+                            const userAns = confirm("Have you done the pre-quiz? Click OK if yes, cancel if no.");
+                            
+                            if (userAns) {
+                                const userAnsTwo = confirm("Have you also done the post-quiz? Click OK if yes cancel if no.");
+                                const userOption = confirm("Would you like to continue with existing response? Click OK if yes.");
+                                
+                                if (userOption) {
+                                    let preOrpost = prompt("If would like to proceed with pre-quiz type pre, otherwise type post");
+                                    let userMem = prompt("Please enter its response ID:");
+                                    quizType = (preOrPost.toLowerCase() === 'pre') ? 'pre' : 'post';
+                                    
+                                    if (userMem) {
+                                        responseId = userMem;
+                                        localStorage.setItem('responseId', responseId);
+                                        exportDataToNetlify(responseId);
+                                        setupContinueButton();
+                                        return; 
+                                    } else {
+                                        alert("Invalid response ID entered.");
+                                    }
                                 }
-                            });
-
-                            if (!response.ok) {
-                                throw new Error('Failed to fetch response ID from Netlify');
                             }
-                        }
-
-                        const data = await response.json();
-                        responseId = data.responseId;
-
-                        localStorage.setItem('responseId', data.responseId);
-
-                        return responseId;
+                            quizType = userAns ? 'pre' : 'post';
+                            responseId = await fetchResponseIdFromNetlify(quizType);
+                            if (responseId) {
+                                localStorage.setItem(quizType === 'pre' ? 'preResponseId' : 'postResponseId', responseId);
+                            }
+                        }   
+                        setupContinueButton();
                     } catch (error) {
-                        console.error('Error fetching response id:', error);
-                        return null;
+                        console.error('Error in checkOrFetchResponseId:', error);
                     } finally {
                         hideSpinner();
                     }
                 }
+                
+                async function fetchResponseIdFromNetlify(quizType) {
+                    try {
 
-                //when the user has a response id and choose to proceed with the previous quiz, we will need to check the response id with the recorded response in Netlify
+                        const endpoint = `/api/fetch-response?quizType=${quizType}`;
+                        const options = {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                // If we have an existing preResponseId or postResponseId, include it
+                                'Q-RESPONSE-ID': localStorage.getItem('preResponseId') || localStorage.getItem('postResponseId') || '',
+                            },
+                        };
 
-                //to export the response id to netlify
+                        // Fetch the responseId from the Netlify endpoint
+                        const response = await fetch(endpoint, options);
+
+                        // Check if the response is successful
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch response ID');
+                        }
+
+                        // Parse the JSON response
+                        const data = await response.json();
+
+                        // Check if the data contains the responseId
+                        if (data && data.responseId) {
+                            // Save responseId to localStorage and return it
+                            const responseId = data.responseId;
+                            localStorage.setItem(quizType === 'pre' ? 'preResponseId' : 'postResponseId', responseId);
+                            return responseId;
+                        } else {
+                            throw new Error('No response ID found in the response.');
+                        }
+                    } catch (error) {
+                        console.error('Error fetching response ID from Netlify:', error);
+                        return null; 
+                    }
+                }
+                
                 async function exportDataToNetlify(data) {
                     try {
                         showSpinner(); 
@@ -235,66 +232,6 @@
                     }
                 }
 
-
-                async function checkOrFetchResponseId() {
-                    try {
-                        showSpinner();
-                        let preResponseId = localStorage.getItem('preResponseId');
-                        let postResponseId = localStorage.getItem('postResponseId');
-                        let responseId = preResponseId || postResponseId
-
-                        if (responseId) {
-                            const userChoice = confirm("Looks like there is your recorded response. Would you like to continue with existing responses? Click OK if yes.");
-                            
-                            if (userChoice) {
-                                // User chooses to continue with existing responses
-                                exportDataToNetlify(responseId);
-                                continueButton.addEventListener('click', function() {
-                                    window.location.href = 'qualtrics.html';
-                                });
-                                return; // Exit the function
-                            } else {
-                                // User chooses to start a new quiz
-                                localStorage.removeItem('preResponseId');
-                                localStorage.removeItem('postResponseId');
-                                setupContinueButton();
-                            }
-                        } else {
-                            // If no responseId in localStorage, ask the user if they've completed the pre-quiz
-                            const userAns = confirm("Have you done the pre-quiz? Click OK if yes.");
-                            
-                            if (userAns) {
-                                const userOption = confirm("Would you like to continue with existing responses? Click OK if yes.");
-                                
-                                if (userOption) {
-                                    let userMem = prompt("Please enter your response ID:");
-                                    
-                                    if (userMem) {
-                                        responseId = userMem;
-                                        localStorage.setItem('responseId', responseId);
-                                        exportDataToNetlify(responseId);
-                                        setupContinueButton();
-                                        return; // Exit the function
-                                    } else {
-                                        alert("Invalid response ID entered.");
-                                    }
-                                }
-                            }
-
-                            // No valid response ID found or entered; attempt to fetch a new one
-                            responseId = await fetchResponseIdFromNetlify();
-                            if (responseId) {
-                                localStorage.setItem('responseId', responseId);
-                            }
-                        }
-                        
-                        setupContinueButton();
-                    } catch (error) {
-                        console.error('Error in checkOrFetchResponseId:', error);
-                    } finally {
-                        hideSpinner();
-                    }
-                }
 
                 function setupContinueButton() {
                     continueButton.addEventListener('click', function() {
