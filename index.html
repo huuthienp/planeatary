@@ -106,27 +106,19 @@
                     }
                 };
 
-                const postResponseId = localStorage.getItem('postResponseId');
-                let url = '/api/fetch-response?quiztype=post';
-                let options = {
-                    method: 'GET'
-                };               
+                const postResponseId = localStorage.getItem('postResponseId');         
 
                 // fetch response_id from Netlify
                 async function fetchResponseIdFromNetlify() {
                     try {
                         showSpinner(); 
 
-                        let response = await fetch(url, options);
+                        let response = await fetch('/api/fetch-response?quiztype=post', { method: 'GET' });
                         
                         if (!response.ok) {
                             const preResponseId = localStorage.getItem('preResponseId');
-                            let url = '/api/fetch-response?quiztype=pre';
-                            let options = {
-                                method: 'GET'
-                            };
                             try {
-                                let response = await fetch(url, options);
+                                let response = await fetch('/api/fetch-response?quiztype=pre', { method: 'GET' });
                             } catch (error) {
                                 console.error('Error fetching response id:', error);
                                 hideSpinner(); 
