@@ -110,9 +110,12 @@
                 async function checkUserResponseId() {
                     try {
                         showSpinner();
-                        const postResponseId = localStorage.getItem('postResponseId');
+                        const postResponseId = await localStorage.getItem('postResponseId');
                         if (!postResponseId) {
-                            const preResponseId = localStorage.getItem('preResponseId');
+                            const preResponseId = await localStorage.getItem('preResponseId');
+                            if (!preResponseId) {
+                                fetchResponseIdFromNetlify();
+                            }
                         }
 
                     } catch (error) {
@@ -122,10 +125,11 @@
                     }
                 }
 
+                
                 async function fetchResponseIdFromNetlify() {
                     try {
                         showSpinner();     
-                        checkUserResponseId()
+                        
                         let response = await fetch('/api/fetch-response?quizType=post', {
                             method: 'GET',
                             headers: {
@@ -154,13 +158,13 @@
 
                         // Store the response_id in localStorage
                         localStorage.setItem('responseId', data.responseId);
-                        hideSpinner(); 
 
                         return responseId;
                     } catch (error) {
                         console.error('Error fetching response id:', error);
-                        hideSpinner(); 
                         return null;
+                    } finally {
+                        hideSpinner();
                     }
                 }
 
