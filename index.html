@@ -120,15 +120,12 @@
                             if (userChoice) {
                                 // User chooses to continue with existing responses
                                 exportDataToNetlify(responseId);
-                                continueButton.addEventListener('click', function() {
-                                    window.location.href = 'qualtrics.html';
-                                });
-                                return; // Exit the function
+                                return; 
                             } else {
                                 // User chooses to start a new quiz
                                 localStorage.removeItem('preResponseId');
                                 localStorage.removeItem('postResponseId');
-                                setupContinueButton();
+                                setupContinueButton('qualtrics.html');
                             }
                         } else {
                             // If no responseId in localStorage, ask the user if they've completed the pre-quiz
@@ -139,28 +136,50 @@
                                 const userOption = confirm("Would you like to continue with existing response? Click OK if yes.");
                                 
                                 if (userOption) {
-                                    let preOrpost = prompt("If would like to proceed with pre-quiz type pre, otherwise type post");
-                                    let userMem = prompt("Please enter its response ID:");
-                                    quizType = (preOrPost.toLowerCase() === 'pre') ? 'pre' : 'post';
                                     
+                                    let preOrpost = prompt("If you would like to proceed with pre-quiz, type 'pre'; otherwise, type 'post'.");
+                                    
+                                    // Validate the input
+                                    if (preOrpost !== 'pre' && preOrpost !== 'post') {
+                                        alert("Invalid input. Please enter 'pre' or 'post'.");
+                                        hideSpinner();
+                                        return; 
+                                    }
+
+                                    let userMem = prompt("Please enter its response ID:");
+
                                     if (userMem) {
                                         responseId = userMem;
-                                        localStorage.setItem('responseId', responseId);
+                                        localStorage.setItem(preOrpost === 'pre' ? 'preResponseId' : 'postResponseId', responseId);
                                         exportDataToNetlify(responseId);
                                         setupContinueButton();
                                         return; 
                                     } else {
                                         alert("Invalid response ID entered.");
+                                        hideSpinner();
+                                        return; 
                                     }
                                 }
                             }
-                            quizType = userAns ? 'pre' : 'post';
-                            responseId = await fetchResponseIdFromNetlify(quizType);
-                            if (responseId) {
-                                localStorage.setItem(quizType === 'pre' ? 'preResponseId' : 'postResponseId', responseId);
+
+
+                            // If no valid response ID found or entered, attempt to fetch both pre and post response IDs
+                            let fetchedPreResponseId = await fetchResponseIdFromNetlify('pre');
+                            let fetchedPostResponseId = await fetchResponseIdFromNetlify('post');
+                            // Store fetched response IDs in localStorage if they exist
+                            if (fetchedPreResponseId) {
+                                localStorage.setItem('preResponseId', fetchedPreResponseId);
+                                setupContinueButton('qualtrics.html');
                             }
+                            if (fetchedPostResponseId) {
+                                localStorage.setItem('postResponseId', fetchedPostResponseId);
+                                setupContinueButton('qualtrics_post.html');
+                            }
+                            responseId = fetchedPreResponseId || fetchedPostResponseId;
+                            setupContinueButton('qualtrics.html');
+                            
                         }   
-                        setupContinueButton();
+                        
                     } catch (error) {
                         console.error('Error in checkOrFetchResponseId:', error);
                     } finally {
@@ -233,9 +252,9 @@
                 }
 
 
-                function setupContinueButton() {
+                function setupContinueButton(path) {
                     continueButton.addEventListener('click', function() {
-                        window.location.href = 'qualtrics.html';
+                        window.location.href = path;
                     });
                 }
                 checkOrFetchResponseId();
