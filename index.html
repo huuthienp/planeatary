@@ -104,15 +104,28 @@
                         overlay.classList.add('hidden');
                         isLoading = false;
                     }
-                };
+                }
+                
+                //function to recieve the result of checking response id
+                async function checkUserResponseId() {
+                    try {
+                        showSpinner();
+                        const postResponseId = localStorage.getItem('postResponseId');
+                        if (!postResponseId) {
+                            const preResponseId = localStorage.getItem('preResponseId');
+                        }
 
-                const postResponseId = localStorage.getItem('postResponseId');         
+                    } catch (error) {
+                        console.error('Error checking response id:', error);
+                    } finally {
+                        hideSpinner();
+                    }
+                }
 
-                // fetch response_id from Netlify
                 async function fetchResponseIdFromNetlify() {
                     try {
-                        showSpinner(); 
-
+                        showSpinner();     
+                        checkUserResponseId()
                         let response = await fetch('/api/fetch-response?quizType=post', {
                             method: 'GET',
                             headers: {
@@ -120,8 +133,7 @@
                                 'Content-Type': 'application/json'
                             }
                         });
-                        if (!response.ok) {
-                            const preResponseId = localStorage.getItem('preResponseId');
+                        if (!response.ok) {         
                             try {
                                 let response = await fetch('/api/fetch-response?quiztype=pre', {
                                     method: 'GET',
@@ -152,8 +164,7 @@
                     }
                 }
 
-                //when the user has a response id and choose to proceed with the previous quiz, 
-                //we will need to check the response id with the recorded response in Netlify
+                //when the user has a response id and choose to proceed with the previous quiz, we will need to check the response id with the recorded response in Netlify
 
                 //to export the response id to netlify
                 async function exportDataToNetlify(data) {
@@ -181,17 +192,6 @@
                     }
                 }
 
-                //function to recieve the result of checking response id
-                async function checkUserResponseId() {
-                    try {
-                        showSpinner();
-
-                    } catch (error) {
-                        console.error('Error checking response id:', error);
-                    } finally {
-                        hideSpinner();
-                    }
-                }
 
                 async function checkOrFetchResponseId() {
                     showSpinner();
