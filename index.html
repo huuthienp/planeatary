@@ -117,7 +117,7 @@
                             let userChoice = confirm("Looks like there is your recorded pre quiz. Would you like to continue with existing responses? Click OK if yes.");
                             
                             if (userChoice) {
-                                setupContinueButton('qualtrics.html');
+                                setupContinueButton('manifesto.html');
                             } else {
                                 // User chooses to start a new quiz
                                 localStorage.removeItem('preResponseId');
@@ -129,7 +129,7 @@
                             let userChoice = confirm("Looks like there is your recorded post quiz. Would you like to continue with existing responses? Click OK if yes.");
                             
                             if (userChoice) {
-                                setupContinueButton('qualtrics_post.html');
+                                setupContinueButton('congrat_page.html');
                             } else {
                                 localStorage.removeItem('postResponseId');
                                 
@@ -170,7 +170,6 @@
                                     }
                                 }
                             }
-                            // responseId = fetchedPreResponseId || fetchedPostResponseId;
                             setupContinueButton('qualtrics.html');
                             
                         }   
