@@ -90,57 +90,31 @@
                 </div>
         </section>
         <script>
+
+            const modal = document.querySelector(".modal");
+            const overlay = document.querySelector(".overlay");
+
             function Modal(source) {
-                const modal = document.querySelector(".modal");
-                const overlay = document.querySelector(".overlay");
-                const modalContent = document.querySelector('.modal-content');
+                const modalContent = document.querySelector(".modal-content");
 
-                // Clear any existing content
-                modalContent.innerHTML = '';
-
-                // Create an object element to display the PDF
-                const pdfObject = document.createElement('object');
-                pdfObject.classList.add('visual-info');
-                pdfObject.data = source;
-                pdfObject.type = "application/pdf";
-                pdfObject.width = '100%';
-                pdfObject.height = '100%';
-                pdfObject.style.border = 'none';
-
-                // Optional: Provide a fallback message
-                const fallbackMessage = document.createElement('p');
-                fallbackMessage.innerHTML = 'Your browser does not support PDFs.';
-                pdfObject.appendChild(fallbackMessage);
-
-                // Append the object to the modal content
-                modalContent.appendChild(pdfObject);
-
-                // Show the modal and overlay
                 modal.classList.remove('hidden');
                 overlay.classList.remove('hidden');
-            }
+            };
 
             function Close() {
-                var modal = document.querySelector(".modal");
-                var overlay = document.querySelector(".overlay");
                 modal.classList.add("hidden");
                 overlay.classList.add('hidden');
-            }
+            };
 
             function openNav() {
-            document.getElementById("mySidenav").style.width = "40%";
-            document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
-            }
+                document.getElementById("mySidenav").style.width = "40%";
+                document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+            };
 
             function closeNav() {
                 document.getElementById("mySidenav").style.width = "0";
                 document.body.style.backgroundColor = "white";
-            }
-
-
-            const modal = document.querySelector(".modal");
-            const overlay = document.querySelector(".overlay");
-            const spinner = document.querySelector(".spinner");
+            };
 
             const QContainer = document.querySelector(".q-task");
 
@@ -180,21 +154,50 @@
                             isLoading = false;
                         }, minDisplayTime - elapsedTime);
                     } else {
-                        console.log("Hiding spinner...");
+                        //console.log("Hiding spinner...");
                         spinner.classList.add('hidden');
                         overlay.classList.add('hidden');
                         isLoading = false;
                     }
                 };
 
-                
-                // Check if scores are stored in localStorage
-                const storedScore = localStorage.getItem("user");
-                showSpinner();
 
-                if (storedScore) {
 
-                    scores = JSON.parse(storedScore);
+                async function fetchResponseIdFromNetlify(quizType='pre', responseId) {
+                    try {
+                        const endpoint = `/api/fetch-response?quizType=${quizType}`;
+                        const options = {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Q-RESPONSE-ID': responseId,
+                            },
+                        };
+
+                        // Fetch the responseId from the Netlify endpoint
+                        const response = await fetch(endpoint, options);
+
+                        // Check if the response is successful
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch response ID');
+                        }
+
+                        // Parse the JSON response
+                        const data = await response.json();
+
+                        return data;
+                        
+                    } catch (error) {
+                        console.error('Error fetching response ID from Netlify:', error);
+                        return null; 
+                    }
+                }
+
+                let surveyResponses = localStorage.getItem('preResponseId');
+
+                if (surveyResponses) {
+                    
+                    scores = JSON.parse(surveyResponses.responses);
                     scores.forEach((score, i) => {
                         score.tasks.forEach((task, j) => {
                             if (task.choice === "selected") {
@@ -207,10 +210,10 @@
                     hideSpinner();    
                 } else {            
                     try {
-                        const response = await fetch('before_user.json');
+                        const response = await fetchTasks();
                         const data = await response.json();
-                        scores = data.postscore || data.prescore;
-                        localStorage.setItem("user", JSON.stringify(scores));
+                        scores = data.result;
+                        localStorage.setItem("preResponseId", JSON.stringify(scores));
                         updateStartButton();
                         renderTasks(score => score.score <= 3);
                     } catch (error) {
@@ -222,7 +225,69 @@
                         hideSpinner();
                     }
                 };
-            
+
+                async function fetchTasks() {
+                    try {
+                        showSpinner();
+                        const response = await fetch('/api/manage-tasks', {
+                            method: 'GET',
+                            headers: {
+                                'Q-RESPONSE-ID': surveyResponses.result.responseId, 
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch tasks');
+                        }
+                        const data = await response.json();
+                        if (!surveyResponses) {
+                            handleFetchedData(surveyResponses, data);
+                        };
+                        
+                    } catch (error) {
+                        hideSpinner();
+                        console.error('Error fetching tasks:', error);
+                        return null;
+                    }
+                }
+                
+                async function updateTasks(chosenTasks, doneTasks) {
+                    try {
+                        let surveyResponses = localStorage.getItem('preResponseId');
+                        if (!surveyResponses) {
+                            console.error('preResponseId is not available in localStorage.');
+                            return;
+                        }
+
+                        const endpoint = '/api/manage-tasks';
+                        const body = {
+                            id: surveyResponses.result.responseId,
+                            chosen: chosenTasks,
+                            done: doneTasks,
+                        };
+
+                        const options = {
+
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Q-RESPONSE-ID': surveyResponses.result.responseId,
+                            },
+                            body: JSON.stringify(body),
+                        };
+
+                        const response = await fetch(endpoint, options);
+                        if (!response.ok) {
+                            throw new Error(`Failed to update tasks: ${response.status} ${response.statusText}`);
+                        }
+                        console.log('Tasks updated successfully!');
+                    } catch (error) {
+                        console.error('Error updating tasks:', error);
+                    }
+                }
+
+                
 
             // Function to update start button state
             function updateStartButton() {
@@ -275,7 +340,6 @@
                                 } else {
                                     q_con.style.boxShadow = '0px 6px 8px 0px rgba(255, 0, 0, 0.5)';
                                 };
-                                //q_con.style.transition = "all 1s";
                                 q_con.appendChild(question);
                                 question.appendChild(q_num);
                                 question.appendChild(q_info);

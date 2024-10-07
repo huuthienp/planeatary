@@ -16,7 +16,8 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="qualtrics.html"><b>Quiz</b></a></li>
             <li><a href="manifesto.html">Challenge</a></li>
-            <li><!-- <a href="#">About us</a> --></li>
+            <li><a href="result_page.html">Dashboard</a></li>
+            <!-- <li><a href="#">About us</a></li> -->
         </ul>
     </div>
     <div class="container">
@@ -29,6 +30,7 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="qualtrics.html"><b>Quiz</b></a></li>
                     <li><a href="manifesto.html">Challenge</a></li>
+                    <li><a href="result_page.html">Dashboard</a></li>
                     <!-- <li>About us</li> -->
                 </ul>
             </nav>
@@ -133,52 +135,185 @@
                         isLoading = false;
                     }, minDisplayTime - elapsedTime);
                 } else {
-                    console.log("Hiding spinner...");
+                    //console.log("Hiding spinner...");
                     spinner.classList.add('hidden');
                     overlay.classList.add('hidden');
                     isLoading = false;
                 }
             };
             
-            let scores = [];
-            let task_counts = 0;
-            const Container = document.querySelector(".q");
-            const question_contain = document.querySelector(".questions");
+            let preResponseId = localStorage.getItem('preResponseId');
+            let postResponseId = localStorage.getItem('postResponseId');
 
-            // Check if scores are stored in localStorage
-            const storedScore = localStorage.getItem("user");
-            if (storedScore) {
-                scores = JSON.parse(storedScore);
-                scores.forEach((score, i) => {
-                        score.tasks.forEach((task, j) => {
-                            if (task.choice === "selected") {
-                                task_counts += 1;
-                            }
-                    });
-                });
-            } else {
-                // Fetch score from 'before_user.json' and store them in localStorage
-                fetch('before_user.json')
-                    .then(response => response.json())
-                    .then(data => {
-                        scores = data.postscore || data.prescore;
-                        localStorage.setItem("user", JSON.stringify(scores));
-                    })
-                    .catch(error => console.error("Error fetching JSON data:", error));
+            // Sample data: Replace these with your actual data
+            const preQuizData = [
+                { questionNumber: 1, score: 1 },
+                { questionNumber: 2, score: 5 },
+                { questionNumber: 3, score: 3 }
+                // Add more questions as needed
+            ];
+
+            const postQuizData = [
+                { questionNumber: 1, score: 4 },
+                { questionNumber: 2, score: 5 },
+                { questionNumber: 3, score: 4 }
+                // Add more questions as needed
+            ];
+
+            const comparisonContainer = document.getElementById('improved_score');
+
+            async function fetchTasks() {
+                    try {
+                        const response = await fetch('updated_tasks_final.json');
+                        if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        const data = await response.json();
+                        console.log(data);
+                        return data;
+                        
+                    } catch (error) {
+                        console.error('There has been a problem with your fetch operation:', error);
+                    }
+                }
+
+
+            async function handleFetchedData(responseData) {
+                const taskData = JSON.stringify(fetchTasks());
+                    if (responseData.result && taskData) {
+                        const {values} = responseData.result;
+
+                        if (responseData.result.responseId == taskData.id) {
+                            const surveyResponses = {
+                            id: values.responseData.result.responseId,
+                            startDate: values.startDate,
+                            endDate: values.endDate,
+                            responses: {
+                                    "QID1":{
+                                        "score": values.QID3
+                                    },
+                                    "QID2":{
+                                        "score": values.QID4
+                                    },
+                                    "QID3":{
+                                        "score": values.QID5
+                                    }, 
+                                    "QID4":{
+                                        "score": values.QID6
+                                    },
+                                    "QID5":{
+                                        "score": values.QID7
+                                    },
+                                    "QID6":{
+                                        "score": values.QID8
+                                    },
+                                    "QID7":{
+                                        "score": values.QID9
+                                    },
+                                    "QID8":{
+                                        "score": values.QID10
+                                    },
+                                    "QID9":{
+                                        "score": values.QID11
+                                    },
+                                    "QID10":{
+                                        "score": values.QID12
+                                    },
+                                    "QID11":{
+                                        "score": values.QID13
+                                    },
+                                    "QID12":{
+                                        "score": values.QID14
+                                        
+                                    }
+                                }
+                            };
+                            Object.keys(surveyResponses.responses).forEach((qid, i) => {
+                                let taskKey = `${i + 1}`;
+                                if (taskData[taskKey]) {
+                                    surveyResponses.responses[qid].tasks = taskData[taskKey].tasks;
+                                }
+                            });
+                        
+                        };
+                        localStorage.setItem('preResponseId', surveyResponses);
+                        console.log('Processed survey data:', surveyResponses);
+                        
+                    } else {
+                        console.error('Invalid data structure:', responseData);
+                    }
+                }
+
+            // Function to calculate the total score
+            function calculateTotalScore(quizData) {
+                return quizData.reduce((total, question) => total + question.score, 0);
             }
 
-            document.getElementById('preQ').addEventListener('click', function() {
+            function compareScores() {
+                let preQuizTotal = calculateTotalScore(preQuizData);
+                let postQuizTotal = calculateTotalScore(postQuizData);
+                
+                let improvement = postQuizTotal - preQuizTotal;
+                return improvement;
+            }
 
+            function displayQuestions(questionsData) {
+                const questionsContainer = document.querySelector('.questions');
+
+                // Clear the container first
+                questionsContainer.innerHTML = '';
+
+                // Iterate over each question in the questionsData array
+                questionsData.forEach((question) => {
+                    // Create a container for each question
+                    const questionDiv = document.createElement('div');
+
+                    // Apply class based on score to change color
+                    if (question.score <= 2) {
+                        questionDiv.classList.add('question', 'red');
+                    } else if (question.score >= 4) {
+                        questionDiv.classList.add('question', 'green');
+                    } else {
+                        questionDiv.classList.add('question');
+                    }
+
+                    // Create and set the question title
+                    const questionTitle = document.createElement('h3');
+                    questionTitle.textContent = `Question ${question.questionNumber} - ${question.score} points`;
+                    questionDiv.appendChild(questionTitle);
+
+                    // Create and set the question content
+                    const questionContent = document.createElement('p');
+                    questionContent.textContent = question.content;
+                    questionDiv.appendChild(questionContent);
+
+                    // Create and set the answer
+                    const questionAnswer = document.createElement('p');
+                    questionAnswer.innerHTML = `<strong>Answer:</strong> ${question.answer}`;
+                    questionDiv.appendChild(questionAnswer);
+
+                    // Append the question container to the main container
+                    questionsContainer.appendChild(questionDiv);
+                });
+            }
+
+
+            document.getElementById('preQ').addEventListener('click', function() {
+                handleFetchedData(preResponseId, taskData);
+                displayQuestions(preResponseId);
             });
 
             document.getElementById('postQ').addEventListener('click', function() {
-
+                handleFetchedData(postResponseId, taskData);
+                displayQuestions(postResponseId)
             });
 
             // Attach single click listener for the start button navigation
             selectButton.addEventListener('click', function(event) {
                 window.location.href = "manifesto.html";
             });
+            calculateTotalScore(quizData);
+            compareScores();
         });
     </script>
 </body>
