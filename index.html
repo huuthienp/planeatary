@@ -165,10 +165,11 @@
 
                             // If no valid response ID found or entered, attempt to fetch both pre and post response IDs
                             let fetchedPreResponseId = await fetchResponseIdFromNetlify('pre');
+    
                             //let fetchedPostResponseId = await fetchResponseIdFromNetlify('post');
                             // Store fetched response IDs in localStorage if they exist
                             if (fetchedPreResponseId) {
-                                localStorage.setItem('preResponseId', fetchedPreResponseId);
+                                localStorage.setItem('preResponseId', JSON.stringify(fetchedPreResponseId));
                                 setupContinueButton('qualtrics.html');
                             }
                             // if (fetchedPostResponseId) {
@@ -197,7 +198,7 @@
                                 'Content-Type': 'application/json',
                                 // If we have an existing preResponseId or postResponseId, include it
                                 //'Q-RESPONSE-ID': localStorage.getItem('preResponseId') || localStorage.getItem('postResponseId') || 'preResponseId',
-                                'Q-RESPONSE-ID': 'R_4uX8Gcf7lYMn252'
+                                'Q-RESPONSE-ID': 'R_42X3d6pIpOg5YuU',
                             },
                         };
 
@@ -213,14 +214,14 @@
                         const data = await response.json();
 
                         // Check if the data contains the responseId
-                        //if (data && data.responseId) {
+                        //if (data) {
                             // Save responseId to localStorage and return it
                             //const responseId = data.responseId;
-                            //localStorage.setItem(quizType === 'pre' ? 'preResponseId' : 'postResponseId', responseId);
+                            //localStorage.setItem(quizType === 'pre' ? 'preResponseId' : 'postResponseId', data.);
                             //return responseId;
-                        //} else {
-                            //throw new Error('No response ID found in the response.');
-                        //}
+                        // } else {
+                        //     throw new Error('No response ID found in the response.');
+                        // }
                         return data;
                     } catch (error) {
                         console.error('Error fetching response ID from Netlify:', error);
