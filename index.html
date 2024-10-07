@@ -109,7 +109,7 @@
                 const postResponseId = localStorage.getItem('postResponseId');
                 let url = '/api/fetch-response?quiztype=post';
                 let options = {
-                    method: 'POST',
+                    method: 'GET',
                     body: JSON.stringify({ responseId: postResponseId })
                 };               
 
@@ -124,7 +124,7 @@
                             const preResponseId = localStorage.getItem('preResponseId');
                             let url = '/api/fetch-response?quiztype=pre';
                             let options = {
-                                method: 'POST',
+                                method: 'GET',
                                 body: JSON.stringify({ responseId: preResponseId })
                             };
                             try {
