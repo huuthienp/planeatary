@@ -196,7 +196,7 @@
                             headers: {
                                 'Content-Type': 'application/json',
                                 // If we have an existing preResponseId or postResponseId, include it
-                                'Q-RESPONSE-ID': localStorage.getItem('preResponseId') || localStorage.getItem('postResponseId') || '',
+                                'Q-RESPONSE-ID': localStorage.getItem('preResponseId') || localStorage.getItem('postResponseId') || 'preResponseId'
                             },
                         };
 
