@@ -42,7 +42,7 @@
             <div class="content">
                 <iframe class="quiz" src="https://uow.au1.qualtrics.com/jfe/form/SV_5njEnh46h0tSueG" title="Planeatary quiz"></iframe>
             <div class="btn-next">
-                <a href="result_page.html"><button class="next">Next  &#8594;</button></a>
+                <button class="next">Next  &#8594;</button>
             </div>
         </div>
     <script>
@@ -57,6 +57,27 @@
             document.getElementById("mySidenav").style.width = "0";
             document.body.style.backgroundColor = "white";
         };
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const nextButton = document.querySelector('.next');
+
+            // Check if preResult exists in localStorage
+            let preResult = JSON.parse(localStorage.getItem('postResult'));
+
+            if (preResult) {
+                // If preResult exists, enable the button and navigate to the results page
+                nextButton.style.backgroundColor = ''; // Reset background color
+                nextButton.style.cursor = 'pointer';   // Reset cursor
+                nextButton.addEventListener("click", function() {
+                    window.location.href = "result_page.html";
+                });
+            } else {
+                // Disable the button if preResult does not exist
+                nextButton.style.backgroundColor = 'grey';
+                nextButton.style.cursor = 'not-allowed';
+                nextButton.disabled = true;
+            }
+        });
 
     </script> 
     <script src="/listen-to-qualtrics.js"></script>         
