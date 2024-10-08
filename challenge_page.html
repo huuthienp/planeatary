@@ -201,8 +201,9 @@
                         // Toggle task status between "Done" and "Completed"
                         if (task.status === "Done") {
                             task.status = "Completed";
-                        } else if (task.status === "Completed") {
-                            task.status = "Done";
+                            taskCard.classList.remove("card_incompleted");
+                            taskCard.classList.add("card_completed");
+                            taskName.style.textDecoration = "line-through";
                         }
 
                         // Update task in localStorage
