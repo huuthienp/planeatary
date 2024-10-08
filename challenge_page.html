@@ -79,6 +79,7 @@
         let scores = [];
         let spinnerStartTime;
         const minDisplayTime = 2000;
+        let preResponseId = localStorage.getItem('preResponseId');
         
         const cardContainer = document.querySelector(".card");
         // Function to show the spinner
@@ -117,6 +118,7 @@
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Q-RESPONSE-ID': preResponseId,
                     }
                 });
                 const data = await response.json();
@@ -136,6 +138,7 @@
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Q-RESPONSE-ID': preResponseId,
                     },
                     body: JSON.stringify(task),
                 });
@@ -319,6 +322,7 @@
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Q-RESPONSE-ID': preResponseId,
             },
             body: JSON.stringify(task),
         })
