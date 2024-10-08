@@ -231,10 +231,10 @@
 
 
             function compareScores() {
-                let preQuizTotal = calculateTotalScore(preResult.totalScore);
+                let preQuizTotal = preResult.totalScore;
                 if (postResult) {
                     const improvement = document.getElementById('improvement');
-                    let postQuizTotal = calculateTotalScore(postResult.totalScore);
+                    let postQuizTotal = postResult.totalScore;
                     improvement.innerHTML = postQuizTotal - preQuizTotal;
                 }
                 else {
