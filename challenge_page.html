@@ -132,15 +132,6 @@
 
             // Check if scores are stored in localStorage
             
-            const storedScore = localStorage.getItem("user");
-            if (storedScore) {
-                // Parse and use scores from localStorage
-                scores = JSON.parse(storedScore);
-                displayTasksFromScores(scores);
-                hideSpinner();
-            } else {
-                
-            }
 
             async function updateTasks(chosenTasks, doneTasks) {
                     try {
@@ -176,76 +167,76 @@
                         console.error('Error updating tasks:', error);
                     }
                 }
+            
+            const cardContainer = document.querySelector(".card");
 
+            const tasks = JSON.parse(localStorage.getItem('tasks'));
 
-            // Function to display tasks
-            function displayTasksFromScores(scores) {
-                cardContainer.innerHTML = ''; // Clear any existing content
-                scores.forEach((scoreObj, i) => {
-                    const tasks = scoreObj.tasks;
-                    tasks.forEach((task, j) => {
+            // Check if tasks exist in localStorage
+            if (tasks) {
+                displaySelectedTasks(tasks);  // Call function to display the selected tasks
+            } else {
+                cardContainer.innerHTML = "<p>No tasks found.</p>";
+            }
+
+            // Function to display only selected tasks and allow status update
+            function displaySelectedTasks(tasks) {
+                cardContainer.innerHTML = '';  // Clear any existing content
+
+                // Iterate over each question/task group
+                Object.keys(tasks).forEach(questionKey => {
+                    const taskGroup = tasks[questionKey].tasks;
+
+                    // Filter tasks that are selected
+                    taskGroup.forEach(task => {
                         if (task.choice === 'selected') {
+                            // Create and append a card for each selected task
                             const taskCard = document.createElement("div");
                             taskCard.classList.add(task.status === "Completed" ? "card_completed" : "card_incompleted");
 
                             const taskName = document.createElement("span");
-                            taskName.id = `task${i}_${j}`;
-                            taskName.innerHTML = task.taskName;
+                            taskName.textContent = task.taskName;
 
-                            const info = document.createElement("img");
-                            info.src = "./images/info.png";
-                            info.style.width = "5%";
-                            info.alt = "Info Icon";
-                            info.addEventListener('click', function(event) {
-                                event.stopPropagation();
-                                event.preventDefault();
-                                Modal();
-                            });
+                            const taskDescription = document.createElement("p");
+                            taskDescription.textContent = task.taskDescription;
 
                             const completion = document.createElement("span");
                             completion.classList.add("completion");
-                            completion.innerHTML = task.status;
-
-                            // Event listener to toggle task status
-                            taskCard.addEventListener('click', function() {
-                                toggleTaskStatus(i, j);
-
-                            });
+                            completion.textContent = task.status;
 
                             taskCard.appendChild(taskName);
-                            taskCard.appendChild(info);
+                            taskCard.appendChild(taskDescription);
                             taskCard.appendChild(completion);
                             cardContainer.appendChild(taskCard);
 
-                            // Check the updated task status
+                            // Add strikethrough effect to completed tasks
                             if (task.status === "Completed") {
-                                // Add strikethrough effect to the task name
                                 taskName.style.textDecoration = "line-through";
-                            } else {
-
-                                // Remove strikethrough effect from the task name
-                                taskName.style.textDecoration = "none";
                             }
 
+                            // Add event listener to task card to update status
+                            taskCard.addEventListener('click', function() {
+                                // Toggle task status between "Done" and "Completed"
+                                if (task.status === "Done") {
+                                    task.status = "Completed";
+                                } else if (task.status === "Completed") {
+                                    task.status = "Done";
+                                }
+
+                                // Update task in localStorage
+                                localStorage.setItem('tasks', JSON.stringify(tasks));
+
+                                // Re-render tasks to reflect the updated status
+                                displaySelectedTasks(tasks);
+
+                                // Update the state of the Next button based on the new status
+                                updateNextButton();
+                            });
                         }
                     });
                 });
+
                 updateNextButton(); 
-            }
-
-            function toggleTaskStatus(scoreIndex, taskIndex) {
-                const tasks = scores[scoreIndex].tasks;
-
-                // Allow changing the status only from "Done" to "Completed"
-                if (tasks[taskIndex].status === "Done") {
-                    tasks[taskIndex].status = "Completed"; 
-                }
-
-                // Update stored scores in localStorage
-                localStorage.setItem("user", JSON.stringify(scores));
-
-                // Re-render the tasks
-                displayTasksFromScores(scores);
             }
 
             // Function to update the Next button's state
@@ -281,6 +272,7 @@
             }
 
         });
+
 
         const modal = document.querySelector(".modal");
         const overlay = document.querySelector(".overlay");
