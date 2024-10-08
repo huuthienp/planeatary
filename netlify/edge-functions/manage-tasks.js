@@ -49,19 +49,22 @@ export default async (req) => {
     };
 
     if (methodUpper === 'PUT') {
-      const parsedBody = await req.json(); // error handled below
+      const parsed = await req.json(); // error handled below
 
-      const { taskData } = parsedBody;
-      
-      if (!taskData) {
-        const message = 'taskData is empty/missing in body of request.';
-        console.error(message, parsedBody);
+      const expected = ['id', 'chosen', 'done'];
+
+      const missing = expected.filter(prop => !Object.hasOwn(parsed, prop));
+
+      if (missing.length > 0) {
+        const message = `Body of request is missing: ${missing}`;
+        console.error(message, parsed);
         return new CustomResponse(message, 400);
-      }
 
-      options.headers['Content-Type'] = 'application/json';
-      options.params = {nonDestructive: 'true'};
-      options.data = taskData;
+      } else {
+        options.headers['Content-Type'] = 'application/json';
+        options.params = {nonDestructive: 'true'};
+        options.data = parsed;
+      }
     }
 
     // Make API request to Qualtrics
