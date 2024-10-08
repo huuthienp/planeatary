@@ -85,6 +85,7 @@
                             <button class="close" onclick="Close();">x</button>
                         </div>
                         <div class="modal-content">
+                            <img id="inform"/>
                         </div>
                     </div>
                 </div>
@@ -96,7 +97,8 @@
 
             function Modal(source) {
                 const modalContent = document.querySelector(".modal-content");
-
+                const image = document.getElementById("inform");
+                image.src = source;
                 modal.classList.remove('hidden');
                 overlay.classList.remove('hidden');
             };
@@ -161,43 +163,48 @@
                     }
                 };
 
+                let preResult = JSON.parse(localStorage.getItem('preResult')); // a JS Object
 
+                let preTotalScore = preResult.totalScore; // an integer
 
-                async function fetchResponseIdFromNetlify(quizType='pre', responseId) {
-                    try {
-                        const endpoint = `/api/fetch-response?quizType=${quizType}`;
-                        const options = {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Q-RESPONSE-ID': responseId,
-                            },
-                        };
+                let prePointArray = preResult.pointArray // an Array of 12 integers (sorted from question 1 to 12)
 
-                        // Fetch the responseId from the Netlify endpoint
-                        const response = await fetch(endpoint, options);
+                // async function fetchResponseIdFromNetlify(quizType='pre', responseId) {
+                //     try {
+                //         const endpoint = `/api/fetch-response?quizType=${quizType}`;
+                //         const options = {
+                //             method: 'GET',
+                //             headers: {
+                //                 'Content-Type': 'application/json',
+                //                 'Q-RESPONSE-ID': responseId,
+                //             },
+                //         };
 
-                        // Check if the response is successful
-                        if (!response.ok) {
-                            throw new Error('Failed to fetch response ID');
-                        }
+                //         // Fetch the responseId from the Netlify endpoint
+                //         const response = await fetch(endpoint, options);
 
-                        // Parse the JSON response
-                        const data = await response.json();
+                //         // Check if the response is successful
+                //         if (!response.ok) {
+                //             throw new Error('Failed to fetch response ID');
+                //         }
 
-                        return data;
+                //         // Parse the JSON response
+                //         const data = await response.json();
+
+                //         return data;
                         
-                    } catch (error) {
-                        console.error('Error fetching response ID from Netlify:', error);
-                        return null; 
-                    }
-                }
+                //     } catch (error) {
+                //         console.error('Error fetching response ID from Netlify:', error);
+                //         return null; 
+                //     }
+                // }
 
-                let surveyResponses = localStorage.getItem('preResponseId');
-
-                if (surveyResponses) {
-                    
-                    scores = JSON.parse(surveyResponses.responses);
+                if (preResult) {
+                    const response = await fetchTasks();
+                    const data = await response.json();
+                    const Task = JSON.stringify(data);
+                    localStorage.setItem('tasks', Task);
+                    scores = preResult.pointArray;
                     scores.forEach((score, i) => {
                         score.tasks.forEach((task, j) => {
                             if (task.choice === "selected") {
@@ -209,21 +216,7 @@
                     });  
                     hideSpinner();    
                 } else {            
-                    try {
-                        const response = await fetchTasks();
-                        const data = await response.json();
-                        scores = data.result;
-                        localStorage.setItem("preResponseId", JSON.stringify(scores));
-                        updateStartButton();
-                        renderTasks(score => score.score <= 3);
-                    } catch (error) {
-                        console.error("Error fetching JSON data:", error);
-                        const errorMessage = document.createElement('p');
-                        errorMessage.textContent = "Failed to load tasks. Please try again later.";
-                        document.body.appendChild(errorMessage);
-                    } finally {
-                        hideSpinner();
-                    }
+                    document.innerHTML = 'Looks like we are experiencing in displaying tasks. Please tey again later.';
                 };
 
                 async function fetchTasks() {
@@ -232,7 +225,7 @@
                         const response = await fetch('/api/manage-tasks', {
                             method: 'GET',
                             headers: {
-                                'Q-RESPONSE-ID': surveyResponses.result.responseId, 
+                                'Q-RESPONSE-ID': preResult.result.responseId, 
                                 'Content-Type': 'application/json'
                             }
                         });
@@ -241,8 +234,8 @@
                             throw new Error('Failed to fetch tasks');
                         }
                         const data = await response.json();
-                        if (!surveyResponses) {
-                            handleFetchedData(surveyResponses, data);
+                        if (!preResult) {
+                            handleFetchedData(preResult, data);
                         };
                         
                     } catch (error) {
@@ -252,41 +245,6 @@
                     }
                 }
                 
-                async function updateTasks(chosenTasks, doneTasks) {
-                    try {
-                        let surveyResponses = localStorage.getItem('preResponseId');
-                        if (!surveyResponses) {
-                            console.error('preResponseId is not available in localStorage.');
-                            return;
-                        }
-
-                        const endpoint = '/api/manage-tasks';
-                        const body = {
-                            id: surveyResponses.result.responseId,
-                            chosen: chosenTasks,
-                            done: doneTasks,
-                        };
-
-                        const options = {
-
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Q-RESPONSE-ID': surveyResponses.result.responseId,
-                            },
-                            body: JSON.stringify(body),
-                        };
-
-                        const response = await fetch(endpoint, options);
-                        if (!response.ok) {
-                            throw new Error(`Failed to update tasks: ${response.status} ${response.statusText}`);
-                        }
-                        console.log('Tasks updated successfully!');
-                    } catch (error) {
-                        console.error('Error updating tasks:', error);
-                    }
-                }
-
                 
 
             // Function to update start button state
@@ -345,7 +303,7 @@
                                 question.appendChild(q_info);
 
                                 q_info.addEventListener('click', function() {
-                                    Modal(`./images/Question ${i+1}.pdf`);
+                                    Modal(`./images/pop${i+1}.jpg`);
                                 });
 
                                 score.tasks.forEach((task, j) => {

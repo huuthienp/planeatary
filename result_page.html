@@ -253,7 +253,7 @@
                     return;
                 }
                 if (preResult) {
-                    document.getElementById('curr_score').textContent = `Total Score: ${preResult.totalScore}`;
+                    document.getElementById('curr_score').textContent = preResult.totalScore;
                 }
                 // Iterate over each question in the pointArray
                 questionsData.pointArray.forEach((score, index) => {
@@ -285,7 +285,7 @@
                     displayQuestions(postResult);
                 });
             } else {
-                document.getElementById('postQ').style.color = 'grey';
+                document.getElementById('postQ').style.backgroundColor = 'grey';
                 document.getElementById('postQ').disabled = true; 
                 displayQuestions(preResult);
             };
