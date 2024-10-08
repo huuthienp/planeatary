@@ -234,7 +234,7 @@
                     Object.keys(tasks).forEach((questionKey, i) => {
                         const taskGroup = tasks[questionKey].tasks;
                         const score = scores[i]; 
-                        if (condition) {
+                        if (condition(score)) {
                             // Create a container for the question
                             const questionDiv = document.createElement('div');
                             questionDiv.classList.add('question-block');
