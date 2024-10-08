@@ -54,7 +54,8 @@
                 <div class="overlay hidden"></div>
             </div>
         </div>
-        <script>
+        <script type="module">
+        import { reformatQualtricsData, saveLocalStorage } from './data-functions.mjs';
             const greetingDiv = document.getElementById('greeting');
             const continueButton = document.getElementById('continueButton');
             const overlay = document.querySelector(".overlay");
@@ -158,7 +159,8 @@
                                     if (userMem) {
                                         let responseId = userMem;
                                         let fetchedResponseId = await fetchResponseIdFromNetlify(preOrpost, responseId);
-                                        localStorage.setItem(`${preOrpost}ResponseId`, JSON.stringify(fetchedResponseId));
+                                        // localStorage.setItem(`${preOrpost}ResponseId`, JSON.stringify(fetchedResponseId));
+                                        saveLocalStorage(fetchedResponseId, 'response'); 
                                         setupContinueButton(preOrpost === 'pre' ?'result_page.html':'manifesto_page.html');
                                         return; 
                                     } else {
@@ -203,7 +205,11 @@
                         // Parse the JSON response
                         const data = await response.json();
 
-                        return data;
+                        data.quizType = quizType;
+
+                        console.log('Successful fetch.', '\n', data);
+
+                        return reformatQualtricsData(data, 'response');
                     } catch (error) {
                         console.error('Error fetching response ID from Netlify:', error);
                         return null; 
