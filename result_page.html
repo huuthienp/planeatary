@@ -243,47 +243,39 @@
 
             function displayQuestions(questionsData) {
                 const questionsContainer = document.querySelector('.questions');
+                questionsContainer.innerHTML = ''; // Clear the container first
+                comparison.innerHTML = ''; // Clear comparison
 
-                // Clear the container first
-                questionsContainer.innerHTML = '';
-                comparison.innerHTML = '';
+                // Handle missing pointArray or invalid data
+                if (!questionsData.pointArray || !Array.isArray(questionsData.pointArray)) {
+                    document.getElementById('curr_score').textContent = 'No score available.';
+                    questionsContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us to fix it.';
+                    return;
+                }
 
-                // Iterate over each question in the questionsData array
-                questionsData.forEach((question) => {
-                    // Create a container for each question
+                // Iterate over each question in the pointArray
+                questionsData.pointArray.forEach((score, index) => {
                     const questionDiv = document.createElement('div');
+                    questionDiv.classList.add('question');
 
-                    // Apply class based on score to change color
-                    if (question.score <= 2) {
-                        questionDiv.classList.add('question', 'red');
-                    } else if (question.score >= 4) {
-                        questionDiv.classList.add('question', 'green');
-                    } else {
-                        questionDiv.classList.add('question');
+                    // Apply styling based on score
+                    if (score <= 2) {
+                        questionDiv.classList.add('red');
+                    } else if (score >= 4) {
+                        questionDiv.classList.add('green');
                     }
 
-                    // Create and set the question title
+                    // Create and append question title
                     const questionTitle = document.createElement('h3');
-                    questionTitle.textContent = `Question ${question.questionNumber} - ${question.score} points`;
+                    questionTitle.textContent = `Question ${index + 1} - ${score} points`;
                     questionDiv.appendChild(questionTitle);
 
-                    // Create and set the question content
-                    const questionContent = document.createElement('p');
-                    questionContent.textContent = question.content;
-                    questionDiv.appendChild(questionContent);
-
-                    // Create and set the answer
-                    const questionAnswer = document.createElement('p');
-                    questionAnswer.innerHTML = `<strong>Answer:</strong> ${question.answer}`;
-                    questionDiv.appendChild(questionAnswer);
-
-                    // Append the question container to the main container
                     questionsContainer.appendChild(questionDiv);
                 });
-                comparison.innerHTML = compareScores();
+
+                comparison.innerHTML = compareScores(); // Show comparison
             }
             
-
 
             document.getElementById('preQ').addEventListener('click', function() {
                 //handleFetchedData(preResult, taskData);
@@ -292,7 +284,7 @@
 
             document.getElementById('postQ').addEventListener('click', function() {
                 //handleFetchedData(postResponseId, taskData);
-                displayQuestions(postResult)
+                displayQuestions(postResult);
             });
 
             // Attach single click listener for the start button navigation
