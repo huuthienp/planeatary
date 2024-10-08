@@ -76,6 +76,8 @@
             document.body.style.backgroundColor = "white";
         };
 
+        let scores = [];
+
         const content = document.querySelector(".content");
         const cardContainer = document.querySelector(".card");
         // Create and append the next button
@@ -93,6 +95,7 @@
         content.appendChild(nextContainer);
 
         document.addEventListener("DOMContentLoaded", function() {
+
             const spinner = document.getElementById('spinner');
             let isLoading = false;
             const minDisplayTime = 2000; 
@@ -105,50 +108,38 @@
                     overlay.classList.remove('hidden');
                     isLoading = true;
                     spinnerStartTime = Date.now();
-                };
+            };
                 
-                // Function to hide the spinner
-                function hideSpinner() {
-                    const elapsedTime = Date.now() - spinnerStartTime;
-                    if (elapsedTime < minDisplayTime) {
-                        // Delay hiding spinner until the minimum display time
+            // Function to hide the spinner
+            function hideSpinner() {
+                const elapsedTime = Date.now() - spinnerStartTime;
+                if (elapsedTime < minDisplayTime) {
+                    // Delay hiding spinner until the minimum display time
                         setTimeout(() => {
-                            //console.log("Hiding spinner after min time...");
-                            spinner.classList.add('hidden');
-                            overlay.classList.add('hidden');
-                            isLoading = false;
-                        }, minDisplayTime - elapsedTime);
-                    } else {
+                        //console.log("Hiding spinner after min time...");
+                        spinner.classList.add('hidden');
+                        overlay.classList.add('hidden');
+                        isLoading = false;
+                    }, minDisplayTime - elapsedTime);
+                } else {
                         console.log("Hiding spinner...");
                         spinner.classList.add('hidden');
                         overlay.classList.add('hidden');
                         isLoading = false;
-                    }
-                };
-
-            let scores = [];
+                }
+            };
+            showSpinner();
 
             // Check if scores are stored in localStorage
+            
             const storedScore = localStorage.getItem("user");
             if (storedScore) {
-                showSpinner();
                 // Parse and use scores from localStorage
                 scores = JSON.parse(storedScore);
                 displayTasksFromScores(scores);
                 hideSpinner();
             } else {
-                showSpinner();
-                // Fetch scores from 'before_user.json' and store them in localStorage
-                fetch('before_user.json')
-                    .then(response => response.json())
-                    .then(data => {
-                        scores = data.postscore || data.prescore;
-                        localStorage.setItem("user", JSON.stringify(scores));
-                        displayTasksFromScores(scores);
-                        hideSpinner();
-                    })
-                    .catch(error => console.error("Error fetching JSON data:", error));
-                    hideSpinner();
+                
             }
 
             async function updateTasks(chosenTasks, doneTasks) {

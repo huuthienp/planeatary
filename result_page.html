@@ -14,7 +14,7 @@
         <ul>
             <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
             <li><a href="index.html">Home</a></li>
-            <li><a href="qualtrics.html"><b>Quiz</b></a></li>
+            <!--<li><b>Quiz</b></li>-->
             <li><a href="manifesto.html">Challenge</a></li>
             <li><a href="result_page.html">Dashboard</a></li>
             <!-- <li><a href="#">About us</a></li> -->
@@ -28,7 +28,7 @@
             <nav class="forwindow">
                 <ul>
                     <li><a href="index.html">Home</a></li>
-                    <li><a href="qualtrics.html"><b>Quiz</b></a></li>
+                    <!--<li><b>Quiz</b></li>-->
                     <li><a href="manifesto.html">Challenge</a></li>
                     <li><a href="result_page.html">Dashboard</a></li>
                     <!-- <li>About us</li> -->
@@ -147,6 +147,7 @@
 
 
             const comparison = document.getElementById('improvement');
+            const select =  document.quesrySelector('.select-tasks');
 
             async function fetchTasks() {
                 try {
@@ -158,7 +159,9 @@
                     return data;
                 } catch (error) {
                     console.error('Fetch error:', error);
+                    select.display = 'none';
                     alert('Failed to load tasks. Please try again later.');
+
                 }
             }
 
