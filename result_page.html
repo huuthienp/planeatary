@@ -13,9 +13,9 @@
     <div id="mySidenav" class="sidenav">
         <ul>
             <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
-            <li><a href="index.html">Home</a></li>
+            <!-- <li><a href="index.html">Home</a></li> -->
             <!--<li><b>Quiz</b></li>-->
-            <li><a href="manifesto.html">Challenge</a></li>
+            <li>Challenge</li>
             <li><a href="result_page.html">Dashboard</a></li>
             <!-- <li><a href="#">About us</a></li> -->
         </ul>
@@ -27,9 +27,9 @@
             <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
             <nav class="forwindow">
                 <ul>
-                    <li><a href="index.html">Home</a></li>
+                    <!-- <li><a href="index.html">Home</a></li> -->
                     <!--<li><b>Quiz</b></li>-->
-                    <li><a href="manifesto.html">Challenge</a></li>
+                    <li>Challenge</li>
                     <li><a href="result_page.html">Dashboard</a></li>
                     <!-- <li>About us</li> -->
                 </ul>
@@ -255,7 +255,10 @@
                     questionsContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us to fix it.';
                     return;
                 }
-                if (preResult) {
+                if (postResult) {
+                    document.getElementById('curr_score').textContent = postResult.totalScore;
+                    document.getElementById('total').textContent = 60;
+                } else {
                     document.getElementById('curr_score').textContent = preResult.totalScore;
                     document.getElementById('total').textContent = 60;
                 }
