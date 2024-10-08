@@ -66,7 +66,8 @@
         </div>
     </section>
 
-    <script>
+    <script type="module">
+        import {extractTaskArrays} from './data-function.mjs';
         function openNav() {
             next = document.querySelector(".next");
             next.style.cursor = "not-allowed";
@@ -150,10 +151,13 @@
         async function updateTaskStatus(task) {
             try {
                 showSpinner();
+                const taskData = JSON.parse(localStorage.getItem('tasks'));
+                const extracted = extractTaskArrays(taskData);
+
                 let task = {
                     id: preResponseId,
-                    chosen: [],
-                    done:[]
+                    chosen: extracted.chosen,
+                    done: extracted.done
                 }
                 const response = await fetch('/api/manage-tasks', {
                     method: 'PUT',
@@ -259,7 +263,7 @@
 
                     // Set the click event for the info icon to show the modal
                     infoIcon.addEventListener('click', function(event) {
-                        event.stopPropagation(); // Prevent triggering the card click event
+                        event.stopPropagation(); 
                         showModal(task.taskName, task.taskDescription);
                     });
 
@@ -303,8 +307,9 @@
 
                         updateNextButton();
 
-                        updateTaskStatus(task);
+                        
                     });
+                    updateTaskStatus(task);
                 }
             });
         });
