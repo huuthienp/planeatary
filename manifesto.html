@@ -271,10 +271,10 @@
                                 // Update task count and localStorage on checkbox change
                                 checkbox.addEventListener('change', function() {
                                     if (checkbox.checked) {
-                                        task.choice = "selected";
+                                        task.choice = "chosen";
                                         task_counts += 1;
                                     } else {
-                                        task.choice = "not selected";
+                                        task.choice = "";
                                         task_counts -= 1;
                                     }
                                     localStorage.setItem('tasks', JSON.stringify(tasks)); // Save tasks to localStorage
