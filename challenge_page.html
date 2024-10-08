@@ -208,18 +208,20 @@
             });
 
             // Dynamically create the Next button
-            const nextButtonContainer = document.createElement("div");
-            nextButtonContainer.classList.add("button_next");
-
-            const btn_next = document.createElement("button");
+            const nextButtonContainer = document.querySelector(".btn-next");
+            const btn_next = document.querySelector(".next")
             btn_next.id = "btn_next";
-            btn_next.classList.add("next");
-            btn_next.textContent = "Next";
-            btn_next.style.pointerEvents = "none"; // Disable initially
-            btn_next.style.backgroundColor = "grey"; // Disable color initially
-            btn_next.style.cursor = "not-allowed"; // Show disabled cursor
+            btn_next.style.pointerEvents = "none"; 
+            btn_next.style.backgroundColor = "grey"; 
+            btn_next.style.cursor = "not-allowed"; 
 
             nextButtonContainer.appendChild(btn_next);
+
+            btn_next.addEventListener("click", function () {
+            if (btn_next.style.pointerEvents === "auto") {
+                window.location.href = "congrat_page.html";
+            }
+        });
             
 
             // Retrieve tasks from localStorage
@@ -337,13 +339,13 @@
         }
     }
 
-    // Call updateNextButton function whenever a task is updated
-    document.querySelectorAll('.task-card').forEach(taskCard => {
-        taskCard.addEventListener('click', function() {
-            // Update task status code here...
-            updateNextButton(); // Update the button status after clicking a task
-        });
-    });
+    // // Call updateNextButton function whenever a task is updated
+    // document.querySelectorAll('.task-card').forEach(taskCard => {
+    //     taskCard.addEventListener('click', function() {
+    //         // Update task status code here...
+    //         updateNextButton(); // Update the button status after clicking a task
+    //     });
+    // });
     
 });
     </script>
