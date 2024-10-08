@@ -62,9 +62,9 @@
         
         const nextButton = document.querySelector('.next');
         function updateNextButton() {
-            let preResult = JSON.parse(localStorage.getItem('preResult'));
+            let postResult = JSON.parse(localStorage.getItem('postResult'));
 
-            if (preResult) {
+            if (postResult) {
                 // If preResult exists, enable the button and navigate to the results page
                 nextButton.style.backgroundColor = '#02897A'; 
                 nextButton.style.cursor = 'pointer';   
