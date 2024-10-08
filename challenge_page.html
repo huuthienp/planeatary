@@ -95,86 +95,47 @@
         content.appendChild(nextContainer);
 
         document.addEventListener("DOMContentLoaded", function() {
-
             const spinner = document.getElementById('spinner');
+            const overlay = document.querySelector('.overlay');
             let isLoading = false;
-            const minDisplayTime = 2000; 
+            const minDisplayTime = 2000; // Minimum spinner display time in milliseconds
             let spinnerStartTime;
 
-            /// Function to show the spinner
+            // Function to show the spinner
             function showSpinner() {
-                    //console.log("Showing spinner...");
-                    spinner.classList.remove('hidden');
-                    overlay.classList.remove('hidden');
-                    isLoading = true;
-                    spinnerStartTime = Date.now();
-            };
-                
+                spinner.classList.remove('hidden');
+                overlay.classList.remove('hidden');
+                isLoading = true;
+                spinnerStartTime = Date.now(); // Track when the spinner is shown
+            }
+
             // Function to hide the spinner
             function hideSpinner() {
                 const elapsedTime = Date.now() - spinnerStartTime;
                 if (elapsedTime < minDisplayTime) {
-                    // Delay hiding spinner until the minimum display time
-                        setTimeout(() => {
-                        //console.log("Hiding spinner after min time...");
+                    // Delay hiding spinner until the minimum display time is reached
+                    setTimeout(() => {
                         spinner.classList.add('hidden');
                         overlay.classList.add('hidden');
                         isLoading = false;
                     }, minDisplayTime - elapsedTime);
                 } else {
-                        console.log("Hiding spinner...");
-                        spinner.classList.add('hidden');
-                        overlay.classList.add('hidden');
-                        isLoading = false;
+                    spinner.classList.add('hidden');
+                    overlay.classList.add('hidden');
+                    isLoading = false;
                 }
-            };
-            showSpinner();
+            }
 
-            // Check if scores are stored in localStorage
-            
-
-            async function updateTasks(chosenTasks, doneTasks) {
-                    try {
-                        let surveyResponses = localStorage.getItem('preResponseId');
-                        if (!surveyResponses) {
-                            console.error('preResponseId is not available in localStorage.');
-                            return;
-                        }
-
-                        const endpoint = '/api/manage-tasks';
-                        const body = {
-                            id: surveyResponses.result.responseId,
-                            chosen: chosenTasks,
-                            done: doneTasks,
-                        };
-
-                        const options = {
-
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Q-RESPONSE-ID': surveyResponses.result.responseId,
-                            },
-                            body: JSON.stringify(body),
-                        };
-
-                        const response = await fetch(endpoint, options);
-                        if (!response.ok) {
-                            throw new Error(`Failed to update tasks: ${response.status} ${response.statusText}`);
-                        }
-                        console.log('Tasks updated successfully!');
-                    } catch (error) {
-                        console.error('Error updating tasks:', error);
-                    }
-                }
-            
-            const cardContainer = document.querySelector(".card");
-
+            // Retrieve tasks from localStorage
             const tasks = JSON.parse(localStorage.getItem('tasks'));
 
             // Check if tasks exist in localStorage
             if (tasks) {
-                displaySelectedTasks(tasks);  // Call function to display the selected tasks
+                showSpinner(); // Show spinner while loading tasks
+                setTimeout(() => {
+                    displaySelectedTasks(tasks); // Display tasks after delay
+                    hideSpinner(); // Hide spinner after tasks are displayed
+                }, 1000); // You can adjust this delay as needed
             } else {
                 cardContainer.innerHTML = "<p>No tasks found.</p>";
             }
@@ -242,24 +203,27 @@
             // Function to update the Next button's state
             function updateNextButton() {
                 let allCompleted = true;
-                scores.forEach((scoreObj) => {
-                    scoreObj.tasks.forEach((task) => {
+
+                Object.keys(tasks).forEach(questionKey => {
+                    const taskGroup = tasks[questionKey].tasks;
+                    taskGroup.forEach(task => {
                         if (task.choice === "selected" && task.status !== "Completed") {
                             allCompleted = false; // If any selected task is not "Completed", set false
                         }
                     });
                 });
 
+                const btn_next = document.querySelector("#btn_next"); // Next button selector
+
                 // Enable or disable the next button based on task completion status
                 if (allCompleted) {
                     btn_next.style.pointerEvents = "auto"; // Enable the next button
                     btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
                     btn_next.style.cursor = "pointer"; 
-                    // Attach click listener to next button
                     btn_next.addEventListener("click", function() {
                         if (btn_next.style.pointerEvents === "auto") {
-                            let text = "Would you like to proceed to the post quiz?"
-                            if(confirm(text) == true) {
+                            let text = "Would you like to proceed to the post quiz?";
+                            if (confirm(text)) {
                                 window.location.href = "congrat_page.html";
                             }
                         }
@@ -270,7 +234,6 @@
                     btn_next.style.cursor = "not-allowed"; 
                 }
             }
-
         });
 
 
