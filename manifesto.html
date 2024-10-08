@@ -203,8 +203,9 @@
                 // }
 
 
+                // Retrieve tasks from localStorage or fetch if not available
                 async function fetchTasks() {
-                try {
+                    try {
                         const response = await fetch('updated_tasks_final.json');
                         if (!response.ok) {
                             throw new Error('Network response was not ok ' + response.statusText);
@@ -213,187 +214,96 @@
                         return data;
                     } catch (error) {
                         console.error('Fetch error:', error);
-                        select.display = 'none';
                         alert('Failed to load tasks. Please try again later.');
-
-                    }
-                }
-
-                async function fetchTasksFromNetlify() {
-                    try {
-                        showSpinner();
-                        const response = await fetch('/api/manage-tasks', {
-                            method: 'GET',
-                            headers: {
-                                'Q-RESPONSE-ID': preResponseId, 
-                                'Content-Type': 'application/json'
-                            }
-                        });
-
-                        if (!response.ok) {
-                            throw new Error('Failed to fetch tasks');
-                        }
-                        const data = await response.json();
-                        if (!preResult) {
-                            handleFetchedData(preResult, data);
-                        };
-                        
-                    } catch (error) {
-                        hideSpinner();
-                        console.error('Error fetching tasks:', error);
                         return null;
                     }
                 }
-                
-                
-                if (preResult) {
-                    try {
-                        const Task = await fetchTasks();  // Await the result of the fetchTasks function
-                        localStorage.setItem('tasks', JSON.stringify(Task));  // Store the fetched tasks as a JSON string
-                        const tasks = JSON.parse(localStorage.getItem('tasks'));
-                        scores = preResult.pointArray;
-                        scores.forEach((score, i) => {
-                            Object.keys(tasks).forEach(questionKey => {
-                                const taskGroup = tasks[questionKey].tasks;
-                                taskGroup.forEach((task, j) => {
-                                    if (task.choice === "selected") {
-                                        task_counts += 1;
-                                    }
-                                });
-                            });
-                        });
-                        updateStartButton();
-                        renderTasks(score => score.score <= 3);
-                        hideSpinner();  // Hide spinner after tasks are fetched and processed
-                    } catch (error) {
-                        alert('Failed to load tasks. Please try again later.');
-                        hideSpinner();
-                        console.error("Error:", error);
-                        document.body.innerHTML = 'Looks like we are experiencing issues in displaying tasks. Please try again later.';
+
+                // Function to display questions, scores, and tasks
+                async function renderQuestions() {
+                    const tasks = await fetchTasks(); // Fetch or retrieve tasks
+                    const preResult = JSON.parse(localStorage.getItem('preResult')); // Get stored scores
+
+                    if (!tasks || !preResult) {
+                        QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
+                        return;
                     }
-                } else {
-                    document.body.innerHTML = 'Looks like we are experiencing issues in displaying tasks. Please try again later.';
-                }
 
-            // Function to update start button state
-            function updateStartButton() {
-                persuade = document.getElementById("tentask");
-                if (task_counts >= 10) {
-                    persuade.innerHTML = 'You’ve selected 10 tasks. Start challenge now';
-                    persuade.style.color = 'black';
-                    startButton.style.pointerEvents = "auto";
-                    startButton.style.backgroundColor = "#02897A";
-                    //startButton.style.transition = "all 1s";
-                } else {
-                    persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
-                    persuade.style.color = 'grey';
-                    startButton.style.pointerEvents = "none";
-                    startButton.style.backgroundColor = "grey";
-                    //startButton.style.transition = "all 1s";
-                }
-            }
+                    scores = preResult.pointArray; // Use preResult scores to display with questions
 
-            function renderTasksForQuestion(questionNumber) {
-                const taskGroup = tasks[questionNumber];  // Access tasks for the specific question
+                    // Iterate over each question
+                    Object.keys(tasks).forEach((questionKey, i) => {
+                        const taskGroup = tasks[questionKey].tasks;
+                        const score = scores[i]; // Get the score for this question
 
-                if (taskGroup && taskGroup.tasks) {
-                    taskGroup.tasks.forEach(task => {
-                        const q_input = document.createElement("li");
-                        const label = document.createElement("label");
-                        const input = document.createElement("input");
-                        const text = document.createElement("span");
-                        text.innerHTML = task.taskName;
-                        input.type = "checkbox";
+                        // Create a container for the question
+                        const questionDiv = document.createElement('div');
+                        questionDiv.classList.add('question-block');
 
-                        // Initialize task count based on current selected state
-                        if (task.choice === "selected") {
-                            input.checked = true;
-                        }
+                        // Display question number and score
+                        const questionTitle = document.createElement('h3');
+                        questionTitle.innerHTML = `Question ${i + 1} - ${score} points`;
 
-                        label.appendChild(input);
-                        label.appendChild(text);
-                        q_input.appendChild(label);
-                        QContainer.appendChild(q_input);
+                        questionDiv.appendChild(questionTitle);
 
-                        // Event listener to track selection
-                        input.addEventListener('change', function() {
-                            if (input.checked) {
-                                task.choice = "selected";
-                                task_counts += 1;
-                            } else {
-                                task.choice = "not selected";
-                                task_counts -= 1;
-                            }
+                        // Create a list to hold the tasks for this question
+                        const taskList = document.createElement('ul');
 
-                            // Save updated task state to localStorage
-                            localStorage.setItem("tasks", JSON.stringify(tasks));
+                        // Iterate over tasks for the question
+                        taskGroup.forEach((task, j) => {
+                            const taskItem = document.createElement('li');
+                            const label = document.createElement('label');
+                            const checkbox = document.createElement('input');
+                            checkbox.type = 'checkbox';
 
-                            // Update the start button
-                            updateStartButton();
-                        });
-                    });
-                } else {
-                    QContainer.innerHTML = '<p>No tasks found for this question.</p>';
-                }
-            };
+                            // Initialize checkbox state based on task selection
+                            checkbox.checked = task.choice === 'selected';
 
-            function renderTasks(scoreCondition) {
-                QContainer.innerHTML = ''; 
-                const tasks = JSON.parse(localStorage.getItem('tasks'));
-
-                scores.forEach((score, i) => {
-                    if (scoreCondition(score)) {
-                        const btnContainer = document.createElement("div");
-                        const q_button = document.createElement("button");    
-                        const q_con = document.createElement("ul");
-                        q_con.classList.add("q");
-                        
-
-                        btnContainer.classList.add("btn-q");
-                        q_button.classList.add("next");
-                        q_button.textContent = `Question ${i+1}`;
-                        btnContainer.appendChild(q_button);
-
-
-                        q_button.addEventListener('click', function () {
-
-
-                            if (q_con.innerHTML === 'none' || q_con.innerHTML === '') {
-                                const question = document.createElement("li");
-                                question.id = `q_num${i+1}`;
-                                const q_num = document.createElement("span");
-                                q_num.textContent = `Question ${i+1} - ${score.score} points`;
-                                const q_info = document.createElement("img");
-                                q_info.src = './images/info.png';
-                                q_info.width = '16';  
-                                if(score.score > 3) {
-                                    q_con.style.boxShadow = '0px 6px 8px 0px rgba(0, 128, 0, 0.5)';
+                            // Update task count and localStorage on checkbox change
+                            checkbox.addEventListener('change', function() {
+                                if (checkbox.checked) {
+                                    task.choice = "selected";
+                                    task_counts += 1;
                                 } else {
-                                    q_con.style.boxShadow = '0px 6px 8px 0px rgba(255, 0, 0, 0.5)';
-                                };
-                                q_con.appendChild(question);
-                                question.appendChild(q_num);
-                                question.appendChild(q_info);
+                                    task.choice = "not selected";
+                                    task_counts -= 1;
+                                }
+                                localStorage.setItem('tasks', JSON.stringify(tasks)); // Save tasks to localStorage
+                                updateStartButton(); // Update the start button based on the number of selected tasks
+                            });
 
-                                q_info.addEventListener('click', function() {
-                                    Modal(`./images/pop${i+1}.jpg`);
-                                });
-                                renderTasksForQuestion();
-                            } else {
-                                q_con.style.boxShadow = 'none';
-                                q_con.innerHTML = ''; 
-                            }
-                            
+                            label.appendChild(checkbox);
+                            label.appendChild(document.createTextNode(task.taskName));
+                            taskItem.appendChild(label);
+                            taskList.appendChild(taskItem);
                         });
-                        QContainer.appendChild(btnContainer);
-                        QContainer.appendChild(q_con);
-                    }
-                    
-                });
 
-                // Update start button state after rendering tasks
-                updateStartButton();
-            }
+                        questionDiv.appendChild(taskList);
+                        QContainer.appendChild(questionDiv);
+                    });
+                    updateStartButton(); // Update the start button after rendering all tasks
+                }
+
+                // Function to update the start button state based on selected tasks
+                function updateStartButton() {
+                    const startButton = document.querySelector(".start");
+                    const persuade = document.getElementById("tentask");
+                    if (task_counts >= 10) {
+                        persuade.innerHTML = 'You’ve selected 10 tasks. Start challenge now';
+                        persuade.style.color = 'black';
+                        startButton.style.pointerEvents = "auto";
+                        startButton.style.backgroundColor = "#02897A";
+                    } else {
+                        persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
+                        persuade.style.color = 'grey';
+                        startButton.style.pointerEvents = "none";
+                        startButton.style.backgroundColor = "grey";
+                    }
+                }
+
+                // Call the function to render the questions and tasks
+                renderQuestions();
+
             // Event listener for "good" button
             document.getElementById('good').addEventListener('click', function() {
                 updateStartButton();
