@@ -82,6 +82,8 @@
         let preResponseId = localStorage.getItem('preResponseId');
         const modal = document.querySelector(".modal");
         const overlay = document.querySelector(".overlay");
+        const closeButt = document.querySelector('.close');
+        const spinner = document.querySelector('.spinner');
 
         
         const cardContainer = document.querySelector(".card");
@@ -90,7 +92,7 @@
                     //console.log("Showing spinner...");
                     spinner.classList.remove('hidden');
                     overlay.classList.remove('hidden');
-                    const closeButt = document.querySelector('close');
+                    
                     closeButt.classList.add('hidden');
                     isLoading = true;
                     spinnerStartTime = Date.now();
@@ -99,7 +101,6 @@
                 // Function to hide the spinner
                 function hideSpinner() {
                     const elapsedTime = Date.now() - spinnerStartTime;
-                    const closeButt = document.querySelector('close');
                     closeButt.classList.remove('hidden');
                     if (elapsedTime < minDisplayTime) {
                         // Delay hiding spinner until the minimum display time
@@ -327,9 +328,6 @@
             btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
             btn_next.style.cursor = "not-allowed";
             btn_next.disabled = true;
-            document.getElementById("btn_next").addEventListener("click", function() {
-                window.location.href = "congrat_page.html"; 
-            });
         }
     }
 
