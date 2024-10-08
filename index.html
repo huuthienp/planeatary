@@ -109,8 +109,8 @@
                 async function checkOrFetchResponseId() {
                     try {
                         showSpinner();
-                        let preResponseId = localStorage.getItem('preResponseId');
-                        let postResponseId = localStorage.getItem('postResponseId');
+                        let preResponseId = localStorage.getItem('preResult');
+                        let postResponseId = localStorage.getItem('postResult');
                         let quizType = '';
 
                         if (preResponseId) {
@@ -120,7 +120,7 @@
                                 setupContinueButton('manifesto.html');
                             } else {
                                 // User chooses to start a new quiz
-                                localStorage.removeItem('preResponseId');
+                                localStorage.removeItem('preResult');
                                 
                                 setupContinueButton('qualtrics.html');
 
@@ -129,8 +129,8 @@
                             let userChoice = confirm("Looks like there is your recorded post quiz. Would you like to start over? Click OK if yes.");
                             
                             if (userChoice) {
-                                localStorage.removeItem('preResponseId');
-                                localStorage.removeItem('postResponseId');
+                                localStorage.removeItem('preResult');
+                                localStorage.removeItem('postResult');
                                 setupContinueButton('qualtrics.html');
                             } 
                             
@@ -143,11 +143,11 @@
                                 
                                 if (userOption) {
                                     
-                                    let preOrpost = prompt("If you would like to proceed with pre-quiz, type 'pre'; otherwise, type 'post'.");
+                                    let preOrpost = prompt("If you would like to proceed with pre-quiz, type 'pre'");
                                     
                                     // Validate the input
-                                    if (preOrpost !== 'pre' && preOrpost !== 'post') {
-                                        alert("Invalid input. Please enter 'pre' or 'post'.");
+                                    if (preOrpost !== 'pre') {
+                                        alert("Invalid input. Please enter 'pre'.");
                                         hideSpinner();
                                         return; 
                                     }
@@ -158,7 +158,7 @@
                                         let responseId = userMem;
                                         let fetchedResponseId = await fetchResponseIdFromNetlify(preOrpost, responseId);
                                         localStorage.setItem(`${preOrpost}ResponseId`, JSON.stringify(fetchedResponseId));
-                                        setupContinueButton(preOrpost === 'pre' ?'qualtrics.html':'qualtrics_post.html');
+                                        setupContinueButton(preOrpost === 'pre' ?'result_page.html':'manifesto_page.html');
                                         return; 
                                     } else {
                                         alert("Invalid response ID entered.");
@@ -167,7 +167,6 @@
                                     }
                                 }
                             }
-                            setupContinueButton('qualtrics.html');
                             
                         }   
                         
