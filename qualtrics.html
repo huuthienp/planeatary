@@ -6,6 +6,7 @@
         <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
         <link href="style_concat.css" rel="stylesheet" />
         <title>PlanEATary Quiz</title>
+    <script src="/listen-to-qualtrics.js"></script>
     </head>
     <body>
         <!-- Sidebar -->
@@ -60,7 +61,7 @@
         };
             
     </script>
-    <script src="/listen-to-qualtrics.js">
+    <script>
         let preResult = JSON.parse(localStorage.getItem('preResult'));
         if (preResult) {
             document.querySelector('.next').addEventListener("click", function() {
