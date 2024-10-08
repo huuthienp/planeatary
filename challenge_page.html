@@ -99,6 +99,7 @@
                 // Function to hide the spinner
                 function hideSpinner() {
                     const elapsedTime = Date.now() - spinnerStartTime;
+                    const closeButt = document.querySelector('close');
                     closeButt.classList.remove('hidden');
                     if (elapsedTime < minDisplayTime) {
                         // Delay hiding spinner until the minimum display time
