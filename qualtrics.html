@@ -16,7 +16,7 @@
                 <li><a href="qualtrics.html"><b>Quiz</b></a></li>
                 <li><a href="manifesto.html">Challenge</a></li>
                 <li><a href="result_page.html">Dashboard</a></li>
-                <!-- <li><a href="#">About us</a></li> -->
+                <li><!-- <a href="#">About us</a> --></li>
             </ul>
         </div>
         <div class="container">
@@ -42,25 +42,35 @@
 
             <div class="content">
                 <iframe class="quiz" src="https://uow.au1.qualtrics.com/jfe/form/SV_8es3au3sYKpwaii" title="Planeatary quiz"></iframe>
-                <div class="btn-next">
-                    <a href="result_page.html"><button class="next">Next  &#8594;</button></a>
-                </div>
+            <div class="btn-next">
+                <button class="next">Next  &#8594;</button>
             </div>
         </div>
-        <script>
+    <script>
         function openNav() {
             next = document.querySelector(".next");
             next.style.cursor = "not-allowed";
             document.getElementById("mySidenav").style.width = "40%";
             document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
         };
-
+        
         function closeNav() {
             document.getElementById("mySidenav").style.width = "0";
             document.body.style.backgroundColor = "white";
         };
-
-        </script>
-        <script src="/listen-to-qualtrics.js"></script>
-</body>
+        document.addEventListener("DOMContentLoaded", function() {
+            let preResult = JSON.parse(localStorage.getItem('preResult'));
+            if (preResult) {
+                document.querySelector('.next').addEventListener("click", function() {
+                    window.location.href = "result_page.html";
+                })
+            } else {
+                document.querySelector('.next').style.backgroundColor = 'grey';
+                document.querySelector('.next').disabled = true;
+            }
+            
+        });
+    </script>
+    <script src="/listen-to-qualtrics.js"></script>        
+    </body>
 </html>
