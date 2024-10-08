@@ -206,8 +206,9 @@
                             completion.textContent = "Done";
                         }
 
-                        // Update the next button's state
                         updateNextButton();
+
+                        updateTaskStatus(task);
                     });
                 }
             });
@@ -224,7 +225,7 @@
         Object.keys(tasks).forEach(questionKey => {
             const taskGroup = tasks[questionKey].tasks;
             taskGroup.forEach(task => {
-                if (task.status !== "Completed") {
+                if (task.choice === "selected" && task.status !== "Completed") {
                     allCompleted = false; // If any selected task is not "Completed", set false
                 }
             });
@@ -235,11 +236,31 @@
             btn_next.style.pointerEvents = "auto"; // Enable the next button
             btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
             btn_next.style.cursor = "pointer";
+            btn_next.disabled = false;
         } else {
             btn_next.style.pointerEvents = "none"; // Disable the next button
             btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
             btn_next.style.cursor = "not-allowed";
+            btn_next.disabled = true;
         }
+    }
+
+    // Function to send updated task status to Netlify
+    function updateTaskStatus(task) {
+        fetch('/.netlify/functions/updateTask', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(task),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
     }
 });
     </script>

@@ -60,14 +60,13 @@
         };
 
         
-            const nextButton = document.querySelector('.next');
-
-            // Check if preResult exists in localStorage
-            let preResult = JSON.parse(localStorage.getItem('postResult'));
+        const nextButton = document.querySelector('.next');
+        function updateNextButton() {
+            let preResult = JSON.parse(localStorage.getItem('preResult'));
 
             if (preResult) {
                 // If preResult exists, enable the button and navigate to the results page
-                nextButton.style.backgroundColor = ''; 
+                nextButton.style.backgroundColor = '#02897A'; 
                 nextButton.style.cursor = 'pointer';   
                 nextButton.disabled = false;
                 nextButton.addEventListener("click", function() {
@@ -79,6 +78,13 @@
                 nextButton.style.cursor = 'not-allowed';
                 nextButton.disabled = true;
             }
+        }
+
+    // Initial check for preResult
+    updateNextButton();
+
+    // Set up an interval to check for changes in localStorage
+    setInterval(updateNextButton, 1000);
 
 
     </script>      
