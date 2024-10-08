@@ -203,6 +203,7 @@
                 // }
 
 
+
                 // Retrieve tasks from localStorage or fetch if not available
                 async function fetchTasks() {
                     try {
@@ -221,21 +222,20 @@
 
                 scores = preResult.pointArray; 
 
-                // Function to display questions, scores, and tasks
                 async function renderQuestions(condition) {
-
                     QContainer.innerHTML = '';
                     const tasks = await fetchTasks(); // Fetch or retrieve tasks
-                    
 
                     if (!tasks || !preResult) {
                         QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
                         return;
                     }
+
                     // Iterate over each question
                     Object.keys(tasks).forEach((questionKey, i) => {
                         const taskGroup = tasks[questionKey].tasks;
                         const score = scores[i]; 
+
                         if (condition(score)) {
                             // Create a container for the question
                             const questionDiv = document.createElement('div');
@@ -244,14 +244,25 @@
                             // Display question number and score
                             const questionTitle = document.createElement('h3');
                             questionTitle.innerHTML = `Question ${i + 1} - ${score} points`;
+
                             if(score < 3) {
                                 questionTitle.style.color = 'red';
                             } else {
                                 questionTitle.style.color = 'green';
                             }
-                            
-                            questionDiv.appendChild(questionTitle);
 
+                            // Add the info icon with a click event to open the modal
+                            const infoIcon = document.createElement('img');
+                            infoIcon.src = './images/info.png'; // Info icon image
+                            infoIcon.style.cursor = 'pointer'; // Cursor pointer on hover
+
+                            // Set the click event for the info icon to show the modal with the correct image
+                            infoIcon.addEventListener('click', function() {
+                                Modal(`./images/pop${i+1}.jpg`); // Dynamically load the image based on the question number
+                            });
+
+                            questionDiv.appendChild(questionTitle);
+                            questionDiv.appendChild(infoIcon); // Add the info icon to the question div
 
                             // Create a list to hold the tasks for this question
                             const taskList = document.createElement('ul');
@@ -288,11 +299,10 @@
                             questionDiv.appendChild(taskList);
                             QContainer.appendChild(questionDiv);
                         }
-
                     });
+
                     updateStartButton(); // Update the start button after rendering all tasks
                 }
-
                 // Function to update the start button state based on selected tasks
                 function updateStartButton() {
                     const startButton = document.querySelector(".start");
