@@ -6,6 +6,7 @@
         <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
         <link href="style_concat.css" rel="stylesheet" />
         <title>PlanEATary Quiz</title>
+        <script type="module" src="listen-to-qualtrics.mjs"></script>
     </head>
     <body>
         <!-- Sidebar -->
@@ -14,9 +15,8 @@
                 <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="qualtrics.html"><b>Quiz</b></a></li>
-                <!-- <li>Challenge</li>
-                <li>Dashboard</li> -->
-                <li><!-- <a href="#">About us</a> --></li>
+                <!-- <li>Challenge</li> <li>Dashboard</li> -->
+                <!-- <a href="#">About us</a> -->
             </ul>
         </div>
         <div class="container">
@@ -28,63 +28,53 @@
                     <ul>
                         <li><a href="index.html">Home</a></li>
                         <li><a href="qualtrics.html"><b>Quiz</b></a></li>
-                        <!-- <li>Challenge</li>
-                        <li>Dashboard</li> -->
+                        <!-- <li>Challenge</li> <li>Dashboard</li> -->
                         <!-- <li>About us</li> -->
                     </ul>
                 </nav>
-                <!-- <div class="button">
-                    <button class="signIn">Sign In</button>
-                    <span>&ensp;</span>
-                    <button class="signUp">Sign Up</button>
-                </div> -->
+                <!-- <div class="button"> <button class="signIn">Sign In</button> <span>&ensp;</span> <button class="signUp">Sign Up</button> </div> -->
             </div>
 
             <div class="content">
                 <iframe class="quiz" src="https://uow.au1.qualtrics.com/jfe/form/SV_8es3au3sYKpwaii" title="Planeatary quiz"></iframe>
-            <div class="btn-next">
-                <button class="next">Next  &#8594;</button>
+                <div class="btn-next">
+                    <button class="next">Next  &#8594;</button>
+                </div>
             </div>
-        </div>
-   
-    <script src="/listen-to-qualtrics.js">
-        
-    </script>  
-     <script>
-        function openNav() {
-            next = document.querySelector(".next");
-            next.style.cursor = "not-allowed";
-            document.getElementById("mySidenav").style.width = "40%";
-            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
-        };
-        
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.body.style.backgroundColor = "white";
-        };
+            <script>
+            function openNav() {
+                next = document.querySelector(".next");
+                next.style.cursor = "not-allowed";
+                document.getElementById("mySidenav").style.width = "40%";
+                document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
+            };
 
-        document.addEventListener("DOMContentLoaded", function() {
-            const nextButton = document.querySelector('.next');
+            function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+                document.body.style.backgroundColor = "white";
+            };
 
-            // Check if preResult exists in localStorage
-            let preResult = JSON.parse(localStorage.getItem('preResult'));
+            document.addEventListener("DOMContentLoaded", function() {
+                const nextButton = document.querySelector('.next');
 
-            if (preResult) {
-                // If preResult exists, enable the button and navigate to the results page
-                nextButton.style.backgroundColor = '#02897A'; 
-                nextButton.style.cursor = 'pointer';   
-                nextButton.disabled = false;
-                nextButton.addEventListener("click", function() {
-                    window.location.href = "result_page.html";
-                });
-            } else {
-                // Disable the button if preResult does not exist
-                nextButton.style.backgroundColor = 'grey';
-                nextButton.style.cursor = 'not-allowed';
-                nextButton.disabled = true;
-            }
-        });
-            
-    </script>      
+                // Check if preResult exists in localStorage
+                let preResult = JSON.parse(localStorage.getItem('preResult'));
+
+                if (preResult) {
+                    // If preResult exists, enable the button and navigate to the results page
+                    nextButton.style.backgroundColor = '#02897A'; 
+                    nextButton.style.cursor = 'pointer';   
+                    nextButton.disabled = false;
+                    nextButton.addEventListener("click", function() {
+                        window.location.href = "result_page.html";
+                    });
+                } else {
+                    // Disable the button if preResult does not exist
+                    nextButton.style.backgroundColor = 'grey';
+                    nextButton.style.cursor = 'not-allowed';
+                    nextButton.disabled = true;
+                }
+            });
+            </script>      
     </body>
 </html>
