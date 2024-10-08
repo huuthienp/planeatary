@@ -294,7 +294,7 @@
             }
 
             function renderTasksForQuestion(questionNumber) {
-                const taskGroup = tasks[questionNumber];  
+                const taskGroup = tasks[questionNumber];  // Access tasks for the specific question
 
                 if (taskGroup && taskGroup.tasks) {
                     taskGroup.tasks.forEach(task => {
@@ -304,17 +304,17 @@
                         const text = document.createElement("span");
                         text.innerHTML = task.taskName;
                         input.type = "checkbox";
-                        
+
                         // Initialize task count based on current selected state
                         if (task.choice === "selected") {
                             input.checked = true;
                         }
-                        
+
                         label.appendChild(input);
                         label.appendChild(text);
                         q_input.appendChild(label);
-                        q_con.appendChild(q_input);
-                        
+                        QContainer.appendChild(q_input);
+
                         // Event listener to track selection
                         input.addEventListener('change', function() {
                             if (input.checked) {
@@ -324,10 +324,10 @@
                                 task.choice = "not selected";
                                 task_counts -= 1;
                             }
-                            
+
                             // Save updated task state to localStorage
-                            localStorage.setItem("user", JSON.stringify(scores));
-                            
+                            localStorage.setItem("tasks", JSON.stringify(tasks));
+
                             // Update the start button
                             updateStartButton();
                         });
@@ -335,7 +335,7 @@
                 } else {
                     QContainer.innerHTML = '<p>No tasks found for this question.</p>';
                 }
-            }
+            };
 
             function renderTasks(scoreCondition) {
                 QContainer.innerHTML = ''; 
