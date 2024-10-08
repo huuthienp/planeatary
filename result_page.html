@@ -146,7 +146,7 @@
             };
 
 
-            const comparison = document.getElementById('improved_score');
+            const comparison = document.getElementById('improvement');
 
             async function fetchTasks() {
                 try {
@@ -232,9 +232,8 @@
             function compareScores() {
                 let preQuizTotal = preResult.totalScore;
                 if (postResult) {
-                    const improvement = document.getElementById('improvement');
                     let postQuizTotal = postResult.totalScore;
-                    improvement.textContent = postQuizTotal - preQuizTotal;
+                    comparison.textContent = postQuizTotal - preQuizTotal;
                 }
                 else {
                     return 0;
@@ -275,18 +274,12 @@
 
                     questionsContainer.appendChild(questionDiv);
                 });
+                compareScores();
 
             }
 
-            compareScores();
-            
-
-            document.getElementById('preQ').addEventListener('click', function() {
-                //handleFetchedData(preResult, taskData);
-                displayQuestions(preResult);
-            });
-
             if (postResult) {
+                displayQuestions(postResult);
                 document.getElementById('postQ').addEventListener('click', function() {
                     //handleFetchedData(postResponseId, taskData);
                     displayQuestions(postResult);
@@ -294,7 +287,15 @@
             } else {
                 document.getElementById('postQ').style.color = 'grey';
                 document.getElementById('postQ').disabled = true; 
-            }
+                displayQuestions(preResult);
+            };
+            
+            document.getElementById('preQ').addEventListener('click', function() {
+                //handleFetchedData(preResult, taskData);
+                displayQuestions(preResult);
+            });
+
+            
 
             // Attach single click listener for the start button navigation
             selectButton.addEventListener('click', function(event) {
