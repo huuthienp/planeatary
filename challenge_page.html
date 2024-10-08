@@ -85,70 +85,22 @@
         
 
         document.addEventListener("DOMContentLoaded", function() {
-            const nextContainer = document.createElement("div");
-            const content = document.querySelector(".content");
-            const spinner = document.getElementById('spinner');
-            const overlay = document.querySelector('.overlay');
-            let isLoading = false;
-            const minDisplayTime = 2000; // Minimum spinner display time in milliseconds
-            let spinnerStartTime;
-
-            const btn_next = document.createElement("button");
-            btn_next.classList.add("next");
-            btn_next.id = "btn_next";  // Add this line to set the ID
-            btn_next.innerHTML = "Next";
-            btn_next.style.pointerEvents = "none"; // Disable initially
-            btn_next.style.backgroundColor = "grey"; // Disable color initially
-            btn_next.style.cursor = "not-allowed"; // Show disabled cursor
-            nextContainer.classList.add("btn-next");
-                    
-            nextContainer.appendChild(btn_next);
-            content.appendChild(nextContainer);
-
-            // Function to show the spinner
-            function showSpinner() {
-                spinner.classList.remove('hidden');
-                overlay.classList.remove('hidden');
-                isLoading = true;
-                spinnerStartTime = Date.now(); // Track when the spinner is shown
-            }
-
-            // Function to hide the spinner
-            function hideSpinner() {
-                const elapsedTime = Date.now() - spinnerStartTime;
-                if (elapsedTime < minDisplayTime) {
-                    // Delay hiding spinner until the minimum display time is reached
-                    setTimeout(() => {
-                        spinner.classList.add('hidden');
-                        overlay.classList.add('hidden');
-                        isLoading = false;
-                    }, minDisplayTime - elapsedTime);
-                } else {
-                    spinner.classList.add('hidden');
-                    overlay.classList.add('hidden');
-                    isLoading = false;
-                }
-            }
+            const cardContainer = document.querySelector(".card");
 
             // Retrieve tasks from localStorage
             const tasks = JSON.parse(localStorage.getItem('tasks'));
 
             // Check if tasks exist in localStorage
             if (tasks) {
-                showSpinner(); // Show spinner while loading tasks
-                setTimeout(() => {
-                    displaySelectedTasks(tasks); // Display tasks after delay
-                    hideSpinner(); // Hide spinner after tasks are displayed
-                }, 1000); // You can adjust this delay as needed
+                displaySelectedTasks(tasks); // Display tasks
             } else {
                 cardContainer.innerHTML = "<p>No tasks found.</p>";
             }
 
-            // Function to display only selected tasks and allow status update
+            // Function to display selected tasks and allow status update
             function displaySelectedTasks(tasks) {
                 cardContainer.innerHTML = '';  // Clear any existing content
 
-                // Iterate over each question/task group
                 Object.keys(tasks).forEach(questionKey => {
                     const taskGroup = tasks[questionKey].tasks;
 
@@ -167,17 +119,22 @@
 
                             const completion = document.createElement("span");
                             completion.classList.add("completion");
-                            completion.textContent = task.status;
+                            completion.textContent = task.status === "Completed" ? "Completed" : "Done";
+
+                            // Set card styles based on status
+                            if (task.status === "Completed") {
+                                taskCard.style.backgroundColor = "#f0f0f0"; // Completed card style
+                                taskCard.style.color = "grey";
+                                taskName.style.textDecoration = "line-through"; // Strikethrough text
+                            } else {
+                                taskCard.style.backgroundColor = "white"; // Default style for "Done"
+                                taskCard.style.border = "1px solid #02897A";
+                            }
 
                             taskCard.appendChild(taskName);
                             taskCard.appendChild(taskDescription);
                             taskCard.appendChild(completion);
                             cardContainer.appendChild(taskCard);
-
-                            // Add strikethrough effect to completed tasks
-                            if (task.status === "Completed") {
-                                taskName.style.textDecoration = "line-through";
-                            }
 
                             // Add event listener to task card to update status
                             taskCard.addEventListener('click', function() {
@@ -193,9 +150,6 @@
 
                                 // Re-render tasks to reflect the updated status
                                 displaySelectedTasks(tasks);
-
-                                // Update the state of the Next button based on the new status
-                                updateNextButton();
                             });
                         }
                     });
@@ -217,6 +171,8 @@
                     });
                 });
 
+                const btn_next = document.querySelector("#btn_next"); // Next button selector
+
                 // Enable or disable the next button based on task completion status
                 if (allCompleted) {
                     btn_next.style.pointerEvents = "auto"; // Enable the next button
@@ -237,7 +193,6 @@
                 }
             }
         });
-
         const modal = document.querySelector(".modal");
         const overlay = document.querySelector(".overlay");
 
