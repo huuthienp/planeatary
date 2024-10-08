@@ -314,7 +314,7 @@
             // Event listener for "good" button
             document.getElementById('good').addEventListener('click', function() {
                 updateStartButton();
-                renderQuestions(score > 3);
+                renderQuestions((score) => score >= 3);
                 good.style.backgroundColor = '#02897A';
                 good.style.transition = "all 1s";
                 bad.style.backgroundColor = '#a9d1cd';
@@ -324,7 +324,7 @@
             // Event listener for "bad" button
             document.getElementById('notyet').addEventListener('click', function() {
                 updateStartButton();
-                renderQuestions(score <= 3);
+                renderQuestions((score) => score < 3);
                 good.style.backgroundColor = '#a9d1cd';
                 good.style.transition = "all 1s";
                 bad.style.backgroundColor = '#02897A';
