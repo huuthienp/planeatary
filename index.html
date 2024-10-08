@@ -48,7 +48,7 @@
                     </div>
             </div>
             <div class="button_next">
-                <a href="qualtrics.html"><button class="next" id="continueButton">Take the quiz &#8594;</button></a>
+                <button class="next" id="continueButton">Take the quiz &#8594;</button>
             </div>
             <div>
                 <div class="overlay hidden"></div>
@@ -107,6 +107,7 @@
                 }
 
                 async function checkOrFetchResponseId() {
+                    
                     try {
                         showSpinner();
                         let preResponseId = localStorage.getItem('preResult');
