@@ -176,18 +176,22 @@
 
                 // Retrieve tasks from localStorage or fetch if not available
                 async function fetchTasks() {
-                    try {
-                        const response = await fetch('updated_tasks_final.json');
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok ' + response.statusText);
+                    const taskData = localStorage.getItem('tasks');
+                    if (!taskData) {
+                        try {
+                            const response = await fetch('updated_tasks_final.json');
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok ' + response.statusText);
+                            }
+                            const data = await response.json();
+                            return data;
+                        } catch (error) {
+                            console.error('Fetch error:', error);
+                            alert('Failed to load tasks. Please try again later.');
+                            return null;
                         }
-                        const data = await response.json();
-                        return data;
-                    } catch (error) {
-                        console.error('Fetch error:', error);
-                        alert('Failed to load tasks. Please try again later.');
-                        return null;
                     }
+                    return JSON.parse(taskData);
                 }
 
                 // Function to get task status from the API
@@ -214,11 +218,7 @@
 
                 async function renderQuestions(condition) {
                     QContainer.innerHTML = '';
-                    if(!localStorage.getItem('tasks')) {
-                        const tasks = await fetchTasks();
-                    } else {
-                        const tasks = localStorage.getItem('tasks');
-                    }
+                    const tasks = await fetchTasks(); // Fetch or retrieve tasks
 
                     if (!tasks || !preResult) {
                         QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
