@@ -121,7 +121,7 @@ body {
     width: 100%;
     display: flex;
     transition: 0.5s;
-    justify-content: center;
+    justify-content: flex-end;
   }
   .forwindow ul {
     list-style: none;
@@ -612,6 +612,9 @@ body {
   z-index: 1000;
 }
 
+.modal-content {
+  background-color: white;
+}
 
 .visual_info {
   overflow: auto;
