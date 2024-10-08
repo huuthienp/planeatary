@@ -265,8 +265,7 @@
                                 const checkbox = document.createElement('input');
                                 checkbox.type = 'checkbox';
 
-                                // Initialize checkbox state based on task selection
-                                checkbox.checked = task.choice === 'selected';
+                                
 
                                 // Update task count and localStorage on checkbox change
                                 checkbox.addEventListener('change', function() {
@@ -277,14 +276,17 @@
                                         task.choice = "";
                                         task_counts -= 1;
                                     }
-                                    localStorage.setItem('tasks', JSON.stringify(tasks)); // Save tasks to localStorage
-                                    updateStartButton(); // Update the start button based on the number of selected tasks
+                                    localStorage.setItem('tasks', JSON.stringify(tasks)); 
+                                    updateStartButton(); 
                                 });
+
 
                                 label.appendChild(checkbox);
                                 label.appendChild(document.createTextNode(task.taskName));
                                 taskItem.appendChild(label);
                                 taskList.appendChild(taskItem);
+                                // Initialize checkbox state based on task selection
+                                checkbox.checked = task.choice === 'chosen';
                             });
 
                             questionDiv.appendChild(taskList);
