@@ -163,11 +163,13 @@
                     }
                 };
 
-                let preResult = JSON.parse(localStorage.getItem('preResult')); // a JS Object
+                let preResult = JSON.parse(localStorage.getItem('preResult')); 
 
-                let preTotalScore = preResult.totalScore; // an integer
+                let preResponseId = JSON.parse(localStorage.getItem('preResponseId')); 
 
-                let prePointArray = preResult.pointArray // an Array of 12 integers (sorted from question 1 to 12)
+                let preTotalScore = preResult.totalScore; 
+
+                let prePointArray = preResult.pointArray 
 
                 // async function fetchResponseIdFromNetlify(quizType='pre', responseId) {
                 //     try {
@@ -225,7 +227,7 @@
                         const response = await fetch('/api/manage-tasks', {
                             method: 'GET',
                             headers: {
-                                'Q-RESPONSE-ID': preResult.result.responseId, 
+                                'Q-RESPONSE-ID': preResponseId, 
                                 'Content-Type': 'application/json'
                             }
                         });
@@ -267,6 +269,7 @@
 
             function renderTasks(scoreCondition) {
                 QContainer.innerHTML = ''; 
+                const tasks = JSON.parse(localStorage.getItem('tasks'));
 
                 scores.forEach((score, i) => {
                     if (scoreCondition(score)) {
