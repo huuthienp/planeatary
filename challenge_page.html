@@ -78,28 +78,31 @@
 
         let scores = [];
 
-        const content = document.querySelector(".content");
+        
         const cardContainer = document.querySelector(".card");
         // Create and append the next button
-        const nextContainer = document.createElement("div");
-        nextContainer.classList.add("btn-next");
         
-        const btn_next = document.createElement("button");
-        btn_next.classList.add("next");
-        btn_next.innerHTML = "Next";
-        btn_next.style.pointerEvents = "none"; // Disable initially
-        btn_next.style.backgroundColor = "grey"; // Disable color initially
-        btn_next.style.cursor = "not-allowed"; // Show disabled cursor
         
-        nextContainer.appendChild(btn_next);
-        content.appendChild(nextContainer);
 
         document.addEventListener("DOMContentLoaded", function() {
+            const nextContainer = document.createElement("div");
+            const content = document.querySelector(".content");
             const spinner = document.getElementById('spinner');
             const overlay = document.querySelector('.overlay');
             let isLoading = false;
             const minDisplayTime = 2000; // Minimum spinner display time in milliseconds
             let spinnerStartTime;
+
+            const btn_next = document.createElement("button");
+            btn_next.classList.add("next");
+            btn_next.innerHTML = "Next";
+            btn_next.style.pointerEvents = "none"; // Disable initially
+            btn_next.style.backgroundColor = "grey"; // Disable color initially
+            btn_next.style.cursor = "not-allowed"; // Show disabled cursor
+            nextContainer.classList.add("btn-next");
+        
+            nextContainer.appendChild(btn_next);
+            content.appendChild(nextContainer);
 
             // Function to show the spinner
             function showSpinner() {
@@ -235,7 +238,6 @@
                 }
             }
         });
-
 
         const modal = document.querySelector(".modal");
         const overlay = document.querySelector(".overlay");
