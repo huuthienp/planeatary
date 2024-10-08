@@ -229,8 +229,22 @@
                     document.getElementById('preQ').style.backgroundColor = '#a9d1cd';    
                     document.getElementById('preQ').style.transition = "all 1s";
                     document.getElementById('postQ').style.transition = "all 1s"
-                    
+
                 });
+
+                // Remove next step, suggestion, and select-tasks button if post quiz is done
+                const toRemove = [
+                    'p.next-step',
+                    'p.suggestion',
+                    'button.select-tasks'
+                ];
+
+                const tagsToRemove = toRemove.map(s => document.querySelector(s)) ;
+
+                tagsToRemove.forEach(
+                    (tag) => { tag.remove() }
+                );
+
             } else {
                 document.getElementById('preQ').style.backgroundColor = '#02897A';   
                 document.getElementById('postQ').style.backgroundColor = 'grey';
@@ -271,9 +285,9 @@
                 } else {
                     window.location.href = "manifesto.html";
                 }
-    
+
             });
         });
-    </script>
+        </script>
 </body>
 </html>
