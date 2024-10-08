@@ -85,68 +85,60 @@
         
 
         document.addEventListener("DOMContentLoaded", function() {
-            const cardContainer = document.querySelector(".card");
-            const modal = document.getElementById("taskModal");
-            const modalOverlay = document.getElementById("modalOverlay");
-            const modalTitle = document.getElementById("modalTitle");
-            const modalDescription = document.getElementById("modalDescription");
+    const cardContainer = document.querySelector(".card");
+    const modal = document.getElementById("taskModal");
+    const modalOverlay = document.getElementById("modalOverlay");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDescription = document.getElementById("modalDescription");
 
-            // Function to show the modal
-            function showModal(title, description) {
-                modalTitle.textContent = title;
-                modalDescription.textContent = description;
-                modal.classList.remove("hidden");
-                modalOverlay.classList.remove("hidden");
-            }
+    // Function to show the modal
+    function showModal(title, description) {
+        modalTitle.textContent = title;
+        modalDescription.textContent = description;
+        modal.classList.remove("hidden");
+        modalOverlay.classList.remove("hidden");
+    }
 
-            function closeModal() {
-                const modal = document.getElementById("taskModal");
-                const modalOverlay = document.getElementById("modalOverlay");
-                modal.classList.add("hidden");
-                modalOverlay.classList.add("hidden");
-            }
+    // Function to close the modal
+    function closeModal() {
+        modal.classList.add("hidden");
+        modalOverlay.classList.add("hidden");
+    }
 
-            // Ensure the event listener for the close button is defined:
-            document.querySelector(".close").addEventListener("click", closeModal);
+    // Close modal when user clicks the close button
+    document.querySelector(".close").addEventListener("click", closeModal);
 
-            // Close modal when user clicks the close button
-            document.querySelector(".close").addEventListener("click", function() {
-                modal.classList.add("hidden");
-                modalOverlay.classList.add("hidden");
-            });
+    // Close modal when user clicks outside the modal
+    window.addEventListener("click", function(event) {
+        if (event.target === modalOverlay) {
+            closeModal();
+        }
+    });
 
-            // Close modal when user clicks outside the modal
-            window.addEventListener("click", function(event) {
-                if (event.target === modalOverlay) {
-                    modal.classList.add("hidden");
-                    modalOverlay.classList.add("hidden");
-                }
-            });
+    // Dynamically create the Next button
+    const nextButtonContainer = document.createElement("div");
+    nextButtonContainer.classList.add("next-button-container");
 
-            // Dynamically create the Next button
-            const nextButtonContainer = document.createElement("div");
-            nextButtonContainer.classList.add("next-button-container");
-            
-            const btn_next = document.createElement("button");
-            btn_next.id = "btn_next";
-            btn_next.classList.add("next-button");
-            btn_next.textContent = "Next";
-            btn_next.style.pointerEvents = "none"; // Disable initially
-            btn_next.style.backgroundColor = "grey"; // Disable color initially
-            btn_next.style.cursor = "not-allowed"; // Show disabled cursor
-            
-            nextButtonContainer.appendChild(btn_next);
-            cardContainer.appendChild(nextButtonContainer); // Add the button after tasks
+    const btn_next = document.createElement("button");
+    btn_next.id = "btn_next";
+    btn_next.classList.add("next-button");
+    btn_next.textContent = "Next";
+    btn_next.style.pointerEvents = "none"; // Disable initially
+    btn_next.style.backgroundColor = "grey"; // Disable color initially
+    btn_next.style.cursor = "not-allowed"; // Show disabled cursor
 
-            // Retrieve tasks from localStorage
-            const tasks = JSON.parse(localStorage.getItem('tasks'));
+    nextButtonContainer.appendChild(btn_next);
+    cardContainer.appendChild(nextButtonContainer); // Add the button after tasks
 
-            // Check if tasks exist in localStorage
-            if (tasks) {
-                displaySelectedTasks(tasks); // Display tasks
-            } else {
-                cardContainer.innerHTML = "<p>No tasks found.</p>";
-            }
+    // Retrieve tasks from localStorage
+    let tasks = JSON.parse(localStorage.getItem('tasks'));
+
+    // Check if tasks exist in localStorage
+    if (tasks) {
+        displaySelectedTasks(tasks); // Display tasks
+    } else {
+        cardContainer.innerHTML = "<p>No tasks found.</p>";
+    }
 
     // Function to display selected tasks and allow status update
     function displaySelectedTasks(tasks) {
@@ -160,12 +152,12 @@
                 if (task.choice === 'selected') {
                     // Create and append a card for each selected task
                     const taskCard = document.createElement("div");
-                    taskCard.classList.add(task.status === "Completed" ? "card_completed" : "card_incompleted");
+                    taskCard.classList.add("task-card", task.status === "Completed" ? "card_completed" : "card_incompleted");
 
                     const taskName = document.createElement("span");
                     taskName.textContent = task.taskName;
 
-                    
+                    // Add an info icon for task description
                     const infoIcon = document.createElement("span");
                     infoIcon.classList.add("info-icon");
                     infoIcon.innerHTML = "&#9432;"; // Unicode info icon
@@ -176,18 +168,15 @@
                         showModal(task.taskName, task.taskDescription);
                     });
 
-
                     const completion = document.createElement("span");
                     completion.classList.add("completion");
                     completion.textContent = task.status === "Completed" ? "Completed" : "Done";
 
                     // Set card styles based on status
                     if (task.status === "Completed") {
-                        taskCard.classList.remove("card_incompleted");
                         taskCard.classList.add("card_completed");
                         taskName.style.textDecoration = "line-through";
                     } else {
-                        taskCard.classList.remove("card_completed");
                         taskCard.classList.add("card_incompleted");
                     }
 
@@ -199,18 +188,26 @@
                     // Add event listener to task card to update status
                     taskCard.addEventListener('click', function() {
                         // Toggle task status between "Done" and "Completed"
-                        if (task.status === "Done") {
-                            task.status = "Completed";
-                            taskCard.classList.remove("card_incompleted");
-                            taskCard.classList.add("card_completed");
-                            taskName.style.textDecoration = "line-through";
-                        }
+                        task.status = task.status === "Done" ? "Completed" : "Done";
 
                         // Update task in localStorage
                         localStorage.setItem('tasks', JSON.stringify(tasks));
 
-                        // Re-render tasks to reflect the updated status
-                        displaySelectedTasks(tasks);
+                        // Update styles for the current card without re-rendering all
+                        if (task.status === "Completed") {
+                            taskCard.classList.remove("card_incompleted");
+                            taskCard.classList.add("card_completed");
+                            taskName.style.textDecoration = "line-through";
+                            completion.textContent = "Completed";
+                        } else {
+                            taskCard.classList.remove("card_completed");
+                            taskCard.classList.add("card_incompleted");
+                            taskName.style.textDecoration = "none";
+                            completion.textContent = "Done";
+                        }
+
+                        // Update the next button's state
+                        updateNextButton();
                     });
                 }
             });
@@ -236,19 +233,11 @@
         if (allCompleted) {
             btn_next.style.pointerEvents = "auto"; // Enable the next button
             btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
-            btn_next.style.cursor = "pointer"; 
-            btn_next.addEventListener("click", function() {
-                if (btn_next.style.pointerEvents === "auto") {
-                    let text = "Would you like to proceed to the post quiz?";
-                    if (confirm(text)) {
-                        window.location.href = "congrat_page.html";
-                    }
-                }
-            });
+            btn_next.style.cursor = "pointer";
         } else {
             btn_next.style.pointerEvents = "none"; // Disable the next button
             btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
-            btn_next.style.cursor = "not-allowed"; 
+            btn_next.style.cursor = "not-allowed";
         }
     }
 });
