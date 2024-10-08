@@ -253,10 +253,13 @@
                         const tasks = JSON.parse(localStorage.getItem('tasks'));
                         scores = preResult.pointArray;
                         scores.forEach((score, i) => {
-                            tasks.forEach((task, j) => {
-                                if (task.tasks.choice === "selected") {
-                                    task_counts += 1;
-                                }
+                            Object.keys(tasks).forEach(questionKey => {
+                                const taskGroup = tasks[questionKey].tasks;
+                                taskGroup.forEach((task, j) => {
+                                    if (task.choice === "selected") {
+                                        task_counts += 1;
+                                    }
+                                });
                             });
                         });
                         updateStartButton();
