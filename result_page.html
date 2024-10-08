@@ -142,7 +142,7 @@
                 }
             };
             let preResult = JSON.parse(localStorage.getItem('preResult'));
-            let postResult = localStorage.getItem('postResult');
+            let postResult = JSON.parse(localStorage.getItem('postResult'));
 
 
             const comparison = document.getElementById('improved_score');
@@ -230,9 +230,9 @@
 
 
             function compareScores() {
-                let preQuizTotal = calculateTotalScore(preQuizData);
+                let preQuizTotal = calculateTotalScore(preResult.totalScore);
                 if (postResult) {
-                    let postQuizTotal = calculateTotalScore(postQuizData);
+                    let postQuizTotal = calculateTotalScore(postResult.totalScore);
                     let improvement = postQuizTotal - preQuizTotal;
                     return improvement;
                 }
