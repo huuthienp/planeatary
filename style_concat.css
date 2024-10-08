@@ -175,6 +175,7 @@ body {
     border-radius: 0.5em;
     z-index: 1000;
     justify-content: center;
+    flex-direction: column;
   }
 
 
@@ -610,6 +611,7 @@ body {
   border-radius: 0.5em;
   z-index: 1000;
   justify-content: center;
+  flex-direction: column;
 }
 
 .modal-content {
@@ -658,6 +660,9 @@ body {
 .close:hover,
 .close:focus {
   cursor: pointer;
+  background-color: #02897A;  /* Use the brand color for hover */
+  color: white;  /* Make the text color white for better contrast */
+  transform: scale(1.1);  /* Increase size slightly on hover */
 }
 
 /*.align .modal2 {

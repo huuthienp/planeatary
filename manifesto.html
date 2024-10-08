@@ -14,7 +14,7 @@
                 <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
                 <!-- <li><a href="index.html">Home</a></li>
                 <li><a href="qualtrics.html"><b>Quiz</b></a></li> -->
-                <li><a href="manifesto.html">Challenge</a></li>
+                <!-- <li><a href="manifesto.html">Challenge</a></li> -->
                 <li><a href="result_page.html">Dashboard</a></li>
                 <li><!-- <a href="#">About us</a> --></li>
             </ul>
@@ -28,7 +28,7 @@
                     <ul>
                         <!-- <li><a href="index.html">Home</a></li>
                         <li><a href="qualtrics.html"><b>Quiz</b></a></li> -->
-                        <li><a href="manifesto.html">Challenge</a></li>
+                        <!-- <li><a href="manifesto.html">Challenge</a></li> -->
                         <li><a href="result_page.html">Dashboard</a></li>
                         <!-- <li>About us</li> -->
                     </ul>
@@ -43,7 +43,7 @@
                 <p id="tentask"></p>
             </div>
             <div class="button2">
-                <button class="start"><a href="challenge_page.html">Start</a></button>
+                <button class="start">Start</button>
             </div>
             <div class="improvement">
                 <button id="good">Good scores</button>
@@ -171,36 +171,6 @@
                 let preTotalScore = preResult.totalScore; 
 
                 let prePointArray = preResult.pointArray 
-
-                // async function fetchResponseIdFromNetlify(quizType='pre', responseId) {
-                //     try {
-                //         const endpoint = `/api/fetch-response?quizType=${quizType}`;
-                //         const options = {
-                //             method: 'GET',
-                //             headers: {
-                //                 'Content-Type': 'application/json',
-                //                 'Q-RESPONSE-ID': responseId,
-                //             },
-                //         };
-
-                //         // Fetch the responseId from the Netlify endpoint
-                //         const response = await fetch(endpoint, options);
-
-                //         // Check if the response is successful
-                //         if (!response.ok) {
-                //             throw new Error('Failed to fetch response ID');
-                //         }
-
-                //         // Parse the JSON response
-                //         const data = await response.json();
-
-                //         return data;
-                        
-                //     } catch (error) {
-                //         console.error('Error fetching response ID from Netlify:', error);
-                //         return null; 
-                //     }
-                // }
 
 
 
@@ -343,6 +313,12 @@
 
                 // Call the function to render the questions and tasks
                 renderQuestions((score) => score < 3);
+                // Attach single click listener for the start button navigation
+                startButton.addEventListener('click', function(event) {
+                    if (task_counts >= 10) {
+                        window.location.href = "challenge_page.html";
+                    }
+                });
 
             // Event listener for "good" button
             document.getElementById('good').addEventListener('click', function() {
@@ -364,12 +340,7 @@
                 bad.style.transition = "all 1s";
             });
 
-            // Attach single click listener for the start button navigation
-            startButton.addEventListener('click', function(event) {
-                if (task_counts >= 10) {
-                    window.location.href = "challenge_page.html";
-                }
-            });
+            
         });
         </script>
     </body>
