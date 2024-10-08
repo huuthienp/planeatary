@@ -28,7 +28,7 @@
                 <ul>
                     <li>Home</li>
                     <li><a href="qualtrics.html"><b>Quiz</b></a></li>
-                    <li><a href="manifesto.html">Challenge</a></li>
+                    <li><a href="challenge_page.html">Challenge</a></li>
                     <li><a href="result_page.html">Dashboard</a></li>
                     <!-- <li>About us</li> -->
                 </ul>
@@ -56,8 +56,8 @@
                     <button class="close" >x</button>
                 </div>
                 <div class="modal-content">
-                    <h2 id="modalTitle">Task Title</h2>
-                    <p id="modalDescription">Task Description</p>
+                    <h2 id="modalTitle"></h2>
+                    <p id="modalDescription"></p>
                 </div>
             </div>
         </div>
@@ -316,9 +316,20 @@
             btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
             btn_next.style.cursor = "not-allowed";
             btn_next.disabled = true;
+            document.getElementById("btn_next").addEventListener("click", function() {
+                window.location.href = "congrat_page.html"; 
+            });
         }
     }
 
+    // Call updateNextButton function whenever a task is updated
+    document.querySelectorAll('.task-card').forEach(taskCard => {
+        taskCard.addEventListener('click', function() {
+            // Update task status code here...
+            updateNextButton(); // Update the button status after clicking a task
+        });
+    });
+    
     // Function to send updated task status to Netlify
     function updateTaskStatus(task) {
         fetch('/api/manage-tasks', {
