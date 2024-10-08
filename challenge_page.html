@@ -243,7 +243,7 @@
 
             // Filter tasks that are selected
             taskGroup.forEach(task => {
-                if (task.choice === 'selected') {
+                if (task.choice === 'chosen') {
                     // Create and append a card for each selected task
                     const taskCard = document.createElement("div");
                     taskCard.classList.add("task-card", task.status === "Completed" ? "card_completed" : "card_incompleted");
