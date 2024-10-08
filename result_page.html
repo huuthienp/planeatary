@@ -248,6 +248,17 @@
                     document.getElementById('preQ').style.transition = "all 1s";
                 }
             });
+
+            document.getElementById('postQ').addEventListener('click', function() {
+                //handleFetchedData(preResult, taskData);
+                displayQuestions(preResult);
+                if (postResult) {
+                    document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
+                    document.getElementById('preQ').style.transition = "all 1s";
+                    document.getElementById('postQ').style.backgroundColor = '#02897A';    
+                    document.getElementById('postQ').style.transition = "all 1s";
+                }
+            });
             
             document.getElementById('postQ').style.color = 'white';
             document.getElementById('preQ').style.color = 'white';
