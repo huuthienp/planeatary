@@ -351,6 +351,7 @@ body {
 .status {
   display: flex;
   align-items: center;
+  justify-content: center;
   color: rgba(33,52,60,1);
   font-weight: Bold;
   font-size: 2em;
