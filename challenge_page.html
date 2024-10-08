@@ -81,7 +81,8 @@
 
         let scores = [];
         let spinnerStartTime;
-        const minDisplayTime = 2000;
+        let isLoading;
+        const minDisplayTime = 1000;
         let preResponseId = localStorage.getItem('preResponseId');
         const modal = document.querySelector(".modal");
         const overlay = document.querySelector(".overlay");
@@ -207,7 +208,7 @@
                 }
             });
 
-            // Dynamically create the Next button
+            
             const nextButtonContainer = document.querySelector(".btn-next");
             const btn_next = document.querySelector(".next")
             btn_next.id = "btn_next";
@@ -340,12 +341,11 @@
     }
 
     // // Call updateNextButton function whenever a task is updated
-    // document.querySelectorAll('.task-card').forEach(taskCard => {
-    //     taskCard.addEventListener('click', function() {
-    //         // Update task status code here...
-    //         updateNextButton(); // Update the button status after clicking a task
-    //     });
-    // });
+    document.querySelectorAll('.task-card').forEach(taskCard => {
+        taskCard.addEventListener('click', function() {
+            updateNextButton(); 
+        });
+    });
     
 });
     </script>
