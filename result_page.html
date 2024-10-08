@@ -250,9 +250,10 @@
             });
 
             document.getElementById('postQ').addEventListener('click', function() {
-                //handleFetchedData(preResult, taskData);
-                displayQuestions(preResult);
+                //handleFetchedData(postResult, taskData);
+                
                 if (postResult) {
+                    displayQuestions(postResult);
                     document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                     document.getElementById('preQ').style.transition = "all 1s";
                     document.getElementById('postQ').style.backgroundColor = '#02897A';    
