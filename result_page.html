@@ -141,26 +141,11 @@
                     isLoading = false;
                 }
             };
-            
-            let preResponseId = localStorage.getItem('preResponseId');
-            let postResponseId = localStorage.getItem('postResponseId');
+            let preResult = JSON.parse(localStorage.getItem('preResult'));
+            let postResult = localStorage.getItem('postResult');
 
-            // Sample data: Replace these with your actual data
-            const preQuizData = [
-                { questionNumber: 1, score: 1 },
-                { questionNumber: 2, score: 5 },
-                { questionNumber: 3, score: 3 }
-                // Add more questions as needed
-            ];
 
-            const postQuizData = [
-                { questionNumber: 1, score: 4 },
-                { questionNumber: 2, score: 5 },
-                { questionNumber: 3, score: 4 }
-                // Add more questions as needed
-            ];
-
-            const comparisonContainer = document.getElementById('improved_score');
+            const comparison = document.getElementById('improved_score');
 
             async function fetchTasks() {
                     try {
@@ -177,84 +162,83 @@
                     }
                 }
 
+            // async function handleFetchedData(responseData) {
+            //     const taskData = JSON.stringify(fetchTasks());
+            //         if (responseData.result && taskData) {
+            //             const {values} = responseData.result;
 
-            async function handleFetchedData(responseData) {
-                const taskData = JSON.stringify(fetchTasks());
-                    if (responseData.result && taskData) {
-                        const {values} = responseData.result;
-
-                        if (responseData.result.responseId == taskData.id) {
-                            const surveyResponses = {
-                            id: values.responseData.result.responseId,
-                            startDate: values.startDate,
-                            endDate: values.endDate,
-                            responses: {
-                                    "QID1":{
-                                        "score": values.QID3
-                                    },
-                                    "QID2":{
-                                        "score": values.QID4
-                                    },
-                                    "QID3":{
-                                        "score": values.QID5
-                                    }, 
-                                    "QID4":{
-                                        "score": values.QID6
-                                    },
-                                    "QID5":{
-                                        "score": values.QID7
-                                    },
-                                    "QID6":{
-                                        "score": values.QID8
-                                    },
-                                    "QID7":{
-                                        "score": values.QID9
-                                    },
-                                    "QID8":{
-                                        "score": values.QID10
-                                    },
-                                    "QID9":{
-                                        "score": values.QID11
-                                    },
-                                    "QID10":{
-                                        "score": values.QID12
-                                    },
-                                    "QID11":{
-                                        "score": values.QID13
-                                    },
-                                    "QID12":{
-                                        "score": values.QID14
+            //             if (responseData.result.responseId == taskData.id) {
+            //                 const surveyResponses = {
+            //                 id: values.responseData.result.responseId,
+            //                 startDate: values.startDate,
+            //                 endDate: values.endDate,
+            //                 responses: {
+            //                         "QID1":{
+            //                             "score": values.QID3
+            //                         },
+            //                         "QID2":{
+            //                             "score": values.QID4
+            //                         },
+            //                         "QID3":{
+            //                             "score": values.QID5
+            //                         }, 
+            //                         "QID4":{
+            //                             "score": values.QID6
+            //                         },
+            //                         "QID5":{
+            //                             "score": values.QID7
+            //                         },
+            //                         "QID6":{
+            //                             "score": values.QID8
+            //                         },
+            //                         "QID7":{
+            //                             "score": values.QID9
+            //                         },
+            //                         "QID8":{
+            //                             "score": values.QID10
+            //                         },
+            //                         "QID9":{
+            //                             "score": values.QID11
+            //                         },
+            //                         "QID10":{
+            //                             "score": values.QID12
+            //                         },
+            //                         "QID11":{
+            //                             "score": values.QID13
+            //                         },
+            //                         "QID12":{
+            //                             "score": values.QID14
                                         
-                                    }
-                                }
-                            };
-                            Object.keys(surveyResponses.responses).forEach((qid, i) => {
-                                let taskKey = `${i + 1}`;
-                                if (taskData[taskKey]) {
-                                    surveyResponses.responses[qid].tasks = taskData[taskKey].tasks;
-                                }
-                            });
+            //                         }
+            //                     }
+            //                 };
+            //                 Object.keys(surveyResponses.responses).forEach((qid, i) => {
+            //                     let taskKey = `${i + 1}`;
+            //                     if (taskData[taskKey]) {
+            //                         surveyResponses.responses[qid].tasks = taskData[taskKey].tasks;
+            //                     }
+            //                 });
                         
-                        };
-                        localStorage.setItem('preResponseId', surveyResponses);
-                        console.log('Processed survey data:', surveyResponses);
+            //             };
+            //             localStorage.setItem('preResult', surveyResponses);
+            //             console.log('Processed survey data:', surveyResponses);
                         
-                    } else {
-                        console.error('Invalid data structure:', responseData);
-                    }
-                }
+            //         } else {
+            //             console.error('Invalid data structure:', responseData);
+            //         }
+            //     }
 
-            // Function to calculate the total score
-            function calculateTotalScore(quizData) {
-                return quizData.reduce((total, question) => total + question.score, 0);
-            }
 
             function compareScores() {
                 let preQuizTotal = calculateTotalScore(preQuizData);
-                let postQuizTotal = calculateTotalScore(postQuizData);
-                
-                let improvement = postQuizTotal - preQuizTotal;
-                return improvement;
+                if (postResult) {
+                    let postQuizTotal = calculateTotalScore(postQuizData);
+                    let improvement = postQuizTotal - preQuizTotal;
+                    return improvement;
+                }
+                else {
+                    return 0;
+                }
             }
 
             function displayQuestions(questionsData) {
@@ -262,6 +246,7 @@
 
                 // Clear the container first
                 questionsContainer.innerHTML = '';
+                comparison.innerHTML = '';
 
                 // Iterate over each question in the questionsData array
                 questionsData.forEach((question) => {
@@ -295,25 +280,29 @@
                     // Append the question container to the main container
                     questionsContainer.appendChild(questionDiv);
                 });
+                comparison.innerHTML = compareScores();
             }
+            
 
 
             document.getElementById('preQ').addEventListener('click', function() {
-                handleFetchedData(preResponseId, taskData);
-                displayQuestions(preResponseId);
+                //handleFetchedData(preResult, taskData);
+                displayQuestions(preResult);
             });
 
             document.getElementById('postQ').addEventListener('click', function() {
-                handleFetchedData(postResponseId, taskData);
-                displayQuestions(postResponseId)
+                //handleFetchedData(postResponseId, taskData);
+                displayQuestions(postResult)
             });
 
             // Attach single click listener for the start button navigation
             selectButton.addEventListener('click', function(event) {
-                window.location.href = "manifesto.html";
+                if(postResult) {
+                    window.location.href = "welcome_page.html";
+                } else {
+                    window.location.href = "manifesto.html";
+                }
             });
-            calculateTotalScore(quizData);
-            compareScores();
         });
     </script>
 </body>
