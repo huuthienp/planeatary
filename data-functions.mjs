@@ -63,3 +63,48 @@ export function saveLocalStorage(data, type) {
     }
   }
 }
+
+
+export function extractTaskArrays(data) {
+/**
+ * Extracts two arrays of task numbers from the given data object.
+ * @param {Object} data - The input data object.
+ * @returns {Object} An object containing two arrays: chosen tasks and done tasks.
+ *
+ * Expected structure of data:
+ * {
+ *   '1': {
+ *     tasks: [
+ *       {
+ *         taskNumber: string,
+ *         choice: string,
+ *         status: string,
+ *       },
+ *       // ... more tasks
+ *     ]
+ *   },
+ *   '2': {
+ *     // Similar structure as '1'
+ *   },
+ *   // ... more numbered keys
+ * }
+ */
+  const chosen = [];
+  const done = [];
+
+  Object.values(data).forEach(question => {
+    question['tasks'].forEach(task => {
+      if (task.choice === 'chosen') {
+        chosen.push(task.taskNumber);
+      }
+      if (task.status === 'Completed') {
+        done.push(task.taskNumber);
+      }
+    });
+  });
+
+  return {
+    chosen: chosen,
+    done: done
+  };
+}
