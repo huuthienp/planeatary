@@ -214,7 +214,11 @@
 
                 async function renderQuestions(condition) {
                     QContainer.innerHTML = '';
-                    const tasks = await fetchTasks(); // Fetch or retrieve tasks
+                    if(!localStorage.getItem('tasks')) {
+                        const tasks = await fetchTasks();
+                    } else {
+                        const tasks = localStorage.getItem('tasks');
+                    }
 
                     if (!tasks || !preResult) {
                         QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
