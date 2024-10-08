@@ -151,6 +151,41 @@
                     hideSpinner();
             }
 
+            async function updateTasks(chosenTasks, doneTasks) {
+                    try {
+                        let surveyResponses = localStorage.getItem('preResponseId');
+                        if (!surveyResponses) {
+                            console.error('preResponseId is not available in localStorage.');
+                            return;
+                        }
+
+                        const endpoint = '/api/manage-tasks';
+                        const body = {
+                            id: surveyResponses.result.responseId,
+                            chosen: chosenTasks,
+                            done: doneTasks,
+                        };
+
+                        const options = {
+
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Q-RESPONSE-ID': surveyResponses.result.responseId,
+                            },
+                            body: JSON.stringify(body),
+                        };
+
+                        const response = await fetch(endpoint, options);
+                        if (!response.ok) {
+                            throw new Error(`Failed to update tasks: ${response.status} ${response.statusText}`);
+                        }
+                        console.log('Tasks updated successfully!');
+                    } catch (error) {
+                        console.error('Error updating tasks:', error);
+                    }
+                }
+
 
             // Function to display tasks
             function displayTasksFromScores(scores) {
@@ -207,12 +242,19 @@
                 updateNextButton(); 
             }
 
-            // Function to toggle task status and update localStorage
             function toggleTaskStatus(scoreIndex, taskIndex) {
                 const tasks = scores[scoreIndex].tasks;
-                tasks[taskIndex].status = tasks[taskIndex].status === "Done" ? "Completed" : "Done"; 
-                localStorage.setItem("user", JSON.stringify(scores)); // Update stored scores
-                displayTasksFromScores(scores); // Re-render the tasks
+
+                // Allow changing the status only from "Done" to "Completed"
+                if (tasks[taskIndex].status === "Done") {
+                    tasks[taskIndex].status = "Completed"; 
+                }
+
+                // Update stored scores in localStorage
+                localStorage.setItem("user", JSON.stringify(scores));
+
+                // Re-render the tasks
+                displayTasksFromScores(scores);
             }
 
             // Function to update the Next button's state
