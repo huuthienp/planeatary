@@ -95,12 +95,13 @@
 
             const btn_next = document.createElement("button");
             btn_next.classList.add("next");
+            btn_next.id = "btn_next";  // Add this line to set the ID
             btn_next.innerHTML = "Next";
             btn_next.style.pointerEvents = "none"; // Disable initially
             btn_next.style.backgroundColor = "grey"; // Disable color initially
             btn_next.style.cursor = "not-allowed"; // Show disabled cursor
             nextContainer.classList.add("btn-next");
-        
+                    
             nextContainer.appendChild(btn_next);
             content.appendChild(nextContainer);
 
@@ -215,8 +216,6 @@
                         }
                     });
                 });
-
-                const btn_next = document.querySelector("#btn_next"); // Next button selector
 
                 // Enable or disable the next button based on task completion status
                 if (allCompleted) {
