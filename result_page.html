@@ -53,8 +53,9 @@
             <div class="score">
                 <div class="circle">
                     <h2 id="curr_score"></h2>
-                    <p id="improved_score"></p>
+                    <p id="total"></p>
                 </div>
+                <p id="improvement"></p>
                 <p class="next-step">Next step: Select 10 Tasks To Improve Your Scores!</p>
                 <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
             </div>
@@ -232,9 +233,9 @@
             function compareScores() {
                 let preQuizTotal = calculateTotalScore(preResult.totalScore);
                 if (postResult) {
+                    const improvement = document.getElementById('improvement');
                     let postQuizTotal = calculateTotalScore(postResult.totalScore);
-                    let improvement = postQuizTotal - preQuizTotal;
-                    return improvement;
+                    improvement.innerHTML = postQuizTotal - preQuizTotal;
                 }
                 else {
                     return 0;
@@ -243,9 +244,8 @@
 
             function displayQuestions(questionsData) {
                 const questionsContainer = document.querySelector('.questions');
-                questionsContainer.innerHTML = ''; // Clear the container first
-                comparison.innerHTML = ''; // Clear comparison
-
+                questionsContainer.innerHTML = ''; 
+                comparison.innerHTML = ''; 
                 // Handle missing pointArray or invalid data
                 if (!questionsData.pointArray || !Array.isArray(questionsData.pointArray)) {
                     document.getElementById('curr_score').textContent = 'No score available.';
@@ -261,7 +261,7 @@
                     // Apply styling based on score
                     if (score <= 2) {
                         questionDiv.classList.add('red');
-                    } else if (score >= 4) {
+                    } else if (score >= 3) {
                         questionDiv.classList.add('green');
                     }
 
@@ -273,8 +273,9 @@
                     questionsContainer.appendChild(questionDiv);
                 });
 
-                comparison.innerHTML = compareScores(); // Show comparison
             }
+
+            compareScores();
             
 
             document.getElementById('preQ').addEventListener('click', function() {
@@ -282,10 +283,14 @@
                 displayQuestions(preResult);
             });
 
-            document.getElementById('postQ').addEventListener('click', function() {
-                //handleFetchedData(postResponseId, taskData);
-                displayQuestions(postResult);
-            });
+            if (postResult) {
+                document.getElementById('postQ').addEventListener('click', function() {
+                    //handleFetchedData(postResponseId, taskData);
+                    displayQuestions(postResult);
+                });
+            } else {
+                document.getElementById('postQ').style.color = 'grey';
+            }
 
             // Attach single click listener for the start button navigation
             selectButton.addEventListener('click', function(event) {
