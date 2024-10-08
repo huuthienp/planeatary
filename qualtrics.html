@@ -58,19 +58,18 @@
             document.getElementById("mySidenav").style.width = "0";
             document.body.style.backgroundColor = "white";
         };
-        document.addEventListener("DOMContentLoaded", function() {
-            let preResult = JSON.parse(localStorage.getItem('preResult'));
-            if (preResult) {
-                document.querySelector('.next').addEventListener("click", function() {
-                    window.location.href = "result_page.html";
-                })
-            } else {
-                document.querySelector('.next').style.backgroundColor = 'grey';
-                document.querySelector('.next').disabled = true;
-            }
             
-        });
     </script>
-    <script src="/listen-to-qualtrics.js"></script>        
+    <script src="/listen-to-qualtrics.js">
+        let preResult = JSON.parse(localStorage.getItem('preResult'));
+        if (preResult) {
+            document.querySelector('.next').addEventListener("click", function() {
+            window.location.href = "result_page.html";
+            })
+        } else {
+            document.querySelector('.next').style.backgroundColor = 'grey';
+            document.querySelector('.next').disabled = true;
+        }
+    </script>        
     </body>
 </html>
