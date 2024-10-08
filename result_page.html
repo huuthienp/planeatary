@@ -147,7 +147,7 @@
 
 
             const comparison = document.getElementById('improvement');
-            const select =  document.quesrySelector('.select-tasks');
+            const select =  document.querySelector('.select-tasks');
 
             async function fetchTasks() {
                 try {
@@ -317,7 +317,7 @@
             // Attach single click listener for the start button navigation
             selectButton.addEventListener('click', function(event) {
                 if(postResult) {
-                    window.location.href = "welcome_page.html";
+                    window.location.href = "index.html";
                 } else {
                     window.location.href = "manifesto.html";
                 }
