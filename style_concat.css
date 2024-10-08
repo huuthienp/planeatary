@@ -628,6 +628,18 @@ body {
 
 .btn > .close {
   font-size: 1.5em; 
+  background: #f1f1f1; /* Lighter background color for better contrast */
+  color: #333;  /* Use a darker color for better visibility */
+  font-size: 2em; /* Make the close button more noticeable */
+  font-weight: bold;
+  border-radius: 50%; /* Make it round */
+  border: none;  /* Remove unnecessary border */
+  width: 40px;  /* Width to match height */
+  height: 40px; /* Height for a square button */
+  text-align: center;
+  line-height: 40px;  /* Vertically align the 'x' */
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 /* The Close Button */
