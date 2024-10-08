@@ -165,78 +165,12 @@
                 }
             }
 
-            // async function handleFetchedData(responseData) {
-            //     const taskData = JSON.stringify(fetchTasks());
-            //         if (responseData.result && taskData) {
-            //             const {values} = responseData.result;
-
-            //             if (responseData.result.responseId == taskData.id) {
-            //                 const surveyResponses = {
-            //                 id: values.responseData.result.responseId,
-            //                 startDate: values.startDate,
-            //                 endDate: values.endDate,
-            //                 responses: {
-            //                         "QID1":{
-            //                             "score": values.QID3
-            //                         },
-            //                         "QID2":{
-            //                             "score": values.QID4
-            //                         },
-            //                         "QID3":{
-            //                             "score": values.QID5
-            //                         }, 
-            //                         "QID4":{
-            //                             "score": values.QID6
-            //                         },
-            //                         "QID5":{
-            //                             "score": values.QID7
-            //                         },
-            //                         "QID6":{
-            //                             "score": values.QID8
-            //                         },
-            //                         "QID7":{
-            //                             "score": values.QID9
-            //                         },
-            //                         "QID8":{
-            //                             "score": values.QID10
-            //                         },
-            //                         "QID9":{
-            //                             "score": values.QID11
-            //                         },
-            //                         "QID10":{
-            //                             "score": values.QID12
-            //                         },
-            //                         "QID11":{
-            //                             "score": values.QID13
-            //                         },
-            //                         "QID12":{
-            //                             "score": values.QID14
-                                        
-            //                         }
-            //                     }
-            //                 };
-            //                 Object.keys(surveyResponses.responses).forEach((qid, i) => {
-            //                     let taskKey = `${i + 1}`;
-            //                     if (taskData[taskKey]) {
-            //                         surveyResponses.responses[qid].tasks = taskData[taskKey].tasks;
-            //                     }
-            //                 });
-                        
-            //             };
-            //             localStorage.setItem('preResult', surveyResponses);
-            //             console.log('Processed survey data:', surveyResponses);
-                        
-            //         } else {
-            //             console.error('Invalid data structure:', responseData);
-            //         }
-            //     }
-
 
             function compareScores() {
                 let preQuizTotal = preResult.totalScore;
                 if (postResult) {
                     let postQuizTotal = postResult.totalScore;
-                    comparison.textContent = postQuizTotal - preQuizTotal;
+                    comparison.textContent = `Your score improved by ${postQuizTotal - preQuizTotal}`;
                 }
                 else {
                     return 0;
@@ -256,10 +190,10 @@
                     return;
                 }
                 if (postResult) {
-                    document.getElementById('curr_score').textContent = postResult.totalScore;
+                    document.getElementById('curr_score').textContent = questionsData.totalScore;
                     document.getElementById('total').textContent = 60;
                 } else {
-                    document.getElementById('curr_score').textContent = preResult.totalScore;
+                    document.getElementById('curr_score').textContent = questionsData.totalScore;
                     document.getElementById('total').textContent = 60;
                 }
                 // Iterate over each question in the pointArray
@@ -296,7 +230,6 @@
                     document.getElementById('preQ').style.transition = "all 1s";
                     document.getElementById('postQ').style.transition = "all 1s"
                     
-                    displayQuestions(postResult);
                 });
             } else {
                 document.getElementById('preQ').style.backgroundColor = '#02897A';   
