@@ -1,4 +1,4 @@
-// /listen-to-qualtrics.js
+// /listen-to-qualtrics.mjs
 
 import { saveLocalStorage } from './data-functions.mjs';
 
@@ -9,21 +9,21 @@ const allowedOrigins = new Set();
 // Function to add a new origin to the set
 function addOrigin(origin) {
   allowedOrigins.add(origin);
-  console.log("Updated allowed origins:", Array.from(allowedOrigins));
+  console.log('Updated allowed origins:', Array.from(allowedOrigins));
 }
 
 
 // Listen for messages from the iframe
-window.addEventListener("message", (event) => {
+window.addEventListener('message', (event) => {
   // Check if the received message is requesting the origin
-  if (event.data === "getParentOrigin") {
+  if (event.data === 'getParentOrigin') {
 
     // Add the origin of the message sender to the allowed list
     addOrigin(event.origin);
 
     // Prepare the response with the origin information
     const response = {
-      type: "originResponse",
+      type: 'originResponse',
       origin: window.location.origin
     };
 
@@ -36,6 +36,8 @@ window.addEventListener("message", (event) => {
       // Parse the JSON data from the event
       const data = JSON.parse(event.data); // error handled below
 
+      console.log('Parsed.', '\n', data);
+
       saveLocalStorage(data, 'response');
 
     } catch (error) {
@@ -46,6 +48,8 @@ window.addEventListener("message", (event) => {
       }
     }
   } else {
-    console.warn("Received message from unauthorized origin:", event.origin);
+    console.warn('Received message without greeting.',
+      '\nFrom:', event.origin,
+      '\nMessage:', event.data);
   }
 });
