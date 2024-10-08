@@ -220,6 +220,26 @@
                     }
                 }
 
+                // Function to get task status from the API
+                async function fetchTaskStatus() {
+                    try {
+                        showSpinner();
+                        const response = await fetch('/api/manage-tasks', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        });
+                        const data = await response.json();
+                        console.log('Task status fetched:', data);
+                        hideSpinner();
+                    } catch (error) {
+                        hideSpinner();
+                        console.error('Error fetching task status:', error);
+                    }
+                }
+
+
                 scores = preResult.pointArray; 
 
                 async function renderQuestions(condition) {
@@ -253,7 +273,7 @@
 
                             // Add the info icon with a click event to open the modal
                             const infoIcon = document.createElement('img');
-                            infoIcon.src = './images/info.png'; 
+                            infoIcon.src = './images/info.png';
                             infoIcon.width = '8px';
                             infoIcon.style.cursor = 'pointer'; // Cursor pointer on hover
 

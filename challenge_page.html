@@ -80,40 +80,107 @@
 
         
         const cardContainer = document.querySelector(".card");
-        // Create and append the next button
+        // Function to show the spinner
+        function showSpinner() {
+                    //console.log("Showing spinner...");
+                    spinner.classList.remove('hidden');
+                    overlay.classList.remove('hidden');
+                    isLoading = true;
+                    spinnerStartTime = Date.now();
+                };
+                
+                // Function to hide the spinner
+                function hideSpinner() {
+                    const elapsedTime = Date.now() - spinnerStartTime;
+                    if (elapsedTime < minDisplayTime) {
+                        // Delay hiding spinner until the minimum display time
+                        setTimeout(() => {
+                            //console.log("Hiding spinner after min time...");
+                            spinner.classList.add('hidden');
+                            overlay.classList.add('hidden');
+                            isLoading = false;
+                        }, minDisplayTime - elapsedTime);
+                    } else {
+                        //console.log("Hiding spinner...");
+                        spinner.classList.add('hidden');
+                        overlay.classList.add('hidden');
+                        isLoading = false;
+                    }
+                };
         
-        
+        // Function to get task status from the API
+        async function fetchTaskStatus() {
+            try {
+                showSpinner();
+                const response = await fetch('/api/manage-tasks', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                const data = await response.json();
+                console.log('Task status fetched:', data);
+                hideSpinner();
+            } catch (error) {
+                hideSpinner();
+                console.error('Error fetching task status:', error);
+            }
+        }
+
+        // Function to update task status using the API
+        async function updateTaskStatus(task) {
+            try {
+                showSpinner();
+                const response = await fetch('/api/manage-tasks', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(task),
+                });
+                const data = await response.json();
+                console.log('Task updated successfully:', data);
+                hideSpinner();
+            } catch (error) {
+                hideSpinner();
+                console.error('Error updating task status:', error);
+                
+            }
+        }
 
         document.addEventListener("DOMContentLoaded", function() {
-    const cardContainer = document.querySelector(".card");
-    const modal = document.getElementById("taskModal");
-    const modalOverlay = document.getElementById("modalOverlay");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalDescription = document.getElementById("modalDescription");
 
-    // Function to show the modal
-    function showModal(title, description) {
-        modalTitle.textContent = title;
-        modalDescription.textContent = description;
-        modal.classList.remove("hidden");
-        modalOverlay.classList.remove("hidden");
-    }
+            fetchTaskStatus();
 
-    // Function to close the modal
-    function closeModal() {
-        modal.classList.add("hidden");
-        modalOverlay.classList.add("hidden");
-    }
+            const cardContainer = document.querySelector(".card");
+            const modal = document.getElementById("taskModal");
+            const modalOverlay = document.getElementById("modalOverlay");
+            const modalTitle = document.getElementById("modalTitle");
+            const modalDescription = document.getElementById("modalDescription");
 
-    // Close modal when user clicks the close button
-    document.querySelector(".close").addEventListener("click", closeModal);
+            // Function to show the modal
+            function showModal(title, description) {
+                modalTitle.textContent = title;
+                modalDescription.textContent = description;
+                modal.classList.remove("hidden");
+                modalOverlay.classList.remove("hidden");
+            }
 
-    // Close modal when user clicks outside the modal
-    window.addEventListener("click", function(event) {
-        if (event.target === modalOverlay) {
-            closeModal();
-        }
-    });
+            // Function to close the modal
+            function closeModal() {
+                modal.classList.add("hidden");
+                modalOverlay.classList.add("hidden");
+            }
+
+            // Close modal when user clicks the close button
+            document.querySelector(".close").addEventListener("click", closeModal);
+
+            // Close modal when user clicks outside the modal
+            window.addEventListener("click", function(event) {
+                if (event.target === modalOverlay) {
+                    closeModal();
+                }
+            });
 
     // Dynamically create the Next button
     const nextButtonContainer = document.createElement("div");
@@ -247,7 +314,7 @@
 
     // Function to send updated task status to Netlify
     function updateTaskStatus(task) {
-        fetch('/.netlify/functions/updateTask', {
+        fetch('/api/manage-tasks', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
