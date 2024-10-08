@@ -128,7 +128,7 @@
     btn_next.style.cursor = "not-allowed"; // Show disabled cursor
 
     nextButtonContainer.appendChild(btn_next);
-    cardContainer.appendChild(nextButtonContainer); // Add the button after tasks
+    
 
     // Retrieve tasks from localStorage
     let tasks = JSON.parse(localStorage.getItem('tasks'));
@@ -193,7 +193,7 @@
                         // Update task in localStorage
                         localStorage.setItem('tasks', JSON.stringify(tasks));
 
-                        // Update styles for the current card without re-rendering all
+
                         if (task.status === "Completed") {
                             taskCard.classList.remove("card_incompleted");
                             taskCard.classList.add("card_completed");
@@ -212,6 +212,7 @@
                 }
             });
         });
+        cardContainer.appendChild(nextButtonContainer);
 
         updateNextButton(); 
     }
@@ -223,7 +224,7 @@
         Object.keys(tasks).forEach(questionKey => {
             const taskGroup = tasks[questionKey].tasks;
             taskGroup.forEach(task => {
-                if (task.choice === "selected" && task.status !== "Completed") {
+                if (task.status !== "Completed") {
                     allCompleted = false; // If any selected task is not "Completed", set false
                 }
             });
