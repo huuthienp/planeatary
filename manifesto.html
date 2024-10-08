@@ -201,27 +201,24 @@
                 //     }
                 // }
 
-                if (preResult) {
-                    const response = await fetchTasks();
-                    const data = await response.json();
-                    const Task = JSON.stringify(data);
-                    localStorage.setItem('tasks', Task);
-                    scores = preResult.pointArray;
-                    scores.forEach((score, i) => {
-                        score.tasks.forEach((task, j) => {
-                            if (task.choice === "selected") {
-                                task_counts += 1;
-                            };
-                        });
-                        updateStartButton();
-                        renderTasks(score => score.score <= 3);
-                    });  
-                    hideSpinner();    
-                } else {            
-                    document.innerHTML = 'Looks like we are experiencing in displaying tasks. Please tey again later.';
-                };
 
                 async function fetchTasks() {
+                try {
+                        const response = await fetch('updated_tasks_final.json');
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        const data = await response.json();
+                        return data;
+                    } catch (error) {
+                        console.error('Fetch error:', error);
+                        select.display = 'none';
+                        alert('Failed to load tasks. Please try again later.');
+
+                    }
+                }
+
+                async function fetchTasksFromNetlify() {
                     try {
                         showSpinner();
                         const response = await fetch('/api/manage-tasks', {
@@ -248,6 +245,32 @@
                 }
                 
                 
+                if (preResult) {
+                    try {
+                        const Task = JSON.parse(fetchTasks);
+                        localStorage.setItem('tasks', Task);
+                        scores = preResult.pointArray;
+                        scores.forEach((score, i) => {
+                        score.tasks.forEach((task, j) => {
+                            if (task.choice === "selected") {
+                                task_counts += 1;
+                            }
+                        });
+                        updateStartButton();
+                        renderTasks(score => score.score <= 3);
+                    });  
+                    hideSpinner();    
+                    } catch (error) {
+                        alert('Failed to load tasks. Please try again later.');
+                        hideSpinner();
+                        console.error("Error:", error);
+                        document.body.innerHTML = 'Looks like we are experiencing issues in displaying tasks. Please try again later.';
+
+                    }
+                    
+                } else {            
+                    document.body.innerHTML = 'Looks like we are experiencing in displaying tasks. Please tey again later.';
+                }
 
             // Function to update start button state
             function updateStartButton() {
