@@ -320,7 +320,7 @@
         Object.keys(tasks).forEach(questionKey => {
             const taskGroup = tasks[questionKey].tasks;
             taskGroup.forEach(task => {
-                if (task.choice === "selected" && task.status !== "Completed") {
+                if (task.choice === "chosen" && task.status !== "Completed") {
                     allCompleted = false; // If any selected task is not "Completed", set false
                 }
             });
@@ -340,12 +340,12 @@
         }
     }
 
-    // // Call updateNextButton function whenever a task is updated
-    document.querySelectorAll('.task-card').forEach(taskCard => {
-        taskCard.addEventListener('click', function() {
-            updateNextButton(); 
-        });
-    });
+    // // // Call updateNextButton function whenever a task is updated
+    // document.querySelectorAll('.task-card').forEach(taskCard => {
+    //     taskCard.addEventListener('click', function() {
+    //         updateNextButton(); 
+    //     });
+    // });
     
 });
     </script>
