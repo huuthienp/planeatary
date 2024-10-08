@@ -309,7 +309,7 @@
                 }
 
                 // Call the function to render the questions and tasks
-                renderQuestions();
+                renderQuestions((score) => score < 3);
 
             // Event listener for "good" button
             document.getElementById('good').addEventListener('click', function() {
