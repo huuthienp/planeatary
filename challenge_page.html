@@ -53,7 +53,7 @@
         <div class="align">
             <div class="modal hidden" id="taskModal"> 
                 <div class="btn">
-                    <button class="close" >x</button>
+                    <button class="close">x</button>
                 </div>
                 <div class="modal-content">
                     <h2 id="modalTitle"></h2>
@@ -90,6 +90,8 @@
                     //console.log("Showing spinner...");
                     spinner.classList.remove('hidden');
                     overlay.classList.remove('hidden');
+                    const closeButt = document.querySelector('close');
+                    closeButt.classList.add('hidden');
                     isLoading = true;
                     spinnerStartTime = Date.now();
                 };
@@ -97,6 +99,7 @@
                 // Function to hide the spinner
                 function hideSpinner() {
                     const elapsedTime = Date.now() - spinnerStartTime;
+                    closeButt.classList.remove('hidden');
                     if (elapsedTime < minDisplayTime) {
                         // Delay hiding spinner until the minimum display time
                         setTimeout(() => {
@@ -116,6 +119,11 @@
         // Function to get task status from the API
         async function fetchTaskStatus() {
             try {
+                let task = {
+                    id: preResponseId,
+                    chosen: [],
+                    done:[]
+                }
                 showSpinner();
                 const response = await fetch('/api/manage-tasks', {
                     method: 'GET',
@@ -158,8 +166,8 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-
             fetchTaskStatus();
+            
 
             const cardContainer = document.querySelector(".card");
             const modal = document.getElementById("taskModal");
@@ -193,11 +201,11 @@
 
     // Dynamically create the Next button
     const nextButtonContainer = document.createElement("div");
-    nextButtonContainer.classList.add("next-button-container");
+    nextButtonContainer.classList.add("button_next");
 
     const btn_next = document.createElement("button");
     btn_next.id = "btn_next";
-    btn_next.classList.add("next-button");
+    btn_next.classList.add("next");
     btn_next.textContent = "Next";
     btn_next.style.pointerEvents = "none"; // Disable initially
     btn_next.style.backgroundColor = "grey"; // Disable color initially
