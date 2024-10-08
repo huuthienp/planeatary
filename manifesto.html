@@ -219,67 +219,74 @@
                     }
                 }
 
+                scores = preResult.pointArray; 
+
                 // Function to display questions, scores, and tasks
-                async function renderQuestions() {
+                async function renderQuestions(condition) {
                     const tasks = await fetchTasks(); // Fetch or retrieve tasks
-                    const preResult = JSON.parse(localStorage.getItem('preResult')); // Get stored scores
+                    
 
                     if (!tasks || !preResult) {
                         QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
                         return;
                     }
-
-                    scores = preResult.pointArray; // Use preResult scores to display with questions
-
                     // Iterate over each question
                     Object.keys(tasks).forEach((questionKey, i) => {
                         const taskGroup = tasks[questionKey].tasks;
-                        const score = scores[i]; // Get the score for this question
+                        const score = scores[i]; 
+                        if (condition) {
+                            // Create a container for the question
+                            const questionDiv = document.createElement('div');
+                            questionDiv.classList.add('question-block');
 
-                        // Create a container for the question
-                        const questionDiv = document.createElement('div');
-                        questionDiv.classList.add('question-block');
+                            // Display question number and score
+                            const questionTitle = document.createElement('h3');
+                            questionTitle.innerHTML = `Question ${i + 1} - ${score} points`;
+                            if(score < 3) {
+                                questionTitle.style.color = 'red';
+                            } else {
+                                questionTitle.style.color = 'green';
+                            }
+                            
+                            questionDiv.appendChild(questionTitle);
 
-                        // Display question number and score
-                        const questionTitle = document.createElement('h3');
-                        questionTitle.innerHTML = `Question ${i + 1} - ${score} points`;
 
-                        questionDiv.appendChild(questionTitle);
+                            // Create a list to hold the tasks for this question
+                            const taskList = document.createElement('ul');
 
-                        // Create a list to hold the tasks for this question
-                        const taskList = document.createElement('ul');
+                            // Iterate over tasks for the question
+                            taskGroup.forEach((task, j) => {
+                                const taskItem = document.createElement('li');
+                                const label = document.createElement('label');
+                                const checkbox = document.createElement('input');
+                                checkbox.type = 'checkbox';
 
-                        // Iterate over tasks for the question
-                        taskGroup.forEach((task, j) => {
-                            const taskItem = document.createElement('li');
-                            const label = document.createElement('label');
-                            const checkbox = document.createElement('input');
-                            checkbox.type = 'checkbox';
+                                // Initialize checkbox state based on task selection
+                                checkbox.checked = task.choice === 'selected';
 
-                            // Initialize checkbox state based on task selection
-                            checkbox.checked = task.choice === 'selected';
+                                // Update task count and localStorage on checkbox change
+                                checkbox.addEventListener('change', function() {
+                                    if (checkbox.checked) {
+                                        task.choice = "selected";
+                                        task_counts += 1;
+                                    } else {
+                                        task.choice = "not selected";
+                                        task_counts -= 1;
+                                    }
+                                    localStorage.setItem('tasks', JSON.stringify(tasks)); // Save tasks to localStorage
+                                    updateStartButton(); // Update the start button based on the number of selected tasks
+                                });
 
-                            // Update task count and localStorage on checkbox change
-                            checkbox.addEventListener('change', function() {
-                                if (checkbox.checked) {
-                                    task.choice = "selected";
-                                    task_counts += 1;
-                                } else {
-                                    task.choice = "not selected";
-                                    task_counts -= 1;
-                                }
-                                localStorage.setItem('tasks', JSON.stringify(tasks)); // Save tasks to localStorage
-                                updateStartButton(); // Update the start button based on the number of selected tasks
+                                label.appendChild(checkbox);
+                                label.appendChild(document.createTextNode(task.taskName));
+                                taskItem.appendChild(label);
+                                taskList.appendChild(taskItem);
                             });
 
-                            label.appendChild(checkbox);
-                            label.appendChild(document.createTextNode(task.taskName));
-                            taskItem.appendChild(label);
-                            taskList.appendChild(taskItem);
-                        });
+                            questionDiv.appendChild(taskList);
+                            QContainer.appendChild(questionDiv);
+                        }
 
-                        questionDiv.appendChild(taskList);
-                        QContainer.appendChild(questionDiv);
                     });
                     updateStartButton(); // Update the start button after rendering all tasks
                 }
@@ -307,7 +314,7 @@
             // Event listener for "good" button
             document.getElementById('good').addEventListener('click', function() {
                 updateStartButton();
-                renderTasks(score => score.score > 3);
+                renderQuestions(score > 3);
                 good.style.backgroundColor = '#02897A';
                 good.style.transition = "all 1s";
                 bad.style.backgroundColor = '#a9d1cd';
@@ -317,7 +324,7 @@
             // Event listener for "bad" button
             document.getElementById('notyet').addEventListener('click', function() {
                 updateStartButton();
-                renderTasks(score => score.score <= 3);
+                renderQuestions(score <= 3);
                 good.style.backgroundColor = '#a9d1cd';
                 good.style.transition = "all 1s";
                 bad.style.backgroundColor = '#02897A';
