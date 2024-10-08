@@ -123,11 +123,12 @@
             const good = document.getElementById("good");
             const bad = document.getElementById("notyet");
 
-            const startButton = document.querySelector(".start");
+            
             good.style.backgroundColor = '#a9d1cd';
             bad.style.backgroundColor = '#02897A';
 
             document.addEventListener("DOMContentLoaded", async function() {
+                const startButton = document.querySelector(".start");
                 const spinner = document.getElementById('spinner');
                 let isLoading = false;
                 const minDisplayTime = 2000; 
@@ -247,29 +248,28 @@
                 
                 if (preResult) {
                     try {
-                        const Task = JSON.parse(fetchTasks);
-                        localStorage.setItem('tasks', Task);
+                        const Task = await fetchTasks();  // Await the result of the fetchTasks function
+                        localStorage.setItem('tasks', JSON.stringify(Task));  // Store the fetched tasks as a JSON string
+                        const tasks = JSON.parse(localStorage.getItem('tasks'));
                         scores = preResult.pointArray;
                         scores.forEach((score, i) => {
-                        score.tasks.forEach((task, j) => {
-                            if (task.choice === "selected") {
-                                task_counts += 1;
-                            }
+                            tasks.forEach((task, j) => {
+                                if (task.tasks.choice === "selected") {
+                                    task_counts += 1;
+                                }
+                            });
                         });
                         updateStartButton();
                         renderTasks(score => score.score <= 3);
-                    });  
-                    hideSpinner();    
+                        hideSpinner();  // Hide spinner after tasks are fetched and processed
                     } catch (error) {
                         alert('Failed to load tasks. Please try again later.');
                         hideSpinner();
                         console.error("Error:", error);
                         document.body.innerHTML = 'Looks like we are experiencing issues in displaying tasks. Please try again later.';
-
                     }
-                    
-                } else {            
-                    document.body.innerHTML = 'Looks like we are experiencing in displaying tasks. Please tey again later.';
+                } else {
+                    document.body.innerHTML = 'Looks like we are experiencing issues in displaying tasks. Please try again later.';
                 }
 
             // Function to update start button state
@@ -288,7 +288,51 @@
                     startButton.style.backgroundColor = "grey";
                     //startButton.style.transition = "all 1s";
                 }
-            };
+            }
+
+            function renderTasksForQuestion(questionNumber) {
+                const taskGroup = tasks[questionNumber];  
+
+                if (taskGroup && taskGroup.tasks) {
+                    taskGroup.tasks.forEach(task => {
+                        const q_input = document.createElement("li");
+                        const label = document.createElement("label");
+                        const input = document.createElement("input");
+                        const text = document.createElement("span");
+                        text.innerHTML = task.taskName;
+                        input.type = "checkbox";
+                        
+                        // Initialize task count based on current selected state
+                        if (task.choice === "selected") {
+                            input.checked = true;
+                        }
+                        
+                        label.appendChild(input);
+                        label.appendChild(text);
+                        q_input.appendChild(label);
+                        q_con.appendChild(q_input);
+                        
+                        // Event listener to track selection
+                        input.addEventListener('change', function() {
+                            if (input.checked) {
+                                task.choice = "selected";
+                                task_counts += 1;
+                            } else {
+                                task.choice = "not selected";
+                                task_counts -= 1;
+                            }
+                            
+                            // Save updated task state to localStorage
+                            localStorage.setItem("user", JSON.stringify(scores));
+                            
+                            // Update the start button
+                            updateStartButton();
+                        });
+                    });
+                } else {
+                    QContainer.innerHTML = '<p>No tasks found for this question.</p>';
+                }
+            }
 
             function renderTasks(scoreCondition) {
                 QContainer.innerHTML = ''; 
@@ -331,43 +375,7 @@
                                 q_info.addEventListener('click', function() {
                                     Modal(`./images/pop${i+1}.jpg`);
                                 });
-
-                                score.tasks.forEach((task, j) => {
-                                    const q_input = document.createElement("li");
-                                    const label = document.createElement("label");
-                                    const input = document.createElement("input");
-                                    const text = document.createElement("span");
-                                    text.innerHTML = task.taskName;
-                                    input.type = "checkbox";
-
-                                    // Initialize task count based on current selected state
-                                    if (task.choice === "selected") {
-                                        input.checked = true;
-                                    }
-
-                                    label.appendChild(input);
-                                    label.appendChild(text);
-                                    q_input.appendChild(label);
-                                    q_con.appendChild(q_input);
-
-                                    // Event listener to track selection
-                                    input.addEventListener('change', function() {
-                                        if (input.checked) {
-                                            task.choice = "selected";
-                                            task_counts += 1;
-                                        } else {
-                                            task.choice = "not selected";
-                                            task_counts -= 1;
-                                        }
-
-                                        // Save updated task state to localStorage
-                                        localStorage.setItem("user", JSON.stringify(scores));
-
-                                        // Update the start button
-                                        updateStartButton();
-                                    });
-                                    
-                                });
+                                renderTasksForQuestion();
                             } else {
                                 q_con.style.boxShadow = 'none';
                                 q_con.innerHTML = ''; 
