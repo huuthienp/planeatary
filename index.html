@@ -12,10 +12,10 @@
         <div id="mySidenav" class="sidenav">
             <ul>
                 <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="qualtrics.html"><b>Quiz</b></a></li>
-                <li><a href="manifesto.html">Challenge</a></li>
-                <li><a href="result_page.html">Dashboard</a></li>
+                <li id="Home"><a href="index.html">Home</a></li>
+                <li id="Quiz"><b>Quiz</b></li>
+                <li id="Challenge">Challenge</li>
+                <li id="Dashboard">Dashboard</li>
                 <li><!-- <a href="#">About us</a> --></li>
             </ul>
         </div>
@@ -26,10 +26,10 @@
                 <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
                 <nav class="forwindow">
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="qualtrics.html"><b>Quiz</b></a></li>
-                        <li><a href="manifesto.html">Challenge</a></li>
-                        <li><a href="result_page.html">Dashboard</a></li>
+                        <li id="H"><a href="index.html">Home</a></li>
+                        <li id="Q"><b>Quiz</b></li>
+                        <li id="CH">Challenge/li>
+                        <li id="D">Dashboard</li>
                         <!-- <li>About us</li> -->
                     </ul>
                 </nav>
@@ -167,6 +167,8 @@
                                         return; 
                                     }
                                 }
+                            } else {
+                                setupContinueButton('qualtrics.html');
                             }
                             
                         }   
@@ -213,6 +215,13 @@
                         window.location.href = path;
                     });
                 }
+
+                function setupNavBar() {
+                    const quiz = document.getElementById('Q');
+                    const challenge = document.getElementById('CH');
+                    const dashboard = document.getElementById('D');
+                }
+                
                 checkOrFetchResponseId();
             });
         </script>
