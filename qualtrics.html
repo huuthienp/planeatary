@@ -71,8 +71,9 @@
 
             if (preResult) {
                 // If preResult exists, enable the button and navigate to the results page
-                nextButton.style.backgroundColor = ''; // Reset background color
-                nextButton.style.cursor = 'pointer';   // Reset cursor
+                nextButton.style.backgroundColor = '#02897A'; 
+                nextButton.style.cursor = 'pointer';   
+                nextButton.disabled = false;
                 nextButton.addEventListener("click", function() {
                     window.location.href = "result_page.html";
                 });
