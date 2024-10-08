@@ -223,6 +223,8 @@
 
                 // Function to display questions, scores, and tasks
                 async function renderQuestions(condition) {
+
+                    QContainer.innerHTML = '';
                     const tasks = await fetchTasks(); // Fetch or retrieve tasks
                     
 
