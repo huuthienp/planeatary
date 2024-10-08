@@ -114,6 +114,8 @@
             let isLoading = false;
             const minDisplayTime = 2000; // Minimum time spinner should be visible (2 seconds)
             let spinnerStartTime;
+            let preResult = JSON.parse(localStorage.getItem('preResult'));
+            let postResult = JSON.parse(localStorage.getItem('postResult'));
             
             // Function to show the spinner
             function showSpinner() {
@@ -142,26 +144,23 @@
                     isLoading = false;
                 }
             };
-            let preResult = JSON.parse(localStorage.getItem('preResult'));
-            let postResult = JSON.parse(localStorage.getItem('postResult'));
 
 
             const comparison = document.getElementById('improved_score');
 
             async function fetchTasks() {
-                    try {
-                        const response = await fetch('updated_tasks_final.json');
-                        if (!response.ok) {
+                try {
+                    const response = await fetch('updated_tasks_final.json');
+                    if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
-                        }
-                        const data = await response.json();
-                        console.log(data);
-                        return data;
-                        
-                    } catch (error) {
-                        console.error('There has been a problem with your fetch operation:', error);
                     }
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error('Fetch error:', error);
+                    alert('Failed to load tasks. Please try again later.');
                 }
+            }
 
             // async function handleFetchedData(responseData) {
             //     const taskData = JSON.stringify(fetchTasks());
@@ -235,7 +234,7 @@
                 if (postResult) {
                     const improvement = document.getElementById('improvement');
                     let postQuizTotal = postResult.totalScore;
-                    improvement.innerHTML = postQuizTotal - preQuizTotal;
+                    improvement.textContent = postQuizTotal - preQuizTotal;
                 }
                 else {
                     return 0;
@@ -246,13 +245,17 @@
                 const questionsContainer = document.querySelector('.questions');
                 questionsContainer.innerHTML = ''; 
                 comparison.innerHTML = ''; 
+                console.log('Pre Result:', preResult);
+                console.log('Post Result:', postResult);
                 // Handle missing pointArray or invalid data
                 if (!questionsData.pointArray || !Array.isArray(questionsData.pointArray)) {
                     document.getElementById('curr_score').textContent = 'No score available.';
                     questionsContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us to fix it.';
                     return;
                 }
-
+                if (preResult) {
+                    document.getElementById('curr_score').textContent = `Total Score: ${preResult.totalScore}`;
+                }
                 // Iterate over each question in the pointArray
                 questionsData.pointArray.forEach((score, index) => {
                     const questionDiv = document.createElement('div');
@@ -290,6 +293,7 @@
                 });
             } else {
                 document.getElementById('postQ').style.color = 'grey';
+                document.getElementById('postQ').disabled = true; 
             }
 
             // Attach single click listener for the start button navigation
@@ -299,6 +303,7 @@
                 } else {
                     window.location.href = "manifesto.html";
                 }
+    
             });
         });
     </script>
