@@ -122,11 +122,7 @@
         // Function to get task status from the API
         async function fetchTaskStatus() {
             try {
-                let task = {
-                    id: preResponseId,
-                    chosen: [],
-                    done:[]
-                }
+                
                 showSpinner();
                 const response = await fetch('/api/manage-tasks', {
                     method: 'GET',
@@ -150,6 +146,11 @@
         async function updateTaskStatus(task) {
             try {
                 showSpinner();
+                let task = {
+                    id: preResponseId,
+                    chosen: [],
+                    done:[]
+                }
                 const response = await fetch('/api/manage-tasks', {
                     method: 'PUT',
                     headers: {
