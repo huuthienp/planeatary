@@ -122,8 +122,10 @@
                     headers: {
                         'Content-Type': 'application/json',
                         'Q-RESPONSE-ID': preResponseId,
-                    }
+                    },
+                    body: JSON.stringify(task)
                 });
+                
                 const data = await response.json();
                 console.log('Task status fetched:', data);
                 hideSpinner();
@@ -330,24 +332,6 @@
         });
     });
     
-    // Function to send updated task status to Netlify
-    function updateTaskStatus(task) {
-        fetch('/api/manage-tasks', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Q-RESPONSE-ID': preResponseId,
-            },
-            body: JSON.stringify(task),
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-    }
 });
     </script>
 </body>
