@@ -1,18 +1,14 @@
-export function restructureDataFromQualtrics(data, type) {
+export function reformatQualtricsData(data, type) {
   try {
-    let restructuredData;
-
-    const dataAsStr = typeof data === 'string';
-
-    // Parse the JSON if it's a string
-    const responseObject = dataAsStr ? JSON.parse(data) : data;
+    let reformatted = {};
 
     if (type === 'response') {
-      const result = data.result;
+      reformatted.quizType = data['quizType'];
+      reformatted.responseId = data['result']['responseId'];
 
-      restructuredData.responseId = result.responseId;
+      const values = data['result']['values'];
 
-      restructuredData.recordedDate = result.recordedDate;
+      reformatted.recordedDate = values['recordedDate'];
 
       // Array of the desired keys
       const orderedKeys = [
@@ -21,24 +17,49 @@ export function restructureDataFromQualtrics(data, type) {
         'QID10', 'QID9', 'QID11',
         'QID13', 'QID12', 'QID14'];
 
-      const pointArray = orderedKeys.map(key => result[key]);
+      const pointArray = orderedKeys.map(key => values[key] || 0);
 
-      restructuredData.result = {
-        totalScore: result.SC_4OW9P7VDYuDLVbw,
+      reformatted.result = {
+        totalScore: values['SC_4OW9P7VDYuDLVbw'],
         pointArray: pointArray
       }
 
     } else {
-      throw Error('Empty or invalid type:', `'${type}'`);
+      throw Error(`Empty or invalid data type: ${type}`);
     }
 
-    return restructuredData;
+    return reformatted;
 
   } catch (error) {
     if (error instanceof SyntaxError && error.message.toLowerCase().includes('json')) {
       console.error('Cannot parse as JSON:', data);
     } else {
       console.error(error);
+    }
+  }
+}
+
+
+export function saveLocalStorage(data, type) {
+
+  // Iterate over each key-value pair in the parsed data
+  for (const [key, value] of Object.entries(data)) {
+    if (type === 'response') {
+      const { quizType } = data;
+      try {
+        // Capitalize the first letter of the key
+        const titleCaseKey = key.charAt(0).toUpperCase() + key.slice(1);
+
+        // Process the value and store in localStorage
+        const valueAsStr = typeof value === 'string';
+        const strValue = valueAsStr ? value : JSON.stringify(value);
+
+        localStorage.setItem(`${quizType}${titleCaseKey}`, strValue);
+
+      } catch (storageError) {
+        console.error(`Cannot store ${key} as ${value}.`, '\n', storageError);
+        continue;
+      }
     }
   }
 }
