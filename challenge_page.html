@@ -101,7 +101,7 @@
                 // Function to hide the spinner
                 function hideSpinner() {
                     const elapsedTime = Date.now() - spinnerStartTime;
-                    closeButt.classList.remove('hidden');
+                    
                     if (elapsedTime < minDisplayTime) {
                         // Delay hiding spinner until the minimum display time
                         setTimeout(() => {
@@ -116,6 +116,7 @@
                         overlay.classList.add('hidden');
                         isLoading = false;
                     }
+                    closeButt.classList.remove('hidden');
                 };
         
         // Function to get task status from the API
@@ -132,8 +133,8 @@
                     headers: {
                         'Content-Type': 'application/json',
                         'Q-RESPONSE-ID': preResponseId,
-                    },
-                    body: JSON.stringify(task)
+                    }
+
                 });
                 
                 const data = await response.json();
