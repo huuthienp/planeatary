@@ -168,13 +168,13 @@ body {
   }
   
   .align .modal {
-    position: fixed;
-    width: 80vw;
-    height: 80vh; 
+    display: flex;
+    position: fixed; 
     max-height: 80vh;
     margin: 0 auto;
     border-radius: 0.5em;
     z-index: 1000;
+    justify-content: center;
   }
 
 
@@ -603,17 +603,18 @@ body {
 }
 
 .align .modal {
+  display: flex;
   position: fixed;
-  width: 80vw;
-  height: 80vh; 
   max-height: 80vh;
   margin: 0 auto;
   border-radius: 0.5em;
   z-index: 1000;
+  justify-content: center;
 }
 
 .modal-content {
   background-color: white;
+  justify-content: center;
 }
 
 .visual_info {
