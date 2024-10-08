@@ -6,6 +6,7 @@
         <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
         <link href="style_concat.css" rel="stylesheet" />
         <title>PlanEATary Quiz</title>
+        <script src="/listen-to-qualtrics.mjs"  type="module"></script>  
     </head>
     <body>
         <!-- Sidebar -->
@@ -58,7 +59,7 @@
             document.body.style.backgroundColor = "white";
         };
 
-        document.addEventListener("DOMContentLoaded", function() {
+        
             const nextButton = document.querySelector('.next');
 
             // Check if preResult exists in localStorage
@@ -78,9 +79,8 @@
                 nextButton.style.cursor = 'not-allowed';
                 nextButton.disabled = true;
             }
-        });
 
-    </script> 
-    <script src="/listen-to-qualtrics.js"></script>         
+
+    </script>      
     </body>
 </html>
