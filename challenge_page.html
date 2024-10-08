@@ -46,18 +46,21 @@
                 <p class="suggestion">Please click Done when you complete your tasks</p>
             </div>
             <div class="card"></div>
+            <button id="btn_next" class="next-button" disabled>Next</button>
         </div>
     </div>
 
     <!-- The Modal -->
-    <section class="overlay hidden">
+    <section class="overlay hidden" id="modalOverlay">
         <div class="align">
-            <div class="modal hidden"> 
+            <div class="modal hidden" id="taskModal"> 
                 <div class="btn">
-                    <button class="close" onclick="Close();">x</button>
+                    <button class="close" onclick="closeModal();">x</button>
                 </div>
                 <div class="modal-content">
-                    <img />
+                    <img id="modalImage" src="" alt="Task Image" />
+                    <h2 id="modalTitle">Task Title</h2>
+                    <p id="modalDescription">Task Description</p>
                 </div>
             </div>
         </div>
@@ -85,126 +88,165 @@
         
 
         document.addEventListener("DOMContentLoaded", function() {
-            const cardContainer = document.querySelector(".card");
+    const cardContainer = document.querySelector(".card");
+    const modal = document.getElementById("taskModal");
+    const modalOverlay = document.getElementById("modalOverlay");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDescription = document.getElementById("modalDescription");
 
-            // Retrieve tasks from localStorage
-            const tasks = JSON.parse(localStorage.getItem('tasks'));
+    // Function to show the modal
+    function showModal(title, description) {
+        modalTitle.textContent = title;
+        modalDescription.textContent = description;
+        modal.classList.remove("hidden");
+        modalOverlay.classList.remove("hidden");
+    }
 
-            // Check if tasks exist in localStorage
-            if (tasks) {
-                displaySelectedTasks(tasks); // Display tasks
-            } else {
-                cardContainer.innerHTML = "<p>No tasks found.</p>";
-            }
+    // Close modal when user clicks the close button
+    document.querySelector(".close").addEventListener("click", function() {
+        modal.classList.add("hidden");
+        modalOverlay.classList.add("hidden");
+    });
 
-            // Function to display selected tasks and allow status update
-            function displaySelectedTasks(tasks) {
-                cardContainer.innerHTML = '';  // Clear any existing content
-
-                Object.keys(tasks).forEach(questionKey => {
-                    const taskGroup = tasks[questionKey].tasks;
-
-                    // Filter tasks that are selected
-                    taskGroup.forEach(task => {
-                        if (task.choice === 'selected') {
-                            // Create and append a card for each selected task
-                            const taskCard = document.createElement("div");
-                            taskCard.classList.add(task.status === "Completed" ? "card_completed" : "card_incompleted");
-
-                            const taskName = document.createElement("span");
-                            taskName.textContent = task.taskName;
-
-                            const taskDescription = document.createElement("p");
-                            taskDescription.textContent = task.taskDescription;
-
-                            const completion = document.createElement("span");
-                            completion.classList.add("completion");
-                            completion.textContent = task.status === "Completed" ? "Completed" : "Done";
-
-                            // Set card styles based on status
-                            if (task.status === "Completed") {
-                                taskCard.style.backgroundColor = "#f0f0f0"; // Completed card style
-                                taskCard.style.color = "grey";
-                                taskName.style.textDecoration = "line-through"; // Strikethrough text
-                            } else {
-                                taskCard.style.backgroundColor = "white"; // Default style for "Done"
-                                taskCard.style.border = "1px solid #02897A";
-                            }
-
-                            taskCard.appendChild(taskName);
-                            taskCard.appendChild(taskDescription);
-                            taskCard.appendChild(completion);
-                            cardContainer.appendChild(taskCard);
-
-                            // Add event listener to task card to update status
-                            taskCard.addEventListener('click', function() {
-                                // Toggle task status between "Done" and "Completed"
-                                if (task.status === "Done") {
-                                    task.status = "Completed";
-                                } else if (task.status === "Completed") {
-                                    task.status = "Done";
-                                }
-
-                                // Update task in localStorage
-                                localStorage.setItem('tasks', JSON.stringify(tasks));
-
-                                // Re-render tasks to reflect the updated status
-                                displaySelectedTasks(tasks);
-                            });
-                        }
-                    });
-                });
-
-                updateNextButton(); 
-            }
-
-            // Function to update the Next button's state
-            function updateNextButton() {
-                let allCompleted = true;
-
-                Object.keys(tasks).forEach(questionKey => {
-                    const taskGroup = tasks[questionKey].tasks;
-                    taskGroup.forEach(task => {
-                        if (task.choice === "selected" && task.status !== "Completed") {
-                            allCompleted = false; // If any selected task is not "Completed", set false
-                        }
-                    });
-                });
-
-                const btn_next = document.querySelector("#btn_next"); // Next button selector
-
-                // Enable or disable the next button based on task completion status
-                if (allCompleted) {
-                    btn_next.style.pointerEvents = "auto"; // Enable the next button
-                    btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
-                    btn_next.style.cursor = "pointer"; 
-                    btn_next.addEventListener("click", function() {
-                        if (btn_next.style.pointerEvents === "auto") {
-                            let text = "Would you like to proceed to the post quiz?";
-                            if (confirm(text)) {
-                                window.location.href = "congrat_page.html";
-                            }
-                        }
-                    });
-                } else {
-                    btn_next.style.pointerEvents = "none"; // Disable the next button
-                    btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
-                    btn_next.style.cursor = "not-allowed"; 
-                }
-            }
-        });
-        const modal = document.querySelector(".modal");
-        const overlay = document.querySelector(".overlay");
-
-        function Modal() {
-            modal.classList.remove("hidden");
-            overlay.classList.remove("hidden");
-        }
-
-        function Close() {
+    // Close modal when user clicks outside the modal
+    window.addEventListener("click", function(event) {
+        if (event.target === modalOverlay) {
             modal.classList.add("hidden");
-            overlay.classList.add("hidden");
+            modalOverlay.classList.add("hidden");
         }
+    });
+
+    // Dynamically create the Next button
+    const nextButtonContainer = document.createElement("div");
+    nextButtonContainer.classList.add("next-button-container");
+    
+    const btn_next = document.createElement("button");
+    btn_next.id = "btn_next";
+    btn_next.classList.add("next-button");
+    btn_next.textContent = "Next";
+    btn_next.style.pointerEvents = "none"; // Disable initially
+    btn_next.style.backgroundColor = "grey"; // Disable color initially
+    btn_next.style.cursor = "not-allowed"; // Show disabled cursor
+    
+    nextButtonContainer.appendChild(btn_next);
+    cardContainer.appendChild(nextButtonContainer); // Add the button after tasks
+
+    // Retrieve tasks from localStorage
+    const tasks = JSON.parse(localStorage.getItem('tasks'));
+
+    // Check if tasks exist in localStorage
+    if (tasks) {
+        displaySelectedTasks(tasks); // Display tasks
+    } else {
+        cardContainer.innerHTML = "<p>No tasks found.</p>";
+    }
+
+    // Function to display selected tasks and allow status update
+    function displaySelectedTasks(tasks) {
+        cardContainer.innerHTML = '';  // Clear any existing content
+
+        Object.keys(tasks).forEach(questionKey => {
+            const taskGroup = tasks[questionKey].tasks;
+
+            // Filter tasks that are selected
+            taskGroup.forEach(task => {
+                if (task.choice === 'selected') {
+                    // Create and append a card for each selected task
+                    const taskCard = document.createElement("div");
+                    taskCard.classList.add(task.status === "Completed" ? "card_completed" : "card_incompleted");
+
+                    const taskName = document.createElement("span");
+                    taskName.textContent = task.taskName;
+
+                    // Add an info icon for task description
+                    const infoIcon = document.createElement("span");
+                    infoIcon.classList.add("info-icon");
+                    infoIcon.innerHTML = "&#9432;"; // Unicode info icon
+
+                    // Set the click event for the info icon to show the modal
+                    infoIcon.addEventListener('click', function(event) {
+                        event.stopPropagation(); // Prevent triggering the card click event
+                        showModal(task.taskName, task.taskDescription);
+                    });
+
+                    const taskDescription = document.createElement("p");
+                    taskDescription.textContent = task.taskDescription;
+
+                    const completion = document.createElement("span");
+                    completion.classList.add("completion");
+                    completion.textContent = task.status === "Completed" ? "Completed" : "Done";
+
+                    // Set card styles based on status
+                    if (task.status === "Completed") {
+                        taskCard.style.backgroundColor = "#f0f0f0"; // Completed card style
+                        taskCard.style.color = "grey";
+                        taskName.style.textDecoration = "line-through"; // Strikethrough text
+                    } else {
+                        taskCard.style.backgroundColor = "white"; // Default style for "Done"
+                        taskCard.style.border = "1px solid #02897A";
+                    }
+
+                    taskCard.appendChild(taskName);
+                    taskCard.appendChild(infoIcon); // Add info icon to the card
+                    taskCard.appendChild(taskDescription);
+                    taskCard.appendChild(completion);
+                    cardContainer.appendChild(taskCard);
+
+                    // Add event listener to task card to update status
+                    taskCard.addEventListener('click', function() {
+                        // Toggle task status between "Done" and "Completed"
+                        if (task.status === "Done") {
+                            task.status = "Completed";
+                        } else if (task.status === "Completed") {
+                            task.status = "Done";
+                        }
+
+                        // Update task in localStorage
+                        localStorage.setItem('tasks', JSON.stringify(tasks));
+
+                        // Re-render tasks to reflect the updated status
+                        displaySelectedTasks(tasks);
+                    });
+                }
+            });
+        });
+
+        updateNextButton(); 
+    }
+
+    // Function to update the Next button's state
+    function updateNextButton() {
+        let allCompleted = true;
+
+        Object.keys(tasks).forEach(questionKey => {
+            const taskGroup = tasks[questionKey].tasks;
+            taskGroup.forEach(task => {
+                if (task.choice === "selected" && task.status !== "Completed") {
+                    allCompleted = false; // If any selected task is not "Completed", set false
+                }
+            });
+        });
+
+        // Enable or disable the next button based on task completion status
+        if (allCompleted) {
+            btn_next.style.pointerEvents = "auto"; // Enable the next button
+            btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
+            btn_next.style.cursor = "pointer"; 
+            btn_next.addEventListener("click", function() {
+                if (btn_next.style.pointerEvents === "auto") {
+                    let text = "Would you like to proceed to the post quiz?";
+                    if (confirm(text)) {
+                        window.location.href = "congrat_page.html";
+                    }
+                }
+            });
+        } else {
+            btn_next.style.pointerEvents = "none"; // Disable the next button
+            btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
+            btn_next.style.cursor = "not-allowed"; 
+        }
+    }
+});
     </script>
 </body>
 </html>
