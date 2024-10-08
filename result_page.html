@@ -280,11 +280,19 @@
 
             if (postResult) {
                 displayQuestions(postResult);
+                document.getElementById('postQ').style.backgroundColor = '#02897A';
+                document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                 document.getElementById('postQ').addEventListener('click', function() {
-                    //handleFetchedData(postResponseId, taskData);
+                    //handleFetchedData(postResponseId, taskData); 
+                    document.getElementById('postQ').style.backgroundColor = '#02897A';
+                    document.getElementById('preQ').style.backgroundColor = '#a9d1cd';    
+                    document.getElementById('preQ').style.transition = "all 1s";
+                    document.getElementById('postQ').style.transition = "all 1s"
+                    
                     displayQuestions(postResult);
                 });
             } else {
+                document.getElementById('preQ').style.backgroundColor = '#02897A';   
                 document.getElementById('postQ').style.backgroundColor = 'grey';
                 document.getElementById('postQ').disabled = true; 
                 displayQuestions(preResult);
@@ -293,8 +301,13 @@
             document.getElementById('preQ').addEventListener('click', function() {
                 //handleFetchedData(preResult, taskData);
                 displayQuestions(preResult);
+                if (postResult) {
+                    document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
+                    document.getElementById('postQ').style.transition = "all 1s";
+                    document.getElementById('preQ').style.backgroundColor = '#02897A';    
+                    document.getElementById('preQ').style.transition = "all 1s";
+                }
             });
-
             
 
             // Attach single click listener for the start button navigation
