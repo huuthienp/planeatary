@@ -165,7 +165,7 @@
                     const taskName = document.createElement("span");
                     taskName.textContent = task.taskName;
 
-                    // Add an info icon for task description
+                    
                     const infoIcon = document.createElement("span");
                     infoIcon.classList.add("info-icon");
                     infoIcon.innerHTML = "&#9432;"; // Unicode info icon
@@ -183,12 +183,12 @@
 
                     // Set card styles based on status
                     if (task.status === "Completed") {
-                        taskCard.style.backgroundColor = "#f0f0f0"; // Completed card style
-                        taskCard.style.color = "grey";
-                        taskName.style.textDecoration = "line-through"; // Strikethrough text
+                        taskCard.classList.remove("card_incompleted");
+                        taskCard.classList.add("card_completed");
+                        taskName.style.textDecoration = "line-through";
                     } else {
-                        taskCard.style.backgroundColor = "white"; // Default style for "Done"
-                        taskCard.style.border = "1px solid #02897A";
+                        taskCard.classList.remove("card_completed");
+                        taskCard.classList.add("card_incompleted");
                     }
 
                     taskCard.appendChild(taskName);
