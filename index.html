@@ -27,17 +27,18 @@
                 <nav class="forwindow">
                     <ul>
                         <li id="H"><a href="index.html">Home</a></li>
-                        <!-- <li id="Q"><b>Quiz</b></li>
-                        <li id="CH">Challenge/li>
-                        <li id="D">Dashboard</li> -->
+                        <!--
+<li id="Q"><b>Quiz</b></li>
+<li id="CH">Challenge/li>
+<li id="D">Dashboard</li> -->
                         <!-- <li>About us</li> -->
                     </ul>
                 </nav>
                 <!-- <div class="button">
-                    <button class="signIn">Sign In</button>
-                    <span>&ensp;</span>
-                    <button class="signUp">Sign Up</button>
-                </div> -->
+<button class="signIn">Sign In</button>
+<span>&ensp;</span>
+<button class="signUp">Sign Up</button>
+</div> -->
             </div>
             <div class="welcome-content">
                 <div class="greeting">
@@ -45,7 +46,7 @@
                     <p>Welcome! This 12-question quiz forms part of a research study, exploring effective approaches to promote healthy and environmentally sustainable food habits. If you would like further information, please review this Explanatory Statement, approved by Monash University's Human Research Ethics Committee.</p>
                     <p>Your email address is collected so that you can receive a copy of your responses, however this will not be used for data analysis and your response is anonymous.</p>
                     <p>By completing the quiz, you are consenting to be part of this research.</p>
-                    </div>
+                </div>
             </div>
             <div class="button_next">
                 <button class="next" id="continueButton">Take the quiz &#8594;</button>
@@ -56,180 +57,180 @@
         </div>
         <script type="module">
         import { reformatQualtricsData, saveLocalStorage } from './data-functions.mjs';
-            const greetingDiv = document.getElementById('greeting');
-            const continueButton = document.getElementById('continueButton');
-            const overlay = document.querySelector(".overlay");
+        const greetingDiv = document.getElementById('greeting');
+        const continueButton = document.getElementById('continueButton');
+        const overlay = document.querySelector(".overlay");
 
-            function openNav() {
+        function openNav() {
             document.getElementById("mySidenav").style.width = "40%";
             document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
+        };
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.body.style.backgroundColor = "white";
+        };
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const spinner = document.getElementById('spinner');
+            const greetingDiv = document.querySelector('.greeting');
+            const continueButton = document.getElementById('continueButton');
+
+            let isLoading = false;
+            const minDisplayTime = 2000;
+            let spinnerStartTime;
+
+            // Function to show the spinner
+            function showSpinner() {
+                //console.log("Showing spinner...");
+                spinner.classList.remove('hidden');
+                overlay.classList.remove('hidden');
+                isLoading = true;
+                spinnerStartTime = Date.now();
             };
 
-            function closeNav() {
-                document.getElementById("mySidenav").style.width = "0";
-                document.body.style.backgroundColor = "white";
-            };
-            
-            document.addEventListener("DOMContentLoaded", function() {
-                const spinner = document.getElementById('spinner');
-                const greetingDiv = document.querySelector('.greeting');
-                const continueButton = document.getElementById('continueButton');
-
-                let isLoading = false;
-                const minDisplayTime = 2000; 
-                let spinnerStartTime;
-                
-                // Function to show the spinner
-                function showSpinner() {
-                    //console.log("Showing spinner...");
-                    spinner.classList.remove('hidden');
-                    overlay.classList.remove('hidden');
-                    isLoading = true;
-                    spinnerStartTime = Date.now();
-                };
-                
-                // Function to hide the spinner
-                function hideSpinner() {
-                    const elapsedTime = Date.now() - spinnerStartTime;
-                    if (elapsedTime < minDisplayTime) {
-                        // Delay hiding spinner until the minimum display time
-                        setTimeout(() => {
-                            //console.log("Hiding spinner after min time...");
-                            spinner.classList.add('hidden');
-                            overlay.classList.add('hidden');
-                            isLoading = false;
-                        }, minDisplayTime - elapsedTime);
-                    } else {
-                        console.log("Hiding spinner...");
+            // Function to hide the spinner
+            function hideSpinner() {
+                const elapsedTime = Date.now() - spinnerStartTime;
+                if (elapsedTime < minDisplayTime) {
+                    // Delay hiding spinner until the minimum display time
+                    setTimeout(() => {
+                        //console.log("Hiding spinner after min time...");
                         spinner.classList.add('hidden');
                         overlay.classList.add('hidden');
                         isLoading = false;
-                    }
+                    }, minDisplayTime - elapsedTime);
+                } else {
+                    console.log("Hiding spinner...");
+                    spinner.classList.add('hidden');
+                    overlay.classList.add('hidden');
+                    isLoading = false;
                 }
+            }
 
-                async function checkOrFetchResponseId() {
-                    
-                    try {
-                        showSpinner();
-                        let preResponseId = localStorage.getItem('preResult');
-                        let postResponseId = localStorage.getItem('postResult');
-                        let quizType = '';
+            async function checkOrFetchResponseId() {
 
-                        if (preResponseId) {
-                            let userChoice = confirm("Looks like there is your recorded pre quiz. Would you like to continue with existing responses? Click OK if yes.");
-                            
-                            if (userChoice) {
-                                setupContinueButton('result_page.html');
-                            } else {
-                                // User chooses to start a new quiz
-                                localStorage.removeItem('preResult');
-                                
-                                setupContinueButton('qualtrics.html');
+                try {
+                    showSpinner();
+                    let preResponseId = localStorage.getItem('preResult');
+                    let postResponseId = localStorage.getItem('postResult');
+                    let quizType = '';
 
-                            }
-                        } else if (postResponseId) {
-                            let userChoice = confirm("Looks like there is your recorded post quiz. Would you like to start over? Click OK if yes.");
-                            
-                            if (userChoice) {
-                                localStorage.removeItem('preResult');
-                                localStorage.removeItem('postResult');
-                                setupContinueButton('qualtrics.html');
-                            } 
-                            
+                    if (preResponseId) {
+                        let userChoice = confirm("Looks like there is your recorded pre quiz. Would you like to continue with existing responses? Click OK if yes.");
+
+                        if (userChoice) {
+                            setupContinueButton('result_page.html');
                         } else {
-                            // If no responseId in localStorage, ask the user if they've completed the pre-quiz
-                            const userAns = confirm("Have you done the quiz? Click OK if yes, cancel if no.");
-                            
-                            if (userAns) {
-                                const userOption = confirm("Would you like to continue with existing response? Click OK if yes.");
-                                
-                                if (userOption) {
-                                    
-                                    let preOrpost = prompt("If you would like to proceed with pre-quiz, type 'pre'");
-                                    
-                                    // Validate the input
-                                    if (preOrpost !== 'pre') {
-                                        alert("Invalid input. Please enter 'pre'.");
-                                        hideSpinner();
-                                        return; 
-                                    }
+                            // User chooses to start a new quiz
+                            localStorage.removeItem('preResult');
 
-                                    let userMem = prompt("Please enter its response ID:");
+                            setupContinueButton('qualtrics.html');
 
-                                    if (userMem) {
-                                        let responseId = userMem;
-                                        let fetchedResponseId = await fetchResponseIdFromNetlify(preOrpost, responseId);
-                                        // localStorage.setItem(`${preOrpost}ResponseId`, JSON.stringify(fetchedResponseId));
-                                        saveLocalStorage(fetchedResponseId, 'response'); 
-                                        setupContinueButton(preOrpost === 'pre' ?'result_page.html':'manifesto_page.html');
-                                        return; 
-                                    } else {
-                                        alert("Invalid response ID entered.");
-                                        hideSpinner();
-                                        return; 
-                                    }
-                                }
-                            } else {
-                                setupContinueButton('qualtrics.html');
-                            }
-                            
-                        }   
-                        
-                    } catch (error) {
-                        console.error('Error in checkOrFetchResponseId:', error);
-                    } finally {
-                        hideSpinner();
-                    }
-                }
-                
-                async function fetchResponseIdFromNetlify(quizType, responseId) {
-                    try {
+                        }
+                    } else if (postResponseId) {
+                        let userChoice = confirm("Looks like there is your recorded post quiz. Would you like to start over? Click OK if yes.");
 
-                        const endpoint = `/api/fetch-response?quizType=${quizType}`;
-                        const options = {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Q-RESPONSE-ID': responseId,
-                            },
-                        };
-
-                        // Fetch the responseId from the Netlify endpoint
-                        const response = await fetch(endpoint, options);
-
-                        // Check if the response is successful
-                        if (!response.ok) {
-                            throw new Error('Failed to fetch response ID');
+                        if (userChoice) {
+                            localStorage.removeItem('preResult');
+                            localStorage.removeItem('postResult');
+                            setupContinueButton('qualtrics.html');
                         }
 
-                        // Parse the JSON response
-                        const data = await response.json();
+                    } else {
+                        // If no responseId in localStorage, ask the user if they've completed the pre-quiz
+                        const userAns = confirm("Have you done the quiz? Click OK if yes, cancel if no.");
 
-                        data.quizType = quizType;
+                        if (userAns) {
+                            const userOption = confirm("Would you like to continue with existing response? Click OK if yes.");
 
-                        console.log('Successful fetch.', '\n', data);
+                            if (userOption) {
 
-                        return reformatQualtricsData(data, 'response');
-                    } catch (error) {
-                        console.error('Error fetching response ID from Netlify:', error);
-                        return null; 
+                                let preOrpost = prompt("If you would like to proceed with pre-quiz, type 'pre'");
+
+                                // Validate the input
+                                if (preOrpost !== 'pre') {
+                                    alert("Invalid input. Please enter 'pre'.");
+                                    hideSpinner();
+                                    return;
+                                }
+
+                                let userMem = prompt("Please enter its response ID:");
+
+                                if (userMem) {
+                                    let responseId = userMem;
+                                    let fetchedResponseId = await fetchResponseIdFromNetlify(preOrpost, responseId);
+                                    // localStorage.setItem(`${preOrpost}ResponseId`, JSON.stringify(fetchedResponseId));
+                                    saveLocalStorage(fetchedResponseId, 'response');
+                                    setupContinueButton(preOrpost === 'pre' ?'result_page.html':'manifesto_page.html');
+                                    return;
+                                } else {
+                                    alert("Invalid response ID entered.");
+                                    hideSpinner();
+                                    return;
+                                }
+                            }
+                        } else {
+                            setupContinueButton('qualtrics.html');
+                        }
+
                     }
-                }
 
-                function setupContinueButton(path) {
-                    continueButton.addEventListener('click', function() {
-                        window.location.href = path;
-                    });
+                } catch (error) {
+                    console.error('Error in checkOrFetchResponseId:', error);
+                } finally {
+                    hideSpinner();
                 }
+            }
 
-                function setupNavBar() {
-                    const quiz = document.getElementById('Q');
-                    const challenge = document.getElementById('CH');
-                    const dashboard = document.getElementById('D');
+            async function fetchResponseIdFromNetlify(quizType, responseId) {
+                try {
+
+                    const endpoint = `/api/fetch-response?quizType=${quizType}`;
+                    const options = {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Q-RESPONSE-ID': responseId,
+                        },
+                    };
+
+                    // Fetch the responseId from the Netlify endpoint
+                    const response = await fetch(endpoint, options);
+
+                    // Check if the response is successful
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch response ID');
+                    }
+
+                    // Parse the JSON response
+                    const data = await response.json();
+
+                    data.quizType = quizType;
+
+                    console.log('Successful fetch.', '\n', data);
+
+                    return reformatQualtricsData(data, 'response');
+                } catch (error) {
+                    console.error('Error fetching response ID from Netlify:', error);
+                    return null;
                 }
-                
-                checkOrFetchResponseId();
-            });
+            }
+
+            function setupContinueButton(path) {
+                continueButton.addEventListener('click', function() {
+                    window.location.href = path;
+                });
+            }
+
+            function setupNavBar() {
+                const quiz = document.getElementById('Q');
+                const challenge = document.getElementById('CH');
+                const dashboard = document.getElementById('D');
+            }
+
+            checkOrFetchResponseId();
+        });
         </script>
     </body>
 </html>
