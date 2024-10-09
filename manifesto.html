@@ -249,6 +249,19 @@
 
                 scores = preResult.pointArray; 
 
+                function calculateSelectedTasks(tasks) {
+                    let count = 0;
+                    Object.keys(tasks).forEach((questionKey) => {
+                        const taskGroup = tasks[questionKey].tasks;
+                        taskGroup.forEach(task => {
+                            if (task.choice === 'chosen') {
+                                count += 1;
+                            }
+                        });
+                    });
+                    return count;
+                }
+
                 async function renderQuestions(condition) {
                     QContainer.innerHTML = '';
                     const tasks = await fetchTasks();
@@ -335,12 +348,7 @@
                                 // Initialize checkbox state based on task selection
                                 checkbox.checked = task.choice === 'chosen';
                                 localStorage.setItem('tasks', JSON.stringify(tasks)); 
-                                if(task.choice === 'chosen') {
-                                    task_counts += 1;
-                                } else {
-                                    task_counts -= 1;
-                                }
-                                                         
+                              
                                 updateStartButton(); 
                             });
 
@@ -350,7 +358,7 @@
                         }
                         localStorage.setItem('tasks', JSON.stringify(tasks)); 
                     });
-                    
+                    task_counts = calculateSelectedTasks(tasks);
                     updateStartButton(); 
                 }
                 // Function to update the start button state based on selected tasks
