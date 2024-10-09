@@ -652,6 +652,7 @@ body {
 .modal-content {
   position: absolute;
   justify-content: center;
+  padding: 0 16px;
   max-height: 50%;
   max-width: 80%;
 }
@@ -717,10 +718,8 @@ body {
   font-weight: bold;
   border-radius: 0.5em;
   border: 0.5em grey;
-  position:absolute;
-  left: 90%;
-  top: 0%;
 }
+
 .close:hover,
 .close:focus {
   cursor: pointer;
