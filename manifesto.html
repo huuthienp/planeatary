@@ -119,10 +119,10 @@
                 overlay.classList.remove('hidden');
             };
 
-            function ModalDes(desk) {
+            function ModalDes(des) {
                 const modalContent = document.querySelector(".modal-content");
                 const text = document.getElementById("inform");
-                text.innerHTML = source;
+                text.innerHTML = des;
                 modal2.classList.remove('hidden2');
                 overlay2.classList.remove('hidden2');
             };
@@ -339,14 +339,21 @@
                                 checkbox.checked = task.choice === 'chosen';
                                 if (task.choice === 'chosen') {
                                     task_counts += 1;
+                                    localStorage.setItem('tasks', JSON.stringify(tasks)); 
                                     updateStartButton(); 
-                                };
+                                } else {
+                                    task_counts -= 1;
+                                    localStorage.setItem('tasks', JSON.stringify(tasks)); 
+                                    updateStartButton(); 
+                                }
                             });
 
                             questionDiv.appendChild(taskList);
                             QContainer.appendChild(questionDiv);
                         }
+                        localStorage.setItem('tasks', JSON.stringify(tasks)); 
                     });
+                    
                     updateStartButton(); 
                 }
                 // Function to update the start button state based on selected tasks
@@ -354,7 +361,7 @@
                     const startButton = document.querySelector(".start");
                     const persuade = document.getElementById("threetask");
                     if (task_counts >= 3) {
-                        persuade.innerHTML = 'You’ve selected 3 tasks. Start challenge now';
+                        persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
                         persuade.style.color = 'black';
                         startButton.style.pointerEvents = "auto";
                         startButton.style.backgroundColor = "#02897A";

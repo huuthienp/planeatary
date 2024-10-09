@@ -176,6 +176,7 @@ body {
     border-radius: 0.5em;
     z-index: 1000;
     justify-content: center;
+    align-items: center;
     flex-direction: column;
   }
 
@@ -639,6 +640,7 @@ body {
   border-radius: 0.5em;
   z-index: 1000;
   justify-content: center;
+  align-items: center;
   flex-direction: column;
 }
 
@@ -684,6 +686,7 @@ body {
   border-radius: 0.5em;
   z-index: 1000;
   justify-content: center;
+  align-items: center;
   flex-direction: column;
 }
 
