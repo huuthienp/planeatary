@@ -338,11 +338,11 @@
                                 // Initialize checkbox state based on task selection
                                 checkbox.checked = task.choice === 'chosen';
                                 if (task.choice === 'chosen') {
-                                    task_counts += 1;
+                                    
                                     localStorage.setItem('tasks', JSON.stringify(tasks)); 
                                     
                                 } else {
-                                    task_counts -= 1;
+                                    
                                     localStorage.setItem('tasks', JSON.stringify(tasks)); 
                                 }
                                 updateStartButton(); 
