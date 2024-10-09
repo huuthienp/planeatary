@@ -251,7 +251,6 @@
 
                 async function renderQuestions(condition) {
                     QContainer.innerHTML = '';
-                    let task_counts = 0;
                     const tasks = await fetchTasks();
                     if (!tasks || !preResult) {
                         QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
