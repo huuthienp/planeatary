@@ -340,12 +340,11 @@
                                 if (task.choice === 'chosen') {
                                     task_counts += 1;
                                     localStorage.setItem('tasks', JSON.stringify(tasks)); 
-                                    updateStartButton(); 
+                                    
                                 } else {
-                                    task_counts -= 1;
                                     localStorage.setItem('tasks', JSON.stringify(tasks)); 
-                                    updateStartButton(); 
                                 }
+                                updateStartButton(); 
                             });
 
                             questionDiv.appendChild(taskList);
