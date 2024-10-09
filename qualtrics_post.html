@@ -13,23 +13,23 @@
         <div id="mySidenav" class="sidenav">
             <ul>
                 <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
-                <!-- <li><a href="index.html">Home</a></li>
-                <li><a href="qualtrics.html"><b>Quiz</b></a></li> -->
-                <!-- <li><a href="manifesto.html">Challenge</a></li> -->
+                <!-- <li><a href="index.html">Home</a></li> -->
+                <!-- <a href="qualtrics.html"><b>Quiz</b></a></li> -->
+                <li id="ch">Challenge</li>
                 <li><a href="result_page.html">Dashboard</a></li>
-                <li><!-- <a href="#">About us</a> --></li>
+                <!-- <li><a href="#">About us</a></li> -->
             </ul>
         </div>
         <div class="container">
             <div class="spinner hidden" id="spinner"></div>
             <div class="header">
-                <h2 class="logo">planeatary - logo</h2>
+                <h2 class="logo">planeatary</h2>
                 <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
                 <nav class="forwindow">
                     <ul>
                         <!-- <li><a href="index.html">Home</a></li>
                         <li><a href="qualtrics.html"><b>Quiz</b></a></li> -->
-                        <!-- <li><a href="manifesto.html">Challenge</a></li> -->
+                        <li id="CH">Challenge</li>
                         <li><a href="result_page.html">Dashboard</a></li>
                         <!-- <li>About us</li> -->
                     </ul>
@@ -59,7 +59,8 @@
             document.body.style.backgroundColor = "white";
         };
 
-        
+        const CH = document.getElementById("CH");
+        const ch = document.getElementById("ch");
         const nextButton = document.querySelector('.next');
         function updateNextButton() {
             let postResult = JSON.parse(localStorage.getItem('postResult'));
@@ -73,10 +74,17 @@
                     window.location.href = "result_page.html";
                 });
             } else {
+                ch.addEventListener("click", function() {
+                    window.location.href = "manifesto.html";
+                });
+                CH.addEventListener("click", function() {
+                    window.location.href = "manifesto.html";
+                });
                 // Disable the button if preResult does not exist
                 nextButton.style.backgroundColor = 'grey';
                 nextButton.style.cursor = 'not-allowed';
                 nextButton.disabled = true;
+
             }
         }
 

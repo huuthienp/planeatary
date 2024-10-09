@@ -280,7 +280,7 @@
                             // Add the info icon with a click event to open the modal
                             const infoIcon = document.createElement('img');
                             infoIcon.src = './images/info.png';
-                            infoIcon.width = '16';
+                            infoIcon.width = '20';
                             infoIcon.style.cursor = 'pointer'; 
 
                             questionTitle.appendChild(infoIcon); 
@@ -312,10 +312,8 @@
                                 checkbox.addEventListener('change', function() {
                                     if (checkbox.checked) {
                                         task.choice = "chosen";
-                                        task_counts += 1;
                                     } else {
                                         task.choice = "";
-                                        task_counts -= 1;
                                     }
                                     localStorage.setItem('tasks', JSON.stringify(tasks)); 
                                     updateStartButton(); 
@@ -337,12 +335,10 @@
 
                                 // Initialize checkbox state based on task selection
                                 checkbox.checked = task.choice === 'chosen';
+                                task_counts += 1;
                                 if (task.choice === 'chosen') {
-                                    
                                     localStorage.setItem('tasks', JSON.stringify(tasks)); 
-                                    
                                 } else {
-                                    
                                     localStorage.setItem('tasks', JSON.stringify(tasks)); 
                                 }
                                 updateStartButton(); 

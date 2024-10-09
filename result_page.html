@@ -15,7 +15,7 @@
             <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
             <!-- <li><a href="index.html">Home</a></li> -->
             <!--<li><b>Quiz</b></li>-->
-            <li>Challenge</li>
+            <li id="ch">Challenge</li>
             <li><a href="result_page.html">Dashboard</a></li>
             <!-- <li><a href="#">About us</a></li> -->
         </ul>
@@ -23,13 +23,13 @@
     <div class="container">
         <div class="spinner hidden" id="spinner"></div>
         <div class="header">
-            <h2 class="logo">planeatary - logo</h2>
+            <h2 class="logo">planeatary</h2>
             <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
             <nav class="forwindow">
                 <ul>
                     <!-- <li><a href="index.html">Home</a></li> -->
                     <!--<li><b>Quiz</b></li>-->
-                    <li>Challenge</li>
+                    <li id="CH">Challenge</li>
                     <li><a href="result_page.html">Dashboard</a></li>
                     <!-- <li>About us</li> -->
                 </ul>
@@ -111,6 +111,8 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             const spinner = document.getElementById('spinner');
+            const ch = document.getElementById('ch');
+            const CH = document.getElementById('CH');
             let isLoading = false;
             const minDisplayTime = 2000; // Minimum time spinner should be visible (2 seconds)
             let spinnerStartTime;
@@ -143,7 +145,9 @@
                     overlay.classList.add('hidden');
                     isLoading = false;
                 }
-            };
+            }
+
+            
 
 
             const comparison = document.getElementById('improvement');
@@ -246,6 +250,12 @@
                 );
 
             } else {
+                ch.addEventListener("click", function() {
+                    window.location.href = "manifesto.html";
+                });
+                CH.addEventListener("click", function() {
+                    window.location.href = "manifesto.html";
+                });
                 document.getElementById('preQ').style.backgroundColor = '#02897A';   
                 document.getElementById('postQ').style.backgroundColor = 'grey';
                 document.getElementById('postQ').disabled = true; 

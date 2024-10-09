@@ -633,7 +633,6 @@ body {
 
 .align .modal {
   display: flex;
-  position: fixed;
   max-height: auto;
   max-width: auto;
   margin: 0 auto;
@@ -645,7 +644,7 @@ body {
 }
 
 .modal-content {
-  background-color: white;
+  position: absolute;
   justify-content: center;
 }
 
@@ -699,9 +698,9 @@ body {
 }
 
 /* The Close Button */
-.modal2 .btn {
+.modal2 > .btn {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: flex-end;
 }
 
 .btn > .close {
@@ -710,6 +709,9 @@ body {
   font-weight: bold;
   border-radius: 0.5em;
   border: 0.5em grey;
+  position:relative;
+  left: 90%;
+  z-index: 1001;
 }
 .close:hover,
 .close:focus {
@@ -719,20 +721,6 @@ body {
   transform: scale(1.1);  /* Increase size slightly on hover */
 }
 
-.btn > .close {
-  background: #aaa;
-  font-size: 2em;
-  font-weight: bold;
-  border-radius: 0.5em;
-  border: 0.5em grey;
-}
-.close:hover,
-.close:focus {
-  cursor: pointer;
-  background-color: #02897A;  /* Use the brand color for hover */
-  color: white;  /* Make the text color white for better contrast */
-  transform: scale(1.1);  /* Increase size slightly on hover */
-}
 
 .header a:link {
   text-decoration: none;
@@ -825,17 +813,6 @@ body {
   border-radius: 1px;
 }
 
-.btn .close {
-  background: #aaa;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 32px;
-  border: 1px grey;
-}
-.close:hover,
-.close:focus {
-  cursor: pointer;
-}
 
 .next a:link {
   text-decoration: none;

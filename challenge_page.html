@@ -13,9 +13,9 @@
     <div id="mySidenav" class="sidenav">
         <ul>
             <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
-            <!-- <li><a href="index.html">Home</a></li>
-            <li><a href="qualtrics.html"><b>Quiz</b></a></li>
-            <li><a href="manifesto.html">Challenge</a></li> -->
+            <!-- <li><a href="index.html">Home</a></li> -->
+            <!-- <li><a href="qualtrics.html"><b>Quiz</b></a></li> -->
+            <a href="manifesto.html">Challenge</a></li>
             <li><a href="result_page.html">Dashboard</a></li>
         </ul>
     </div>
@@ -27,9 +27,9 @@
             <nav class="forwindow">
                 <ul>
                     <!-- <li>Home</li> -->
-                    <!-- <li><a href="qualtrics.html"><b>Quiz</b></a></li>
-                    <li><a href="challenge_page.html">Challenge</a></li>
-                    <li><a href="result_page.html">Dashboard</a></li> -->
+                    <!-- <li><a href="qualtrics.html"><b>Quiz</b></a></li> -->
+                    <li><a href="manifesto.html">Challenge</a></li> 
+                    <a href="result_page.html">Dashboard</a></li>
                     <!-- <li>About us</li> -->
                 </ul>
             </nav>
@@ -68,18 +68,7 @@
 
     <script type="module">
         import {extractTaskArrays} from './data-functions.mjs';
-        function openNav() {
-            next = document.querySelector(".next");
-            next.style.cursor = "not-allowed";
-            document.getElementById("mySidenav").style.width = "40%";
-            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
-        };
-
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.body.style.backgroundColor = "white";
-        };
-
+        
         let scores = [];
         let spinnerStartTime;
         let isLoading;
@@ -101,28 +90,28 @@
                     closeButt.classList.add('hidden');
                     isLoading = true;
                     spinnerStartTime = Date.now();
-                };
+        }
                 
-                // Function to hide the spinner
-                function hideSpinner() {
-                    const elapsedTime = Date.now() - spinnerStartTime;
+        // Function to hide the spinner
+        function hideSpinner() {
+            const elapsedTime = Date.now() - spinnerStartTime;
                     
-                    if (elapsedTime < minDisplayTime) {
-                        // Delay hiding spinner until the minimum display time
-                        setTimeout(() => {
-                            //console.log("Hiding spinner after min time...");
-                            spinner.classList.add('hidden');
-                            overlay.classList.add('hidden');
-                            isLoading = false;
-                        }, minDisplayTime - elapsedTime);
-                    } else {
-                        //console.log("Hiding spinner...");
-                        spinner.classList.add('hidden');
-                        overlay.classList.add('hidden');
-                        isLoading = false;
-                    }
+            if (elapsedTime < minDisplayTime) {
+                // Delay hiding spinner until the minimum display time
+                setTimeout(() => {
+                    //console.log("Hiding spinner after min time...");
+                    spinner.classList.add('hidden');
+                    overlay.classList.add('hidden');
+                    isLoading = false;
+                }, minDisplayTime - elapsedTime);
+            } else {
+                //console.log("Hiding spinner...");
+                spinner.classList.add('hidden');
+                overlay.classList.add('hidden');
+                isLoading = false;
+            }
                     
-                };
+        }
         
         // Function to get task status from the API
         async function fetchTaskStatus() {
@@ -140,6 +129,7 @@
                 
                 const data = await response.json();
                 console.log('Task status fetched:', data);
+                return data
                 hideSpinner();
             } catch (error) {
                 hideSpinner();
@@ -177,11 +167,20 @@
             }
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            fetchTaskStatus();
-            
-            
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "40%";
+            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
+        };
 
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.body.style.backgroundColor = "white";
+        };
+
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const fetched = JSON.parse(localStorage.setItem('fetched tasks', fetchTaskStatus()));
+            
             const cardContainer = document.querySelector(".card");
             const modal = document.getElementById("taskModal");
             const modalOverlay = document.getElementById("modalOverlay");
@@ -241,119 +240,111 @@
                 cardContainer.innerHTML = "<p>No tasks found.</p>";
             }
 
-    // Function to display selected tasks and allow status update
-    function displaySelectedTasks(tasks) {
-        cardContainer.innerHTML = '';  // Clear any existing content
+        // Function to display selected tasks and allow status update
+        function displaySelectedTasks(tasks) {
+            cardContainer.innerHTML = '';  // Clear any existing content
 
-        Object.keys(tasks).forEach(questionKey => {
-            const taskGroup = tasks[questionKey].tasks;
+            Object.keys(tasks).forEach(questionKey => {
+                const taskGroup = tasks[questionKey].tasks;
 
-            // Filter tasks that are selected
-            taskGroup.forEach(task => {
-                if (task.choice === 'chosen') {
-                    // Create and append a card for each selected task
-                    const taskCard = document.createElement("div");
-                    taskCard.classList.add("task-card", task.status === "Completed" ? "card_completed" : "card_incompleted");
+                // Filter tasks that are selected
+                taskGroup.forEach(task => {
+                    if (task.choice === 'chosen') {
+                        // Create and append a card for each selected task
+                        const taskCard = document.createElement("div");
+                        taskCard.classList.add("task-card", task.status === "Completed" ? "card_completed" : "card_incompleted");
 
-                    const taskName = document.createElement("span");
-                    taskName.textContent = task.taskName;
+                        const taskName = document.createElement("span");
+                        taskName.textContent = task.taskName;
 
-                    // Add an info icon for task description
-                    const infoIcon = document.createElement("span");
-                    infoIcon.classList.add("info-icon");
-                    infoIcon.innerHTML = "&#9432;"; 
+                        // Add an info icon for task description
+                        const infoIcon = document.createElement("span");
+                        infoIcon.classList.add("info-icon");
+                        infoIcon.innerHTML = "&#9432;"; 
 
-                    // Set the click event for the info icon to show the modal
-                    infoIcon.addEventListener('click', function(event) {
-                        event.stopPropagation(); 
-                        showModal(task.taskName, task.taskDescription);
-                    });
+                        // Set the click event for the info icon to show the modal
+                        infoIcon.addEventListener('click', function(event) {
+                            event.stopPropagation(); 
+                            showModal(task.taskName, task.taskDescription);
+                        });
 
-                    const completion = document.createElement("span");
-                    completion.classList.add("completion");
-                    completion.textContent = task.status === "Completed" ? "Completed" : "Done";
+                        const completion = document.createElement("span");
+                        completion.classList.add("completion");
+                        completion.textContent = task.status === "Completed" ? "Completed" : "Done";
 
-                    // Set card styles based on status
-                    if (task.status === "Completed") {
-                        taskCard.classList.add("card_completed");
-                        taskName.style.textDecoration = "line-through";
-                    } else {
-                        taskCard.classList.add("card_incompleted");
-                    }
-
-                    taskCard.appendChild(taskName);
-                    taskCard.appendChild(infoIcon); // Add info icon to the card
-                    taskCard.appendChild(completion);
-                    cardContainer.appendChild(taskCard);
-
-                    // Add event listener to task card to update status
-                    taskCard.addEventListener('click', function() {
-                        // Toggle task status between "Done" and "Completed"
-                        task.status = task.status === "Done" ? "Completed" : "Done";
-
-                        // Update task in localStorage
-                        localStorage.setItem('tasks', JSON.stringify(tasks));
-
-
+                        // Set card styles based on status
                         if (task.status === "Completed") {
-                            taskCard.classList.remove("card_incompleted");
                             taskCard.classList.add("card_completed");
                             taskName.style.textDecoration = "line-through";
-                            completion.textContent = "Completed";
                         } else {
-                            taskCard.classList.remove("card_completed");
                             taskCard.classList.add("card_incompleted");
-                            taskName.style.textDecoration = "none";
-                            completion.textContent = "Done";
                         }
 
-                        updateNextButton();
+                        taskCard.appendChild(taskName);
+                        taskCard.appendChild(infoIcon); // Add info icon to the card
+                        taskCard.appendChild(completion);
+                        cardContainer.appendChild(taskCard);
 
-                        
-                    });
-                    updateTaskStatus(task);
-                }
+                        // Add event listener to task card to update status
+                        taskCard.addEventListener('click', function() {
+                            // Toggle task status between "Done" and "Completed"
+                            task.status = task.status === "Done" ? "Completed" : "Done";
+
+                            // Update task in localStorage
+                            localStorage.setItem('tasks', JSON.stringify(tasks));
+
+
+                            if (task.status === "Completed") {
+                                taskCard.classList.remove("card_incompleted");
+                                taskCard.classList.add("card_completed");
+                                taskName.style.textDecoration = "line-through";
+                                completion.textContent = "Completed";
+                            } else {
+                                taskCard.classList.remove("card_completed");
+                                taskCard.classList.add("card_incompleted");
+                                taskName.style.textDecoration = "none";
+                                completion.textContent = "Done";
+                            }
+
+                            updateNextButton();
+                            
+                        });
+                        localStorage.setItem('tasks', JSON.stringify(tasks));
+                        updateTaskStatus(task);
+                    }
+                });
             });
-        });
-        cardContainer.appendChild(nextButtonContainer);
-
-        updateNextButton(); 
-    }
-
-    // Function to update the Next button's state
-    function updateNextButton() {
-        let allCompleted = true;
-
-        Object.keys(tasks).forEach(questionKey => {
-            const taskGroup = tasks[questionKey].tasks;
-            taskGroup.forEach(task => {
-                if (task.choice === "chosen" && task.status !== "Completed") {
-                    allCompleted = false; // If any selected task is not "Completed", set false
-                }
-            });
-        });
-
-        // Enable or disable the next button based on task completion status
-        if (allCompleted) {
-            btn_next.style.pointerEvents = "auto"; // Enable the next button
-            btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
-            btn_next.style.cursor = "pointer";
-            btn_next.disabled = false;
-        } else {
-            btn_next.style.pointerEvents = "none"; // Disable the next button
-            btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
-            btn_next.style.cursor = "not-allowed";
-            btn_next.disabled = true;
+            cardContainer.appendChild(nextButtonContainer);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            updateNextButton(); 
         }
-    }
 
-    // // // Call updateNextButton function whenever a task is updated
-    // document.querySelectorAll('.task-card').forEach(taskCard => {
-    //     taskCard.addEventListener('click', function() {
-    //         updateNextButton(); 
-    //     });
-    // });
-    
+        // Function to update the Next button's state
+        function updateNextButton() {
+            let allCompleted = true;
+
+            Object.keys(tasks).forEach(questionKey => {
+                const taskGroup = tasks[questionKey].tasks;
+                taskGroup.forEach(task => {
+                    if (task.choice === "chosen" && task.status !== "Completed") {
+                        allCompleted = false; // If any selected task is not "Completed", set false
+                    }
+                });
+            });
+
+            // Enable or disable the next button based on task completion status
+            if (allCompleted) {
+                btn_next.style.pointerEvents = "auto"; // Enable the next button
+                btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
+                btn_next.style.cursor = "pointer";
+                btn_next.disabled = false;
+            } else {
+                btn_next.style.pointerEvents = "none"; // Disable the next button
+                btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
+                btn_next.style.cursor = "not-allowed";
+                btn_next.disabled = true;
+            }
+        }
 });
     </script>
 </body>
