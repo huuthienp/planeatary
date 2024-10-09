@@ -622,8 +622,7 @@ body {
 }
 
 #visual_info {
-  width: auto;
-  height: auto;
+  width: 8%;
 }
 
 .overlay2 {
@@ -668,7 +667,6 @@ body {
 }
 
 #inform {
-  overflow: auto;
   width: 100%;
   height: 80vh;
   height: auto;
