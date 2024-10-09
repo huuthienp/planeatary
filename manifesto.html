@@ -164,7 +164,7 @@
                 const minDisplayTime = 2000; 
                 let spinnerStartTime;
                 let scores = [];
-                task_counts = 0;
+                task_counts =0;
 
                 // Function to show the spinner
                 function showSpinner() {
@@ -338,17 +338,19 @@
 
                                 // Initialize checkbox state based on task selection
                                 checkbox.checked = task.choice === 'chosen';
+                                localStorage.setItem('tasks', JSON.stringify(tasks)); 
                                 if(task.choice === 'chosen') {
                                     task_counts += 1;
                                 }
                                 
-                                localStorage.setItem('tasks', JSON.stringify(tasks)); 
+                                
                            
                                 updateStartButton(); 
                             });
 
                             questionDiv.appendChild(taskList);
                             QContainer.appendChild(questionDiv);
+                            localStorage.setItem('tasks', JSON.stringify(tasks)); 
                         }
                         localStorage.setItem('tasks', JSON.stringify(tasks)); 
                     });
