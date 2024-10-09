@@ -280,7 +280,7 @@
                             // Add the info icon with a click event to open the modal
                             const infoIcon = document.createElement('img');
                             infoIcon.src = './images/info.png';
-                            infoIcon.width = '8';
+                            infoIcon.width = '16';
                             infoIcon.style.cursor = 'pointer'; 
 
                             questionTitle.appendChild(infoIcon); 
@@ -321,18 +321,19 @@
                                     updateStartButton(); 
                                 });
 
-                                //event listener for more info
-                                infoIcon2.addEventListener('click', function (event) {
-                                    event.stopPropagation(); 
-                                    ModalDes(task.taskDescription);
-                                });
-
 
                                 label.appendChild(checkbox);
                                 label.appendChild(document.createTextNode(task.taskName));
                                 label.appendChild(infoIcon2);
                                 taskItem.appendChild(label);
                                 taskList.appendChild(taskItem);
+
+                                //event listener for more info
+                                infoIcon2.addEventListener('click', function (event) {
+                                    event.stopPropagation(); 
+                                    ModalDes(task.taskDescription);
+                                });
+                                
                                 // Initialize checkbox state based on task selection
                                 checkbox.checked = task.choice === 'chosen';
                                 if (task.choice === 'chosen') {
