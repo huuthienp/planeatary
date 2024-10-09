@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
         <link href="style_concat.css" rel="stylesheet" />
         <title>Start Challenges</title>
     </head>
@@ -85,7 +86,7 @@
                             <button class="close" onclick="Close();">x</button>
                         </div>
                         <div class="modal-content">
-                            <img id="visual_info"/>
+                            <img id="visual_info" />
                         </div>
                     </div>
                 </div>
@@ -275,7 +276,6 @@
                             // Add the info icon with a click event to open the modal
                             const infoIcon = document.createElement('img');
                             infoIcon.src = './images/info.png';
-                            infoIcon.width = '8px';
                             infoIcon.style.cursor = 'pointer'; 
 
                             questionDiv.appendChild(questionTitle);
@@ -357,8 +357,6 @@
                         startButton.style.backgroundColor = "grey";
                     }
                 }
-
-                // Call the function to render the questions and tasks
                 renderQuestions((score) => score < 3);
                 // Attach single click listener for the start button navigation
                 startButton.addEventListener('click', function(event) {
