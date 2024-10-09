@@ -646,6 +646,7 @@ body {
 .modal-content {
   position: absolute;
   justify-content: center;
+  z-index: 1000;
 }
 
 .modal-content #visual_info {
@@ -701,6 +702,7 @@ body {
 .modal2 > .btn {
   display: flex;
   flex-direction: flex-end;
+  z-index: 1000;
 }
 
 .btn > .close {
@@ -711,7 +713,7 @@ body {
   border: 0.5em grey;
   position:relative;
   left: 90%;
-  z-index: 1001;
+  z-index: 1003;
 }
 .close:hover,
 .close:focus {
