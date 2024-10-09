@@ -78,19 +78,20 @@
                 </div>
             </div>
         </div>
-        <!-- The Modal -->
-        <section class="overlay hidden">
-                <div class="align">
-                    <div class="modal hidden"> 
-                        <div class="btn">
-                            <button class="close" onclick="Close();">x</button>
-                        </div>
-                        <div class="modal-content">
-                            <img id="visual_info" />
-                        </div>
+
+        <section class="overlay hidden" id="modalOverlay">
+            <div class="align">
+                <div class="modal hidden" id="taskModal"> 
+                    <div class="btn">
+                        <button class="close">x</button>
+                    </div>
+                    <div class="modal-content" style="background-color: white;">
+                        <img id="visual_info" />
                     </div>
                 </div>
+            </div>
         </section>
+
         <!-- The Modal 2-->
         <section class="overlay2 hidden2">
             <div class="align2">
@@ -122,9 +123,10 @@
             function ModalDes(des) {
                 const modalContent = document.querySelector(".modal-content");
                 const text = document.getElementById("inform");
-                text.innerHTML = des;
+                text.textContent = des;
                 modal2.classList.remove('hidden2');
                 overlay2.classList.remove('hidden2');
+
             };
 
             function Close() {

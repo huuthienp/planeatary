@@ -82,7 +82,22 @@
         
         const cardContainer = document.querySelector(".card");
         // Function to show the spinner
-        function showSpinner() {
+        
+
+
+        document.addEventListener("DOMContentLoaded", async function() {
+
+            function openNav() {
+            document.getElementById("mySidenav").style.width = "40%";
+            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
+            }
+
+            function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+                document.body.style.backgroundColor = "white";
+            }
+
+            function showSpinner() {
                     //console.log("Showing spinner...");
                     spinner.classList.remove('hidden');
                     overlay.classList.remove('hidden');
@@ -90,41 +105,28 @@
                     closeButt.classList.add('hidden');
                     isLoading = true;
                     spinnerStartTime = Date.now();
-        };
-                
-        // Function to hide the spinner
-        function hideSpinner() {
-            const elapsedTime = Date.now() - spinnerStartTime;
+            }
                     
-            if (elapsedTime < minDisplayTime) {
-                // Delay hiding spinner until the minimum display time
-                setTimeout(() => {
-                    //console.log("Hiding spinner after min time...");
+            // Function to hide the spinner
+            function hideSpinner() {
+                const elapsedTime = Date.now() - spinnerStartTime;
+                        
+                if (elapsedTime < minDisplayTime) {
+                    // Delay hiding spinner until the minimum display time
+                    setTimeout(() => {
+                        //console.log("Hiding spinner after min time...");
+                        spinner.classList.add('hidden');
+                        overlay.classList.add('hidden');
+                        isLoading = false;
+                    }, minDisplayTime - elapsedTime);
+                } else {
+                    //console.log("Hiding spinner...");
                     spinner.classList.add('hidden');
                     overlay.classList.add('hidden');
                     isLoading = false;
-                }, minDisplayTime - elapsedTime);
-            } else {
-                //console.log("Hiding spinner...");
-                spinner.classList.add('hidden');
-                overlay.classList.add('hidden');
-                isLoading = false;
+                }
+                        
             }
-                    
-        };
-        
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "40%";
-            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
-        };
-
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.body.style.backgroundColor = "white";
-        };
-
-
-        document.addEventListener("DOMContentLoaded", async function() {
 
             // Function to get task status from the API
             async function fetchTaskStatus() {

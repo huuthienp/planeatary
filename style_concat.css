@@ -638,7 +638,6 @@ body {
 }
 
 .align .modal {
-  display: flex;
   max-height: auto;
   max-width: 80vw;
   margin: 0 auto;
@@ -689,7 +688,6 @@ body {
 
 
 .align2 > .modal2 {
-  display: flex;
   max-height: 80vh;
   max-width: 70vw;
   margin: 0 auto;
