@@ -22,7 +22,7 @@
     <div class="container">
         <div class="spinner hidden" id="spinner"></div>
         <div class="header">
-            <h2 class="logo">planeatary - logo</h2>
+            <h2 class="logo">planeatary</h2>
             <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
             <nav class="forwindow">
                 <ul>
@@ -179,7 +179,7 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             fetchTaskStatus();
-            closeButt.classList.remove('hidden');
+            
             
 
             const cardContainer = document.querySelector(".card");
@@ -190,6 +190,7 @@
 
             // Function to show the modal
             function showModal(title, description) {
+                closeButt.classList.remove('hidden');
                 modalTitle.textContent = title;
                 modalDescription.textContent = description;
                 modal.classList.remove("hidden");
@@ -198,6 +199,7 @@
 
             // Function to close the modal
             function closeModal() {
+                closeButt.classList.remove('hidden');
                 modal.classList.add("hidden");
                 modalOverlay.classList.add("hidden");
             }
