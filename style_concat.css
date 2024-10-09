@@ -647,7 +647,8 @@ body {
 }
 
 .modal-content #visual_info {
-  width: 50%;
+  width: 80%;
+  height: auto;
 }
 
 .overlay2 {
