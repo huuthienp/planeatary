@@ -90,7 +90,7 @@
                     closeButt.classList.add('hidden');
                     isLoading = true;
                     spinnerStartTime = Date.now();
-        }
+        };
                 
         // Function to hide the spinner
         function hideSpinner() {
@@ -111,62 +111,8 @@
                 isLoading = false;
             }
                     
-        }
+        };
         
-        // Function to get task status from the API
-        async function fetchTaskStatus() {
-            try {
-                
-                showSpinner();
-                const response = await fetch('/api/manage-tasks', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Q-RESPONSE-ID': preResponseId,
-                    }
-
-                });
-                
-                const data = await response.json();
-                console.log('Task status fetched:', data);
-                return data
-                hideSpinner();
-            } catch (error) {
-                hideSpinner();
-                console.error('Error fetching task status:', error);
-            }
-        }
-
-        // Function to update task status using the API
-        async function updateTaskStatus(task) {
-            try {
-                showSpinner();
-                const taskData = JSON.parse(localStorage.getItem('tasks'));
-                const extracted = extractTaskArrays(taskData);
-
-                let task = {
-                    id: preResponseId,
-                    chosen: extracted.chosen,
-                    done: extracted.done
-                }
-                const response = await fetch('/api/manage-tasks', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Q-RESPONSE-ID': preResponseId,
-                    },
-                    body: JSON.stringify(task),
-                });
-                const data = await response.json();
-                console.log('Task updated successfully:', data);
-                hideSpinner();
-            } catch (error) {
-                hideSpinner();
-                console.error('Error updating task status:', error);
-                
-            }
-        }
-
         function openNav() {
             document.getElementById("mySidenav").style.width = "40%";
             document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
@@ -178,8 +124,68 @@
         };
 
 
-        document.addEventListener("DOMContentLoaded", function() {
-            const fetched = JSON.parse(localStorage.setItem('fetched tasks', fetchTaskStatus()));
+        document.addEventListener("DOMContentLoaded", async function() {
+
+            // Function to get task status from the API
+            async function fetchTaskStatus() {
+                try {
+                    
+                    showSpinner();
+                    const response = await fetch('/api/manage-tasks', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Q-RESPONSE-ID': preResponseId,
+                        }
+
+                    });
+                    
+                    const data = await response.json();
+                    console.log('Task status fetched:', data);
+                    hideSpinner();
+                    return data;
+                } catch (error) {
+                    hideSpinner();
+                    console.error('Error fetching task status:', error);
+                    return null;
+                }
+            }
+
+            // Function to update task status using the API
+            async function updateTaskStatus(task) {
+                try {
+                    showSpinner();
+                    const taskData = JSON.parse(localStorage.getItem('tasks'));
+                    const extracted = extractTaskArrays(taskData);
+
+                    let task = {
+                        id: preResponseId,
+                        chosen: extracted.chosen,
+                        done: extracted.done
+                    }
+                    const response = await fetch('/api/manage-tasks', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Q-RESPONSE-ID': preResponseId,
+                        },
+                        body: JSON.stringify(task),
+                    });
+                    const data = await response.json();
+                    console.log('Task updated successfully:', data);
+                    hideSpinner();
+                } catch (error) {
+                    hideSpinner();
+                    console.error('Error updating task status:', error);
+                    
+                }
+            }
+
+            const fetchedTasks = await fetchTaskStatus(); 
+            localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks)); 
+            const fetchTasks = JSON.parse(localStorage.getItem('fetched_tasks')); 
+            console.log(fetchTasks); 
+
             
             const cardContainer = document.querySelector(".card");
             const modal = document.getElementById("taskModal");
