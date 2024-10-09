@@ -83,19 +83,19 @@
         const cardContainer = document.querySelector(".card");
         // Function to show the spinner
         
+        window.openNav = function() {
+            document.getElementById("mySidenav").style.width = "40%";
+            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
+        };
+
+        window.closeNav = function() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.body.style.backgroundColor = "white";
+        };
 
 
         document.addEventListener("DOMContentLoaded", async function() {
 
-            function openNav() {
-            document.getElementById("mySidenav").style.width = "40%";
-            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
-            }
-
-            function closeNav() {
-                document.getElementById("mySidenav").style.width = "0";
-                document.body.style.backgroundColor = "white";
-            }
 
             function showSpinner() {
                     //console.log("Showing spinner...");
