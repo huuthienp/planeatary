@@ -645,6 +645,7 @@ body {
 }
 
 .modal-content {
+  background-color: white;
   justify-content: center;
 }
 
