@@ -596,7 +596,6 @@ body {
 
 .modal-content {
   padding: 0 16px;
-  max-height: 50%;
   width: 100%;
 }
 
@@ -640,6 +639,7 @@ body {
   margin: 0 auto;
   border-radius: 0.5em;
   justify-content: center;  
+  flex-direction: column;
 }
 
 .btn {
