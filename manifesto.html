@@ -92,9 +92,9 @@
                 </div>
         </section>
         <!-- The Modal 2-->
-        <section class="overlay2 hidden2">
+        <section class="overlay2 hidden">
             <div class="align2">
-                <div class="modal2 hidden2"> 
+                <div class="modal2 hidden"> 
                     <div class="btn">
                         <button class="close" onclick="Close();">x</button>
                     </div>
@@ -276,10 +276,12 @@
                             // Add the info icon with a click event to open the modal
                             const infoIcon = document.createElement('img');
                             infoIcon.src = './images/info.png';
+                            infoIcon.width = '8';
                             infoIcon.style.cursor = 'pointer'; 
 
+                            questionTitle.appendChild(infoIcon); 
                             questionDiv.appendChild(questionTitle);
-                            questionDiv.appendChild(infoIcon); 
+                            
 
                             // Set the click event for the info icon to show the modal with the correct image
                             infoIcon.addEventListener('click', function() {
@@ -296,9 +298,9 @@
                                 const checkbox = document.createElement('input');
                                 checkbox.type = 'checkbox';
                                 // Add an info icon for task description
-                                const infoIcon = document.createElement("span");
-                                infoIcon.classList.add("info-icon");
-                                infoIcon.innerHTML = "&#9432;"; 
+                                const infoIcon2 = document.createElement("span");
+                                infoIcon2.classList.add("info-icon");
+                                infoIcon2.innerHTML = "&#9432;"; 
 
                                 
 
@@ -316,7 +318,7 @@
                                 });
 
                                 //event listener for more info
-                                infoIcon.addEventListener('click', function (event) {
+                                infoIcon2.addEventListener('click', function (event) {
                                     event.stopPropagation(); 
                                     ModalDes(task.taskDescription);
                                 });

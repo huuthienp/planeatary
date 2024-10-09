@@ -180,11 +180,36 @@ body {
   }
 
 
-  .visual_info {
+  #visual_info {
     display: flex;
     justify-content: center;
-    overflow: auto;
-    width: 100%;
+    width: 80%;
+    height: 90vh;
+  }
+
+  .align2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .align2 .modal2 {
+    display: flex;
+    position: fixed; 
+    max-height: 80vh;
+    max-width: 70vw;
+    margin: 0 auto;
+    border-radius: 0.5em;
+    z-index: 1000;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  #inform {
+    display: flex;
+    justify-content: center;
+    width: 80%;
     height: 90vh;
   }
     
@@ -666,23 +691,6 @@ body {
   width: 80%;
   max-height: 80vh;
   background-color: white;
-}
-
-
-.btn > .close {
-  font-size: 1.5em; 
-  background: #f1f1f1; /* Lighter background color for better contrast */
-  color: #333;  /* Use a darker color for better visibility */
-  font-size: 2em; /* Make the close button more noticeable */
-  font-weight: bold;
-  border-radius: 50%; /* Make it round */
-  border: none;  /* Remove unnecessary border */
-  width: 40px;  /* Width to match height */
-  height: 40px; /* Height for a square button */
-  text-align: center;
-  line-height: 40px;  /* Vertically align the 'x' */
-  cursor: pointer;
-  transition: all 0.3s ease;
 }
 
 /* The Close Button */
