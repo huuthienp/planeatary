@@ -546,7 +546,7 @@ body {
 
 .q-task {
   margin: 0 auto;
-  padding: 2vh 2vw;
+  padding: 2vh 1vw;
 }
 .q-task ul {
   list-style: none;
@@ -601,6 +601,12 @@ body {
 
 #visual_info {
   width: 100%;
+}
+
+.btn {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
 }
 
 .overlay2 {
