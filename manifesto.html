@@ -119,12 +119,12 @@
                 overlay.classList.remove('hidden');
             };
 
-            function ModalDes(des) {
+            function ModalDes(desk) {
                 const modalContent = document.querySelector(".modal-content");
                 const text = document.getElementById("inform");
-                text.innerHTML = des;
-                modal2.classList.remove('hidden');
-                overlay2.classList.remove('hidden');
+                text.innerHTML = source;
+                modal2.classList.remove('hidden2');
+                overlay2.classList.remove('hidden2');
             };
 
             function Close() {
@@ -134,8 +134,8 @@
             };
 
             function CloseDes() {
-                modal2.classList.add("hidden");
-                overlay2.classList.add('hidden');
+                modal2.classList.add("hidden2");
+                overlay2.classList.add('hidden2');
             };
 
             function openNav() {
@@ -322,6 +322,7 @@
                                 });
 
 
+
                                 label.appendChild(checkbox);
                                 label.appendChild(document.createTextNode(task.taskName));
                                 label.appendChild(infoIcon2);
@@ -333,11 +334,12 @@
                                     event.stopPropagation(); 
                                     ModalDes(task.taskDescription);
                                 });
-                                
+
                                 // Initialize checkbox state based on task selection
                                 checkbox.checked = task.choice === 'chosen';
                                 if (task.choice === 'chosen') {
                                     task_counts += 1;
+                                    updateStartButton(); 
                                 };
                             });
 
@@ -345,8 +347,7 @@
                             QContainer.appendChild(questionDiv);
                         }
                     });
-
-                    updateStartButton(); // Update the start button after rendering all tasks
+                    updateStartButton(); 
                 }
                 // Function to update the start button state based on selected tasks
                 function updateStartButton() {
