@@ -22,7 +22,7 @@
         <div class="container">
             <div class="spinner hidden" id="spinner"></div>
             <div class="header">
-                <h2 class="logo">planeatary - logo</h2>
+                <h2 class="logo">planeatary</h2>
                 <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
                 <nav class="forwindow">
                     <ul>
@@ -85,27 +85,52 @@
                             <button class="close" onclick="Close();">x</button>
                         </div>
                         <div class="modal-content">
-                            <img id="inform"/>
+                            <img id="visual_info"/>
                         </div>
                     </div>
                 </div>
         </section>
+        <!-- The Modal 2-->
+        <section class="overlay2 hidden2">
+            <div class="align2">
+                <div class="modal2 hidden2"> 
+                    <div class="btn">
+                        <button class="close" onclick="Close();">x</button>
+                    </div>
+                    <div class="modal-content">
+                        <span id="inform"></span>
+                    </div>
+                </div>
+            </div>
+    </section>
         <script>
 
             const modal = document.querySelector(".modal");
             const overlay = document.querySelector(".overlay");
+            const modal2 = document.querySelector(".modal2");
+            const overlay2 = document.querySelector(".overlay2");
 
             function Modal(source) {
                 const modalContent = document.querySelector(".modal-content");
-                const image = document.getElementById("inform");
+                const image = document.getElementById("visual_info");
                 image.src = source;
                 modal.classList.remove('hidden');
                 overlay.classList.remove('hidden');
             };
 
+            function ModalDes(desk) {
+                const modalContent = document.querySelector(".modal-content");
+                const text = document.getElementById("inform");
+                text.innerHTML = source;
+                modal2.classList.remove('hidden');
+                overlay2.classList.remove('hidden');
+            };
+
             function Close() {
                 modal.classList.add("hidden");
                 overlay.classList.add('hidden');
+                modal2.classList.add("hidden");
+                overlay2.classList.add('hidden');
             };
 
             function openNav() {
@@ -251,15 +276,15 @@
                             const infoIcon = document.createElement('img');
                             infoIcon.src = './images/info.png';
                             infoIcon.width = '8px';
-                            infoIcon.style.cursor = 'pointer'; // Cursor pointer on hover
+                            infoIcon.style.cursor = 'pointer'; 
+
+                            questionDiv.appendChild(questionTitle);
+                            questionDiv.appendChild(infoIcon); 
 
                             // Set the click event for the info icon to show the modal with the correct image
                             infoIcon.addEventListener('click', function() {
-                                Modal(`./images/pop${i+1}.jpg`); // Dynamically load the image based on the question number
+                                Modal(`./images/pop${i+1}.jpg`); 
                             });
-
-                            questionDiv.appendChild(questionTitle);
-                            questionDiv.appendChild(infoIcon); // Add the info icon to the question div
 
                             // Create a list to hold the tasks for this question
                             const taskList = document.createElement('ul');
@@ -270,6 +295,10 @@
                                 const label = document.createElement('label');
                                 const checkbox = document.createElement('input');
                                 checkbox.type = 'checkbox';
+                                // Add an info icon for task description
+                                const infoIcon = document.createElement("span");
+                                infoIcon.classList.add("info-icon");
+                                infoIcon.innerHTML = "&#9432;"; 
 
                                 
 
@@ -286,9 +315,16 @@
                                     updateStartButton(); 
                                 });
 
+                                //event listener for more info
+                                infoIcon.addEventListener('click', function (event) {
+                                    event.stopPropagation(); 
+                                    ModalDes(task.taskDescription);
+                                });
+
 
                                 label.appendChild(checkbox);
                                 label.appendChild(document.createTextNode(task.taskName));
+                                label.appendChild(document.createTextNode(infoIcon));
                                 taskItem.appendChild(label);
                                 taskList.appendChild(taskItem);
                                 // Initialize checkbox state based on task selection
@@ -326,7 +362,7 @@
                 renderQuestions((score) => score < 3);
                 // Attach single click listener for the start button navigation
                 startButton.addEventListener('click', function(event) {
-                    if (task_counts >= 10) {
+                    if (task_counts >= 3) {
                         window.location.href = "challenge_page.html";
                     }
                 });
