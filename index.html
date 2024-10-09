@@ -151,6 +151,7 @@
                                 // Validate the input
                                 if (preOrpost !== 'pre') {
                                     alert("Invalid input. Please enter 'pre'.");
+                                    setupContinueButton('qualtrics.html');
                                     hideSpinner();
                                     return;
                                 }
@@ -169,6 +170,8 @@
                                     hideSpinner();
                                     return;
                                 }
+                            } else {
+                                setupContinueButton('qualtrics.html');
                             }
                         } else {
                             setupContinueButton('qualtrics.html');
