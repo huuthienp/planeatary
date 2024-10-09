@@ -535,6 +535,7 @@ body {
 
 .subheader {
   display: flex;
+  text-align: justify;
   justify-content: center;
   font-weight: bold;
 }
@@ -595,7 +596,7 @@ body {
 
 .q-task {
   margin: 0 auto;
-  padding: 1vmax;
+  padding: 2vh 2vw;
 }
 .q-task ul {
   list-style: none;
@@ -647,6 +648,8 @@ body {
 .modal-content {
   position: absolute;
   justify-content: center;
+  max-height: 50%;
+  max-width: 80%;
 }
 
 .modal-content #visual_info {
