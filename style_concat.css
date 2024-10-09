@@ -174,7 +174,7 @@ body {
     max-width: 70vw;
     margin: 0 auto;
     border-radius: 0.5em;
-    z-index: 1000;
+    z-index: 1001;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -202,7 +202,7 @@ body {
     max-width: 70vw;
     margin: 0 auto;
     border-radius: 0.5em;
-    z-index: 1000;
+    z-index: 1001;
     justify-content: center;
     flex-direction: column;
   }
@@ -637,7 +637,7 @@ body {
   max-width: auto;
   margin: 0 auto;
   border-radius: 0.5em;
-  z-index: 1000;
+  z-index: 1001;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -646,7 +646,6 @@ body {
 .modal-content {
   position: absolute;
   justify-content: center;
-  z-index: 1000;
 }
 
 .modal-content #visual_info {
@@ -678,14 +677,14 @@ body {
   height: 100%;
 }
 
-.align2 .modal2 {
+.align2 > .modal2 {
   display: flex;
   position: fixed;
   max-height: 80vh;
   max-width: 70vw;
   margin: 0 auto;
   border-radius: 0.5em;
-  z-index: 1000;
+  z-index: 1001;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -702,7 +701,6 @@ body {
 .modal2 > .btn {
   display: flex;
   flex-direction: flex-end;
-  z-index: 1000;
 }
 
 .btn > .close {
@@ -713,6 +711,7 @@ body {
   border: 0.5em grey;
   position:relative;
   left: 90%;
+  top: 0%;
   z-index: 1003;
 }
 .close:hover,
