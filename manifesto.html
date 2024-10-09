@@ -96,7 +96,7 @@
             <div class="align2">
                 <div class="modal2 hidden"> 
                     <div class="btn">
-                        <button class="close" onclick="Close();">x</button>
+                        <button class="close" onclick="CloseDes();">x</button>
                     </div>
                     <div class="modal-content">
                         <span id="inform"></span>
@@ -130,6 +130,10 @@
             function Close() {
                 modal.classList.add("hidden");
                 overlay.classList.add('hidden');
+                
+            };
+
+            function CloseDes() {
                 modal2.classList.add("hidden");
                 overlay2.classList.add('hidden');
             };
