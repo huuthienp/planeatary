@@ -706,7 +706,8 @@ body {
 }
 
 /* The Close Button */
-.modal2 > .btn {
+.btn {
+  display: flex;
   width: 100%;
 }
 
