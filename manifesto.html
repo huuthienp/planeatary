@@ -41,7 +41,7 @@
                 </div> -->
             </div>
             <div class="subheader">
-                <p id="tentask"></p>
+                <p id="threetask"></p>
             </div>
             <div class="button2">
                 <button class="start">Start</button>
@@ -350,9 +350,9 @@
                 // Function to update the start button state based on selected tasks
                 function updateStartButton() {
                     const startButton = document.querySelector(".start");
-                    const persuade = document.getElementById("tentask");
-                    if (task_counts >= 10) {
-                        persuade.innerHTML = 'You’ve selected 10 tasks. Start challenge now';
+                    const persuade = document.getElementById("threetask");
+                    if (task_counts >= 3) {
+                        persuade.innerHTML = 'You’ve selected 3 tasks. Start challenge now';
                         persuade.style.color = 'black';
                         startButton.style.pointerEvents = "auto";
                         startButton.style.backgroundColor = "#02897A";
