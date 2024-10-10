@@ -604,6 +604,7 @@ body {
 .modal-content {
   padding: 0 16px;
   width: 80vw;
+  max-height: 80vh;
   display: flex;
   text-align: justify;
   justify-content: center;
