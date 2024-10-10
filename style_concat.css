@@ -588,7 +588,6 @@ body {
   align-items: stretch;
   flex-direction: column;
   width: 80%;
-  height: 80%;
 }
 
 .align .modal {
@@ -637,7 +636,6 @@ body {
   align-items: center;
   flex-direction: column;
   width: 80%;
-  height: 80%;
 }
 
 
@@ -654,7 +652,7 @@ body {
 
 .btn {
   display: flex;
-  width: 90%;
+  width: 100%;
   justify-content: flex-end;
 }
 
