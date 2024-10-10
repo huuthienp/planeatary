@@ -603,10 +603,11 @@ body {
 
 .modal-content {
   padding: 0 16px;
-  width: 100%;
+  width: 80vw;
   display: flex;
   text-align: justify;
   justify-content: center;
+  flex-direction: column;
 }
 
 #visual_info {

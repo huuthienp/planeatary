@@ -58,7 +58,7 @@
                 <div class="btn">
                     <button class="close">x</button>
                 </div>
-                <div class="modal-content" style="background-color: white;">
+                <div class="modal-content">
                     <h2 id="modalTitle"></h2>
                     <p id="modalDescription"></p>
                 </div>
@@ -201,6 +201,7 @@
                 modalTitle.textContent = title;
                 modalDescription.textContent = description;
                 modal.classList.remove("hidden");
+                modal.style.backgroundColor = 'white';
                 modalOverlay.classList.remove("hidden");
             }
 
