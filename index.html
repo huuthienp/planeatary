@@ -23,7 +23,7 @@
             <div class="spinner hidden" id="spinner"></div>
             <div class="header">
                 <h2 class="logo"><img  src="./images/logo.png" style="width: 120px; height:auto"/>planeatary</h2>
-                <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
+                <!-- <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span> -->
                 <nav class="forwindow">
                     <ul>
                         <!-- <li id="H"><a href="index.html">Home</a></li> -->
@@ -61,12 +61,12 @@
         const continueButton = document.getElementById('continueButton');
         const overlay = document.querySelector(".overlay");
 
-        function openNav() {
+        window.openNav = function() {
             document.getElementById("mySidenav").style.width = "40%";
             document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
         };
 
-        function closeNav() {
+        window.closeNav = function() {
             document.getElementById("mySidenav").style.width = "0";
             document.body.style.backgroundColor = "white";
         };
