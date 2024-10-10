@@ -79,8 +79,8 @@
                     window.location.href = "result_page.html";
                 });
 
-                ch.style.pointerEvents = "auto"; 
-                CH.style.pointerEvents = "auto"; 
+                ch.style.cursor = "pointer"; 
+                CH.style.cursor = "pointer"; 
                 ch.addEventListener("click", function() {
                     window.location.href = "manifesto.html";  
                 });
@@ -88,8 +88,8 @@
                     window.location.href = "manifesto.html";
                 });
 
-                d.style.pointerEvents = "auto"; 
-                D.style.pointerEvents = "auto"; 
+                d.style.cursor = "pointer"; 
+                D.style.cursor = "pointer"; 
                 d.addEventListener("click", function() {
                     window.location.href = "manifesto.html";  
                 });
@@ -101,6 +101,10 @@
                 nextButton.style.backgroundColor = 'grey';
                 nextButton.style.cursor = 'not-allowed';
                 nextButton.disabled = true;
+                ch.style.cursor = "not-allowed"; 
+                CH.style.cursor = "not-allowed";
+                d.style.cursor = "not-allowed"; 
+                D.style.cursor = "not-allowed"; 
             }
         }
 

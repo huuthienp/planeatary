@@ -30,7 +30,7 @@
                     <!-- <li><a href="index.html">Home</a></li> -->
                     <!--<li><b>Quiz</b></li>-->
                     <li id="CH">Challenge</li>
-                    <li><a href="result_page.html">Dashboard</a></li>
+                    <li style="color:#074740;"><a href="result_page.html">Dashboard</a></li>
                     <!-- <li>About us</li> -->
                 </ul>
             </nav>
@@ -251,15 +251,17 @@
                 tagsToRemove.forEach(
                     (tag) => { tag.remove() }
                 );
+                ch.style.cursor = "not-allowed"; 
+                CH.style.cursor = "not-allowed"; 
 
             } else {
+                ch.style.cursor = "pointer"; 
+                CH.style.cursor = "pointer"; 
                 ch.addEventListener("click", function() {
-                    window.location.href = "manifesto.html";
-                    ch.style.pointerEvents = "auto"; 
+                    window.location.href = "manifesto.html";  
                 });
                 CH.addEventListener("click", function() {
                     window.location.href = "manifesto.html";
-                    CH.style.pointerEvents = "auto"; 
                 });
                 document.getElementById('preQ').style.backgroundColor = '#02897A';   
                 document.getElementById('postQ').style.backgroundColor = 'grey';
