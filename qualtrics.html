@@ -15,8 +15,8 @@
                 <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
                 <!-- <li><a href="index.html">Home</a></li> -->
                 <!-- <li><a href="qualtrics.html"><b>Quiz</b></a></li> -->
-                <!-- <li>Challenge</li>
-                <li>Dashboard</li> -->
+                <li id="ch">Challenge</li>
+                <li id="d">Dashboard</li>
                 <li><!-- <a href="#">About us</a> --></li>
             </ul>
         </div>
@@ -29,8 +29,8 @@
                     <ul>
                         <!-- <li><a href="index.html">Home</a></li> -->
                         <!-- <li><a href="qualtrics.html"><b>Quiz</b></a></li> -->
-                        <!-- <li>Challenge</li>
-                        <li>Dashboard</li> -->
+                        <li id="CH">Challenge</li>
+                        <li id="D">Dashboard</li>
                         <!-- <li>About us</li> -->
                     </ul>
                 </nav>
@@ -62,7 +62,10 @@
             document.body.style.backgroundColor = "white";
         };
 
-        
+        const ch = document.getElementById('ch');
+        const CH = document.getElementById('CH');
+        const d = document.getElementById('d');
+        const D = document.getElementById('D');
         const nextButton = document.querySelector('.next');
         function updateNextButton() {
             let preResult = JSON.parse(localStorage.getItem('preResult'));
@@ -74,6 +77,24 @@
                 nextButton.disabled = false;
                 nextButton.addEventListener("click", function() {
                     window.location.href = "result_page.html";
+                });
+
+                ch.style.pointerEvents = "auto"; 
+                CH.style.pointerEvents = "auto"; 
+                ch.addEventListener("click", function() {
+                    window.location.href = "manifesto.html";  
+                });
+                CH.addEventListener("click", function() {
+                    window.location.href = "manifesto.html";
+                });
+
+                d.style.pointerEvents = "auto"; 
+                D.style.pointerEvents = "auto"; 
+                d.addEventListener("click", function() {
+                    window.location.href = "manifesto.html";  
+                });
+                D.addEventListener("click", function() {
+                    window.location.href = "manifesto.html";
                 });
             } else {
                 // Disable the button if preResult does not exist

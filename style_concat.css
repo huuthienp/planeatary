@@ -346,11 +346,13 @@ body {
   font-size: 1em;
 }
 .content .card {
+  margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   gap: 1.5vmax;
   justify-content: space-between;
   flex-direction: row;
+  align-items: center;
 }
 .content .card_completed {
   padding: 3vh 0.5vw;
@@ -591,6 +593,7 @@ body {
 .align .modal {
   display: flex;
   width: 80vw;
+  max-height: 80vh;
   margin: 0 auto;
   border-radius: 0.5em;
   justify-content: center;
@@ -601,6 +604,9 @@ body {
 .modal-content {
   padding: 0 16px;
   width: 100%;
+  display: flex;
+  text-align: justify;
+  justify-content: center;
 }
 
 #visual_info {
