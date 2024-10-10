@@ -81,6 +81,10 @@
 
                 ch.style.cursor = "pointer"; 
                 CH.style.cursor = "pointer"; 
+                ch.disabled = false; 
+                CH.disabled = false;
+                
+                
                 ch.addEventListener("click", function() {
                     window.location.href = "manifesto.html";  
                 });
@@ -90,6 +94,8 @@
 
                 d.style.cursor = "pointer"; 
                 D.style.cursor = "pointer"; 
+                d.disabled = false; 
+                D.disabled = false; 
                 d.addEventListener("click", function() {
                     window.location.href = "manifesto.html";  
                 });
@@ -105,6 +111,10 @@
                 CH.style.cursor = "not-allowed";
                 d.style.cursor = "not-allowed"; 
                 D.style.cursor = "not-allowed"; 
+                ch.disabled = true; 
+                CH.disabled = true;
+                d.disabled = true; 
+                D.disabled = true; 
             }
         }
 

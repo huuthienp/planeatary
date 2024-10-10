@@ -253,10 +253,14 @@
                 );
                 ch.style.cursor = "not-allowed"; 
                 CH.style.cursor = "not-allowed"; 
+                ch.disabled = true; 
+                CH.disabled = true;  
 
             } else {
                 ch.style.cursor = "pointer"; 
                 CH.style.cursor = "pointer"; 
+                ch.disabled = false; 
+                CH.disabled = false;
                 ch.addEventListener("click", function() {
                     window.location.href = "manifesto.html";  
                 });
