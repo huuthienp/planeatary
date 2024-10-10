@@ -643,12 +643,12 @@ body {
 
 .modal2 {
   display: flex;
-  align-items: center;
-  width: 80vw;
-  height: 60vh;
+  width: 100%;
+  max-height: 80%;
   margin: 0 auto;
   border-radius: 0.5em;
-  justify-content: center;  
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
 }
 
