@@ -600,7 +600,6 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  flex-wrap: wrap;
 }
 
 .modal-content {
@@ -608,11 +607,10 @@ body {
   width: 100%;
   text-align: justify;
   flex-direction: column;
-  flex-wrap: wrap;
 }
 
 #visual_info {
-  width: 100%;
+  width: 80%;
 }
 
 .overlay2 {
