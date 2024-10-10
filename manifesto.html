@@ -82,11 +82,10 @@
         <section class="overlay hidden" id="modalOverlay">
             <div class="align">
                 <div class="modal hidden" id="taskModal"> 
-                    
+                    <div class="btn">
+                        <button class="close" onclick="Close();">x</button>
+                    </div>
                     <div class="modal-content">
-                        <div class="btn">
-                            <button class="close" onclick="Close();">x</button>
-                        </div>
                         <img id="visual_info" />
                     </div>
                 </div>
@@ -96,12 +95,12 @@
         <!-- The Modal 2-->
         <section class="overlay2 hidden2">
             <div class="align2">
-                <div class="modal2 hidden2" style="background-color: white;"> 
+                <div class="modal2 hidden2"> 
                     <div class="btn">
                         <button class="close" onclick="CloseDes();">x</button>
                     </div>
-                    <div class="modal-content">
-                        <p id="inform" style="padding: 0 20px;"></p>
+                    <div class="modal-content" style="background-color: white;">
+                        <span id="inform"></span>
                     </div>
                 </div>
             </div>
@@ -124,7 +123,7 @@
             function ModalDes(des) {
                 const modalContent = document.querySelector(".modal-content");
                 const text = document.getElementById("inform");
-                text.textContent = des;
+                text.innerHTML = des;
                 modal2.classList.remove('hidden2');
                 overlay2.classList.remove('hidden2');
 
@@ -335,15 +334,16 @@
                                         task.choice = "chosen";
                                         task_counts += 1;
                                     } else {
-                                        task.choice = "";
+                                        task.choice = "";                                         
                                         task_counts -= 1;
                                     }
                                     localStorage.setItem('tasks', JSON.stringify(tasks)); 
                                     updateStartButton(); 
                                 });
-
+                                        
                                 //event listener for more info
                                 infoIcon2.addEventListener('click', function (event) {
+                                    event.preventDefault();
                                     event.stopPropagation(); 
                                     ModalDes(task.taskDescription);
                                 });
