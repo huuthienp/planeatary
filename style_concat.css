@@ -602,8 +602,8 @@ body {
 }
 
 .modal-content {
+  display: flex;
   width: 100%;
-  max-height: 80%;
   text-align: justify;
 }
 
