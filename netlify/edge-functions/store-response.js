@@ -40,24 +40,23 @@ export default async (req) => {
     }
 
     // Extract quizType to get the store and the key
-    const { quizType } = data;
     const { PRE_QUIZ_ID, POST_QUIZ_ID } = process.env;
-    let responses, key;
+    const quizTypeLower = data['quizType'].toLowerCase();
+    const asPreQuiz = quizTypeLower === 'pre';
+    const asPostQuiz = quizTypeLower === 'post';
 
-    if (quizType === 'pre') {
-      responses = getStore(PRE_QUIZ_ID);
-      key = data.preResponseId;
-    } else if (quizType === 'post') {
-      responses = getStore(POST_QUIZ_ID);
-      key = data.postResponseId;
-    } else {
-      const message = `Invalid quizType: ${quizType}`;
+    if (!asPreQuiz && !asPostQuiz) {
+      const message = `Invalid quizType: ${quizTypeLower}`;
       console.error(message, '\n', data);
       return new CustomResponse(message, 400);
     }
 
+    const quizResponses = asPreQuiz ? getStore(PRE_QUIZ_ID) : getStore(POST_QUIZ_ID);
+
+    const key = data['responseId'];
+
     // Store the data in Netlify Blobs
-    await responses.set(key, JSON.stringify(data));
+    await quizResponses.set(key, JSON.stringify(data));
 
     const message = `Success: ${key}`;
     console.log(message);
@@ -65,7 +64,7 @@ export default async (req) => {
 
   } catch (error) {
     console.error(error)
-    if (error instanceof SyntaxError && error.message.includes('JSON')) {
+    if (error instanceof SyntaxError && error.message.toUpperCase.includes('JSON')) {
       const message = 'Cannot parse JSON.';
       console.error(message, '\n', error);
       return new CustomResponse(message, 400);
