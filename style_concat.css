@@ -612,7 +612,7 @@ body {
 }
 
 #visual_info {
-  width: 100%;
+  display: flex;
 }
 
 .overlay2 {
@@ -646,7 +646,7 @@ body {
 .modal2 {
   display: flex;
   align-items: center;
-  width: 70vw;
+  width: 80vw;
   height: 60vh;
   margin: 0 auto;
   border-radius: 0.5em;
