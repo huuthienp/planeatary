@@ -607,6 +607,7 @@ body {
   width: 100%;
   text-align: justify;
   flex-direction: column;
+  align-items: center;
 }
 
 #visual_info {
