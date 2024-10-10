@@ -593,7 +593,7 @@ body {
 
 .align .modal {
   display: flex;
-  width: 100%;
+  width: 80%;
   max-height: 80%;
   margin: 0 auto;
   border-radius: 0.5em;
@@ -643,7 +643,7 @@ body {
 
 .modal2 {
   display: flex;
-  width: 100%;
+  width: 80%;
   max-height: 80%;
   margin: 0 auto;
   border-radius: 0.5em;
@@ -654,7 +654,7 @@ body {
 
 .btn {
   display: flex;
-  width: 100%;
+  width: 90%;
   justify-content: flex-end;
 }
 
