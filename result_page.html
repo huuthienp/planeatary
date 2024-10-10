@@ -23,7 +23,7 @@
     <div class="container">
         <div class="spinner hidden" id="spinner"></div>
         <div class="header">
-            <h2 class="logo">planeatary</h2>
+            <h2 class="logo"><img  src="./images/logo.png" style="width: 120px; height:auto"/>planeatary</h2>
             <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
             <nav class="forwindow">
                 <ul>
@@ -110,6 +110,8 @@
         
 
         document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('postQ').style.color = 'white';
+            document.getElementById('preQ').style.color = 'white';
             const spinner = document.getElementById('spinner');
             const ch = document.getElementById('ch');
             const CH = document.getElementById('CH');
@@ -223,6 +225,7 @@
 
             }
 
+
             if (postResult) {
                 displayQuestions(postResult);
                 document.getElementById('postQ').style.backgroundColor = '#02897A';
@@ -252,9 +255,11 @@
             } else {
                 ch.addEventListener("click", function() {
                     window.location.href = "manifesto.html";
+                    ch.style.pointerEvents = "auto"; 
                 });
                 CH.addEventListener("click", function() {
                     window.location.href = "manifesto.html";
+                    CH.style.pointerEvents = "auto"; 
                 });
                 document.getElementById('preQ').style.backgroundColor = '#02897A';   
                 document.getElementById('postQ').style.backgroundColor = 'grey';
@@ -285,8 +290,6 @@
                 }
             });
             
-            document.getElementById('postQ').style.color = 'white';
-            document.getElementById('preQ').style.color = 'white';
 
             // Attach single click listener for the start button navigation
             selectButton.addEventListener('click', function(event) {
