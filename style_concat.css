@@ -586,6 +586,7 @@ body {
   justify-content: center;
   align-content: center;
   align-items: stretch;
+  flex-direction: column;
   width: 80%;
   height: 80%;
 }
@@ -599,12 +600,15 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  flex-wrap: wrap;
 }
 
 .modal-content {
   display: flex;
   width: 100%;
   text-align: justify;
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 
 #visual_info {
