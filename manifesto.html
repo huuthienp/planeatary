@@ -122,7 +122,7 @@
                 overlay.classList.remove('hidden');
             };
 
-            function ModalDes(des) {
+            function ModalDes(title, des) {
                 const modalContent = document.querySelector(".modal-content");
                 const text = document.getElementById("inform");
                 modalTitle.textContent = title;
@@ -352,7 +352,7 @@
                                 infoIcon2.addEventListener('click', function (event) {
                                     event.preventDefault();
                                     event.stopPropagation(); 
-                                    ModalDes(task.taskDescription);
+                                    ModalDes(task.taskName, task.taskDescription);
                                 });
 
                                 // Initialize checkbox state based on task selection
