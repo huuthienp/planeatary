@@ -100,7 +100,8 @@
                         <button class="close" onclick="CloseDes();">x</button>
                     </div>
                     <div class="modal-content" style="background-color: white;">
-                        <span id="inform"></span>
+                        <h2 id="modalTitle"></h2>
+                        <p id="inform"></p>
                     </div>
                 </div>
             </div>
@@ -111,6 +112,7 @@
             const overlay = document.querySelector(".overlay");
             const modal2 = document.querySelector(".modal2");
             const overlay2 = document.querySelector(".overlay2");
+            const modalTitle = document.getElementById("modalTitle");
 
             function Modal(source) {
                 const modalContent = document.querySelector(".modal-content");
@@ -123,6 +125,7 @@
             function ModalDes(des) {
                 const modalContent = document.querySelector(".modal-content");
                 const text = document.getElementById("inform");
+                modalTitle.textContent = title;
                 text.innerHTML = des;
                 modal2.classList.remove('hidden2');
                 overlay2.classList.remove('hidden2');
@@ -281,14 +284,18 @@
                             // Create a container for the question
                             const questionDiv = document.createElement('div');
                             questionDiv.classList.add('question-block');
+                            
 
                             // Display question number and score
                             const questionTitle = document.createElement('h3');
                             questionTitle.innerHTML = `Question ${i + 1} - ${score} points`;
 
                             if(score < 3) {
+                                questionDiv.style.boxShadow = "10px 10px 10px red";
                                 questionTitle.style.color = 'red';
+                                
                             } else {
+                                questionDiv.style.boxShadow = "10px 10px 10px green";
                                 questionTitle.style.color = 'green';
                             }
 
