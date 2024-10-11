@@ -199,7 +199,7 @@
             function showModal(title, description) {
                 closeButt.classList.remove('hidden');
                 modalTitle.textContent = title;
-                modalDescription.textContent = description;
+                modalDescription.innerHTML = description;
                 modal.classList.remove("hidden");
                 modal.style.backgroundColor = 'white';
                 modalOverlay.classList.remove("hidden");
