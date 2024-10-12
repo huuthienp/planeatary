@@ -126,7 +126,8 @@
                 const modalContent = document.querySelector(".modal-content");
                 const text = document.getElementById("inform");
                 modalTitle.textContent = title;
-                text.innerHTML = des;
+                const taskDescription = des.replace('target="_blank"', 'rel="noopener noreferrer"');
+                text.innerHTML = taskDescription;
                 modal2.classList.remove('hidden2');
                 overlay2.classList.remove('hidden2');
 
