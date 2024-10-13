@@ -6,11 +6,6 @@ body {
   transition: background-color .5s;
 }
 
-.container {
-  width: 100%;
-  height: 100%;
-}
-
 .header {
     display: flex;
     justify-content: space-between;
@@ -216,50 +211,12 @@ body {
     flex-direction: column;
   }
 
-  .welcome-content {
-    display: flex;
-    align-items: center;
-    padding: 3vh 2vw;
-  }
   .welcome {
     color: rgba(33,52,60,1);
     font-family: Poppins;
     font-weight: Bold;
     font-size: 2em;
   }
-  .greeting {
-    width: 100%;
-    padding: 5vh 5vw;
-    color: rgba(33,52,60,1);
-    font-family: Poppins;
-    font-size: 1em;
-    text-align: justify;
-  }
-
-  .button_next {
-    display: flex;
-    justify-content: center;
-  }
-  .button_next .next{
-    background-color: #02897A;
-    color: white;
-    border: none;
-    padding: 1vh 2vw;
-    border-radius: 0.5em;
-    cursor: pointer;
-    font-size: 1em;
-    font-family: Poppins;
-  }
-  
-  .button_next a:link {
-    text-decoration: none;
-    color: white;
-  }
-  .button_next a:visited {
-    text-decoration: none;
-    color: white;
-  }
-  
 
 /* Spinner styling */
 .spinner {
@@ -285,33 +242,6 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-/* Initially hide the spinner */
-.hidden {
-  display: none;
-}
-
-/* .header .button {
-  cursor: pointer;
-  font-size: 1em;
-}
-
-.header .button .signIn {
-  background-color: #e1f5f3;
-  color: rgb(39, 38, 38);
-  border: none;
-  padding: 1vh 1.2vw;
-  border-radius: 0.5em;
-  font-family: Poppins;
-}
-
-.header .button .signUp {
-  background-color: #02897A;
-  color: white;
-  border: none;
-  padding: 1vh 1vw;
-  border-radius: 0.5em;
-  font-family: Poppins;
-} */
 .content {
   width: 100%;
   max-width: 1200px;
@@ -474,15 +404,6 @@ body {
   border: none;
   padding: 1vh 2vw;
   border-radius: 0.5em;
-}
-
-.button_next a:link {
-  text-decoration: none;
-  color: white;
-}
-.button_next a:visited {
-  text-decoration: none;
-  color: white;
 }
 
 .subheader {
@@ -720,15 +641,6 @@ body {
   width: 100%;
   justify-content: flex-end;
 }
-.next {
-  font-size: 1em;
-  font-family: 'Poppins', sans-serif;
-  padding: 1vh 2vw;
-  border-radius: 0.5em;
-  border: none;
-  background-color: #02897A;
-  color: white;
-}
 
 .content {
   display: flex;
@@ -780,6 +692,17 @@ body {
   border-radius: 1px;
 }
 
+.next{
+  background-color: #02897A;
+  color: white;
+  border: none;
+  margin: 0 1em;
+  padding: 8px 25px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: Poppins;
+}
 
 .next a:link {
   text-decoration: none;
@@ -940,17 +863,6 @@ body {
   display: flex;
   justify-content: center;
 }
-.button_next .next{
-  background-color: #02897A;
-  color: white;
-  border: none;
-  padding: 8px 25px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  font-family: Poppins;
-}
-
 
 .button_next a:link {
   text-decoration: none;
