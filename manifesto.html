@@ -381,9 +381,9 @@
                                     ModalDes(task.taskName, task.taskDescription);
                                 });
 
-                                if(chosen_tasks.includes(task.taskNumber)) {
+                                if(chosen_tasks.includes(String(task.taskNumber)) {
                                     task.choice = 'chosen';
-                                    if(status_tasks.includes(task.taskNumber)) {
+                                    if(status_tasks.includes(String(task.taskNumber)) {
                                         task.status = 'Completed';
                                     }
                                 }
