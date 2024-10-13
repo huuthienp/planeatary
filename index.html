@@ -42,24 +42,36 @@
             </div>
             <div class="welcome-content">
                 <div class="greeting">
-                    <h2>WELCOME ....!</h2>
-                    <p>Welcome! This 12-question quiz forms part of a research study, exploring effective approaches to promote healthy and environmentally sustainable food habits. If you would like further information, please review this Explanatory Statement, approved by Monash University's Human Research Ethics Committee.</p>
-                    <p>Your email address is collected so that you can receive a copy of your responses, however this will not be used for data analysis and your response is anonymous.</p>
-                    <p>By completing the quiz, you are consenting to be part of this research.</p>
+                    <h2>Welcome to the PlanEATary Quest!</h2>
+                    <h3><label><input type="checkbox" id="donePreQuiz"> I have done a pre-quiz before.</label></h3>  
+                    <div class="questions" id="checkIdDiv" style="display: none;">
+                        <span class="info-icon" id="checkIdInfo" title="The ID was sent to the email provided in the response.">ⓘ</span>
+                        <input type="text" id="checkIdInp" placeholder="Your response ID">
+                        <button class="next disabled" id="checkIdBtn" disabled>Check</button>
+                        <span id="checkIdMsg"></span>
+                    </div>
                 </div>
             </div>
             <div class="button_next">
-                <button class="next" id="continueButton">Take the quiz &#8594;</button>
+                <button class="next disabled" id="resultsBtn" disabled style="display: none;">See results</button>
+                <button class="next" id="continueButton"><a href="qualtrics">Take pre-quiz</a></button>
             </div>
-            <div>
-                <div class="overlay hidden"></div>
-            </div>
+            <section class="overlay hidden" id="modalOverlay">
+                <div class="align">
+                    <div class="modal hidden" id="taskModal"> 
+                        <div class="btn">
+                            <button class="close">x</button>
+                        </div>
+                        <div class="modal-content">
+                            <h2 id="modalTitle" style="padding: 0 20px;"></h2>
+                            <p id="modalDescription" style="padding: 0 20px;"></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
         <script type="module">
         import { reformatQualtricsData, saveLocalStorage } from './data-functions.mjs';
-        const greetingDiv = document.getElementById('greeting');
-        const continueButton = document.getElementById('continueButton');
-        const overlay = document.querySelector(".overlay");
 
         window.openNav = function() {
             document.getElementById("mySidenav").style.width = "40%";
@@ -75,6 +87,18 @@
             const spinner = document.getElementById('spinner');
             const greetingDiv = document.querySelector('.greeting');
             const continueButton = document.getElementById('continueButton');
+            const modal = document.querySelector(".modal");
+            const overlay = document.querySelector(".overlay");
+            const closeButt = document.querySelector('.close');
+
+            const resultsUrl = 'result_page';
+            const doneChkbox = document.getElementById('donePreQuiz');
+            const infoIcon = document.getElementById('checkIdInfo');
+            const checkIdDiv = document.getElementById('checkIdDiv');
+            const checkIdInp = document.getElementById('checkIdInp');
+            const checkIdBtn = document.getElementById('checkIdBtn');
+            const resultsBtn = document.getElementById('resultsBtn');
+            const checkIdMsg = document.getElementById('checkIdMsg');
 
             let isLoading = false;
             const minDisplayTime = 2000;
@@ -107,6 +131,33 @@
                     isLoading = false;
                 }
             }
+
+            // Function to show the modal
+            function showModal(title = '', description = '') {
+                closeButt.classList.remove('hidden');
+                modalTitle.textContent = title;
+                modalDescription.innerHTML = description;
+                modal.classList.remove("hidden");
+                modal.style.backgroundColor = 'white';
+                modalOverlay.classList.remove("hidden");
+            }
+
+            // Function to close the modal
+            function closeModal() {
+                closeButt.classList.remove('hidden');
+                modal.classList.add("hidden");
+                modalOverlay.classList.add("hidden");
+            }
+
+            // Close modal when user clicks the close button
+            document.querySelector(".close").addEventListener("click", closeModal);
+
+            // Close modal when user clicks outside the modal
+            window.addEventListener("click", function(event) {
+                if (event.target === modalOverlay) {
+                    closeModal();
+                }
+            });
 
             async function checkOrFetchResponseId() {
 
@@ -203,7 +254,7 @@
 
                     // Check if the response is successful
                     if (!response.ok) {
-                        throw new Error('Failed to fetch response ID');
+                        throw new Error(`${response.status}: ${await response.text() || response.body}`);
                     }
 
                     // Parse the JSON response
@@ -215,8 +266,8 @@
 
                     return reformatQualtricsData(data, 'response');
                 } catch (error) {
-                    console.error('Error fetching response ID from Netlify:', error);
-                    return null;
+                    console.error(error);
+                    throw error;
                 }
             }
 
@@ -232,7 +283,60 @@
                 const dashboard = document.getElementById('D');
             }
 
-            checkOrFetchResponseId();
+            function disableButton(button) {
+                button.disabled = true;
+                button.classList.add('disabled');
+            }
+
+            function enableButton(button) {
+                button.disabled = false;
+                button.classList.remove('disabled');
+            }
+
+            doneChkbox.addEventListener('change', function() {
+                checkIdDiv.style.display = this.checked ? '' : 'none';
+                resultsBtn.style.display = this.checked ? '' : 'none';
+
+                if (!this.checked) {
+                    disableButton(checkIdBtn);
+                    disableButton(resultsBtn);
+                    checkIdInp.value = '';
+                    checkIdMsg.textContent = '';
+                    continueButton.querySelector('a').textContent = 'Take pre-quiz';
+                }
+            });
+
+            infoIcon.addEventListener('click', function(event) {
+                event.stopPropagation(); 
+                showModal(this.title);
+            });
+
+            checkIdInp.addEventListener('input', function() {
+                if (this.value.trim() === '') {
+                    disableButton(checkIdBtn);
+                } else {
+                    enableButton(checkIdBtn);
+                }
+                checkIdMsg.textContent = '';
+            });
+
+            checkIdBtn.addEventListener('click', async function() {
+                try {
+                    let fetchedResponseId = await fetchResponseIdFromNetlify('pre', checkIdInp.value);
+                    saveLocalStorage(fetchedResponseId, 'response');
+                    checkIdMsg.style.color = '#2ecc71';
+                    checkIdMsg.innerHTML = 'We found your response!';
+                    enableButton(resultsBtn);
+                    resultsBtn.innerHTML = `<a href="${resultsUrl}">${resultsBtn.textContent}</a>`;
+                    continueButton.querySelector('a').textContent = 'Re-take pre-quiz';
+
+                } catch(error) {
+                    checkIdMsg.style.color = '#ff6b6b';
+                    checkIdMsg.innerHTML = 'Sorry, we cannot find this ID.';
+                }
+            });
+
+            // checkOrFetchResponseId();
         });
         </script>
     </body>
