@@ -285,8 +285,6 @@
                             console.log(Tstatus.chosen, Tstatus.done);
                             let chosen_tasks = Tstatus.chosen;
                             let status_tasks = Tstatus.done;
-                            console.log(chosen_tasks);
-                            console.log(status_tasks);
                         }   
                     } catch (error) {
                         console.error('Error fetching task status:', error);
@@ -361,6 +359,17 @@
                                 taskItem.appendChild(label);
                                 taskList.appendChild(taskItem);
 
+                                if (chosen_tasks.includes(String(task.taskNumber))) {
+                                    task.choice = 'chosen';
+                                    checkbox.checked = true;
+                                    if (status_tasks.includes(String(task.taskNumber))) {
+                                        task.status = 'Completed';
+                                    }
+                                } else {
+                                    task.choice = '';
+                                    checkbox.checked = false;
+                                }
+
                                 // Update task count and localStorage on checkbox change
                                 checkbox.addEventListener('change', function() {
                                     if (checkbox.checked) {
@@ -381,15 +390,8 @@
                                     ModalDes(task.taskName, task.taskDescription);
                                 });
 
-                                if(chosen_tasks.includes(String(task.taskNumber))) {
-                                    task.choice = 'chosen';
-                                    if(status_tasks.includes(String(task.taskNumber))) {
-                                        task.status = 'Completed';
-                                    }
-                                }
+                                checkbox.checked = task.choice === "chosen";
 
-                                // Initialize checkbox state based on task selection
-                                checkbox.checked = task.choice === 'chosen';
                                 localStorage.setItem('tasks', JSON.stringify(tasks)); 
                               
                                 updateStartButton(); 
