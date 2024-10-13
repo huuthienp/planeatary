@@ -251,7 +251,6 @@
                         console.error('Error fetching task status:', error);
                         return null;
                     }
-                    
                 }
 
 
@@ -276,22 +275,19 @@
                 async function renderQuestions(condition) {
                     QContainer.innerHTML = '';
                     const tasks = await fetchTasks();
-                    try {
-                        let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks')); 
-                        if(!Tstatus) {
-                            const fetchedTasks = await fetchTaskStatus(); 
-                            localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks.result)); 
-                            Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
-                            console.log(Tstatus.chosen, Tstatus.done);
-                            let chosen_tasks = Tstatus.chosen;
-                            let status_tasks = Tstatus.done;
-                        }   
-                    } catch (error) {
-                        console.error('Error fetching task status:', error);
+                    let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks')); 
+                    let chosen_tasks = [];
+                    let status_tasks = [];
 
-                    } finally {
-                        chosen_tasks = [];
-                        status_tasks = [];
+                    if(!Tstatus) {
+                        const fetchedTasks = await fetchTaskStatus(); 
+                        localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks.result)); 
+                        Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    }
+                    
+                    else {
+                        chosen_tasks = Tstatus.chosen
+                        status_tasks = Tstatus.done;
                     }
                     
                     if (!tasks || !preResult) {
@@ -369,6 +365,7 @@
                                     task.choice = '';
                                     checkbox.checked = false;
                                 }
+                                localStorage.setItem('tasks', JSON.stringify(tasks)); 
 
                                 // Update task count and localStorage on checkbox change
                                 checkbox.addEventListener('change', function() {
@@ -391,7 +388,6 @@
                                 });
 
                                 checkbox.checked = task.choice === "chosen";
-
                                 localStorage.setItem('tasks', JSON.stringify(tasks)); 
                               
                                 updateStartButton(); 
