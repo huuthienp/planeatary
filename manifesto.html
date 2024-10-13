@@ -281,8 +281,8 @@
                 async function renderQuestions(condition) {
                     QContainer.innerHTML = '';
                     const tasks = await fetchTasks();
-                    const chosen_tasks = Tstatus.chosen;
-                    const status_tasks = Tstatus.done;
+                    const chosen_tasks = Tstatus[1];
+                    const status_tasks = Tstatus[2];
                     if (!tasks || !preResult) {
                         QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
                         return;
