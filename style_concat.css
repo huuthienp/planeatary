@@ -143,16 +143,16 @@ body {
     text-decoration: none;
     display: block;
     transition: 0.3s;
-    color: white;
+    color: #074740;
   }
   
   .forwindow a:link {
     text-decoration: none;
-    color: white;
+    color: #074740;
   }
   .forwindow a:visited {
     text-decoration: none;
-    color: white;
+    color: #074740;
   }
   
   body {
