@@ -113,8 +113,10 @@
             const modal2 = document.querySelector(".modal2");
             const overlay2 = document.querySelector(".overlay2");
             const modalTitle = document.getElementById("modalTitle");
+            const closeButt = document.querySelector('.close');
 
             function Modal(source) {
+                closeButt.classList.remove('hidden');
                 const modalContent = document.querySelector(".modal-content");
                 const image = document.getElementById("visual_info");
                 image.src = source;
@@ -123,6 +125,7 @@
             };
 
             function ModalDes(title, des) {
+                closeButt.classList.remove('hidden');
                 const modalContent = document.querySelector(".modal-content");
                 const text = document.getElementById("inform");
                 modalTitle.textContent = title;
@@ -134,12 +137,14 @@
             };
 
             function Close() {
+                closeButt.classList.remove('hidden');
                 modal.classList.add("hidden");
                 overlay.classList.add('hidden');
                 
             };
 
             function CloseDes() {
+                closeButt.classList.remove('hidden');
                 modal2.classList.add("hidden2");
                 overlay2.classList.add('hidden2');
             };
@@ -177,6 +182,7 @@
                     //console.log("Showing spinner...");
                     spinner.classList.remove('hidden');
                     overlay.classList.remove('hidden');
+                    closeButt.classList.add('hidden');
                     isLoading = true;
                     spinnerStartTime = Date.now();
                 };
