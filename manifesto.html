@@ -263,7 +263,7 @@
                     localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks.result)); 
                     const Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
                 }   
-                //console.log(Tstatus);
+                console.log(Tstatus.chosen, Tstatus.done);
 
                 function calculateSelectedTasks(tasks) {
                     let count = 0;
@@ -281,8 +281,8 @@
                 async function renderQuestions(condition) {
                     QContainer.innerHTML = '';
                     const tasks = await fetchTasks();
-                    const chosen_tasks = Tstatus[1];
-                    const status_tasks = Tstatus[2];
+                    const chosen_tasks = Tstatus.chosen;
+                    const status_tasks = Tstatus.done;
                     if (!tasks || !preResult) {
                         QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
                         return;
