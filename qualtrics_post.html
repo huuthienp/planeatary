@@ -30,7 +30,7 @@
                         <!-- <li><a href="index.html">Home</a></li>
                         <li><a href="qualtrics.html"><b>Quiz</b></a></li> -->
                         <li id="CH">Challenge</li>
-                        <li><a href="result_page.html">Dashboard</a></li>
+                        <li><a href="result_page.html" style="color: #074740;">Dashboard</a></li>
                         <!-- <li>About us</li> -->
                     </ul>
                 </nav>
@@ -66,10 +66,16 @@
             let postResult = JSON.parse(localStorage.getItem('postResult'));
 
             if (postResult) {
-                // If preResult exists, enable the button and navigate to the results page
+                // If postResult exists, enable the button and navigate to the results page
                 nextButton.style.backgroundColor = '#02897A'; 
                 nextButton.style.cursor = 'pointer';   
                 nextButton.disabled = false;
+                ch.style.color = 'grey'; 
+                CH.style.color = 'grey'
+                ch.style.cursor = "not-allowed"; 
+                CH.style.cursor = "not-allowed";
+                ch.disabled = true; 
+                CH.disabled = true;
                 nextButton.addEventListener("click", function() {
                     window.location.href = "result_page.html";
                 });
@@ -80,7 +86,13 @@
                 CH.addEventListener("click", function() {
                     window.location.href = "manifesto.html";
                 });
-                // Disable the button if preResult does not exist
+                ch.style.cursor = "pointer"; 
+                CH.style.cursor = "pointer";
+                ch.style.color = '#074740'; 
+                CH.style.color = 'white'; 
+                ch.disabled = false; 
+                CH.disabled = false;
+                // Disable the button if postResult does not exist
                 nextButton.style.backgroundColor = 'grey';
                 nextButton.style.cursor = 'not-allowed';
                 nextButton.disabled = true;

@@ -28,8 +28,8 @@
                 <ul>
                     <!-- <li>Home</li> -->
                     <!-- <li><a href="qualtrics.html"><b>Quiz</b></a></li> -->
-                    <li><a href="manifesto.html">Challenge</a></li> 
-                    <li><a href="result_page.html">Dashboard</a></li>
+                    <li><a href="manifesto.html" style="color:#074740;">Challenge</a></li> 
+                    <li><a href="result_page.html" style="color:#074740;">Dashboard</a></li>
                     <!-- <li>About us</li> -->
                 </ul>
             </nav>
@@ -183,10 +183,14 @@
                 }
             }
 
-            const fetchedTasks = await fetchTaskStatus(); 
-            localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks)); 
-            const fetchTasks = JSON.parse(localStorage.getItem('fetched_tasks')); 
-            console.log(fetchTasks); 
+            const Tstatus = JSON.parse(localStorage.getItem('fetched_tasks')); 
+
+            if(!Tstatus) {
+                const fetchedTasks = await fetchTaskStatus(); 
+                localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks.result)); 
+                const Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+            }   
+            console.log(Tstatus); 
 
             
             const cardContainer = document.querySelector(".card");
@@ -233,12 +237,11 @@
             nextButtonContainer.appendChild(btn_next);
 
             btn_next.addEventListener("click", function () {
-            if (btn_next.style.pointerEvents === "auto") {
-                window.location.href = "congrat_page.html";
-            }
-        });
+                if (btn_next.style.pointerEvents === "auto") {
+                    window.location.href = "congrat_page.html";
+                }
+            });
             
-
             // Retrieve tasks from localStorage
             let tasks = JSON.parse(localStorage.getItem('tasks'));
 
