@@ -61,7 +61,7 @@
                 <div class="align">
                     <div class="modal hidden" id="taskModal"> 
                         <div class="btn">
-                            <button class="close">x</button>
+                            <button class="close hidden">x</button>
                         </div>
                         <div class="modal-content">
                             <h4 id="modalTitle" style="text-align: center;"></h4>
@@ -149,10 +149,11 @@
 
             // Function to close the modal
             function closeModal() {
-                closeButt.classList.remove('hidden');
+                closeButt.classList.add('hidden');
                 modalTitle.textContent = '';
                 modalDescription.innerHTML = '';
                 modal.classList.add("hidden");
+                modal.style.removeProperty('background-color');
                 modalOverlay.classList.add("hidden");
             }
 
