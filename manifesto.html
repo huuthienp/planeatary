@@ -239,6 +239,7 @@
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',
+                                'Q-RESPONSE-ID': preResponseId,
                             }
                         });
                         const data = await response.json();
@@ -248,6 +249,7 @@
                     } catch (error) {
                         hideSpinner();
                         console.error('Error fetching task status:', error);
+                        return null;
                     }
                     
                 }
