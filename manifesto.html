@@ -284,15 +284,15 @@
                             Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
                         }   
                         console.log(Tstatus.chosen, Tstatus.done);
-                        const chosen_tasks = Tstatus.chosen;
-                        const status_tasks = Tstatus.done;
+                        let chosen_tasks = Tstatus.chosen;
+                        let status_tasks = Tstatus.done;
 
                     } catch (error) {
                         console.error('Error fetching task status:', error);
 
                     } finally {
-                        const chosen_tasks = [];
-                        const status_tasks = [];
+                        chosen_tasks = [];
+                        status_tasks = [];
                     }
                     
                     if (!tasks || !preResult) {
