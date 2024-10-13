@@ -881,3 +881,20 @@ body {
   text-decoration: none;
   color: white;
 }
+
+input[type=text] {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.info-icon {
+  color: #02897A;
+  font-size: inherit;
+  margin: 0 1em;
+  cursor: help;
+}
+
+button.disabled {
+  background-color: grey;
+  cursor: not-allowed;
+}
