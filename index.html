@@ -101,7 +101,7 @@
             const checkIdMsg = document.getElementById('checkIdMsg');
 
             let isLoading = false;
-            const minDisplayTime = 2000;
+            const minDisplayTime = 1000;
             let spinnerStartTime;
 
             // Function to show the spinner
@@ -288,16 +288,38 @@
                 button.classList.add('disabled');
             }
 
-            function enableButton(button) {
+            function enableButton(button, href=null) {
                 button.disabled = false;
                 button.classList.remove('disabled');
+                if (href) {
+                    button.innerHTML = `<a href="${href}">${button.textContent}</a>`;
+                }
+            }
+
+            function renderOutcome(success, message='', color='') {
+                if (success === true) {
+                    checkIdMsg.style.color = color || '#2ecc71';
+                    checkIdMsg.textContent = message;
+                    enableButton(resultsBtn, resultsUrl);
+                    continueButton.querySelector('a').textContent = 'Re-take pre-quiz';
+
+                } else {
+                    checkIdMsg.style.color = color || '#ff6b6b';
+                    checkIdMsg.textContent = message;
+                }
             }
 
             doneChkbox.addEventListener('change', function() {
                 checkIdDiv.style.display = this.checked ? '' : 'none';
                 resultsBtn.style.display = this.checked ? '' : 'none';
 
-                if (!this.checked) {
+                if (this.checked) {
+                    const preResult = localStorage.getItem('preResult');
+                    if (preResult) {
+                        const message = 'Your response is already saved in this device.';
+                        renderOutcome(true, message);
+                    }
+                } else {
                     disableButton(checkIdBtn);
                     disableButton(resultsBtn);
                     checkIdInp.value = '';
@@ -322,17 +344,17 @@
 
             checkIdBtn.addEventListener('click', async function() {
                 try {
-                    let fetchedResponseId = await fetchResponseIdFromNetlify('pre', checkIdInp.value);
+                    showSpinner();
+                    const fetchedResponseId = await fetchResponseIdFromNetlify('pre', checkIdInp.value);
                     saveLocalStorage(fetchedResponseId, 'response');
-                    checkIdMsg.style.color = '#2ecc71';
-                    checkIdMsg.innerHTML = 'We found your response!';
-                    enableButton(resultsBtn);
-                    resultsBtn.innerHTML = `<a href="${resultsUrl}">${resultsBtn.textContent}</a>`;
-                    continueButton.querySelector('a').textContent = 'Re-take pre-quiz';
+                    const message = 'We found your response and saved it in this device!';
+                    renderOutcome(true, message);
+                    hideSpinner();
 
                 } catch(error) {
-                    checkIdMsg.style.color = '#ff6b6b';
-                    checkIdMsg.innerHTML = 'Sorry, we cannot find this ID.';
+                    const message = 'Sorry, we cannot find this ID.';
+                    renderOutcome(false, message);
+                    hideSpinner();
                 }
             });
 
