@@ -42,9 +42,10 @@
             </div>
             <div class="welcome-content">
                 <div class="greeting">
-                    <h2>Welcome to the PlanEATary Quest!</h2>
-                    <h3><label><input type="checkbox" id="donePreQuiz"> I have done a pre-quiz before.</label></h3>  
-                    <div class="questions" id="checkIdDiv" style="display: none;">
+                    <h3>Welcome to the PlanEATary Quest!</h3>
+                    <h4>Promoting planetary health, one bite at a time.</h4>
+                    <p><label><input type="checkbox" id="donePreQuiz"> I have done a pre-quiz before.</label></p>
+                    <div class="questions" id="checkIdDiv" style="display: none; line-height: 1cm;">
                         <span class="info-icon" id="checkIdInfo" title="The ID was sent to the email provided in the response.">ⓘ</span>
                         <input type="text" id="checkIdInp" placeholder="Your response ID">
                         <button class="next disabled" id="checkIdBtn" disabled>Check</button>
@@ -63,8 +64,8 @@
                             <button class="close">x</button>
                         </div>
                         <div class="modal-content">
-                            <h2 id="modalTitle" style="padding: 0 20px;"></h2>
-                            <p id="modalDescription" style="padding: 0 20px;"></p>
+                            <h4 id="modalTitle" style="text-align: center;"></h4>
+                            <p id="modalDescription"></p>
                         </div>
                     </div>
                 </div>
@@ -88,10 +89,14 @@
             const greetingDiv = document.querySelector('.greeting');
             const continueButton = document.getElementById('continueButton');
             const modal = document.querySelector(".modal");
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
             const overlay = document.querySelector(".overlay");
             const closeButt = document.querySelector('.close');
 
             const resultsUrl = 'result_page';
+            const green = '#02897A';
+            const red = '#ff6b6b';
             const doneChkbox = document.getElementById('donePreQuiz');
             const infoIcon = document.getElementById('checkIdInfo');
             const checkIdDiv = document.getElementById('checkIdDiv');
@@ -125,7 +130,7 @@
                         isLoading = false;
                     }, minDisplayTime - elapsedTime);
                 } else {
-                    console.log("Hiding spinner...");
+                    // console.log("Hiding spinner...");
                     spinner.classList.add('hidden');
                     overlay.classList.add('hidden');
                     isLoading = false;
@@ -145,6 +150,8 @@
             // Function to close the modal
             function closeModal() {
                 closeButt.classList.remove('hidden');
+                modalTitle.textContent = '';
+                modalDescription.innerHTML = '';
                 modal.classList.add("hidden");
                 modalOverlay.classList.add("hidden");
             }
@@ -298,13 +305,13 @@
 
             function renderOutcome(success, message='', color='') {
                 if (success === true) {
-                    checkIdMsg.style.color = color || '#2ecc71';
+                    checkIdMsg.style.color = color || green;
                     checkIdMsg.textContent = message;
                     enableButton(resultsBtn, resultsUrl);
                     continueButton.querySelector('a').textContent = 'Re-take pre-quiz';
 
                 } else {
-                    checkIdMsg.style.color = color || '#ff6b6b';
+                    checkIdMsg.style.color = color || red;
                     checkIdMsg.textContent = message;
                 }
             }
