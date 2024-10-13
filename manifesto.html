@@ -256,14 +256,9 @@
 
 
                 scores = preResult.pointArray; 
-                const Tstatus = JSON.parse(localStorage.getItem('fetched_tasks')); 
+                
 
-                if(!Tstatus) {
-                    const fetchedTasks = await fetchTaskStatus(); 
-                    localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks.result)); 
-                    const Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
-                }   
-                console.log(Tstatus.chosen, Tstatus.done);
+                
 
                 function calculateSelectedTasks(tasks) {
                     let count = 0;
@@ -281,8 +276,25 @@
                 async function renderQuestions(condition) {
                     QContainer.innerHTML = '';
                     const tasks = await fetchTasks();
-                    const chosen_tasks = Tstatus.chosen;
-                    const status_tasks = Tstatus.done;
+                    try {
+                        let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks')); 
+                        if(!Tstatus) {
+                            const fetchedTasks = await fetchTaskStatus(); 
+                            localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks.result)); 
+                            Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+                        }   
+                        console.log(Tstatus.chosen, Tstatus.done);
+                        const chosen_tasks = Tstatus.chosen;
+                        const status_tasks = Tstatus.done;
+
+                    } catch (error) {
+                        console.error('Error fetching task status:', error);
+
+                    } finally {
+                        const chosen_tasks = [];
+                        const status_tasks = [];
+                    }
+                    
                     if (!tasks || !preResult) {
                         QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
                         return;
