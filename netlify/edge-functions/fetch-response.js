@@ -30,13 +30,10 @@ export default async (req) => {
       return new CustomResponse(message, 400);
     }
 
-    // Convert quizType to lowercase
-    const quizTypeLower = quizType.toLowerCase();
-
     // Determine the survey ID based on quiz type
     const { ID_HEADER, PRE_QUIZ_ID, POST_QUIZ_ID } = process.env;
 
-    const surveyId = (quizTypeLower === 'pre') ? PRE_QUIZ_ID : POST_QUIZ_ID;
+    const surveyId = (quizType === 'pre') ? PRE_QUIZ_ID : POST_QUIZ_ID;
 
     // Check if id exists in Netlify Blobs
     const id = req.headers.get(ID_HEADER);
@@ -53,7 +50,7 @@ export default async (req) => {
     const entry = await quizResponses.get(id, { consistency: 'strong' });
 
     if (entry === null) {
-      const message = `Invalid ID for ${quizTypeLower}-quiz.`;
+      const message = `Invalid ID for ${quizType}-quiz.`;
       console.error(message);
       return new CustomResponse(message, 403);
     }
