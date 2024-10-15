@@ -30,25 +30,27 @@ export default async (req) => {
       return new CustomResponse(message, 400);
     }
 
-    // Determine the survey ID based on quiz type
-    const { ID_HEADER, PRE_QUIZ_ID, POST_QUIZ_ID } = process.env;
-
-    const surveyId = (quizType === 'pre') ? PRE_QUIZ_ID : POST_QUIZ_ID;
-
     // Check if id exists in Netlify Blobs
-    const id = req.headers.get(ID_HEADER);
-
-    if (!id) {
+    const { ID_HEADER } = process.env;
+    const _id = req.headers.get(ID_HEADER);
+    if (!_id) {
       const message = 'Unauthorized.';
       console.error(message, '\n', req.headers);
       return new CustomResponse(message, 401);
     }
 
+    // Add prefix to id if necessary
+    const { ID_PREFIX, ID_PREFIX_LENGTH } = process.env;
+    const _hasPrefix = _id.slice(0, ID_PREFIX_LENGTH) === ID_PREFIX;
+    const id = _hasPrefix ? _id : ID_PREFIX + _id;
+
+    // Determine the survey ID based on quiz type
+    const { PRE_QUIZ_ID, POST_QUIZ_ID } = process.env;
+    const surveyId = (quizType === 'pre') ? PRE_QUIZ_ID : POST_QUIZ_ID;
+
     // Search Netlify Blobs for ID
     const quizResponses = getStore(surveyId);
-
     const entry = await quizResponses.get(id, { consistency: 'strong' });
-
     if (entry === null) {
       const message = `Invalid ID for ${quizType}-quiz.`;
       console.error(message);
@@ -57,9 +59,7 @@ export default async (req) => {
 
     // Prepare API request to Qualtrics
     const { QDC_ID, Q_API_TOKEN } = process.env;
-
     const qUrl = `https://${QDC_ID}.qualtrics.com/API/v3/surveys/${surveyId}/responses/${id}`;
-
     const options = {
       method: methodUpper,
       url: qUrl,
