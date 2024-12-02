@@ -80,6 +80,7 @@
                 </div>
             </div>
         </section>
+        
     </div>
     <script type="module">
         import {extractTaskArrays} from './data-functions.mjs';
@@ -98,8 +99,6 @@
         let spinnerStartTime;
         let isLoading;
         let preResponseId = localStorage.getItem('preResponseId');
-        const modal = document.querySelector(".modal");
-        const overlay = document.querySelector(".overlay");
         const closeButt = document.querySelector('.close');
 
 
@@ -117,18 +116,6 @@
             document.body.style.backgroundColor = "white";
         };
 
-        function Modal(a) {
-            var detail = document.getElementById("detail");
-            detail.src = './images/pop' + a + '.png';
-            modal.classList.remove('hidden');
-            overlay.classList.remove('hidden');
-        }
-
-        function Close() {
-            modal.classList.add('hidden');
-            overlay.classList.add('hidden');
-        }
-
         // Function to show the modal
         function showModal(title, description) {
             closeButt.classList.remove('hidden');
@@ -145,8 +132,17 @@
             tmodal.classList.add("hidden");
             modalOverlay.classList.add("hidden");
         }
-        
 
+        // Close modal when user clicks the close button
+        document.querySelector(".close").addEventListener("click", closeModal);
+
+        // Close modal when user clicks outside the modal
+        window.addEventListener("click", function(event) {
+            if (event.target === modalOverlay) {
+                closeModal();
+            }
+        });
+                
         document.addEventListener("DOMContentLoaded", async function() {
             document.getElementById('postQ').style.color = 'white';
             document.getElementById('preQ').style.color = 'white';
