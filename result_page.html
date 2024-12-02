@@ -17,6 +17,8 @@
             <!--<li><b>Quiz</b></li>-->
             <li id="ch">Challenge</li>
             <li><a href="result_page.html">Dashboard</a></li>
+            <li>sign in</li>
+            <li>sign up</li>
             <!-- <li><a href="#">About us</a></li> -->
         </ul>
     </div>
@@ -64,7 +66,6 @@
         </div>
         <div class="q">
             <div class="questions"></div>
-            <div class="card"></div>
         </div>
         <section class="overlay hidden" id="modalOverlay">
             <div class="align">
@@ -87,7 +88,7 @@
         const Pre_Q = document.querySelector("#preQ");
         const Post_Q = document.querySelector("#postQ");
         const selectButton = document.querySelector(".select-tasks");
-        const cardContainer = document.querySelector(".card");
+        const cardContainer = document.querySelector(".q");
         const tmodal = document.getElementById("taskModal");
         const modalOverlay = document.getElementById("modalOverlay");
         const modalTitle = document.getElementById("modalTitle");
@@ -130,25 +131,26 @@
 
         // Function to show the modal
         function showModal(title, description) {
-                closeButt.classList.remove('hidden');
-                modalTitle.textContent = title;
-                modalDescription.innerHTML = description;
-                tmodal.classList.remove("hidden");
-                tmodal.style.backgroundColor = 'white';
-                modalOverlay.classList.remove("hidden");
+            closeButt.classList.remove('hidden');
+            modalTitle.textContent = title;
+            modalDescription.innerHTML = description;
+            tmodal.classList.remove("hidden");
+            tmodal.style.backgroundColor = 'white';
+            modalOverlay.classList.remove("hidden");
         }
 
-            // Function to close the modal
-            function closeModal() {
-                closeButt.classList.remove('hidden');
-                tmodal.classList.add("hidden");
-                modalOverlay.classList.add("hidden");
+        // Function to close the modal
+        function closeModal() {
+            closeButt.classList.remove('hidden');
+            tmodal.classList.add("hidden");
+            modalOverlay.classList.add("hidden");
         }
         
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", async function() {
             document.getElementById('postQ').style.color = 'white';
             document.getElementById('preQ').style.color = 'white';
+            document.getElementById('com-tasks').style.color = 'white';
             const spinner = document.getElementById('spinner');
             const ch = document.getElementById('ch');
             const CH = document.getElementById('CH');
@@ -157,6 +159,8 @@
             let spinnerStartTime;
             let preResult = JSON.parse(localStorage.getItem('preResult'));
             let postResult = JSON.parse(localStorage.getItem('postResult'));
+            // Retrieve tasks from localStorage
+            let tasks = JSON.parse(localStorage.getItem('tasks'));
             
             // Function to show the spinner
             function showSpinner() {
@@ -186,23 +190,30 @@
                 }
             }
 
-
-            async function fetchTasks() {
+            // Function to get task status from the API
+            async function fetchTaskStatus() {
                 try {
-                    const response = await fetch('updated_tasks_final.json');
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
+                    
+                    showSpinner();
+                    const response = await fetch('/api/manage-tasks', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Q-RESPONSE-ID': preResponseId,
+                        }
+
+                    });
+                    
                     const data = await response.json();
+                    console.log('Task status fetched:', data);
+                    hideSpinner();
                     return data;
                 } catch (error) {
-                    console.error('Fetch error:', error);
-                    select.display = 'none';
-                    alert('Failed to load tasks. Please try again later.');
-
+                    hideSpinner();
+                    console.error('Error fetching task status:', error);
+                    return null;
                 }
             }
-
 
             function compareScores() {
                 let preQuizTotal = preResult.totalScore;
@@ -230,9 +241,11 @@
                 if (postResult) {
                     document.getElementById('curr_score').textContent = questionsData.totalScore;
                     document.getElementById('total').textContent = 60;
-                } else {
+                } else if (preResult) {
                     document.getElementById('curr_score').textContent = questionsData.totalScore;
                     document.getElementById('total').textContent = 60;
+                } else {
+                    document.getElementById('curr_score').textContent = 'All tasks you have completed';
                 }
                 // Iterate over each question in the pointArray
                 questionsData.pointArray.forEach((score, index) => {
@@ -257,62 +270,6 @@
 
             }
 
-            // Function to get task status from the API
-            async function fetchTaskStatus() {
-                try {
-                    
-                    showSpinner();
-                    const response = await fetch('/api/manage-tasks', {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Q-RESPONSE-ID': preResponseId,
-                        }
-
-                    });
-                    
-                    const data = await response.json();
-                    console.log('Task status fetched:', data);
-                    hideSpinner();
-                    return data;
-                } catch (error) {
-                    hideSpinner();
-                    console.error('Error fetching task status:', error);
-                    return null;
-                }
-            }
-
-
-        // Function to show the modal
-        function showModal(title, description) {
-            closeButt.classList.remove('hidden');
-            modalTitle.textContent = title;
-            modalDescription.innerHTML = description;
-            modal.classList.remove("hidden");
-            modal.style.backgroundColor = 'white';
-            modalOverlay.classList.remove("hidden");
-        }
-
-        // Function to close the modal
-        function closeModal() {
-            closeButt.classList.remove('hidden');
-            modal.classList.add("hidden");
-            modalOverlay.classList.add("hidden");
-        }
-
-        // Close modal when user clicks the close button
-        document.querySelector(".close").addEventListener("click", closeModal);
-
-        // Close modal when user clicks outside the modal
-        window.addEventListener("click", function(event) {
-            if (event.target === modalOverlay) {
-                closeModal();
-            }
-        });
-
-        
-        // Retrieve tasks from localStorage
-        let tasks = JSON.parse(localStorage.getItem('tasks'));
 
         // Function to display completed tasks 
         function displaySelectedTasks(tasks) {
@@ -350,8 +307,7 @@
                         taskCard.appendChild(infoIcon); 
                         taskCard.appendChild(completion);
                         cardContainer.appendChild(taskCard);
-
-                            
+       
                         }
                     });
                 });
