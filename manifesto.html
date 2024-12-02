@@ -263,8 +263,6 @@
                 scores = preResult.pointArray; 
                 
 
-                
-
                 function calculateSelectedTasks(tasks) {
                     let count = 0;
                     Object.keys(tasks).forEach((questionKey) => {
@@ -281,21 +279,19 @@
                 async function renderQuestions(condition) {
                     QContainer.innerHTML = '';
                     const tasks = await fetchTasks();
-                    let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks')); 
+                    let Tstatus = JSON.parse(localStorage.getItem('tasks')); 
                     let chosen_tasks = [];
                     let status_tasks = [];
 
-                    if(!Tstatus) {
+                    if (!Tstatus) {
                         const fetchedTasks = await fetchTaskStatus(); 
-                        localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks.result)); 
-                        Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    }
-                    
-                    else {
-                        chosen_tasks = Tstatus.chosen
+                        localStorage.setItem('tasks', JSON.stringify(fetchedTasks.result)); 
+                        Tstatus = JSON.parse(localStorage.getItem('tasks'));
+                    } else {
+                        chosen_tasks = Tstatus.chosen;
                         status_tasks = Tstatus.done;
                     }
-                    
+
                     if (!tasks || !preResult) {
                         QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
                         return;
@@ -309,16 +305,14 @@
                             // Create a container for the question
                             const questionDiv = document.createElement('div');
                             questionDiv.classList.add('question-block');
-                            
 
                             // Display question number and score
                             const questionTitle = document.createElement('h3');
                             questionTitle.innerHTML = `Question ${i + 1} - ${score} points`;
 
-                            if(score < 3) {
+                            if (score < 3) {
                                 questionDiv.style.boxShadow = "10px 10px 10px red";
                                 questionTitle.style.color = 'red';
-                                
                             } else {
                                 questionDiv.style.boxShadow = "10px 10px 10px green";
                                 questionTitle.style.color = 'green';
@@ -332,11 +326,10 @@
 
                             questionTitle.appendChild(infoIcon); 
                             questionDiv.appendChild(questionTitle);
-                            
 
                             // Set the click event for the info icon to show the modal with the correct image
                             infoIcon.addEventListener('click', function() {
-                                Modal(`./images/pop${i+1}.jpg`); 
+                                Modal(`./images/pop${i + 1}.jpg`); 
                             });
 
                             // Create a list to hold the tasks for this question
@@ -344,16 +337,15 @@
 
                             // Iterate over tasks for the question
                             taskGroup.forEach((task, j) => {
-                                
                                 const taskItem = document.createElement('li');
                                 const label = document.createElement('label');
                                 const checkbox = document.createElement('input');
                                 checkbox.type = 'checkbox';
+
                                 // Add an info icon for task description
                                 const infoIcon2 = document.createElement("span");
                                 infoIcon2.classList.add("info-icon");
                                 infoIcon2.innerHTML = "&#9432;"; 
-
 
                                 label.appendChild(checkbox);
                                 label.appendChild(document.createTextNode(task.taskName));
@@ -361,33 +353,36 @@
                                 taskItem.appendChild(label);
                                 taskList.appendChild(taskItem);
 
+                                // Set task choice and status based on local storage values
                                 if (chosen_tasks.includes(String(task.taskNumber))) {
                                     task.choice = 'chosen';
                                     checkbox.checked = true;
                                     if (status_tasks.includes(String(task.taskNumber))) {
                                         task.status = 'Completed';
+                                        checkbox.disabled = true; // Disable the checkbox if the task is completed
                                     }
                                 } else {
                                     task.choice = '';
                                     checkbox.checked = false;
                                 }
-                                localStorage.setItem('tasks', JSON.stringify(tasks)); 
 
                                 // Update task count and localStorage on checkbox change
                                 checkbox.addEventListener('change', function() {
-                                    if (checkbox.checked) {
-                                        task.choice = "chosen";
-                                        task_counts += 1;
-                                    } else {
-                                        task.choice = "";                                         
-                                        task_counts -= 1;
+                                    if (!checkbox.disabled) {
+                                        if (checkbox.checked) {
+                                            task.choice = "chosen";
+                                            task_counts += 1;
+                                        } else {
+                                            task.choice = "";                                         
+                                            task_counts -= 1;
+                                        }
+                                        localStorage.setItem('tasks', JSON.stringify(tasks)); 
+                                        updateStartButton(); 
                                     }
-                                    localStorage.setItem('tasks', JSON.stringify(tasks)); 
-                                    updateStartButton(); 
                                 });
-                                        
-                                //event listener for more info
-                                infoIcon2.addEventListener('click', function (event) {
+
+                                // Event listener for more info
+                                infoIcon2.addEventListener('click', function(event) {
                                     event.preventDefault();
                                     event.stopPropagation(); 
                                     ModalDes(task.taskName, task.taskDescription);
@@ -395,7 +390,7 @@
 
                                 checkbox.checked = task.choice === "chosen";
                                 localStorage.setItem('tasks', JSON.stringify(tasks)); 
-                              
+
                                 updateStartButton(); 
                             });
 
@@ -405,9 +400,12 @@
                         }
                         localStorage.setItem('tasks', JSON.stringify(tasks)); 
                     });
+
                     task_counts = calculateSelectedTasks(tasks);
                     updateStartButton(); 
                 }
+
+
                 // Function to update the start button state based on selected tasks
                 function updateStartButton() {
                     const startButton = document.querySelector(".start");
