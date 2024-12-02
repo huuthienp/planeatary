@@ -107,15 +107,15 @@
         const select =  document.querySelector('.select-tasks');
         
 
-        function openNav() {
+        window.openNav = function() {
             document.getElementById("mySidenav").style.width = "40%";
             document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
-        }
+        };
 
-        function closeNav() {
+        window.closeNav = function() {
             document.getElementById("mySidenav").style.width = "0";
             document.body.style.backgroundColor = "white";
-        }
+        };
 
         function Modal(a) {
             var detail = document.getElementById("detail");
@@ -270,47 +270,47 @@
             }
 
 
-        // Function to display completed tasks 
-        function displaySelectedTasks(tasks) {
-            cardContainer.innerHTML = ''; 
+            // Function to display completed tasks 
+            function displaySelectedTasks(tasks) {
+                cardContainer.innerHTML = ''; 
 
-            Object.keys(tasks).forEach(questionKey => {
-                const taskGroup = tasks[questionKey].tasks;
+                Object.keys(tasks).forEach(questionKey => {
+                    const taskGroup = tasks[questionKey].tasks;
 
-                // Filter tasks that are selected
-                taskGroup.forEach(task => {
-                    if (task.choice === "Completed") {
-                        // Create and append a card for each completed task
-                        const taskCard = document.createElement("div");
-                        taskCard.classList.add("task-card", task.status === "Completed" ? "card_completed" : "hidden");
+                    // Filter tasks that are selected
+                    taskGroup.forEach(task => {
+                        if (task.choice === "Completed") {
+                            // Create and append a card for each completed task
+                            const taskCard = document.createElement("div");
+                            taskCard.classList.add("task-card", task.status === "Completed" ? "card_completed" : "hidden");
 
-                        const taskName = document.createElement("span");
-                        taskName.textContent = task.taskName;
+                            const taskName = document.createElement("span");
+                            taskName.textContent = task.taskName;
 
-                        // Add an info icon for task description
-                        const infoIcon = document.createElement("span");
-                        infoIcon.classList.add("info-icon");
-                        infoIcon.innerHTML = "&#9432;"; 
+                            // Add an info icon for task description
+                            const infoIcon = document.createElement("span");
+                            infoIcon.classList.add("info-icon");
+                            infoIcon.innerHTML = "&#9432;"; 
 
-                        // Set the click event for the info icon to show the modal
-                        infoIcon.addEventListener('click', function(event) {
-                            event.stopPropagation(); 
-                            showModal(task.taskName, task.taskDescription);
+                            // Set the click event for the info icon to show the modal
+                            infoIcon.addEventListener('click', function(event) {
+                                event.stopPropagation(); 
+                                showModal(task.taskName, task.taskDescription);
+                            });
+
+                            const completion = document.createElement("span");
+                            completion.classList.add("completion");
+                            completion.textContent = task.status === "Completed" ? "Completed" : null;
+
+                            taskCard.appendChild(taskName);
+                            taskCard.appendChild(infoIcon); 
+                            taskCard.appendChild(completion);
+                            cardContainer.appendChild(taskCard);
+        
+                            }
                         });
-
-                        const completion = document.createElement("span");
-                        completion.classList.add("completion");
-                        completion.textContent = task.status === "Completed" ? "Completed" : null;
-
-                        taskCard.appendChild(taskName);
-                        taskCard.appendChild(infoIcon); 
-                        taskCard.appendChild(completion);
-                        cardContainer.appendChild(taskCard);
-       
-                        }
                     });
-                });
-        }
+            }
 
         if (postResult) {
             displayQuestions(postResult);
@@ -340,6 +340,7 @@
             );
             
         } else {
+            displayQuestions(preResult);
             // Attach single click listener for the start button navigation
             selectButton.addEventListener('click', function(event) {
                 if(postResult) {
@@ -378,7 +379,7 @@
                     document.getElementById('preQ').style.transition = "all 1s";
                 }
             });
-
+            
             document.getElementById('postQ').addEventListener('click', function() {
                 
                 if (postResult) {
@@ -391,7 +392,7 @@
                     document.getElementById('postQ').style.transition = "all 1s";
                 }
             });
-
+            
             document.getElementById('com-tasks').addEventListener('click', function() {
                 
                 if (tasks) {
@@ -404,7 +405,7 @@
                     document.getElementById('postQ').style.transition = "all 1s";
                     document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
                     document.getElementById('com-tasks').style.transition = "all 1s";
-
+                    
                 }
             });
             
