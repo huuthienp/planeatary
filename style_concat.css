@@ -347,11 +347,10 @@ body {
 }
 .content .card_completed {
   padding: 3vh 0.5vw;
-  background: rgb(226, 224, 224);
+  background: rgb(133, 132, 132);
   border: none;
   border-radius: 1em;
   text-align: center;
-  text-decoration-line: line-through;
 }
 .content .card_completed:hover,
 .content .card_completed:focus {

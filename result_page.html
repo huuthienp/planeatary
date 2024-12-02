@@ -278,7 +278,7 @@
                         if (task.status === "Completed") {
                             // Create and append a card for each completed task
                             const taskCard = document.createElement("div");
-                            taskCard.classList.add("task-card", task.status === "Completed" ? "card_completed" : "hidden");
+                            taskCard.classList.add(task.status === "Completed" ? "card_completed" : "hidden");
 
                             const taskName = document.createElement("span");
                             taskName.textContent = task.taskName;
@@ -312,6 +312,7 @@
             displayQuestions(postResult);
             document.getElementById('postQ').style.backgroundColor = '#02897A';
             document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
+            document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
             
             // Remove next step, suggestion, and select-tasks button if post quiz is done
             const toRemove = [
