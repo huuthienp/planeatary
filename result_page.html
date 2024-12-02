@@ -88,7 +88,7 @@
         const Pre_Q = document.querySelector("#preQ");
         const Post_Q = document.querySelector("#postQ");
         const selectButton = document.querySelector(".select-tasks");
-        const cardContainer = document.querySelector(".q");
+        const cardContainer = document.querySelector(".questions");
         const tmodal = document.getElementById("taskModal");
         const modalOverlay = document.getElementById("modalOverlay");
         const modalTitle = document.getElementById("modalTitle");
@@ -227,15 +227,14 @@
             }
 
             function displayQuestions(questionsData) {
-                const questionsContainer = document.querySelector('.questions');
-                questionsContainer.innerHTML = ''; 
+                cardContainer.innerHTML = ''; 
                 comparison.innerHTML = ''; 
                 console.log('Pre Result:', preResult);
                 console.log('Post Result:', postResult);
                 // Handle missing pointArray or invalid data
                 if (!questionsData.pointArray || !Array.isArray(questionsData.pointArray)) {
                     document.getElementById('curr_score').textContent = 'No score available.';
-                    questionsContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us to fix it.';
+                    cardContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us to fix it.';
                     return;
                 }
                 if (postResult) {
@@ -264,7 +263,7 @@
                     questionTitle.textContent = `Question ${index + 1} - ${score} points`;
                     questionDiv.appendChild(questionTitle);
 
-                    questionsContainer.appendChild(questionDiv);
+                    cardContainer.appendChild(questionDiv);
                 });
                 compareScores();
 
@@ -369,8 +368,8 @@
         };
             
             document.getElementById('preQ').addEventListener('click', function() {
-                displayQuestions(preResult);
-                if (postResult) {
+                if (preResult) {
+                    displayQuestions(preResult);
                     document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
                     document.getElementById('postQ').style.transition = "all 1s";
                     document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
