@@ -34,21 +34,22 @@
                     <!-- <li>About us</li> -->
                 </ul>
             </nav>
-            <!-- <div class="button">
+            <div class="button">
                 <button class="signIn">Sign In</button>
                 <span>&ensp;</span>
                 <button class="signUp">Sign Up</button>
-            </div> -->
+            </div>
         </div>
 
         <div class="pre-postQ">
             <button id="preQ">PreQuiz</button>
             <button id="postQ">PostQuiz</button>
+            <button id="com-tasks">Task</button>
         </div>
         <div class="result">
             <div class="congrats">
-                <h1><img src="images/heart.png"/>CONGRATULATIONS!</h1>
-                <p>You have finished your Quiz and this is the result!</p>
+                <h1 id="q-type"></h1>
+                <p id="date-completion-q"></p>
             </div>
             <div class="score">
                 <div class="circle">
@@ -62,51 +63,87 @@
             <button class="select-tasks">Select Tasks →</button>
         </div>
         <div class="q">
-            <div class="questions">
-                <!-- <div class="question red">
-                    <h3>Question 1 - 1 points</h3>
-                    <p>When you source & purchase your food, how often do you think about the way it has been produced, grown or raised and whether it is environmentally sustainable?</p>
-                    <p><strong>Answer:</strong> Never</p>
-                </div>
-                
-                <div class="question green">
-                    <h3>Question 2 - 5 points</h3>
-                    <p>When you source & purchase your food, how often do you think about the way it has been produced, grown or raised and whether it is environmentally sustainable?</p>
-                    <p><strong>Answer:</strong> Always</p>
-                </div> -->
-                
-            </div>
+            <div class="questions"></div>
+            <div class="card"></div>
         </div>
+        <section class="overlay hidden" id="modalOverlay">
+            <div class="align">
+                <div class="modal hidden" id="taskModal"> 
+                    <div class="btn">
+                        <button class="close">x</button>
+                    </div>
+                    <div class="modal-content">
+                        <h2 id="modalTitle" style="padding: 0 20px;"></h2>
+                        <p id="modalDescription" style="padding: 0 20px;"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-    <script>
-        var modal = document.querySelector('.modal');
-        var overlay = document.querySelector(".overlay");
+    <script type="module">
+        import {extractTaskArrays} from './data-functions.mjs';
+
         const Qbuttoncontainer = document.querySelector(".pre-postQ");
         const Pre_Q = document.querySelector("#preQ");
         const Post_Q = document.querySelector("#postQ");
         const selectButton = document.querySelector(".select-tasks");
+        const cardContainer = document.querySelector(".card");
+        const tmodal = document.getElementById("taskModal");
+        const modalOverlay = document.getElementById("modalOverlay");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalDescription = document.getElementById("modalDescription");
+    
+        let scores = [];
+        let spinnerStartTime;
+        let isLoading;
+        let preResponseId = localStorage.getItem('preResponseId');
+        const modal = document.querySelector(".modal");
+        const overlay = document.querySelector(".overlay");
+        const closeButt = document.querySelector('.close');
+
+
+        const comparison = document.getElementById('improvement');
+        const select =  document.querySelector('.select-tasks');
+        
 
         function openNav() {
             document.getElementById("mySidenav").style.width = "40%";
             document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
-        };
+        }
 
         function closeNav() {
             document.getElementById("mySidenav").style.width = "0";
             document.body.style.backgroundColor = "white";
-        };
+        }
 
         function Modal(a) {
             var detail = document.getElementById("detail");
             detail.src = './images/pop' + a + '.png';
             modal.classList.remove('hidden');
             overlay.classList.remove('hidden');
-        };
+        }
 
         function Close() {
             modal.classList.add('hidden');
             overlay.classList.add('hidden');
-        };
+        }
+
+        // Function to show the modal
+        function showModal(title, description) {
+                closeButt.classList.remove('hidden');
+                modalTitle.textContent = title;
+                modalDescription.innerHTML = description;
+                tmodal.classList.remove("hidden");
+                tmodal.style.backgroundColor = 'white';
+                modalOverlay.classList.remove("hidden");
+        }
+
+            // Function to close the modal
+            function closeModal() {
+                closeButt.classList.remove('hidden');
+                tmodal.classList.add("hidden");
+                modalOverlay.classList.add("hidden");
+        }
         
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -149,11 +186,6 @@
                 }
             }
 
-            
-
-
-            const comparison = document.getElementById('improvement');
-            const select =  document.querySelector('.select-tasks');
 
             async function fetchTasks() {
                 try {
@@ -225,82 +257,134 @@
 
             }
 
+            // Function to get task status from the API
+            async function fetchTaskStatus() {
+                try {
+                    
+                    showSpinner();
+                    const response = await fetch('/api/manage-tasks', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Q-RESPONSE-ID': preResponseId,
+                        }
 
-            if (postResult) {
-                displayQuestions(postResult);
-                document.getElementById('postQ').style.backgroundColor = '#02897A';
-                document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
-                document.getElementById('postQ').addEventListener('click', function() {
-                    //handleFetchedData(postResponseId, taskData); 
-                    document.getElementById('postQ').style.backgroundColor = '#02897A';
-                    document.getElementById('preQ').style.backgroundColor = '#a9d1cd';    
-                    document.getElementById('preQ').style.transition = "all 1s";
-                    document.getElementById('postQ').style.transition = "all 1s"
-
-                });
-
-                // Remove next step, suggestion, and select-tasks button if post quiz is done
-                const toRemove = [
-                    'p.next-step',
-                    'p.suggestion',
-                    'button.select-tasks'
-                ];
-
-                const tagsToRemove = toRemove.map(s => document.querySelector(s)) ;
-
-                tagsToRemove.forEach(
-                    (tag) => { tag.remove() }
-                );
-                ch.style.color = 'grey'; 
-                CH.style.color = 'grey'; 
-                ch.style.cursor = "not-allowed"; 
-                CH.style.cursor = "not-allowed"; 
-                ch.disabled = true; 
-                CH.disabled = true;  
-
-            } else {
-                ch.style.color = 'white'; 
-                CH.style.color = '#074740';
-                ch.style.cursor = "pointer"; 
-                CH.style.cursor = "pointer"; 
-                ch.disabled = false; 
-                CH.disabled = false;
-                ch.addEventListener("click", function() {
-                    window.location.href = "manifesto.html";  
-                });
-                CH.addEventListener("click", function() {
-                    window.location.href = "manifesto.html";
-                });
-                document.getElementById('preQ').style.backgroundColor = '#02897A';   
-                document.getElementById('postQ').style.backgroundColor = 'grey';
-                document.getElementById('postQ').disabled = true; 
-                displayQuestions(preResult);
-            };
-            
-            document.getElementById('preQ').addEventListener('click', function() {
-                //handleFetchedData(preResult, taskData);
-                displayQuestions(preResult);
-                if (postResult) {
-                    document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
-                    document.getElementById('postQ').style.transition = "all 1s";
-                    document.getElementById('preQ').style.backgroundColor = '#02897A';    
-                    document.getElementById('preQ').style.transition = "all 1s";
+                    });
+                    
+                    const data = await response.json();
+                    console.log('Task status fetched:', data);
+                    hideSpinner();
+                    return data;
+                } catch (error) {
+                    hideSpinner();
+                    console.error('Error fetching task status:', error);
+                    return null;
                 }
-            });
+            }
 
-            document.getElementById('postQ').addEventListener('click', function() {
-                //handleFetchedData(postResult, taskData);
-                
-                if (postResult) {
-                    displayQuestions(postResult);
-                    document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
-                    document.getElementById('preQ').style.transition = "all 1s";
-                    document.getElementById('postQ').style.backgroundColor = '#02897A';    
-                    document.getElementById('postQ').style.transition = "all 1s";
-                }
-            });
+
+        // Function to show the modal
+        function showModal(title, description) {
+            closeButt.classList.remove('hidden');
+            modalTitle.textContent = title;
+            modalDescription.innerHTML = description;
+            modal.classList.remove("hidden");
+            modal.style.backgroundColor = 'white';
+            modalOverlay.classList.remove("hidden");
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            closeButt.classList.remove('hidden');
+            modal.classList.add("hidden");
+            modalOverlay.classList.add("hidden");
+        }
+
+        // Close modal when user clicks the close button
+        document.querySelector(".close").addEventListener("click", closeModal);
+
+        // Close modal when user clicks outside the modal
+        window.addEventListener("click", function(event) {
+            if (event.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        
+        // Retrieve tasks from localStorage
+        let tasks = JSON.parse(localStorage.getItem('tasks'));
+
+        // Function to display completed tasks 
+        function displaySelectedTasks(tasks) {
+            cardContainer.innerHTML = ''; 
+
+            Object.keys(tasks).forEach(questionKey => {
+                const taskGroup = tasks[questionKey].tasks;
+
+                // Filter tasks that are selected
+                taskGroup.forEach(task => {
+                    if (task.choice === "Completed") {
+                        // Create and append a card for each completed task
+                        const taskCard = document.createElement("div");
+                        taskCard.classList.add("task-card", task.status === "Completed" ? "card_completed" : "hidden");
+
+                        const taskName = document.createElement("span");
+                        taskName.textContent = task.taskName;
+
+                        // Add an info icon for task description
+                        const infoIcon = document.createElement("span");
+                        infoIcon.classList.add("info-icon");
+                        infoIcon.innerHTML = "&#9432;"; 
+
+                        // Set the click event for the info icon to show the modal
+                        infoIcon.addEventListener('click', function(event) {
+                            event.stopPropagation(); 
+                            showModal(task.taskName, task.taskDescription);
+                        });
+
+                        const completion = document.createElement("span");
+                        completion.classList.add("completion");
+                        completion.textContent = task.status === "Completed" ? "Completed" : null;
+
+                        taskCard.appendChild(taskName);
+                        taskCard.appendChild(infoIcon); 
+                        taskCard.appendChild(completion);
+                        cardContainer.appendChild(taskCard);
+
+                            
+                        }
+                    });
+                });
+        }
+
+        if (postResult) {
+            displayQuestions(postResult);
+            document.getElementById('postQ').style.backgroundColor = '#02897A';
+            document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
             
-
+            // Remove next step, suggestion, and select-tasks button if post quiz is done
+            const toRemove = [
+            'p.next-step',
+            'p.suggestion',
+            'button.select-tasks'
+            ];
+            
+            const tagsToRemove = toRemove.map(s => document.querySelector(s));
+            
+            tagsToRemove.forEach(
+            (tag) => { tag.remove() }
+            );
+            
+            const challenge_tab = [ch, CH];
+            challenge_tab.forEach(
+            (tab) => {
+                tab.style.color = 'grey';
+                tab.style.cursor = "not-allowed";
+                tab.disabled = true;
+            }
+            );
+            
+        } else {
             // Attach single click listener for the start button navigation
             selectButton.addEventListener('click', function(event) {
                 if(postResult) {
@@ -308,9 +392,69 @@
                 } else {
                     window.location.href = "manifesto.html";
                 }
-
+                
             });
+            ch.style.color = 'white'; 
+            CH.style.color = '#074740';
+            ch.style.cursor = "pointer"; 
+            CH.style.cursor = "pointer"; 
+            ch.disabled = false; 
+            CH.disabled = false;
+            ch.addEventListener("click", function() {
+                window.location.href = "manifesto.html";  
+            });
+            CH.addEventListener("click", function() {
+                window.location.href = "manifesto.html";
+            });
+            document.getElementById('preQ').style.backgroundColor = '#02897A';   
+            document.getElementById('postQ').style.backgroundColor = 'grey';
+            document.getElementById('postQ').disabled = true; 
+            displayQuestions(preResult);
+        };
+            
+            document.getElementById('preQ').addEventListener('click', function() {
+                displayQuestions(preResult);
+                if (postResult) {
+                    document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
+                    document.getElementById('postQ').style.transition = "all 1s";
+                    document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
+                    document.getElementById('com-tasks').style.transition = "all 1s";
+                    document.getElementById('preQ').style.backgroundColor = '#02897A';    
+                    document.getElementById('preQ').style.transition = "all 1s";
+                }
+            });
+
+            document.getElementById('postQ').addEventListener('click', function() {
+                
+                if (postResult) {
+                    displayQuestions(postResult);
+                    document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
+                    document.getElementById('preQ').style.transition = "all 1s";
+                    document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
+                    document.getElementById('com-tasks').style.transition = "all 1s";
+                    document.getElementById('postQ').style.backgroundColor = '#02897A';    
+                    document.getElementById('postQ').style.transition = "all 1s";
+                }
+            });
+
+            document.getElementById('com-tasks').addEventListener('click', function() {
+                
+                if (tasks) {
+                    const circle = document.querySelector(".circle");
+                    circle.classList.add('hidden');
+                    displaySelectedTasks(tasks)
+                    document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
+                    document.getElementById('preQ').style.transition = "all 1s";
+                    document.getElementById('postQ').style.backgroundColor = '#a9d1cd';    
+                    document.getElementById('postQ').style.transition = "all 1s";
+                    document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
+                    document.getElementById('com-tasks').style.transition = "all 1s";
+
+                }
+            });
+            
         });
         </script>
-</body>
+    </body>
 </html>
+
