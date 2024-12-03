@@ -164,7 +164,7 @@ body {
     font-size: 1em;
   }
 
-  .button {
+  .button .signIn {
     background-color: #577975;
     color: white;
     border: none;
@@ -176,7 +176,23 @@ body {
     transition: background-color 1s;
   }
 
-  .button:hover {
+  .button .signUp {
+    background-color: #577975;
+    color: white;
+    border: none;
+    padding: 1vh 2vw;
+    border-radius: 0.5em;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: Poppins;
+    transition: background-color 1s;
+  }
+
+  .signIn:hover {
+    background-color: #0cbba6;
+  }
+
+  .signUp:hover {
     background-color: #0cbba6;
   }
     
@@ -281,28 +297,7 @@ body {
   display: none;
 }
 
-/* .header .button {
-  cursor: pointer;
-  font-size: 1em;
-}
 
-.header .button .signIn {
-  background-color: #e1f5f3;
-  color: rgb(39, 38, 38);
-  border: none;
-  padding: 1vh 1.2vw;
-  border-radius: 0.5em;
-  font-family: Poppins;
-}
-
-.header .button .signUp {
-  background-color: #02897A;
-  color: white;
-  border: none;
-  padding: 1vh 1vw;
-  border-radius: 0.5em;
-  font-family: Poppins;
-} */
 .content {
   width: 100%;
   max-width: 1200px;
