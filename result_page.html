@@ -342,7 +342,6 @@
             displayQuestions(postResult);
             document.getElementById('postQ').style.backgroundColor = '#02897A';
             document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
-            document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
             
             // Remove next step, suggestion, and select-tasks button if post quiz is done
             const toRemove = [
@@ -390,7 +389,7 @@
                 window.location.href = "manifesto.html";
             });
             document.getElementById('preQ').style.backgroundColor = '#02897A';   
-            document.getElementById('postQ').style.backgroundColor = 'grey';
+            document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
             document.getElementById('postQ').disabled = true; 
             displayQuestions(preResult);
         };
