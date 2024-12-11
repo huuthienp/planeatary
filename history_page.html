@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
+    <link href="style_concat.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Sidebar -->
+    <div id="mySidenav" class="sidenav">
+        <ul>
+            <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><b>Quiz</b></li>
+            <li id="ch">Challenge</li>
+            <li><a href="result_page.html">Dashboard</a></li>
+            <li id="his">History</li>
+            <li>Sign in</li>
+            <li>Sign up</li>
+            <!-- <li><a href="#">About us</a></li> -->
+        </ul>
+    </div>
+    <div class="container">
+        <div class="spinner hidden" id="spinner"></div>
+        <div class="header">
+            <h2 class="logo"><img  src="./images/logo.png" style="width: 120px; height:auto"/>planeatary</h2>
+            <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
+            <nav class="forwindow">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><b>Quiz</b></li>
+                    <li id="CH">Challenge</li>
+                    <li><a href="result_page.html" style="color:#074740;">Dashboard</a></li>
+                    <li id="His">History</li> 
+                </ul>
+                <div class="button">
+                    <button class="signIn">Sign In</button>
+                    <span>&ensp;</span>
+                    <button class="signUp">Sign Up</button>
+                </div>
+            </nav>
+        </div>
+        <div class="history-table">
+            <p class="404">There is no information available</p>
+            <table id="h-table"></table>
+        </div>
+    </div>
+    <script>
+        
+    
+        let scores = [];
+        let spinnerStartTime;
+        let isLoading;
+        let preResponseId = localStorage.getItem('preResponseId');
+
+
+        window.openNav = function() {
+            document.getElementById("mySidenav").style.width = "40%";
+            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
+        };
+
+        window.closeNav = function() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.body.style.backgroundColor = "white";
+        };
+
+                
+        document.addEventListener("DOMContentLoaded", async function() {
+            
+            const spinner = document.getElementById('spinner');
+            const ch = document.getElementById('ch');
+            const CH = document.getElementById('CH');
+            let isLoading = false;
+            const minDisplayTime = 2000; 
+            let spinnerStartTime;
+            let preResult = JSON.parse(localStorage.getItem('preResult'));
+            let postResult = JSON.parse(localStorage.getItem('postResult'));
+            // Retrieve tasks from localStorage
+            let tasks = JSON.parse(localStorage.getItem('tasks'));
+            
+            // Function to show the spinner
+            function showSpinner() {
+                console.log("Showing spinner...");
+                spinner.classList.remove('hidden');
+                overlay.classList.remove('hidden');
+                isLoading = true;
+                spinnerStartTime = Date.now();
+            };
+            
+            // Function to hide the spinner
+            function hideSpinner() {
+                const elapsedTime = Date.now() - spinnerStartTime;
+                if (elapsedTime < minDisplayTime) {
+                    // Delay hiding spinner until the minimum display time
+                    setTimeout(() => {
+                        console.log("Hiding spinner after min time...");
+                        spinner.classList.add('hidden');
+                        overlay.classList.add('hidden');
+                        isLoading = false;
+                    }, minDisplayTime - elapsedTime);
+                } else {
+                    //console.log("Hiding spinner...");
+                    spinner.classList.add('hidden');
+                    overlay.classList.add('hidden');
+                    isLoading = false;
+                }
+            }
+
+            // Function to get task status from the API
+            async function fetchTaskStatus() {
+                try {
+                    
+                    showSpinner();
+                    const response = await fetch('/api/manage-tasks', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Q-RESPONSE-ID': preResponseId,
+                        }
+
+                    });
+                    
+                    const data = await response.json();
+                    console.log('Task status fetched:', data);
+                    hideSpinner();
+                    return data;
+                } catch (error) {
+                    hideSpinner();
+                    console.error('Error fetching task status:', error);
+                    return null;
+                }
+            }
+
+            async function findOrfetchQuiz() {
+
+            }
+            
+        });
+        </script>
+    </body>
+</html>

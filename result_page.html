@@ -17,6 +17,8 @@
             <!--<li><b>Quiz</b></li>-->
             <li id="ch">Challenge</li>
             <li><a href="result_page.html">Dashboard</a></li>
+            <li><a href="history_page.html">History</a></li>
+            <li><a href="#">User</a></li>
             <li>sign in</li>
             <li>sign up</li>
             <!-- <li><a href="#">About us</a></li> -->
@@ -32,7 +34,9 @@
                     <!-- <li><a href="index.html">Home</a></li> -->
                     <!--<li><b>Quiz</b></li>-->
                     <li id="CH">Challenge</li>
-                    <li><a href="result_page.html" style="color:#074740;">Dashboard</a></li>
+                    <li><a href="result_page.html">Dashboard</a></li>
+                    <li><a href="history_page.html">History</a></li>
+                    <li><a href="#">User</a></li>
                     <!-- <li>About us</li> -->
                 </ul>
                 <div class="button">
@@ -94,11 +98,13 @@
         const modalOverlay = document.getElementById("modalOverlay");
         const modalTitle = document.getElementById("modalTitle");
         const modalDescription = document.getElementById("modalDescription");
+        const header = document.querySelector(".q-type");
+        const completion_date = document.querySelector(".date-completion-q");
     
         let scores = [];
         let spinnerStartTime;
         let isLoading;
-        let preResponseId = localStorage.getItem('preResponseId');
+        let preResponseId = localStorage.getItem('preResponseId'); //This has to be change to user's identify
         const closeButt = document.querySelector('.close');
 
 
@@ -151,11 +157,12 @@
             const ch = document.getElementById('ch');
             const CH = document.getElementById('CH');
             let isLoading = false;
-            const minDisplayTime = 2000; // Minimum time spinner should be visible (2 seconds)
+            const minDisplayTime = 2000; 
             let spinnerStartTime;
             let preResult = JSON.parse(localStorage.getItem('preResult'));
             let postResult = JSON.parse(localStorage.getItem('postResult'));
-            // Retrieve tasks from localStorage
+            let pre_rec = JSON.parse(localStorage.getItem('preRecordedDate'));
+            let post_rec = JSON.parse(localStorage.getItem('postRecordedDate'));
             let tasks = JSON.parse(localStorage.getItem('tasks'));
             
             // Function to show the spinner
@@ -195,7 +202,7 @@
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Q-RESPONSE-ID': preResponseId,
+                            'Q-RESPONSE-ID': preResponseId, //Need change 
                         }
 
                     });
@@ -225,23 +232,39 @@
             function displayQuestions(questionsData) {
                 cardContainer.innerHTML = ''; 
                 comparison.innerHTML = ''; 
-                console.log('Pre Result:', preResult);
-                console.log('Post Result:', postResult);
-                // Handle missing pointArray or invalid data
+                header.innerHTML='';
+                completion_date.innerHTML='';
+
+
+                //console.log('Pre Result:', preResult);
+                //console.log('Post Result:', postResult);
+
                 if (!questionsData.pointArray || !Array.isArray(questionsData.pointArray)) {
                     document.getElementById('curr_score').textContent = 'No score available.';
                     cardContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us to fix it.';
                     return;
                 }
                 if (postResult) {
+                    let date = new Date(post_rec);
+                    header.innerHTML = 'POST-QUIZ RESULT';
+                    let localHours = String(date.getHours()).padStart(2, "0");
+                    let localMinutes = String(date.getMinutes()).padStart(2, "0");
+                     
                     document.getElementById('curr_score').textContent = questionsData.totalScore;
                     document.getElementById('total').textContent = 60;
+                    completion_date.innerHTML = `Post quiz was completed at ${localHours}:${localMinutes}:${localSeconds}`
+                
                 } else if (preResult) {
+                    let date = new Date(pre_rec);
+                    header.innerHTML = 'PRE-QUIZ RESULT';
+                    let localHours = String(date.getHours()).padStart(2, "0");
+                    let localMinutes = String(date.getMinutes()).padStart(2, "0");
+
                     document.getElementById('curr_score').textContent = questionsData.totalScore;
                     document.getElementById('total').textContent = 60;
-                } else {
-                    document.getElementById('curr_score').textContent = 'All tasks you have completed';
-                }
+                    completion_date.innerHTML = `Pre quiz was completed at ${localHours}:${localMinutes}:${localSeconds}`
+                } 
+                
                 // Iterate over each question in the pointArray
                 questionsData.pointArray.forEach((score, index) => {
                     const questionDiv = document.createElement('div');
@@ -271,6 +294,7 @@
                 cardContainer.innerHTML = ''; 
 
                 Object.keys(tasks).forEach(questionKey => {
+                    header.innerHTML = '<img src="./images/battery.png"/>'+'All tasks you have completed';
                     const taskGroup = tasks[questionKey].tasks;
 
                     // Filter tasks that are selected
@@ -330,7 +354,7 @@
             const challenge_tab = [ch, CH];
             challenge_tab.forEach(
             (tab) => {
-                tab.style.color = 'grey';
+                tab.style.color = '#a9d1cd';
                 tab.style.cursor = "not-allowed";
                 tab.disabled = true;
             }
