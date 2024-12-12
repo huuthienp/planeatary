@@ -316,21 +316,6 @@
                 }
             }
 
-            let tasks = JSON.parse(localStorage.getItem('tasks')); 
-            let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-
-            if (!tasks && !fetched_tasks) {
-                tasks = await fetchTasks();
-                fetched_tasks = await fetchTaskStatus(); 
-                localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result)); 
-                localStorage.setItem('tasks', JSON.stringify(tasks));
-                tasks = JSON.parse(localStorage.getItem('tasks'));
-                fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-            }
-            
-            chosen_tasks = fetched_tasks.chosen;
-            status_tasks = fetched_tasks.done;
-
             function setupContinueButton(path) {
                 continueButton.addEventListener('click', function() {
                     window.location.href = path;
@@ -369,15 +354,27 @@
                 }
             }
 
-            doneChkbox.addEventListener('change', function() {
+            doneChkbox.addEventListener('change', async function() {
                 checkIdDiv.style.display = this.checked ? '' : 'none';
                 resultsBtn.style.display = this.checked ? '' : 'none';
 
                 if (this.checked) {
                     const preResult = localStorage.getItem('preResult');
+                    let tasks = JSON.parse(localStorage.getItem('tasks')); 
+                    let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                     if (preResult) {
                         const message = 'Your response is already saved in this device.';
                         renderOutcome(true, message);
+                        if (!tasks && !fetched_tasks) {
+                            tasks = await fetchTasks();
+                            fetched_tasks = await fetchTaskStatus(); 
+                            localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result)); 
+                            localStorage.setItem('tasks', JSON.stringify(tasks));
+                            tasks = JSON.parse(localStorage.getItem('tasks'));
+                            fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                        }
+                        chosen_tasks = fetched_tasks.chosen;
+                        status_tasks = fetched_tasks.done;
                     }
                 } else {
                     disableButton(checkIdBtn);
