@@ -262,19 +262,22 @@
                     let chosen_tasks = [];
                     let status_tasks = [];
                     
-                    
-
-                    if (!tasks && !fetchedTasks) {
-                        let tasks = await fetchTasks();
-                        let fetched_tasks = await fetchTaskStatus(); 
+                    if (!tasks && !fetched_tasks) {
+                        tasks = await fetchTasks();
+                        fetched_tasks = await fetchTaskStatus(); 
                         localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result)); 
                         localStorage.setItem('tasks', JSON.stringify(tasks));
+                        tasks = JSON.parse(localStorage.getItem('tasks'));
+                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                         chosen_tasks = fetched_tasks.chosen;
                         status_tasks = fetched_tasks.done;
                     } else {
                         chosen_tasks = (fetched_tasks && Array.isArray(fetched_tasks.choice)) ? fetched_tasks.chosen : [];
-                        tatus_tasks = (fetched_tasks && Array.isArray(fetched_tasks.done)) ? fetched_tasks.done : [];
+                        status_tasks = (fetched_tasks && Array.isArray(fetched_tasks.done)) ? fetched_tasks.done : [];
                     }
+
+                    console.log(chosen_tasks);
+                    console.log(status_tasks);
 
                     if (!tasks || !preResult) {
                         QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
@@ -344,6 +347,7 @@
                                     if (status_tasks.includes(String(task.taskNumber))) {
                                         task.status = 'Completed';
                                         checkbox.disabled = true; // Disable the checkbox if the task is completed
+
                                     }
                                 } else {
                                     task.choice = '';
