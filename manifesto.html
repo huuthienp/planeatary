@@ -188,11 +188,14 @@
 
                 let preResult = JSON.parse(localStorage.getItem('preResult')); 
                 let preResponseId = localStorage.getItem('preResponseId'); 
-                let preTotalScore = preResult.totalScore; 
-                let prePointArray = preResult.pointArray;
+                
 
                 if(!preResult && !preResponseId) {
                     QContainer.innerHTML = '<p>No available information to be displayed</p>';
+                }
+                else{
+                    let preTotalScore = preResult.totalScore; 
+                    let prePointArray = preResult.pointArray;
                 }
 
 

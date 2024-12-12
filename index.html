@@ -62,7 +62,7 @@
             </section>
         </div>
         <script type="module">
-        import { reformatQualtricsData, saveLocalStorage } from './data-functions.mjs';
+        import { reformatQualtricsData, saveLocalStorage, extractTaskArrays } from './data-functions.mjs';
 
         window.openNav = function() {
             document.getElementById("mySidenav").style.width = "40%";
@@ -74,7 +74,7 @@
             document.body.style.backgroundColor = "white";
         };
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", async function() {
             const spinner = document.getElementById('spinner');
             const greetingDiv = document.querySelector('.greeting');
             const continueButton = document.getElementById('continueButton');
@@ -268,6 +268,65 @@
                     throw error;
                 }
             }
+
+            // Retrieve tasks from localStorage or fetch if not available
+            async function fetchTasks() {
+                    const taskData = localStorage.getItem('tasks');
+                    if (!taskData) {
+                        try {
+                            const response = await fetch('updated_tasks_final.json');
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok ' + response.statusText);
+                            }
+                            const data = await response.json();
+                            return data;
+                        } catch (error) {
+                            console.error('Fetch error:', error);
+                            alert('Failed to load tasks. Please try again later.');
+                            return null;
+                        };
+                        
+                    }
+                    return JSON.parse(taskData);
+            }
+
+
+            // Function to get task status from the API
+            async function fetchTaskStatus() {
+                try {
+                    
+                    showSpinner();
+                    const response = await fetch('/api/manage-tasks', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Q-RESPONSE-ID': preResponseId,
+                        }
+
+                    });
+                    
+                    const data = await response.json();
+                    console.log('Task status fetched:', data);
+                    hideSpinner();
+                    return data;
+                } catch (error) {
+                    hideSpinner();
+                    console.error('Error fetching task status:', error);
+                    return null;
+                }
+            }
+
+            if (!tasks && !fetched_tasks) {
+                tasks = await fetchTasks();
+                fetched_tasks = await fetchTaskStatus(); 
+                localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result)); 
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                tasks = JSON.parse(localStorage.getItem('tasks'));
+                fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+            }
+            
+            chosen_tasks = fetched_tasks.chosen;
+            status_tasks = fetched_tasks.done;
 
             function setupContinueButton(path) {
                 continueButton.addEventListener('click', function() {
