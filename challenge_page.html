@@ -367,15 +367,14 @@
                             }
                             localStorage.setItem('tasks', JSON.stringify(tasks));
                             localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
-                            let time = {time};
-                            localStorage.setItem('time', time); 
+                            localStorage.setItem('time', JSON.stringify(time));
                             updateTaskStatus(task);
                             updateNextButton();
                             
                         });
                         localStorage.setItem('tasks', JSON.stringify(tasks));
                         localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus)); 
-                        localStorage.setItem('time', time); 
+                        localStorage.setItem('time', JSON.stringify(time));
 
                         updateTaskStatus(task);
                         
