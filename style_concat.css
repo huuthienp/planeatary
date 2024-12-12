@@ -340,19 +340,19 @@ body {
   flex-direction: row;
   align-items: center;
 }
-.content .card_completed {
+.card_completed {
   padding: 3vh 0.5vw;
   background: rgb(133, 132, 132);
   border: none;
   border-radius: 1em;
   text-align: center;
 }
-.content .card_completed:hover,
-.content .card_completed:focus {
+.card_completed:hover,
+.card_completed:focus {
   cursor: pointer;
 }
 
-.content .card_incompleted {
+.card_incompleted {
   padding: 3vh 0.5vw;
   color: rgb(71, 71, 71);
   background: rgb(95, 201, 109);
@@ -360,8 +360,8 @@ body {
   border-radius: 1em;
   text-align: center;
 }
-.content .card_incompleted:hover,
-.content .card_incompleted:focus {
+.card_incompleted:hover,
+.card_incompleted:focus {
   cursor: pointer;
 }
 

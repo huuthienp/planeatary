@@ -132,6 +132,27 @@
                         
             }
 
+            // Retrieve tasks from localStorage or fetch if not available
+            async function fetchTasks() {
+                const taskData = localStorage.getItem('tasks');
+                if (!taskData) {
+                    try {
+                        const response = await fetch('updated_tasks_final.json');
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        const data = await response.json();
+                        return data;
+                    } catch (error) {
+                        console.error('Fetch error:', error);
+                        alert('Failed to load tasks. Please try again later.');
+                        return null;
+                    };
+                    
+                }
+                return JSON.parse(taskData);
+            }
+
             // Function to get task status from the API
             async function fetchTaskStatus() {
                 try {
@@ -187,7 +208,7 @@
                 }
             }
 
-            let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks')); 
+            let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));  
 
             if(!Tstatus) {
                 const fetchedTasks = await fetchTaskStatus(); 
@@ -253,7 +274,9 @@
             if (tasks) {
                 displaySelectedTasks(tasks); // Display tasks
             } else {
-                cardContainer.innerHTML = "<p>No tasks found.</p>";
+                tasks = await fetchTasks();
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                tasks = JSON.parse(localStorage.getItem('tasks'));
             }
 
         // Function to display selected tasks and allow status update
@@ -296,6 +319,17 @@
                             taskCard.classList.add("card_incompleted");
                         }
 
+
+                        // Set task choice and status based on local storage
+                        if (Tstatus.chosen.includes(String(task.taskNumber))) {
+                            if (Tstatus.done.includes(String(task.taskNumber))) {
+                                taskCard.classList.add("card_completed");
+                                taskName.style.textDecoration = "line-through";
+                            }
+                        } else {
+                            taskCard.classList.add("card_incompleted");
+                        }
+
                         taskCard.appendChild(taskName);
                         taskCard.appendChild(infoIcon); // Add info icon to the card
                         taskCard.appendChild(completion);
@@ -308,8 +342,6 @@
 
                             // Update task in localStorage
                             localStorage.setItem('tasks', JSON.stringify(tasks));
-                            localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus)); 
-
 
                             if (task.status === "Completed") {
                                 taskCard.classList.remove("card_incompleted");
@@ -322,13 +354,17 @@
                                 taskName.style.textDecoration = "none";
                                 completion.textContent = "Done";
                             }
-                            localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus)); 
+                            localStorage.setItem('tasks', JSON.stringify(tasks));
+                            localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                             updateTaskStatus(task);
+                             
                             updateNextButton();
                             
                         });
                         localStorage.setItem('tasks', JSON.stringify(tasks));
+                        localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus)); 
                         updateTaskStatus(task);
+                        
                     }
                 });
             });

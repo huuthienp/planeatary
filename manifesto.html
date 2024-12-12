@@ -86,7 +86,7 @@
             </div>
     </section>
         <script type="module">
-            import {extractTaskArrays} from './data-functions.mjs';
+            //import {extractTaskArrays} from './data-functions.mjs';
 
             const modal = document.querySelector(".modal");
             const overlay = document.querySelector(".overlay");
@@ -242,6 +242,35 @@
                     }
                 }
 
+                // Function to update task status using the API
+                async function updateTaskStatus(task) {
+                    try {
+                        showSpinner();
+                        const taskData = JSON.parse(localStorage.getItem('tasks'));
+                        const extracted = extractTaskArrays(taskData);
+
+                        let task = {
+                            id: preResponseId,
+                            chosen: extracted.chosen,
+                            done: extracted.done
+                        }
+                        const response = await fetch('/api/manage-tasks', {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Q-RESPONSE-ID': preResponseId,
+                            },
+                            body: JSON.stringify(task),
+                        });
+                        const data = await response.json();
+                        console.log('Task updated successfully:', data);
+                        hideSpinner();
+                    } catch (error) {
+                        hideSpinner();
+                        console.error('Error updating task status:', error);
+                        
+                    }
+                }
 
                 scores = preResult.pointArray; 
                 
@@ -263,23 +292,21 @@
                     QContainer.innerHTML = '';
                     let tasks = JSON.parse(localStorage.getItem('tasks')); 
                     let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    let chosen_tasks = [];
-                    let status_tasks = [];
+                    //let chosen_tasks = [];
+                    //let status_tasks = [];
                     
-                    if (!tasks && !fetched_tasks) {
+                    if (!tasks) {
                         tasks = await fetchTasks();
-                        fetched_tasks = await fetchTaskStatus(); 
-                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result)); 
                         localStorage.setItem('tasks', JSON.stringify(tasks));
                         tasks = JSON.parse(localStorage.getItem('tasks'));
+                    } else if (!fetched_tasks) {
+                        fetched_tasks = await fetchTaskStatus(); 
+                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result));
                         fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                     }
 
-                    chosen_tasks = fetched_tasks.chosen;
-                    status_tasks = fetched_tasks.done;
-
-                    console.log(chosen_tasks);
-                    console.log(status_tasks);
+                    console.log(fetched_tasks.chosen);
+                    console.log(fetched_tasks.done);
 
                     if (!tasks || !preResult) {
                         QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
@@ -343,18 +370,19 @@
                                 taskList.appendChild(taskItem);
 
                                 // Set task choice and status based on local storage
-                                if (chosen_tasks.includes(String(task.taskNumber))) {
+                                if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
                                     task.choice = 'chosen';
                                     checkbox.checked = true;
-                                    if (status_tasks.includes(String(task.taskNumber))) {
+                                    if (fetched_tasks.done.includes(String(task.taskNumber))) {
                                         task.status = 'Completed';
                                         checkbox.disabled = true; // Disable the checkbox if the task is completed
-
                                     }
                                 } else {
                                     task.choice = '';
                                     checkbox.checked = false;
                                 }
+
+                                localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
 
                                 // Update task count and localStorage on checkbox change
                                 checkbox.addEventListener('change', function() {
@@ -389,6 +417,7 @@
                             localStorage.setItem('tasks', JSON.stringify(tasks)); 
                         }
                         localStorage.setItem('tasks', JSON.stringify(tasks)); 
+                        updateTaskStatus(task);
                     });
 
                     task_counts = calculateSelectedTasks(tasks);
@@ -413,6 +442,7 @@
                     }
                 }
                 renderQuestions((score) => score < 3);
+                updateTaskStatus(task);
                 // Attach single click listener for the start button navigation
                 startButton.addEventListener('click', function(event) {
                     if (task_counts >= 3) {

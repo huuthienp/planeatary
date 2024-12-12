@@ -296,6 +296,7 @@
             function displaySelectedTasks(tasks) {
                 cardContainer.innerHTML = ''; 
 
+
                 Object.keys(tasks).forEach(questionKey => {
                     header.innerHTML = '<img src="./images/battery.png"/>'+'All tasks you have completed';
                     const taskGroup = tasks[questionKey].tasks;
@@ -395,6 +396,20 @@
             
             document.getElementById('preQ').addEventListener('click', function() {
                 if (preResult) {
+                    const circle = document.querySelector(".circle");
+                    circle.classList.remove('hidden');
+                     // Show next step, suggestion, and select-tasks button if display tasks
+                     const toshow = [
+                    'p.next-step',
+                    'p.suggestion',
+                    'button.select-tasks'
+                    ];
+                    
+                    const tagsToShow = toshow.map(s => document.querySelector(s));
+                    
+                    tagsToShow.forEach(
+                    (tag) => { tag.classList.add('hidden'); }
+                    );
                     displayQuestions(preResult);
                     document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
                     document.getElementById('postQ').style.transition = "all 1s";
@@ -408,6 +423,8 @@
             document.getElementById('postQ').addEventListener('click', function() {
                 
                 if (postResult) {
+                    const circle = document.querySelector(".circle");
+                    circle.classList.remove('hidden');
                     displayQuestions(postResult);
                     document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                     document.getElementById('preQ').style.transition = "all 1s";
@@ -423,6 +440,18 @@
                 if (tasks) {
                     const circle = document.querySelector(".circle");
                     circle.classList.add('hidden');
+                    // Remove next step, suggestion, and select-tasks button if display tasks
+                    const tohide = [
+                    'p.next-step',
+                    'p.suggestion',
+                    'button.select-tasks'
+                    ];
+                    
+                    const tagsToHide = tohide.map(s => document.querySelector(s));
+                    
+                    tagsToHide.forEach(
+                    (tag) => { tag.classList.add('hidden'); }
+                    );
                     displaySelectedTasks(tasks)
                     document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                     document.getElementById('preQ').style.transition = "all 1s";
