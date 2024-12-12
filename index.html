@@ -362,6 +362,7 @@
                     const preResult = localStorage.getItem('preResult');
                     let tasks = JSON.parse(localStorage.getItem('tasks')); 
                     let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    let preResponseId = localStorage.getItem('preResponseId'); 
                     if (preResult) {
                         const message = 'Your response is already saved in this device.';
                         renderOutcome(true, message);
