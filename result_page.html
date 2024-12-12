@@ -338,16 +338,17 @@
                     });
                     if (!task_rec) {
                         //fetch from BE
-                    } else {
-                        const latestTimestamp = Math.max(task_rec);
-                        let date = new Date(latestTimestamp);
-                        let day = String(date.getDate()).padStart(2, '0');      
-                        let month = String(date.getMonth() + 1).padStart(2, '0'); 
-                        let year = date.getFullYear();                       
-                        let hours = String(date.getHours()).padStart(2, '0');  
-                        let minutes = String(date.getMinutes()).padStart(2, '0'); 
                     }
-                    completion_date.innerHTML = `Last task was completed at ${hours}:${minutes} on ${day}/${month}/${year}`
+                    
+                    const latestTimestamp = Math.max(...task_rec);
+                    let date = new Date(latestTimestamp);
+                    let day = String(date.getDate()).padStart(2, '0');      
+                    let month = String(date.getMonth() + 1).padStart(2, '0'); 
+                    let year = date.getFullYear();                       
+                    let hours = String(date.getHours()).padStart(2, '0');  
+                    let minutes = String(date.getMinutes()).padStart(2, '0'); 
+                    
+                    completion_date.innerHTML = `Last task was completed at ${hours}:${minutes} on ${day}/${month}/${year}`;
             }
 
         if (postResult) {
