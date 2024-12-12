@@ -377,11 +377,8 @@
                                         task.status = 'Completed';
                                         checkbox.disabled = true; // Disable the checkbox if the task is completed
                                     }
-                                } else {
-                                    task.choice = '';
-                                    checkbox.checked = false;
                                 }
-
+                                
                                 localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
 
                                 // Update task count and localStorage on checkbox change
