@@ -350,14 +350,14 @@
                             localStorage.setItem('tasks', JSON.stringify(tasks));
 
                             if (task.status === "Completed") {
-                                taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
+                                taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
                                 taskName.style.textDecoration = "line-through";
                                 completion.textContent = "Completed";
                                 let timestamp = Date.now();
                                 task.finish = timestamp;
                                 time.push(timestamp);
                             } else {
-                                taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
+                                taskCard.style.backgroundColor = 'rgb(95, 201, 109);';
                                 taskName.style.textDecoration = "none";
                                 completion.textContent = "Done";
                                 task.finish = '';

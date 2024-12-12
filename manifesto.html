@@ -379,6 +379,7 @@
                                     }
                                 }
                                 
+                                checkbox.disabled = task.status === 'Completed';
                                 localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
 
                                 // Update task count and localStorage on checkbox change
