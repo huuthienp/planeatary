@@ -258,19 +258,22 @@
                 async function renderQuestions(condition) {
                     QContainer.innerHTML = '';
                     let tasks = JSON.parse(localStorage.getItem('tasks')); 
+                    let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                     let chosen_tasks = [];
                     let status_tasks = [];
+                    
+                    
 
-                    if (!tasks) {
+                    if (!tasks && !fetchedTasks) {
                         let tasks = await fetchTasks();
-                        const fetchedTasks = await fetchTaskStatus(); 
-                        localStorage.setItem('tasks', JSON.stringify(fetchedTasks.result)); 
-                        tasks = JSON.parse(localStorage.getItem('tasks'));
-                        chosen_tasks = tasks.chosen;
-                        status_tasks = tasks.done;
+                        let fetched_tasks = await fetchTaskStatus(); 
+                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result)); 
+                        localStorage.setItem('tasks', JSON.stringify(tasks));
+                        chosen_tasks = fetched_tasks.chosen;
+                        status_tasks = fetched_tasks.done;
                     } else {
-                        chosen_tasks = (tasks && Array.isArray(tasks.choice)) ? tasks.choice : [];
-                        tatus_tasks = (tasks && Array.isArray(tasks.status)) ? tasks.status : [];
+                        chosen_tasks = (fetched_tasks && Array.isArray(fetched_tasks.choice)) ? fetched_tasks.chosen : [];
+                        tatus_tasks = (fetched_tasks && Array.isArray(fetched_tasks.done)) ? fetched_tasks.done : [];
                     }
 
                     if (!tasks || !preResult) {
