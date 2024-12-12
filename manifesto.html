@@ -257,20 +257,20 @@
 
                 async function renderQuestions(condition) {
                     QContainer.innerHTML = '';
-                    const tasks = await fetchTasks();
-                    let Tstatus = JSON.parse(localStorage.getItem('tasks')); 
+                    let tasks = JSON.parse(localStorage.getItem('tasks')); 
                     let chosen_tasks = [];
                     let status_tasks = [];
 
-                    if (!Tstatus) {
+                    if (!tasks) {
+                        let tasks = await fetchTasks();
                         const fetchedTasks = await fetchTaskStatus(); 
                         localStorage.setItem('tasks', JSON.stringify(fetchedTasks.result)); 
-                        Tstatus = JSON.parse(localStorage.getItem('tasks'));
-                        chosen_tasks = Tstatus.chosen;
-                        status_tasks = Tstatus.done;
+                        tasks = JSON.parse(localStorage.getItem('tasks'));
+                        chosen_tasks = tasks.chosen;
+                        status_tasks = tasks.done;
                     } else {
-                        chosen_tasks = (Tstatus && Array.isArray(Tstatus.choice)) ? Tstatus.choice : [];
-                        tatus_tasks = (Tstatus && Array.isArray(Tstatus.status)) ? Tstatus.status : [];
+                        chosen_tasks = (tasks && Array.isArray(tasks.choice)) ? tasks.choice : [];
+                        tatus_tasks = (tasks && Array.isArray(tasks.status)) ? tasks.status : [];
                     }
 
                     if (!tasks || !preResult) {
