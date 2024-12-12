@@ -269,12 +269,10 @@
                         localStorage.setItem('tasks', JSON.stringify(tasks));
                         tasks = JSON.parse(localStorage.getItem('tasks'));
                         fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                        chosen_tasks = fetched_tasks.chosen;
-                        status_tasks = fetched_tasks.done;
-                    } else {
-                        chosen_tasks = (fetched_tasks && Array.isArray(fetched_tasks.choice)) ? fetched_tasks.chosen : [];
-                        status_tasks = (fetched_tasks && Array.isArray(fetched_tasks.done)) ? fetched_tasks.done : [];
                     }
+
+                    chosen_tasks = fetched_tasks.chosen;
+                    status_tasks = fetched_tasks.done;
 
                     console.log(chosen_tasks);
                     console.log(status_tasks);
