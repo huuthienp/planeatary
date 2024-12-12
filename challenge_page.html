@@ -320,6 +320,12 @@
                         }
 
 
+
+                        taskCard.appendChild(taskName);
+                        taskCard.appendChild(infoIcon); // Add info icon to the card
+                        taskCard.appendChild(completion);
+                        cardContainer.appendChild(taskCard);
+
                         // Set task choice and status based on local storage
                         if (Tstatus.chosen.includes(String(task.taskNumber))) {
                             if (Tstatus.done.includes(String(task.taskNumber))) {
@@ -329,11 +335,6 @@
                         } else {
                             taskCard.classList.add("card_incompleted");
                         }
-
-                        taskCard.appendChild(taskName);
-                        taskCard.appendChild(infoIcon); // Add info icon to the card
-                        taskCard.appendChild(completion);
-                        cardContainer.appendChild(taskCard);
 
                         // Add event listener to task card to update status
                         taskCard.addEventListener('click', function() {
