@@ -73,6 +73,7 @@
     <script type="module">
         import {extractTaskArrays} from './data-functions.mjs';
         
+        let time =  [];
         let scores = [];
         let spinnerStartTime;
         let isLoading;
@@ -188,7 +189,7 @@
                         id: preResponseId,
                         chosen: extracted.chosen,
                         done: extracted.done,
-                        timestamp: taskData.finish
+                        timestamp: time
                     }
                     const response = await fetch('/api/manage-tasks', {
                         method: 'PUT',
@@ -327,16 +328,19 @@
                         taskCard.appendChild(completion);
                         cardContainer.appendChild(taskCard);
 
-                        // Set task choice and status based on local storage
-                        if (Tstatus.chosen.includes(String(task.taskNumber))) {
-                            if (Tstatus.done.includes(String(task.taskNumber))) {
-                                taskCard.classList.add("card_completed");
-                                taskName.style.textDecoration = "line-through";
+                        if (Tstatus) {
+                            // Set task choice and status based on local storage
+                            if (Tstatus.chosen.includes(String(task.taskNumber))) {
+                                if (Tstatus.done.includes(String(task.taskNumber))) {
+                                    taskCard.classList.add("card_completed");
+                                    taskName.style.textDecoration = "line-through";
+                                }
+                            } else {
+                                taskCard.classList.add("card_incompleted");
                             }
-                        } else {
-                            taskCard.classList.add("card_incompleted");
-                        }
 
+                        }
+                        
                         // Add event listener to task card to update status
                         taskCard.addEventListener('click', function() {
                             // Toggle task status between "Done" and "Completed"
@@ -352,21 +356,26 @@
                                 completion.textContent = "Completed";
                                 let timestamp = Date.now();
                                 task.finish = timestamp;
+                                time.push(timestamp);
                             } else {
                                 taskCard.classList.remove("card_completed");
                                 taskCard.classList.add("card_incompleted");
                                 taskName.style.textDecoration = "none";
                                 completion.textContent = "Done";
                                 task.finish = '';
+                                time.splice(-1, 1);
                             }
                             localStorage.setItem('tasks', JSON.stringify(tasks));
                             localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
+                            localStorage.setItem('time', time); 
                             updateTaskStatus(task);
                             updateNextButton();
                             
                         });
                         localStorage.setItem('tasks', JSON.stringify(tasks));
                         localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus)); 
+                        localStorage.setItem('time', time); 
+
                         updateTaskStatus(task);
                         
                     }
@@ -374,7 +383,7 @@
             });
             cardContainer.appendChild(nextButtonContainer);
             localStorage.setItem('tasks', JSON.stringify(tasks));
-
+            localStorage.setItem('time', JSON.stringify(time)); 
             updateNextButton(); 
         }
 

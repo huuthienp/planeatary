@@ -160,7 +160,8 @@
             let postResult = JSON.parse(localStorage.getItem('postResult'));
             let pre_rec = localStorage.getItem('preRecordedDate');
             let post_rec = localStorage.getItem('postRecordedDate');
-            let task_rec = localStorage.getItem('taskRecordedDate');
+            //need BE confirmation
+            let task_rec = localStorage.getItem('time');
             let tasks = JSON.parse(localStorage.getItem('tasks'));
             
             // Function to show the spinner
@@ -297,7 +298,6 @@
             function displaySelectedTasks(tasks) {
                 cardContainer.innerHTML = ''; 
 
-
                 Object.keys(tasks).forEach(questionKey => {
                     header.innerHTML = '<img src="./images/battery.png"/>'+'All tasks you have completed';
                     const taskGroup = tasks[questionKey].tasks;
@@ -333,8 +333,21 @@
                             cardContainer.appendChild(taskCard);
         
                             }
+                            
                         });
                     });
+                    if (!task_rec) {
+                        //fetch from BE
+                    } else {
+                        const latestTimestamp = Math.max(task_rec);
+                        let date = new Date(latestTimestamp);
+                        let day = String(now.getDate()).padStart(2, '0');      
+                        let month = String(now.getMonth() + 1).padStart(2, '0'); 
+                        let year = now.getFullYear();                       
+                        let hours = String(now.getHours()).padStart(2, '0');  
+                        let minutes = String(now.getMinutes()).padStart(2, '0'); 
+                    }
+                    completion_date.innerHTML = `Last task was completed at ${hours}:${minutes} on ${day}/${month}/${year}`
             }
 
         if (postResult) {
@@ -455,17 +468,6 @@
                     (tag) => { tag.classList.add('hidden'); }
                     );
 
-                    if (!task_rec) {
-                        
-                    }
-                    let date = new Date(task_rec);
-                    let localHours = String(date.getHours()).padStart(2, "0");
-                    let localMinutes = String(date.getMinutes()).padStart(2, "0");
-                    let year = date.getFullYear();
-                    let month = String(date.getMonth() + 1).padStart(2, '0'); 
-                    let day = String(date.getDate()).padStart(2, '0');
-                     
-                    completion_date.innerHTML = `Last task was completed at ${localHours}:${localMinutes} on ${day}/${month}/${year}`
 
                     displaySelectedTasks(tasks)
                     document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
