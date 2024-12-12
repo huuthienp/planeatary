@@ -187,12 +187,12 @@
                 }
             }
 
-            const Tstatus = JSON.parse(localStorage.getItem('fetched_tasks')); 
+            let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks')); 
 
             if(!Tstatus) {
                 const fetchedTasks = await fetchTaskStatus(); 
                 localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks.result)); 
-                const Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+                let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
             }   
             console.log(Tstatus); 
 
@@ -322,19 +322,19 @@
                                 taskName.style.textDecoration = "none";
                                 completion.textContent = "Done";
                             }
+                            localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus)); 
                             updateTaskStatus(task);
                             updateNextButton();
                             
                         });
                         localStorage.setItem('tasks', JSON.stringify(tasks));
-                        localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus)); 
                         updateTaskStatus(task);
                     }
                 });
             });
             cardContainer.appendChild(nextButtonContainer);
             localStorage.setItem('tasks', JSON.stringify(tasks));
-            localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus)); 
+
             updateNextButton(); 
         }
 

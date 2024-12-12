@@ -85,7 +85,8 @@
                 </div>
             </div>
     </section>
-        <script>
+        <script type="module">
+            import {extractTaskArrays} from './data-functions.mjs';
 
             const modal = document.querySelector(".modal");
             const overlay = document.querySelector(".overlay");
@@ -128,12 +129,12 @@
                 overlay2.classList.add('hidden2');
             };
 
-            function openNav() {
+            window.openNav = function() {
                 document.getElementById("mySidenav").style.width = "40%";
                 document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
             };
 
-            function closeNav() {
+            window.closeNav = function() {
                 document.getElementById("mySidenav").style.width = "0";
                 document.body.style.backgroundColor = "white";
             };
@@ -186,13 +187,13 @@
                 };
 
                 let preResult = JSON.parse(localStorage.getItem('preResult')); 
-
                 let preResponseId = localStorage.getItem('preResponseId'); 
-
                 let preTotalScore = preResult.totalScore; 
+                let prePointArray = preResult.pointArray;
 
-                let prePointArray = preResult.pointArray 
-
+                if(!preResult && !preResponseId) {
+                    QContainer.innerHTML = '<p>No available information to be displayed</p>';
+                }
 
 
                 // Retrieve tasks from localStorage or fetch if not available
