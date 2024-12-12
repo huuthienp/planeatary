@@ -161,7 +161,7 @@
             let pre_rec = localStorage.getItem('preRecordedDate');
             let post_rec = localStorage.getItem('postRecordedDate');
             //need BE confirmation
-            let task_rec = localStorage.getItem('time');
+            let task_rec = JSON.parse(localStorage.getItem('time'));
             let tasks = JSON.parse(localStorage.getItem('tasks'));
             
             // Function to show the spinner
