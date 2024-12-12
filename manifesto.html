@@ -408,7 +408,7 @@
 
                                 checkbox.checked = task.choice === "chosen";
                                 localStorage.setItem('tasks', JSON.stringify(tasks)); 
-
+                                updateTaskStatus(task);
                                 updateStartButton(); 
                             });
 
@@ -417,7 +417,7 @@
                             localStorage.setItem('tasks', JSON.stringify(tasks)); 
                         }
                         localStorage.setItem('tasks', JSON.stringify(tasks)); 
-                        updateTaskStatus(task);
+                        
                     });
 
                     task_counts = calculateSelectedTasks(tasks);
@@ -442,7 +442,6 @@
                     }
                 }
                 renderQuestions((score) => score < 3);
-                updateTaskStatus(task);
                 // Attach single click listener for the start button navigation
                 startButton.addEventListener('click', function(event) {
                     if (task_counts >= 3) {

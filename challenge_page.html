@@ -277,6 +277,7 @@
                 tasks = await fetchTasks();
                 localStorage.setItem('tasks', JSON.stringify(tasks));
                 tasks = JSON.parse(localStorage.getItem('tasks'));
+                displaySelectedTasks(tasks);
             }
 
         // Function to display selected tasks and allow status update
@@ -358,7 +359,6 @@
                             localStorage.setItem('tasks', JSON.stringify(tasks));
                             localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                             updateTaskStatus(task);
-                             
                             updateNextButton();
                             
                         });
