@@ -160,6 +160,7 @@
             let postResult = JSON.parse(localStorage.getItem('postResult'));
             let pre_rec = localStorage.getItem('preRecordedDate');
             let post_rec = localStorage.getItem('postRecordedDate');
+            let task_rec = localStorage.getItem('taskRecordedDate');
             let tasks = JSON.parse(localStorage.getItem('tasks'));
             
             // Function to show the spinner
@@ -408,7 +409,7 @@
                     const tagsToShow = toshow.map(s => document.querySelector(s));
                     
                     tagsToShow.forEach(
-                    (tag) => { tag.classList.add('hidden'); }
+                    (tag) => { tag.classList.remove('hidden'); }
                     );
                     displayQuestions(preResult);
                     document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
@@ -438,6 +439,7 @@
             document.getElementById('com-tasks').addEventListener('click', function() {
                 
                 if (tasks) {
+                    
                     const circle = document.querySelector(".circle");
                     circle.classList.add('hidden');
                     // Remove next step, suggestion, and select-tasks button if display tasks
@@ -452,6 +454,19 @@
                     tagsToHide.forEach(
                     (tag) => { tag.classList.add('hidden'); }
                     );
+
+                    if (!task_rec) {
+                        
+                    }
+                    let date = new Date(task_rec);
+                    let localHours = String(date.getHours()).padStart(2, "0");
+                    let localMinutes = String(date.getMinutes()).padStart(2, "0");
+                    let year = date.getFullYear();
+                    let month = String(date.getMonth() + 1).padStart(2, '0'); 
+                    let day = String(date.getDate()).padStart(2, '0');
+                     
+                    completion_date.innerHTML = `Last task was completed at ${localHours}:${localMinutes} on ${day}/${month}/${year}`
+
                     displaySelectedTasks(tasks)
                     document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                     document.getElementById('preQ').style.transition = "all 1s";

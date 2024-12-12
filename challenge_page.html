@@ -82,7 +82,6 @@
         const overlay = document.querySelector(".overlay");
         const closeButt = document.querySelector('.close');
         const spinner = document.querySelector('.spinner');
-
         
         const cardContainer = document.querySelector(".card");
         // Function to show the spinner
@@ -188,7 +187,8 @@
                     let task = {
                         id: preResponseId,
                         chosen: extracted.chosen,
-                        done: extracted.done
+                        done: extracted.done,
+                        timestamp: taskData.finish
                     }
                     const response = await fetch('/api/manage-tasks', {
                         method: 'PUT',
@@ -350,11 +350,14 @@
                                 taskCard.classList.add("card_completed");
                                 taskName.style.textDecoration = "line-through";
                                 completion.textContent = "Completed";
+                                let timestamp = Date.now();
+                                task.finish = timestamp;
                             } else {
                                 taskCard.classList.remove("card_completed");
                                 taskCard.classList.add("card_incompleted");
                                 taskName.style.textDecoration = "none";
                                 completion.textContent = "Done";
+                                task.finish = '';
                             }
                             localStorage.setItem('tasks', JSON.stringify(tasks));
                             localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
