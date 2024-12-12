@@ -184,7 +184,6 @@
                     showSpinner();
                     const taskData = JSON.parse(localStorage.getItem('tasks'));
                     const extracted = extractTaskArrays(taskData);
-                    let time = {time};
 
                     let task = {
                         id: preResponseId,
@@ -368,6 +367,7 @@
                             }
                             localStorage.setItem('tasks', JSON.stringify(tasks));
                             localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
+                            let time = {time};
                             localStorage.setItem('time', time); 
                             updateTaskStatus(task);
                             updateNextButton();
