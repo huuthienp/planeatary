@@ -316,6 +316,9 @@
                 }
             }
 
+            let tasks = JSON.parse(localStorage.getItem('tasks')); 
+            let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+
             if (!tasks && !fetched_tasks) {
                 tasks = await fetchTasks();
                 fetched_tasks = await fetchTaskStatus(); 
