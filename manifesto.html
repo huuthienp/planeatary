@@ -415,12 +415,10 @@
             document.getElementById('good').addEventListener('click', function() {
                 updateStartButton();
                 var condition = (score) => score >= 3;
-                var ifNull = condition(score);
-                if (ifNull != null) {
-                    renderQuestions(condition);
-                }
-                else {
-                    QContainer.innerHTML = '<p>None of your answers got good score</p>';
+                renderQuestions(condition);
+                var tContent = document.querySelector(".task-content");
+                if (tContent.innerHTML == '') {
+                    tContent.innerHTML == '<p>None of your answer got good score</p>';
                 }
                 good.style.backgroundColor = '#02897A';
                 good.style.transition = "all 1s";
@@ -432,12 +430,10 @@
             document.getElementById('notyet').addEventListener('click', function() {
                 updateStartButton();
                 var condition = (score) => score < 3;
-                var ifNull = condition(score);
-                if (ifNull != null) {
-                    renderQuestions(condition);
-                }
-                else {
-                    QContainer.innerHTML = '<p>None of your answers got bad score</p>';
+                renderQuestions(condition);
+                var tContent = document.querySelector(".task-content");
+                if (tContent.innerHTML == '') {
+                    tContent.innerHTML == '<p>None of your answer got bad score</p>';
                 }
                 good.style.backgroundColor = '#a9d1cd';
                 good.style.transition = "all 1s";
