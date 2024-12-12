@@ -407,6 +407,19 @@
                     saveLocalStorage(fetchedResponseId, 'response');
                     const message = 'We found your response and saved it in this device!';
                     renderOutcome(true, message);
+                    let tasks = JSON.parse(localStorage.getItem('tasks')); 
+                    let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    let preResponseId = localStorage.getItem('preResponseId'); 
+                    if (!tasks && !fetched_tasks) {
+                            tasks = await fetchTasks();
+                            fetched_tasks = await fetchTaskStatus(); 
+                            localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result)); 
+                            localStorage.setItem('tasks', JSON.stringify(tasks));
+                            tasks = JSON.parse(localStorage.getItem('tasks'));
+                            fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                        }
+                        chosen_tasks = fetched_tasks.chosen;
+                        status_tasks = fetched_tasks.done;
                     hideSpinner();
 
                 } catch(error) {
