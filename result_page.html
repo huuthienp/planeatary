@@ -299,6 +299,13 @@
             // Function to display completed tasks 
             async function displaySelectedTasks(tasks) {
                 cardContainer.innerHTML = ''; 
+                if (!task_rec) {
+                        const com_tasks = await fetchTaskStatus();
+                        localStorage.setItem('com_tasks', JSON.stringify(com_tasks));
+                        let detailed = JSON.parse(localStorage.getItem('com_tasks'));
+                        task_rec = detailed.time;
+
+                    }
 
                 Object.keys(tasks).forEach(questionKey => {
                     header.innerHTML = '<img src="./images/battery.png"/>'+'All tasks you have completed';
@@ -306,7 +313,7 @@
 
                     // Filter tasks that are selected
                     taskGroup.forEach(task => {
-                        if (task.status === "Completed") {
+                        if (detailed.done.includes(String(task.taskNumber))) {
                             // Create and append a card for each completed task
                             const taskCard = document.createElement("div");
                             taskCard.classList.add(task.status === "Completed" ? "card_completed" : "hidden");
@@ -338,13 +345,6 @@
                             
                         });
                     });
-                    if (!task_rec) {
-                        const com_tasks = await fetchTaskStatus();
-                        localStorage.setItem('com_tasks', JSON.stringify(com_tasks));
-                        let detailed = JSON.parse(localStorage.getItem('com_tasks'));
-                        task_rec = detailed.time;
-
-                    }
                     
                     const latestTimestamp = Math.max(...task_rec);
                     let date = new Date(latestTimestamp);
@@ -463,7 +463,7 @@
                     localStorage.setItem('tasks', JSON.stringify(tasks));
                     tasks = JSON.parse(localStorage.getItem('tasks'));
                 }
-                
+
                 const circle = document.querySelector(".circle");
                 circle.classList.add('hidden');
                 // Remove next step, suggestion, and select-tasks button if display tasks
