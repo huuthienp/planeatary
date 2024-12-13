@@ -161,6 +161,7 @@
             let pre_rec = localStorage.getItem('preRecordedDate');
             let post_rec = localStorage.getItem('postRecordedDate');
             let task_rec = [];
+            let tasks = JSON.parse(localStorage.getItem('tasks'));
             
             //need BE confirmation
             let detailed = JSON.parse(localStorage.getItem('com_tasks'));
@@ -455,35 +456,35 @@
                 }
             });
             
-            document.getElementById('com-tasks').addEventListener('click', function() {
+            document.getElementById('com-tasks').addEventListener('click', async function() {
                 
-                if (tasks) {
-                    
-                    const circle = document.querySelector(".circle");
-                    circle.classList.add('hidden');
-                    // Remove next step, suggestion, and select-tasks button if display tasks
-                    const tohide = [
-                    'p.next-step',
-                    'p.suggestion',
-                    'button.select-tasks'
-                    ];
-                    
-                    const tagsToHide = tohide.map(s => document.querySelector(s));
-                    
-                    tagsToHide.forEach(
-                    (tag) => { tag.classList.add('hidden'); }
-                    );
-
-
-                    displaySelectedTasks(tasks)
-                    document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
-                    document.getElementById('preQ').style.transition = "all 1s";
-                    document.getElementById('postQ').style.backgroundColor = '#a9d1cd';    
-                    document.getElementById('postQ').style.transition = "all 1s";
-                    document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
-                    document.getElementById('com-tasks').style.transition = "all 1s";
-                    
+                if (!tasks) {
+                    tasks = await fetchTasks();
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    tasks = JSON.parse(localStorage.getItem('tasks'));
                 }
+                
+                const circle = document.querySelector(".circle");
+                circle.classList.add('hidden');
+                // Remove next step, suggestion, and select-tasks button if display tasks
+                const tohide = [
+                'p.next-step',
+                'p.suggestion',
+                'button.select-tasks'
+                ];
+                
+                const tagsToHide = tohide.map(s => document.querySelector(s));
+                
+                tagsToHide.forEach(
+                (tag) => { tag.classList.add('hidden'); }
+                );
+                displaySelectedTasks(tasks)
+                document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
+                document.getElementById('preQ').style.transition = "all 1s";
+                document.getElementById('postQ').style.backgroundColor = '#a9d1cd';    
+                document.getElementById('postQ').style.transition = "all 1s";
+                document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
+                document.getElementById('com-tasks').style.transition = "all 1s";
             });
             
         });
