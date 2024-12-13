@@ -241,6 +241,8 @@
             
             //need BE confirmation
             let detailed = JSON.parse(localStorage.getItem('com_tasks'));
+
+            //fetch up-to-date info
             if (!detailed.done) {
                     const done_tasks = await fetchTaskStatus();
                     localStorage.setItem('com_tasks', JSON.stringify(done_tasks.result));

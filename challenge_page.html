@@ -207,17 +207,19 @@
                     
                 }
             }
-
+            
+            // Retrieve tasks from localStorage
+            let tasks = JSON.parse(localStorage.getItem('tasks'));
             let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));  
 
-            if(!Tstatus) {
-                const fetchedTasks = await fetchTaskStatus(); 
-                localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks.result)); 
-                let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
-            }   
-            console.log(Tstatus); 
+            //fetch up-to-date info
+            if (!Tstatus.done || !Tstatus.chosen) {
+                    let Tstatus = await fetchTaskStatus();
+                    localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result));
+                    Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    
+                }
 
-            
             const cardContainer = document.querySelector(".card");
             const modal = document.getElementById("taskModal");
             const modalOverlay = document.getElementById("modalOverlay");
@@ -267,16 +269,17 @@
                 }
             });
             
-            // Retrieve tasks from localStorage
-            let tasks = JSON.parse(localStorage.getItem('tasks'));
 
             // Check if tasks exist in localStorage
-            if (tasks && Tstatus) {
+            if (tasks) {
                 displaySelectedTasks(tasks); // Display tasks
             } else {
-                tasks = await fetchTasks();
+                let tasks = await fetchTasks();
                 localStorage.setItem('tasks', JSON.stringify(tasks));
                 tasks = JSON.parse(localStorage.getItem('tasks'));
+                let fetchedTasks = await fetchTaskStatus(); 
+                localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks.result)); 
+                let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
                 displaySelectedTasks(tasks);
             }
 
