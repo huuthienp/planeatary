@@ -260,7 +260,6 @@
                 header.innerHTML='';
                 completion_date.innerHTML='';
 
-
                 //console.log('Pre Result:', preResult);
                 //console.log('Post Result:', postResult);
 
@@ -324,7 +323,7 @@
             async function displaySelectedTasks(tasks) {
                 cardContainer.innerHTML = ''; 
 
-                if (!tasks && !detailed) {
+                if (!detailed.done) {
                     cardContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us to fix it.';
                     return;
                 }

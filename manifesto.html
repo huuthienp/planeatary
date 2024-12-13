@@ -370,14 +370,17 @@
                                 taskList.appendChild(taskItem);
 
                                 // Set task choice and status based on local storage
-                                if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
-                                    task.choice = 'chosen';
-                                    checkbox.checked = true;
-                                    if (fetched_tasks.done.includes(String(task.taskNumber))) {
-                                        task.status = 'Completed';
-                                        checkbox.disabled = true; // Disable the checkbox if the task is completed
+                                if (fetched_tasks.chosen && fetched_tasks.done) {
+                                    if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
+                                        task.choice = 'chosen';
+                                        checkbox.checked = true;
+                                        if (fetched_tasks.done.includes(String(task.taskNumber))) {
+                                            task.status = 'Completed';
+                                            checkbox.disabled = true; // Disable the checkbox if the task is completed
+                                        }
                                     }
                                 }
+                                
                                 
                                 checkbox.disabled = task.status === 'Completed';
                                 localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
