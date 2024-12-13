@@ -194,6 +194,27 @@
                 }
             }
 
+            // Retrieve tasks from localStorage or fetch if not available
+            async function fetchTasks() {
+                const taskData = localStorage.getItem('tasks');
+                if (!taskData) {
+                    try {
+                        const response = await fetch('updated_tasks_final.json');
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        const data = await response.json();
+                        return data;
+                    } catch (error) {
+                        console.error('Fetch error:', error);
+                        alert('Failed to load tasks. Please try again later.');
+                        return null;
+                    };
+                    
+                }
+                return JSON.parse(taskData);
+            }
+
             // Function to get task status from the API
             async function fetchTaskStatus() {
                 try {
@@ -301,7 +322,7 @@
                 cardContainer.innerHTML = ''; 
                 if (!task_rec) {
                         const com_tasks = await fetchTaskStatus();
-                        localStorage.setItem('com_tasks', JSON.stringify(com_tasks));
+                        localStorage.setItem('com_tasks', JSON.stringify(com_tasks.result));
                         let detailed = JSON.parse(localStorage.getItem('com_tasks'));
                         task_rec = detailed.time;
 
