@@ -160,9 +160,11 @@
             let postResult = JSON.parse(localStorage.getItem('postResult'));
             let pre_rec = localStorage.getItem('preRecordedDate');
             let post_rec = localStorage.getItem('postRecordedDate');
+            let task_rec = [];
+            
             //need BE confirmation
-            let task_rec = JSON.parse(localStorage.getItem('time'));
-            let tasks = JSON.parse(localStorage.getItem('tasks'));
+            let detailed = JSON.parse(localStorage.getItem('com_tasks'));
+            task_rec = detailed.time;
             
             // Function to show the spinner
             function showSpinner() {
@@ -295,7 +297,7 @@
 
 
             // Function to display completed tasks 
-            function displaySelectedTasks(tasks) {
+            async function displaySelectedTasks(tasks) {
                 cardContainer.innerHTML = ''; 
 
                 Object.keys(tasks).forEach(questionKey => {
@@ -337,7 +339,11 @@
                         });
                     });
                     if (!task_rec) {
-                        //fetch from BE
+                        const com_tasks = await fetchTaskStatus();
+                        localStorage.setItem('com_tasks', JSON.stringify(com_tasks));
+                        let detailed = JSON.parse(localStorage.getItem('com_tasks'));
+                        task_rec = detailed.time;
+
                     }
                     
                     const latestTimestamp = Math.max(...task_rec);

@@ -184,12 +184,11 @@
                     showSpinner();
                     const taskData = JSON.parse(localStorage.getItem('tasks'));
                     const extracted = extractTaskArrays(taskData);
-
                     let task = {
                         id: preResponseId,
                         chosen: extracted.chosen,
                         done: extracted.done,
-                        timestamp: time
+                        time: extracted.time
                     }
                     const response = await fetch('/api/manage-tasks', {
                         method: 'PUT',
@@ -350,18 +349,20 @@
                             localStorage.setItem('tasks', JSON.stringify(tasks));
 
                             if (task.status === "Completed") {
+                                taskCard.style.color = 'black';
                                 taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
                                 taskName.style.textDecoration = "line-through";
                                 completion.textContent = "Completed";
                                 let timestamp = Date.now();
                                 task.finish = timestamp;
-                                time.push(timestamp);
+                                //time.push(timestamp);
                             } else {
+                                taskCard.style.color = 'rgb(71, 71, 71)';
                                 taskCard.style.backgroundColor = 'rgb(95, 201, 109);';
                                 taskName.style.textDecoration = "none";
                                 completion.textContent = "Done";
                                 task.finish = '';
-                                time.splice(-1, 1);
+                                //time.splice(-1, 1);
                             }
                             localStorage.setItem('tasks', JSON.stringify(tasks));
                             localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
@@ -372,7 +373,7 @@
                         });
                         localStorage.setItem('tasks', JSON.stringify(tasks));
                         localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus)); 
-                        localStorage.setItem('time', JSON.stringify(time));
+                        //localStorage.setItem('time', JSON.stringify(time));
 
                         updateTaskStatus(task);
                         
@@ -381,7 +382,7 @@
             });
             cardContainer.appendChild(nextButtonContainer);
             localStorage.setItem('tasks', JSON.stringify(tasks));
-            localStorage.setItem('time', JSON.stringify(time)); 
+            //localStorage.setItem('time', JSON.stringify(time)); 
             updateNextButton(); 
         }
 

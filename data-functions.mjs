@@ -91,6 +91,7 @@ export function extractTaskArrays(data) {
  */
   const chosen = [];
   const done = [];
+  const time = [];
 
   Object.values(data).forEach(question => {
     question['tasks'].forEach(task => {
@@ -100,11 +101,13 @@ export function extractTaskArrays(data) {
       if (task.status === 'Completed') {
         done.push(task.taskNumber);
       }
+      time.push(task.finish);
     });
   });
 
   return {
     chosen: chosen,
-    done: done
+    done: done,
+    time: time
   };
 }
