@@ -241,6 +241,13 @@
             
             //need BE confirmation
             let detailed = JSON.parse(localStorage.getItem('com_tasks'));
+            if (!detailed.done) {
+                    const done_tasks = await fetchTaskStatus();
+                    localStorage.setItem('com_tasks', JSON.stringify(done_tasks.result));
+                    let detailed = JSON.parse(localStorage.getItem('com_tasks'));
+                    task_rec = detailed.time;
+                    
+                }
             
 
             function compareScores() {
@@ -323,7 +330,7 @@
             async function displaySelectedTasks(tasks) {
                 cardContainer.innerHTML = ''; 
 
-                if (!detailed.done) {
+                if (!detailed) {
                     cardContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us to fix it.';
                     return;
                 }

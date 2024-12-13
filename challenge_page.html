@@ -358,7 +358,7 @@
                                 //time.push(timestamp);
                             } else {
                                 taskCard.style.color = 'rgb(71, 71, 71)';
-                                taskCard.style.backgroundColor = 'rgb(95, 201, 109);';
+                                taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
                                 taskName.style.textDecoration = "none";
                                 completion.textContent = "Done";
                                 task.finish = '';
@@ -366,7 +366,7 @@
                             }
                             localStorage.setItem('tasks', JSON.stringify(tasks));
                             localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
-                            localStorage.setItem('time', JSON.stringify(time));
+                            //localStorage.setItem('time', JSON.stringify(time));
                             updateTaskStatus(task);
                             updateNextButton();
                             

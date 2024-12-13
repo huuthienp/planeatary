@@ -292,21 +292,26 @@
                     QContainer.innerHTML = '';
                     let tasks = JSON.parse(localStorage.getItem('tasks')); 
                     let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    //let chosen_tasks = [];
-                    //let status_tasks = [];
+                    
+                    //fetch up-to-date info
+                    if (!fetched_tasks.done || !fetched_tasks.chosen) {
+                        let fetched_tasks = await fetchTaskStatus(); 
+                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result));
+                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    }
                     
                     if (!tasks) {
-                        tasks = await fetchTasks();
+                        let tasks = await fetchTasks();
                         localStorage.setItem('tasks', JSON.stringify(tasks));
                         tasks = JSON.parse(localStorage.getItem('tasks'));
                     } else if (!fetched_tasks) {
-                        fetched_tasks = await fetchTaskStatus(); 
+                        let fetched_tasks = await fetchTaskStatus(); 
                         localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result));
                         fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                     }
 
-                    console.log(fetched_tasks.chosen);
-                    console.log(fetched_tasks.done);
+                    //console.log(fetched_tasks.chosen);
+                    //console.log(fetched_tasks.done);
 
                     if (!tasks || !preResult) {
                         QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
