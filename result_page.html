@@ -162,6 +162,8 @@
             let post_rec = localStorage.getItem('postRecordedDate');
             let task_rec = [];
             let tasks = JSON.parse(localStorage.getItem('tasks'));
+            //need BE confirmation
+            let detailed = JSON.parse(localStorage.getItem('com_tasks'));
 
             // Function to show the spinner
             function showSpinner() {
@@ -238,19 +240,7 @@
                     return null;
                 }
             }
-            
-            //need BE confirmation
-            let detailed = JSON.parse(localStorage.getItem('com_tasks'));
-
-            //fetch up-to-date info
-            if (!detailed.done) {
-                    const done_tasks = await fetchTaskStatus();
-                    localStorage.setItem('com_tasks', JSON.stringify(done_tasks.result));
-                    let detailed = JSON.parse(localStorage.getItem('com_tasks'));
-                    task_rec = detailed.time;
-                    
-                }
-            
+               
 
             function compareScores() {
                 let preQuizTotal = preResult.totalScore;
@@ -493,9 +483,19 @@
                     localStorage.setItem('tasks', JSON.stringify(tasks));
                     tasks = JSON.parse(localStorage.getItem('tasks'));
                 }
+
                 if (!detailed) {
                     const com_tasks = await fetchTaskStatus();
                     localStorage.setItem('com_tasks', JSON.stringify(com_tasks.result));
+                    let detailed = JSON.parse(localStorage.getItem('com_tasks'));
+                    task_rec = detailed.time;
+                    
+                }
+                
+                //fetch up-to-date info
+                if (!detailed.done) {
+                    const done_tasks = await fetchTaskStatus();
+                    localStorage.setItem('com_tasks', JSON.stringify(done_tasks.result));
                     let detailed = JSON.parse(localStorage.getItem('com_tasks'));
                     task_rec = detailed.time;
                     
