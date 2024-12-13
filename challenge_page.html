@@ -271,7 +271,7 @@
             let tasks = JSON.parse(localStorage.getItem('tasks'));
 
             // Check if tasks exist in localStorage
-            if (tasks) {
+            if (tasks && Tstatus) {
                 displaySelectedTasks(tasks); // Display tasks
             } else {
                 tasks = await fetchTasks();
@@ -327,8 +327,9 @@
                         taskCard.appendChild(completion);
                         cardContainer.appendChild(taskCard);
 
-                        if (Tstatus) {
-                            // Set task choice and status based on local storage
+                        // Set task choice and status based on local storage
+                        if (Tstatus.chosen && Tstatus.done) {
+                            
                             if (Tstatus.chosen.includes(String(task.taskNumber))) {
                                 if (Tstatus.done.includes(String(task.taskNumber))) {
                                     taskCard.classList.add("card_completed");
@@ -337,7 +338,6 @@
                             } else {
                                 taskCard.classList.add("card_incompleted");
                             }
-
                         }
                         
                         // Add event listener to task card to update status
