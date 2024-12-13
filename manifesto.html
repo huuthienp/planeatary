@@ -293,18 +293,18 @@
                     let tasks = JSON.parse(localStorage.getItem('tasks')); 
                     let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                     
-                    //fetch up-to-date info
-                    if (!fetched_tasks.done || !fetched_tasks.chosen) {
-                        let fetched_tasks = await fetchTaskStatus(); 
-                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result));
-                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    }
-                    
                     if (!tasks) {
                         let tasks = await fetchTasks();
                         localStorage.setItem('tasks', JSON.stringify(tasks));
                         tasks = JSON.parse(localStorage.getItem('tasks'));
                     } else if (!fetched_tasks) {
+                        let fetched_tasks = await fetchTaskStatus(); 
+                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result));
+                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    }
+
+                    //fetch up-to-date info
+                    if (!fetched_tasks.done || !fetched_tasks.chosen) {
                         let fetched_tasks = await fetchTaskStatus(); 
                         localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result));
                         fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
