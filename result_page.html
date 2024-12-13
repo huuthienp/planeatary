@@ -162,15 +162,13 @@
             let post_rec = localStorage.getItem('postRecordedDate');
             let task_rec = [];
             let tasks = JSON.parse(localStorage.getItem('tasks'));
-            
-            //need BE confirmation
-            let detailed = JSON.parse(localStorage.getItem('com_tasks'));
-            
+
             // Function to show the spinner
             function showSpinner() {
                 console.log("Showing spinner...");
                 spinner.classList.remove('hidden');
                 modalOverlay.classList.remove('hidden');
+                closeButt.classList.add('hidden');
                 isLoading = true;
                 spinnerStartTime = Date.now();
             };
@@ -190,6 +188,7 @@
                     //console.log("Hiding spinner...");
                     spinner.classList.add('hidden');
                     modalOverlay.classList.add('hidden');
+                    closeButt.classList.remove('hidden');
                     isLoading = false;
                 }
             }
@@ -239,6 +238,10 @@
                     return null;
                 }
             }
+            
+            //need BE confirmation
+            let detailed = JSON.parse(localStorage.getItem('com_tasks'));
+            
 
             function compareScores() {
                 let preQuizTotal = preResult.totalScore;
@@ -320,13 +323,11 @@
             // Function to display completed tasks 
             async function displaySelectedTasks(tasks) {
                 cardContainer.innerHTML = ''; 
-                if (!detailed) {
-                        const com_tasks = await fetchTaskStatus();
-                        localStorage.setItem('com_tasks', JSON.stringify(com_tasks.result));
-                        let detailed = JSON.parse(localStorage.getItem('com_tasks'));
-                        task_rec = detailed.time;
 
-                    }
+                if (!tasks && !detailed) {
+                    cardContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us to fix it.';
+                    return;
+                }
 
                 Object.keys(tasks).forEach(questionKey => {
                     header.innerHTML = '<img src="./images/battery.png"/>'+'All tasks you have completed';
@@ -483,6 +484,13 @@
                     tasks = await fetchTasks();
                     localStorage.setItem('tasks', JSON.stringify(tasks));
                     tasks = JSON.parse(localStorage.getItem('tasks'));
+                }
+                if (!detailed) {
+                    const com_tasks = await fetchTaskStatus();
+                    localStorage.setItem('com_tasks', JSON.stringify(com_tasks.result));
+                    let detailed = JSON.parse(localStorage.getItem('com_tasks'));
+                    task_rec = detailed.time;
+                    
                 }
 
                 const circle = document.querySelector(".circle");
