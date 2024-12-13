@@ -479,26 +479,24 @@
             document.getElementById('com-tasks').addEventListener('click', async function() {
                 
                 if (!tasks) {
-                    tasks = await fetchTasks();
+                    tasks = await fetchTasks(); // No 'let' here, reuse the existing 'tasks'
                     localStorage.setItem('tasks', JSON.stringify(tasks));
-                    tasks = JSON.parse(localStorage.getItem('tasks'));
-                }
-
-                if (!detailed) {
-                    const com_tasks = await fetchTaskStatus();
-                    localStorage.setItem('com_tasks', JSON.stringify(com_tasks.result));
-                    let detailed = JSON.parse(localStorage.getItem('com_tasks'));
-                    task_rec = detailed.time;
-                    
+                    tasks = JSON.parse(localStorage.getItem('tasks')); 
                 }
                 
-                //fetch up-to-date info
-                if (!detailed.done) {
-                    const done_tasks = await fetchTaskStatus();
-                    localStorage.setItem('com_tasks', JSON.stringify(done_tasks.result));
-                    let detailed = JSON.parse(localStorage.getItem('com_tasks'));
+                if (!detailed) {
+                    let com_tasks = await fetchTaskStatus(); // 'com_tasks' might be fine as local if you don't need it outside
+                    localStorage.setItem('com_tasks', JSON.stringify(com_tasks.result));
+                    detailed = JSON.parse(localStorage.getItem('com_tasks')); // no 'let' here
                     task_rec = detailed.time;
-                    
+                }
+                
+                // fetch up-to-date info
+                if (!detailed.done) {
+                    let done_tasks = await fetchTaskStatus();
+                    localStorage.setItem('com_tasks', JSON.stringify(done_tasks.result));
+                    detailed = JSON.parse(localStorage.getItem('com_tasks'));
+                    task_rec = detailed.time;
                 }
 
                 const circle = document.querySelector(".circle");
