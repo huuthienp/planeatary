@@ -6,11 +6,6 @@ body {
   transition: background-color .5s;
 }
 
-.container {
-  width: 100%;
-  height: 100%;
-}
-
 .header {
     display: flex;
     justify-content: space-between;
@@ -29,14 +24,13 @@ body {
   
   .header nav ul{
     list-style: none;
-    margin: 0;
+    margin: auto auto;
     padding: 0;
-    display: flex;
     gap: 1vw;
   }
   .header nav ul li {
     display: inline-block;
-    font-size: 2em;
+    font-size: 1em;
   }
 
 .forwindow {
@@ -68,7 +62,6 @@ body {
 }
 
 .sidenav a {
-    padding: 1vh 1vw;
     text-decoration: none;
     font-size: 1em;
     color: white;
@@ -102,16 +95,14 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2vw 2vh;
+    padding: 1vw 2vh;
     border-bottom: 0.2em solid #02897A;
     gap: 1vw;
   }
   .header .logo {
     font-weight: Bold;
     color: #02897A;
-    font-size: 3em;
-    display: flex;
-    width: 80%;
+    font-size: 2em;
   }
   .sidenav {
     display: none;
@@ -120,21 +111,20 @@ body {
     display: none;
   }
   .forwindow {
-    width: 100%;
     display: flex;
     transition: 0.5s;
-    justify-content: flex-end;
+    font-size: 16px;
+    justify-content: space-between;
     font-weight: Bold;
   }
   .forwindow ul {
     list-style: none;
     margin: 0 auto;
-    padding: 3vh 2vw;
+    padding: 3vh 1vw;
   }
   
   .forwindow ul li{
     display: inline-block;
-    font-size: 2em;
     padding: 0 1vw;
     color: #074740;
   }
@@ -164,11 +154,17 @@ body {
     font-size: 1em;
   }
 
+  .button {
+    display:flex;
+    justify-content: space-between;
+    gap: 1vw;
+  }
+
   .button .signIn {
     background-color: #577975;
     color: white;
     border: none;
-    padding: 1vh 2vw;
+    padding: 1vh 1vw;
     border-radius: 0.5em;
     cursor: pointer;
     font-size: 1em;
@@ -180,7 +176,7 @@ body {
     background-color: #577975;
     color: white;
     border: none;
-    padding: 1vh 2vw;
+    padding: 1vh 1vw;
     border-radius: 0.5em;
     cursor: pointer;
     font-size: 1em;
@@ -200,10 +196,7 @@ body {
 
   .container {
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: block;
-    
+    margin: 0 auto;   
   }
 
   .welcome {
