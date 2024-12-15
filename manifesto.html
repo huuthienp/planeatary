@@ -62,7 +62,7 @@
             <div class="align">
                 <div class="modal hidden" id="taskModal"> 
                     <div class="btn">
-                        <button class="close" id = "closeDes" onclick="Close();">x</button>
+                        <button class="close" id = "close">x</button>
                     </div>
                     <div class="modal-content">
                         <img id="visual_info" />
@@ -76,7 +76,7 @@
             <div class="align2">
                 <div class="modal2 hidden2" style="background-color: white;"> 
                     <div class="btn">
-                        <button class="close" id = "closeDes" onclick="CloseDes();">x</button>
+                        <button class="close" id = "closeDes">x</button>
                     </div>
                     <div class="modal-content">
                         <h2 id="modalTitle" style="padding: 0 20px;"></h2>
@@ -145,12 +145,13 @@
                     }
                 };
 
-                const modal = document.querySelector(".modal");
+            const modal = document.querySelector(".modal");
             const overlay = document.querySelector(".overlay");
             const modal2 = document.querySelector(".modal2");
             const overlay2 = document.querySelector(".overlay2");
             const modalTitle = document.getElementById("modalTitle");
-            const closeButt = document.querySelector('.close');
+            const close = document.getElementById('close');
+            const closeDes = document.getElementById('closeDes');
 
             function Modal(source) {
                 closeButt.classList.remove('hidden');
@@ -185,6 +186,20 @@
                 modal2.classList.add("hidden2");
                 overlay2.classList.add('hidden2');
             };
+
+            
+            document.getElementById("close").addEventListener("click", Close);
+            document.getElementById("closeDes").addEventListener("click", CloseDes);
+
+            // Close modal when user clicks outside the modal
+            window.addEventListener("click", function(event) {
+                if (event.target === modalOverlay) {
+                    close();
+                    CloseDes();
+                }
+            });
+
+            
 
                 let preResult = JSON.parse(localStorage.getItem('preResult')); 
                 let preResponseId = localStorage.getItem('preResponseId'); 
