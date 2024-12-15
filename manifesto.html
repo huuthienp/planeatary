@@ -62,7 +62,7 @@
             <div class="align">
                 <div class="modal hidden" id="taskModal"> 
                     <div class="btn">
-                        <button class="close" onclick="Close();">x</button>
+                        <button class="close" id = "closeDes" onclick="Close();">x</button>
                     </div>
                     <div class="modal-content">
                         <img id="visual_info" />
@@ -76,7 +76,7 @@
             <div class="align2">
                 <div class="modal2 hidden2" style="background-color: white;"> 
                     <div class="btn">
-                        <button class="close" onclick="CloseDes();">x</button>
+                        <button class="close" id = "closeDes" onclick="CloseDes();">x</button>
                     </div>
                     <div class="modal-content">
                         <h2 id="modalTitle" style="padding: 0 20px;"></h2>
@@ -87,47 +87,6 @@
     </section>
         <script type="module">
             import {extractTaskArrays} from './data-functions.mjs';
-
-            const modal = document.querySelector(".modal");
-            const overlay = document.querySelector(".overlay");
-            const modal2 = document.querySelector(".modal2");
-            const overlay2 = document.querySelector(".overlay2");
-            const modalTitle = document.getElementById("modalTitle");
-            const closeButt = document.querySelector('.close');
-
-            function Modal(source) {
-                closeButt.classList.remove('hidden');
-                const modalContent = document.querySelector(".modal-content");
-                const image = document.getElementById("visual_info");
-                image.src = source;
-                modal.classList.remove('hidden');
-                overlay.classList.remove('hidden');
-            };
-
-            function ModalDes(title, des) {
-                closeButt.classList.remove('hidden');
-                const modalContent = document.querySelector(".modal-content");
-                const text = document.getElementById("inform");
-                modalTitle.textContent = title;
-                const taskDescription = des.replace('target="_blank"', 'rel="noopener noreferrer"');
-                text.innerHTML = taskDescription;
-                modal2.classList.remove('hidden2');
-                overlay2.classList.remove('hidden2');
-
-            };
-
-            function Close() {
-                closeButt.classList.remove('hidden');
-                modal.classList.add("hidden");
-                overlay.classList.add('hidden');
-                
-            };
-
-            function CloseDes() {
-                closeButt.classList.remove('hidden');
-                modal2.classList.add("hidden2");
-                overlay2.classList.add('hidden2');
-            };
 
             window.openNav = function() {
                 document.getElementById("mySidenav").style.width = "40%";
@@ -185,6 +144,47 @@
                         isLoading = false;
                     }
                 };
+
+                const modal = document.querySelector(".modal");
+            const overlay = document.querySelector(".overlay");
+            const modal2 = document.querySelector(".modal2");
+            const overlay2 = document.querySelector(".overlay2");
+            const modalTitle = document.getElementById("modalTitle");
+            const closeButt = document.querySelector('.close');
+
+            function Modal(source) {
+                closeButt.classList.remove('hidden');
+                const modalContent = document.querySelector(".modal-content");
+                const image = document.getElementById("visual_info");
+                image.src = source;
+                modal.classList.remove('hidden');
+                overlay.classList.remove('hidden');
+            };
+
+            function ModalDes(title, des) {
+                closeButt.classList.remove('hidden');
+                const modalContent = document.querySelector(".modal-content");
+                const text = document.getElementById("inform");
+                modalTitle.textContent = title;
+                const taskDescription = des.replace('target="_blank"', 'rel="noopener noreferrer"');
+                text.innerHTML = taskDescription;
+                modal2.classList.remove('hidden2');
+                overlay2.classList.remove('hidden2');
+
+            };
+
+            function Close() {
+                closeButt.classList.remove('hidden');
+                modal.classList.add("hidden");
+                overlay.classList.add('hidden');
+                
+            };
+
+            function CloseDes() {
+                closeButt.classList.remove('hidden');
+                modal2.classList.add("hidden2");
+                overlay2.classList.add('hidden2');
+            };
 
                 let preResult = JSON.parse(localStorage.getItem('preResult')); 
                 let preResponseId = localStorage.getItem('preResponseId'); 
