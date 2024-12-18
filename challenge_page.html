@@ -59,9 +59,9 @@
         <!-- <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating... -->
     </div>
 
-    <section class="overlay hidden" id="modalOverlay">
-        <div class="align">
-            <div class="modal hidden" id="taskModal"> 
+    <section class="overlay2 hidden2" id="modalOverlay">
+        <div class="align2">
+            <div class="modal2 hidden2" id="taskModal"> 
                 <div class="btn">
                     <button class="close">x</button>
                 </div>
@@ -353,13 +353,10 @@
                         taskCard.addEventListener('click', async function() {
 
                             completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
-                            await delay(1500);
+                            await delay(1000);
 
                             // Toggle task status between "Done" and "Completed"
                             task.status = task.status === "Done" ? "Completed" : "Done";
-
-                            // Update task in localStorage
-                            localStorage.setItem('tasks', JSON.stringify(tasks));
 
                             if (task.status === "Completed") {
                                 taskCard.style.color = 'black';
@@ -377,6 +374,8 @@
                                 task.finish = '';
                                 //time.splice(-1, 1);
                             }
+
+                            // Update task in localStorage
                             localStorage.setItem('tasks', JSON.stringify(tasks));
                             localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                             //localStorage.setItem('time', JSON.stringify(time));

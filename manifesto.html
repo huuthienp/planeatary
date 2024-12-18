@@ -200,41 +200,39 @@
                 }
             });
 
-            
+            let preResult = JSON.parse(localStorage.getItem('preResult')); 
+            let preResponseId = localStorage.getItem('preResponseId'); 
 
-                let preResult = JSON.parse(localStorage.getItem('preResult')); 
-                let preResponseId = localStorage.getItem('preResponseId'); 
-                
 
-                if(!preResult && !preResponseId) {
-                    QContainer.innerHTML = '<p>No available information to be displayed</p>';
+            if(!preResult && !preResponseId) {
+                QContainer.innerHTML = '<p>No available information to be displayed</p>';
+            }
+            else{
+                let preTotalScore = preResult.totalScore; 
+                let prePointArray = preResult.pointArray;
+            }
+
+
+            // Retrieve tasks from localStorage or fetch if not available
+            async function fetchTasks() {
+                const taskData = localStorage.getItem('tasks');
+                if (!taskData) {
+                    try {
+                        const response = await fetch('updated_tasks_final.json');
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        const data = await response.json();
+                        return data;
+                    } catch (error) {
+                        console.error('Fetch error:', error);
+                        alert('Failed to load tasks. Please try again later.');
+                        return null;
+                    };
+                    
                 }
-                else{
-                    let preTotalScore = preResult.totalScore; 
-                    let prePointArray = preResult.pointArray;
-                }
-
-
-                // Retrieve tasks from localStorage or fetch if not available
-                async function fetchTasks() {
-                    const taskData = localStorage.getItem('tasks');
-                    if (!taskData) {
-                        try {
-                            const response = await fetch('updated_tasks_final.json');
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok ' + response.statusText);
-                            }
-                            const data = await response.json();
-                            return data;
-                        } catch (error) {
-                            console.error('Fetch error:', error);
-                            alert('Failed to load tasks. Please try again later.');
-                            return null;
-                        };
-                        
-                    }
-                    return JSON.parse(taskData);
-                }
+                return JSON.parse(taskData);
+            }
 
                 // Function to get task status from the API
                 async function fetchTaskStatus() {
@@ -483,9 +481,7 @@
                     tContent.innerHTML == '<p>None of your answer got good score</p>';
                 }
                 good.style.backgroundColor = '#02897A';
-                good.style.transition = "all 1s";
                 bad.style.backgroundColor = '#a9d1cd';
-                bad.style.transition = "all 1s";
             });
 
             // Event listener for "bad" button
@@ -498,9 +494,7 @@
                     tContent.innerHTML == '<p>None of your answer got bad score</p>';
                 }
                 good.style.backgroundColor = '#a9d1cd';
-                good.style.transition = "all 1s";
                 bad.style.backgroundColor = '#02897A';
-                bad.style.transition = "all 1s";
             });
 
             
