@@ -1,150 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
-        <link href="style_concat.css" rel="stylesheet" />
-        <title>Start Challenges</title>
-    </head>
-    <body>
-        <!-- Sidebar -->
-        <div id="mySidenav" class="sidenav">
-            <ul>
-                <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
-                <li><a href="qualtrics.html"><b>Quiz</b></a></li>
-                <!-- <li><a href="manifesto.html">Challenge</a></li> -->
-                <li><a href="result_page.html">Dashboard</a></li>
-                <li><a href="history_page.html">History</a></li>
-                <li><a href="#">User</a></li>
-            </ul>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
+    <link href="style_concat.css" rel="stylesheet" />
+    <title>Start Challenges</title>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div id="mySidenav" class="sidenav">
+        <ul>
+            <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
+            <li><a href="qualtrics.html"><b>Quiz</b></a></li>
+            <!-- <li><a href="manifesto.html">Challenge</a></li> -->
+            <li><a href="result_page.html">Dashboard</a></li>
+            <li><a href="history_page.html">History</a></li>
+            <li><a href="#">User</a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="spinner hidden" id="spinner"></div>
+        <div class="header">
+            <h2 class="logo"><img  src="./images/logo.png" style="width: 120px; height:auto"/>planeatary</h2>
+            <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
+            <nav class="forwindow">
+                <ul>
+                    <!-- <li><a href="index.html">Home</a></li>
+                    <li><a href="qualtrics.html"><b>Quiz</b></a></li> -->
+                    <!-- <li><a href="manifesto.html">Challenge</a></li> -->
+                    <li><a href="result_page.html" style="color:#074740;">Dashboard</a></li>
+                    <li><a href="history_page.html">History</a></li>
+                    <li><a href="#">User</a></li>
+                    <!-- <li>About us</li> -->
+                </ul>
+            </nav>
+            <!-- <div class="button">
+                <button class="signIn">Sign In</button>
+                <span>&ensp;</span>
+                <button class="signUp">Sign Up</button>
+            </div> -->
         </div>
-        <div class="container">
-            <div class="spinner hidden" id="spinner"></div>
-            <div class="header">
-                <h2 class="logo"><img  src="./images/logo.png" style="width: 120px; height:auto"/>planeatary</h2>
-                <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
-                <nav class="forwindow">
-                    <ul>
-                        <!-- <li><a href="index.html">Home</a></li>
-                        <li><a href="qualtrics.html"><b>Quiz</b></a></li> -->
-                        <!-- <li><a href="manifesto.html">Challenge</a></li> -->
-                        <li><a href="result_page.html" style="color:#074740;">Dashboard</a></li>
-                        <li><a href="history_page.html">History</a></li>
-                        <li><a href="#">User</a></li>
-                        <!-- <li>About us</li> -->
-                    </ul>
-                </nav>
-                <!-- <div class="button">
-                    <button class="signIn">Sign In</button>
-                    <span>&ensp;</span>
-                    <button class="signUp">Sign Up</button>
-                </div> -->
+        <div class="subheader">
+            <p id="threetask"></p>
+        </div>
+        <div class="button2">
+            <button class="start">Start</button>
+        </div>
+        <div class="improvement">
+            <button id="good">Good scores</button>
+            <button id="notyet">Need improvement</button>
+        </div>
+        <div class="task-content">
+            <div class="q-task">
             </div>
-            <div class="subheader">
-                <p id="threetask"></p>
-            </div>
-            <div class="button2">
-                <button class="start">Start</button>
-            </div>
-            <div class="improvement">
-                <button id="good">Good scores</button>
-                <button id="notyet">Need improvement</button>
-            </div>
-            <div class="task-content">
-                <div class="q-task">
+        </div>
+    </div>
+    
+    <section class="overlay hidden" id="modalOverlay">
+        <div class="align">
+            <div class="modal hidden" id="taskModal"> 
+                <div class="btn">
+                    <button class="close" id = "close">x</button>
+                </div>
+                <div class="modal-content">
+                    <img id="visual_info" />
                 </div>
             </div>
         </div>
-
-        <section class="overlay hidden" id="modalOverlay">
-            <div class="align">
-                <div class="modal hidden" id="taskModal"> 
-                    <div class="btn">
-                        <button class="close" id = "close">x</button>
-                    </div>
-                    <div class="modal-content">
-                        <img id="visual_info" />
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- The Modal 2-->
-        <section class="overlay2 hidden2">
-            <div class="align2">
-                <div class="modal2 hidden2" style="background-color: white;"> 
-                    <div class="btn">
-                        <button class="close" id = "closeDes">x</button>
-                    </div>
-                    <div class="modal-content">
-                        <h2 id="modalTitle" style="padding: 0 20px;"></h2>
-                        <p id="inform" style="padding: 0 20px;"></p>
-                    </div>
-                </div>
-            </div>
     </section>
-        <script type="module">
-            import {extractTaskArrays} from './data-functions.mjs';
+    
+    <!-- The Modal 2-->
+    <section class="overlay2 hidden2">
+        <div class="align2">
+            <div class="modal2 hidden2" style="background-color: white;"> 
+                <div class="btn">
+                    <button class="close" id = "closeDes">x</button>
+                </div>
+                <div class="modal-content">
+                    <h2 id="modalTitle" style="padding: 0 20px;"></h2>
+                    <p id="inform" style="padding: 0 20px;"></p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            window.openNav = function() {
-                document.getElementById("mySidenav").style.width = "40%";
-                document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
-            };
+    <!-- spinner overlay-->
+    <section class="overlay hidden" id="spinnerOverlay">
+    </section>
 
-            window.closeNav = function() {
-                document.getElementById("mySidenav").style.width = "0";
-                document.body.style.backgroundColor = "white";
-            };
-
-            const QContainer = document.querySelector(".q-task");
-
-            const good = document.getElementById("good");
-            const bad = document.getElementById("notyet");
-
+    <script type="module">
+        import {extractTaskArrays} from './data-functions.mjs';
+        
+        window.openNav = function() {
+            document.getElementById("mySidenav").style.width = "40%";
+            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
+        };
+        
+        window.closeNav = function() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.body.style.backgroundColor = "white";
+        };
+        
+        const QContainer = document.querySelector(".q-task");
+        
+        const good = document.getElementById("good");
+        const bad = document.getElementById("notyet");
+        const spOver = document.getElementById("spinnerOverlay");
+        
+        
+        good.style.backgroundColor = '#a9d1cd';
+        bad.style.backgroundColor = '#02897A';
+        
+        document.addEventListener("DOMContentLoaded", async function() {
+            const startButton = document.querySelector(".start");
+            const spinner = document.getElementById('spinner');
+            let isLoading = false;
+            const minDisplayTime = 2000; 
+            let spinnerStartTime;
+            let scores = [];
+            let task_counts = 0;
             
-            good.style.backgroundColor = '#a9d1cd';
-            bad.style.backgroundColor = '#02897A';
-
-            document.addEventListener("DOMContentLoaded", async function() {
-                const startButton = document.querySelector(".start");
-                const spinner = document.getElementById('spinner');
-                let isLoading = false;
-                const minDisplayTime = 2000; 
-                let spinnerStartTime;
-                let scores = [];
-                let task_counts = 0;
-
-                // Function to show the spinner
-                function showSpinner() {
-                    //console.log("Showing spinner...");
-                    spinner.classList.remove('hidden');
-                    overlay.classList.remove('hidden');
-                    closeButt.classList.add('hidden');
-                    isLoading = true;
-                    spinnerStartTime = Date.now();
-                };
-                
-                // Function to hide the spinner
-                function hideSpinner() {
-                    const elapsedTime = Date.now() - spinnerStartTime;
-                    if (elapsedTime < minDisplayTime) {
-                        // Delay hiding spinner until the minimum display time
-                        setTimeout(() => {
-                            //console.log("Hiding spinner after min time...");
-                            spinner.classList.add('hidden');
-                            overlay.classList.add('hidden');
-                            isLoading = false;
-                        }, minDisplayTime - elapsedTime);
-                    } else {
-                        //console.log("Hiding spinner...");
+            // Function to show the spinner
+            function showSpinner() {
+                //console.log("Showing spinner...");
+                spinner.classList.remove('hidden');
+                spOver.classList.remove('hidden');
+                isLoading = true;
+                spinnerStartTime = Date.now();
+            };
+            
+            // Function to hide the spinner
+            function hideSpinner() {
+                const elapsedTime = Date.now() - spinnerStartTime;
+                if (elapsedTime < minDisplayTime) {
+                    // Delay hiding spinner until the minimum display time
+                    setTimeout(() => {
+                        //console.log("Hiding spinner after min time...");
                         spinner.classList.add('hidden');
-                        overlay.classList.add('hidden');
+                        spOver.classList.remove('hidden');
                         isLoading = false;
-                    }
-                };
-
+                    }, minDisplayTime - elapsedTime);
+                } else {
+                    //console.log("Hiding spinner...");
+                    spinner.classList.add('hidden');
+                    spOver.classList.remove('hidden');
+                    isLoading = false;
+                }
+            };
+            
             const modal = document.querySelector(".modal");
             const overlay = document.querySelector(".overlay");
             const modal2 = document.querySelector(".modal2");
@@ -153,7 +158,7 @@
             const closeButt = document.querySelector('.close');
             const close = document.getElementById('close');
             const closeDes = document.getElementById('closeDes');
-
+            
             function Modal(source) {
                 close.classList.remove('hidden');
                 const modalContent = document.querySelector(".modal-content");
@@ -162,7 +167,7 @@
                 modal.classList.remove('hidden');
                 overlay.classList.remove('hidden');
             };
-
+            
             function ModalDes(title, des) {
                 closeDes.classList.remove('hidden2');
                 const modalContent = document.querySelector(".modal-content");
@@ -172,26 +177,26 @@
                 text.innerHTML = taskDescription;
                 modal2.classList.remove('hidden2');
                 overlay2.classList.remove('hidden2');
-
+                
             };
-
+            
             function Close() {
                 close.classList.remove('hidden');
                 modal.classList.add("hidden");
                 overlay.classList.add('hidden');
                 
             };
-
+            
             function CloseDes() {
                 closeDes.classList.remove('hidden');
                 modal2.classList.add("hidden2");
                 overlay2.classList.add('hidden2');
             };
-
+            
             
             document.getElementById("close").addEventListener("click", Close);
             document.getElementById("closeDes").addEventListener("click", CloseDes);
-
+            
             // Close modal when user clicks outside the modal
             window.addEventListener("click", function(event) {
                 if (event.target === modalOverlay) {
@@ -199,11 +204,11 @@
                     CloseDes();
                 }
             });
-
+            
             let preResult = JSON.parse(localStorage.getItem('preResult')); 
             let preResponseId = localStorage.getItem('preResponseId'); 
-
-
+            
+            
             if(!preResult && !preResponseId) {
                 QContainer.innerHTML = '<p>No available information to be displayed</p>';
             }
@@ -211,8 +216,8 @@
                 let preTotalScore = preResult.totalScore; 
                 let prePointArray = preResult.pointArray;
             }
-
-
+            
+            
             // Retrieve tasks from localStorage or fetch if not available
             async function fetchTasks() {
                 const taskData = localStorage.getItem('tasks');
@@ -233,246 +238,246 @@
                 }
                 return JSON.parse(taskData);
             }
-
-                // Function to get task status from the API
-                async function fetchTaskStatus() {
-                    try {
-                        showSpinner();
-                        const response = await fetch('/api/manage-tasks', {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Q-RESPONSE-ID': preResponseId,
-                            }
-                        });
-                        const data = await response.json();
-                        console.log('Task status fetched:', data);
-                        hideSpinner();
-                        return data;
-                    } catch (error) {
-                        hideSpinner();
-                        console.error('Error fetching task status:', error);
-                        return null;
-                    }
-                }
-
-                // Function to update task status using the API
-                async function updateTaskStatus(task) {
-                    try {
-                        showSpinner();
-                        const taskData = JSON.parse(localStorage.getItem('tasks'));
-                        const extracted = extractTaskArrays(taskData);
-
-                        let task = {
-                            id: preResponseId,
-                            chosen: extracted.chosen,
-                            done: extracted.done
+            
+            // Function to get task status from the API
+            async function fetchTaskStatus() {
+                try {
+                    showSpinner();
+                    const response = await fetch('/api/manage-tasks', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Q-RESPONSE-ID': preResponseId,
                         }
-                        const response = await fetch('/api/manage-tasks', {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Q-RESPONSE-ID': preResponseId,
-                            },
-                            body: JSON.stringify(task),
-                        });
-                        const data = await response.json();
-                        console.log('Task updated successfully:', data);
-                        hideSpinner();
-                    } catch (error) {
-                        hideSpinner();
-                        console.error('Error updating task status:', error);
-                        
-                    }
-                }
-
-                scores = preResult.pointArray; 
-                
-
-                function calculateSelectedTasks(tasks) {
-                    let count = 0;
-                    Object.keys(tasks).forEach((questionKey) => {
-                        const taskGroup = tasks[questionKey].tasks;
-                        taskGroup.forEach(task => {
-                            if (task.choice === 'chosen') {
-                                count += 1;
-                            }
-                        });
                     });
-                    return count;
+                    const data = await response.json();
+                    console.log('Task status fetched:', data);
+                    hideSpinner();
+                    return data;
+                } catch (error) {
+                    hideSpinner();
+                    console.error('Error fetching task status:', error);
+                    return null;
                 }
-
-                async function renderQuestions(condition) {
-                    QContainer.innerHTML = '';
-                    let tasks = JSON.parse(localStorage.getItem('tasks')); 
-                    let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+            }
+            
+            // Function to update task status using the API
+            async function updateTaskStatus(task) {
+                try {
+                    showSpinner();
+                    const taskData = JSON.parse(localStorage.getItem('tasks'));
+                    const extracted = extractTaskArrays(taskData);
                     
-                    if (!tasks) {
-                        tasks = await fetchTasks();
-                        localStorage.setItem('tasks', JSON.stringify(tasks));
-                        tasks = JSON.parse(localStorage.getItem('tasks'));
+                    let task = {
+                        id: preResponseId,
+                        chosen: extracted.chosen,
+                        done: extracted.done
                     }
+                    const response = await fetch('/api/manage-tasks', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Q-RESPONSE-ID': preResponseId,
+                        },
+                        body: JSON.stringify(task),
+                    });
+                    const data = await response.json();
+                    console.log('Task updated successfully:', data);
+                    hideSpinner();
+                } catch (error) {
+                    hideSpinner();
+                    console.error('Error updating task status:', error);
                     
-                    if (!fetched_tasks) {
-                        fetched_tasks = await fetchTaskStatus(); 
-                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result));
-                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    }
-
-                    //fetch up-to-date info
-                    if (!fetched_tasks.done || !fetched_tasks.chosen) {
-                        fetched_tasks = await fetchTaskStatus(); 
-                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result));
-                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    }
-
-                    //console.log(fetched_tasks.chosen);
-                    //console.log(fetched_tasks.done);
-
-                    if (!tasks || !preResult) {
-                        QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
-                        return;
-                    }
-
-                    // Iterate over each question
-                    Object.keys(tasks).forEach((questionKey, i) => {
-                        const taskGroup = tasks[questionKey].tasks;
-                        const score = scores[i]; 
-                        if (condition(score)) {
-                            // Create a container for the question
-                            const questionDiv = document.createElement('div');
-                            questionDiv.classList.add('question-block');
-
-                            // Display question number and score
-                            const questionTitle = document.createElement('h3');
-                            questionTitle.innerHTML = `Question ${i + 1} - ${score} points`;
-
-                            if (score < 3) {
-                                questionDiv.style.borderRadius = "10px";
-                                questionDiv.style.boxShadow = "10px 10px 10px red";
-                                questionTitle.style.color = 'red';
-                            } else {
-                                questionDiv.style.borderRadius = "10px";
-                                questionDiv.style.boxShadow = "10px 10px 10px rgb(2, 137, 122)";
-                                questionTitle.style.color = 'green';
-                            }
-
-                            // Add the info icon with a click event to open the modal
-                            const infoIcon = document.createElement('img');
-                            infoIcon.src = './images/info.png';
-                            infoIcon.width = '20';
-                            infoIcon.style.cursor = 'pointer'; 
-
-                            questionTitle.appendChild(infoIcon); 
-                            questionDiv.appendChild(questionTitle);
-
-                            // Set the click event for the info icon to show the modal with the correct image
-                            infoIcon.addEventListener('click', function() {
-                                Modal(`./images/pop${i + 1}.jpg`); 
-                            });
-
-                            // Create a list to hold the tasks for this question
-                            const taskList = document.createElement('ul');
-
-                            // Iterate over tasks for the question
-                            taskGroup.forEach((task, j) => {
-                                const taskItem = document.createElement('li');
-                                const label = document.createElement('label');
-                                const checkbox = document.createElement('input');
-                                checkbox.type = 'checkbox';
-
-                                // Add an info icon for task description
-                                const infoIcon2 = document.createElement("span");
-                                infoIcon2.classList.add("info-icon");
-                                infoIcon2.innerHTML = "&#9432;"; 
-
-                                label.appendChild(checkbox);
-                                label.appendChild(document.createTextNode(task.taskName));
-                                label.appendChild(infoIcon2);
-                                taskItem.appendChild(label);
-                                taskList.appendChild(taskItem);
-
-                                // Set task choice and status based on local storage
-                                if (fetched_tasks.chosen && fetched_tasks.done) {
-                                    if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
-                                        task.choice = 'chosen';
-                                        checkbox.checked = true;
-                                        if (fetched_tasks.done.includes(String(task.taskNumber))) {
-                                            task.status = 'Completed';
-                                            checkbox.disabled = true; // Disable the checkbox if the task is completed
-                                        }
+                }
+            }
+            
+            scores = preResult.pointArray; 
+            
+            
+            function calculateSelectedTasks(tasks) {
+                let count = 0;
+                Object.keys(tasks).forEach((questionKey) => {
+                    const taskGroup = tasks[questionKey].tasks;
+                    taskGroup.forEach(task => {
+                        if (task.choice === 'chosen') {
+                            count += 1;
+                        }
+                    });
+                });
+                return count;
+            }
+            
+            async function renderQuestions(condition) {
+                QContainer.innerHTML = '';
+                let tasks = JSON.parse(localStorage.getItem('tasks')); 
+                let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                
+                if (!tasks) {
+                    tasks = await fetchTasks();
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    tasks = JSON.parse(localStorage.getItem('tasks'));
+                }
+                
+                if (!fetched_tasks) {
+                    fetched_tasks = await fetchTaskStatus(); 
+                    localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result));
+                    fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                }
+                
+                //fetch up-to-date info
+                if (!fetched_tasks.done || !fetched_tasks.chosen) {
+                    fetched_tasks = await fetchTaskStatus(); 
+                    localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result));
+                    fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                }
+                
+                //console.log(fetched_tasks.chosen);
+                //console.log(fetched_tasks.done);
+                
+                if (!tasks || !preResult) {
+                    QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
+                    return;
+                }
+                
+                // Iterate over each question
+                Object.keys(tasks).forEach((questionKey, i) => {
+                    const taskGroup = tasks[questionKey].tasks;
+                    const score = scores[i]; 
+                    if (condition(score)) {
+                        // Create a container for the question
+                        const questionDiv = document.createElement('div');
+                        questionDiv.classList.add('question-block');
+                        
+                        // Display question number and score
+                        const questionTitle = document.createElement('h3');
+                        questionTitle.innerHTML = `Question ${i + 1} - ${score} points`;
+                        
+                        if (score < 3) {
+                            questionDiv.style.borderRadius = "10px";
+                            questionDiv.style.boxShadow = "10px 10px 10px red";
+                            questionTitle.style.color = 'red';
+                        } else {
+                            questionDiv.style.borderRadius = "10px";
+                            questionDiv.style.boxShadow = "10px 10px 10px rgb(2, 137, 122)";
+                            questionTitle.style.color = 'green';
+                        }
+                        
+                        // Add the info icon with a click event to open the modal
+                        const infoIcon = document.createElement('img');
+                        infoIcon.src = './images/info.png';
+                        infoIcon.width = '20';
+                        infoIcon.style.cursor = 'pointer'; 
+                        
+                        questionTitle.appendChild(infoIcon); 
+                        questionDiv.appendChild(questionTitle);
+                        
+                        // Set the click event for the info icon to show the modal with the correct image
+                        infoIcon.addEventListener('click', function() {
+                            Modal(`./images/pop${i + 1}.jpg`); 
+                        });
+                        
+                        // Create a list to hold the tasks for this question
+                        const taskList = document.createElement('ul');
+                        
+                        // Iterate over tasks for the question
+                        taskGroup.forEach((task, j) => {
+                            const taskItem = document.createElement('li');
+                            const label = document.createElement('label');
+                            const checkbox = document.createElement('input');
+                            checkbox.type = 'checkbox';
+                            
+                            // Add an info icon for task description
+                            const infoIcon2 = document.createElement("span");
+                            infoIcon2.classList.add("info-icon");
+                            infoIcon2.innerHTML = "&#9432;"; 
+                            
+                            label.appendChild(checkbox);
+                            label.appendChild(document.createTextNode(task.taskName));
+                            label.appendChild(infoIcon2);
+                            taskItem.appendChild(label);
+                            taskList.appendChild(taskItem);
+                            
+                            // Set task choice and status based on local storage
+                            if (fetched_tasks.chosen && fetched_tasks.done) {
+                                if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
+                                    task.choice = 'chosen';
+                                    checkbox.checked = true;
+                                    if (fetched_tasks.done.includes(String(task.taskNumber))) {
+                                        task.status = 'Completed';
+                                        checkbox.disabled = true; // Disable the checkbox if the task is completed
                                     }
                                 }
-                                
-                                
-                                checkbox.disabled = task.status === 'Completed';
-                                localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
-
-                                // Update task count and localStorage on checkbox change
-                                checkbox.addEventListener('change', function() {
-                                    if (!checkbox.disabled) {
-                                        if (checkbox.checked) {
-                                            task.choice = "chosen";
-                                            task_counts += 1;
-                                        } else {
-                                            task.choice = "";                                         
-                                            task_counts -= 1;
-                                        }
-                                        localStorage.setItem('tasks', JSON.stringify(tasks)); 
-                                        updateStartButton(); 
+                            }
+                            
+                            //Also double-check task status in local storage
+                            checkbox.disabled = task.status === 'Completed';
+                            localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
+                            
+                            // Update task count and localStorage on checkbox change
+                            checkbox.addEventListener('change', function() {
+                                if (!checkbox.disabled) {
+                                    if (checkbox.checked) {
+                                        task.choice = "chosen";
+                                        task_counts += 1;
+                                    } else {
+                                        task.choice = "";                                         
+                                        task_counts -= 1;
                                     }
-                                });
-
-                                // Event listener for more info
-                                infoIcon2.addEventListener('click', function(event) {
-                                    event.preventDefault();
-                                    event.stopPropagation(); 
-                                    ModalDes(task.taskName, task.taskDescription);
-                                });
-
-                                checkbox.checked = task.choice === "chosen";
-                                localStorage.setItem('tasks', JSON.stringify(tasks)); 
-                                updateTaskStatus(task);
-                                updateStartButton(); 
+                                    localStorage.setItem('tasks', JSON.stringify(tasks)); 
+                                    updateStartButton(); 
+                                }
                             });
-
-                            questionDiv.appendChild(taskList);
-                            QContainer.appendChild(questionDiv);
+                            
+                            // Event listener for more info
+                            infoIcon2.addEventListener('click', function(event) {
+                                event.preventDefault();
+                                event.stopPropagation(); 
+                                ModalDes(task.taskName, task.taskDescription);
+                            });
+                            
+                            checkbox.checked = task.choice === "chosen";
                             localStorage.setItem('tasks', JSON.stringify(tasks)); 
-                        }
-                        localStorage.setItem('tasks', JSON.stringify(tasks)); 
+                            updateTaskStatus(task);
+                            updateStartButton(); 
+                        });
                         
-                    });
-
-                    task_counts = calculateSelectedTasks(tasks);
-                    updateStartButton(); 
-                }
-
-
-                // Function to update the start button state based on selected tasks
-                function updateStartButton() {
-                    const startButton = document.querySelector(".start");
-                    const persuade = document.getElementById("threetask");
-                    if (task_counts >= 3) {
-                        persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
-                        persuade.style.color = 'black';
-                        startButton.style.pointerEvents = "auto";
-                        startButton.style.backgroundColor = "#02897A";
-                    } else {
-                        persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
-                        persuade.style.color = 'grey';
-                        startButton.style.pointerEvents = "none";
-                        startButton.style.backgroundColor = "grey";
+                        questionDiv.appendChild(taskList);
+                        QContainer.appendChild(questionDiv);
+                        localStorage.setItem('tasks', JSON.stringify(tasks)); 
                     }
-                }
-                renderQuestions((score) => score < 3);
-                // Attach single click listener for the start button navigation
-                startButton.addEventListener('click', function(event) {
-                    if (task_counts >= 3) {
-                        window.location.href = "challenge_page.html";
-                    }
+                    localStorage.setItem('tasks', JSON.stringify(tasks)); 
+                    
                 });
-
+                
+                task_counts = calculateSelectedTasks(tasks);
+                updateStartButton(); 
+            }
+            
+            
+            // Function to update the start button state based on selected tasks
+            function updateStartButton() {
+                const startButton = document.querySelector(".start");
+                const persuade = document.getElementById("threetask");
+                if (task_counts >= 3) {
+                    persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
+                    persuade.style.color = 'black';
+                    startButton.style.pointerEvents = "auto";
+                    startButton.style.backgroundColor = "#02897A";
+                } else {
+                    persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
+                    persuade.style.color = 'grey';
+                    startButton.style.pointerEvents = "none";
+                    startButton.style.backgroundColor = "grey";
+                }
+            }
+            renderQuestions((score) => score < 3);
+            // Attach single click listener for the start button navigation
+            startButton.addEventListener('click', function(event) {
+                if (task_counts >= 3) {
+                    window.location.href = "challenge_page.html";
+                }
+            });
+            
             // Event listener for "good" button
             document.getElementById('good').addEventListener('click', function() {
                 updateStartButton();
@@ -485,7 +490,7 @@
                 good.style.backgroundColor = '#02897A';
                 bad.style.backgroundColor = '#a9d1cd';
             });
-
+            
             // Event listener for "bad" button
             document.getElementById('notyet').addEventListener('click', function() {
                 updateStartButton();
@@ -498,9 +503,9 @@
                 good.style.backgroundColor = '#a9d1cd';
                 bad.style.backgroundColor = '#02897A';
             });
-
+            
             
         });
-        </script>
-    </body>
+    </script>
+</body>
 </html>
