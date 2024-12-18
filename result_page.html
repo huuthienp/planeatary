@@ -200,11 +200,13 @@
                 const taskData = localStorage.getItem('tasks');
                 if (!taskData) {
                     try {
+                        showSpinner();
                         const response = await fetch('updated_tasks_final.json');
                         if (!response.ok) {
                             throw new Error('Network response was not ok ' + response.statusText);
                         }
                         const data = await response.json();
+                        hideSpinner();
                         return data;
                     } catch (error) {
                         console.error('Fetch error:', error);
@@ -219,7 +221,6 @@
             // Function to get task status from the API
             async function fetchTaskStatus() {
                 try {
-                    
                     showSpinner();
                     const response = await fetch('/api/manage-tasks', {
                         method: 'GET',
@@ -267,6 +268,7 @@
                     cardContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us to fix it.';
                     return;
                 }
+                
                 if (postResult) {
                     let date = new Date(post_rec);
                     header.innerHTML = 'POST-QUIZ RESULT';
@@ -479,15 +481,15 @@
             document.getElementById('com-tasks').addEventListener('click', async function() {
                 
                 if (!tasks) {
-                    tasks = await fetchTasks(); // No 'let' here, reuse the existing 'tasks'
+                    tasks = await fetchTasks(); 
                     localStorage.setItem('tasks', JSON.stringify(tasks));
                     tasks = JSON.parse(localStorage.getItem('tasks')); 
                 }
                 
                 if (!detailed) {
-                    let com_tasks = await fetchTaskStatus(); // 'com_tasks' might be fine as local if you don't need it outside
+                    let com_tasks = await fetchTaskStatus(); 
                     localStorage.setItem('com_tasks', JSON.stringify(com_tasks.result));
-                    detailed = JSON.parse(localStorage.getItem('com_tasks')); // no 'let' here
+                    detailed = JSON.parse(localStorage.getItem('com_tasks')); 
                     task_rec = detailed.time;
                 }
                 
