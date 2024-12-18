@@ -348,10 +348,12 @@
                             questionTitle.innerHTML = `Question ${i + 1} - ${score} points`;
 
                             if (score < 3) {
+                                questionDiv.style.borderRadius = "10px";
                                 questionDiv.style.boxShadow = "10px 10px 10px red";
                                 questionTitle.style.color = 'red';
                             } else {
-                                questionDiv.style.boxShadow = "10px 10px 10px green";
+                                questionDiv.style.borderRadius = "10px";
+                                questionDiv.style.boxShadow = "10px 10px 10px rgb(2, 137, 122)";
                                 questionTitle.style.color = 'green';
                             }
 
