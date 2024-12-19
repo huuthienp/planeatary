@@ -91,6 +91,7 @@ body {
     height: 100%;
     margin: 0 auto;
     flex-direction: column;
+    font-family: 'Poppins', sans-serif;
   }
 
   .Header {
