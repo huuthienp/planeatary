@@ -14,7 +14,7 @@ body {
     border-bottom: 0.2em solid #02897A;
     gap: 1vw;
   }
-  .header .logo {
+  .logo {
     font-weight: Bold;
     color: #02897A;
     font-size: 2em;
@@ -85,12 +85,18 @@ body {
 /* styles for larger screens */
 @media (min-width: 992px) {
 
-  .container {
+  .main-container {
+    display: flex;
     width: 100%;
     height: 100%;
     margin: 0 auto;
-    
+    flex-direction: column;
   }
+
+  .Header {
+    width: 100%;
+  }
+
   .header {
     display: flex;
     justify-content: space-between;
@@ -194,8 +200,11 @@ body {
     
 }
 
-  .container {
+  .main-container {
+    display: flex;
     width: 100%;
+    height: 100%;
+    flex-direction: column;
     margin: 0 auto;   
   }
 
@@ -957,6 +966,16 @@ body {
   color: white;
 }
 
+.Header {
+  width: 100%;
+  font-family: Poppins;
+  color: #02897A;
+  border-bottom: 0.2em solid #02897A;
+}
 .history-table {
-  margin: 20px auto;
+  position: relative;
+  padding: 1vh 1vw;
+}
+#h-table {
+  position: relative;
 }
