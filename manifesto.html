@@ -139,13 +139,13 @@
                     setTimeout(() => {
                         //console.log("Hiding spinner after min time...");
                         spinner.classList.add('hidden');
-                        spOver.classList.remove('hidden');
+                        spOver.classList.add('hidden');
                         isLoading = false;
                     }, minDisplayTime - elapsedTime);
                 } else {
                     //console.log("Hiding spinner...");
                     spinner.classList.add('hidden');
-                    spOver.classList.remove('hidden');
+                    spOver.classList.add('hidden');
                     isLoading = false;
                 }
             };
