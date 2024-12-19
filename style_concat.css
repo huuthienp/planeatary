@@ -144,15 +144,6 @@ body {
     text-decoration: none;
     color: #074740;
   }
-  
-  body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: white;
-    transition: background-color .5s;
-    font-size: 1em;
-  }
 
   .button {
     display:flex;
@@ -282,6 +273,14 @@ body {
   color: white;
 }
 
+.m-content {
+  display: flex;
+  justify-content: space-between;
+  padding: 3vh 0;
+  gap: 2vmax;
+  flex-direction: column;
+}
+
 
 /* Spinner styling */
 .spinner {
@@ -312,14 +311,7 @@ body {
   display: none;
 }
 
-.content {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  align-items: center;
-  font-family: Poppins;
-}
+
 .content .head {
   width: 100%;
   align-items: center;
