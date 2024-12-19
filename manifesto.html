@@ -6,41 +6,74 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
     <link href="style_concat.css" rel="stylesheet" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Icon CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Start Challenges</title>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div id="mySidenav" class="sidenav">
-        <ul>
-            <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
-            <li><a href="qualtrics.html"><b>Quiz</b></a></li>
-            <!-- <li><a href="manifesto.html">Challenge</a></li> -->
-            <li><a href="result_page.html">Dashboard</a></li>
-            <li><a href="history_page.html">History</a></li>
-            <li><a href="#">User</a></li>
-        </ul>
-    </div>
-    <div class="container">
+    <div class="main-container">
         <div class="spinner hidden" id="spinner"></div>
-        <div class="header">
-            <h2 class="logo"><img  src="./images/logo.png" style="width: 120px; height:auto"/>planeatary</h2>
-            <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
-            <nav class="forwindow">
-                <ul>
-                    <!-- <li><a href="index.html">Home</a></li>
-                    <li><a href="qualtrics.html"><b>Quiz</b></a></li> -->
-                    <!-- <li><a href="manifesto.html">Challenge</a></li> -->
-                    <li><a href="result_page.html" style="color:#074740;">Dashboard</a></li>
-                    <li><a href="history_page.html">History</a></li>
-                    <li><a href="#">User</a></li>
-                    <!-- <li>About us</li> -->
+        <div class="Header">
+            <!-- Sidebar -->
+            <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
+                <div class="container-fluid">
+                    <a class="navbar-brand d-flex align-items-center" href="#">
+                        <img  src="./images/transparent_logo.png" width="70" height="auto" class="d-inline-block align-text-top"/>
+                        <strong>Planeatary</strong>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                        <div class="offcanvas-header" style="background-color: #096358;">
+                            <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="50" height="auto" class="d-inline-block align-text-top"/>planeatary</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body" style="background-color: #02897A;">
+                            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                                <li class="nav-item">
+                                    <a class="nav-link disabled" href="index.html"><i class="fa fa-home"></i> Home</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle disabled" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-edit"></i>  <strong>Quiz</strong>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                      <li><a class="dropdown-item disabled" href="qualtrics.html">Pre-quiz</a></li>
+                                      <li><a class="dropdown-item disabled" href="qualtrics_post.html">Post-quiz</a></li>
+                                    </ul>
+                                  </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" id="ch" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                      <li><a class="dropdown-item" href="#">My account</a></li>
+                                      <li><a class="dropdown-item" href="#">Log out</a></li>
+                                    </ul>
+                                  </li>
+                                <!-- <li class="nav-item">
+                                    <button class="signIn"><a class="nav-link" href="#">Sign in</a></button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="signIn"><a class="nav-link" href="#">Sign up</a></button>
+                                </li> -->
+                            </div>
+                        </div>
+                    </div>
+                </nav>
                 </ul>
             </nav>
-            <!-- <div class="button">
-                <button class="signIn">Sign In</button>
-                <span>&ensp;</span>
-                <button class="signUp">Sign Up</button>
-            </div> -->
+
         </div>
         <div class="subheader">
             <p id="threetask"></p>
@@ -89,7 +122,7 @@
     <!-- spinner overlay-->
     <section class="overlay hidden" id="spinnerOverlay">
     </section>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module">
         import {extractTaskArrays} from './data-functions.mjs';
         

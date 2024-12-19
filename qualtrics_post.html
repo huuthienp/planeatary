@@ -5,61 +5,82 @@
         <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
         <link href="style_concat.css" rel="stylesheet" />
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <!-- Icon CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>PlanEATary Quiz</title>
         <script src="/listen-to-qualtrics.mjs"  type="module"></script>  
     </head>
     <body>
+
+<div class="main-container">
+    <div class="spinner hidden" id="spinner"></div>
+    <div class="Header">
         <!-- Sidebar -->
-        <div id="mySidenav" class="sidenav">
-            <ul>
-                <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
-                <!-- <li><a href="index.html">Home</a></li> -->
-                <!-- <a href="qualtrics.html"><b>Quiz</b></a></li> -->
-                <li id="ch">Challenge</li>
-                <li><a href="result_page.html">Dashboard</a></li>
-                <!-- <li><a href="#">About us</a></li> -->
-            </ul>
-        </div>
-        <div class="container">
-            <div class="spinner hidden" id="spinner"></div>
-            <div class="header">
-                <h2 class="logo"><img  src="./images/logo.png" style="width: 120px; height:auto"/>planeatary</h2>
-                <span style="font-size:2em;cursor:pointer" onclick="openNav()">&#9776;</span>
-                <nav class="forwindow">
-                    <ul>
-                        <!-- <li><a href="index.html">Home</a></li>
-                        <li><a href="qualtrics.html"><b>Quiz</b></a></li> -->
-                        <li id="CH">Challenge</li>
-                        <li><a href="result_page.html" style="color: #074740;">Dashboard</a></li>
-                        <!-- <li>About us</li> -->
-                    </ul>
-                </nav>
-                <!-- <div class="button">
-                    <button class="signIn">Sign In</button>
-                    <span>&ensp;</span>
-                    <button class="signUp">Sign Up</button>
-                </div> -->
+        <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <img  src="./images/transparent_logo.png" width="70" height="auto" class="d-inline-block align-text-top"/>
+                    <strong>Planeatary</strong>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header" style="background-color: #096358;">
+                        <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="50" height="auto" class="d-inline-block align-text-top"/>planeatary</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body" style="background-color: #02897A;">
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <li class="nav-item">
+                                <a class="nav-link disabled" href="index.html"><i class="fa fa-home"></i> Home</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle active" aria-current="page" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-edit"></i>  <strong>Quiz</strong>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                    <li><a class="dropdown-item disabled" href="qualtrics.html">Pre-quiz</a></li>
+                                    <li><a class="dropdown-item active" aria-current="page" href="qualtrics_post.html">Post-quiz</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="ch" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="d" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
+                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                    <li><a class="dropdown-item" href="#">My account</a></li>
+                                    <li><a class="dropdown-item" href="#">Log out</a></li>
+                                </ul>
+                            </li>
+                            <!-- <li class="nav-item">
+                                <button class="signIn"><a class="nav-link" href="#">Sign in</a></button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="signIn"><a class="nav-link" href="#">Sign up</a></button>
+                            </li> -->
+                        </div>
+                    </div>
+                </div>
+            </nav>
             </div>
             <div class="content">
                 <iframe class="quiz" src="https://uow.au1.qualtrics.com/jfe/form/SV_5njEnh46h0tSueG" title="Planeatary quiz"></iframe>
             <div class="btn-next">
-                <button class="next">Next  &#8594;</button>
+                <button type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button>
             </div>
         </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function openNav() {
-            next = document.querySelector(".next");
-            next.style.cursor = "not-allowed";
-            document.getElementById("mySidenav").style.width = "40%";
-            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
-        };
-        
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.body.style.backgroundColor = "white";
-        };
-
-        const CH = document.getElementById("CH");
         const ch = document.getElementById("ch");
         const nextButton = document.querySelector('.next');
         function updateNextButton() {
@@ -71,11 +92,8 @@
                 nextButton.style.cursor = 'pointer';   
                 nextButton.disabled = false;
                 ch.style.color = 'grey'; 
-                CH.style.color = 'grey'
                 ch.style.cursor = "not-allowed"; 
-                CH.style.cursor = "not-allowed";
                 ch.disabled = true; 
-                CH.disabled = true;
                 nextButton.addEventListener("click", function() {
                     window.location.href = "result_page.html";
                 });
@@ -83,17 +101,13 @@
                 ch.addEventListener("click", function() {
                     window.location.href = "manifesto.html";
                 });
-                CH.addEventListener("click", function() {
-                    window.location.href = "manifesto.html";
-                });
+
                 ch.style.cursor = "pointer"; 
-                CH.style.cursor = "pointer";
                 ch.style.color = 'white'; 
-                CH.style.color = '#074740'; 
                 ch.disabled = false; 
-                CH.disabled = false;
                 // Disable the button if postResult does not exist
                 nextButton.style.backgroundColor = 'grey';
+                nextButton.style.borderColor = 'grey';
                 nextButton.style.cursor = 'not-allowed';
                 nextButton.disabled = true;
 
