@@ -65,7 +65,7 @@ export function saveLocalStorage(data, type) {
 }
 
 
-export function extractTaskArrays(data) {
+export function mergeTaskArrays(data) {
 /**
  * Extracts two arrays of task numbers from the given data object.
  * @param {Object} data - The input data object.
