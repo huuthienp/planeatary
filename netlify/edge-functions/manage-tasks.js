@@ -51,7 +51,7 @@ export default async (req) => {
     if (methodUpper === 'PUT') {
       const parsed = await req.json(); // error handled below
 
-      const expected = ['id', 'chosen', 'done'];
+      const expected = ['id', 'chosen'];
 
       const missing = expected.filter(prop => !Object.hasOwn(parsed, prop));
 

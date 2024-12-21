@@ -90,8 +90,8 @@ export function mergeTaskArrays(data) {
  * }
  */
   const chosen = [];
-  const done = [];
-  const time = [];
+  // const done = [];
+  // const time = [];
   const delimiter = '@';
 
   Object.values(data).forEach(question => {
@@ -102,16 +102,16 @@ export function mergeTaskArrays(data) {
         const suffix = (completed || finishTime) ? delimiter+finishTime : '';
         chosen.push(task.taskNumber + suffix);
       }
-      if (task.status === 'Completed') {
-        done.push(task.taskNumber);
-      }
-      time.push(task.finish);
+      // if (task.status === 'Completed') {
+        // done.push(task.taskNumber);
+      // }
+      // time.push(task.finish);
     });
   });
 
   return {
     chosen: chosen,
-    done: done,
-    time: time
+    // done: done,
+    // time: time
   };
 }

@@ -223,8 +223,8 @@
                     let task = {
                         id: preResponseId,
                         chosen: extracted.chosen,
-                        done: extracted.done,
-                        time: extracted.time
+                        // done: extracted.done,
+                        // time: extracted.time
                     }
                     const response = await fetch('/api/manage-tasks', {
                         method: 'PUT',

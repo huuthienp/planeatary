@@ -303,7 +303,7 @@
                     let task = {
                         id: preResponseId,
                         chosen: extracted.chosen,
-                        done: extracted.done
+                        // done: extracted.done
                     }
                     const response = await fetch('/api/manage-tasks', {
                         method: 'PUT',
