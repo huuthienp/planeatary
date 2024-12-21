@@ -92,11 +92,15 @@ export function extractTaskArrays(data) {
   const chosen = [];
   const done = [];
   const time = [];
+  const delimiter = '@';
 
   Object.values(data).forEach(question => {
     question['tasks'].forEach(task => {
       if (task.choice === 'chosen') {
-        chosen.push(task.taskNumber);
+        const completed = task.status.toLowerCase() === 'completed';
+        const finishTime = task.finish || ''; // in case undefined
+        const suffix = (completed || finishTime) ? delimiter+finishTime : '';
+        chosen.push(task.taskNumber + suffix);
       }
       if (task.status === 'Completed') {
         done.push(task.taskNumber);
