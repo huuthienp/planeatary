@@ -138,3 +138,27 @@ export async function fetchTaskStatus(preResponseId) {
         return null;
     }
 }
+
+
+export function extractTaskData(responseBody, delimiter='@') {
+    /* 
+     * Example of response body
+     * {                                                        
+     *   "result": {                                            
+     *     "id": "example-id",                           
+     *     "chosen": [                                          
+     *       "t0101@1728420121",                                
+     *       "t0102",                                           
+     *       "t0103",                                           
+     *       "t0302@1728423461",                                
+     *       "t0303@1728422505"                                 
+     *     ]                                                    
+     *   },                                                     
+     *   "meta": {                                              
+     *     "requestId": "example-id", 
+     *     "httpStatus": "200 - OK"                             
+     *   }                                                      
+     * }
+     * @returns {Object} An object containing arrays: chosen, done, and time.
+     */
+}
