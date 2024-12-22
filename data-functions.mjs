@@ -92,14 +92,14 @@ export function mergeTaskArrays(data) {
   const chosen = [];
   // const done = [];
   // const time = [];
-  const delimiter = '@';
+  const separator = '@';
 
   Object.values(data).forEach(question => {
     question['tasks'].forEach(task => {
       if (task.choice === 'chosen') {
         const completed = task.status.toLowerCase() === 'completed';
         const finishTime = task.finish || ''; // in case undefined
-        const suffix = (completed || finishTime) ? delimiter+finishTime : '';
+        const suffix = (completed || finishTime) ? separator+finishTime : '';
         chosen.push(task.taskNumber + suffix);
       }
       // if (task.status === 'Completed') {
@@ -140,7 +140,7 @@ export async function fetchTaskStatus(preResponseId) {
 }
 
 
-export function extractTaskData(responseBody, delimiter='@') {
+export function extractTaskData(responseBody, separator='@') {
     /* 
      * Example of response body
      * {                                                        
