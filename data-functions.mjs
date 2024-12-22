@@ -98,7 +98,7 @@ export function mergeTaskArrays(data) {
     question['tasks'].forEach(task => {
       if (task.choice === 'chosen') {
         const completed = task.status === 'Completed';
-        const finishTime = task.finish || ''; // in case undefined
+        const finishTime = task.finishTime || ''; // in case undefined
         const suffix = (completed || finishTime) ? separator+finishTime : '';
         chosen.push(task.taskNumber + suffix);
       }
@@ -167,9 +167,9 @@ export function extractTaskData(responseBody, separator='@') {
     responseBody.result.chosen.forEach( (merged_string) => {
         const _split = merged_string.split(separator);
         const isDone = merged_string.includes(separator);
-        const finish = _split[1] || '';
+        const finishTime = _split[1] || '';
         chosen.push(_split[0]);
-        time.push(finish);
+        time.push(finishTime);
         if (isDone) {
             done.push(_split[0]);
         }

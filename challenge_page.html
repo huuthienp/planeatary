@@ -394,14 +394,14 @@
                                 taskName.style.textDecoration = "line-through";
                                 completion.innerHTML = "Completed";
                                 let timestamp = Date.now();
-                                task.finish = timestamp;
+                                task.finishTime = timestamp;
                                 //time.push(timestamp);
                             } else {
                                 taskCard.style.color = 'rgb(71, 71, 71)';
                                 taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
                                 taskName.style.textDecoration = "none";
                                 completion.innerHTML = "Done";
-                                task.finish = '';
+                                task.finishTime = '';
                                 //time.splice(-1, 1);
                             }
 

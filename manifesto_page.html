@@ -442,7 +442,7 @@
                                     // for incomplete task, finish time is empty string ''
                                     const _index = fetched_tasks.chosen.indexOf(task.taskNumber);
                                     // `chosen` and `time` are parallel
-                                    task.finish = fetched_tasks.time[_index];
+                                    task.finishTime = fetched_tasks.time[_index];
                                     if (fetched_tasks.done.includes(String(task.taskNumber))) {
                                         task.status = 'Completed';
                                         checkbox.disabled = true; // Disable the checkbox if the task is completed
