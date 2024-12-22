@@ -116,7 +116,8 @@
         
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+    <script type="module">
+        import { fetchTaskStatus } from './data-functions.mjs';
 
         const Qbuttoncontainer = document.querySelector(".pre-postQ");
         const Pre_Q = document.querySelector("#preQ");
@@ -251,7 +252,7 @@
             }
 
             // Function to get task status from the API
-            async function fetchTaskStatus() {
+            async function fetchTaskStatus_() {  // archive
                 try {
                     showSpinner();
                     const response = await fetch('/api/manage-tasks', {
@@ -519,16 +520,20 @@
                 }
                 
                 if (!detailed) {
-                    let com_tasks = await fetchTaskStatus(); 
-                    localStorage.setItem('com_tasks', JSON.stringify(com_tasks.result));
+                    showSpinner();
+                    let com_tasks = await fetchTaskStatus(preResponseId); 
+                    hideSpinner();
+                    localStorage.setItem('com_tasks', JSON.stringify(com_tasks));
                     detailed = JSON.parse(localStorage.getItem('com_tasks')); 
                     task_rec = detailed.time;
                 }
                 
                 // fetch up-to-date info
                 if (!detailed.done) {
-                    let done_tasks = await fetchTaskStatus();
-                    localStorage.setItem('com_tasks', JSON.stringify(done_tasks.result));
+                    showSpinner();
+                    let done_tasks = await fetchTaskStatus(preResponseId);
+                    hideSpinner();
+                    localStorage.setItem('com_tasks', JSON.stringify(done_tasks));
                     detailed = JSON.parse(localStorage.getItem('com_tasks'));
                     task_rec = detailed.time;
                 }

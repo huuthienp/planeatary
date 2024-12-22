@@ -123,7 +123,7 @@
     </section>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module">
-        import { mergeTaskArrays } from './data-functions.mjs';
+        import { mergeTaskArrays, fetchTaskStatus } from './data-functions.mjs';
         
         window.openNav = function() {
             document.getElementById("mySidenav").style.width = "40%";
@@ -272,7 +272,7 @@
             }
             
             // Function to get task status from the API
-            async function fetchTaskStatus() {
+            async function fetchTaskStatus_() {  // archive
                 try {
                     showSpinner();
                     const response = await fetch('/api/manage-tasks', {
@@ -351,15 +351,19 @@
                 }
                 
                 if (!fetched_tasks) {
-                    fetched_tasks = await fetchTaskStatus(); 
-                    localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result));
+                    showSpinner();
+                    fetched_tasks = await fetchTaskStatus(preResponseId); 
+                    hideSpinner();
+                    localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
                     fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                 }
                 
                 //fetch up-to-date info
                 if (!fetched_tasks.done || !fetched_tasks.chosen) {
-                    fetched_tasks = await fetchTaskStatus(); 
-                    localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result));
+                    showSpinner();
+                    fetched_tasks = await fetchTaskStatus(preResponseId); 
+                    hideSpinner();
+                    localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
                     fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                 }
                 

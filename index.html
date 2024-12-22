@@ -83,6 +83,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script type="module">
         import { reformatQualtricsData, saveLocalStorage, mergeTaskArrays } from './data-functions.mjs';
+        import { fetchTaskStatus } from './data-functions.mjs'
 
         document.addEventListener("DOMContentLoaded", async function() {
             const spinner = document.getElementById('spinner');
@@ -270,7 +271,7 @@
 
 
             // Function to get task status from the API
-            async function fetchTaskStatus() {
+            async function fetchTaskStatus_() {  // archive
                 try {
                     
                     showSpinner();
@@ -346,8 +347,10 @@
                         renderOutcome(true, message);
                         if (!tasks && !fetched_tasks) {
                             tasks = await fetchTasks();
-                            fetched_tasks = await fetchTaskStatus(); 
-                            localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result)); 
+                            showSpinner();
+                            fetched_tasks = await fetchTaskStatus(preResponseId); 
+                            hideSpinner();
+                            localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
                             localStorage.setItem('tasks', JSON.stringify(tasks));
                             tasks = JSON.parse(localStorage.getItem('tasks'));
                             fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
@@ -389,8 +392,10 @@
                     let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                     if (!tasks && !fetched_tasks) {
                             tasks = await fetchTasks();
-                            fetched_tasks = await fetchTaskStatus(); 
-                            localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks.result)); 
+                            showSpinner();
+                            fetched_tasks = await fetchTaskStatus(preResponseId); 
+                            hideSpinner();
+                            localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
                             localStorage.setItem('tasks', JSON.stringify(tasks));
                             tasks = JSON.parse(localStorage.getItem('tasks'));
                             fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
