@@ -115,3 +115,26 @@ export function mergeTaskArrays(data) {
     // time: time
   };
 }
+
+
+// Function to get task status from the API
+export async function fetchTaskStatus(preResponseId) {
+    try {
+        // showSpinner(); // put this outside
+        const response = await fetch('/api/manage-tasks', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Q-RESPONSE-ID': preResponseId,
+            }
+        });
+        const data = await response.json();
+        console.log('Task status fetched:', data);
+        // hideSpinner(); // put this outside
+        return data;
+    } catch (error) {
+        // hideSpinner(); // put this outside
+        console.error('Error fetching task status:', error);
+        return null;
+    }
+}
