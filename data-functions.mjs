@@ -65,7 +65,7 @@ export function saveLocalStorage(data, type) {
 }
 
 
-export function mergeTaskArrays(data) {
+export function mergeTaskArrays(data, separator = '@') {
 /**
  * @param {Object} data - The input data object.
  * @returns {Object} An object containing an array named chosen.
@@ -92,7 +92,6 @@ export function mergeTaskArrays(data) {
   const chosen = [];
   // const done = [];
   // const time = [];
-  const separator = '@';
 
   Object.values(data).forEach(question => {
     question['tasks'].forEach(task => {
