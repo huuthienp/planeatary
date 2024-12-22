@@ -128,7 +128,7 @@ export async function fetchTaskStatus(preResponseId) {
                 'Q-RESPONSE-ID': preResponseId,
             }
         });
-        const data = await response.json();
+        const data = extractTaskData(await response.json());
         console.log('Task status fetched:', data);
         // hideSpinner(); // put this outside
         return data;
@@ -161,4 +161,22 @@ export function extractTaskData(responseBody, separator='@') {
      * }
      * @returns {Object} An object containing arrays: chosen, done, and time.
      */
+    const chosen = [];
+    const done = [];
+    const time = [];
+    responseBody.result.chosen.forEach( (merged_string) => {
+        const _split = merged_string.split(separator);
+        const isDone = merged_string.includes(separator);
+        const finish = _split[1] || '';
+        chosen.push(_split[0]);
+        if (isDone) {
+            done.push(_split[0]);
+            time.push(finish);
+        }
+    });
+    return {
+        chosen: chosen,
+        done: done,
+        time: time,
+    }
 }
