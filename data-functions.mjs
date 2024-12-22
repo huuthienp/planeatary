@@ -169,9 +169,9 @@ export function extractTaskData(responseBody, separator='@') {
         const isDone = merged_string.includes(separator);
         const finish = _split[1] || '';
         chosen.push(_split[0]);
+        time.push(finish);
         if (isDone) {
             done.push(_split[0]);
-            time.push(finish);
         }
     });
     return {
