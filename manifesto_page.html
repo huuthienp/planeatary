@@ -434,6 +434,7 @@
                             taskList.appendChild(taskItem);
                             
                             // Set task choice and status based on local storage
+                            // and finish time
                             if (fetched_tasks.chosen && fetched_tasks.done) {
                                 if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
                                     task.choice = 'chosen';
@@ -441,6 +442,9 @@
                                     if (fetched_tasks.done.includes(String(task.taskNumber))) {
                                         task.status = 'Completed';
                                         checkbox.disabled = true; // Disable the checkbox if the task is completed
+                                        const _index = fetched_tasks.chosen.indexOf(task.taskNumber);
+                                        // `chosen` and `time` are parallel
+                                        task.finish = fetched_tasks.time[_index];
                                     }
                                 }
                             }
