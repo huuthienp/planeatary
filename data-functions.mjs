@@ -67,9 +67,8 @@ export function saveLocalStorage(data, type) {
 
 export function mergeTaskArrays(data) {
 /**
- * Extracts two arrays of task numbers from the given data object.
  * @param {Object} data - The input data object.
- * @returns {Object} An object containing two arrays: chosen tasks and done tasks.
+ * @returns {Object} An object containing an array named chosen.
  *
  * Expected structure of data:
  * {
@@ -79,6 +78,7 @@ export function mergeTaskArrays(data) {
  *         taskNumber: string,
  *         choice: string,
  *         status: string,
+ *         finishTime: string,
  *       },
  *       // ... more tasks
  *     ]
