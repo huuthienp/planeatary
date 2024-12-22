@@ -97,7 +97,7 @@ export function mergeTaskArrays(data) {
   Object.values(data).forEach(question => {
     question['tasks'].forEach(task => {
       if (task.choice === 'chosen') {
-        const completed = task.status.toLowerCase() === 'completed';
+        const completed = task.status === 'Completed';
         const finishTime = task.finish || ''; // in case undefined
         const suffix = (completed || finishTime) ? separator+finishTime : '';
         chosen.push(task.taskNumber + suffix);
