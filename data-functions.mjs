@@ -65,6 +65,36 @@ export function saveLocalStorage(data, type) {
 }
 
 
+// Function to update task status using the API
+export async function updateTaskStatus(preResponseId, taskData) {
+    try {
+        // showSpinner();  // to be called outside
+        // const taskData = JSON.parse(localStorage.getItem('tasks'));  // to be called outside
+        const mergedData = mergeTaskArrays(taskData);
+        const requestBody = {
+            id: preResponseId,
+            chosen: mergedData.chosen,
+            // done: mergedData.done,
+            // time: mergedData.time,
+        };
+        const response = await fetch('/api/manage-tasks', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Q-RESPONSE-ID': preResponseId,
+            },
+            body: JSON.stringify(requestBody),
+        });
+        const responseBody = await response.json();
+        console.log('Task updated successfully:', responseBody);
+        // hideSpinner();  // to be called outside
+    } catch (error) {
+        // hideSpinner();  // to be called outside
+        console.error('Error updating task status:', error);
+    }
+}
+
+
 export function mergeTaskArrays(data, separator = '@') {
 /**
  * @param {Object} data - The input data object.
