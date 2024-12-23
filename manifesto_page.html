@@ -478,10 +478,11 @@
                             
                             checkbox.checked = task.choice === "chosen";
                             localStorage.setItem('tasks', JSON.stringify(tasks)); 
+                            // update task status on `startButton` click
                             // updateTaskStatus(task);
-                            showSpinner();
-                            updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
-                            hideSpinner();
+                            // showSpinner();
+                            // updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
+                            // hideSpinner();
                             updateStartButton(); 
                         });
                         
@@ -518,6 +519,9 @@
             // Attach single click listener for the start button navigation
             startButton.addEventListener('click', function(event) {
                 if (task_counts >= 3) {
+                    showSpinner();
+                    updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
+                    hideSpinner();
                     window.location.href = "challenge_page.html";
                 }
             });
