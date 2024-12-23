@@ -103,7 +103,7 @@
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
     <script type="module">
-        import { mergeTaskArrays, fetchTaskStatus } from './data-functions.mjs';
+        import { fetchTaskStatus, updateTaskStatus } from './data-functions.mjs';
         
         let time =  [];
         let scores = [];
@@ -215,7 +215,7 @@
             }
 
             // Function to update task status using the API
-            async function updateTaskStatus(task) {
+            async function updateTaskStatus_(task) {  // archive
 
                 try {
                     const taskData = JSON.parse(localStorage.getItem('tasks'));
@@ -409,7 +409,10 @@
                             localStorage.setItem('tasks', JSON.stringify(tasks));
                             localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                             //localStorage.setItem('time', JSON.stringify(time));
-                            updateTaskStatus(task);
+                            // updateTaskStatus(task);
+                            showSpinner();
+                            updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
+                            hideSpinner();
                             updateNextButton();
                             
                         });
@@ -417,7 +420,10 @@
                         localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus)); 
                         //localStorage.setItem('time', JSON.stringify(time));
 
-                        updateTaskStatus(task);
+                        // updateTaskStatus(task);
+                        showSpinner();
+                        updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
+                        hideSpinner();
                         
                     }
                 });
