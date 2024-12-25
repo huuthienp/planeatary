@@ -396,6 +396,98 @@ body {
   text-decoration: none;
   color: white;
 }
+
+/*home screen*/
+    /*hero section*/
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: url('https://cdni.autocarindia.com/Utils/ImageResizer.ashx?n=http://img.haymarketsac.in/autocarpro/5d12d2d8-c6bd-4899-91d3-a3e79a57569b_sustainable-earth-image.jpg&w=750&h=490&q=75&c=1') center/cover no-repeat;
+      margin-bottom: 50px;
+    }
+  
+    .hero .herocontent {
+      position: relative;
+      max-width: 100%;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+  
+    .hero .herocontent h1 {
+      font-size: 36px;
+      margin: 0 0 20px;
+      color: #333;
+    }
+  
+    .hero .herocontent p {
+      font-size: 18px;
+      margin: 0 0 20px;
+      color: #555;
+    }
+  
+    .hero .herocontent .herobtn {
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #28a745;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  
+    .hero .herocontent .herobtn:hover {
+      background-color: #218838;
+    }
+  
+    /*step section*/
+    .step-section {
+      padding-top: 50px; 
+      text-align: center;
+      background-color: #f9f9f9;
+      padding: 50px 20px;
+    }
+    
+    .step-section h2 {
+      font-size: 24px;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    
+    .steps {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+    
+    .step {
+      max-width: 200px;
+      text-align: center;
+    }
+    
+    .step img {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    .step h3 {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+    
+    .step p {
+      font-size: 14px;
+      color: #555;
+    }
+
 .welcome {
   color: rgba(33,52,60,1);
   font-family: Poppins;
