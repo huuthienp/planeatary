@@ -51,10 +51,10 @@
                                         <a class="nav-link" href="result_page.html"></a>
                                     </li> -->
                                     <li class="nav-item">
-                                        <button type="button" class="btn btn-success" style="width: 150px;"><a class="nav-link" href="#">Sign in</a></button>
+                                        <button type="button" class="btn btn-success" id="signinBtn" style="width: 150px;"><a class="nav-link" href="#">Sign in</a></button>
                                     </li>
                                     <li class="nav-item">
-                                        <button type="button" class="btn btn-primary" style="width: 150px;"><a class="nav-link" href="#"><strong>Sign up</strong></a></button>
+                                        <button type="button" class="btn btn-primary" id="signupBtn" style="width: 150px;"><a class="nav-link" href="#"><strong>Sign up</strong></a></button>
                                     </li>
                                 </div>
                             </div>
@@ -456,5 +456,9 @@
             // checkOrFetchResponseId();
         });
         </script>
+        <script>  // start of user account functionality
+            signinBtn.addEventListener('click', () => { netlifyIdentity.close(); netlifyIdentity.open('login'); } );
+            signupBtn.addEventListener('click', () => { netlifyIdentity.close(); netlifyIdentity.open('signup'); } );
+        </script>  <!-- end of user account functionality -->
     </body>
 </html>
