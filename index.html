@@ -457,8 +457,16 @@
         });
         </script>
         <script>  // start of user account functionality
-            signinBtn.addEventListener('click', () => { netlifyIdentity.close(); netlifyIdentity.open('login'); } );
-            signupBtn.addEventListener('click', () => { netlifyIdentity.close(); netlifyIdentity.open('signup'); } );
+        signinBtn.addEventListener('click', () => { netlifyIdentity.close(); netlifyIdentity.open('login'); } );
+        signupBtn.addEventListener('click', () => { netlifyIdentity.close(); netlifyIdentity.open('signup'); } );
+        </script>
+        <script type="module">
+        import { checkFragment } from "./user-account-functions.js";
+        window.addEventListener('hashchange', () => {
+            if (checkFragment('confirmation_token')) {
+                window.location.reload();
+            }
+        } );
         </script>  <!-- end of user account functionality -->
     </body>
 </html>
