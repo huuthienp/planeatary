@@ -49,11 +49,12 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="result_page.html"></a>
                                     </li> -->
+                                    
                                     <li class="nav-item">
-                                        <button type="button" class="btn btn-success" style="width: 150px;"><a class="nav-link" href="#">Sign in</a></button>
+                                        <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signInModal">Sign in</button>
                                     </li>
                                     <li class="nav-item">
-                                        <button type="button" class="btn btn-primary" style="width: 150px;"><a class="nav-link" href="#"><strong>Sign up</strong></a></button>
+                                        <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signUpModal">Sign up</button>
                                     </li>
                                 </div>
                             </div>
@@ -225,6 +226,78 @@
                 </footer>
               </section>
 
+        </div>
+
+        <!-- Sign In Modal-->
+        <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="signInModalLabel">Sign In</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Sign-In Form -->
+                        <form id="signInForm" novalidate>
+                            <div class="mb-3">
+                                <label for="emailInput" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="emailInput" placeholder="Enter email" required>
+                                <div class="invalid-feedback">This email is invalid.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="passwordInput" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="passwordInput" placeholder="Enter password" required>
+                                <div class="invalid-feedback">Password must be at least 6 characters long.</div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="signInButton">Sign In</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sign Up Modal-->
+        <div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="signUpModalLabel">Sign Up</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Sign-Up Form -->
+                        <form id="signUpForm" novalidate>
+                            <div class="mb-3">
+                                <label for="nameInput" class="form-label">Username</label>
+                                <input type="name" class="form-control" id="nameInput" placeholder="Enter username" required>
+                        
+                            </div>
+                            <div class="mb-3">
+                                <label for="emailInput" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="emailInput" placeholder="Enter email" required>
+                                <div class="invalid-feedback">This email is invalid.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="passwordInput1" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="passwordInput1" placeholder="Enter password" required>
+                                <div class="invalid-feedback">Password must be at least 6 characters long.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="passwordInput2" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="passwordInput2" placeholder="Enter password" required>
+                                
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="signUpButton">Sign Up</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -561,6 +634,95 @@
             });
 
             // checkOrFetchResponseId();
+        });
+        </script>
+
+        <!--sign in popup-->
+        <script>
+            function showSignInModal() {
+            const modal = new bootstrap.Modal(document.getElementById('signInModal'));
+            modal.show();
+            }
+        </script>
+        <!--sign in validation-->
+        <script>
+            document.getElementById('submitButton').addEventListener('click', function () {
+                const emailInput = document.getElementById('emailInput');
+                const passwordInput = document.getElementById('passwordInput');
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        
+                let isValid = true;
+        
+                // Email validation
+                if (!emailRegex.test(emailInput.value) || emailInput.value === 'harry@m.com') {
+                    emailInput.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    emailInput.classList.remove('is-invalid');
+                }
+        
+                // Password validation (minimum 6 characters)
+                if (passwordInput.value.length < 6) {
+                    passwordInput.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    passwordInput.classList.remove('is-invalid');
+                }
+        
+                // If valid, submit the form or proceed further
+                if (isValid) {
+                    alert('Form is valid. Proceeding...');
+                    // Add your form submission logic here
+                }
+            });
+        </script>
+
+        <!--sign up popup-->
+        <script>
+            function showSignUpModal() {
+            const modal = new bootstrap.Modal(document.getElementById('signUpModal'));
+            modal.show();
+            }
+        </script>
+
+        <!--Sign Up validation-->
+        <script>
+            document.getElementById('signUpButton').addEventListener('click', function () {
+            const emailInput = document.getElementById('emailInput');
+            const passwordInput1 = document.getElementById('passwordInput1');
+            const passwordInput2 = document.getElementById('passwordInput2');
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            let isValid = true;
+
+        // Email validation
+        if (!emailRegex.test(emailInput.value) || emailInput.value === 'harry@m.com') {
+            emailInput.classList.add('is-invalid');
+            isValid = false;
+            } else {
+            emailInput.classList.remove('is-invalid');
+        }
+
+        // Password validation (minimum 6 characters and match confirmation)
+        if (passwordInput1.value.length < 6) {
+            passwordInput1.classList.add('is-invalid');
+            isValid = false;
+            } else {
+            passwordInput1.classList.remove('is-invalid');
+        }
+        if (passwordInput1.value !== passwordInput2.value) {
+            passwordInput1.classList.add('is-invalid');
+            passwordInput2.classList.add('is-invalid');
+            isValid = false;
+            } else {
+            passwordInput1.classList.remove('is-invalid');
+            passwordInput2.classList.remove('is-invalid');
+        }
+
+        // If valid, potentially submit form or redirect
+        if (isValid) {
+        // Add logic to handle successful signup (e.g., redirect to account.html)
+         window.location.href = "account.html"; // Redirect to account page
+        }
         });
         </script>
     </body>
