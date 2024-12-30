@@ -488,6 +488,53 @@ body {
       color: #555;
     }
 
+    /*do you know section*/
+    .do-you-know {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 50px 50px;
+      background-color: #f9f9f9;
+    }
+    
+    .do-you-know .content {
+      flex: 1;
+      max-width: 50%;
+    }
+    
+    .do-you-know h2 {
+      font-size: 24px;
+      color: #333;
+    }
+    
+    .do-you-know p {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 15px;
+    }
+    
+    .do-you-know ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+    
+    .do-you-know ul li {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    
+    .do-you-know .video {
+      flex: 1;
+      max-width: 40%;
+    }
+    
+    .do-you-know iframe {
+      width: 100%;
+      height: 500px;
+    }
+    
+
 .welcome {
   color: rgba(33,52,60,1);
   font-family: Poppins;
