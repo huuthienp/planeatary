@@ -533,7 +533,17 @@ body {
       width: 100%;
       height: 500px;
     }
+    .citation {
+      margin: 30px; 
+      font-size: 14px;
+      color: #555;
+    }
     
+    .citation p {
+      margin-bottom: 10px; 
+    }
+    
+  
 
 .welcome {
   color: rgba(33,52,60,1);
