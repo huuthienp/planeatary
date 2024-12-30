@@ -542,6 +542,129 @@ body {
     .citation p {
       margin-bottom: 10px; 
     }
+
+    /*Feedback*/
+    .reflect-section {
+      padding: 50px 30px;
+      margin:30px;
+      text-align: left;
+    }
+    
+    .reflect-section h2 {
+      font-size: 24px;
+      color: #333;
+    }
+    
+    .reflect-section hr {
+      border: none;
+      border-top: 1px solid #313131;
+      margin: 20px 0;
+    }
+    
+    .reflect-section p {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 15px;
+    }
+    
+    .reflect-section ul {
+      list-style-type: square;
+      padding-left: 20px;
+    }
+    
+    .reflect-section ul li {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    
+    .reflect-section a {
+      color: #007bff; 
+      text-decoration: underline;
+    }
+    
+    .reflect-section a:hover {
+      text-decoration: none; /* Remove underline on hover */
+    }
+    .background-section {
+      padding: 50px 20px;
+      text-align: center;
+    }
+    
+    .background-section h2 {
+      font-size: 24px;
+      color: #333;
+    }
+    
+    .background-section hr {
+      border: none;
+      border-top: 1px solid #ccc;
+      margin: 20px auto;
+    }
+    
+    .background-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-top: 20px;
+    }
+    
+    .person {
+      flex: 1;
+      max-width: 25%;
+    }
+    
+    .person img {
+      width: 100%;
+      height: auto;
+      border-radius: 50%;
+    }
+    
+    .person p {
+      margin-top: 10px;
+    }
+    
+    .description {
+      flex: 2;
+      max-width: 50%;
+    }
+    
+    .description p {
+      font-size: 16px;
+      color: #555;
+    }
+    
+    .description a {
+      color: #007bff; /* Link color */
+    }
+    
+    .team {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 30px;
+    }
+    
+    .team-member {
+      text-align: center;
+    }
+    
+    .team-member img {
+      width: 100px;
+      height: auto;
+    }
+    
+    .team-member p {
+      margin-top: 10px;
+    }
+    
+    .acknowledgment {
+      margin-top: 30px;
+    }
+    
+    .acknowledgment p {
+      font-size: 14px;
+    }
+    
     
   
 
