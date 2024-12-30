@@ -20,7 +20,7 @@
                 <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
                     <div class="container-fluid">
                         <a class="navbar-brand d-flex align-items-center" href="index.html">
-                            <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
+                            <img  src="./transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
                             <strong>Planeatary</strong>
                         </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
@@ -50,7 +50,7 @@
                                         <a class="nav-link" href="result_page.html"></a>
                                     </li> -->
                                     <li class="nav-item">
-                                        <button type="button" class="btn btn-success" style="width: 150px;"><a class="nav-link" href="#">Sign in</a></button>
+                                        <button type="button" class="btn btn-success" style="width: 150px;"><a class="nav-link" onclick="showSignIn()">Sign in</a></button>
                                     </li>
                                     <li class="nav-item">
                                         <button type="button" class="btn btn-primary" style="width: 150px;"><a class="nav-link" href="#"><strong>Sign up</strong></a></button>
@@ -86,7 +86,7 @@
                         Embark on a delicious adventure to learn how we can create a more sustainable food system
                         and improve our planet's health for current and future generations.
                     </p>
-                    <a href="https://planeatary.netlify.app/qualtrics" class="herobtn" >Get started</a>
+                    <a href="#" class="herobtn">Get started</a>
                 </div>
             </div>
 
@@ -117,114 +117,31 @@
                     </div>
                 </div>
             </section>
+        </div>
 
-            <!--do you know section-->
-            <section class="do-you-know">
-                <div class="content">
-                  <h2>DO YOU KNOW...?</h2>
-                  <p>(1) Our global food system is contributing approximately one-third of greenhouse gas emissions.<br/>
-                  (2) Experts have called for an urgent transformation to the way food is produced and consumed, including a population-wide shift to healthy and sustainable diets.</p>
-
-                    The PlanEATary Quest is a fun, interactive intervention that aims to help you:
-                  <ul>
-                    <li>Identify how you can improve the way you’re interacting with our food system to promote human and planetary health.</li>
-                    <li>Adopt new healthy and environmentally sustainable food habits, inspired by a supportive and collegial approach.</li>
-                    <li>Reflect on the factors that help or hinder your environmentally sustainable food habits.</li>
-                  </ul>
-     
+        <!-- Sign In Modal-->
+        <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="signInModalLabel">Sign In</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="Password">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Sign In</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="video">
-                  <iframe 
-                    width="560" 
-                    height="315" 
-                    src="https://www.youtube.com/embed/nYe-ibIFxW4" 
-                    title="YouTube video player" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                  </iframe>
-                </div>
-              </section>
-              <div class="citation">
-                <p>(1) Intergovernmental Panel on Climate Change (IPCC), Summary for Policymakers. Climate Change and Land: an IPCC special report on climate change, desertification, land degradation, sustainable land management, food security, and greenhouse gas fluxes in terrestrial ecosystems. 2019. Accessed: https://www.ipcc.ch/srccl/ (September, 2023).</p>
-                <p>(2) Willett, W., et al., Food in the Anthropocene: the EAT–Lancet Commission on healthy diets from sustainable food systems. The Lancet. 2019. 393(10170): p. 447-492.</p>
-              </div>
-            <!--Feedback section-->
-            <section class="reflect-section">
-                <h2><b>REFLECT: Tell us how you went!</b></h2>
-                <hr>
-                <h5><b>We'd love to learn about your journey on the PlanEATary Quest!</b></h4>
-                <p>
-                  Please write a short reflection, thinking about the factors that helped or hindered your ability to complete the challenge. For example:
-                </p>
-                <ul>
-                  <li>Your own motivation to change?</li>
-                  <li>Your household - the people and living environment?</li>
-                  <li>Your community?</li>
-                  <li>Your Local Government Authority? (e.g., Any initiatives that promote more environmentally sustainable eating practices)</li>
-                  <li>Your State or Territory Government?</li>
-                </ul>
-                <p>
-                  If you would like to share your short reflection with us, we'd love to read it. Please submit your writing 
-                  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdKqX8bxsmJlcy1mKSnv9kN2JyyElmt7ZC4-PICtAcMLANwQg/viewform?usp=sf_link" target="_blank">HERE</a>.
-                </p>
-              </section>
-            <!--Last section - development team-->
-            <section class="background-section">
-                <h2>BACKGROUND: How was the PlanEATary Quest developed?</h2>
-                <hr>
-                <div class="background-content">
-                  <div class="person">
-                    <img src="path-to-image1.jpg" alt="Dr Liza Barbour">
-                    <p><strong>Dr Liza Barbour</strong><br>Monash University</p>
-                  </div>
-                  <div class="description">
-                    <p>
-                      This resource was developed by this dedicated Working Group of seven volunteers, all dietitians and members of DA’s Food & Environment Leadership Committee. This project was funded by a grant from the International Congress of Dietetic Associations (ICDA) and led by grant applicants Dr Liza Barbour and Sandy Murray.
-                    </p>
-                    <p>
-                      We would like to acknowledge and thank Monash University dietetic students, Zi Wong, Jingjun (Phoebe) Wu, Wancin (Wendy) Tan, Halle Yip and Jessica Gleeson, and their supervisors Kathy Faulkner, Stacey Holden and Stefanie Carino for piloting this intervention with the wonderful team at Eastern Health in Victoria.
-                    </p>
-                    <p>
-                      For further information about the resources, intervention and evaluation, please contact: 
-                      <a href="mailto:liza.barbour@monash.edu">liza.barbour@monash.edu</a>.
-                    </p>
-                  </div>
-                  <div class="person">
-                    <img src="path-to-image2.jpg" alt="Sandy Murray">
-                    <p><strong>Sandy Murray</strong><br>University of Tasmania</p>
-                  </div>
-                </div>
-              
-                <div class="team">
-                  <div class="team-member">
-                    <img src="path-to-image3.jpg" alt="Nicole Senior">
-                    <p><strong>Nicole Senior</strong></p>
-                  </div>
-                  <div class="team-member">
-                    <img src="path-to-image4.jpg" alt="Sara Forbes">
-                    <p><strong>Sara Forbes</strong></p>
-                  </div>
-                  <div class="team-member">
-                    <img src="path-to-image5.jpg" alt="Nathan Cook">
-                    <p><strong>Nathan Cook</strong></p>
-                  </div>
-                  <div class="team-member">
-                    <img src="path-to-image6.jpg" alt="Aimee Bowles">
-                    <p><strong>Aimee Bowles</strong></p>
-                  </div>
-                  <div class="team-member">
-                    <img src="path-to-image7.jpg" alt="Grace Zadow">
-                    <p><strong>Grace Zadow</strong></p>
-                  </div>
-                </div>
-              
-                <footer class="acknowledgment">
-                  <p>The PlanEATary Quest is brought to you by Dietitians Australia’s (DA) Food & Environment Interest group with support from the International Confederation of Dietetic Associations (ICDA).</p>
-                  <p>We acknowledge the Traditional Owners of Country throughout Australia. We pay our respects to Elders past and present, and this respect extends to the knowledge and value systems required to maintain a truly sustainable food system here in Australia for over 60,000 years.</p>
-                </footer>
-              </section>
-
+            </div>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -563,5 +480,13 @@
             // checkOrFetchResponseId();
         });
         </script>
+
+        <script>
+            function showSignInModal() {
+            const modal = new bootstrap.Modal(document.getElementById('signInModal'));
+            modal.show();
+            }
+        </script>
+        
     </body>
 </html>
