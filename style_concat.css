@@ -182,7 +182,70 @@ body {
   .signUp:hover {
     background-color: #0cbba6;
   }
-    
+
+   /*do you know section*/
+   .do-you-know {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row !important;
+    padding: 50px 50px;
+    background-color: #f9f9f9;
+  }
+
+  .do-you-know .content {
+    flex: 1;
+    max-width: 40% !important;
+  }
+  
+  .do-you-know .video {
+    flex: 1;
+    width: 40% !important;
+  }
+
+  /*step section*/
+  .step-section {
+    display: flex;
+    text-align: center;
+    background-color: #f9f9f9;
+    padding: 50px 20px;
+  }
+
+  .step-section h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #333;
+  }
+
+  .steps {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+
+  .step {
+    max-width: 200px;
+    text-align: center;
+  }
+
+  .carousel-inner {
+    display: flex !important;
+    padding: 1em;
+  }
+
+  .carousel-item {
+    margin-right: 0 !important;
+    flex: 0 0 25% !important;
+    display: block !important;
+  }
+
+  .card{
+    margin: 0 .5em;
+    box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
+    border: none;
+    height: 100% !important;
+  }
+
 }
 
 .main-container {
@@ -450,9 +513,10 @@ body {
   
     /*step section*/
     .step-section {
-      padding-top: 50px; 
+      display: flex;
       text-align: center;
       background-color: #f9f9f9;
+      flex-direction: column !important;
       padding: 50px 20px;
     }
     
@@ -488,18 +552,41 @@ body {
       color: #555;
     }
 
+    /*carousel section*/
+    #carousel-section {
+      display: flex;
+      margin: 0 auto;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-inner {
+      display: flex;
+    }
+
+    .carousel-indicators {
+      margin-bottom: 0rem !important;
+    }
+
+    .carousel-control-prev, .carousel-control-next{
+      background-color: #e1e1e1 !important;
+      width: 6vh !important;
+      height: 6vh !important;
+      border-radius: 50% !important;
+      top: 50% !important;
+  }
+
     /*do you know section*/
     .do-you-know {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 50px 50px;
+      flex-direction: column;
       background-color: #f9f9f9;
     }
     
     .do-you-know .content {
       flex: 1;
-      max-width: 50%;
+      max-width: 80%;
     }
     
     .do-you-know h2 {
@@ -526,7 +613,8 @@ body {
     
     .do-you-know .video {
       flex: 1;
-      max-width: 40%;
+      width: 90%;
+      height: auto;
     }
     
     .do-you-know iframe {
