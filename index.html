@@ -632,90 +632,90 @@
 
         <!--sign in popup-->
         <script>
-            function showSignInModal() {
+        function showSignInModal() {
             const modal = new bootstrap.Modal(document.getElementById('signInModal'));
             modal.show();
-            }
+        }
         </script>
         <!--sign in validation-->
         <script>
-            document.getElementById('submitButton').addEventListener('click', function () {
-                const emailInput = document.getElementById('emailInput');
-                const passwordInput = document.getElementById('passwordInput');
-                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        document.getElementById('submitButton').addEventListener('click', function () {
+            const emailInput = document.getElementById('emailInput');
+            const passwordInput = document.getElementById('passwordInput');
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-                let isValid = true;
+            let isValid = true;
 
-                // Email validation
-                if (!emailRegex.test(emailInput.value) || emailInput.value === 'harry@m.com') {
-                    emailInput.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    emailInput.classList.remove('is-invalid');
-                }
+            // Email validation
+            if (!emailRegex.test(emailInput.value) || emailInput.value === 'harry@m.com') {
+                emailInput.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                emailInput.classList.remove('is-invalid');
+            }
 
-                // Password validation (minimum 6 characters)
-                if (passwordInput.value.length < 6) {
-                    passwordInput.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    passwordInput.classList.remove('is-invalid');
-                }
+            // Password validation (minimum 6 characters)
+            if (passwordInput.value.length < 6) {
+                passwordInput.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                passwordInput.classList.remove('is-invalid');
+            }
 
-                // If valid, submit the form or proceed further
-                if (isValid) {
-                    alert('Form is valid. Proceeding...');
-                    // Add your form submission logic here
-                }
-            });
+            // If valid, submit the form or proceed further
+            if (isValid) {
+                alert('Form is valid. Proceeding...');
+                // Add your form submission logic here
+            }
+        });
         </script>
 
         <!--sign up popup-->
         <script>
-            function showSignUpModal() {
+        function showSignUpModal() {
             const modal = new bootstrap.Modal(document.getElementById('signUpModal'));
             modal.show();
-            }
+        }
         </script>
 
         <!--Sign Up validation-->
         <script>
-            document.getElementById('signUpButton').addEventListener('click', function () {
+        document.getElementById('signUpButton').addEventListener('click', function () {
             const emailInput = document.getElementById('emailInput');
             const passwordInput1 = document.getElementById('passwordInput1');
             const passwordInput2 = document.getElementById('passwordInput2');
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             let isValid = true;
 
-        // Email validation
-        if (!emailRegex.test(emailInput.value) || emailInput.value === 'harry@m.com') {
-            emailInput.classList.add('is-invalid');
-            isValid = false;
+            // Email validation
+            if (!emailRegex.test(emailInput.value) || emailInput.value === 'harry@m.com') {
+                emailInput.classList.add('is-invalid');
+                isValid = false;
             } else {
-            emailInput.classList.remove('is-invalid');
-        }
+                emailInput.classList.remove('is-invalid');
+            }
 
-        // Password validation (minimum 6 characters and match confirmation)
-        if (passwordInput1.value.length < 6) {
-            passwordInput1.classList.add('is-invalid');
-            isValid = false;
+            // Password validation (minimum 6 characters and match confirmation)
+            if (passwordInput1.value.length < 6) {
+                passwordInput1.classList.add('is-invalid');
+                isValid = false;
             } else {
-            passwordInput1.classList.remove('is-invalid');
-        }
-        if (passwordInput1.value !== passwordInput2.value) {
-            passwordInput1.classList.add('is-invalid');
-            passwordInput2.classList.add('is-invalid');
-            isValid = false;
+                passwordInput1.classList.remove('is-invalid');
+            }
+            if (passwordInput1.value !== passwordInput2.value) {
+                passwordInput1.classList.add('is-invalid');
+                passwordInput2.classList.add('is-invalid');
+                isValid = false;
             } else {
-            passwordInput1.classList.remove('is-invalid');
-            passwordInput2.classList.remove('is-invalid');
-        }
+                passwordInput1.classList.remove('is-invalid');
+                passwordInput2.classList.remove('is-invalid');
+            }
 
-        // If valid, potentially submit form or redirect
-        if (isValid) {
-        // Add logic to handle successful signup (e.g., redirect to account.html)
-         window.location.href = "account.html"; // Redirect to account page
-        }
+            // If valid, potentially submit form or redirect
+            if (isValid) {
+                // Add logic to handle successful signup (e.g., redirect to account.html)
+                window.location.href = "account.html"; // Redirect to account page
+            }
         });
         </script>
     </body>
