@@ -36,7 +36,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                                     </li>
-                                    <!-- 
+                                    <!--
                                     <li class="nav-item">
                                         <a class="nav-link" href="#"><b>Quiz</b></a>
                                     </li>
@@ -49,7 +49,6 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="result_page.html"></a>
                                     </li> -->
-                                    
                                     <li class="nav-item">
                                         <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signInModal">Sign in</button>
                                     </li>
@@ -132,7 +131,6 @@
                     <li>Adopt new healthy and environmentally sustainable food habits, inspired by a supportive and collegial approach.</li>
                     <li>Reflect on the factors that help or hinder your environmentally sustainable food habits.</li>
                   </ul>
-     
                 </div>
                 <div class="video">
                   <iframe 
@@ -196,7 +194,7 @@
                     <p><strong>Sandy Murray</strong><br>University of Tasmania</p>
                   </div>
                 </div>
-              
+
                 <div class="team">
                   <div class="team-member">
                     <img src="path-to-image3.jpg" alt="Nicole Senior">
@@ -219,7 +217,7 @@
                     <p><strong>Grace Zadow</strong></p>
                   </div>
                 </div>
-              
+
                 <footer class="acknowledgment">
                   <p>The PlanEATary Quest is brought to you by Dietitians Australia’s (DA) Food & Environment Interest group with support from the International Confederation of Dietetic Associations (ICDA).</p>
                   <p>We acknowledge the Traditional Owners of Country throughout Australia. We pay our respects to Elders past and present, and this respect extends to the knowledge and value systems required to maintain a truly sustainable food system here in Australia for over 60,000 years.</p>
@@ -273,7 +271,6 @@
                             <div class="mb-3">
                                 <label for="nameInput" class="form-label">Username</label>
                                 <input type="name" class="form-control" id="nameInput" placeholder="Enter username" required>
-                        
                             </div>
                             <div class="mb-3">
                                 <label for="emailInput" class="form-label">Email address</label>
@@ -288,7 +285,6 @@
                             <div class="mb-3">
                                 <label for="passwordInput2" class="form-label">Confirm Password</label>
                                 <input type="password" class="form-control" id="passwordInput2" placeholder="Enter password" required>
-                                
                             </div>
                         </form>
                     </div>
@@ -484,7 +480,6 @@
                             alert('Failed to load tasks. Please try again later.');
                             return null;
                         };
-                        
                     }
                     return JSON.parse(taskData);
             }
@@ -493,7 +488,6 @@
             // Function to get task status from the API
             async function fetchTaskStatus_() {  // archive
                 try {
-                    
                     showSpinner();
                     const response = await fetch('/api/manage-tasks', {
                         method: 'GET',
@@ -503,7 +497,6 @@
                         }
 
                     });
-                    
                     const data = await response.json();
                     console.log('Task status fetched:', data);
                     hideSpinner();
@@ -650,9 +643,9 @@
                 const emailInput = document.getElementById('emailInput');
                 const passwordInput = document.getElementById('passwordInput');
                 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        
+
                 let isValid = true;
-        
+
                 // Email validation
                 if (!emailRegex.test(emailInput.value) || emailInput.value === 'harry@m.com') {
                     emailInput.classList.add('is-invalid');
@@ -660,7 +653,7 @@
                 } else {
                     emailInput.classList.remove('is-invalid');
                 }
-        
+
                 // Password validation (minimum 6 characters)
                 if (passwordInput.value.length < 6) {
                     passwordInput.classList.add('is-invalid');
@@ -668,7 +661,7 @@
                 } else {
                     passwordInput.classList.remove('is-invalid');
                 }
-        
+
                 // If valid, submit the form or proceed further
                 if (isValid) {
                     alert('Form is valid. Proceeding...');
