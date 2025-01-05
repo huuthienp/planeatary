@@ -774,6 +774,12 @@
                 window.location.href = "account.html"; // Redirect to account page
             }
         });
+        document.getElementById('signInButton').addEventListener('click', function () {
+            const emailInput = document.getElementById('emailInput');
+            netlifyIdentity.gotrue.login(emailInput.value, passwordInput.value, true)  // true means to remember login
+                .then(r => console.log('Successful login!', emailInput.value))
+                .catch(e => console.error('Caught', e));
+        });
         </script>
     </body>
 </html>
