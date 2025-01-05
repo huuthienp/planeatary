@@ -767,6 +767,10 @@
             // If valid, potentially submit form or redirect
             if (isValid) {
                 // Add logic to handle successful signup (e.g., redirect to account.html)
+                netlifyIdentity.gotrue.signup(emailInput.value, passwordInput2.value, {full_name: nameInput.value})
+                    .then(r => console.log('Successful signup!', emailInput.value))
+                    .catch(e => console.error('Caught', e));
+                return;  // because we don't have account page yet
                 window.location.href = "account.html"; // Redirect to account page
             }
         });
