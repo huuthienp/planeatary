@@ -137,10 +137,10 @@
                                 <button type="button" data-bs-target="#carousel-section" data-bs-slide-to="2" aria-label="Complete your Challenge"></button>
                                 <button type="button" data-bs-target="#carousel-section" data-bs-slide-to="3" aria-label="Complete Post Quiz"></button>
                               </div>
-                              <div class="carousel-inner">
-                                <div class="carousel-item active">
+                              <div class="carousel-inner" id="c-steps">
+                                <div class="carousel-item active c-items">
                                   <div class="card atep" style="background-color: #D0F0C0;">
-                                      <img src="./images/battery.png" class="card-img-top">
+                                      <img src="./images/plug.png" class="card-img-top">
                                       <div class="card-body">
                                         <h5 class="card-title">Complete the Quiz</h5>
                                         <p class="card-text">Let's see where you're kicking goals. Start the journey now!</p>
@@ -148,9 +148,9 @@
                                       </div>
                                   </div>
                                 </div>
-                                <div class="carousel-item">
+                                <div class="carousel-item c-items">
                                   <div class="card" style="background-color: #aad693;">
-                                      <img src="./images/battery.png" class="card-img-top">
+                                      <img src="./images/bulb.png" class="card-img-top">
                                       <div class="card-body">
                                         <h5 class="card-title">Design your Challenge</h5>
                                         <p class="card-text">Complete 10 tasks to improve your score</p>
@@ -158,9 +158,9 @@
                                       </div>
                                   </div>
                                 </div>
-                                <div class="carousel-item">
+                                <div class="carousel-item c-items">
                                   <div class="card" style="background-color: #95d376;">
-                                      <img src="./images/battery.png" class="card-img-top">
+                                      <img src="./images/leaveBulb.png" class="card-img-top">
                                       <div class="card-body">
                                         <h5 class="card-title">Complete the Challenge</h5>
                                         <p class="card-text">Spend 2-3 weeks to complete your goal</p>
@@ -168,9 +168,9 @@
                                       </div>
                                   </div>
                                 </div>
-                                <div class="carousel-item">
+                                <div class="carousel-item c-items">
                                   <div class="card" style="background-color: #729760;">
-                                      <img src="./images/battery.png" class="card-img-top">
+                                      <img src="./images/hanger.png" class="card-img-top">
                                       <div class="card-body">
                                         <h5 class="card-title">Complete Post Quiz</h5>
                                         <p class="card-text">Check how your score has been improved</p>
@@ -243,10 +243,8 @@
                 </p>
               </section>
             <!--Last section - development team-->
-            <section class="background-section">
-                <h2>BACKGROUND: How was the PlanEATary Quest developed?</h2>
-                <hr>
-                <div class="background-content">
+                
+                <!-- <div class="background-content">
                   <div class="person">
                     <img src="path-to-image1.jpg" alt="Dr Liza Barbour">
                     <p><strong>Dr Liza Barbour</strong><br>Monash University</p>
@@ -267,35 +265,79 @@
                     <img src="path-to-image2.jpg" alt="Sandy Murray">
                     <p><strong>Sandy Murray</strong><br>University of Tasmania</p>
                   </div>
-                </div>
-
-                <div class="team">
-                  <div class="team-member">
-                    <img src="path-to-image3.jpg" alt="Nicole Senior">
-                    <p><strong>Nicole Senior</strong></p>
-                  </div>
-                  <div class="team-member">
-                    <img src="path-to-image4.jpg" alt="Sara Forbes">
-                    <p><strong>Sara Forbes</strong></p>
-                  </div>
-                  <div class="team-member">
-                    <img src="path-to-image5.jpg" alt="Nathan Cook">
-                    <p><strong>Nathan Cook</strong></p>
-                  </div>
-                  <div class="team-member">
-                    <img src="path-to-image6.jpg" alt="Aimee Bowles">
-                    <p><strong>Aimee Bowles</strong></p>
-                  </div>
-                  <div class="team-member">
-                    <img src="path-to-image7.jpg" alt="Grace Zadow">
-                    <p><strong>Grace Zadow</strong></p>
-                  </div>
-                </div>
-
-                <footer class="acknowledgment">
-                  <p>The PlanEATary Quest is brought to you by Dietitians Australia’s (DA) Food & Environment Interest group with support from the International Confederation of Dietetic Associations (ICDA).</p>
-                  <p>We acknowledge the Traditional Owners of Country throughout Australia. We pay our respects to Elders past and present, and this respect extends to the knowledge and value systems required to maintain a truly sustainable food system here in Australia for over 60,000 years.</p>
-                </footer>
+                </div> -->
+                <section class="container-fluid">
+                    <h2>BACKGROUND: How was the PlanEATary Quest developed?</h2>
+                    <hr>
+                    <div class="row d-flex">
+                        
+                        <div class="col-md-12 d-inline-flex justify-content-space-around">
+                            <div id="carouselInterval" class="carousel slide w-50" data-mdb-ride="carousel" data-mdb-carousel-init>
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active" data-mdb-interval="1000">
+                                        <div class="card" style="background-color: #0cad78;">
+                                            <img src="./images/bulb.png" class="card-img-top" />
+                                            <div class="card-body">
+                                                <p class="card-title"><strong>Dr Liza Barbour</strong></p>
+                                                <p>Monash University</p>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="carousel-item" data-mdb-interval="2000">
+                                        <div class="card" style="background-color: #0cad78;">
+                                            <img src="./images/battery.png" class="card-img-top" />
+                                            <div class="card-body">
+                                                <p class="card-title"><strong>Sandy Murray</strong></p>
+                                                <p>University of Tasmania</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-inline-flex flex-column p-2 bd-highlight">
+                                <p>
+                                  This resource was developed by this dedicated Working Group of seven volunteers, all dietitians and members of DA’s Food & Environment Leadership Committee. This project was funded by a grant from the International Congress of Dietetic Associations (ICDA) and led by grant applicants Dr Liza Barbour and Sandy Murray.
+                                </p>
+                                <p>
+                                  We would like to acknowledge and thank Monash University dietetic students, Zi Wong, Jingjun (Phoebe) Wu, Wancin (Wendy) Tan, Halle Yip and Jessica Gleeson, and their supervisors Kathy Faulkner, Stacey Holden and Stefanie Carino for piloting this intervention with the wonderful team at Eastern Health in Victoria.
+                                </p>
+                                <p>
+                                  For further information about the resources, intervention and evaluation, please contact: 
+                                  <a href="mailto:liza.barbour@monash.edu" style="color: #007bff;">liza.barbour@monash.edu</a>.
+                                </p>
+                            </div>
+                            
+                        </div>
+                        
+                        
+                    </div>
+                    <div class="team">
+                        <div class="team-member">
+                            <img src="path-to-image3.jpg" alt="Nicole Senior">
+                            <p><strong>Nicole Senior</strong></p>
+                        </div>
+                        <div class="team-member">
+                            <img src="path-to-image4.jpg" alt="Sara Forbes">
+                            <p><strong>Sara Forbes</strong></p>
+                        </div>
+                        <div class="team-member">
+                            <img src="path-to-image5.jpg" alt="Nathan Cook">
+                            <p><strong>Nathan Cook</strong></p>
+                        </div>
+                        <div class="team-member">
+                            <img src="path-to-image6.jpg" alt="Aimee Bowles">
+                            <p><strong>Aimee Bowles</strong></p>
+                        </div>
+                        <div class="team-member">
+                            <img src="path-to-image7.jpg" alt="Grace Zadow">
+                            <p><strong>Grace Zadow</strong></p>
+                        </div>
+                    </div>
+                    <footer class="acknowledgment">
+                        <p>The PlanEATary Quest is brought to you by Dietitians Australia’s (DA) Food & Environment Interest group with support from the International Confederation of Dietetic Associations (ICDA).</p>
+                        <p>We acknowledge the Traditional Owners of Country throughout Australia. We pay our respects to Elders past and present, and this respect extends to the knowledge and value systems required to maintain a truly sustainable food system here in Australia for over 60,000 years.</p>
+                    </footer>
               </section>
 
         </div>

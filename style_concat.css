@@ -193,6 +193,56 @@ body {
     background-color: #f9f9f9;
   }
 
+  /*hero section*/
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: url('https://cdni.autocarindia.com/Utils/ImageResizer.ashx?n=http://img.haymarketsac.in/autocarpro/5d12d2d8-c6bd-4899-91d3-a3e79a57569b_sustainable-earth-image.jpg&w=750&h=490&q=75&c=1') center/cover no-repeat;
+    margin-bottom: 50px;
+  }
+
+  .hero .herocontent {
+    position: relative;
+    max-width: 100%;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .hero .herocontent h1 {
+    font-size: 36px;
+    margin: 0 0 20px;
+    color: #333;
+  }
+
+  .hero .herocontent p {
+    font-size: 18px;
+    margin: 0 0 20px;
+    color: #555;
+  }
+
+  .hero .herocontent .herobtn {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .hero .herocontent .herobtn:hover {
+    background-color: #218838;
+  }
+
   .do-you-know .content {
     flex: 1;
     max-width: 40% !important;
@@ -204,7 +254,7 @@ body {
   }
 
   /*step section*/
-  .step-section {
+  /* .step-section {
     display: flex;
     text-align: center;
     background-color: #f9f9f9;
@@ -226,14 +276,14 @@ body {
   .step {
     max-width: 200px;
     text-align: center;
-  }
+  } */
 
-  .carousel-inner {
+  #c-steps {
     display: flex !important;
     padding: 1em;
   }
 
-  .carousel-item {
+  .c-items {
     margin-right: 0 !important;
     flex: 0 0 25% !important;
     display: block !important;
@@ -675,8 +725,11 @@ body {
       text-decoration: none; /* Remove underline on hover */
     }
     .background-section {
-      padding: 50px 20px;
+      display: flex;
       text-align: center;
+      margin: 0 auto;
+      justify-content: space-evenly;
+      flex-direction: column;
     }
     
     .background-section h2 {
@@ -710,20 +763,6 @@ body {
     
     .person p {
       margin-top: 10px;
-    }
-    
-    .description {
-      flex: 2;
-      max-width: 50%;
-    }
-    
-    .description p {
-      font-size: 16px;
-      color: #555;
-    }
-    
-    .description a {
-      color: #007bff; /* Link color */
     }
     
     .team {
