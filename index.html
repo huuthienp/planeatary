@@ -60,23 +60,7 @@
                         </div>
                     </nav>
                 </div>
-            <div class="welcome-content" style="display: none;">
-                <div class="greeting">
-                    <h3>Welcome to the PlanEATary Quest!</h3>
-                    <p>Promoting planetary health, one bite at a time.</p>
-                    <p><label><input type="checkbox" id="donePreQuiz"> I have done a pre-quiz before.</label></p>
-                    <div class="questions" id="checkIdDiv" style="display: none; line-height: 1cm;">
-                        <span class="info-icon" id="checkIdInfo" title="The ID was sent to the email provided in the response.">ⓘ</span>
-                        <input type="text" id="checkIdInp" placeholder="Your response ID">
-                        <button class="next disabled" id="checkIdBtn" disabled>Check</button>
-                        <span id="checkIdMsg"></span>
-                    </div>
-                    <div class="button_next">
-                        <button type="button" class="btn btn-success disabled" id="resultsBtn"style="display: none; width: 150px;">See results</button>
-                        <button type="button" class="btn btn-success" style="width: 150px; height: 50px;"><a href="qualtrics">Take pre-quiz</a></button>
-                    </div>
-                </div>
-            </div>
+            <!--removed 'div.welcome-content' since ec7b4e787e17723fccf03c2b331a9f0258d1ea97-->
 
             <!--Hero section at the top-->
             <div class="hero">
@@ -423,17 +407,9 @@
             const greetingDiv = document.querySelector('.greeting');
             const continueButton = document.getElementById('continueButton');
 
-
-            const resultsUrl = 'result_page';
-            const green = '#02897A';
-            const red = '#ff6b6b';
-            const doneChkbox = document.getElementById('donePreQuiz');
-            const infoIcon = document.getElementById('checkIdInfo');
-            const checkIdDiv = document.getElementById('checkIdDiv');
-            const checkIdInp = document.getElementById('checkIdInp');
-            const checkIdBtn = document.getElementById('checkIdBtn');
-            const resultsBtn = document.getElementById('resultsBtn');
-            const checkIdMsg = document.getElementById('checkIdMsg');
+            /* removed some javascript
+             * between d8be6a5dfcab3936113b39596591a055af44e578
+             *     and f4cae0a8896a980fb9607449a47df37c841c56f7 */
 
             let preResponseId = localStorage.getItem('preResponseId'); 
 
@@ -650,99 +626,22 @@
                 }
             }
 
-            function renderOutcome(success, message='', color='') {
-                if (success === true) {
-                    checkIdMsg.style.color = color || green;
-                    checkIdMsg.textContent = message;
-                    enableButton(resultsBtn, resultsUrl);
-                    continueButton.querySelector('a').textContent = 'Re-take pre-quiz';
+            // function renderOutcome(success, message='', color='') {
+            //     if (success === true) {
+            //         checkIdMsg.style.color = color || green;
+            //         checkIdMsg.textContent = message;
+            //         enableButton(resultsBtn, resultsUrl);
+            //         continueButton.querySelector('a').textContent = 'Re-take pre-quiz';
+            //
+            //     } else {
+            //         checkIdMsg.style.color = color || red;
+            //         checkIdMsg.textContent = message;
+            //     }
+            // }
 
-                } else {
-                    checkIdMsg.style.color = color || red;
-                    checkIdMsg.textContent = message;
-                }
-            }
-
-            doneChkbox.addEventListener('change', async function() {
-                checkIdDiv.style.display = this.checked ? '' : 'none';
-                resultsBtn.style.display = this.checked ? '' : 'none';
-
-                if (this.checked) {
-                    const preResult = localStorage.getItem('preResult');
-                    let tasks = JSON.parse(localStorage.getItem('tasks')); 
-                    let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    let preResponseId = localStorage.getItem('preResponseId'); 
-                    if (preResult) {
-                        const message = 'Your response is already saved in this device.';
-                        renderOutcome(true, message);
-                        if (!tasks && !fetched_tasks) {
-                            tasks = await fetchTasks();
-                            showSpinner();
-                            fetched_tasks = await fetchTaskStatus(preResponseId); 
-                            hideSpinner();
-                            localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
-                            localStorage.setItem('tasks', JSON.stringify(tasks));
-                            tasks = JSON.parse(localStorage.getItem('tasks'));
-                            fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                        }
-                        chosen_tasks = fetched_tasks.chosen;
-                        status_tasks = fetched_tasks.done;
-                    }
-                } else {
-                    disableButton(checkIdBtn);
-                    disableButton(resultsBtn);
-                    checkIdInp.value = '';
-                    checkIdMsg.textContent = '';
-                    continueButton.querySelector('a').textContent = 'Take pre-quiz';
-                }
-            });
-
-            infoIcon.addEventListener('click', function(event) {
-                event.stopPropagation(); 
-                showModal(this.title);
-            });
-
-            checkIdInp.addEventListener('input', function() {
-                if (this.value.trim() === '') {
-                    disableButton(checkIdBtn);
-                } else {
-                    enableButton(checkIdBtn);
-                }
-                checkIdMsg.textContent = '';
-            });
-
-            checkIdBtn.addEventListener('click', async function() {
-                try {
-                    showSpinner();
-                    const fetchedResponseId = await fetchResponseIdFromNetlify('pre', checkIdInp.value);
-                    saveLocalStorage(fetchedResponseId, 'response');
-                    const message = 'We found your response and saved it in this device!';
-                    renderOutcome(true, message);
-                    let tasks = JSON.parse(localStorage.getItem('tasks')); 
-                    let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    if (!tasks && !fetched_tasks) {
-                            tasks = await fetchTasks();
-                            showSpinner();
-                            fetched_tasks = await fetchTaskStatus(preResponseId); 
-                            hideSpinner();
-                            localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
-                            localStorage.setItem('tasks', JSON.stringify(tasks));
-                            tasks = JSON.parse(localStorage.getItem('tasks'));
-                            fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                        }
-                        chosen_tasks = fetched_tasks.chosen;
-                        status_tasks = fetched_tasks.done;
-                    hideSpinner();
-                    console.log(tasks);
-                    console.log(fetched_tasks);
-
-                } catch(error) {
-                    const message = 'Sorry, we cannot find this ID.';
-                    renderOutcome(false, message);
-                    hideSpinner();
-                }
-            });
-
+            /* removed some javascript
+             * between d8be6a5dfcab3936113b39596591a055af44e578
+             *     and f4cae0a8896a980fb9607449a47df37c841c56f7 */
             // checkOrFetchResponseId();
         });
         </script>
