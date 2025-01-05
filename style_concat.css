@@ -189,7 +189,7 @@ body {
     align-items: center;
     justify-content: space-between;
     flex-direction: row !important;
-    padding: 50px 50px;
+    padding: 50px;
     background-color: #f9f9f9;
   }
 
@@ -244,12 +244,11 @@ body {
   }
 
   .do-you-know .content {
-    flex: 1;
+    padding: 0 20px;
     max-width: 40% !important;
   }
   
   .do-you-know .video {
-    flex: 1;
     width: 40% !important;
   }
 
@@ -281,12 +280,14 @@ body {
   #c-steps {
     display: flex !important;
     padding: 1em;
+    flex-direction: row !important;
   }
 
   .c-items {
     margin-right: 0 !important;
     flex: 0 0 25% !important;
     display: block !important;
+    
   }
 
   .card{
@@ -294,6 +295,34 @@ body {
     box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
     border: none;
     height: 100% !important;
+  }
+
+  .p-carousel {
+    display: none !important;
+  }
+
+  .people {
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+  .person {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .person img {
+    width: 300px;
+    height: auto;
+    border-radius: 50%;
+  }
+
+  .team {
+    display: flex !important;
+    justify-content: space-around;
+    margin-top: 30px;
   }
 
 }
@@ -632,6 +661,7 @@ body {
       align-items: center;
       flex-direction: column;
       background-color: #f9f9f9;
+      text-align: justify;
     }
     
     .do-you-know .content {
@@ -724,7 +754,7 @@ body {
     .reflect-section a:hover {
       text-decoration: none; /* Remove underline on hover */
     }
-    .background-section {
+    /* .background-section {
       display: flex;
       text-align: center;
       margin: 0 auto;
@@ -749,26 +779,15 @@ body {
       align-items: flex-start;
       margin-top: 20px;
     }
-    
-    .person {
-      flex: 1;
-      max-width: 25%;
+  
+     */
+
+    .people {
+      display: none;
     }
-    
-    .person img {
-      width: 100%;
-      height: auto;
-      border-radius: 50%;
-    }
-    
-    .person p {
-      margin-top: 10px;
-    }
-    
+
     .team {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 30px;
+      display: none !important;
     }
     
     .team-member {
@@ -792,7 +811,24 @@ body {
       font-size: 14px;
     }
     
+    .icon {
+      width: 100px;       
+      height: 150px;
+      display: inline-block;
+      margin: 0 auto;
+    }
+
+    #c-steps {
+      display: block;
+      padding: 1em;
+    }
     
+    .card{
+      margin: 0 .5em;
+      box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
+      border: none;
+      height: 100% !important;
+    }
   
 
 .welcome {
