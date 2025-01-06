@@ -375,8 +375,8 @@
                         <!-- Sign-In Form -->
                         <form id="signInForm" novalidate>
                             <div class="mb-3">
-                                <label for="emailInput" class="form-label">Email address</label>
-                                <input type="email" class="form-control" id="emailInput" placeholder="Enter email" required>
+                                <label for="emailInput2" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="emailInput2" placeholder="Enter email" required>
                                 <div class="invalid-feedback">This email is invalid.</div>
                             </div>
                             <div class="mb-3">
@@ -410,8 +410,8 @@
                                 <input type="name" class="form-control" id="nameInput" placeholder="Enter username" required>
                             </div>
                             <div class="mb-3">
-                                <label for="emailInput" class="form-label">Email address</label>
-                                <input type="email" class="form-control" id="emailInput" placeholder="Enter email" required>
+                                <label for="emailInput1" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="emailInput1" placeholder="Enter email" required>
                                 <div class="invalid-feedback">This email is invalid.</div>
                             </div>
                             <div class="mb-3">
@@ -693,23 +693,23 @@
         <!--sign in validation-->
         <script>
         document.getElementById('submitButton').addEventListener('click', function () {
-            const emailInput = document.getElementById('emailInput');
+            const emailInput = document.getElementById('emailInput2');
             const passwordInput = document.getElementById('passwordInput');
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
             let isValid = true;
 
             // Email validation
-            if (!emailRegex.test(emailInput.value) || emailInput.value === 'harry@m.com') {
-                emailInput.classList.add('is-invalid');
+            if (!emailRegex.test(emailInput2.value) || emailInput2.value === 'harry@m.com') {
+                emailInput2.classList.add('is-invalid');
                 isValid = false;
             } else {
-                emailInput.classList.remove('is-invalid');
+                emailInput2.classList.remove('is-invalid');
             }
 
             // Password validation (minimum 6 characters)
-            if (passwordInput.value.length < 6) {
-                passwordInput.classList.add('is-invalid');
+            if (passwordInput2.value.length < 6) {
+                passwordInput2.classList.add('is-invalid');
                 isValid = false;
             } else {
                 passwordInput.classList.remove('is-invalid');
@@ -734,18 +734,18 @@
         <!--Sign Up validation-->
         <script>
         document.getElementById('signUpButton').addEventListener('click', function () {
-            const emailInput = document.getElementById('emailInput');
+            const emailInput = document.getElementById('emailInput1');
             const passwordInput1 = document.getElementById('passwordInput1');
             const passwordInput2 = document.getElementById('passwordInput2');
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             let isValid = true;
 
             // Email validation
-            if (!emailRegex.test(emailInput.value) || emailInput.value === 'harry@m.com') {
-                emailInput.classList.add('is-invalid');
+            if (!emailRegex.test(emailInput1.value) || emailInput1.value === 'harry@m.com') {
+                emailInput2.classList.add('is-invalid');
                 isValid = false;
             } else {
-                emailInput.classList.remove('is-invalid');
+                emailInput1.classList.remove('is-invalid');
             }
 
             // Password validation (minimum 6 characters and match confirmation)
@@ -767,17 +767,17 @@
             // If valid, potentially submit form or redirect
             if (isValid) {
                 // Add logic to handle successful signup (e.g., redirect to account.html)
-                netlifyIdentity.gotrue.signup(emailInput.value, passwordInput2.value, {full_name: nameInput.value})
-                    .then(r => console.log('Successful signup!', emailInput.value))
+                netlifyIdentity.gotrue.signup(emailInput1.value, passwordInput2.value, {full_name: nameInput.value})
+                    .then(r => console.log('Successful signup!', emailInput2.value))
                     .catch(e => console.error('Caught', e));
                 return;  // because we don't have account page yet
                 window.location.href = "account.html"; // Redirect to account page
             }
         });
         document.getElementById('signInButton').addEventListener('click', function () {
-            const emailInput = document.getElementById('emailInput');
-            netlifyIdentity.gotrue.login(emailInput.value, passwordInput.value, true)  // true means to remember login
-                .then(r => console.log('Successful login!', emailInput.value))
+            const emailInput = document.getElementById('emailInput1');
+            netlifyIdentity.gotrue.login(emailInput1.value, passwordInput.value, true)  // true means to remember login
+                .then(r => console.log('Successful login!', emailInput1.value))
                 .catch(e => console.error('Caught', e));
         });
         </script>
