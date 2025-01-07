@@ -10,6 +10,7 @@
         <!-- Icon CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="./netlify-identity-widget.js"></script>
+        <script src="./user-account-functions.js"></script>
         <title>PlanEATary Home</title>
     </head>
     <body>
@@ -463,7 +464,8 @@
         <script type="module">
         import { checkFragment } from "./user-account-functions.js";
         window.addEventListener('hashchange', () => {
-            if (checkFragment('confirmation_token')) {
+            const exists = checkFragment('confirmation_token');
+            if (exists) {
                 window.location.reload();
             }
         } );
