@@ -41,7 +41,7 @@
                                         <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item disabled" href="qualtrics.html">Pre-quiz</a></li>
+                                        <li><a class="dropdown-item" href="qualtrics.html">Pre-quiz</a></li>
                                         <li><a class="dropdown-item disabled" href="qualtrics_post.html">Post-quiz</a></li>
                                     </ul>
                                 </li>
@@ -58,7 +58,8 @@
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
                                         <li><a class="dropdown-item" href="#">My account</a></li>
-                                        <li><a class="dropdown-item" href="#">Log out</a></li>
+                                        <!--My question is, how would we have any function dealing with user signing out-->
+                                        <li><a class="dropdown-item" id="signOut">Log out</a></li>
                                     </ul>
                                 </li>
                                 <!-- <li class="nav-item">
@@ -121,19 +122,22 @@
     <!-- spinner overlay-->
     <section class="overlay hidden" id="spinnerOverlay">
     </section>
+
+    <!-- Warning Toast -->
+    <div class="toast-container position-absolute top-0 end-0 p-3" aria-live="polite" aria-atomic="true">
+        <div id="task-toast" class="toast align-items-center text-white bg-warning border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+            <div class="d-flex">
+                <div class="toast-body" id="task-toast-body">
+                    You've already done this task!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module">
         import { fetchTaskStatus, updateTaskStatus } from './data-functions.mjs';
-        
-        window.openNav = function() {
-            document.getElementById("mySidenav").style.width = "40%";
-            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
-        };
-        
-        window.closeNav = function() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.body.style.backgroundColor = "white";
-        };
         
         const QContainer = document.querySelector(".q-task");
         
@@ -452,6 +456,14 @@
                             
                             //Also double-check task status in local storage
                             checkbox.disabled = task.status === 'Completed';
+                            
+                            //Warn a user if they accidentially re-select any task that is marked completed
+                            if (checkbox.disabled === true) {
+                                const toasty = document.getElementById('task-toast');
+                                const myToast = new bootstrap.Toast(toasty);
+                                myToast.show();
+                            }
+                            
                             localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
                             
                             // Update task count and localStorage on checkbox change

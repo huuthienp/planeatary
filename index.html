@@ -36,30 +36,28 @@
                                     <li class="nav-item">
                                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                                     </li>
-                                    <!--
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#"><b>Quiz</b></a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="ch" href="manifesto_page.html">Challenge</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="result_page.html">Dashboard</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="result_page.html"></a>
-                                    </li> -->
                                     <li class="nav-item">
                                         <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signInModal">Sign in</button>
                                     </li>
                                     <li class="nav-item">
                                         <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signUpModal">Sign up</button>
                                     </li>
-                                </div>
+                                    <!-- <li class="nav-item">
+                                        <a class="nav-link" href="#"><b>Quiz</b></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="manifesto_page.html">Challenge</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="result_page.html">Dashboard</a>
+                                    </li>
+                                    -->
+                                </ul>
                             </div>
                         </div>
-                    </nav>
-                </div>
+                    </div>
+                </nav>
+            </div>
             <!--removed 'div.welcome-content' since ec7b4e787e17723fccf03c2b331a9f0258d1ea97-->
 
             <!--Hero section at the top-->
@@ -434,7 +432,7 @@
             <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                 <div class="toast-header">
                     <strong class="me-auto">PlanEatary</strong>
-                    <small class="text-muted">just now</small>
+                    <!-- <small class="text-muted">just now</small> -->
                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
                 <div class="toast-body" id="e-toast"></div>
@@ -786,14 +784,17 @@
             if (isValid) {
                 // Add logic to handle successful signup (e.g., redirect to account.html)
                 netlifyIdentity.gotrue.signup(emailInput1.value, passwordInput2.value, {full_name: nameInput.value})
-                    .then(r => console.log('Successful signup!', emailInput2.value))
+                    .then((r) => {
+                        console.log('Successful signup!', emailInput2.value);
+                        window.location.href = "qualtrics.html";
+                    })
                     .catch((e) => {
                         console.error('Caught', e)
                         document.getElementById('e-toast').textContent = e;
                         const toastEl = document.getElementById('liveToast');
                         const myToast = new bootstrap.Toast(toastEl);
                         myToast.show();
-                        });
+                    });
                 return;  // because we don't have account page yet
                 window.location.href = "account.html"; // Redirect to account page
             }
@@ -808,7 +809,7 @@
                 })
                 .catch((e) => {
                     console.error('Caught error:', e);
-                    document.getElementById('e-toast').textContent = 'Please sign in or sign up first';
+                    document.getElementById('e-toast').textContent = e;
                     const toastEl = document.getElementById('liveToast');
                     const myToast = new bootstrap.Toast(toastEl);
                     myToast.show();
