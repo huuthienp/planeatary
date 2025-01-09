@@ -800,10 +800,10 @@
             }
         });
         document.getElementById('signInButton').addEventListener('click', function () {
-            const emailInput = document.getElementById('emailInput1');
-            netlifyIdentity.gotrue.login(emailInput1.value, passwordInput.value, true)  // true means to remember login
+            const emailInput = document.getElementById('emailInput2');
+            netlifyIdentity.gotrue.login(emailInput2.value, passwordInput.value, true)  // true means to remember login
                 .then((r) => {
-                    console.log('Successful login!', emailInput1.value);
+                    console.log('Successful login!', emailInput2.value);
                     //This will change later if we can retrieve cycle information of a user
                     window.location.href = "result_page.html";
                 })
