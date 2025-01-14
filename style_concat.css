@@ -24,6 +24,65 @@ body {
 /* styles for larger screens */
 @media (min-width: 992px) {
 
+  .hero {
+    position: relative;
+    width: 100%;
+    display: flex;
+    text-align: left !important;
+    align-items: center;
+    background: url('./images/welcome_background.png') center/cover no-repeat;
+    margin: 0 auto;
+    padding: 10vh 10vw !important;
+  }
+
+  .hero .herocontent {
+    display: flex !important;
+    margin: auto 0;
+    flex-direction: row;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+
+  .herocontent .hero-text {
+    display: flex;
+    width: 60%;
+    height: auto;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 40px 40px 40px 70px;
+  }
+
+  .hero-text h1 {
+    font-size: 2.5rem !important;
+  }
+
+  .hero-text p {
+    font-size: 1.5rem !important;
+  }
+
+  .herocontent .hero-image {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .hero-image img {
+    position: relative;
+    width: 100%;
+    height: auto;
+    z-index: 100;
+    top: -10%;
+    right: -8%;
+  }
+
+  .herobtn {
+    font-size: 1.5rem !important;
+  }
+
   .button {
     display:flex;
     justify-content: space-between;
@@ -38,56 +97,6 @@ body {
     flex-direction: row !important;
     padding: 50px;
     background-color: #f9f9f9;
-  }
-
-  /*hero section*/
-  .hero {
-    position: relative;
-    width: 100%;
-    height: 90vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background: url('https://cdni.autocarindia.com/Utils/ImageResizer.ashx?n=http://img.haymarketsac.in/autocarpro/5d12d2d8-c6bd-4899-91d3-a3e79a57569b_sustainable-earth-image.jpg&w=750&h=490&q=75&c=1') center/cover no-repeat;
-    margin-bottom: 50px;
-  }
-
-  .hero .herocontent {
-    margin: auto 0;
-    max-width: 95%;
-    z-index: 2;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-
-  .hero .herocontent h1 {
-    font-size: 36px;
-    margin: 0 0 20px;
-    color: #333;
-  }
-
-  .hero .herocontent p {
-    font-size: 18px;
-    margin: 0 0 20px;
-    color: #555;
-  }
-
-  .hero .herocontent .herobtn {
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #28a745;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  .hero .herocontent .herobtn:hover {
-    background-color: #218838;
   }
 
   .do-you-know .content {
@@ -390,50 +399,49 @@ body {
     .hero {
       position: relative;
       width: 100%;
-      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      background: url('https://cdni.autocarindia.com/Utils/ImageResizer.ashx?n=http://img.haymarketsac.in/autocarpro/5d12d2d8-c6bd-4899-91d3-a3e79a57569b_sustainable-earth-image.jpg&w=750&h=490&q=75&c=1') center/cover no-repeat;
-      margin-bottom: 50px;
+      text-align: justify;
+      background: url('./images/welcome_background.png') center/cover no-repeat;
+      margin: 0 auto;
+      padding: 5vh 5vw;
     }
   
     .hero .herocontent {
       margin: auto 0;
-      max-width: 90%;
+      width: 100%;
+      height: auto;
       z-index: 2;
       background: rgba(255, 255, 255, 0.9);
-      padding: 40px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
+
+    .hero-text {
+      padding: 30px;
+    }
   
-    .hero .herocontent h1 {
-      font-size: 36px;
+    .hero-text h1 {
+      font-size: 30px;
       margin: 0 0 20px;
       color: #333;
     }
   
-    .hero .herocontent p {
-      font-size: 18px;
+    .hero-text p {
+      font-size: 16px;
       margin: 0 0 20px;
       color: #555;
     }
   
-    .hero .herocontent .herobtn {
-      padding: 10px 20px;
-      font-size: 16px;
-      color: #fff;
-      background-color: #28a745;
-      border: none;
-      border-radius: 5px;
+    .hero-text .herobtn {
       text-decoration: none;
+      color: white;
       cursor: pointer;
     }
-  
-    .hero .herocontent .herobtn:hover {
-      background-color: #218838;
+
+    .hero-image {
+      display: none;
     }
   
     /*step section*/
@@ -487,10 +495,6 @@ body {
 
     .carousel-inner {
       display: flex;
-    }
-
-    .carousel-indicators {
-      margin-bottom: 0rem !important;
     }
 
     .carousel-control-prev, .carousel-control-next{
@@ -632,6 +636,7 @@ body {
       display: flex;
       flex-wrap: wrap !important;
       justify-content: center;
+      gap: 10px;
     }
     
     .team-member {
@@ -668,7 +673,7 @@ body {
 
     #c-steps {
       display: block;
-      padding: 1em;
+      padding: 2em;
     }
     
     .card{
