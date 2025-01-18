@@ -2,6 +2,7 @@
   "dependencies": {
     "@netlify/blobs": "^8.1.0",
     "axios": "^1.7.9",
-    "disposable-email-domains-js": "^1.8.0"
+    "disposable-email-domains-js": "^1.8.0",
+    "node-fetch": "^3.3.2"
   }
 }
