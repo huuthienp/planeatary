@@ -124,19 +124,32 @@
             updateAnchor(navDashboard);
             updateAnchor(navNext);
         }
+        function updateIFrame(frm, src=null) {
+            try {
+                new URL(src);
+                if (!frm.src) {  // avoid reloading
+                    frm.src = src;
+                }
+                frm.style.display = null;
+            } catch(error) {
+                frm.style.display = 'none';
+            }
+        }
         </script>
         <script defer type="module">
         const qDataCtId = 'uow.syd1';
         const qSurveyId = 'SV_8es3au3sYKpwaii';
         const quizFrame = document.querySelector('div.content > iframe.quiz');
-        quizFrame.src= `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}?userId=${getUserId()}`;
+        const quizUrl = `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}?userId=${getUserId()}`;
         // Initial preResult check
         try {
             getResult();
             enableButtons();
+            updateIFrame(quizFrame);  // hide
         } catch(error) {
             console.error(error);
             disableButtons();
+            updateIFrame(quizFrame, quizUrl);  // show
         }
         // Listen to preResult change in localStorage
         window.onstorage = (event) => {
@@ -144,9 +157,11 @@
                 try {
                     JSON.parse(event.newValue || '');  // force null -> empty string to throw error
                     enableButtons();
+                    updateIFrame(quizFrame);  // hide
                 } catch(error) {
                     console.error(error);
                     disableButtons();
+                    updateIFrame(quizFrame, quizUrl);  // show
                 }
             }
         };
