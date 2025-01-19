@@ -46,13 +46,13 @@
                                         </ul>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="ch" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                                        <a class="nav-link" id="navChallenge" ><i class="fa fa-rocket"></i>Challenge</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="result_page.html" id="d"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                        <a class="nav-link" id="navDashboard"><i class="fa fa-line-chart"></i>Dashboard</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
+                                        <a class="nav-link" id="navHistory"><i class="fa fa-calendar-check-o"></i>History</a>
                                     </li>
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
@@ -75,80 +75,81 @@
             <div class="content">
                 <iframe class="quiz" title="Planeatary quiz"></iframe>
                 <div class="btn-next">
-                    <button type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button>
+                    <a><button type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button></a>
                 </div>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
         const getUserId = () => JSON.parse(localStorage['gotrue.user']).id || '';
+        const getResult = () => JSON.parse(localStorage['preResult']);
             function openNav() {
                 next = document.querySelector(".next");
                 next.style.cursor = "not-allowed";
                 document.getElementById("mySidenav").style.width = "40%";
                 document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
             };
-
             function closeNav() {
                 document.getElementById("mySidenav").style.width = "0";
                 document.body.style.backgroundColor = "white";
             };
-
-            const ch = document.getElementById('ch');
-            const d = document.getElementById('d');
-            const nextButton = document.querySelector('.next');
-            function updateNextButton() {
-                let preResult = JSON.parse(localStorage.getItem('preResult'));
-
-                if (preResult) {
-                    // If preResult exists, enable the button and navigate to the results page
-                    nextButton.style.backgroundColor = '#02897A'; 
-                    nextButton.style.cursor = 'pointer';   
-                    nextButton.disabled = false;
-                    nextButton.addEventListener("click", function() {
-                        window.location.href = "result_page.html";
-                    });
-                    ch.style.cursor = "pointer"; 
-                    ch.disabled = false; 
-
-                    ch.addEventListener("click", function() {
-                        window.location.href = "manifesto.html";  
-                    });
-
-
-                d.style.cursor = "pointer"; 
-                d.disabled = false; 
-                d.addEventListener("click", function() {
-                    window.location.href = "manifesto.html";  
-                });
-                D.addEventListener("click", function() {
-                    window.location.href = "manifesto.html";
-                });
+        function updateAnchor(anchor, url=null) {
+            if (url) {
+                anchor.removeAttribute('disabled');
+                anchor.href = url;
+                anchor.style.cursor = 'pointer';
             } else {
-                // Disable the button if preResult does not exist
-                nextButton.style.backgroundColor = 'grey';
-                nextButton.style.borderColor = 'grey';
-                nextButton.style.cursor = 'not-allowed';
-                nextButton.disabled = true;
-                ch.style.cursor = "not-allowed"; 
-                d.style.cursor = "not-allowed"; 
-                ch.disabled = true; 
-                d.disabled = true; 
+                anchor.removeAttribute('href');
+                anchor.disabled = true;
+                anchor.style.cursor = 'not-allowed';
             }
         }
-
-        // Initial check for preResult
-        updateNextButton();
-
-        // Set up an interval to check for changes in localStorage
-        setInterval(updateNextButton, 1000);
-
-    </script>
+        const navChallenge = document.getElementById('navChallenge');
+        const navDashboard = document.getElementById('navDashboard');
+        const navNext = document.querySelector('div.btn-next > a');
+        const nextButton = document.querySelector('div.btn-next button.next');
+        function enableButtons() {
+            nextButton.style.backgroundColor = '#02897A';
+            nextButton.style.borderColor = '#02897A';
+            nextButton.style.cursor = 'pointer';
+            updateAnchor(navChallenge, 'manifesto_page');
+            updateAnchor(navDashboard, 'result_page');
+            updateAnchor(navNext, 'result_page');
+        }
+        function disableButtons() {
+            nextButton.style.backgroundColor = 'grey';
+            nextButton.style.borderColor = 'grey';
+            nextButton.style.cursor = 'not-allowed';
+            updateAnchor(navChallenge);
+            updateAnchor(navDashboard);
+            updateAnchor(navNext);
+        }
+        </script>
         <script defer type="module">
         const qDataCtId = 'uow.syd1';
         const qSurveyId = 'SV_8es3au3sYKpwaii';
         const quizFrame = document.querySelector('div.content > iframe.quiz');
         quizFrame.src= `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}?userId=${getUserId()}`;
+        // Initial preResult check
+        try {
+            getResult();
+            enableButtons();
+        } catch(error) {
+            console.error(error);
+            disableButtons();
+        }
+        // Listen to preResult change in localStorage
+        window.onstorage = (event) => {
+            if (event.key === 'preResult' && event.oldValue !== event.newValue) {
+                try {
+                    JSON.parse(event.newValue || '');  // force null -> empty string to throw error
+                    enableButtons();
+                } catch(error) {
+                    console.error(error);
+                    disableButtons();
+                }
+            }
+        };
         </script>
     </body>
 </html>
