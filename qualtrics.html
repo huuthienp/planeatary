@@ -73,7 +73,7 @@
                 </nav>
             </div>
             <div class="content">
-                <iframe class="quiz" src="https://uow.au1.qualtrics.com/jfe/form/SV_8es3au3sYKpwaii" title="Planeatary quiz"></iframe>
+                <iframe class="quiz" title="Planeatary quiz"></iframe>
                 <div class="btn-next">
                     <button type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button>
                 </div>
@@ -81,6 +81,7 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
+        const getUserId = () => JSON.parse(localStorage['gotrue.user']).id || '';
             function openNav() {
                 next = document.querySelector(".next");
                 next.style.cursor = "not-allowed";
@@ -143,5 +144,11 @@
         setInterval(updateNextButton, 1000);
 
     </script>
+        <script defer type="module">
+        const qDataCtId = 'uow.syd1';
+        const qSurveyId = 'SV_8es3au3sYKpwaii';
+        const quizFrame = document.querySelector('div.content > iframe.quiz');
+        quizFrame.src= `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}?userId=${getUserId()}`;
+        </script>
     </body>
 </html>
