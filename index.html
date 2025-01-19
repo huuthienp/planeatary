@@ -397,42 +397,65 @@
 
         <!-- Sign Up Modal-->
         <div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="signUpModalLabel">Sign Up</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Sign-Up Form -->
-                        <form id="signUpForm" novalidate>
-                            <div class="mb-3">
-                                <label for="nameInput" class="form-label">Full name</label>
-                                <input type="name" class="form-control" id="nameInput" placeholder="Enter username" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="emailInput1" class="form-label">Email address</label>
-                                <input type="email" class="form-control" id="emailInput1" placeholder="Enter email" required>
-                                <div class="invalid-feedback">This email is invalid.</div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="passwordInput1" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="passwordInput1" placeholder="Enter password" required>
-                                <div class="invalid-feedback">Password must be at least 6 characters long.</div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="passwordInput2" class="form-label">Confirm Password</label>
-                                <input type="password" class="form-control" id="passwordInput2" placeholder="Enter password" required>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="signUpButton">Sign Up</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="signUpModalLabel">Sign Up</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<!-- Sign-Up Form -->
+						<form class="account-form" id="signUpForm" onsubmit="return validate_form()">
+							<div class="mb-3">
+								<label for="name">Name:</label>
+								<input type="text" class="form-control" id="name" placeholder="Enter your name">
+							</div>
+							<div class="mb-3">
+								<label for="age">Age:</label>
+								<input type="number" class="form-control" id="age" placeholder="Enter your age" min="0">
+							</div>
+							<div class="mb-3">
+								<label for="gender">Gender:</label>
+								<select class="form-select" id="gender">
+									<option value="male">Male</option>
+									<option value="female">Female</option>
+									<option value="other">Other</option>
+								</select>
+							</div>
+							<div class="mb-3">
+								<label for="email">Additional Email Address:</label>
+								<input type="email" class="form-control" id="email" placeholder="Enter your email">
+							</div>
+							<div class="mb-3">
+								<label for="user-type">User Type:</label>
+								<select class="form-select" id="user-type">
+									<option value="student">Student</option>
+									<option value="dietician">Dietician</option>
+									<option value="academic">Academic Staff</option>
+									<option value="other">Other</option>
+								</select>
+							</div>
+							<div class="mb-3">
+								<label for="password">Password:</label>
+								<input type="password" class="form-control" id="password" placeholder="Enter new password">
+							</div>
+							<div id="password-message" class="mb-3">
+								<span>Password must contain:</span>
+								<div class="password-message-item invalid">At least <b>one lowercase letter</b></div>
+								<div class="password-message-item invalid">At least <b>one uppercase letter</b></div>
+								<div class="password-message-item invalid">At least <b>one number</b></div>
+								<div class="password-message-item invalid">Minimum <b>8 characters</b></div>
+							</div>
+							<div class="mb-3 text-danger" id="form_validate_msg"></div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								<button type="submit" class="btn btn-primary">Sign Up</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
         
         <div class="toast-container position-absolute top-0 end-0 p-3" aria-live="polite" aria-atomic="true">
             <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
