@@ -9,6 +9,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
         <!-- Icon CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- Bootstrap Javascript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="/listen-to-qualtrics.mjs"  type="module"></script> 
         <title>PlanEATary Quiz</title> 
     </head>
@@ -79,20 +81,11 @@
                 </div>
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        
         <script>
         const getUserId = () => JSON.parse(localStorage['gotrue.user']).id || '';
         const getResult = () => JSON.parse(localStorage['preResult']);
-            function openNav() {
-                next = document.querySelector(".next");
-                next.style.cursor = "not-allowed";
-                document.getElementById("mySidenav").style.width = "40%";
-                document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
-            };
-            function closeNav() {
-                document.getElementById("mySidenav").style.width = "0";
-                document.body.style.backgroundColor = "white";
-            };
+          
         function updateAnchor(anchor, url=null) {
             if (url) {
                 anchor.removeAttribute('disabled');
@@ -108,6 +101,7 @@
         const navDashboard = document.getElementById('navDashboard');
         const navNext = document.querySelector('div.btn-next > a');
         const nextButton = document.querySelector('div.btn-next button.next');
+        
         function enableButtons() {
             nextButton.style.backgroundColor = '#02897A';
             nextButton.style.borderColor = '#02897A';
