@@ -1,23 +1,20 @@
 import fetch from 'node-fetch';
 
 
-export default async (event, context) => {
-    const authHeader = event.headers.get('Authorization');
-    const { url } = context.site;
+export default async (request, context) => {
     try {
-        const options = {
-            method: event.method,
+        const { url } = context.site;
+        const nf_jwt = context.cookies.get('nf_jwt');
+        const authHeader = nf_jwt ? `Bearer ${nf_jwt}` : request.headers.get('Authorization');
+        const response = await fetch(url + '/.netlify/identity/user', {
+            method: request.method,
             headers: {
                 Authorization: authHeader,
             },
-        };
-        const response = await fetch(url + '/.netlify/identity/user', options);
-        const status = response.status;
-        if (response.ok) {
-            console.log(status);
-        } else {
-            console.error(status);
-        }
+        });
+        const { status } = response;
+        const __log = response.ok ? console.log : console.error;
+        __log(status);
         return new Response(await response.text(), {
             status: status,
         });
