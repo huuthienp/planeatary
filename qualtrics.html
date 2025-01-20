@@ -63,12 +63,6 @@
                                             <li><a class="dropdown-item" href="#">Log out</a></li>
                                         </ul>
                                     </li>
-                                    <!-- <li class="nav-item">
-                                        <button class="signIn"><a class="nav-link" href="#">Sign in</a></button>
-                                    </li>
-                                    <li class="nav-item">
-                                        <button class="signIn"><a class="nav-link" href="#">Sign up</a></button>
-                                    </li> -->
                             </div>
                         </div>
                     </div>
@@ -76,8 +70,9 @@
             </div>
             <div class="content">
                 <iframe class="quiz" title="Planeatary quiz"></iframe>
+                <span class="void"></span>
                 <div class="btn-next">
-                    <a><button type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button></a>
+                    <a><button id="nextButt" type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button></a>
                 </div>
             </div>
         </div>
@@ -100,7 +95,7 @@
         const navChallenge = document.getElementById('navChallenge');
         const navDashboard = document.getElementById('navDashboard');
         const navNext = document.querySelector('div.btn-next > a');
-        const nextButton = document.querySelector('div.btn-next button.next');
+        const nextButton = document.getElementById('nextButt');
         
         function enableButtons() {
             nextButton.style.backgroundColor = '#02897A';
@@ -119,12 +114,15 @@
             updateAnchor(navNext);
         }
         function updateIFrame(frm, src=null) {
+            const quizSpan = document.querySelector('div.content > span.void');
             try {
                 new URL(src);
                 if (!frm.src) {  // avoid reloading
                     frm.src = src;
                 }
+                
                 frm.style.display = null;
+                quizSpan.innerHTML = "You have already finished the pre-quiz";
             } catch(error) {
                 frm.style.display = 'none';
             }
