@@ -140,7 +140,12 @@
         const qDataCtId = 'uow.syd1';
         const qSurveyId = 'SV_8es3au3sYKpwaii';
         const quizFrame = document.querySelector('div.content > iframe.quiz');
-        const quizUrl = `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}?userId=${getUserId()}`;
+        try {
+            const quizUrl = `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}?userId=${getUserId()}`;
+        } catch(error) {
+            console.error(error);
+            console.warn('You are not logged in!');
+        }
         // Initial preResult check
         try {
             getResult();
