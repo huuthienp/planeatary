@@ -79,8 +79,8 @@
         </div>
 
         <script>
-        const getUserId = () => JSON.parse(localStorage['gotrue.user']).id || '';
-        const getResult = () => JSON.parse(localStorage['preResult']);
+        const getUserId = () => JSON.parse(localStorage.getItem('gotrue.user').id) || '';
+        const getResult = () => JSON.parse(localStorage.getItem('preResult')) || null;
 
         function updateAnchor(anchor, url=null) {
             if (url) {
