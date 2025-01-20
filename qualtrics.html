@@ -79,8 +79,8 @@
         </div>
 
         <script>
-        const getUserId = () => JSON.parse(localStorage.getItem('gotrue.user')).id || '';
-        const getResult = () => JSON.parse(localStorage.getItem('preResult')) || null;
+        const getUserId = () => JSON.parse(localStorage['gotrue.user']).id || '';
+        const getResult = () => JSON.parse(localStorage['preResult']);
 
         function updateAnchor(anchor, url=null) {
             if (url) {
@@ -134,7 +134,7 @@
         try {
             quizUrl += `?userId=${getUserId()}`;
         } catch(error) {
-            console.error(error);
+            console.warn('Caught', error);
             console.warn('You are not logged in!');
         }
         quizFrame.src = quizUrl;
@@ -144,7 +144,7 @@
             enableButtons();
             displayQuiz(quizFrame, quizSpan, false);
         } catch(error) {
-            console.error(error);
+            console.warn('Caught', error);
             disableButtons();
             displayQuiz(quizFrame, quizSpan);
         }
