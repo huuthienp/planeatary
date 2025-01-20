@@ -714,35 +714,35 @@
         </script>
         <!--sign in validation-->
         <script>
-        document.getElementById('submitButton').addEventListener('click', function () {
-            const emailInput = document.getElementById('emailInput2');
-            const passwordInput = document.getElementById('passwordInput');
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        // document.getElementById('submitButton').addEventListener('click', function () {
+        //     const emailInput = document.getElementById('emailInput2');
+        //     const passwordInput = document.getElementById('passwordInput');
+        //     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-            let isValid = true;
+        //     let isValid = true;
 
-            // Email validation
-            if (!emailRegex.test(emailInput2.value) || emailInput2.value === 'harry@m.com') {
-                emailInput2.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                emailInput2.classList.remove('is-invalid');
-            }
+        //     // Email validation
+        //     if (!emailRegex.test(emailInput.value) || emailInput.value === 'harry@m.com') {
+        //         emailInput.classList.add('is-invalid');
+        //         isValid = false;
+        //     } else {
+        //         emailInput.classList.remove('is-invalid');
+        //     }
 
-            // Password validation (minimum 6 characters)
-            if (passwordInput2.value.length < 6) {
-                passwordInput2.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                passwordInput.classList.remove('is-invalid');
-            }
+        //     // Password validation (minimum 6 characters)
+        //     if (passwordInput2.value.length < 6) {
+        //         passwordInput2.classList.add('is-invalid');
+        //         isValid = false;
+        //     } else {
+        //         passwordInput.classList.remove('is-invalid');
+        //     }
 
-            // If valid, submit the form or proceed further
-            if (isValid) {
-                alert('Form is valid. Proceeding...');
-                // Add your form submission logic here
-            }
-        });
+        //     // If valid, submit the form or proceed further
+        //     if (isValid) {
+        //         alert('Form is valid. Proceeding...');
+        //         // Add your form submission logic here
+        //     }
+        // });
         </script>
 
         <!--sign up popup-->
@@ -763,11 +763,11 @@
             let isValid = true;
 
             // Email validation
-            if (!emailRegex.test(emailInput1.value) || emailInput1.value === 'harry@m.com') {
-                emailInput2.classList.add('is-invalid');
+            if (!emailRegex.test(emailInput.value) || emailInput.value === 'harry@m.com') {
+                emailInput.classList.add('is-invalid');
                 isValid = false;
             } else {
-                emailInput1.classList.remove('is-invalid');
+                emailInput.classList.remove('is-invalid');
             }
 
             // Password validation (minimum 6 characters and match confirmation)
@@ -789,9 +789,9 @@
             // If valid, potentially submit form or redirect
             if (isValid) {
                 // Add logic to handle successful signup (e.g., redirect to account.html)
-                netlifyIdentity.gotrue.signup(emailInput1.value, passwordInput2.value, {full_name: nameInput.value})
+                netlifyIdentity.gotrue.signup(emailInput.value, passwordInput2.value, {full_name: nameInput.value})
                     .then((r) => {
-                        console.log('Successful signup!', emailInput2.value);
+                        console.log('Successful signup!', emailInput.value);
                         window.location.href = "qualtrics.html";
                     })
                     .catch((e) => {
@@ -806,7 +806,33 @@
             }
         });
         document.getElementById('signInButton').addEventListener('click', function () {
-            const emailInput = document.getElementById('emailInput2');
+            const emailInput2 = document.getElementById('emailInput2');
+            const passwordInput = document.getElementById('passwordInput');
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            let isValid = true;
+
+            // Email validation
+            if (!emailRegex.test(emailInput2.value) || emailInput2.value === 'harry@m.com') {
+                emailInput2.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                emailInput2.classList.remove('is-invalid');
+            }
+
+            // Password validation (minimum 6 characters)
+            if (passwordInput.value.length < 6) {
+                passwordInput.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                passwordInput.classList.remove('is-invalid');
+            }
+
+            // If valid, submit the form or proceed further
+            if (isValid) {
+                alert('Form is valid. Proceeding...');
+                // Add your form submission logic here
+            }
             netlifyIdentity.gotrue.login(emailInput2.value, passwordInput.value, true)  // true means to remember login
                 .then((r) => {
                     console.log('Successful login!', emailInput2.value);
