@@ -72,15 +72,16 @@
                 <iframe class="quiz" title="Planeatary quiz"></iframe>
                 <span class="void"></span>
                 <div class="btn-next">
+                    <button class="btn btn-success" id="restartBtn" style="width: 150px;">Restart</button>
                     <a><button id="nextButt" type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button></a>
                 </div>
             </div>
         </div>
-        
+
         <script>
         const getUserId = () => JSON.parse(localStorage['gotrue.user']).id || '';
         const getResult = () => JSON.parse(localStorage['preResult']);
-          
+
         function updateAnchor(anchor, url=null) {
             if (url) {
                 anchor.removeAttribute('disabled');
@@ -96,7 +97,10 @@
         const navDashboard = document.getElementById('navDashboard');
         const navNext = document.querySelector('div.btn-next > a');
         const nextButton = document.getElementById('nextButt');
-        
+        const restartBtn = document.getElementById('restartBtn');
+        const quizFrame = document.querySelector('div.content > iframe.quiz');
+        const quizSpan = document.querySelector('div.content > span.void');
+
         function enableButtons() {
             nextButton.style.backgroundColor = '#02897A';
             nextButton.style.borderColor = '#02897A';
@@ -113,40 +117,36 @@
             updateAnchor(navDashboard);
             updateAnchor(navNext);
         }
-        function updateIFrame(frm, src=null) {
-            const quizSpan = document.querySelector('div.content > span.void');
-            try {
-                new URL(src);
-                if (!frm.src) {  // avoid reloading
-                    frm.src = src;
-                }
-                
-                frm.style.display = null;
-                quizSpan.innerHTML = "You have already finished the pre-quiz";
-            } catch(error) {
-                frm.style.display = 'none';
+        function displayQuiz(frame, span, display=true) {
+            if (display) {
+                frame.style.display = null;
+                span.innerText = '';
+            } else {
+                frame.style.display = 'none';
+                span.innerText = 'You have already finished the pre-quiz!';
             }
         }
         </script>
         <script defer type="module">
         const qDataCtId = 'uow.syd1';
         const qSurveyId = 'SV_8es3au3sYKpwaii';
-        const quizFrame = document.querySelector('div.content > iframe.quiz');
         try {
             const quizUrl = `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}?userId=${getUserId()}`;
+            quizFrame.src = quizUrl;
         } catch(error) {
             console.error(error);
             console.warn('You are not logged in!');
+            quizSpan.innerText = 'Please log in and reload to take this quiz!';
         }
         // Initial preResult check
         try {
             getResult();
             enableButtons();
-            updateIFrame(quizFrame);  // hide
+            displayQuiz(quizFrame, quizSpan, false);
         } catch(error) {
             console.error(error);
             disableButtons();
-            updateIFrame(quizFrame, quizUrl);  // show
+            displayQuiz(quizFrame, quizSpan);
         }
         // Listen to preResult change in localStorage
         window.onstorage = (event) => {
@@ -154,14 +154,18 @@
                 try {
                     JSON.parse(event.newValue || '');  // force null -> empty string to throw error
                     enableButtons();
-                    updateIFrame(quizFrame);  // hide
+                    displayQuiz(quizFrame, quizSpan, false);
                 } catch(error) {
                     console.error(error);
                     disableButtons();
-                    updateIFrame(quizFrame, quizUrl);  // show
+                    displayQuiz(quizFrame, quizSpan);
                 }
             }
         };
+        restartBtn.addEventListener('click', () => {
+            quizFrame.style.display = null;
+            quizFrame.src = quizFrame.src;  // reload quiz frame
+        });
         </script>
     </body>
 </html>
