@@ -130,14 +130,14 @@
         <script defer type="module">
         const qDataCtId = 'uow.syd1';
         const qSurveyId = 'SV_8es3au3sYKpwaii';
+        let quizUrl = `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}`;
         try {
-            const quizUrl = `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}?userId=${getUserId()}`;
-            quizFrame.src = quizUrl;
+            quizUrl += `?userId=${getUserId()}`;
         } catch(error) {
             console.error(error);
             console.warn('You are not logged in!');
-            quizSpan.innerText = 'Please log in and reload to take this quiz!';
         }
+        quizFrame.src = quizUrl;
         // Initial preResult check
         try {
             getResult();
@@ -164,7 +164,7 @@
         };
         restartBtn.addEventListener('click', () => {
             quizFrame.style.display = null;
-            quizFrame.src = quizFrame.src;  // reload quiz frame
+            quizFrame.contentWindow.location = quizUrl;  // reload quiz frame
         });
         </script>
     </body>
