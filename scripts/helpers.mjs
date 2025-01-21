@@ -16,6 +16,31 @@ export class LocalStorageService {
 }
 
 
+export async function fetchData(url, options) {
+    try {
+        const response = await fetch(url, options);
+        const { ok, status } = response;
+        if (ok) {
+            const data = await response.json();
+            return data;
+        } else {
+            throw {
+                message: await response.text(),
+                name: 'ResponseNotOkError',
+                status: status,
+            };
+        }
+    } catch(error) {
+        throw {
+            message: error.message,
+            name: error.name,
+            stack: error.stack || '',
+            status: error.status || 500,
+        };
+    }
+}
+
+
 export function reformatQualtricsData(data, type) {
     try {
         let reformatted = {};
