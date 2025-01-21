@@ -87,10 +87,10 @@ export async function updateTaskStatus(preResponseId, taskData) {
         });
         const { ok, status } = response;
         if (!ok) {
-            throw new Error({
-                status: status,
-                message: await response.text(),
-            });
+            throw new Error(JSON.stringify({
+                status: status,  // fix error object
+                response: await response.text(),
+            }));
         }
         const responseBody = await response.json();
         console.log('Task updated successfully!\n', responseBody);
@@ -164,10 +164,10 @@ export async function fetchTaskStatus(preResponseId) {
         });
         const { ok, status } = response;
         if (!ok) {
-            throw new Error({
-                status: status,
-                message: await response.text(),
-            });
+            throw new Error(JSON.stringify({
+                status: status,  // fix error object
+                response: await response.text(),
+            }));
         }
         const data = extractTaskData(await response.json());
         console.log('Task status fetched!\n', data);
