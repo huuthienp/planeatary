@@ -388,7 +388,7 @@
 			   <label>
         			<input type="checkbox" checked="checked" name="remember"> Remember me
       			   </label>
-			<span class="psw">Forgot <a href="#">password?</a></span>
+			<span class="psw">Forgot <a href="#" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">password?</a></span>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -402,6 +402,50 @@
                 </div>
             </div>
         </div>
+
+	<!-- Forgot Password Modal -->
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="forgotPasswordModalLabel">Reset Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="forgotPasswordForm">
+                    <div class="mb-3">
+                        <label for="resetEmailInput" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="resetEmailInput" placeholder="Enter your email to reset password" required>
+                        <div class="invalid-feedback">Please enter a valid email.</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="resetPasswordButton">Reset Password</button>
+            </div>
+        </div>
+    </div>
+</div>
+	    <!--forget password script-->
+	<script>
+	    document.getElementById('resetPasswordButton').addEventListener('click', function () {
+	        const email = document.getElementById('resetEmailInput').value.trim();
+	
+	        if (email === '') {
+	            alert('Please enter your email.');
+	            return;
+	        }
+	
+	        // Simulate server request to send a reset link
+	        alert('A password reset link has been sent to: ' + emailInput);
+	        
+	        // Close the modal after sending the reset email
+	        const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+	        const modal = bootstrap.Modal.getInstance(forgotPasswordModal);
+	        modal.hide();
+	    });
+	</script>
 
         <!-- Sign Up Modal-->
         <div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
