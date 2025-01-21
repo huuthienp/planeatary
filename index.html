@@ -449,7 +449,7 @@
 							<div class="mb-3 text-danger" id="form_validate_msg"></div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-								<button type="submit" class="btn btn-primary">Sign Up</button>
+								<button type="submit" class="btn btn-primary" id="signInButton">Sign Up</button>
 							</div>
 						</form>
 					</div>
@@ -778,66 +778,58 @@
 
         <!--Sign Up validation-->
         <script>
-        		function validate_form() {
-			let nameField = document.getElementById("name");
-			let emailField = document.getElementById("email");
-			let passwordField = document.getElementById("password");
-			let msgString = "";
-			let validateFlag = 1;
+            function validate_form() {
+                let nameField = document.getElementById("name");
+                let emailField = document.getElementById("email");
+                let passwordField = document.getElementById("password");
+                let msgString = "";
+                let validateFlag = 1;
+                
+                // Check name
+                if (nameField.value === "") {
+                    validateFlag = 0;
+                    msgString += "**Name is blank.<br>";
+                }
+                
+                // Check email
+                if (emailField.value === "") {
+                    validateFlag = 0;
+                    msgString += "**Email is blank.<br>";
+                }
+                
+                // Check password
+                const passwordValue = passwordField.value;
+                if (passwordValue.length > 0) {
+                    const uppercaseRegex = /[A-Z]/g;
+                    const lowercaseRegex = /[a-z]/g;
+                    const numbersRegex = /[0-9]/g;
+                    
+                    if (!passwordValue.match(uppercaseRegex) || !passwordValue.match(lowercaseRegex) || !passwordValue.match(numbersRegex) || passwordValue.length < 8) {
+                        validateFlag = 0;
+                        msgString += "**Password does not meet the criteria.<br>";
+                    }
+                }
+                
+                // Show validation message
+                document.getElementById("form_validate_msg").innerHTML = msgString;
+                
+                if (validateFlag) {
+                    alert("Account created successfully!");
+                    return true;
+                } else {
+                    alert("Please correct the highlighted errors.");
+                    return false;
+                }
+            }
 
-			// Check name
-			if (nameField.value === "") {
-				validateFlag = 0;
-				msgString += "**Name is blank.<br>";
-			}
-
-			// Check email
-			if (emailField.value === "") {
-				validateFlag = 0;
-				msgString += "**Email is blank.<br>";
-			}
-
-			// Check password
-			const passwordValue = passwordField.value;
-			if (passwordValue.length > 0) {
-				const uppercaseRegex = /[A-Z]/g;
-				const lowercaseRegex = /[a-z]/g;
-				const numbersRegex = /[0-9]/g;
-
-				if (!passwordValue.match(uppercaseRegex) || !passwordValue.match(lowercaseRegex) || !passwordValue.match(numbersRegex) || passwordValue.length < 8) {
-					validateFlag = 0;
-					msgString += "**Password does not meet the criteria.<br>";
-				}
-			}
-
-			// Show validation message
-			document.getElementById("form_validate_msg").innerHTML = msgString;
-
-			if (validateFlag) {
-				alert("Account created successfully!");
-				return true;
-			} else {
-				alert("Please correct the highlighted errors.");
-				return false;
-			}
-		}
-
-		// Password live validation
-		document.getElementById("password").addEventListener("input", function () {
-			const passwordValue = this.value;
-			const messageItems = document.getElementsByClassName("password-message-item");
-
-			// Update validation status
-			messageItems[0].classList.toggle("valid", /[a-z]/.test(passwordValue));
-			messageItems[1].classList.toggle("valid", /[A-Z]/.test(passwordValue));
-			messageItems[2].classList.toggle("valid", /[0-9]/.test(passwordValue));
-			messageItems[3].classList.toggle("valid", passwordValue.length >= 8);
-		});
+	
             
         document.getElementById('signUpButton').addEventListener('click', function () {
-            const emailInput = document.getElementById('emailInput1');
-            const passwordInput1 = document.getElementById('passwordInput1');
-            const passwordInput2 = document.getElementById('passwordInput2');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const nameField = document.getElementById("name");
+            const genderField = document.getElementById("gender");
+            const ageField = document.getElementById("age");
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             let isValid = true;
 
@@ -849,26 +841,37 @@
                 emailInput.classList.remove('is-invalid');
             }
 
-            // Password validation (minimum 6 characters and match confirmation)
-            if (passwordInput1.value.length < 6) {
-                passwordInput1.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                passwordInput1.classList.remove('is-invalid');
-            }
-            if (passwordInput1.value !== passwordInput2.value) {
-                passwordInput1.classList.add('is-invalid');
-                passwordInput2.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                passwordInput1.classList.remove('is-invalid');
-                passwordInput2.classList.remove('is-invalid');
-            }
+            // Password live validation
+            document.getElementById("password").addEventListener("input", function () {
+                const passwordValue = this.value;
+                const messageItems = document.getElementsByClassName("password-message-item");
+
+                // Update validation status
+                messageItems[0].classList.toggle("valid", /[a-z]/.test(passwordValue));
+                messageItems[1].classList.toggle("valid", /[A-Z]/.test(passwordValue));
+                messageItems[2].classList.toggle("valid", /[0-9]/.test(passwordValue));
+                messageItems[3].classList.toggle("valid", passwordValue.length >= 8);
+            });
+            // // Password validation (minimum 6 characters and match confirmation)
+            // if (passwordInput.value.length < 6) {
+            //     passwordInput.classList.add('is-invalid');
+            //     isValid = false;
+            // } else {
+            //     passwordInput.classList.remove('is-invalid');
+            // }
+            // if (passwordInput1.value !== passwordInput2.value) {
+            //     passwordInput1.classList.add('is-invalid');
+            //     passwordInput2.classList.add('is-invalid');
+            //     isValid = false;
+            // } else {
+            //     passwordInput1.classList.remove('is-invalid');
+            //     passwordInput2.classList.remove('is-invalid');
+            // }
 
             // If valid, potentially submit form or redirect
-            if (isValid) {
+            if (validate_form()) {
                 // Add logic to handle successful signup (e.g., redirect to account.html)
-                netlifyIdentity.gotrue.signup(emailInput.value, passwordInput2.value, {full_name: nameInput.value})
+                netlifyIdentity.gotrue.signup(emailInput.value, passwordInput.value, {full_name: nameField.value})
                     .then((r) => {
                         console.log('Successful signup!', emailInput.value);
                         window.location.href = "qualtrics.html";
@@ -886,7 +889,7 @@
         });
         document.getElementById('signInButton').addEventListener('click', function () {
             const emailInput2 = document.getElementById('emailInput2');
-            const passwordInput = document.getElementById('passwordInput');
+            const passwordInput2 = document.getElementById('passwordInput');
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
             let isValid = true;
@@ -900,11 +903,11 @@
             }
 
             // Password validation (minimum 6 characters)
-            if (passwordInput.value.length < 6) {
-                passwordInput.classList.add('is-invalid');
+            if (passwordInput2.value.length < 6) {
+                passwordInput2.classList.add('is-invalid');
                 isValid = false;
             } else {
-                passwordInput.classList.remove('is-invalid');
+                passwordInput2.classList.remove('is-invalid');
             }
 
             // If valid, submit the form or proceed further
@@ -912,7 +915,7 @@
                 alert('Form is valid. Proceeding...');
                 // Add your form submission logic here
             }
-            netlifyIdentity.gotrue.login(emailInput2.value, passwordInput.value, true)  // true means to remember login
+            netlifyIdentity.gotrue.login(emailInput2.value, passwordInput2.value, true)  // true means to remember login
                 .then((r) => {
                     console.log('Successful login!', emailInput2.value);
                     //This will change later if we can retrieve cycle information of a user
