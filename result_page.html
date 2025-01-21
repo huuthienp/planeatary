@@ -47,7 +47,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="ch" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                                <a class="nav-link disabled" id="ch" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -174,7 +174,7 @@
             document.getElementById('com-tasks').style.color = 'white';
             const spinner = document.getElementById('spinner');
             const ch = document.getElementById('ch');
-            const CH = document.getElementById('CH');
+
             let isLoading = false;
             const minDisplayTime = 2000; 
             let spinnerStartTime;
@@ -420,16 +420,16 @@
             (tag) => { tag.remove() }
             );
             
-            const challenge_tab = [ch, CH];
-            challenge_tab.forEach(
-            (tab) => {
-                tab.style.color = '#a9d1cd';
-                tab.style.cursor = "not-allowed";
-                tab.disabled = true;
-            }
-            );
+            // const challenge_tab = [ch, CH];
+            // challenge_tab.forEach(
+            // (tab) => {
+            //     tab.style.color = '#a9d1cd';
+            //     tab.style.cursor = "not-allowed";
+            //     tab.disabled = true;
+            // }
+            //);
             
-        } else {
+        } else if (preResult) {
             displayQuestions(preResult);
             // Attach single click listener for the start button navigation
             selectButton.addEventListener('click', function(event) {
@@ -440,23 +440,18 @@
                 }
                 
             });
-            ch.style.color = 'white'; 
-            CH.style.color = '#074740';
+
             ch.style.cursor = "pointer"; 
-            CH.style.cursor = "pointer"; 
             ch.disabled = false; 
-            CH.disabled = false;
             ch.addEventListener("click", function() {
                 window.location.href = "manifesto.html";  
             });
-            CH.addEventListener("click", function() {
-                window.location.href = "manifesto.html";
-            });
+
             document.getElementById('preQ').style.backgroundColor = '#02897A';   
             document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
             document.getElementById('postQ').disabled = true; 
-            displayQuestions(preResult);
+            //displayQuestions(preResult);
         };
             
             document.getElementById('preQ').addEventListener('click', function() {
