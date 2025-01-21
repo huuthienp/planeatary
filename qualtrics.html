@@ -158,7 +158,7 @@
                 try {
                     JSON.parse(newValue || undefined);  // force null -> undefined to throw error
                     enableButtons();
-                    displayQuiz(quizFrame, quizSpan, false);
+                    quizSpan.innerText = 'Thank you for your response!';
                     console.log('Found pre-quiz result in storage!\n', newValue);
                 } catch(error) {
                     console.warn('Caught', error, '\nPre-quiz result is not found!');
