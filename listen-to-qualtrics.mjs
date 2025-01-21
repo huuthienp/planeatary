@@ -29,18 +29,12 @@ window.addEventListener('message', (event) => {
         try {
             // Parse the JSON data from the event
             const data = JSON.parse(event.data); // error handled below
-            console.log('Parsed.', '\n', data);
+            console.log(`Parsed message from ${event.origin}!\n`, data);
             storeResponse(data);
         } catch (error) {
-            if (error instanceof SyntaxError && error.message.toLowerCase().includes('json')) {
-                console.error('Cannot parse as JSON:', event.data);
-            } else {
-                console.error('\n', error.message || error);
-            }
+            console.warn('Caught', error, `\nfrom ${event.origin}!\n${event.data}`);
         }
     } else {
-        console.warn('Received message without greeting.',
-            '\nFrom:', event.origin,
-            '\nMessage:', event.data);
+        console.warn(`Received message from ${event.origin}!\n${event.data}`)
     }
 });

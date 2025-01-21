@@ -22,11 +22,7 @@ export function reformatQualtricsData(data, type) {
         }
         return reformatted;
     } catch (error) {
-        if (error instanceof SyntaxError && error.message.toLowerCase().includes('json')) {
-            console.error('Cannot parse as JSON:', data);
-        } else {
-            console.error(error);
-        }
+        console.warn('Caught', error, '\n', data);
     }
 }
 
@@ -43,7 +39,7 @@ export function storeResponse(data) {
             const strValue = valueAsStr ? value : JSON.stringify(value);
             localStorage.setItem(quizType + titleCaseKey, strValue);
         } catch (storageError) {
-            console.error(`Cannot store ${key} as ${value}.`, '\n', storageError);
+            console.warn('Caught', storageError, `\nCannot store ${key} as ${value}!`);
             continue;
         }
     }
@@ -70,12 +66,19 @@ export async function updateTaskStatus(preResponseId, taskData) {
             },
             body: JSON.stringify(requestBody),
         });
+        const { ok, status } = response;
+        if (!ok) {
+            throw new Error({
+                status: status,
+                message: await response.text(),
+            });
+        }
         const responseBody = await response.json();
-        console.log('Task updated successfully:', responseBody);
+        console.log('Task updated successfully!\n', responseBody);
         // hideSpinner();  // to be called outside
     } catch (error) {
         // hideSpinner();  // to be called outside
-        console.error('Error updating task status:', error);
+        console.warn('Caught', error, '\nin updateTaskStatus');
     }
 }
 
@@ -140,13 +143,20 @@ export async function fetchTaskStatus(preResponseId) {
                 'Q-RESPONSE-ID': preResponseId,
             }
         });
+        const { ok, status } = response;
+        if (!ok) {
+            throw new Error({
+                status: status,
+                message: await response.text(),
+            });
+        }
         const data = extractTaskData(await response.json());
-        console.log('Task status fetched:', data);
+        console.log('Task status fetched!\n', data);
         // hideSpinner(); // put this outside
         return data;
     } catch (error) {
         // hideSpinner(); // put this outside
-        console.error('Error fetching task status:', error);
+        console.warn('Caught', error, '\nin fetchTaskStatus');
         return null;
     }
 }
