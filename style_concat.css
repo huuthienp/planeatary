@@ -1139,18 +1139,15 @@ body {
     background-size: contain;
     background-position: center;
     display: flex;
-    justify-content: space-between;
     flex-direction: column;
 }
 .score h2 {
     font-size: 2em;
-    padding: 0.5vh 0;
+    margin: auto auto;
 }
 .score p {
     font-size: 1em;
-    padding: 0.5vh 0;
     color: grey;
-    margin: 0 auto;
 }
 
 .result .next-step {
