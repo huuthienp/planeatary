@@ -136,36 +136,37 @@
         try {
             quizUrl += `?userId=${getUserId()}`;  // contains sensitive info
         } catch(error) {
-            console.warn('Caught', error);
-            console.warn('You are not logged in!');
+            console.warn('Caught', error, '\nYou are not logged in!');
         }
         quizFrame.contentWindow.location = quizUrl;  // load quiz frame, safer than src
         // Initial preResult check
         try {
-            getResult();
+            const preResult = getResult();
             enableButtons();
             displayQuiz(quizFrame, quizSpan, false);
+            console.log('Found pre-quiz result in storage!\n', preResult);
         } catch(error) {
-            console.warn('Caught', error);
-            console.warn('Pre-quiz result is not found!');
+            console.warn('Caught', error, '\nPre-quiz result is not found!');
             disableButtons();
             displayQuiz(quizFrame, quizSpan);
         }
         // Listen to preResult change in localStorage
-        window.onstorage = (event) => {
-            if (event.key === 'preResult' && event.oldValue !== event.newValue) {
+        window.addEventListener('localStorageChange', (event) => {  // custom event by LocalStorageService in ./data-functions.mjs
+            const { type, detail: { key, oldValue, newValue } } = event;
+            console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
+            if (key === 'preResult' && oldValue !== newValue) {
                 try {
-                    JSON.parse(event.newValue || undefined);  // force null -> undefined to throw error
+                    JSON.parse(newValue || undefined);  // force null -> undefined to throw error
                     enableButtons();
                     displayQuiz(quizFrame, quizSpan, false);
+                    console.log('Found pre-quiz result in storage!\n', newValue);
                 } catch(error) {
-                    console.warn('Caught', error);
-                    console.warn('Pre-quiz result is not found!');
+                    console.warn('Caught', error, '\nPre-quiz result is not found!');
                     disableButtons();
                     displayQuiz(quizFrame, quizSpan);
                 }
             }
-        };
+        });
         restartBtn.addEventListener('click', () => {
             quizFrame.style.display = null;
             quizFrame.contentWindow.location = quizUrl;  // reload quiz frame

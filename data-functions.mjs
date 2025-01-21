@@ -1,3 +1,21 @@
+export class LocalStorageService {
+    setItem(key, value) {
+        const oldValue = localStorage.getItem(key);
+        localStorage.setItem(key, value);
+        this.notifyChange(key, oldValue, value);
+    }
+    removeItem(key) {
+        const oldValue = localStorage.getItem(key);
+        localStorage.removeItem(key);
+        this.notifyChange(key, oldValue, '<removed>');
+    }
+    notifyChange(key, oldValue, newValue) {
+        const event = new CustomEvent('localStorageChange', { detail: { key, oldValue, newValue } });
+        window.dispatchEvent(event);
+    }
+}
+
+
 export function reformatQualtricsData(data, type) {
     try {
         let reformatted = {};
@@ -30,6 +48,7 @@ export function reformatQualtricsData(data, type) {
 export function storeResponse(data) {
     // Iterate over each key-value pair in the parsed data
     const { quizType } = data;
+    const storageService = new LocalStorageService();
     for (const [key, value] of Object.entries(data)) {
         try {
             // Capitalize the first letter of the key
@@ -37,7 +56,7 @@ export function storeResponse(data) {
             // Process the value and store in localStorage
             const valueAsStr = typeof value === 'string';
             const strValue = valueAsStr ? value : JSON.stringify(value);
-            localStorage.setItem(quizType + titleCaseKey, strValue);
+            storageService.setItem(quizType + titleCaseKey, strValue);
         } catch (storageError) {
             console.warn('Caught', storageError, `\nCannot store ${key} as ${value}!`);
             continue;
