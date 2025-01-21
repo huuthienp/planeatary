@@ -151,7 +151,7 @@
             displayQuiz(quizFrame, quizSpan);
         }
         // Listen to preResult change in localStorage
-        window.addEventListener('localStorageChange', (event) => {  // custom event by LocalStorageService in ./data-functions.mjs
+        window.addEventListener('localStorageChange', (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
             const { type, detail: { key, oldValue, newValue } } = event;
             console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
             if (key === 'preResult' && oldValue !== newValue) {

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CustomResponse } from '../../classes/http.mjs';
+import { CustomResponse } from '../../scripts/custom-classes.mjs';
 
 
 export default async (req) => {

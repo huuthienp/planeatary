@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getStore } from '@netlify/blobs';
-import { CustomResponse } from '../../classes/http.mjs';
+import { CustomResponse } from '../../scripts/custom-classes.mjs';
 
 
 export default async (req) => {

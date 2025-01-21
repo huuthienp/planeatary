@@ -1,5 +1,5 @@
 import { getStore } from '@netlify/blobs';
-import { CustomResponse } from '../../classes/http.mjs'; // /classes/http.mjs
+import { CustomResponse } from '../../scripts/custom-classes.mjs'; // /classes/http.mjs
 
 export default async (req) => {
   // Ensure the request method is POST
