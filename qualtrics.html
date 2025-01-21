@@ -132,12 +132,12 @@
         const qSurveyId = 'SV_8es3au3sYKpwaii';
         let quizUrl = `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}`;
         try {
-            quizUrl += `?userId=${getUserId()}`;
+            quizUrl += `?userId=${getUserId()}`;  // contains sensitive info
         } catch(error) {
             console.warn('Caught', error);
             console.warn('You are not logged in!');
         }
-        quizFrame.src = quizUrl;
+        quizFrame.contentWindow.location = quizUrl;  // load quiz frame, safer than src
         // Initial preResult check
         try {
             getResult();
@@ -145,6 +145,7 @@
             displayQuiz(quizFrame, quizSpan, false);
         } catch(error) {
             console.warn('Caught', error);
+            console.warn('Pre-quiz result is not found!');
             disableButtons();
             displayQuiz(quizFrame, quizSpan);
         }
@@ -152,11 +153,12 @@
         window.onstorage = (event) => {
             if (event.key === 'preResult' && event.oldValue !== event.newValue) {
                 try {
-                    JSON.parse(event.newValue || '');  // force null -> empty string to throw error
+                    JSON.parse(event.newValue || undefined);  // force null -> undefined to throw error
                     enableButtons();
                     displayQuiz(quizFrame, quizSpan, false);
                 } catch(error) {
-                    console.error(error);
+                    console.warn('Caught', error);
+                    console.warn('Pre-quiz result is not found!');
                     disableButtons();
                     displayQuiz(quizFrame, quizSpan);
                 }
