@@ -41,6 +41,22 @@ export async function fetchData(url, options) {
 }
 
 
+export async function fetchResponse(responseId, quizType, env) {
+    const { PRE_QUIZ_ID, POST_QUIZ_ID } = env;
+    const surveyId = (quizType === 'pre') ? PRE_QUIZ_ID : POST_QUIZ_ID;
+    const { QDC_ID, Q_API_TOKEN } = env;
+    const url = `https://${QDC_ID}.qualtrics.com/API/v3/surveys/${surveyId}/responses/${responseId}`;
+    const options = {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'X-API-TOKEN': Q_API_TOKEN,
+        },
+    };
+    return await fetchData(url, options);
+}
+
+
 export function reformatQualtricsData(data, type) {
     try {
         let reformatted = {};
