@@ -108,31 +108,6 @@ body {
     width: 40% !important;
   }
 
-  /*step section*/
-  /* .step-section {
-    display: flex;
-    text-align: center;
-    background-color: #f9f9f9;
-    padding: 50px 20px;
-  }
-
-  .step-section h2 {
-    font-size: 24px;
-    margin-bottom: 30px;
-    color: #333;
-  }
-
-  .steps {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-  }
-
-  .step {
-    max-width: 200px;
-    text-align: center;
-  } */
-
   #c-steps {
     display: flex !important;
     padding: 1em;
