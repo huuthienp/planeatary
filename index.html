@@ -75,39 +75,8 @@
                         <img src="./images/welcome-removebg.png"/>  
                     </div>
                     <!-- href="https://planeatary.netlify.app/qualtrics" -->
-                </div>
-                
+                </div>             
             </div>
-
-            
-            <!-- Steps section
-            <section class="step-section">
-                <h2>Promoting planetary health, one bite at a time</h2>
-                <div class="steps">
-                    <div class="step">
-                        <img src="path-to-icon1.png">
-                        <h3>Complete the Quiz</h3>
-                        <p>Let's see where you're kicking goals</p>
-                    </div>
-                    <div class="step">
-                        <img src="path-to-icon2.png">
-                        <h3>Design your Challenge</h3>
-                        <p>Complete 10 tasks to improve your score</p>
-                    </div>
-                    <div class="step">
-                        <img src="path-to-icon3.png">
-                        <h3>Complete your Challenge</h3>
-                        <p>Spend 2-3 weeks to complete your goal</p>
-                    </div>
-                    <div class="step">
-                        <img src="path-to-icon4.png">
-                        <h3>Complete Post Quiz</h3>
-                        <p>Check how your score has been improved</p>
-                    </div>
-                </div> 
-                
-                    
-            </section> -->
 
             <section class="container p-3">
                 
@@ -779,57 +748,13 @@
 
         </script>
 
-        <!--sign in popup-->
+        
+        <!--Sign Up -->
         <script>
-
-        function showSignInModal() {
-            const modal = new bootstrap.Modal(document.getElementById('signInModal'));
-            modal.show();
-        }
-        </script>
-        <!--sign in validation-->
-        <script>
-        // document.getElementById('submitButton').addEventListener('click', function () {
-        //     const emailInput = document.getElementById('emailInput2');
-        //     const passwordInput = document.getElementById('passwordInput');
-        //     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-        //     let isValid = true;
-
-        //     // Email validation
-        //     if (!emailRegex.test(emailInput.value) || emailInput.value === 'harry@m.com') {
-        //         emailInput.classList.add('is-invalid');
-        //         isValid = false;
-        //     } else {
-        //         emailInput.classList.remove('is-invalid');
-        //     }
-
-        //     // Password validation (minimum 6 characters)
-        //     if (passwordInput2.value.length < 6) {
-        //         passwordInput2.classList.add('is-invalid');
-        //         isValid = false;
-        //     } else {
-        //         passwordInput.classList.remove('is-invalid');
-        //     }
-
-        //     // If valid, submit the form or proceed further
-        //     if (isValid) {
-        //         alert('Form is valid. Proceeding...');
-        //         // Add your form submission logic here
-        //     }
-        // });
-        </script>
-
-        <!--sign up popup-->
-        <script>
-        function showSignUpModal() {
+            function showSignUpModal() {
             const modal = new bootstrap.Modal(document.getElementById('signUpModal'));
             modal.show();
-        }
-        </script>
-
-        <!--Sign Up validation-->
-        <script>
+            }
             function validate_form() {
                 let nameField = document.getElementById("name");
                 let emailField = document.getElementById("email");
@@ -875,7 +800,6 @@
             }
 
 	
-            
         document.getElementById('signUpButton').addEventListener('click', function () {
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
@@ -939,35 +863,44 @@
 
             }
         });
-        document.getElementById('signInButton').addEventListener('click', function () {
-            const emailInput2 = document.getElementById('emailInput2');
-            const passwordInput2 = document.getElementById('passwordInput');
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        </script>
 
-            let isValid = true;
-
-            // Email validation
-            if (!emailRegex.test(emailInput2.value) || emailInput2.value === 'harry@m.com') {
-                emailInput2.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                emailInput2.classList.remove('is-invalid');
+        <!--Sign In -->
+        <script>
+            function showSignInModal() {
+                const modal = new bootstrap.Modal(document.getElementById('signInModal'));
+                modal.show();
             }
 
-            // Password validation (minimum 6 characters)
-            if (passwordInput2.value.length < 6) {
-                passwordInput2.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                passwordInput2.classList.remove('is-invalid');
-            }
-
-            // If valid, submit the form or proceed further
-            if (isValid) {
-                alert('Form is valid. Proceeding...');
-                // Add your form submission logic here
-            }
-            netlifyIdentity.gotrue.login(emailInput2.value, passwordInput2.value, true)  // true means to remember login
+            document.getElementById('signInButton').addEventListener('click', function () {
+                const emailInput2 = document.getElementById('emailInput2');
+                const passwordInput2 = document.getElementById('passwordInput');
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                
+                let isValid = true;
+                
+                // Email validation
+                if (!emailRegex.test(emailInput2.value) || emailInput2.value === 'harry@m.com') {
+                    emailInput2.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    emailInput2.classList.remove('is-invalid');
+                }
+                
+                // Password validation (minimum 6 characters)
+                if (passwordInput2.value.length < 6) {
+                    passwordInput2.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    passwordInput2.classList.remove('is-invalid');
+                }
+                
+                // If valid, submit the form or proceed further
+                if (isValid) {
+                    alert('Form is valid. Proceeding...');
+                    // Add your form submission logic here
+                }
+                netlifyIdentity.gotrue.login(emailInput2.value, passwordInput2.value, true)  // true means to remember login
                 .then((r) => {
                     console.log('Successful login!', emailInput2.value);
                     //This will change later if we can retrieve cycle information of a user
@@ -981,7 +914,7 @@
                     myToast.show();
                     return;
                 });
-        });
+            });
         </script>
     </body>
 </html>

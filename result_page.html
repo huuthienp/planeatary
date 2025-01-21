@@ -93,7 +93,7 @@
                     <p class="next-step">Next step: Select 10 Tasks To Improve Your Scores!</p>
                     <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
                 </div>
-                <button class="select-tasks">Select Tasks →</button>
+                <button class="select-tasks"><a href="manifesto_page.html">Select Tasks →</a>/button>
             </div>
             <div class="q">
                 <div class="questions"></div>
@@ -122,7 +122,7 @@
         const Qbuttoncontainer = document.querySelector(".pre-postQ");
         const Pre_Q = document.querySelector("#preQ");
         const Post_Q = document.querySelector("#postQ");
-        const selectButton = document.querySelector(".select-tasks");
+        //const selectButton = document.querySelector(".select-tasks");
         const cardContainer = document.querySelector(".questions");
         const tmodal = document.getElementById("taskModal");
         const modalOverlay = document.getElementById("modalOverlay");
@@ -333,6 +333,7 @@
                     // Create and append question title
                     const questionTitle = document.createElement('h3');
                     questionTitle.textContent = `Question ${index + 1} - ${score} points`;
+                    //Later we may add info of each question (question and selected choice)
                     questionDiv.appendChild(questionTitle);
 
                     cardContainer.appendChild(questionDiv);
