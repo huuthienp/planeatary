@@ -59,8 +59,8 @@
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
                                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                            <li><a class="dropdown-item" href="#">My account</a></li>
-                                            <li><a class="dropdown-item" href="#">Log out</a></li>
+                                            <li><a class="dropdown-item" href="account manage.html">My account</a></li>
+                                            <li><a class="dropdown-item" href="index.html">Log out</a></li>
                                         </ul>
                                     </li>
                             </div>
@@ -80,6 +80,8 @@
 
         <script>
         const getUserId = () => JSON.parse(localStorage['gotrue.user']).id || '';
+        //May modification for the case that another user sign up on the same device as previous user did the pre-quiz. 
+        // The pre-quiz page needs to acknowledge different users and allow doing pre-quiz
         const getResult = () => JSON.parse(localStorage['preResult']);
 
         function updateAnchor(anchor, url=null) {

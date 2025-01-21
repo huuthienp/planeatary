@@ -874,7 +874,7 @@
                 netlifyIdentity.gotrue.signup(emailInput.value, passwordInput.value, {full_name: nameField.value})
                     .then((r) => {
                         console.log('Successful signup!', emailInput.value);
-                        window.location.href = "qualtrics.html";
+                        window.location.href = "account manage.html";
                     })
                     .catch((e) => {
                         console.error('Caught', e)
@@ -883,8 +883,8 @@
                         const myToast = new bootstrap.Toast(toastEl);
                         myToast.show();
                     });
-                return;  // because we don't have account page yet
-                window.location.href = "account.html"; // Redirect to account page
+                return;  
+
             }
         });
         document.getElementById('signInButton').addEventListener('click', function () {
