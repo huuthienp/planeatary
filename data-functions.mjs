@@ -31,22 +31,20 @@ export function reformatQualtricsData(data, type) {
 }
 
 
-export function saveLocalStorage(data, type) {
+export function storeResponse(data) {
     // Iterate over each key-value pair in the parsed data
+    const { quizType } = data;
     for (const [key, value] of Object.entries(data)) {
-        if (type === 'response') {
-            const { quizType } = data;
-            try {
-                // Capitalize the first letter of the key
-                const titleCaseKey = key.charAt(0).toUpperCase() + key.slice(1);
-                // Process the value and store in localStorage
-                const valueAsStr = typeof value === 'string';
-                const strValue = valueAsStr ? value : JSON.stringify(value);
-                localStorage.setItem(`${quizType}${titleCaseKey}`, strValue);
-            } catch (storageError) {
-                console.error(`Cannot store ${key} as ${value}.`, '\n', storageError);
-                continue;
-            }
+        try {
+            // Capitalize the first letter of the key
+            const titleCaseKey = key.charAt(0).toUpperCase() + key.slice(1);
+            // Process the value and store in localStorage
+            const valueAsStr = typeof value === 'string';
+            const strValue = valueAsStr ? value : JSON.stringify(value);
+            localStorage.setItem(quizType + titleCaseKey, strValue);
+        } catch (storageError) {
+            console.error(`Cannot store ${key} as ${value}.`, '\n', storageError);
+            continue;
         }
     }
 }

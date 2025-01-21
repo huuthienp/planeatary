@@ -1,5 +1,5 @@
 // /listen-to-qualtrics.mjs
-import { saveLocalStorage } from './data-functions.mjs';
+import { storeResponse } from './data-functions.mjs';
 // Initialize a set to store allowed origins
 const allowedOrigins = new Set();
 
@@ -30,7 +30,7 @@ window.addEventListener('message', (event) => {
             // Parse the JSON data from the event
             const data = JSON.parse(event.data); // error handled below
             console.log('Parsed.', '\n', data);
-            saveLocalStorage(data, 'response');
+            storeResponse(data);
         } catch (error) {
             if (error instanceof SyntaxError && error.message.toLowerCase().includes('json')) {
                 console.error('Cannot parse as JSON:', event.data);
