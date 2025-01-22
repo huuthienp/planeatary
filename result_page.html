@@ -117,6 +117,9 @@
                 </div>
             </div>
         </section>
+
+        <!-- spinner overlay-->
+        <section class="overlay hidden" id="spinnerOverlay"></section>
         
     </div>
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
@@ -134,6 +137,7 @@
         const modalDescription = document.getElementById("modalDescription");
         const header = document.getElementById("q-type");
         const completion_date = document.getElementById("date-completion-q");
+        
     
         let scores = [];
         
@@ -147,6 +151,7 @@
         const minDisplayTime = 2000; 
         let spinnerStartTime;
         let isLoading;
+        const bOverlay = document.getElementById("spinnerOverlay");
         
         // Function to show the modal
         function showModal(title, description) {
@@ -175,32 +180,25 @@
             }
         });
 
-        // Function to show the spinner
         function showSpinner() {
             console.log("Showing spinner...");
             spinner.classList.remove('hidden');
-            modalOverlay.classList.remove('hidden');
-            closeButt.classList.add('hidden');
+            bOverlay.classList.remove('hidden');
             isLoading = true;
             spinnerStartTime = Date.now();
         };
 
-        // Function to hide the spinner
         function hideSpinner() {
             const elapsedTime = Date.now() - spinnerStartTime;
             if (elapsedTime < minDisplayTime) {
-                // Delay hiding spinner until the minimum display time
                 setTimeout(() => {
                     console.log("Hiding spinner after min time...");
                     spinner.classList.add('hidden');
-                    modalOverlay.classList.add('hidden');
+                    bOverlay.classList.remove('hidden');
                     isLoading = false;
                 }, minDisplayTime - elapsedTime);
-            } else {
-                //console.log("Hiding spinner...");
                 spinner.classList.add('hidden');
-                modalOverlay.classList.add('hidden');
-                closeButt.classList.remove('hidden');
+                bOverlay.classList.remove('hidden');
                 isLoading = false;
             }
         }

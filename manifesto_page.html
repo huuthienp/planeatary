@@ -129,8 +129,7 @@
     </section>
 
     <!-- spinner overlay-->
-    <section class="overlay hidden" id="spinnerOverlay">
-    </section>
+    <section class="overlay hidden" id="spinnerOverlay"></section>
 
     <!-- Warning Toast -->
     <div class="toast-container position-absolute top-0 end-0 p-3" aria-live="polite" aria-atomic="true">
@@ -184,40 +183,6 @@
         
         document.addEventListener("DOMContentLoaded", async function() {
             const startButton = document.querySelector(".start");
-            const spinner = document.getElementById('spinner');
-            let isLoading = false;
-            const minDisplayTime = 2000; 
-            let spinnerStartTime;
-            let scores = [];
-            let task_counts = 0;
-            
-            // Function to show the spinner
-            function showSpinner() {
-                //console.log("Showing spinner...");
-                spinner.classList.remove('hidden');
-                spOver.classList.remove('hidden');
-                isLoading = true;
-                spinnerStartTime = Date.now();
-            };
-            
-            // Function to hide the spinner
-            function hideSpinner() {
-                const elapsedTime = Date.now() - spinnerStartTime;
-                if (elapsedTime < minDisplayTime) {
-                    // Delay hiding spinner until the minimum display time
-                    setTimeout(() => {
-                        //console.log("Hiding spinner after min time...");
-                        spinner.classList.add('hidden');
-                        spOver.classList.add('hidden');
-                        isLoading = false;
-                    }, minDisplayTime - elapsedTime);
-                } else {
-                    //console.log("Hiding spinner...");
-                    spinner.classList.add('hidden');
-                    spOver.classList.add('hidden');
-                    isLoading = false;
-                }
-            };
             
             const modal = document.querySelector(".modal");
             const overlay = document.querySelector(".overlay");
@@ -227,6 +192,36 @@
             const closeButt = document.querySelector('.close');
             const close = document.getElementById('close');
             const closeDes = document.getElementById('closeDes');
+
+            const spinner = document.getElementById('spinner');
+            let isLoading = false;
+            const minDisplayTime = 2000; 
+            let spinnerStartTime;
+            let scores = [];
+            let task_counts = 0;
+            
+            function showSpinner() {
+                spinner.classList.remove('hidden');
+                spOver.classList.remove('hidden');
+                isLoading = true;
+                spinnerStartTime = Date.now();
+            };
+            
+            function hideSpinner() {
+                const elapsedTime = Date.now() - spinnerStartTime;
+                
+                if (elapsedTime < minDisplayTime) {
+                    setTimeout(() => {
+                        spinner.classList.add('hidden');
+                        spOver.classList.add('hidden');
+                        isLoading = false;
+                    }, minDisplayTime - elapsedTime);
+                } else {
+                    spinner.classList.add('hidden');
+                    spOver.classList.add('hidden');
+                    isLoading = false;
+                }
+            }
             
             function Modal(source) {
                 close.classList.remove('hidden');
@@ -273,18 +268,6 @@
                     CloseDes();
                 }
             });
-            
-            let preResult = JSON.parse(localStorage.getItem('preResult')); 
-            let preResponseId = localStorage.getItem('preResponseId'); 
-            
-            
-            if(!preResult && !preResponseId) {
-                QContainer.innerHTML = '<p>No available information to be displayed</p>';
-            }
-            else{
-                let preTotalScore = preResult.totalScore; 
-                let prePointArray = preResult.pointArray;
-            }
             
             
             // Retrieve tasks from localStorage or fetch if not available
@@ -359,10 +342,7 @@
                     
                 }
             }
-            
-            scores = preResult.pointArray; 
-            
-            
+                        
             function calculateSelectedTasks(tasks) {
                 let count = 0;
                 Object.keys(tasks).forEach((questionKey) => {
@@ -378,6 +358,18 @@
             
             async function renderQuestions(condition) {
                 QContainer.innerHTML = '';
+                let preResult = JSON.parse(localStorage.getItem('preResult')); 
+                let preResponseId =  preResult.resposeId;
+                
+                
+                if(!preResult && !preResponseId) {
+                    QContainer.innerHTML = '<p>No available information to be displayed</p>';
+                }
+                else{
+                    let preTotalScore = preResult.totalScore; 
+                    scores = preResult.pointArray;
+                }
+
                 let tasks = JSON.parse(localStorage.getItem('tasks')); 
                 let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                 
@@ -393,10 +385,7 @@
                     hideSpinner();
                     localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
                     fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                }
-                
-                //fetch up-to-date info
-                if (fetched_tasks !== null) {
+                } else if (fetched_tasks !== null) {
                     if (!fetched_tasks.status || !fetched_tasks.chosen) {
                         showSpinner();
                         fetched_tasks = await fetchTaskStatus(preResponseId); 

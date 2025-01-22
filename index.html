@@ -488,12 +488,25 @@
             </div>
         </div>
 
+        <!-- spinner overlay-->
+        <section class="overlay hidden" id="spinnerOverlay"></section>
+
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script type="module">
+            
             import { fetchResponse, fetchData, reformatResponseData, mergeTaskArrays, fetchTaskStatus } from './scripts/helpers.mjs';
+
+            const spinner = document.getElementById('spinner');
+            const spOver = document.getElementById("spinnerOverlay");
+            let chosen_tasks = [];
+            let status_tasks = [];
+
+            let isLoading = false;
+            const minDisplayTime = 1000;
+            let spinnerStartTime;
             
             document.addEventListener("DOMContentLoaded", async function() {
-                const spinner = document.getElementById('spinner');
+                
                 const greetingDiv = document.querySelector('.greeting');
                 const continueButton = document.getElementById('continueButton');
                 const heroButton = document.querySelector('.herobtn');
@@ -508,35 +521,27 @@
                 *     and f4cae0a8896a980fb9607449a47df37c841c56f7 */
                 
                 //let preResponseId = localStorage.getItem('preResponseId'); 
+                 
                 
-                let chosen_tasks = [];
-                let status_tasks = [];
-                
-                let isLoading = false;
-                const minDisplayTime = 1000;
-                let spinnerStartTime;
-                
-                // Function to show the spinner
                 function showSpinner() {
-                    //console.log("Showing spinner...");
                     spinner.classList.remove('hidden');
+                    spOver.classList.remove('hidden');
                     isLoading = true;
                     spinnerStartTime = Date.now();
-                };
+                }
                 
-                // Function to hide the spinner
                 function hideSpinner() {
                     const elapsedTime = Date.now() - spinnerStartTime;
+                    
                     if (elapsedTime < minDisplayTime) {
-                        // Delay hiding spinner until the minimum display time
                         setTimeout(() => {
-                            //console.log("Hiding spinner after min time...");
                             spinner.classList.add('hidden');
+                            spOver.classList.add('hidden');
                             isLoading = false;
                         }, minDisplayTime - elapsedTime);
                     } else {
-                        // console.log("Hiding spinner...");
                         spinner.classList.add('hidden');
+                        spOver.classList.add('hidden');
                         isLoading = false;
                     }
                 }
@@ -804,18 +809,6 @@
                     }
                 }
 
-                function logOut() {
-                    if (netlifyIdentity.gotrue.currentUser() !== null) {
-                        let user = netlifyIdentity.gotrue.currentUser();
-                        user.logout().then(() => {
-                            console.log('User has been logged out!');
-                            window.location.href = "index.html";
-                        });
-                    } else {
-                        console.log("No user is logged in!");
-                    }
-                }
-
                 
                 document.getElementById('signInButton').addEventListener('click', () => {
                     const emailInput2 = document.getElementById('emailInput2');
@@ -847,6 +840,18 @@
                     }
 
                 });
+
+                function logOut() {
+                    if (netlifyIdentity.gotrue.currentUser() !== null) {
+                        let user = netlifyIdentity.gotrue.currentUser();
+                        user.logout().then(() => {
+                            console.log('User has been logged out!');
+                            window.location.href = "index.html";
+                        });
+                    } else {
+                        console.log("No user is logged in!");
+                    }
+                }
 
                 document.getElementById('logOut').addEventListener('click', () => {
                     alert("Do you really want to sign out?");

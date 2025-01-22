@@ -79,24 +79,26 @@
         <div class="history-table">
             <p class="404 hidden">There is no information available</p>
             <!--Table structure-->
-            <table class="table table-striped" id="h-table">
+            <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Pre-quiz</th>
-                        <th>Post-quiz</th>
+                        <th colspan="2">Pre-quiz</th>
+                        <th colspan="2">Post-quiz</th>
                         <th>Tasks completed</th>
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>points date</td>
-                        <td>points date</td>
+                <tbody id="h-table">
+                    <!-- <tr>
+                        <td>points</td>
+                        <td>date</td>
+                        <td>points</td>
+                        <td>date</td>
                         <td>completed tasks</td>
                         <td>
-                            <button type="button" class="btn btn-success">View</button>
+                            <button type="button" class="btn btn-success" id="track-back">View</button>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
             
@@ -105,17 +107,59 @@
             <button type="button" class="btn btn-success next" style="width: 150px;"><a href="index.html">Back to <i class="fa fa-home"></i></a></button>
         </div>
     </div>
+
+     <!-- spinner overlay-->
+     <section class="overlay hidden" id="spinnerOverlay"></section>
+
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script type="module">
         import { fetchTaskStatus } from './scripts/helpers.mjs';
-    
+        
         let scores = [];
+        
+        
+        const spinner = document.getElementById('spinner');
         let spinnerStartTime;
         let isLoading;
+        const minDisplayTime = 2000; 
+        const bOverlay = document.getElementById("spinnerOverlay");
         //should be a userId
         let preResponseId = localStorage.getItem('preResponseId');
-        const spinner = document.getElementById('spinner');
-
+        
+        function ExtractHistory() {
+            const user = netlifyIdentity.gotrue.currentUser();
+            const metadata = user.user_metadata;
+            const responseHistory = metadata.responseHistory;
+            let history = [];
+            
+            Object.keys(responseHistory).forEach((cycleKey) =>{
+                const cycle = responseHistory[cycleKey];
+                history.push(cycle);
+            })
+            return history
+        }
+        
+        function showSpinner() {
+            spinner.classList.remove('hidden');
+            bOverlay.classList.remove('hidden');
+            isLoading = true;
+            spinnerStartTime = Date.now();
+        };
+        
+        function hideSpinner() {
+            const elapsedTime = Date.now() - spinnerStartTime;
+            if (elapsedTime < minDisplayTime) {
+                setTimeout(() => {
+                    spinner.classList.add('hidden');
+                    bOverlay.classList.remove('hidden');
+                    isLoading = false;
+                }, minDisplayTime - elapsedTime);
+                spinner.classList.add('hidden');
+                bOverlay.classList.remove('hidden');
+                isLoading = false;
+            }
+        }
+        
         function logOut() {
             if (netlifyIdentity.gotrue.currentUser() !== null) {
                 let user = netlifyIdentity.gotrue.currentUser();
@@ -127,83 +171,70 @@
                 console.log("No user is logged in!");
             }
         }
-
+        
         document.getElementById('logOut').addEventListener('click', () => {
             alert("Do you really want to sign out?");
             showSpinner();
             logOut();
             hideSpinner();
         });
-     
-        document.addEventListener("DOMContentLoaded", async function() {
+        
+        function displayTable() {
+            const history = ExtractHistory();
+            const table = document.getElementById('h-table');
+
+            Object.keys(history).forEach((cycleKey) =>{
+                const cycle = history[cycleKey];
+                
+                const cycleDiv = document.createElement('tr');
+                const prescore = document.createElement('td');
+                const predate = document.createElement('td');
+                const postscore = document.createElement('td');
+                const postdate = document.createElement('td');
+                const taskcycle = document.createElement('td');
+                const view = document.createElement('td');
+                
+                if (cycle.lastTask) {
+                    const timeTask = cycle.lastTask.split("@");
+                    let date = new Date(timeTask);
+                    let localHours = String(date.getHours()).padStart(2, "0");
+                    let localMinutes = String(date.getMinutes()).padStart(2, "0");
+                    let year = date.getFullYear();
+                    let month = String(date.getMonth() + 1).padStart(2, '0'); 
+                    let day = String(date.getDate()).padStart(2, '0');
+                    taskcycle.textContent = `at ${localHours}:${localMinutes} on ${day}/${month}/${year}`;
+                } else {
+                    taskcycle.textContent = "";
+                }
+                
+                prescore.textContent = 0;
+                predate.textContent = "";
+                postscore.textContent = 0;
+                postdate.textContent = "";
+                view.innerHTML = '<button type="button" class="btn btn-success track-back">View</button>';
+                cycleDiv.appenChild(prescore);
+                cycleDiv.appenChild(predate);
+                cycleDiv.appenChild(postscore);
+                cycleDiv.appenChild(postdate);
+                cycleDiv.appenChild(view);
+
+                view.addEventListener('click', () => {
+                    localStorage.setItem('selectedCycle', JSON.stringify(cycle));
+                    window.location.href = "result_page.html";
+                })
+
+            })                  
+        }
+        
+        document.addEventListener("DOMContentLoaded", function() {
             
             
             const ch = document.getElementById('ch');
             const CH = document.getElementById('CH');
-            let isLoading = false;
-            const minDisplayTime = 2000; 
-            let spinnerStartTime;
-            let preResult = JSON.parse(localStorage.getItem('preResult'));
-            let postResult = JSON.parse(localStorage.getItem('postResult'));
-            // Retrieve tasks from localStorage
-            let tasks = JSON.parse(localStorage.getItem('tasks'));
             
-            // Function to show the spinner
-            function showSpinner() {
-                //console.log("Showing spinner...");
-                spinner.classList.remove('hidden');
-                isLoading = true;
-                spinnerStartTime = Date.now();
-            };
-            
-            // Function to hide the spinner
-            function hideSpinner() {
-                const elapsedTime = Date.now() - spinnerStartTime;
-                if (elapsedTime < minDisplayTime) {
-                    // Delay hiding spinner until the minimum display time
-                    setTimeout(() => {
-                        //console.log("Hiding spinner after min time...");
-                        spinner.classList.add('hidden');
-                        isLoading = false;
-                    }, minDisplayTime - elapsedTime);
-                } else {
-                    //console.log("Hiding spinner...");
-                    spinner.classList.add('hidden');
-                    overlay.classList.add('hidden');
-                    isLoading = false;
-                }
-            }
-
-            // Function to get task status from the API
-            async function fetchTaskStatus_() {  // archive
-                try {
-                    
-                    showSpinner();
-                    const response = await fetch('/api/manage-tasks', {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Q-RESPONSE-ID': preResponseId,
-                        }
-
-                    });
-                    
-                    const data = await response.json();
-                    console.log('Task status fetched:', data);
-                    hideSpinner();
-                    return data;
-                } catch (error) {
-                    hideSpinner();
-                    console.error('Error fetching task status:', error);
-                    return null;
-                }
-            }
-
-            async function findOrfetchQuiz() {
-
-            }
+            displayTable();
             
         });
-        </script>
+    </script>
     </body>
 </html>

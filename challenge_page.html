@@ -97,8 +97,7 @@
         </div>
     </section>
     <!-- spinner overlay-->
-    <section class="overlay hidden" id="spinnerOverlay">
-    </section>
+    <section class="overlay hidden" id="spinnerOverlay"></section>
 
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script type="module">
@@ -127,8 +126,6 @@
             //console.log("Showing spinner...");
             spinner.classList.remove('hidden');
             spOver.classList.remove('hidden');
-            
-            closeButt.classList.add('hidden');
             isLoading = true;
             spinnerStartTime = Date.now();
         }
