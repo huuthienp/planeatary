@@ -855,9 +855,13 @@
                 const user = netlifyIdentity.gotrue.currentUser();
                 const metadata = user.user_metadata;
                 const responseHistory = metadata.responseHistory
-                Object.keys(responseHistory).forEach(cycleKey =>{
-                    const cycle = cycleKey.preId;
-                    console.log(cycle);
+                Object.keys(responseHistory).forEach((cycleKey) =>{
+                    const entry = responseHistory[cycleKey];
+                    console.log(`Entry ${cycleKey}:`, entry);
+
+                    console.log("lastTask:", entry.lastTask);
+                    console.log("preId:", entry.preId);
+                    console.log("postId:", entry.postId);
                 })
             }
 
