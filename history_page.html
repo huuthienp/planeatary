@@ -125,6 +125,8 @@
         const bOverlay = document.getElementById("spinnerOverlay");
         //should be a userId
         let preResponseId = localStorage.getItem('preResponseId');
+
+        //require a function that can have taskArray based on a selected cycle
         
         function ExtractHistory() {
             const user = netlifyIdentity.gotrue.currentUser();
@@ -217,6 +219,7 @@
                 cycleDiv.appendChild(postscore);
                 cycleDiv.appendChild(postdate);
                 cycleDiv.appendChild(view);
+                table.appendChild(cycleDiv);
 
                 view.addEventListener('click', () => {
                     localStorage.setItem('selectedCycle', JSON.stringify(cycle));
