@@ -788,6 +788,8 @@
 
                 async function signInAndRedirect() {
                     try {
+                        const emailInput2 = document.getElementById('emailInput2');
+                        const passwordInput2 = document.getElementById('passwordInput');
                         // Wait for login
                         const loginResult = await netlifyIdentity.gotrue.login(
                         emailInput2.value,
