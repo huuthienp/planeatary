@@ -9,6 +9,8 @@
     <link href="style_concat.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Icon CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -52,13 +54,13 @@
                                     <a class="nav-link" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#"><i class="fa fa-calendar-check-o"></i> History</a>
+                                    <a class="nav-link active" aria-current="page" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                      <li><a class="dropdown-item" href="#">My account</a></li>
-                                      <li><a class="dropdown-item" href="#">Log out</a></li>
+                                      <li><a class="dropdown-item" href="account manage.html">My account</a></li>
+                                      <li><a class="dropdown-item" id="logOut">Log out</a></li>
                                     </ul>
                                   </li>
                                 <!-- <li class="nav-item">
@@ -103,7 +105,7 @@
             <button type="button" class="btn btn-success next" style="width: 150px;"><a href="index.html">Back to <i class="fa fa-home"></i></a></button>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script type="module">
         import { fetchTaskStatus } from './scripts/helpers.mjs';
     
@@ -111,6 +113,22 @@
         let spinnerStartTime;
         let isLoading;
         let preResponseId = localStorage.getItem('preResponseId');
+
+        function logOut() {
+            if (netlifyIdentity.gotrue.currentUser() !== null) {
+                let user = netlifyIdentity.gotrue.currentUser();
+                user.logout().then(() => {
+                    console.log('User has been logged out!');
+                    window.location.href = "index.html";
+                });
+            } else {
+                console.log("No user is logged in!");
+            }
+        }
+
+        document.getElementById('logOut').addEventListener('click', () => {
+            logOut();
+        });
      
         document.addEventListener("DOMContentLoaded", async function() {
             

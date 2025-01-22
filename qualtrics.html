@@ -78,99 +78,117 @@
             </div>
         </div>
 
+        <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script>
-        const getUserId = () => JSON.parse(localStorage['gotrue.user']).id || '';
-        //May modification for the case that another user sign up on the same device as previous user did the pre-quiz. 
-        // The pre-quiz page needs to acknowledge different users and allow doing pre-quiz
-        const getResult = () => JSON.parse(localStorage['preResult']);
-
-        function updateAnchor(anchor, url=null) {
-            if (url) {
-                anchor.removeAttribute('disabled');
-                anchor.href = url;
-                anchor.style.cursor = 'pointer';
-            } else {
-                anchor.removeAttribute('href');
-                anchor.disabled = true;
-                anchor.style.cursor = 'not-allowed';
-            }
-        }
-        const navChallenge = document.getElementById('navChallenge');
-        const navDashboard = document.getElementById('navDashboard');
-        const navNext = document.querySelector('div.btn-next > a');
-        const nextButton = document.getElementById('nextButt');
-        const restartBtn = document.getElementById('restartBtn');
-        const quizFrame = document.querySelector('div.content > iframe.quiz');
-        const quizSpan = document.querySelector('div.content > span.void');
-
-        function enableButtons() {
-            nextButton.style.backgroundColor = '#02897A';
-            nextButton.style.borderColor = '#02897A';
-            nextButton.style.cursor = 'pointer';
-            updateAnchor(navChallenge, 'manifesto_page');
-            updateAnchor(navDashboard, 'result_page');
-            updateAnchor(navNext, 'result_page');
-        }
-        function disableButtons() {
-            nextButton.style.backgroundColor = 'grey';
-            nextButton.style.borderColor = 'grey';
-            nextButton.style.cursor = 'not-allowed';
-            updateAnchor(navChallenge);
-            updateAnchor(navDashboard);
-            updateAnchor(navNext);
-        }
-        function displayQuiz(frame, span, display=true) {
-            if (display) {
-                frame.style.display = null;
-                span.innerText = '';
-            } else {
-                frame.style.display = 'none';
-                span.innerText = 'You have already finished the pre-quiz!';
-            }
-        }
-        </script>
-        <script defer type="module">
-        const qDataCtId = 'uow.syd1';
-        const qSurveyId = 'SV_8es3au3sYKpwaii';
-        let quizUrl = `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}`;
-        try {
-            quizUrl += `?userId=${getUserId()}`;  // contains sensitive info
-        } catch(error) {
-            console.warn('Caught', error, '\nYou are not logged in!');
-        }
-        quizFrame.contentWindow.location = quizUrl;  // load quiz frame, safer than src
-        // Initial preResult check
-        try {
-            const preResult = getResult();
-            enableButtons();
-            displayQuiz(quizFrame, quizSpan, false);
-            console.log('Found pre-quiz result in storage!\n', preResult);
-        } catch(error) {
-            console.warn('Caught', error, '\nPre-quiz result is not found!');
-            disableButtons();
-            displayQuiz(quizFrame, quizSpan);
-        }
-        // Listen to preResult change in localStorage
-        window.addEventListener('localStorageChange', (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
-            const { type, detail: { key, oldValue, newValue } } = event;
-            console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
-            if (key === 'preResult' && oldValue !== newValue) {
-                try {
-                    JSON.parse(newValue || undefined);  // force null -> undefined to throw error
-                    enableButtons();
-                    quizSpan.innerText = 'Thank you for your response!';
-                    console.log('Found pre-quiz result in storage!\n', newValue);
-                } catch(error) {
-                    console.warn('Caught', error, '\nPre-quiz result is not found!');
-                    disableButtons();
-                    displayQuiz(quizFrame, quizSpan);
+            const getUserId = () => JSON.parse(localStorage['gotrue.user']).id || '';
+            //May modification for the case that another user sign up on the same device as previous user did the pre-quiz. 
+            // The pre-quiz page needs to acknowledge different users and allow doing pre-quiz
+            const getResult = () => JSON.parse(localStorage['preResult']);
+            
+            function updateAnchor(anchor, url=null) {
+                if (url) {
+                    anchor.removeAttribute('disabled');
+                    anchor.href = url;
+                    anchor.style.cursor = 'pointer';
+                } else {
+                    anchor.removeAttribute('href');
+                    anchor.disabled = true;
+                    anchor.style.cursor = 'not-allowed';
                 }
             }
-        });
-        restartBtn.addEventListener('click', () => {
-            quizFrame.style.display = null;
-            quizFrame.contentWindow.location = quizUrl;  // reload quiz frame
-        });
+
+            function logOut() {
+                if (netlifyIdentity.gotrue.currentUser() !== null) {
+                    let user = netlifyIdentity.gotrue.currentUser();
+                    user.logout().then(() => {
+                        console.log('User has been logged out!');
+                        window.location.href = "index.html";
+                    });
+                } else {
+                    console.log("No user is logged in!");
+                }
+            }
+
+            document.getElementById('logOut').addEventListener('click', () => {
+                logOut();
+            });
+            
+            const navChallenge = document.getElementById('navChallenge');
+            const navDashboard = document.getElementById('navDashboard');
+            const navNext = document.querySelector('div.btn-next > a');
+            const nextButton = document.getElementById('nextButt');
+            const restartBtn = document.getElementById('restartBtn');
+            const quizFrame = document.querySelector('div.content > iframe.quiz');
+            const quizSpan = document.querySelector('div.content > span.void');
+            
+            function enableButtons() {
+                nextButton.style.backgroundColor = '#02897A';
+                nextButton.style.borderColor = '#02897A';
+                nextButton.style.cursor = 'pointer';
+                updateAnchor(navChallenge, 'manifesto_page');
+                updateAnchor(navDashboard, 'result_page');
+                updateAnchor(navNext, 'result_page');
+            }
+            function disableButtons() {
+                nextButton.style.backgroundColor = 'grey';
+                nextButton.style.borderColor = 'grey';
+                nextButton.style.cursor = 'not-allowed';
+                updateAnchor(navChallenge);
+                updateAnchor(navDashboard);
+                updateAnchor(navNext);
+            }
+            function displayQuiz(frame, span, display=true) {
+                if (display) {
+                    frame.style.display = null;
+                    span.innerText = '';
+                } else {
+                    frame.style.display = 'none';
+                    span.innerText = 'You have already finished the pre-quiz!';
+                }
+            }
+        </script>
+        <script defer type="module">
+            const qDataCtId = 'uow.syd1';
+            const qSurveyId = 'SV_8es3au3sYKpwaii';
+            let quizUrl = `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}`;
+            try {
+                quizUrl += `?userId=${getUserId()}`;  // contains sensitive info
+            } catch(error) {
+                console.warn('Caught', error, '\nYou are not logged in!');
+            }
+            quizFrame.contentWindow.location = quizUrl;  // load quiz frame, safer than src
+            // Initial preResult check
+            try {
+                const preResult = getResult();
+                enableButtons();
+                displayQuiz(quizFrame, quizSpan, false);
+                console.log('Found pre-quiz result in storage!\n', preResult);
+            } catch(error) {
+                console.warn('Caught', error, '\nPre-quiz result is not found!');
+                disableButtons();
+                displayQuiz(quizFrame, quizSpan);
+            }
+            // Listen to preResult change in localStorage
+            window.addEventListener('localStorageChange', (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
+                const { type, detail: { key, oldValue, newValue } } = event;
+                console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
+                if (key === 'preResult' && oldValue !== newValue) {
+                    try {
+                        JSON.parse(newValue || undefined);  // force null -> undefined to throw error
+                        enableButtons();
+                        quizSpan.innerText = 'Thank you for your response!';
+                        console.log('Found pre-quiz result in storage!\n', newValue);
+                    } catch(error) {
+                        console.warn('Caught', error, '\nPre-quiz result is not found!');
+                        disableButtons();
+                        displayQuiz(quizFrame, quizSpan);
+                    }
+                }
+            });
+            restartBtn.addEventListener('click', () => {
+                quizFrame.style.display = null;
+                quizFrame.contentWindow.location = quizUrl;  // reload quiz frame
+            });
         </script>
     </body>
 </html>
