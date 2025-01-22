@@ -852,14 +852,15 @@
         <!--Sign In -->
         <script>
             function ExtractUserMetadata() {
-                const metadata = JSON.parse(localStorage.getItem(gotrue.user).user_metadata);
+                const user = netlifyIdentity.gotrue.currentUser();
+                const metadata = user.user_metadata;
                 const responseHistory = metadata.responseHistory
                 Object.keys(responseHistory).forEach(cycleKey =>{
                     const cycle = cycleKey.preId;
                     console.log(cycle);
                 })
             }
-            
+
             function showSignInModal() {
                 const modal = new bootstrap.Modal(document.getElementById('signInModal'));
                 modal.show();
