@@ -892,10 +892,10 @@
             async function ExtractQuizInfo() {
                 const {quizObj, historyObj} = ExtractUserMetadata();
                 if (quizObj.lastPost !== "") {
-                    let quizData = await fetchResponseIdFromNetlify(post, quizObj.lastPost);
+                    let quizData = await fetchResponseIdFromNetlify("post", quizObj.lastPost);
                     localStorage.setItem("postResult", JSON.stringify(quizData));
                 } else if (quizObj.lastPre !== "") {
-                    let quizData = await fetchResponseIdFromNetlify(pre, quizObj.lastPre);
+                    let quizData = await fetchResponseIdFromNetlify("pre", quizObj.lastPre);
                     localStorage.setItem("preResult", JSON.stringify(quizData));
                 }
 
