@@ -85,7 +85,7 @@
                         <th colspan="2">Pre-quiz</th>
                         <th colspan="2">Post-quiz</th>
                         <th>Tasks completed</th>
-                        <th></th>
+                        <th>Track</th>
                     </tr>
                 </thead>
                 <tbody id="h-table">
@@ -198,7 +198,8 @@
                 
                 if (cycle.lastTask) {
                     const timeTask = cycle.lastTask.split("@");
-                    let date = new Date(timeTask);
+                    let time = timeTask[1];
+                    let date = new Date(time * 1000);
                     let localHours = String(date.getHours()).padStart(2, "0");
                     let localMinutes = String(date.getMinutes()).padStart(2, "0");
                     let year = date.getFullYear();
