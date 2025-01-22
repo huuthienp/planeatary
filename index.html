@@ -874,6 +874,12 @@
                 let latest_post = "";
                 let history = [];
 
+                //handle first-time user
+                if (!metadata || !metadata.responseHistory) {
+                    console.warn("No responseHistory found for this user.");
+                    return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
+                }
+
                 Object.keys(responseHistory).forEach((cycleKey) =>{
                     const entry = responseHistory[cycleKey];
                     history.push(entry);
@@ -934,11 +940,11 @@
                     alert('Form is valid. Proceeding...');
                 }
                 netlifyIdentity.gotrue.login(emailInput2.value, passwordInput2.value, true)  // true means to remember login
-                .then((r) => {
+                .then(async (r) => {
                     console.log('Successful login!', emailInput2.value);
                     document.querySelector(".home-hide").style.display = "flex";
                     //This will change later if we can retrieve cycle information of a user
-                    ExtractQuizInfo();
+                    await ExtractQuizInfo();
                     window.location.href = "result_page.html";
                 })
                 .catch((e) => {
