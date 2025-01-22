@@ -726,7 +726,6 @@
                 Object.keys(responseHistory).forEach(cycleKey =>{
                     const cycle = cycleKey.preId;
                     console.log(cycle);
-                    
                 })
             }
 
@@ -897,6 +896,7 @@
                 .then((r) => {
                     console.log('Successful login!', emailInput2.value);
                     //This will change later if we can retrieve cycle information of a user
+                    ExtractUserMetadata();
                     window.location.href = "result_page.html";
                 })
                 .catch((e) => {
