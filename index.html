@@ -720,15 +720,6 @@
                 }
             }
 
-            function ExtractUserMetadata() {
-                const metadata = JSON.parse(localStorage.getItem(gotrue.user).user_metadata);
-                const responseHistory = metadata.responseHistory
-                Object.keys(responseHistory).forEach(cycleKey =>{
-                    const cycle = cycleKey.preId;
-                    console.log(cycle);
-                })
-            }
-
             // function renderOutcome(success, message='', color='') {
             //     if (success === true) {
             //         checkIdMsg.style.color = color || green;
@@ -860,6 +851,15 @@
 
         <!--Sign In -->
         <script>
+            function ExtractUserMetadata() {
+                const metadata = JSON.parse(localStorage.getItem(gotrue.user).user_metadata);
+                const responseHistory = metadata.responseHistory
+                Object.keys(responseHistory).forEach(cycleKey =>{
+                    const cycle = cycleKey.preId;
+                    console.log(cycle);
+                })
+            }
+            
             function showSignInModal() {
                 const modal = new bootstrap.Modal(document.getElementById('signInModal'));
                 modal.show();
