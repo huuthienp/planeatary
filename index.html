@@ -630,10 +630,7 @@
             //     } finally {
             //         hideSpinner();
             //     }
-            })
-        </script>
 
-        <script>
             async function fetchResponseIdFromNetlify(quizType, responseId) {
                 try {
 
@@ -736,7 +733,108 @@
                     button.innerHTML = `<a href="${href}">${button.textContent}</a>`;
                 }
             }
+                heroButton.addEventListener('click', function () {
+                    document.getElementById('e-toast').textContent = 'Please sign in or sign up first';
+                    const toastEl = document.getElementById('liveToast');
+                    const myToast = new bootstrap.Toast(toastEl);
+                    myToast.show();
+                });
 
+                function ExtractUserMetadata() {
+                const user = netlifyIdentity.gotrue.currentUser();
+                const metadata = user.user_metadata;
+                const responseHistory = metadata.responseHistory;
+                let latest_pre = "";
+                let latest_post = "";
+                let history = [];
+
+                //handle first-time user
+                if (!metadata || !metadata.responseHistory) {
+                    console.warn("No responseHistory found for this user.");
+                    return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
+                }
+
+                Object.keys(responseHistory).forEach((cycleKey) =>{
+                    const entry = responseHistory[cycleKey];
+                    history.push(entry);
+                    if (entry.preId) {
+                        latest_pre = entry.preId;
+                    }
+                    if (entry.postId) {
+                        latest_post = entry.postId;
+                    }
+                    
+                })
+                const quizPair = {lastPre: latest_pre, lastPost: latest_post};
+                return {quizObj: quizPair, historyObj: history}
+            }
+
+            async function ExtractQuizInfo() {
+                const {quizObj, historyObj} = ExtractUserMetadata();
+                if (quizObj.lastPost !== "") {
+                    let quizData = await fetchResponseIdFromNetlify("post", quizObj.lastPost);
+                    localStorage.setItem("postResult", JSON.stringify(quizData));
+                } else if (quizObj.lastPre !== "") {
+                    let quizData = await fetchResponseIdFromNetlify("pre", quizObj.lastPre);
+                    localStorage.setItem("preResult", JSON.stringify(quizData));
+                }
+
+            }
+
+            function showSignInModal() {
+                const modal = new bootstrap.Modal(document.getElementById('signInModal'));
+                modal.show();
+            }
+
+            document.getElementById('signInButton').addEventListener('click', function () {
+                const emailInput2 = document.getElementById('emailInput2');
+                const passwordInput2 = document.getElementById('passwordInput');
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                
+                let isValid = true;
+                
+                // Email validation
+                if (!emailRegex.test(emailInput2.value) || emailInput2.value === 'harry@m.com') {
+                    emailInput2.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    emailInput2.classList.remove('is-invalid');
+                }
+                
+                // Password validation (minimum 6 characters)
+                if (passwordInput2.value.length < 6) {
+                    passwordInput2.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    passwordInput2.classList.remove('is-invalid');
+                }
+                
+                // If valid, submit the form or proceed further
+                if (isValid) {
+                    alert('Form is valid. Proceeding...');
+                }
+                netlifyIdentity.gotrue.login(emailInput2.value, passwordInput2.value, true)  // true means to remember login
+                .then(async (r) => {
+                    console.log('Successful login!', emailInput2.value);
+                    document.querySelector(".home-hide").style.display = "flex";
+                    //This will change later if we can retrieve cycle information of a user
+                    await ExtractQuizInfo();
+                    window.location.href = "result_page.html";
+                })
+                .catch((e) => {
+                    console.error('Caught error:', e);
+                    document.getElementById('e-toast').textContent = e;
+                    const toastEl = document.getElementById('liveToast');
+                    const myToast = new bootstrap.Toast(toastEl);
+                    myToast.show();
+                    return;
+                });
+            });
+
+            })
+        </script>
+
+        <script>
             // function renderOutcome(success, message='', color='') {
             //     if (success === true) {
             //         checkIdMsg.style.color = color || green;
@@ -755,12 +853,6 @@
              *     and f4cae0a8896a980fb9607449a47df37c841c56f7 */
             // checkOrFetchResponseId();
 
-            heroButton.addEventListener('click', function () {
-                document.getElementById('e-toast').textContent = 'Please sign in or sign up first';
-                const toastEl = document.getElementById('liveToast');
-                const myToast = new bootstrap.Toast(toastEl);
-                myToast.show();
-            });
         </script>
    
         <!--Sign Up -->
@@ -865,96 +957,7 @@
 
         <!--Sign In -->
         <script>
-            function ExtractUserMetadata() {
-                const user = netlifyIdentity.gotrue.currentUser();
-                const metadata = user.user_metadata;
-                const responseHistory = metadata.responseHistory;
-                let latest_pre = "";
-                let latest_post = "";
-                let history = [];
-
-                //handle first-time user
-                if (!metadata || !metadata.responseHistory) {
-                    console.warn("No responseHistory found for this user.");
-                    return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
-                }
-
-                Object.keys(responseHistory).forEach((cycleKey) =>{
-                    const entry = responseHistory[cycleKey];
-                    history.push(entry);
-                    if (entry.preId) {
-                        latest_pre = entry.preId;
-                    }
-                    if (entry.postId) {
-                        latest_post = entry.postId;
-                    }
-                    
-                })
-                const quizPair = {lastPre: latest_pre, lastPost: latest_post};
-                return {quizObj: quizPair, historyObj: history}
-            }
-
-            async function ExtractQuizInfo() {
-                const {quizObj, historyObj} = ExtractUserMetadata();
-                if (quizObj.lastPost !== "") {
-                    let quizData = await fetchResponseIdFromNetlify("post", quizObj.lastPost);
-                    localStorage.setItem("postResult", JSON.stringify(quizData));
-                } else if (quizObj.lastPre !== "") {
-                    let quizData = await fetchResponseIdFromNetlify("pre", quizObj.lastPre);
-                    localStorage.setItem("preResult", JSON.stringify(quizData));
-                }
-
-            }
-
-            function showSignInModal() {
-                const modal = new bootstrap.Modal(document.getElementById('signInModal'));
-                modal.show();
-            }
-
-            document.getElementById('signInButton').addEventListener('click', function () {
-                const emailInput2 = document.getElementById('emailInput2');
-                const passwordInput2 = document.getElementById('passwordInput');
-                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                
-                let isValid = true;
-                
-                // Email validation
-                if (!emailRegex.test(emailInput2.value) || emailInput2.value === 'harry@m.com') {
-                    emailInput2.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    emailInput2.classList.remove('is-invalid');
-                }
-                
-                // Password validation (minimum 6 characters)
-                if (passwordInput2.value.length < 6) {
-                    passwordInput2.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    passwordInput2.classList.remove('is-invalid');
-                }
-                
-                // If valid, submit the form or proceed further
-                if (isValid) {
-                    alert('Form is valid. Proceeding...');
-                }
-                netlifyIdentity.gotrue.login(emailInput2.value, passwordInput2.value, true)  // true means to remember login
-                .then(async (r) => {
-                    console.log('Successful login!', emailInput2.value);
-                    document.querySelector(".home-hide").style.display = "flex";
-                    //This will change later if we can retrieve cycle information of a user
-                    await ExtractQuizInfo();
-                    window.location.href = "result_page.html";
-                })
-                .catch((e) => {
-                    console.error('Caught error:', e);
-                    document.getElementById('e-toast').textContent = e;
-                    const toastEl = document.getElementById('liveToast');
-                    const myToast = new bootstrap.Toast(toastEl);
-                    myToast.show();
-                    return;
-                });
-            });
+            
         </script>
     </body>
 </html>
