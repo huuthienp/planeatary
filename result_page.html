@@ -315,7 +315,9 @@
                     document.getElementById('curr_score').textContent = questionsData.totalScore;
                     document.getElementById('total').textContent = 60;
                     completion_date.innerHTML = `Pre quiz was completed at ${localHours}:${localMinutes} on ${day}/${month}/${year}`
-                } 
+                } else {
+                    //Need logic for result page after history page or home page right away
+                }
                 
                 // Iterate over each question in the pointArray
                 questionsData.pointArray.forEach((score, index) => {

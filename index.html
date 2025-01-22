@@ -493,8 +493,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script type="module">
-        import { reformatResponseData, saveLocalStorage, mergeTaskArrays } from './scripts/helpers.mjs';
-        import { fetchTaskStatus } from './data-functions.mjs'
+        import { reformatResponseData, saveLocalStorage, mergeTaskArrays, fetchTaskStatus } from './scripts/helpers.mjs';
 
         document.addEventListener("DOMContentLoaded", async function() {
             const spinner = document.getElementById('spinner');
@@ -645,7 +644,7 @@
 
                     console.log('Successful fetch.', '\n', data);
 
-                    return reformatResponseData(data);
+                    return reformatResponseData(data, 'response');
                 } catch (error) {
                     console.error(error);
                     throw error;
@@ -702,11 +701,11 @@
                 });
             }
 
-            function setupNavBar() {
-                const quiz = document.getElementById('Q');
-                const challenge = document.getElementById('CH');
-                const dashboard = document.getElementById('D');
-            }
+            // function setupNavBar() {
+            //     const quiz = document.getElementById('Q');
+            //     const challenge = document.getElementById('CH');
+            //     const dashboard = document.getElementById('D');
+            // }
 
             function disableButton(button) {
                 button.disabled = true;
@@ -719,6 +718,16 @@
                 if (href) {
                     button.innerHTML = `<a href="${href}">${button.textContent}</a>`;
                 }
+            }
+
+            function ExtractUserMetadata() {
+                const metadata = JSON.parse(localStorage.getItem(gotrue.user).user_metadata);
+                const responseHistory = metadata.responseHistory
+                Object.keys(responseHistory).forEach(cycleKey =>{
+                    const cycle = cycleKey.preId;
+                    console.log(cycle);
+                    
+                })
             }
 
             // function renderOutcome(success, message='', color='') {
@@ -792,7 +801,6 @@
                 document.getElementById("form_validate_msg").innerHTML = msgString;
                 
                 if (validateFlag) {
-                    alert("Account created successfully!");
                     return true;
                 } else {
                     alert("Please correct the highlighted errors.");
@@ -829,21 +837,6 @@
                 messageItems[2].classList.toggle("valid", /[0-9]/.test(passwordValue));
                 messageItems[3].classList.toggle("valid", passwordValue.length >= 8);
             });
-            // // Password validation (minimum 6 characters and match confirmation)
-            // if (passwordInput.value.length < 6) {
-            //     passwordInput.classList.add('is-invalid');
-            //     isValid = false;
-            // } else {
-            //     passwordInput.classList.remove('is-invalid');
-            // }
-            // if (passwordInput1.value !== passwordInput2.value) {
-            //     passwordInput1.classList.add('is-invalid');
-            //     passwordInput2.classList.add('is-invalid');
-            //     isValid = false;
-            // } else {
-            //     passwordInput1.classList.remove('is-invalid');
-            //     passwordInput2.classList.remove('is-invalid');
-            // }
 
             // If valid, potentially submit form or redirect
             if (validate_form()) {
@@ -899,7 +892,6 @@
                 // If valid, submit the form or proceed further
                 if (isValid) {
                     alert('Form is valid. Proceeding...');
-                    // Add your form submission logic here
                 }
                 netlifyIdentity.gotrue.login(emailInput2.value, passwordInput2.value, true)  // true means to remember login
                 .then((r) => {
