@@ -168,6 +168,17 @@
         });
                 
         document.addEventListener("DOMContentLoaded", async function() {
+            
+            const preObject = JSON.parse(localStorage.getItem('preResult') || "{}");
+
+            const preResult = preObject.result;
+            const pre_rec = preObject.recordedDate;
+
+            const postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
+
+            const postResult = postObject.result;
+            const post_rec = postObject.recordedDate;
+
             document.getElementById('postQ').style.color = 'white';
             document.getElementById('preQ').style.color = 'white';
             document.getElementById('com-tasks').style.color = 'white';
@@ -177,10 +188,6 @@
             let isLoading = false;
             const minDisplayTime = 2000; 
             let spinnerStartTime;
-            let preResult = JSON.parse(localStorage.getItem('preResult').result);
-            let postResult = JSON.parse(localStorage.getItem('postResult').result);
-            let pre_rec = JSON.parse(localStorage.getItem('preResult').recordedDate);
-            let post_rec = JSON.parse(localStorage.getItem('postResult').recordedDate);
             let task_rec = [];
             let tasks = JSON.parse(localStorage.getItem('tasks'));
             //need BE confirmation
