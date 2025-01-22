@@ -151,11 +151,11 @@
             if (elapsedTime < minDisplayTime) {
                 setTimeout(() => {
                     spinner.classList.add('hidden');
-                    bOverlay.classList.remove('hidden');
+                    bOverlay.classList.add('hidden');
                     isLoading = false;
                 }, minDisplayTime - elapsedTime);
                 spinner.classList.add('hidden');
-                bOverlay.classList.remove('hidden');
+                bOverlay.classList.add('hidden');
                 isLoading = false;
             }
         }

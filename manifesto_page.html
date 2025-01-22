@@ -162,6 +162,29 @@
         const minDisplayTime = 2000; 
         let spinnerStartTime;
 
+        function showSpinner() {
+            spinner.classList.remove('hidden');
+            spOver.classList.remove('hidden');
+            isLoading = true;
+            spinnerStartTime = Date.now();
+        };
+
+        function hideSpinner() {
+            const elapsedTime = Date.now() - spinnerStartTime;
+            
+            if (elapsedTime < minDisplayTime) {
+                setTimeout(() => {
+                    spinner.classList.add('hidden');
+                    spOver.classList.add('hidden');
+                    isLoading = false;
+                }, minDisplayTime - elapsedTime);
+            } else {
+                spinner.classList.add('hidden');
+                spOver.classList.add('hidden');
+                isLoading = false;
+            }
+        }
+
         function logOut() {
             if (netlifyIdentity.gotrue.currentUser() !== null) {
                 let user = netlifyIdentity.gotrue.currentUser();
@@ -200,28 +223,7 @@
             let scores = [];
             let task_counts = 0;
             
-            function showSpinner() {
-                spinner.classList.remove('hidden');
-                spOver.classList.remove('hidden');
-                isLoading = true;
-                spinnerStartTime = Date.now();
-            };
             
-            function hideSpinner() {
-                const elapsedTime = Date.now() - spinnerStartTime;
-                
-                if (elapsedTime < minDisplayTime) {
-                    setTimeout(() => {
-                        spinner.classList.add('hidden');
-                        spOver.classList.add('hidden');
-                        isLoading = false;
-                    }, minDisplayTime - elapsedTime);
-                } else {
-                    spinner.classList.add('hidden');
-                    spOver.classList.add('hidden');
-                    isLoading = false;
-                }
-            }
             
             function Modal(source) {
                 close.classList.remove('hidden');
