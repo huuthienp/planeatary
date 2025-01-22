@@ -515,9 +515,9 @@
                 const greetingDiv = document.querySelector('.greeting');
                 const continueButton = document.getElementById('continueButton');
                 const heroButton = document.querySelector('.herobtn');
-                
+
                 if(netlifyIdentity.gotrue.currentUser() !== null) {
-                    document.querySelector(".home-hide").style.display = "flex"; 
+                    document.querySelectorAll(".home-hide").style.display = "flex"; 
                 }
                 
                 /* removed some javascript
