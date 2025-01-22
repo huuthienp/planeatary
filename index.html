@@ -36,22 +36,37 @@
                                     <li class="nav-item">
                                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                                     </li>
+                                    <li class="nav-item dropdown home-hide">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa fa-edit"></i>  <strong>Quiz</strong>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                            <li><a class="dropdown-item" href="qualtrics.html">Pre-quiz</a></li>
+                                            <li><a class="dropdown-item" href="qualtrics_post.html">Post-quiz</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item home-hide">
+                                        <a class="nav-link" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                                    </li>
+                                    <li class="nav-item home-hide">
+                                        <a class="nav-link" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                    </li>
+                                    <li class="nav-item home-hide">
+                                        <a class="nav-link" aria-current="page" href="history_page"><i class="fa fa-calendar-check-o"></i> History</a>
+                                    </li>
+                                    <li class="nav-item dropdown home-hide">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
+                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                            <li><a class="dropdown-item" href="account manage.html">My account</a></li>
+                                            <li><a class="dropdown-item" href="index.html">Log out</a></li>
+                                        </ul>
+                                    </li>
                                     <li class="nav-item">
                                         <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signInModal">Sign in</button>
                                     </li>
                                     <li class="nav-item">
                                         <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signUpModal">Sign up</button>
                                     </li>
-                                    <!-- <li class="nav-item">
-                                        <a class="nav-link" href="#"><b>Quiz</b></a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="manifesto_page.html">Challenge</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="result_page.html">Dashboard</a>
-                                    </li>
-                                    -->
                                 </ul>
                             </div>
                         </div>
@@ -493,7 +508,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script type="module">
-        import { reformatResponseData, mergeTaskArrays, fetchTaskStatus } from './scripts/helpers.mjs';
+        import { fetchResponse, fetchData, reformatResponseData, mergeTaskArrays, fetchTaskStatus } from './scripts/helpers.mjs';
 
         document.addEventListener("DOMContentLoaded", async function() {
             const spinner = document.getElementById('spinner');
@@ -854,15 +869,36 @@
             function ExtractUserMetadata() {
                 const user = netlifyIdentity.gotrue.currentUser();
                 const metadata = user.user_metadata;
-                const responseHistory = metadata.responseHistory
+                const responseHistory = metadata.responseHistory;
+                let latest_pre = "";
+                let latest_post = "";
+                let history = [];
+
                 Object.keys(responseHistory).forEach((cycleKey) =>{
                     const entry = responseHistory[cycleKey];
-                    console.log(`Entry ${cycleKey}:`, entry);
-
-                    console.log("lastTask:", entry.lastTask);
-                    console.log("preId:", entry.preId);
-                    console.log("postId:", entry.postId);
+                    history.push(entry);
+                    if (entry.preId) {
+                        latest_pre = entry.preId;
+                    }
+                    if (entry.postId) {
+                        latest_post = entry.postId;
+                    }
+                    
                 })
+                const quizPair = {lastPre: latest_pre, lastPost: latest_post};
+                return {quizObj: quizPair, historyObj: history}
+            }
+
+            async function ExtractQuizInfo() {
+                const {quizObj, historyObj} = ExtractUserMetadata();
+                if (quizObj.lastPost !== "") {
+                    let quizData = await fetchResponseIdFromNetlify(post, quizObj.lastPost);
+                    localStorage.setItem("postResult", JSON.stringify(quizData));
+                } else if (quizObj.lastPre !== "") {
+                    let quizData = await fetchResponseIdFromNetlify(pre, quizObj.lastPre);
+                    localStorage.setItem("preResult", JSON.stringify(quizData));
+                }
+
             }
 
             function showSignInModal() {
@@ -900,8 +936,9 @@
                 netlifyIdentity.gotrue.login(emailInput2.value, passwordInput2.value, true)  // true means to remember login
                 .then((r) => {
                     console.log('Successful login!', emailInput2.value);
+                    document.querySelector(".home-hide").style.display = "flex";
                     //This will change later if we can retrieve cycle information of a user
-                    ExtractUserMetadata();
+                    ExtractQuizInfo();
                     window.location.href = "result_page.html";
                 })
                 .catch((e) => {
