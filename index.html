@@ -516,11 +516,15 @@
                 const continueButton = document.getElementById('continueButton');
                 const heroButton = document.querySelector('.herobtn');
                 
+                if(netlifyIdentity.gotrue.currentUser() !== null) {
+                    document.querySelector(".home-hide").style.display = "flex"; 
+                }
+                
                 /* removed some javascript
                 * between d8be6a5dfcab3936113b39596591a055af44e578
                 *     and f4cae0a8896a980fb9607449a47df37c841c56f7 */
                 
-                let preResponseId = localStorage.getItem('preResponseId'); 
+                //let preResponseId = localStorage.getItem('preResponseId'); 
                 
                 let chosen_tasks = [];
                 let status_tasks = [];
@@ -757,11 +761,13 @@
                     Object.keys(responseHistory).forEach((cycleKey) =>{
                         const entry = responseHistory[cycleKey];
                         history.push(entry);
-                        if (entry.preId) {
+                        if (entry.preId && entry.postId) {
                             latest_pre = entry.preId;
-                        }
-                        if (entry.postId) {
                             latest_post = entry.postId;
+                        }
+                        if (!entry.postId) {
+                            latest_pre = entry.preId;
+                            latest_post = "";
                         }
                         
                     })
