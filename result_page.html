@@ -177,10 +177,10 @@
             let isLoading = false;
             const minDisplayTime = 2000; 
             let spinnerStartTime;
-            let preResult = JSON.parse(localStorage.getItem('preResult'));
-            let postResult = JSON.parse(localStorage.getItem('postResult'));
-            let pre_rec = localStorage.getItem('preRecordedDate');
-            let post_rec = localStorage.getItem('postRecordedDate');
+            let preResult = JSON.parse(localStorage.getItem('preResult').result);
+            let postResult = JSON.parse(localStorage.getItem('postResult').result);
+            let pre_rec = localStorage.getItem('preResult').recordedDate;
+            let post_rec = localStorage.getItem('postResult').recordedDate;
             let task_rec = [];
             let tasks = JSON.parse(localStorage.getItem('tasks'));
             //need BE confirmation

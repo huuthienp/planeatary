@@ -508,165 +508,165 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script type="module">
-        import { fetchResponse, fetchData, reformatResponseData, mergeTaskArrays, fetchTaskStatus } from './scripts/helpers.mjs';
-
-        document.addEventListener("DOMContentLoaded", async function() {
-            const spinner = document.getElementById('spinner');
-            const greetingDiv = document.querySelector('.greeting');
-            const continueButton = document.getElementById('continueButton');
-            const heroButton = document.querySelector('.herobtn');
-
-            /* removed some javascript
-             * between d8be6a5dfcab3936113b39596591a055af44e578
-             *     and f4cae0a8896a980fb9607449a47df37c841c56f7 */
-
-            let preResponseId = localStorage.getItem('preResponseId'); 
-
-            let chosen_tasks = [];
-            let status_tasks = [];
-
-            let isLoading = false;
-            const minDisplayTime = 1000;
-            let spinnerStartTime;
-
-            // Function to show the spinner
-            function showSpinner() {
-                //console.log("Showing spinner...");
-                spinner.classList.remove('hidden');
-                isLoading = true;
-                spinnerStartTime = Date.now();
-            };
-
-            // Function to hide the spinner
-            function hideSpinner() {
-                const elapsedTime = Date.now() - spinnerStartTime;
-                if (elapsedTime < minDisplayTime) {
-                    // Delay hiding spinner until the minimum display time
-                    setTimeout(() => {
-                        //console.log("Hiding spinner after min time...");
+            import { fetchResponse, fetchData, reformatResponseData, mergeTaskArrays, fetchTaskStatus } from './scripts/helpers.mjs';
+            
+            document.addEventListener("DOMContentLoaded", async function() {
+                const spinner = document.getElementById('spinner');
+                const greetingDiv = document.querySelector('.greeting');
+                const continueButton = document.getElementById('continueButton');
+                const heroButton = document.querySelector('.herobtn');
+                
+                /* removed some javascript
+                * between d8be6a5dfcab3936113b39596591a055af44e578
+                *     and f4cae0a8896a980fb9607449a47df37c841c56f7 */
+                
+                let preResponseId = localStorage.getItem('preResponseId'); 
+                
+                let chosen_tasks = [];
+                let status_tasks = [];
+                
+                let isLoading = false;
+                const minDisplayTime = 1000;
+                let spinnerStartTime;
+                
+                // Function to show the spinner
+                function showSpinner() {
+                    //console.log("Showing spinner...");
+                    spinner.classList.remove('hidden');
+                    isLoading = true;
+                    spinnerStartTime = Date.now();
+                };
+                
+                // Function to hide the spinner
+                function hideSpinner() {
+                    const elapsedTime = Date.now() - spinnerStartTime;
+                    if (elapsedTime < minDisplayTime) {
+                        // Delay hiding spinner until the minimum display time
+                        setTimeout(() => {
+                            //console.log("Hiding spinner after min time...");
+                            spinner.classList.add('hidden');
+                            isLoading = false;
+                        }, minDisplayTime - elapsedTime);
+                    } else {
+                        // console.log("Hiding spinner...");
                         spinner.classList.add('hidden');
                         isLoading = false;
-                    }, minDisplayTime - elapsedTime);
-                } else {
-                    // console.log("Hiding spinner...");
-                    spinner.classList.add('hidden');
-                    isLoading = false;
-                }
-            }
-
-            // async function checkOrFetchResponseId() {
-
-            //     try {
-            //         showSpinner();
-            //         let preResponseId = localStorage.getItem('preResult');
-            //         let postResponseId = localStorage.getItem('postResult');
-            //         let quizType = '';
-
-            //         if (preResponseId) {
-            //             let userChoice = confirm("Looks like there is your recorded pre quiz. Would you like to continue with existing responses? Click OK if yes.");
-
-            //             if (userChoice) {
-            //                 setupContinueButton('result_page.html');
-            //             } else {
-            //                 // User chooses to start a new quiz
-            //                 localStorage.removeItem('preResult');
-
-            //                 setupContinueButton('qualtrics.html');
-
-            //             }
-            //         } else if (postResponseId) {
-            //             let userChoice = confirm("Looks like there is your recorded post quiz. Would you like to start over? Click OK if yes.");
-
-            //             if (userChoice) {
-            //                 localStorage.removeItem('preResult');
-            //                 localStorage.removeItem('postResult');
-            //                 setupContinueButton('qualtrics.html');
-            //             }
-
-            //         } else {
-            //             // If no responseId in localStorage, ask the user if they've completed the pre-quiz
-            //             const userAns = confirm("Have you done the quiz? Click OK if yes, cancel if no.");
-
-            //             if (userAns) {
-            //                 const userOption = confirm("Would you like to continue with existing response? Click OK if yes.");
-
-            //                 if (userOption) {
-
-            //                     let preOrpost = prompt("If you would like to proceed with pre-quiz, type 'pre'");
-
-            //                     // Validate the input
-            //                     if (preOrpost !== 'pre') {
-            //                         alert("Invalid input. Please enter 'pre'.");
-            //                         setupContinueButton('qualtrics.html');
-            //                         hideSpinner();
-            //                         return;
-            //                     }
-
-            //                     let userMem = prompt("Please enter its response ID:");
-
-            //                     if (userMem) {
-            //                         let responseId = userMem;
-            //                         let fetchedResponseId = await fetchResponseIdFromNetlify(preOrpost, responseId);
-            //                         // localStorage.setItem(`${preOrpost}ResponseId`, JSON.stringify(fetchedResponseId));
-            //                         saveLocalStorage(fetchedResponseId, 'response');
-            //                         setupContinueButton(preOrpost === 'pre' ?'result_page.html':'manifesto_page.html');
-            //                         return;
-            //                     } else {
-            //                         alert("Invalid response ID entered.");
-            //                         hideSpinner();
-            //                         return;
-            //                     }
-            //                 } else {
-            //                     setupContinueButton('qualtrics.html');
-            //                 }
-            //             } else {
-            //                 setupContinueButton('qualtrics.html');
-            //             }
-
-            //         }
-
-            //     } catch (error) {
-            //         console.error('Error in checkOrFetchResponseId:', error);
-            //     } finally {
-            //         hideSpinner();
-            //     }
-
-            async function fetchResponseIdFromNetlify(quizType, responseId) {
-                try {
-
-                    const endpoint = `/api/fetch-response?quizType=${quizType}`;
-                    const options = {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Q-RESPONSE-ID': responseId,
-                        },
-                    };
-
-                    // Fetch the responseId from the Netlify endpoint
-                    const response = await fetch(endpoint, options);
-
-                    // Check if the response is successful
-                    if (!response.ok) {
-                        throw new Error(`${response.status}: ${await response.text() || response.body}`);
                     }
-
-                    // Parse the JSON response
-                    const data = await response.json();
-
-                    data.quizType = quizType;
-
-                    console.log('Successful fetch.', '\n', data);
-
-                    return reformatResponseData(data, 'response');
-                } catch (error) {
-                    console.error(error);
-                    throw error;
                 }
-            }
-
-            // Retrieve tasks from localStorage or fetch if not available
-            async function fetchTasks() {
+                
+                // async function checkOrFetchResponseId() {
+                
+                //     try {
+                //         showSpinner();
+                //         let preResponseId = localStorage.getItem('preResult');
+                //         let postResponseId = localStorage.getItem('postResult');
+                //         let quizType = '';
+                
+                //         if (preResponseId) {
+                //             let userChoice = confirm("Looks like there is your recorded pre quiz. Would you like to continue with existing responses? Click OK if yes.");
+                
+                //             if (userChoice) {
+                //                 setupContinueButton('result_page.html');
+                //             } else {
+                //                 // User chooses to start a new quiz
+                //                 localStorage.removeItem('preResult');
+                
+                //                 setupContinueButton('qualtrics.html');
+                
+                //             }
+                //         } else if (postResponseId) {
+                //             let userChoice = confirm("Looks like there is your recorded post quiz. Would you like to start over? Click OK if yes.");
+                
+                //             if (userChoice) {
+                //                 localStorage.removeItem('preResult');
+                //                 localStorage.removeItem('postResult');
+                //                 setupContinueButton('qualtrics.html');
+                //             }
+                
+                //         } else {
+                //             // If no responseId in localStorage, ask the user if they've completed the pre-quiz
+                //             const userAns = confirm("Have you done the quiz? Click OK if yes, cancel if no.");
+                
+                //             if (userAns) {
+                //                 const userOption = confirm("Would you like to continue with existing response? Click OK if yes.");
+                
+                //                 if (userOption) {
+                
+                //                     let preOrpost = prompt("If you would like to proceed with pre-quiz, type 'pre'");
+                
+                //                     // Validate the input
+                //                     if (preOrpost !== 'pre') {
+                //                         alert("Invalid input. Please enter 'pre'.");
+                //                         setupContinueButton('qualtrics.html');
+                //                         hideSpinner();
+                //                         return;
+                //                     }
+                
+                //                     let userMem = prompt("Please enter its response ID:");
+                
+                //                     if (userMem) {
+                //                         let responseId = userMem;
+                //                         let fetchedResponseId = await fetchResponseIdFromNetlify(preOrpost, responseId);
+                //                         // localStorage.setItem(`${preOrpost}ResponseId`, JSON.stringify(fetchedResponseId));
+                //                         saveLocalStorage(fetchedResponseId, 'response');
+                //                         setupContinueButton(preOrpost === 'pre' ?'result_page.html':'manifesto_page.html');
+                //                         return;
+                //                     } else {
+                //                         alert("Invalid response ID entered.");
+                //                         hideSpinner();
+                //                         return;
+                //                     }
+                //                 } else {
+                //                     setupContinueButton('qualtrics.html');
+                //                 }
+                //             } else {
+                //                 setupContinueButton('qualtrics.html');
+                //             }
+                
+                //         }
+                
+                //     } catch (error) {
+                //         console.error('Error in checkOrFetchResponseId:', error);
+                //     } finally {
+                //         hideSpinner();
+                //     }
+                
+                async function fetchResponseIdFromNetlify(quizType, responseId) {
+                    try {
+                        
+                        const endpoint = `/api/fetch-response?quizType=${quizType}`;
+                        const options = {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Q-RESPONSE-ID': responseId,
+                            },
+                        };
+                        
+                        // Fetch the responseId from the Netlify endpoint
+                        const response = await fetch(endpoint, options);
+                        
+                        // Check if the response is successful
+                        if (!response.ok) {
+                            throw new Error(`${response.status}: ${await response.text() || response.body}`);
+                        }
+                        
+                        // Parse the JSON response
+                        const data = await response.json();
+                        
+                        data.quizType = quizType;
+                        
+                        console.log('Successful fetch.', '\n', data);
+                        
+                        return reformatResponseData(data, 'response');
+                    } catch (error) {
+                        console.error(error);
+                        throw error;
+                    }
+                }
+                
+                // Retrieve tasks from localStorage or fetch if not available
+                async function fetchTasks() {
                     const taskData = localStorage.getItem('tasks');
                     if (!taskData) {
                         try {
@@ -683,154 +683,157 @@
                         };
                     }
                     return JSON.parse(taskData);
-            }
-
-
-            // Function to get task status from the API
-            async function fetchTaskStatus_() {  // archive
-                try {
-                    showSpinner();
-                    const response = await fetch('/api/manage-tasks', {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Q-RESPONSE-ID': preResponseId,
-                        }
-
+                }
+                
+                
+                // Function to get task status from the API
+                async function fetchTaskStatus_() {  // archive
+                    try {
+                        showSpinner();
+                        const response = await fetch('/api/manage-tasks', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Q-RESPONSE-ID': preResponseId,
+                            }
+                            
+                        });
+                        const data = await response.json();
+                        console.log('Task status fetched:', data);
+                        hideSpinner();
+                        return data;
+                    } catch (error) {
+                        hideSpinner();
+                        console.error('Error fetching task status:', error);
+                        return null;
+                    }
+                }
+                
+                function setupContinueButton(path) {
+                    continueButton.addEventListener('click', function() {
+                        window.location.href = path;
                     });
-                    const data = await response.json();
-                    console.log('Task status fetched:', data);
-                    hideSpinner();
-                    return data;
-                } catch (error) {
-                    hideSpinner();
-                    console.error('Error fetching task status:', error);
-                    return null;
                 }
-            }
-
-            function setupContinueButton(path) {
-                continueButton.addEventListener('click', function() {
-                    window.location.href = path;
-                });
-            }
-
-            // function setupNavBar() {
-            //     const quiz = document.getElementById('Q');
-            //     const challenge = document.getElementById('CH');
-            //     const dashboard = document.getElementById('D');
-            // }
-
-            function disableButton(button) {
-                button.disabled = true;
-                button.classList.add('disabled');
-            }
-
-            function enableButton(button, href=null) {
-                button.disabled = false;
-                button.classList.remove('disabled');
-                if (href) {
-                    button.innerHTML = `<a href="${href}">${button.textContent}</a>`;
+                
+                // function setupNavBar() {
+                //     const quiz = document.getElementById('Q');
+                //     const challenge = document.getElementById('CH');
+                //     const dashboard = document.getElementById('D');
+                // }
+                
+                function disableButton(button) {
+                    button.disabled = true;
+                    button.classList.add('disabled');
                 }
-            }
+                
+                function enableButton(button, href=null) {
+                    button.disabled = false;
+                    button.classList.remove('disabled');
+                    if (href) {
+                        button.innerHTML = `<a href="${href}">${button.textContent}</a>`;
+                    }
+                }
                 heroButton.addEventListener('click', function () {
                     document.getElementById('e-toast').textContent = 'Please sign in or sign up first';
                     const toastEl = document.getElementById('liveToast');
                     const myToast = new bootstrap.Toast(toastEl);
                     myToast.show();
                 });
-
+                
                 function ExtractUserMetadata() {
-                const user = netlifyIdentity.gotrue.currentUser();
-                const metadata = user.user_metadata;
-                const responseHistory = metadata.responseHistory;
-                let latest_pre = "";
-                let latest_post = "";
-                let history = [];
-
-                //handle first-time user
-                if (!metadata || !metadata.responseHistory) {
-                    console.warn("No responseHistory found for this user.");
-                    return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
-                }
-
-                Object.keys(responseHistory).forEach((cycleKey) =>{
-                    const entry = responseHistory[cycleKey];
-                    history.push(entry);
-                    if (entry.preId) {
-                        latest_pre = entry.preId;
-                    }
-                    if (entry.postId) {
-                        latest_post = entry.postId;
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
+                    let latest_pre = "";
+                    let latest_post = "";
+                    let history = [];
+                    
+                    //handle first-time user
+                    if (!metadata || !metadata.responseHistory) {
+                        console.warn("No responseHistory found for this user.");
+                        return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
                     }
                     
-                })
-                const quizPair = {lastPre: latest_pre, lastPost: latest_post};
-                return {quizObj: quizPair, historyObj: history}
-            }
-
-            async function ExtractQuizInfo() {
-                const {quizObj, historyObj} = ExtractUserMetadata();
-                if (quizObj.lastPost !== "") {
-                    let quizData = await fetchResponseIdFromNetlify("post", quizObj.lastPost);
-                    localStorage.setItem("postResult", JSON.stringify(quizData));
-                } else if (quizObj.lastPre !== "") {
-                    let quizData = await fetchResponseIdFromNetlify("pre", quizObj.lastPre);
-                    localStorage.setItem("preResult", JSON.stringify(quizData));
-                }
-
-            }
-
-            function showSignInModal() {
-                const modal = new bootstrap.Modal(document.getElementById('signInModal'));
-                modal.show();
-            }
-
-            document.getElementById('signInButton').addEventListener('click', function () {
-                const emailInput2 = document.getElementById('emailInput2');
-                const passwordInput2 = document.getElementById('passwordInput');
-                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                
-                let isValid = true;
-                
-                // Email validation
-                if (!emailRegex.test(emailInput2.value) || emailInput2.value === 'harry@m.com') {
-                    emailInput2.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    emailInput2.classList.remove('is-invalid');
+                    Object.keys(responseHistory).forEach((cycleKey) =>{
+                        const entry = responseHistory[cycleKey];
+                        history.push(entry);
+                        if (entry.preId) {
+                            latest_pre = entry.preId;
+                        }
+                        if (entry.postId) {
+                            latest_post = entry.postId;
+                        }
+                        
+                    })
+                    const quizPair = {lastPre: latest_pre, lastPost: latest_post};
+                    return {quizObj: quizPair, historyObj: history}
                 }
                 
-                // Password validation (minimum 6 characters)
-                if (passwordInput2.value.length < 6) {
-                    passwordInput2.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    passwordInput2.classList.remove('is-invalid');
+                async function ExtractQuizInfo() {
+                    const {quizObj, historyObj} = ExtractUserMetadata();
+                    if (quizObj.lastPost !== "") {
+                        let quizData = await fetchResponseIdFromNetlify("post", quizObj.lastPost);
+                        localStorage.setItem("postResult", JSON.stringify(quizData));
+                    } else if (quizObj.lastPre !== "") {
+                        let quizData = await fetchResponseIdFromNetlify("pre", quizObj.lastPre);
+                        localStorage.setItem("preResult", JSON.stringify(quizData));
+                    }
+                    
                 }
                 
-                // If valid, submit the form or proceed further
-                if (isValid) {
-                    alert('Form is valid. Proceeding...');
+                function showSignInModal() {
+                    const modal = new bootstrap.Modal(document.getElementById('signInModal'));
+                    modal.show();
                 }
-                netlifyIdentity.gotrue.login(emailInput2.value, passwordInput2.value, true)  // true means to remember login
-                .then(async (r) => {
-                    console.log('Successful login!', emailInput2.value);
-                    document.querySelector(".home-hide").style.display = "flex";
-                    //This will change later if we can retrieve cycle information of a user
-                    await ExtractQuizInfo();
-                    window.location.href = "result_page.html";
-                })
-                .catch((e) => {
-                    console.error('Caught error:', e);
-                    document.getElementById('e-toast').textContent = e;
-                    const toastEl = document.getElementById('liveToast');
-                    const myToast = new bootstrap.Toast(toastEl);
-                    myToast.show();
-                    return;
+                
+                document.getElementById('signInButton').addEventListener('click', function () {
+                    const emailInput2 = document.getElementById('emailInput2');
+                    const passwordInput2 = document.getElementById('passwordInput');
+                    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                    
+                    let isValid = true;
+                    
+                    // Email validation
+                    if (!emailRegex.test(emailInput2.value) || emailInput2.value === 'harry@m.com') {
+                        emailInput2.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        emailInput2.classList.remove('is-invalid');
+                    }
+                    
+                    // Password validation (minimum 6 characters)
+                    if (passwordInput2.value.length < 6) {
+                        passwordInput2.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        passwordInput2.classList.remove('is-invalid');
+                    }
+                    
+                    // If valid, submit the form or proceed further
+                    if (isValid) {
+                        alert('Form is valid. Proceeding...');
+                    }
+                    netlifyIdentity.gotrue.login(emailInput2.value, passwordInput2.value, true)  // true means to remember login
+                    .then((r) => {
+                        document.querySelector(".home-hide").style.display = "flex";
+                        return r; // Pass the login result to the next .then
+                    })
+                    .then(async (r) => {
+                        console.log('Successful login!', emailInput2.value);
+                        //This will change later if we can retrieve cycle information of a user
+                        await ExtractQuizInfo();
+                        window.location.href = "result_page.html";
+                    })
+                    .catch((e) => {
+                        console.error('Caught error:', e);
+                        document.getElementById('e-toast').textContent = e;
+                        const toastEl = document.getElementById('liveToast');
+                        const myToast = new bootstrap.Toast(toastEl);
+                        myToast.show();
+                        return;
+                    });
                 });
-            });
-
+                
             })
         </script>
 
