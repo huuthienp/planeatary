@@ -136,13 +136,17 @@
         const completion_date = document.getElementById("date-completion-q");
     
         let scores = [];
-        let spinnerStartTime;
-        let isLoading;
+        
         let preResponseId = localStorage.getItem('preResponseId'); //This has to be change to user's identify
         const closeButt = document.querySelector('.close');
 
 
         const comparison = document.getElementById('improvement');
+
+        const spinner = document.getElementById('spinner');
+        const minDisplayTime = 2000; 
+        let spinnerStartTime;
+        let isLoading;
         
         // Function to show the modal
         function showModal(title, description) {
@@ -171,20 +175,52 @@
             }
         });
 
-        function logOut() {
+        // Function to show the spinner
+        function showSpinner() {
+            console.log("Showing spinner...");
+            spinner.classList.remove('hidden');
+            modalOverlay.classList.remove('hidden');
+            closeButt.classList.add('hidden');
+            isLoading = true;
+            spinnerStartTime = Date.now();
+        };
+
+        // Function to hide the spinner
+        function hideSpinner() {
+            const elapsedTime = Date.now() - spinnerStartTime;
+            if (elapsedTime < minDisplayTime) {
+                // Delay hiding spinner until the minimum display time
+                setTimeout(() => {
+                    console.log("Hiding spinner after min time...");
+                    spinner.classList.add('hidden');
+                    modalOverlay.classList.add('hidden');
+                    isLoading = false;
+                }, minDisplayTime - elapsedTime);
+            } else {
+                //console.log("Hiding spinner...");
+                spinner.classList.add('hidden');
+                modalOverlay.classList.add('hidden');
+                closeButt.classList.remove('hidden');
+                isLoading = false;
+            }
+        }
+
+        async function logOut() {
             if (netlifyIdentity.gotrue.currentUser() !== null) {
                 let user = netlifyIdentity.gotrue.currentUser();
-                user.logout().then(() => {
-                    console.log('User has been logged out!');
-                    window.location.href = "index.html";
-                });
+                const logoutResult = await user.logout();
+                console.log('User has been logged out!');
+                window.location.href = "index.html";
             } else {
                 console.log("No user is logged in!");
             }
         }
 
         document.getElementById('logOut').addEventListener('click', () => {
+            alert("Do you really want to sign out?");
+            showSpinner();
             logOut();
+            hideSpinner();
         });
                 
         document.addEventListener("DOMContentLoaded", async function() {
@@ -202,7 +238,7 @@
             document.getElementById('postQ').style.color = 'white';
             document.getElementById('preQ').style.color = 'white';
             document.getElementById('com-tasks').style.color = 'white';
-            const spinner = document.getElementById('spinner');
+            
             const ch = document.getElementById('ch');
 
             let isLoading = false;
@@ -213,35 +249,7 @@
             //need BE confirmation
             let detailed = JSON.parse(localStorage.getItem('com_tasks'));
 
-            // Function to show the spinner
-            function showSpinner() {
-                console.log("Showing spinner...");
-                spinner.classList.remove('hidden');
-                modalOverlay.classList.remove('hidden');
-                closeButt.classList.add('hidden');
-                isLoading = true;
-                spinnerStartTime = Date.now();
-            };
-            
-            // Function to hide the spinner
-            function hideSpinner() {
-                const elapsedTime = Date.now() - spinnerStartTime;
-                if (elapsedTime < minDisplayTime) {
-                    // Delay hiding spinner until the minimum display time
-                    setTimeout(() => {
-                        console.log("Hiding spinner after min time...");
-                        spinner.classList.add('hidden');
-                        modalOverlay.classList.add('hidden');
-                        isLoading = false;
-                    }, minDisplayTime - elapsedTime);
-                } else {
-                    //console.log("Hiding spinner...");
-                    spinner.classList.add('hidden');
-                    modalOverlay.classList.add('hidden');
-                    closeButt.classList.remove('hidden');
-                    isLoading = false;
-                }
-            }
+           
 
             // Retrieve tasks from localStorage or fetch if not available
             async function fetchTasks() {
@@ -303,6 +311,7 @@
             }
 
             function displayQuestions(questionsData) {
+                showSpinner();
                 cardContainer.innerHTML = ''; 
                 comparison.innerHTML = ''; 
                 header.innerHTML='';
@@ -345,6 +354,7 @@
                 } else {
                     //Need logic for result page after history page or home page right away
                 }
+
                 
                 // Iterate over each question in the pointArray
                 questionsData.pointArray.forEach((score, index) => {
@@ -367,6 +377,7 @@
                     cardContainer.appendChild(questionDiv);
                 });
                 compareScores();
+                hideSpinner();
 
             }
 
@@ -527,7 +538,9 @@
             document.getElementById('com-tasks').addEventListener('click', async function() {
                 
                 if (!tasks) {
+                    showSpinner();
                     tasks = await fetchTasks(); 
+                    hideSpinner();
                     localStorage.setItem('tasks', JSON.stringify(tasks));
                     tasks = JSON.parse(localStorage.getItem('tasks')); 
                 }
@@ -565,7 +578,7 @@
                 tagsToHide.forEach(
                 (tag) => { tag.classList.add('hidden'); }
                 );
-                displaySelectedTasks(tasks)
+                displaySelectedTasks(tasks);
                 document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                 document.getElementById('preQ').style.transition = "all 1s";
                 document.getElementById('postQ').style.backgroundColor = '#a9d1cd';    

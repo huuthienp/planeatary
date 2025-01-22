@@ -123,6 +123,37 @@
             return new Promise(resolve => setTimeout(resolve, ms));
         }
 
+        function showSpinner() {
+            //console.log("Showing spinner...");
+            spinner.classList.remove('hidden');
+            spOver.classList.remove('hidden');
+            
+            closeButt.classList.add('hidden');
+            isLoading = true;
+            spinnerStartTime = Date.now();
+        }
+
+        // Function to hide the spinner
+        function hideSpinner() {
+            const elapsedTime = Date.now() - spinnerStartTime;
+            
+            if (elapsedTime < minDisplayTime) {
+                // Delay hiding spinner until the minimum display time
+                setTimeout(() => {
+                    //console.log("Hiding spinner after min time...");
+                    spinner.classList.add('hidden');
+                    spOver.classList.add('hidden');
+                    isLoading = false;
+                }, minDisplayTime - elapsedTime);
+            } else {
+                //console.log("Hiding spinner...");
+                spinner.classList.add('hidden');
+                spOver.classList.add('hidden');
+                isLoading = false;
+            }
+            
+        }
+
         function logOut() {
             if (netlifyIdentity.gotrue.currentUser() !== null) {
                 let user = netlifyIdentity.gotrue.currentUser();
@@ -136,7 +167,10 @@
         }
 
         document.getElementById('logOut').addEventListener('click', () => {
+            alert("Do you really want to sign out?");
+            showSpinner();
             logOut();
+            showSpinner();
         });
 
 

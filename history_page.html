@@ -112,7 +112,9 @@
         let scores = [];
         let spinnerStartTime;
         let isLoading;
+        //should be a userId
         let preResponseId = localStorage.getItem('preResponseId');
+        const spinner = document.getElementById('spinner');
 
         function logOut() {
             if (netlifyIdentity.gotrue.currentUser() !== null) {
@@ -127,12 +129,15 @@
         }
 
         document.getElementById('logOut').addEventListener('click', () => {
+            alert("Do you really want to sign out?");
+            showSpinner();
             logOut();
+            hideSpinner();
         });
      
         document.addEventListener("DOMContentLoaded", async function() {
             
-            const spinner = document.getElementById('spinner');
+            
             const ch = document.getElementById('ch');
             const CH = document.getElementById('CH');
             let isLoading = false;

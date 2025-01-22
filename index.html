@@ -849,7 +849,10 @@
                 });
 
                 document.getElementById('logOut').addEventListener('click', () => {
+                    alert("Do you really want to sign out?");
+                    showSpinner();
                     logOut();
+                    showSpinner();
                 });
                 
             })

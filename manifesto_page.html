@@ -158,6 +158,11 @@
         good.style.backgroundColor = '#a9d1cd';
         bad.style.backgroundColor = '#02897A';
 
+        const spinner = document.getElementById('spinner');
+        let isLoading = false;
+        const minDisplayTime = 2000; 
+        let spinnerStartTime;
+
         function logOut() {
             if (netlifyIdentity.gotrue.currentUser() !== null) {
                 let user = netlifyIdentity.gotrue.currentUser();
@@ -171,7 +176,10 @@
         }
 
         document.getElementById('logOut').addEventListener('click', () => {
+            alert("Do you really want to sign out?");
+            showSpinner();
             logOut();
+            hideSpinner();
         });
         
         document.addEventListener("DOMContentLoaded", async function() {
@@ -388,13 +396,16 @@
                 }
                 
                 //fetch up-to-date info
-                if (!fetched_tasks.status || !fetched_tasks.chosen) {
-                    showSpinner();
-                    fetched_tasks = await fetchTaskStatus(preResponseId); 
-                    hideSpinner();
-                    localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
-                    fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                if (fetched_tasks !== null) {
+                    if (!fetched_tasks.status || !fetched_tasks.chosen) {
+                        showSpinner();
+                        fetched_tasks = await fetchTaskStatus(preResponseId); 
+                        hideSpinner();
+                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
+                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    }
                 }
+                
                 
                 //console.log(fetched_tasks.chosen);
                 //console.log(fetched_tasks.status);

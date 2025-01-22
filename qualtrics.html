@@ -84,7 +84,12 @@
             //May modification for the case that another user sign up on the same device as previous user did the pre-quiz. 
             // The pre-quiz page needs to acknowledge different users and allow doing pre-quiz
             const getResult = () => JSON.parse(localStorage['preResult']);
-            
+
+            const spinner = document.getElementById('spinner');
+            let isLoading = false;
+            const minDisplayTime = 1000;
+            let spinnerStartTime;
+                        
             function updateAnchor(anchor, url=null) {
                 if (url) {
                     anchor.removeAttribute('disabled');
@@ -94,6 +99,31 @@
                     anchor.removeAttribute('href');
                     anchor.disabled = true;
                     anchor.style.cursor = 'not-allowed';
+                }
+            }
+
+            // Function to show the spinner
+            function showSpinner() {
+                //console.log("Showing spinner...");
+                spinner.classList.remove('hidden');
+                isLoading = true;
+                spinnerStartTime = Date.now();
+            };
+            
+            // Function to hide the spinner
+            function hideSpinner() {
+                const elapsedTime = Date.now() - spinnerStartTime;
+                if (elapsedTime < minDisplayTime) {
+                    // Delay hiding spinner until the minimum display time
+                    setTimeout(() => {
+                        //console.log("Hiding spinner after min time...");
+                        spinner.classList.add('hidden');
+                        isLoading = false;
+                    }, minDisplayTime - elapsedTime);
+                } else {
+                    // console.log("Hiding spinner...");
+                    spinner.classList.add('hidden');
+                    isLoading = false;
                 }
             }
 
@@ -110,7 +140,10 @@
             }
 
             document.getElementById('logOut').addEventListener('click', () => {
+                alert("Do you really want to sign out?");
+                showSpinner();
                 logOut();
+                hideSpinner();
             });
             
             const navChallenge = document.getElementById('navChallenge');
