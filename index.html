@@ -785,8 +785,35 @@
                     const modal = new bootstrap.Modal(document.getElementById('signInModal'));
                     modal.show();
                 }
+
+                async function signInAndRedirect() {
+                    try {
+                        // Wait for login
+                        const loginResult = await netlifyIdentity.gotrue.login(
+                        emailInput2.value,
+                        passwordInput2.value,
+                        true
+                        );
+
+                        document.querySelector(".home-hide").style.display = "flex";
+                        console.log("Successful login!", emailInput2.value);
+
+                        // Wait for quiz info
+                        await ExtractQuizInfo();
+
+                        // Redirect
+                        window.location.href = "result_page.html";
+                    } catch (error) {
+                        console.error("Caught error:", error);
+                        document.getElementById("e-toast").textContent = error;
+                        const toastEl = document.getElementById("liveToast");
+                        const myToast = new bootstrap.Toast(toastEl);
+                        myToast.show();
+                    }
+                }
+
                 
-                document.getElementById('signInButton').addEventListener('click', function () {
+                document.getElementById('signInButton').addEventListener('click', () => {
                     const emailInput2 = document.getElementById('emailInput2');
                     const passwordInput2 = document.getElementById('passwordInput');
                     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -812,26 +839,9 @@
                     // If valid, submit the form or proceed further
                     if (isValid) {
                         alert('Form is valid. Proceeding...');
+                        signInAndRedirect();
                     }
-                    netlifyIdentity.gotrue.login(emailInput2.value, passwordInput2.value, true)  // true means to remember login
-                    .then((r) => {
-                        document.querySelector(".home-hide").style.display = "flex";
-                        return r; // Pass the login result to the next .then
-                    })
-                    .then(async (r) => {
-                        console.log('Successful login!', emailInput2.value);
-                        //This will change later if we can retrieve cycle information of a user
-                        await ExtractQuizInfo();
-                        window.location.href = "result_page.html";
-                    })
-                    .catch((e) => {
-                        console.error('Caught error:', e);
-                        document.getElementById('e-toast').textContent = e;
-                        const toastEl = document.getElementById('liveToast');
-                        const myToast = new bootstrap.Toast(toastEl);
-                        myToast.show();
-                        return;
-                    });
+
                 });
                 
             })

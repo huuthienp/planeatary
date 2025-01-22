@@ -179,8 +179,8 @@
             let spinnerStartTime;
             let preResult = JSON.parse(localStorage.getItem('preResult').result);
             let postResult = JSON.parse(localStorage.getItem('postResult').result);
-            let pre_rec = localStorage.getItem('preResult').recordedDate;
-            let post_rec = localStorage.getItem('postResult').recordedDate;
+            let pre_rec = JSON.parse(localStorage.getItem('preResult').recordedDate);
+            let post_rec = JSON.parse(localStorage.getItem('postResult').recordedDate);
             let task_rec = [];
             let tasks = JSON.parse(localStorage.getItem('tasks'));
             //need BE confirmation
