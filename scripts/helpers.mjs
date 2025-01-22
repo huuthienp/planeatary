@@ -57,27 +57,23 @@ export async function fetchResponse(responseId, quizType, env) {
 }
 
 
-export function reformatQualtricsData(data, type) {
+export function reformatResponseData(data) {
     try {
         let reformatted = {};
-        if (type === 'response') {
-            reformatted.quizType = data['quizType'];
-            reformatted.responseId = data['result']['responseId'];
-            const values = data['result']['values'];
-            reformatted.recordedDate = values['recordedDate'];
-            // Array of the desired keys
-            const orderedKeys = [
-                'QID3', 'QID4', 'QID5',
-                'QID6', 'QID7', 'QID8',
-                'QID10', 'QID9', 'QID11',
-                'QID13', 'QID12', 'QID14'];
-            const pointArray = orderedKeys.map(key => values[key] || 0);
-            reformatted.result = {
-                totalScore: values['SC_4OW9P7VDYuDLVbw'],
-                pointArray: pointArray
-            }
-        } else {
-            throw Error(`Empty or invalid data type: ${type}`);
+        reformatted.quizType = data['quizType'];
+        reformatted.responseId = data['result']['responseId'];
+        const values = data['result']['values'];
+        reformatted.recordedDate = values['recordedDate'];
+        // Array of the desired keys
+        const orderedKeys = [
+            'QID3', 'QID4', 'QID5',
+            'QID6', 'QID7', 'QID8',
+            'QID10', 'QID9', 'QID11',
+            'QID13', 'QID12', 'QID14'];
+        const pointArray = orderedKeys.map(key => values[key] || 0);
+        reformatted.result = {
+            totalScore: values['SC_4OW9P7VDYuDLVbw'],
+            pointArray: pointArray
         }
         return reformatted;
     } catch (error) {
