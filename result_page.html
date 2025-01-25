@@ -8,6 +8,8 @@
     <link href="style_concat.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Icon CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Quiz Results</title>
@@ -47,19 +49,19 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="ch" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                                <a class="nav-link disabled" id="ch" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                <a class="nav-link active" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#"><i class="fa fa-calendar-check-o"></i> History</a>
+                                <a class="nav-link" aria-current="page" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
                                 <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                    <li><a class="dropdown-item" href="#">My account</a></li>
-                                    <li><a class="dropdown-item" href="#">Log out</a></li>
+                                    <li><a class="dropdown-item" href="account manage.html">My account</a></li>
+                                    <li><a class="dropdown-item" id="logOut">Log out</a></li>
                                 </ul>
                             </li>
                             <!-- <li class="nav-item">
@@ -93,7 +95,9 @@
                     <p class="next-step">Next step: Select 10 Tasks To Improve Your Scores!</p>
                     <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
                 </div>
-                <button class="select-tasks">Select Tasks →</button>
+                <button class="select-tasks">
+                    <a href="manifesto_page.html">Select Tasks →</a>
+                </button>
             </div>
             <div class="q">
                 <div class="questions"></div>
@@ -113,11 +117,14 @@
                 </div>
             </div>
         </section>
+
+        <!-- spinner overlay-->
+        <section class="overlay hidden" id="spinnerOverlay"></section>
         
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script type="module">
-        import { fetchTaskStatus } from './data-functions.mjs';
+        import { fetchTaskStatus } from './scripts/helpers.mjs';
 
         const Qbuttoncontainer = document.querySelector(".pre-postQ");
         const Pre_Q = document.querySelector("#preQ");
@@ -130,28 +137,22 @@
         const modalDescription = document.getElementById("modalDescription");
         const header = document.getElementById("q-type");
         const completion_date = document.getElementById("date-completion-q");
+        
     
         let scores = [];
-        let spinnerStartTime;
-        let isLoading;
+        
         let preResponseId = localStorage.getItem('preResponseId'); //This has to be change to user's identify
         const closeButt = document.querySelector('.close');
 
 
         const comparison = document.getElementById('improvement');
-        const select =  document.querySelector('.select-tasks');
+
+        const spinner = document.getElementById('spinner');
+        const minDisplayTime = 2000; 
+        let spinnerStartTime;
+        let isLoading;
+        const bOverlay = document.getElementById("spinnerOverlay");
         
-
-        window.openNav = function() {
-            document.getElementById("mySidenav").style.width = "40%";
-            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
-        };
-
-        window.closeNav = function() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.body.style.backgroundColor = "white";
-        };
-
         // Function to show the modal
         function showModal(title, description) {
             closeButt.classList.remove('hidden');
@@ -178,55 +179,75 @@
                 closeModal();
             }
         });
+
+        function showSpinner() {
+            console.log("Showing spinner...");
+            spinner.classList.remove('hidden');
+            bOverlay.classList.remove('hidden');
+            isLoading = true;
+            spinnerStartTime = Date.now();
+        };
+
+        function hideSpinner() {
+            const elapsedTime = Date.now() - spinnerStartTime;
+            if (elapsedTime < minDisplayTime) {
+                setTimeout(() => {
+                    console.log("Hiding spinner after min time...");
+                    spinner.classList.add('hidden');
+                    bOverlay.classList.add('hidden');
+                    isLoading = false;
+                }, minDisplayTime - elapsedTime);
+                spinner.classList.add('hidden');
+                bOverlay.classList.add('hidden');
+                isLoading = false;
+            }
+        }
+
+        async function logOut() {
+            if (netlifyIdentity.gotrue.currentUser() !== null) {
+                let user = netlifyIdentity.gotrue.currentUser();
+                const logoutResult = await user.logout();
+                console.log('User has been logged out!');
+                window.location.href = "index.html";
+            } else {
+                console.log("No user is logged in!");
+            }
+        }
+
+        document.getElementById('logOut').addEventListener('click', () => {
+            alert("Do you really want to sign out?");
+            showSpinner();
+            logOut();
+            hideSpinner();
+        });
                 
         document.addEventListener("DOMContentLoaded", async function() {
+            
+            const preObject = JSON.parse(localStorage.getItem('preResult') || "{}");
+
+            const preResult = preObject.result;
+            const pre_rec = preObject.recordedDate;
+
+            const postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
+
+            const postResult = postObject.result;
+            const post_rec = postObject.recordedDate;
+
             document.getElementById('postQ').style.color = 'white';
             document.getElementById('preQ').style.color = 'white';
             document.getElementById('com-tasks').style.color = 'white';
-            const spinner = document.getElementById('spinner');
+            
             const ch = document.getElementById('ch');
-            const CH = document.getElementById('CH');
+
             let isLoading = false;
             const minDisplayTime = 2000; 
             let spinnerStartTime;
-            let preResult = JSON.parse(localStorage.getItem('preResult'));
-            let postResult = JSON.parse(localStorage.getItem('postResult'));
-            let pre_rec = localStorage.getItem('preRecordedDate');
-            let post_rec = localStorage.getItem('postRecordedDate');
             let task_rec = [];
             let tasks = JSON.parse(localStorage.getItem('tasks'));
             //need BE confirmation
             let detailed = JSON.parse(localStorage.getItem('com_tasks'));
 
-            // Function to show the spinner
-            function showSpinner() {
-                console.log("Showing spinner...");
-                spinner.classList.remove('hidden');
-                modalOverlay.classList.remove('hidden');
-                closeButt.classList.add('hidden');
-                isLoading = true;
-                spinnerStartTime = Date.now();
-            };
-            
-            // Function to hide the spinner
-            function hideSpinner() {
-                const elapsedTime = Date.now() - spinnerStartTime;
-                if (elapsedTime < minDisplayTime) {
-                    // Delay hiding spinner until the minimum display time
-                    setTimeout(() => {
-                        console.log("Hiding spinner after min time...");
-                        spinner.classList.add('hidden');
-                        modalOverlay.classList.add('hidden');
-                        isLoading = false;
-                    }, minDisplayTime - elapsedTime);
-                } else {
-                    //console.log("Hiding spinner...");
-                    spinner.classList.add('hidden');
-                    modalOverlay.classList.add('hidden');
-                    closeButt.classList.remove('hidden');
-                    isLoading = false;
-                }
-            }
+           
 
             // Retrieve tasks from localStorage or fetch if not available
             async function fetchTasks() {
@@ -288,6 +309,7 @@
             }
 
             function displayQuestions(questionsData) {
+                showSpinner();
                 cardContainer.innerHTML = ''; 
                 comparison.innerHTML = ''; 
                 header.innerHTML='';
@@ -327,7 +349,10 @@
                     document.getElementById('curr_score').textContent = questionsData.totalScore;
                     document.getElementById('total').textContent = 60;
                     completion_date.innerHTML = `Pre quiz was completed at ${localHours}:${localMinutes} on ${day}/${month}/${year}`
-                } 
+                } else {
+                    //Need logic for result page after history page or home page right away
+                }
+
                 
                 // Iterate over each question in the pointArray
                 questionsData.pointArray.forEach((score, index) => {
@@ -344,11 +369,13 @@
                     // Create and append question title
                     const questionTitle = document.createElement('h3');
                     questionTitle.textContent = `Question ${index + 1} - ${score} points`;
+                    //Later we may add info of each question (question and selected choice)
                     questionDiv.appendChild(questionTitle);
 
                     cardContainer.appendChild(questionDiv);
                 });
                 compareScores();
+                hideSpinner();
 
             }
 
@@ -431,16 +458,16 @@
             (tag) => { tag.remove() }
             );
             
-            const challenge_tab = [ch, CH];
-            challenge_tab.forEach(
-            (tab) => {
-                tab.style.color = '#a9d1cd';
-                tab.style.cursor = "not-allowed";
-                tab.disabled = true;
-            }
-            );
+            // const challenge_tab = [ch, CH];
+            // challenge_tab.forEach(
+            // (tab) => {
+            //     tab.style.color = '#a9d1cd';
+            //     tab.style.cursor = "not-allowed";
+            //     tab.disabled = true;
+            // }
+            //);
             
-        } else {
+        } else if (preResult) {
             displayQuestions(preResult);
             // Attach single click listener for the start button navigation
             selectButton.addEventListener('click', function(event) {
@@ -451,23 +478,18 @@
                 }
                 
             });
-            ch.style.color = 'white'; 
-            CH.style.color = '#074740';
+
             ch.style.cursor = "pointer"; 
-            CH.style.cursor = "pointer"; 
             ch.disabled = false; 
-            CH.disabled = false;
             ch.addEventListener("click", function() {
                 window.location.href = "manifesto.html";  
             });
-            CH.addEventListener("click", function() {
-                window.location.href = "manifesto.html";
-            });
+
             document.getElementById('preQ').style.backgroundColor = '#02897A';   
             document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
             document.getElementById('postQ').disabled = true; 
-            displayQuestions(preResult);
+            //displayQuestions(preResult);
         };
             
             document.getElementById('preQ').addEventListener('click', function() {
@@ -514,7 +536,9 @@
             document.getElementById('com-tasks').addEventListener('click', async function() {
                 
                 if (!tasks) {
+                    showSpinner();
                     tasks = await fetchTasks(); 
+                    hideSpinner();
                     localStorage.setItem('tasks', JSON.stringify(tasks));
                     tasks = JSON.parse(localStorage.getItem('tasks')); 
                 }
@@ -552,7 +576,7 @@
                 tagsToHide.forEach(
                 (tag) => { tag.classList.add('hidden'); }
                 );
-                displaySelectedTasks(tasks)
+                displaySelectedTasks(tasks);
                 document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                 document.getElementById('preQ').style.transition = "all 1s";
                 document.getElementById('postQ').style.backgroundColor = '#a9d1cd';    

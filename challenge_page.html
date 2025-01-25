@@ -8,6 +8,8 @@
     <link href="style_concat.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Icon CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>PlanEATary Challenges</title>
@@ -47,7 +49,7 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="ch" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link active" id="ch" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -62,12 +64,6 @@
                                         <li><a class="dropdown-item" href="#">Log out</a></li>
                                     </ul>
                                 </li>
-                                <!-- <li class="nav-item">
-                                    <button class="signIn"><a class="nav-link" href="#">Sign in</a></button>
-                                </li>
-                                <li class="nav-item">
-                                    <button class="signIn"><a class="nav-link" href="#">Sign up</a></button>
-                                </li> -->
                             </div>
                         </div>
                     </div>
@@ -101,12 +97,11 @@
         </div>
     </section>
     <!-- spinner overlay-->
-    <section class="overlay hidden" id="spinnerOverlay">
-    </section>
+    <section class="overlay hidden" id="spinnerOverlay"></section>
 
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script type="module">
-        import { fetchTaskStatus, updateTaskStatus } from './data-functions.mjs';
+        import { fetchTaskStatus, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
         
         let time =  [];
         let scores = [];
@@ -122,20 +117,58 @@
         
         const cardContainer = document.querySelector(".card");
         // Function to show the spinner
-        
-        window.openNav = function() {
-            document.getElementById("mySidenav").style.width = "40%";
-            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
-        };
-
-        window.closeNav = function() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.body.style.backgroundColor = "white";
-        };
 
         function delay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
+
+        function showSpinner() {
+            //console.log("Showing spinner...");
+            spinner.classList.remove('hidden');
+            spOver.classList.remove('hidden');
+            isLoading = true;
+            spinnerStartTime = Date.now();
+        }
+
+        // Function to hide the spinner
+        function hideSpinner() {
+            const elapsedTime = Date.now() - spinnerStartTime;
+            
+            if (elapsedTime < minDisplayTime) {
+                // Delay hiding spinner until the minimum display time
+                setTimeout(() => {
+                    //console.log("Hiding spinner after min time...");
+                    spinner.classList.add('hidden');
+                    spOver.classList.add('hidden');
+                    isLoading = false;
+                }, minDisplayTime - elapsedTime);
+            } else {
+                //console.log("Hiding spinner...");
+                spinner.classList.add('hidden');
+                spOver.classList.add('hidden');
+                isLoading = false;
+            }
+            
+        }
+
+        function logOut() {
+            if (netlifyIdentity.gotrue.currentUser() !== null) {
+                let user = netlifyIdentity.gotrue.currentUser();
+                user.logout().then(() => {
+                    console.log('User has been logged out!');
+                    window.location.href = "index.html";
+                });
+            } else {
+                console.log("No user is logged in!");
+            }
+        }
+
+        document.getElementById('logOut').addEventListener('click', () => {
+            alert("Do you really want to sign out?");
+            showSpinner();
+            logOut();
+            showSpinner();
+        });
 
 
         document.addEventListener("DOMContentLoaded", async function() {

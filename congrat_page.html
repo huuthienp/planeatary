@@ -57,16 +57,10 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item" href="#">My account</a></li>
-                                        <li><a class="dropdown-item" href="#">Log out</a></li>
+                                        <li><a class="dropdown-item" href="account manage.html">My account</a></li>
+                                        <li><a class="dropdown-item" id="logOut">Log out</a></li>
                                     </ul>
                                 </li>
-                                <!-- <li class="nav-item">
-                                    <button class="signIn"><a class="nav-link" href="#">Sign in</a></button>
-                                </li>
-                                <li class="nav-item">
-                                    <button class="signIn"><a class="nav-link" href="#">Sign up</a></button>
-                                </li> -->
                             </div>
                         </div>
                     </div>
@@ -85,6 +79,56 @@
         </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+    
+    const spinner = document.getElementById('spinner');
+    const minDisplayTime = 2000; 
+    let spinnerStartTime;
+    let isLoading;
+    const bOverlay = document.getElementById("spinnerOverlay");
+    
+    function showSpinner() {
+        spinner.classList.remove('hidden');
+        bOverlay.classList.remove('hidden');
+        isLoading = true;
+        spinnerStartTime = Date.now();
+    };
+    
+    function hideSpinner() {
+        const elapsedTime = Date.now() - spinnerStartTime;
+        if (elapsedTime < minDisplayTime) {
+            setTimeout(() => {
+                spinner.classList.add('hidden');
+                bOverlay.classList.add('hidden');
+                isLoading = false;
+            }, minDisplayTime - elapsedTime);
+            spinner.classList.add('hidden');
+            bOverlay.classList.add('hidden');
+            isLoading = false;
+        }
+    }
+    
+    function logOut() {
+        if (netlifyIdentity.gotrue.currentUser() !== null) {
+            let user = netlifyIdentity.gotrue.currentUser();
+            user.logout().then(() => {
+                console.log('User has been logged out!');
+                window.location.href = "index.html";
+            });
+        } else {
+            console.log("No user is logged in!");
+        }
+    }
+    
+    document.getElementById('logOut').addEventListener('click', () => {
+        alert("Do you really want to sign out?");
+        showSpinner();
+        logOut();
+        hideSpinner();
+    });
+</script>
 </body>
 </html>

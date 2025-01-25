@@ -8,6 +8,8 @@
     <link href="style_concat.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Icon CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Start Challenges</title>
@@ -34,19 +36,26 @@
                         <div class="offcanvas-body" style="background-color: #02897A;">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" href="index.html"><i class="fa fa-home"></i> Home</a>
+                                    <a class="nav-link" href="index.html"><i class="fa fa-home"></i> Home</a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle disabled" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item disabled" href="qualtrics.html">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item disabled" href="qualtrics_post.html">Post-quiz</a></li>
+                                        <li><a class="dropdown-item" href="qualtrics.html">Pre-quiz</a></li>
+                                        <li><a class="dropdown-item disabled" id="post-p" href="qualtrics_post.html">Post-quiz</a></li>
                                     </ul>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" id="ch" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-rocket"></i> Challenge
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                        <li><a class="dropdown-item active" aria-current="page" href="manifesto_page.html">Select Challenges</a></li>
+                                        <li><a class="dropdown-item disabled" id="ch" href="challenge_page.html">Complete Challenges</a></li>
+                                    </ul>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -57,8 +66,9 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item" href="#">My account</a></li>
-                                        <li><a class="dropdown-item" href="#">Log out</a></li>
+                                        <li><a class="dropdown-item" href="account manage.html">My account</a></li>
+                                        <!--My question is, how would we have any function dealing with user signing out-->
+                                        <li><a class="dropdown-item" id="logOut">Log out</a></li>
                                     </ul>
                                 </li>
                                 <!-- <li class="nav-item">
@@ -119,21 +129,23 @@
     </section>
 
     <!-- spinner overlay-->
-    <section class="overlay hidden" id="spinnerOverlay">
-    </section>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <section class="overlay hidden" id="spinnerOverlay"></section>
+
+    <!-- Warning Toast -->
+    <div class="toast-container position-absolute top-0 end-0 p-3" aria-live="polite" aria-atomic="true">
+        <div id="task-toast" class="toast align-items-center text-white bg-warning border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+            <div class="d-flex">
+                <div class="toast-body" id="task-toast-body">
+                    You've already done this task!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script type="module">
-        import { fetchTaskStatus, updateTaskStatus } from './data-functions.mjs';
-        
-        window.openNav = function() {
-            document.getElementById("mySidenav").style.width = "40%";
-            document.body.style.backgroundColor = "rgba(255,255,255,255,0.4)";
-        };
-        
-        window.closeNav = function() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.body.style.backgroundColor = "white";
-        };
+        import { fetchTaskStatus, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
         
         const QContainer = document.querySelector(".q-task");
         
@@ -144,43 +156,56 @@
         
         good.style.backgroundColor = '#a9d1cd';
         bad.style.backgroundColor = '#02897A';
-        
-        document.addEventListener("DOMContentLoaded", async function() {
-            const startButton = document.querySelector(".start");
-            const spinner = document.getElementById('spinner');
-            let isLoading = false;
-            const minDisplayTime = 2000; 
-            let spinnerStartTime;
-            let scores = [];
-            let task_counts = 0;
+
+        const spinner = document.getElementById('spinner');
+        let isLoading = false;
+        const minDisplayTime = 2000; 
+        let spinnerStartTime;
+
+        function showSpinner() {
+            spinner.classList.remove('hidden');
+            spOver.classList.remove('hidden');
+            isLoading = true;
+            spinnerStartTime = Date.now();
+        };
+
+        function hideSpinner() {
+            const elapsedTime = Date.now() - spinnerStartTime;
             
-            // Function to show the spinner
-            function showSpinner() {
-                //console.log("Showing spinner...");
-                spinner.classList.remove('hidden');
-                spOver.classList.remove('hidden');
-                isLoading = true;
-                spinnerStartTime = Date.now();
-            };
-            
-            // Function to hide the spinner
-            function hideSpinner() {
-                const elapsedTime = Date.now() - spinnerStartTime;
-                if (elapsedTime < minDisplayTime) {
-                    // Delay hiding spinner until the minimum display time
-                    setTimeout(() => {
-                        //console.log("Hiding spinner after min time...");
-                        spinner.classList.add('hidden');
-                        spOver.classList.add('hidden');
-                        isLoading = false;
-                    }, minDisplayTime - elapsedTime);
-                } else {
-                    //console.log("Hiding spinner...");
+            if (elapsedTime < minDisplayTime) {
+                setTimeout(() => {
                     spinner.classList.add('hidden');
                     spOver.classList.add('hidden');
                     isLoading = false;
-                }
-            };
+                }, minDisplayTime - elapsedTime);
+            } else {
+                spinner.classList.add('hidden');
+                spOver.classList.add('hidden');
+                isLoading = false;
+            }
+        }
+
+        function logOut() {
+            if (netlifyIdentity.gotrue.currentUser() !== null) {
+                let user = netlifyIdentity.gotrue.currentUser();
+                user.logout().then(() => {
+                    console.log('User has been logged out!');
+                    window.location.href = "index.html";
+                });
+            } else {
+                console.log("No user is logged in!");
+            }
+        }
+
+        document.getElementById('logOut').addEventListener('click', () => {
+            alert("Do you really want to sign out?");
+            showSpinner();
+            logOut();
+            hideSpinner();
+        });
+        
+        document.addEventListener("DOMContentLoaded", async function() {
+            const startButton = document.querySelector(".start");
             
             const modal = document.querySelector(".modal");
             const overlay = document.querySelector(".overlay");
@@ -190,6 +215,15 @@
             const closeButt = document.querySelector('.close');
             const close = document.getElementById('close');
             const closeDes = document.getElementById('closeDes');
+
+            const spinner = document.getElementById('spinner');
+            let isLoading = false;
+            const minDisplayTime = 2000; 
+            let spinnerStartTime;
+            let scores = [];
+            let task_counts = 0;
+            
+            
             
             function Modal(source) {
                 close.classList.remove('hidden');
@@ -236,18 +270,6 @@
                     CloseDes();
                 }
             });
-            
-            let preResult = JSON.parse(localStorage.getItem('preResult')); 
-            let preResponseId = localStorage.getItem('preResponseId'); 
-            
-            
-            if(!preResult && !preResponseId) {
-                QContainer.innerHTML = '<p>No available information to be displayed</p>';
-            }
-            else{
-                let preTotalScore = preResult.totalScore; 
-                let prePointArray = preResult.pointArray;
-            }
             
             
             // Retrieve tasks from localStorage or fetch if not available
@@ -303,7 +325,7 @@
                     let task = {
                         id: preResponseId,
                         chosen: extracted.chosen,
-                        // done: extracted.done
+                        // status: extracted.status
                     }
                     const response = await fetch('/api/manage-tasks', {
                         method: 'PUT',
@@ -322,10 +344,7 @@
                     
                 }
             }
-            
-            scores = preResult.pointArray; 
-            
-            
+                        
             function calculateSelectedTasks(tasks) {
                 let count = 0;
                 Object.keys(tasks).forEach((questionKey) => {
@@ -341,6 +360,18 @@
             
             async function renderQuestions(condition) {
                 QContainer.innerHTML = '';
+                let preResult = JSON.parse(localStorage.getItem('preResult')); 
+                let preResponseId =  preResult.resposeId;
+                
+                
+                if(!preResult && !preResponseId) {
+                    QContainer.innerHTML = '<p>No available information to be displayed</p>';
+                }
+                else{
+                    let preTotalScore = preResult.totalScore; 
+                    scores = preResult.pointArray;
+                }
+
                 let tasks = JSON.parse(localStorage.getItem('tasks')); 
                 let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                 
@@ -356,19 +387,19 @@
                     hideSpinner();
                     localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
                     fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                } else if (fetched_tasks !== null) {
+                    if (!fetched_tasks.status || !fetched_tasks.chosen) {
+                        showSpinner();
+                        fetched_tasks = await fetchTaskStatus(preResponseId); 
+                        hideSpinner();
+                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
+                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    }
                 }
                 
-                //fetch up-to-date info
-                if (!fetched_tasks.done || !fetched_tasks.chosen) {
-                    showSpinner();
-                    fetched_tasks = await fetchTaskStatus(preResponseId); 
-                    hideSpinner();
-                    localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
-                    fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                }
                 
                 //console.log(fetched_tasks.chosen);
-                //console.log(fetched_tasks.done);
+                //console.log(fetched_tasks.status);
                 
                 if (!tasks || !preResult) {
                     QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
@@ -435,7 +466,7 @@
                             
                             // Set task choice and status based on local storage
                             // and finish time
-                            if (fetched_tasks.chosen && fetched_tasks.done) {
+                            if (fetched_tasks.chosen && fetched_tasks.status) {
                                 if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
                                     task.choice = 'chosen';
                                     checkbox.checked = true;
@@ -443,7 +474,7 @@
                                     const _index = fetched_tasks.chosen.indexOf(task.taskNumber);
                                     // `chosen` and `time` are parallel
                                     task.finishTime = fetched_tasks.time[_index];
-                                    if (fetched_tasks.done.includes(String(task.taskNumber))) {
+                                    if (fetched_tasks.status.includes(String(task.taskNumber))) {
                                         task.status = 'Completed';
                                         checkbox.disabled = true; // Disable the checkbox if the task is completed
                                     }
@@ -452,6 +483,14 @@
                             
                             //Also double-check task status in local storage
                             checkbox.disabled = task.status === 'Completed';
+                            
+                            //Warn a user if they accidentially re-select any task that is marked completed
+                            if (checkbox.disabled === true) {
+                                const toasty = document.getElementById('task-toast');
+                                const myToast = new bootstrap.Toast(toasty);
+                                myToast.show();
+                            }
+                            
                             localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
                             
                             // Update task count and localStorage on checkbox change

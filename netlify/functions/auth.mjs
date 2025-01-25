@@ -19,7 +19,7 @@ export default async (request, context) => {
             status: status,
         });
     } catch(error) {
-        console.error(JSON.stringify(error));
+        console.warn('Caught', error);
         return new Response(JSON.stringify(error), {
             status: 500,
             statusText: 'Internal error at endpoint. Check body for full error.',
