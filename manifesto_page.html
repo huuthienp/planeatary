@@ -48,7 +48,7 @@
                                     </ul>
                                 </li>
                                 </li>
-                                <li class="nav-item dropdown">
+                                <li class="nav-item dropdown active">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-rocket"></i> Challenge
                                     </a>
@@ -557,6 +557,8 @@
             renderQuestions((score) => score < 3);
             // Attach single click listener for the start button navigation
             startButton.addEventListener('click', function(event) {
+                let preResult = JSON.parse(localStorage.getItem('preResult')); 
+                let preResponseId =  preResult.responseId;
                 if (task_counts >= 3) {
                     showSpinner();
                     updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
