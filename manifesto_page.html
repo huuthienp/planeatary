@@ -460,6 +460,8 @@
                             const infoIcon2 = document.createElement("span");
                             infoIcon2.classList.add("info-icon");
                             infoIcon2.innerHTML = "&#9432;"; 
+
+                            label.classList.add('task-label');
                             
                             label.appendChild(checkbox);
                             label.appendChild(document.createTextNode(task.taskName));
@@ -502,12 +504,16 @@
                                     }
                                     localStorage.setItem('tasks', JSON.stringify(tasks)); 
                                     updateStartButton(); 
-                                } else if (checkbox.disabled === true) {
-                                //Warn a user if they accidentially re-select any task that is marked completed
-                                const toasty = document.getElementById('task-toast');
-                                const myToast = new bootstrap.Toast(toasty);
-                                myToast.show();
-                            }
+                                }
+                            });
+
+                            document.querySelector('.task-label').addEventListener('click', (e) => {
+                                // If the input is disabled, show toast
+                                if (checkbox.disabled) {
+                                    const toasty = document.getElementById('task-toast');
+                                    const myToast = new bootstrap.Toast(toasty);
+                                    myToast.show();
+                                }
                             });
                             
                             // Event listener for more info

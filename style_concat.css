@@ -817,12 +817,18 @@ body {
 
 .question-block {
   width: 80%;
-  background-color: rgb(248, 246, 246);
+  background-color: rgb(255, 249, 249);
+  padding: 2vh 1vw;
 }
 
 .q-task ul {
   list-style: none;
   padding: 2vmax;
+}
+
+.task-label {
+  display: flex;
+  justify-content: space-around;
 }
 
 .task-content img:hover, 
@@ -865,6 +871,12 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.modal > .btn {
+  display: flex;
+  width: 100%;
+  justify-self: flex-end !important;
 }
 
 .modal-content {
@@ -919,10 +931,10 @@ body {
   flex-direction: column;
 }
 
-.btn {
+.modal2 > .btn {
   display: flex;
   width: 100%;
-  justify-content: flex-end;
+  justify-self: flex-end !important;
 }
 
 
