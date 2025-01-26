@@ -19,7 +19,7 @@
             <div class="spinner hidden" id="spinner"></div>
             <div class="Header">
                 <!-- Sidebar -->
-                <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
+                <nav class="navbar navbar-dark navbar-expand-xl sticky-top" style="background-color: #02897A;">
                     <div class="container-fluid">
                         <a class="navbar-brand d-flex align-items-center" href="index.html">
                             <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -91,7 +91,6 @@
                     <div class="hero-image">
                         <img src="./images/welcome-removebg.png"/>  
                     </div>
-                    <!-- href="https://planeatary.netlify.app/qualtrics" -->
                 </div>             
             </div>
 
@@ -508,7 +507,6 @@
             document.addEventListener("DOMContentLoaded", async function() {
                 
                 const greetingDiv = document.querySelector('.greeting');
-                const continueButton = document.getElementById('continueButton');
                 const heroButton = document.querySelector('.herobtn');
 
                 if(netlifyIdentity.gotrue.currentUser() !== null) {
@@ -545,83 +543,6 @@
                         isLoading = false;
                     }
                 }
-                
-                // async function checkOrFetchResponseId() {
-                
-                //     try {
-                //         showSpinner();
-                //         let preResponseId = localStorage.getItem('preResult');
-                //         let postResponseId = localStorage.getItem('postResult');
-                //         let quizType = '';
-                
-                //         if (preResponseId) {
-                //             let userChoice = confirm("Looks like there is your recorded pre quiz. Would you like to continue with existing responses? Click OK if yes.");
-                
-                //             if (userChoice) {
-                //                 setupContinueButton('result_page.html');
-                //             } else {
-                //                 // User chooses to start a new quiz
-                //                 localStorage.removeItem('preResult');
-                
-                //                 setupContinueButton('qualtrics.html');
-                
-                //             }
-                //         } else if (postResponseId) {
-                //             let userChoice = confirm("Looks like there is your recorded post quiz. Would you like to start over? Click OK if yes.");
-                
-                //             if (userChoice) {
-                //                 localStorage.removeItem('preResult');
-                //                 localStorage.removeItem('postResult');
-                //                 setupContinueButton('qualtrics.html');
-                //             }
-                
-                //         } else {
-                //             // If no responseId in localStorage, ask the user if they've completed the pre-quiz
-                //             const userAns = confirm("Have you done the quiz? Click OK if yes, cancel if no.");
-                
-                //             if (userAns) {
-                //                 const userOption = confirm("Would you like to continue with existing response? Click OK if yes.");
-                
-                //                 if (userOption) {
-                
-                //                     let preOrpost = prompt("If you would like to proceed with pre-quiz, type 'pre'");
-                
-                //                     // Validate the input
-                //                     if (preOrpost !== 'pre') {
-                //                         alert("Invalid input. Please enter 'pre'.");
-                //                         setupContinueButton('qualtrics.html');
-                //                         hideSpinner();
-                //                         return;
-                //                     }
-                
-                //                     let userMem = prompt("Please enter its response ID:");
-                
-                //                     if (userMem) {
-                //                         let responseId = userMem;
-                //                         let fetchedResponseId = await fetchResponseIdFromNetlify(preOrpost, responseId);
-                //                         // localStorage.setItem(`${preOrpost}ResponseId`, JSON.stringify(fetchedResponseId));
-                //                         saveLocalStorage(fetchedResponseId, 'response');
-                //                         setupContinueButton(preOrpost === 'pre' ?'result_page.html':'manifesto_page.html');
-                //                         return;
-                //                     } else {
-                //                         alert("Invalid response ID entered.");
-                //                         hideSpinner();
-                //                         return;
-                //                     }
-                //                 } else {
-                //                     setupContinueButton('qualtrics.html');
-                //                 }
-                //             } else {
-                //                 setupContinueButton('qualtrics.html');
-                //             }
-                
-                //         }
-                
-                //     } catch (error) {
-                //         console.error('Error in checkOrFetchResponseId:', error);
-                //     } finally {
-                //         hideSpinner();
-                //     }
                 
                 async function fetchResponseIdFromNetlify(quizType, responseId) {
                     try {
@@ -701,12 +622,6 @@
                     }
                 }
                 
-                function setupContinueButton(path) {
-                    continueButton.addEventListener('click', function() {
-                        window.location.href = path;
-                    });
-                }
-                
                 // function setupNavBar() {
                 //     const quiz = document.getElementById('Q');
                 //     const challenge = document.getElementById('CH');
@@ -726,10 +641,16 @@
                     }
                 }
                 heroButton.addEventListener('click', function () {
-                    document.getElementById('e-toast').textContent = 'Please sign in or sign up first';
-                    const toastEl = document.getElementById('liveToast');
-                    const myToast = new bootstrap.Toast(toastEl);
-                    myToast.show();
+                    if (netlifyIdentity.gotrue.currentUser()) {
+                        alert("Let's see your latest result");
+                        window.location.href = "result_page.html";
+                    } else {
+                        document.getElementById('e-toast').textContent = 'Please sign in or sign up first';
+                        const toastEl = document.getElementById('liveToast');
+                        const myToast = new bootstrap.Toast(toastEl);
+                        myToast.show();
+                    }
+                    
                 });
                 
                 function ExtractUserMetadata() {
@@ -800,6 +721,7 @@
 
                         // Redirect
                         window.location.href = "result_page.html";
+
                     } catch (error) {
                         console.error("Caught error:", error);
                         document.getElementById("e-toast").textContent = error;
@@ -982,11 +904,6 @@
 
             }
         });
-        </script>
-
-        <!--Sign In -->
-        <script>
-            
         </script>
     </body>
 </html>
