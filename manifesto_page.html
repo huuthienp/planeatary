@@ -366,10 +366,9 @@
                 
                 if(!preResult && !preResponseId) {
                     QContainer.innerHTML = '<p>No available information to be displayed</p>';
-                }
-                else{
-                    let preTotalScore = preResult.totalScore; 
-                    scores = preResult.pointArray;
+                }else{
+                    let preTotalScore = preResult.result.totalScore; 
+                    scores = preResult.result.pointArray;
                     console.log(scores);
                 }
 
