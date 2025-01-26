@@ -828,7 +828,8 @@ body {
 
 .task-label {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  gap: 0.5vw;
 }
 
 .task-content img:hover, 
@@ -876,7 +877,7 @@ body {
 .modal > .btn {
   display: flex;
   width: 100%;
-  justify-self: flex-end !important;
+  justify-content: flex-end;
 }
 
 .modal-content {
@@ -934,7 +935,7 @@ body {
 .modal2 > .btn {
   display: flex;
   width: 100%;
-  justify-self: flex-end !important;
+  justify-content: flex-end;
 }
 
 

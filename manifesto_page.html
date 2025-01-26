@@ -296,57 +296,6 @@
                 return JSON.parse(taskData);
             }
             
-            // // Function to get task status from the API
-            // async function fetchTaskStatus(preResponseId) { 
-            //     try {
-            //         showSpinner();
-            //         const response = await fetch('/api/manage-tasks', {
-            //             method: 'GET',
-            //             headers: {
-            //                 'Content-Type': 'application/json',
-            //                 'Q-RESPONSE-ID': preResponseId,
-            //             }
-            //         });
-            //         const data = await response.json();
-            //         console.log('Task status fetched:', data);
-            //         hideSpinner();
-            //         return data;
-            //     } catch (error) {
-            //         hideSpinner();
-            //         console.error('Error fetching task status:', error);
-            //         return null;
-            //     }
-            // }
-            
-            // // Function to update task status using the API
-            // async function updateTaskStatus_(task) {  // archive
-            //     try {
-            //         showSpinner();
-            //         const taskData = JSON.parse(localStorage.getItem('tasks'));
-            //         const extracted = mergeTaskArrays(taskData);
-                    
-            //         let task = {
-            //             id: preResponseId,
-            //             chosen: extracted.chosen,
-            //             // status: extracted.status
-            //         }
-            //         const response = await fetch('/api/manage-tasks', {
-            //             method: 'PUT',
-            //             headers: {
-            //                 'Content-Type': 'application/json',
-            //                 'Q-RESPONSE-ID': preResponseId,
-            //             },
-            //             body: JSON.stringify(task),
-            //         });
-            //         const data = await response.json();
-            //         console.log('Task updated successfully:', data);
-            //         hideSpinner();
-            //     } catch (error) {
-            //         hideSpinner();
-            //         console.error('Error updating task status:', error);
-                    
-            //     }
-            // }
                         
             function calculateSelectedTasks(tasks) {
                 let count = 0;

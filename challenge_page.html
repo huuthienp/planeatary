@@ -108,7 +108,6 @@
         let spinnerStartTime;
         let isLoading;
         const minDisplayTime = 1000;
-        let preResponseId = localStorage.getItem('preResponseId');
         const modal = document.querySelector(".modal");
         const overlay = document.querySelector(".overlay");
         const closeButt = document.querySelector('.close');
@@ -116,7 +115,9 @@
         const spOver = document.getElementById("spinnerOverlay");
         
         const cardContainer = document.querySelector(".card");
-        // Function to show the spinner
+        
+        let preResult = JSON.parse(localStorage.getItem('preResult')); 
+        let preResponseId =  preResult.responseId;
 
         function delay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
@@ -226,59 +227,6 @@
                 return JSON.parse(taskData);
             }
 
-            // Function to get task status from the API
-            async function fetchTaskStatus_() {  // archive
-                try {
-                    
-                    showSpinner();
-                    const response = await fetch('/api/manage-tasks', {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Q-RESPONSE-ID': preResponseId,
-                        }
-
-                    });
-                    
-                    const data = await response.json();
-                    console.log('Task status fetched:', data);
-                    hideSpinner();
-                    return data;
-                } catch (error) {
-                    hideSpinner();
-                    console.error('Error fetching task status:', error);
-                    return null;
-                }
-            }
-
-            // Function to update task status using the API
-            async function updateTaskStatus_(task) {  // archive
-
-                try {
-                    const taskData = JSON.parse(localStorage.getItem('tasks'));
-                    const extracted = mergeTaskArrays(taskData);
-                    let task = {
-                        id: preResponseId,
-                        chosen: extracted.chosen,
-                        // done: extracted.done,
-                        // time: extracted.time
-                    }
-                    const response = await fetch('/api/manage-tasks', {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Q-RESPONSE-ID': preResponseId,
-                        },
-                        body: JSON.stringify(task),
-                    });
-                    const data = await response.json();
-                    console.log('Task updated successfully:', data);
-
-                } catch (error) {
-                    console.error('Error updating task status:', error);
-                    
-                }
-            }
             
             // Retrieve tasks from localStorage
             let tasks = JSON.parse(localStorage.getItem('tasks'));
@@ -417,10 +365,10 @@
                         }
                         
                         // Add event listener to task card to update status
-                        taskCard.addEventListener('click', async function() {
+                        taskCard.addEventListener('click', async (event) => {
 
                             completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
-                            await delay(1000);
+                            await delay(700);
 
                             // Toggle task status between "Done" and "Completed"
                             task.status = task.status === "Done" ? "Completed" : "Done";
