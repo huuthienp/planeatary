@@ -361,7 +361,7 @@
             async function renderQuestions(condition) {
                 QContainer.innerHTML = '';
                 let preResult = JSON.parse(localStorage.getItem('preResult')); 
-                let preResponseId =  preResult.resposeId;
+                let preResponseId =  preResult.responseId;
                 
                 
                 if(!preResult && !preResponseId) {
@@ -370,6 +370,7 @@
                 else{
                     let preTotalScore = preResult.totalScore; 
                     scores = preResult.pointArray;
+                    console.log(scores);
                 }
 
                 let tasks = JSON.parse(localStorage.getItem('tasks')); 
