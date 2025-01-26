@@ -417,16 +417,16 @@
                         
                         // Display question number and score
                         const questionTitle = document.createElement('h3');
-                        questionTitle.innerHTML = `Question ${i + 1} - ${score} points`;
+                        questionTitle.innerHTML = `Question ${i + 1} - ${score} points `;
                         
                         if (score < 3) {
-                            questionDiv.style.borderRadius = "10px";
-                            questionDiv.style.boxShadow = "10px 10px 10px red";
-                            questionTitle.style.color = 'red';
+                            questionDiv.style.borderRadius = "20px";
+                            questionDiv.style.boxShadow = "10px 10px 10px rgb(178, 34, 34)";
+                            questionTitle.style.color = '#B22222';
                         } else {
-                            questionDiv.style.borderRadius = "10px";
-                            questionDiv.style.boxShadow = "10px 10px 10px rgb(2, 137, 122)";
-                            questionTitle.style.color = 'green';
+                            questionDiv.style.borderRadius = "20px";
+                            questionDiv.style.boxShadow = "10px 10px 10px rgb(46, 139, 87)";
+                            questionTitle.style.color = '#2E8B57';
                         }
                         
                         // Add the info icon with a click event to open the modal
@@ -474,7 +474,7 @@
                                     const _index = fetched_tasks.chosen.indexOf(task.taskNumber);
                                     // `chosen` and `time` are parallel
                                     task.finishTime = fetched_tasks.time[_index];
-                                    if (fetched_tasks.status.includes(String(task.taskNumber))) {
+                                    if (fetched_tasks.done.includes(String(task.taskNumber))) {
                                         task.status = 'Completed';
                                         checkbox.disabled = true; // Disable the checkbox if the task is completed
                                     }

@@ -811,11 +811,13 @@ body {
   justify-content: center;
   padding: 2vh 2vw;
   flex-wrap: wrap;
+  gap: 2vh;
 
 }
 
 .question-block {
-  width: 70%;
+  width: 80%;
+  background-color: rgb(248, 246, 246);
 }
 
 .q-task ul {
