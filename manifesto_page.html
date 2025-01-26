@@ -162,6 +162,9 @@
         const minDisplayTime = 2000; 
         let spinnerStartTime;
 
+        let preResult = JSON.parse(localStorage.getItem('preResult')); 
+        let preResponseId =  preResult.responseId;
+
         function showSpinner() {
             spinner.classList.remove('hidden');
             spOver.classList.remove('hidden');
@@ -484,12 +487,6 @@
                             //Also double-check task status in local storage
                             checkbox.disabled = task.status === 'Completed';
                             
-                            //Warn a user if they accidentially re-select any task that is marked completed
-                            if (checkbox.disabled === true) {
-                                const toasty = document.getElementById('task-toast');
-                                const myToast = new bootstrap.Toast(toasty);
-                                myToast.show();
-                            }
                             
                             localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
                             
@@ -505,7 +502,12 @@
                                     }
                                     localStorage.setItem('tasks', JSON.stringify(tasks)); 
                                     updateStartButton(); 
-                                }
+                                } else if (checkbox.disabled === true) {
+                                //Warn a user if they accidentially re-select any task that is marked completed
+                                const toasty = document.getElementById('task-toast');
+                                const myToast = new bootstrap.Toast(toasty);
+                                myToast.show();
+                            }
                             });
                             
                             // Event listener for more info
