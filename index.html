@@ -413,6 +413,12 @@
                 </div>
             </div>
         </div>
+	<script>
+		netlifyIdentity.gotrue
+		  .requestPasswordRecovery(email)
+		  .then((response) => console.log('Recovery email sent', { response }))
+		  .catch((error) => console.log('Error sending recovery mail: %o', error));
+	</script>
 
         <!-- Sign Up Modal-->
         <div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
