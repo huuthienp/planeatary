@@ -323,7 +323,7 @@
                         taskCard.classList.add("task-card", task.status === "Completed" ? "card_completed" : "card_incompleted");
 
                         const taskName = document.createElement("span");
-                        taskName.textContent = task.taskName;
+                        taskName.textContent = task.taskName + " ";
 
                         // Add an info icon for task description
                         const infoIcon = document.createElement("span");

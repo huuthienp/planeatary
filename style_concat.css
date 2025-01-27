@@ -324,12 +324,13 @@ body {
   align-items: center;
 }
 .card_completed {
-  padding: 3vh 0.5vw;
+  padding: 3vh 3vw;
   background: rgb(133, 132, 132);
   border: none;
   border-radius: 1em;
   text-align: center;
 }
+
 .card_completed:hover,
 .card_completed:focus {
   cursor: pointer;

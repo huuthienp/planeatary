@@ -398,7 +398,7 @@
                             taskCard.classList.add("card_completed");
 
                             const taskName = document.createElement("span");
-                            taskName.textContent = task.taskName;
+                            taskName.textContent = task.taskName + " ";
 
                             // Add an info icon for task description
                             const infoIcon = document.createElement("span");
@@ -428,7 +428,7 @@
                     //Check if all chosen tasks are completed.
                     if (detailed.done.length == detailed.chosen.length) {
                         const latestTimestamp = Math.max(...task_rec);
-                        let date = new Date(latestTimestamp);
+                        let date = new Date(latestTimestamp * 1000);
                         let day = String(date.getDate()).padStart(2, '0');      
                         let month = String(date.getMonth() + 1).padStart(2, '0'); 
                         let year = date.getFullYear();                       
