@@ -170,44 +170,9 @@
                 logOut();
                 showSpinner();
             });
-            
-            
-            document.addEventListener("DOMContentLoaded", async function() {
-                
-                
-                function showSpinner() {
-                    //console.log("Showing spinner...");
-                    spinner.classList.remove('hidden');
-                    spOver.classList.remove('hidden');
-                    
-                    closeButt.classList.add('hidden');
-                    isLoading = true;
-                    spinnerStartTime = Date.now();
-                }
-                
-                // Function to hide the spinner
-                function hideSpinner() {
-                    const elapsedTime = Date.now() - spinnerStartTime;
-                    
-                    if (elapsedTime < minDisplayTime) {
-                        // Delay hiding spinner until the minimum display time
-                        setTimeout(() => {
-                            //console.log("Hiding spinner after min time...");
-                            spinner.classList.add('hidden');
-                            spOver.classList.add('hidden');
-                            isLoading = false;
-                        }, minDisplayTime - elapsedTime);
-                    } else {
-                        //console.log("Hiding spinner...");
-                        spinner.classList.add('hidden');
-                        spOver.classList.add('hidden');
-                        isLoading = false;
-                    }
-                    
-                }
-                
-                // Retrieve tasks from localStorage or fetch if not available
-                async function fetchTasks() {
+
+            // Retrieve tasks from localStorage or fetch if not available
+            async function fetchTasks() {
                     const taskData = localStorage.getItem('tasks');
                     if (!taskData) {
                         try {
@@ -243,8 +208,6 @@
                     
                 }
                 
-                const cardContainer = document.querySelector(".card");
-                const modal = document.getElementById("taskModal");
                 const modalOverlay = document.getElementById("modalOverlay");
                 const modalTitle = document.getElementById("modalTitle");
                 const modalDescription = document.getElementById("modalDescription");
@@ -264,6 +227,38 @@
                     closeButt.classList.remove('hidden');
                     modal.classList.add("hidden");
                     modalOverlay.classList.add("hidden");
+                }
+
+                
+                function showSpinner() {
+                    //console.log("Showing spinner...");
+                    spinner.classList.remove('hidden');
+                    spOver.classList.remove('hidden');
+                    
+                    closeButt.classList.add('hidden');
+                    isLoading = true;
+                    spinnerStartTime = Date.now();
+                }
+                
+                // Function to hide the spinner
+                function hideSpinner() {
+                    const elapsedTime = Date.now() - spinnerStartTime;
+                    
+                    if (elapsedTime < minDisplayTime) {
+                        // Delay hiding spinner until the minimum display time
+                        setTimeout(() => {
+                            //console.log("Hiding spinner after min time...");
+                            spinner.classList.add('hidden');
+                            spOver.classList.add('hidden');
+                            isLoading = false;
+                        }, minDisplayTime - elapsedTime);
+                    } else {
+                        //console.log("Hiding spinner...");
+                        spinner.classList.add('hidden');
+                        spOver.classList.add('hidden');
+                        isLoading = false;
+                    }
+                    
                 }
                 
                 // Close modal when user clicks the close button
@@ -292,21 +287,10 @@
                     }
                 });
                 
+            
+            
+            document.addEventListener("DOMContentLoaded", async function() {
                 
-                // Check if tasks exist in localStorage
-                if (tasks) {
-                    displaySelectedTasks(tasks); // Display tasks
-                } else {
-                    let tasks = await fetchTasks();
-                    localStorage.setItem('tasks', JSON.stringify(tasks));
-                    tasks = JSON.parse(localStorage.getItem('tasks'));
-                    showSpinner();
-                    let fetchedTasks = await fetchTaskStatus(preResponseId); 
-                    hideSpinner();
-                    localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks)); 
-                    let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    displaySelectedTasks(tasks);
-                }
                 
                 // Function to display selected tasks and allow status update
                 async function displaySelectedTasks(tasks) {
@@ -390,26 +374,44 @@
                                     }
                                     // Update task in localStorage
                                     localStorage.setItem('tasks', JSON.stringify(tasks));
+                                    updateNextButton();  
                                     
                                 });
                                 
                                 localStorage.setItem('tasks', JSON.stringify(tasks));
-                                // showSpinner();
-                                // updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
-                                // hideSpinner();
-                                // updateNextButton();                 
+                                showSpinner();
+                                updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
+                                hideSpinner();
+                                updateNextButton();                 
                             }
                         });
                     });
                     
                     cardContainer.appendChild(nextButtonContainer);
+
                     localStorage.setItem('tasks', JSON.stringify(tasks));
                     showSpinner();
                     updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
-                    Tstatus = await fetchTaskStatus(preResponseId);
-                    localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
+                    let Taskstatus = await fetchTaskStatus(preResponseId);
+                    localStorage.setItem('fetched_tasks', JSON.stringify(Taskstatus));
+                    Tstatus = Taskstatus;
                     hideSpinner();
                     updateNextButton(); 
+                }
+
+                // Check if tasks exist in localStorage
+                if (tasks) {
+                    displaySelectedTasks(tasks); // Display tasks
+                } else {
+                    let tasks = await fetchTasks();
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    tasks = JSON.parse(localStorage.getItem('tasks'));
+                    showSpinner();
+                    let fetchedTasks = await fetchTaskStatus(preResponseId); 
+                    hideSpinner();
+                    localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks)); 
+                    let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    displaySelectedTasks(tasks);
                 }
                 
                 // Function to update the Next button's state

@@ -239,14 +239,14 @@
             
             let detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
             
-            if (!detailed || !detailed.done) {
+            if (detailed == null || !detailed.done) {
                 showSpinner();
                 const com_tasks = await fetchTaskStatus(preResponseId);
                 hideSpinner();
                 localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
-                detailed = com_tasks; // You could assign directly
+                detailed = com_tasks; 
+                
             }
-            
             const task_rec = detailed.time;
 
             document.getElementById('postQ').style.color = 'white';
@@ -442,7 +442,7 @@
                     //Check if all chosen tasks are completed.
                     if (detailed.done.length == detailed.chosen.length) {
                         const latestTimestamp = Math.max(...task_rec);
-                        let date = new Date(latestTimestamp * 1000);
+                        let date = new Date(latestTimestamp);
                         let day = String(date.getDate()).padStart(2, '0');      
                         let month = String(date.getMonth() + 1).padStart(2, '0'); 
                         let year = date.getFullYear();                       
@@ -481,7 +481,8 @@
             const toshow = [
             'p.next-step',
             'p.suggestion',
-            'button.select-tasks'
+            'button.select-tasks',
+            'div.circle'
             ];
 
             const tagsToShow = toshow.map(s => document.querySelector(s));
@@ -508,7 +509,8 @@
                     const toshow = [
                     'p.next-step',
                     'p.suggestion',
-                    'button.select-tasks'
+                    'button.select-tasks',
+                    'div.circle'
                     ];
                     
                     const tagsToShow = toshow.map(s => document.querySelector(s));
