@@ -227,6 +227,28 @@
             const postResult = postObject.result;
             const post_rec = postObject.recordedDate;
 
+            let tasks = JSON.parse(localStorage.getItem('tasks'));
+
+            if (!tasks) {
+                showSpinner();
+                tasks = await fetchTasks();  // no 'let' here
+                hideSpinner();
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                tasks = JSON.parse(localStorage.getItem('tasks'));
+            }
+            
+            let detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
+            
+            if (!detailed || !detailed.done) {
+                showSpinner();
+                const com_tasks = await fetchTaskStatus(preResponseId);
+                hideSpinner();
+                localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
+                detailed = com_tasks; // You could assign directly
+            }
+            
+            const task_rec = detailed.time;
+
             document.getElementById('postQ').style.color = 'white';
             document.getElementById('preQ').style.color = 'white';
             document.getElementById('com-tasks').style.color = 'white';
@@ -236,12 +258,7 @@
             let isLoading = false;
             const minDisplayTime = 2000; 
             let spinnerStartTime;
-            let task_rec = [];
-            let tasks = JSON.parse(localStorage.getItem('tasks'));
 
-            let detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
-
-           
 
             // Retrieve tasks from localStorage or fetch if not available
             async function fetchTasks() {
@@ -346,15 +363,13 @@
 
             }
 
-
             // Function to display completed tasks 
             async function displaySelectedTasks(tasks) {
                 cardContainer.innerHTML = ''; 
-                const circle = document.querySelector(".circle");
-                circle.classList.add('hidden');
                 
                 // Remove next step, suggestion, and select-tasks button if display tasks
                 const tohide = [
+                'div.circle',
                 'p.next-step',
                 'p.suggestion',
                 'button.select-tasks'
@@ -410,15 +425,18 @@
                         });
                     });
                     
-                    const latestTimestamp = Math.max(...task_rec);
-                    let date = new Date(latestTimestamp);
-                    let day = String(date.getDate()).padStart(2, '0');      
-                    let month = String(date.getMonth() + 1).padStart(2, '0'); 
-                    let year = date.getFullYear();                       
-                    let hours = String(date.getHours()).padStart(2, '0');  
-                    let minutes = String(date.getMinutes()).padStart(2, '0'); 
-                    
-                    completion_date.innerHTML = `Last task was completed at ${hours}:${minutes} on ${day}/${month}/${year}`;
+                    //Check if all chosen tasks are completed.
+                    if (detailed.done.length == detailed.chosen.length) {
+                        const latestTimestamp = Math.max(...task_rec);
+                        let date = new Date(latestTimestamp);
+                        let day = String(date.getDate()).padStart(2, '0');      
+                        let month = String(date.getMonth() + 1).padStart(2, '0'); 
+                        let year = date.getFullYear();                       
+                        let hours = String(date.getHours()).padStart(2, '0');  
+                        let minutes = String(date.getMinutes()).padStart(2, '0'); 
+                        
+                        completion_date.innerHTML = `Last task was completed at ${hours}:${minutes} on ${day}/${month}/${year}`;
+                    }
             }
 
         if (postResult) {
@@ -517,33 +535,6 @@
             
             document.getElementById('com-tasks').addEventListener('click', async function() {
                 
-                if (!tasks) {
-                    showSpinner();
-                    tasks = await fetchTasks(); 
-                    hideSpinner();
-                    localStorage.setItem('tasks', JSON.stringify(tasks));
-                    tasks = JSON.parse(localStorage.getItem('tasks')); 
-                }
-                
-                if (!detailed) {
-                    showSpinner();
-                    let com_tasks = await fetchTaskStatus(preResponseId); 
-                    hideSpinner();
-                    localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
-                    detailed = JSON.parse(localStorage.getItem('fetched_tasks')); 
-                    task_rec = detailed.time;
-                }
-                
-                // fetch up-to-date info
-                if (!detailed.done) {
-                    showSpinner();
-                    let done_tasks = await fetchTaskStatus(preResponseId);
-                    hideSpinner();
-                    localStorage.setItem('fetched_tasks', JSON.stringify(done_tasks));
-                    detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    task_rec = detailed.time;
-                }
-
                 displaySelectedTasks(tasks);
                 document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                 document.getElementById('preQ').style.transition = "all 1s";
