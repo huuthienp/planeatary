@@ -398,7 +398,10 @@ body {
     }
 
     .hero-text {
+      display: flex;
       padding: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
   
     .hero-text h1 {
