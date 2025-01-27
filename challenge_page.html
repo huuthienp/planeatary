@@ -69,126 +69,72 @@
                     </div>
                 </nav>
             </div>
-        <div class="content">
-            <div class="head">
-                <img src="./images/battery.png"/>
-                <h1 class="status">CHALLENGE IN PROGRESS</h1>
-                <p class="suggestion">Please click Done when you complete your tasks</p>
-            </div>
-            <div class="card"></div>
-            <div class="btn-next">
-                <button class="next">Next  &#8594;</button>
-            </div>
-        </div>
-        <!-- <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating... -->
-    </div>
-
-    <section class="overlay2 hidden2" id="modalOverlay">
-        <div class="align2">
-            <div class="modal2 hidden2" id="taskModal"> 
-                <div class="btn">
-                    <button class="close">x</button>
+            <div class="content">
+                <div class="head">
+                    <img src="./images/battery.png"/>
+                    <h1 class="status">CHALLENGE IN PROGRESS</h1>
+                    <p class="suggestion">Please click Done when you complete your tasks</p>
                 </div>
-                <div class="modal-content">
-                    <h2 id="modalTitle" style="padding: 0 20px;"></h2>
-                    <p id="modalDescription" style="padding: 0 20px;"></p>
+                <div class="card"></div>
+                <div class="btn-next">
+                    <button class="next">Next  &#8594;</button>
                 </div>
             </div>
+            <!-- <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating... -->
         </div>
-    </section>
-    <!-- spinner overlay-->
-    <section class="overlay hidden" id="spinnerOverlay"></section>
-
-    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script type="module">
-        import { fetchTaskStatus, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
         
-        let time =  [];
-        let scores = [];
-        let spinnerStartTime;
-        let isLoading;
-        const minDisplayTime = 1000;
-        const modal = document.querySelector(".modal");
-        const overlay = document.querySelector(".overlay");
-        const closeButt = document.querySelector('.close');
-        const spinner = document.querySelector('.spinner');
-        const spOver = document.getElementById("spinnerOverlay");
+        <section class="overlay2 hidden2" id="modalOverlay">
+            <div class="align2">
+                <div class="modal2 hidden2" id="taskModal"> 
+                    <div class="btn">
+                        <button class="close">x</button>
+                    </div>
+                    <div class="modal-content">
+                        <h2 id="modalTitle" style="padding: 0 20px;"></h2>
+                        <p id="modalDescription" style="padding: 0 20px;"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- spinner overlay-->
+        <section class="overlay hidden" id="spinnerOverlay"></section>
         
-        const cardContainer = document.querySelector(".card");
-        
-        let preResult = JSON.parse(localStorage.getItem('preResult')); 
-        let preResponseId =  preResult.responseId;
-
-        function delay(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        function showSpinner() {
-            //console.log("Showing spinner...");
-            spinner.classList.remove('hidden');
-            spOver.classList.remove('hidden');
-            isLoading = true;
-            spinnerStartTime = Date.now();
-        }
-
-        // Function to hide the spinner
-        function hideSpinner() {
-            const elapsedTime = Date.now() - spinnerStartTime;
+        <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+        <script type="module">
+            import { fetchTaskStatus, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
             
-            if (elapsedTime < minDisplayTime) {
-                // Delay hiding spinner until the minimum display time
-                setTimeout(() => {
-                    //console.log("Hiding spinner after min time...");
-                    spinner.classList.add('hidden');
-                    spOver.classList.add('hidden');
-                    isLoading = false;
-                }, minDisplayTime - elapsedTime);
-            } else {
-                //console.log("Hiding spinner...");
-                spinner.classList.add('hidden');
-                spOver.classList.add('hidden');
-                isLoading = false;
+            let time =  [];
+            let scores = [];
+            let spinnerStartTime;
+            let isLoading;
+            const minDisplayTime = 1000;
+            const modal = document.querySelector(".modal");
+            const overlay = document.querySelector(".overlay");
+            const closeButt = document.querySelector('.close');
+            const spinner = document.querySelector('.spinner');
+            const spOver = document.getElementById("spinnerOverlay");
+            
+            const cardContainer = document.querySelector(".card");
+            
+            let preResult = JSON.parse(localStorage.getItem('preResult')); 
+            let preResponseId =  preResult.responseId;
+            
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
             }
             
-        }
-
-        function logOut() {
-            if (netlifyIdentity.gotrue.currentUser() !== null) {
-                let user = netlifyIdentity.gotrue.currentUser();
-                user.logout().then(() => {
-                    console.log('User has been logged out!');
-                    window.location.href = "index.html";
-                });
-            } else {
-                console.log("No user is logged in!");
-            }
-        }
-
-        document.getElementById('logOut').addEventListener('click', () => {
-            alert("Do you really want to sign out?");
-            showSpinner();
-            logOut();
-            showSpinner();
-        });
-
-
-        document.addEventListener("DOMContentLoaded", async function() {
-
-
             function showSpinner() {
-                    //console.log("Showing spinner...");
-                    spinner.classList.remove('hidden');
-                    spOver.classList.remove('hidden');
-                    
-                    closeButt.classList.add('hidden');
-                    isLoading = true;
-                    spinnerStartTime = Date.now();
+                //console.log("Showing spinner...");
+                spinner.classList.remove('hidden');
+                spOver.classList.remove('hidden');
+                isLoading = true;
+                spinnerStartTime = Date.now();
             }
-                    
+            
             // Function to hide the spinner
             function hideSpinner() {
                 const elapsedTime = Date.now() - spinnerStartTime;
-                        
+                
                 if (elapsedTime < minDisplayTime) {
                     // Delay hiding spinner until the minimum display time
                     setTimeout(() => {
@@ -203,249 +149,296 @@
                     spOver.classList.add('hidden');
                     isLoading = false;
                 }
-                        
+                
             }
-
-            // Retrieve tasks from localStorage or fetch if not available
-            async function fetchTasks() {
-                const taskData = localStorage.getItem('tasks');
-                if (!taskData) {
-                    try {
-                        const response = await fetch('updated_tasks_final.json');
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok ' + response.statusText);
-                        }
-                        const data = await response.json();
-                        return data;
-                    } catch (error) {
-                        console.error('Fetch error:', error);
-                        alert('Failed to load tasks. Please try again later.');
-                        return null;
-                    };
+            
+            function logOut() {
+                if (netlifyIdentity.gotrue.currentUser() !== null) {
+                    let user = netlifyIdentity.gotrue.currentUser();
+                    user.logout().then(() => {
+                        console.log('User has been logged out!');
+                        window.location.href = "index.html";
+                    });
+                } else {
+                    console.log("No user is logged in!");
+                }
+            }
+            
+            document.getElementById('logOut').addEventListener('click', () => {
+                alert("Do you really want to sign out?");
+                showSpinner();
+                logOut();
+                showSpinner();
+            });
+            
+            
+            document.addEventListener("DOMContentLoaded", async function() {
+                
+                
+                function showSpinner() {
+                    //console.log("Showing spinner...");
+                    spinner.classList.remove('hidden');
+                    spOver.classList.remove('hidden');
+                    
+                    closeButt.classList.add('hidden');
+                    isLoading = true;
+                    spinnerStartTime = Date.now();
+                }
+                
+                // Function to hide the spinner
+                function hideSpinner() {
+                    const elapsedTime = Date.now() - spinnerStartTime;
+                    
+                    if (elapsedTime < minDisplayTime) {
+                        // Delay hiding spinner until the minimum display time
+                        setTimeout(() => {
+                            //console.log("Hiding spinner after min time...");
+                            spinner.classList.add('hidden');
+                            spOver.classList.add('hidden');
+                            isLoading = false;
+                        }, minDisplayTime - elapsedTime);
+                    } else {
+                        //console.log("Hiding spinner...");
+                        spinner.classList.add('hidden');
+                        spOver.classList.add('hidden');
+                        isLoading = false;
+                    }
                     
                 }
-                return JSON.parse(taskData);
-            }
-
-            
-            // Retrieve tasks from localStorage
-            let tasks = JSON.parse(localStorage.getItem('tasks'));
-            let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));  
-
-            //fetch up-to-date info
-            if (!Tstatus.done || !Tstatus.chosen) {
+                
+                // Retrieve tasks from localStorage or fetch if not available
+                async function fetchTasks() {
+                    const taskData = localStorage.getItem('tasks');
+                    if (!taskData) {
+                        try {
+                            const response = await fetch('updated_tasks_final.json');
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok ' + response.statusText);
+                            }
+                            const data = await response.json();
+                            return data;
+                        } catch (error) {
+                            console.error('Fetch error:', error);
+                            alert('Failed to load tasks. Please try again later.');
+                            return null;
+                        };
+                        
+                    }
+                    return JSON.parse(taskData);
+                }
+                
+                
+                // Retrieve tasks from localStorage
+                let tasks = JSON.parse(localStorage.getItem('tasks'));
+                let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));  
+                
+                //fetch up-to-date info
+                if (!Tstatus.done || !Tstatus.chosen) {
                     showSpinner();
                     let Tstatus = await fetchTaskStatus(preResponseId);
                     hideSpinner();
-
+                    
                     localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
                     Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
                     
                 }
-
-            const cardContainer = document.querySelector(".card");
-            const modal = document.getElementById("taskModal");
-            const modalOverlay = document.getElementById("modalOverlay");
-            const modalTitle = document.getElementById("modalTitle");
-            const modalDescription = document.getElementById("modalDescription");
-
-            // Function to show the modal
-            function showModal(title, description) {
-                closeButt.classList.remove('hidden');
-                modalTitle.textContent = title;
-                modalDescription.innerHTML = description;
-                modal.classList.remove("hidden");
-                modal.style.backgroundColor = 'white';
-                modalOverlay.classList.remove("hidden");
-            }
-
-            // Function to close the modal
-            function closeModal() {
-                closeButt.classList.remove('hidden');
-                modal.classList.add("hidden");
-                modalOverlay.classList.add("hidden");
-            }
-
-            // Close modal when user clicks the close button
-            document.querySelector(".close").addEventListener("click", closeModal);
-
-            // Close modal when user clicks outside the modal
-            window.addEventListener("click", function(event) {
-                if (event.target === modalOverlay) {
-                    closeModal();
+                
+                const cardContainer = document.querySelector(".card");
+                const modal = document.getElementById("taskModal");
+                const modalOverlay = document.getElementById("modalOverlay");
+                const modalTitle = document.getElementById("modalTitle");
+                const modalDescription = document.getElementById("modalDescription");
+                
+                // Function to show the modal
+                function showModal(title, description) {
+                    closeButt.classList.remove('hidden');
+                    modalTitle.textContent = title;
+                    modalDescription.innerHTML = description;
+                    modal.classList.remove("hidden");
+                    modal.style.backgroundColor = 'white';
+                    modalOverlay.classList.remove("hidden");
                 }
-            });
-
-            
-            const nextButtonContainer = document.querySelector(".btn-next");
-            const btn_next = document.querySelector(".next")
-            btn_next.id = "btn_next";
-            btn_next.style.pointerEvents = "none"; 
-            btn_next.style.backgroundColor = "grey"; 
-            btn_next.style.cursor = "not-allowed"; 
-
-            nextButtonContainer.appendChild(btn_next);
-
-            btn_next.addEventListener("click", function () {
-                if (btn_next.style.pointerEvents === "auto") {
-                    window.location.href = "congrat_page.html";
+                
+                // Function to close the modal
+                function closeModal() {
+                    closeButt.classList.remove('hidden');
+                    modal.classList.add("hidden");
+                    modalOverlay.classList.add("hidden");
                 }
-            });
-            
-
-            // Check if tasks exist in localStorage
-            if (tasks) {
-                displaySelectedTasks(tasks); // Display tasks
-            } else {
-                let tasks = await fetchTasks();
-                localStorage.setItem('tasks', JSON.stringify(tasks));
-                tasks = JSON.parse(localStorage.getItem('tasks'));
-                showSpinner();
-                let fetchedTasks = await fetchTaskStatus(preResponseId); 
-                hideSpinner();
-                localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks)); 
-                let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
-                displaySelectedTasks(tasks);
-            }
-
-        // Function to display selected tasks and allow status update
-        function displaySelectedTasks(tasks) {
-            cardContainer.innerHTML = '';  // Clear any existing content
-
-            Object.keys(tasks).forEach(questionKey => {
-                const taskGroup = tasks[questionKey].tasks;
-
-                // Filter tasks that are selected
-                taskGroup.forEach(task => {
-                    if (task.choice === 'chosen') {
-                        // Create and append a card for each selected task
-                        const taskCard = document.createElement("div");
-                        taskCard.classList.add("task-card", task.status === "Completed" ? "card_completed" : "card_incompleted");
-
-                        const taskName = document.createElement("span");
-                        taskName.textContent = task.taskName + " ";
-
-                        // Add an info icon for task description
-                        const infoIcon = document.createElement("span");
-                        infoIcon.classList.add("info-icon");
-                        infoIcon.innerHTML = "&#9432;"; 
-
-                        // Set the click event for the info icon to show the modal
-                        infoIcon.addEventListener('click', function(event) {
-                            event.stopPropagation(); 
-                            showModal(task.taskName, task.taskDescription);
-                        });
-
-                        const completion = document.createElement("span");
-                        completion.classList.add("completion");
-                        completion.textContent = task.status === "Completed" ? "Completed" : "Done";
-
-                        // Set card styles based on status
-                        if (task.status === "Completed") {
-                            taskCard.classList.add("card_completed");
-                            taskName.style.textDecoration = "line-through";
-                        } else {
-                            taskCard.classList.add("card_incompleted");
-                        }
-
-                        taskCard.appendChild(taskName);
-                        taskCard.appendChild(infoIcon); // Add info icon to the card
-                        taskCard.appendChild(completion);
-                        cardContainer.appendChild(taskCard);
-
-                        // Set task choice and status based on local storage
-                        if (Tstatus.chosen && Tstatus.done) {
-                            
-                            if (Tstatus.chosen.includes(String(task.taskNumber))) {
-                                if (Tstatus.done.includes(String(task.taskNumber))) {
+                
+                // Close modal when user clicks the close button
+                document.querySelector(".close").addEventListener("click", closeModal);
+                
+                // Close modal when user clicks outside the modal
+                window.addEventListener("click", function(event) {
+                    if (event.target === modalOverlay) {
+                        closeModal();
+                    }
+                });
+                
+                
+                const nextButtonContainer = document.querySelector(".btn-next");
+                const btn_next = document.querySelector(".next")
+                btn_next.id = "btn_next";
+                btn_next.style.pointerEvents = "none"; 
+                btn_next.style.backgroundColor = "grey"; 
+                btn_next.style.cursor = "not-allowed"; 
+                
+                nextButtonContainer.appendChild(btn_next);
+                
+                btn_next.addEventListener("click", function () {
+                    if (btn_next.style.pointerEvents === "auto") {
+                        window.location.href = "congrat_page.html";
+                    }
+                });
+                
+                
+                // Check if tasks exist in localStorage
+                if (tasks) {
+                    displaySelectedTasks(tasks); // Display tasks
+                } else {
+                    let tasks = await fetchTasks();
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    tasks = JSON.parse(localStorage.getItem('tasks'));
+                    showSpinner();
+                    let fetchedTasks = await fetchTaskStatus(preResponseId); 
+                    hideSpinner();
+                    localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks)); 
+                    let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    displaySelectedTasks(tasks);
+                }
+                
+                // Function to display selected tasks and allow status update
+                async function displaySelectedTasks(tasks) {
+                    cardContainer.innerHTML = '';  // Clear any existing content
+                    
+                    Object.keys(tasks).forEach(questionKey => {
+                        const taskGroup = tasks[questionKey].tasks;
+                        
+                        // Filter tasks that are selected
+                        taskGroup.forEach(task => {
+                            if (task.choice === 'chosen') {
+                                // Create and append a card for each selected task
+                                const taskCard = document.createElement("div");
+                                taskCard.classList.add("task-card", task.status === "Completed" ? "card_completed" : "card_incompleted");
+                                
+                                const taskName = document.createElement("span");
+                                taskName.textContent = task.taskName + " ";
+                                
+                                // Add an info icon for task description
+                                const infoIcon = document.createElement("span");
+                                infoIcon.classList.add("info-icon");
+                                infoIcon.innerHTML = "&#9432;"; 
+                                
+                                // Set the click event for the info icon to show the modal
+                                infoIcon.addEventListener('click', function(event) {
+                                    event.stopPropagation(); 
+                                    showModal(task.taskName, task.taskDescription);
+                                });
+                                
+                                const completion = document.createElement("span");
+                                completion.classList.add("completion");
+                                completion.textContent = task.status === "Completed" ? "Completed" : "Done";
+                                
+                                // Set card styles based on status
+                                if (task.status === "Completed") {
                                     taskCard.classList.add("card_completed");
                                     taskName.style.textDecoration = "line-through";
+                                } else {
+                                    taskCard.classList.add("card_incompleted");
                                 }
+                                
+                                taskCard.appendChild(taskName);
+                                taskCard.appendChild(infoIcon); // Add info icon to the card
+                                taskCard.appendChild(completion);
+                                cardContainer.appendChild(taskCard);
+                                
+                                // Set task choice and status based on local storage
+                                if (Tstatus.chosen && Tstatus.done) {
+                                    
+                                    if (Tstatus.chosen.includes(String(task.taskNumber))) {
+                                        if (Tstatus.done.includes(String(task.taskNumber))) {
+                                            taskCard.classList.add("card_completed");
+                                            taskName.style.textDecoration = "line-through";
+                                        }
+                                    }
+                                }
+                                
+                                // Add event listener to task card to update status
+                                taskCard.addEventListener('click', async (event) => {
+                                    
+                                    completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
+                                    await delay(700);
+                                    
+                                    // Toggle task status between "Done" and "Completed"
+                                    task.status = task.status === "Done" ? "Completed" : "Done";
+                                    
+                                    if (task.status === "Completed") {
+                                        taskCard.style.color = 'black';
+                                        taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
+                                        taskName.style.textDecoration = "line-through";
+                                        completion.innerHTML = "Completed";
+                                        let timestamp = Date.now();
+                                        task.finishTime = timestamp;
+                                    } else {
+                                        taskCard.style.color = 'rgb(71, 71, 71)';
+                                        taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
+                                        taskName.style.textDecoration = "none";
+                                        completion.innerHTML = "Done";
+                                        task.finishTime = '';
+                                        
+                                    }
+                                    // Update task in localStorage
+                                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                                    
+                                });
+                                
+                                localStorage.setItem('tasks', JSON.stringify(tasks));
+                                // showSpinner();
+                                // updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
+                                // hideSpinner();
+                                // updateNextButton();                 
                             }
-                        }
-                        
-                        // Add event listener to task card to update status
-                        taskCard.addEventListener('click', async (event) => {
-
-                            completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
-                            await delay(700);
-
-                            // Toggle task status between "Done" and "Completed"
-                            task.status = task.status === "Done" ? "Completed" : "Done";
-
-                            if (task.status === "Completed") {
-                                taskCard.style.color = 'black';
-                                taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
-                                taskName.style.textDecoration = "line-through";
-                                completion.innerHTML = "Completed";
-                                let timestamp = Date.now();
-                                task.finishTime = timestamp;
-                                //time.push(timestamp);
-                            } else {
-                                taskCard.style.color = 'rgb(71, 71, 71)';
-                                taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
-                                taskName.style.textDecoration = "none";
-                                completion.innerHTML = "Done";
-                                task.finishTime = '';
-                                //time.splice(-1, 1);
-                            }
-
-                            // Update task in localStorage
-                            localStorage.setItem('tasks', JSON.stringify(tasks));
-                            localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
-                            //localStorage.setItem('time', JSON.stringify(time));
-                            // updateTaskStatus(task);
-                            showSpinner();
-                            updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
-                            hideSpinner();
-                            updateNextButton();
-                            
                         });
-                        localStorage.setItem('tasks', JSON.stringify(tasks));
-                        localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus)); 
-                        //localStorage.setItem('time', JSON.stringify(time));
-
-                        // updateTaskStatus(task);
-                        showSpinner();
-                        updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
-                        hideSpinner();
-                        
+                    });
+                    
+                    cardContainer.appendChild(nextButtonContainer);
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    showSpinner();
+                    updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
+                    Tstatus = await fetchTaskStatus(preResponseId);
+                    localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
+                    hideSpinner();
+                    updateNextButton(); 
+                }
+                
+                // Function to update the Next button's state
+                function updateNextButton() {
+                    let allCompleted = true;
+                    
+                    Object.keys(tasks).forEach(questionKey => {
+                        const taskGroup = tasks[questionKey].tasks;
+                        taskGroup.forEach(task => {
+                            if (task.choice === "chosen" && task.status !== "Completed") {
+                                allCompleted = false; // If any selected task is not "Completed", set false
+                            }
+                        });
+                    });
+                    
+                    // Enable or disable the next button based on task completion status
+                    if (allCompleted) {
+                        btn_next.style.pointerEvents = "auto"; // Enable the next button
+                        btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
+                        btn_next.style.cursor = "pointer";
+                        btn_next.disabled = false;
+                    } else {
+                        btn_next.style.pointerEvents = "none"; // Disable the next button
+                        btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
+                        btn_next.style.cursor = "not-allowed";
+                        btn_next.disabled = true;
                     }
-                });
+                }
             });
-            cardContainer.appendChild(nextButtonContainer);
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-            //localStorage.setItem('time', JSON.stringify(time)); 
-            updateNextButton(); 
-        }
-
-        // Function to update the Next button's state
-        function updateNextButton() {
-            let allCompleted = true;
-
-            Object.keys(tasks).forEach(questionKey => {
-                const taskGroup = tasks[questionKey].tasks;
-                taskGroup.forEach(task => {
-                    if (task.choice === "chosen" && task.status !== "Completed") {
-                        allCompleted = false; // If any selected task is not "Completed", set false
-                    }
-                });
-            });
-
-            // Enable or disable the next button based on task completion status
-            if (allCompleted) {
-                btn_next.style.pointerEvents = "auto"; // Enable the next button
-                btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
-                btn_next.style.cursor = "pointer";
-                btn_next.disabled = false;
-            } else {
-                btn_next.style.pointerEvents = "none"; // Disable the next button
-                btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
-                btn_next.style.cursor = "not-allowed";
-                btn_next.disabled = true;
-            }
-        }
-});
-    </script>
-</body>
-</html>
+        </script>
+    </body>
+    </html>
