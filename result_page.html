@@ -467,20 +467,13 @@
             (tag) => { tag.remove() }
             );
 
+            ch.classList.add('disabled');
+
             displayQuestions(postResult);
             document.getElementById('postQ').style.backgroundColor = '#02897A';
             document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
             document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
-            
-            // const challenge_tab = [ch, CH];
-            // challenge_tab.forEach(
-            // (tab) => {
-            //     tab.style.color = '#a9d1cd';
-            //     tab.style.cursor = "not-allowed";
-            //     tab.disabled = true;
-            // }
-            //);
             
         } else if (preResult) {
 
@@ -497,14 +490,11 @@
             (tag) => { tag.classList.remove('hidden'); }
             );
 
+            ch.classList.remove('disabled');
+            ch.style.cursor = "pointer"; 
+
             //display preresult by default
             displayQuestions(preResult);
-
-            ch.style.cursor = "pointer"; 
-            ch.disabled = false; 
-            ch.addEventListener("click", function() {
-                window.location.href = "manifesto_page.html";  
-            });
 
             document.getElementById('preQ').style.backgroundColor = '#02897A';   
             document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
@@ -515,6 +505,19 @@
             
             document.getElementById('preQ').addEventListener('click', function() {
                 if (preResult) {
+                    const toshow = [
+                    'p.next-step',
+                    'p.suggestion',
+                    'button.select-tasks'
+                    ];
+                    
+                    const tagsToShow = toshow.map(s => document.querySelector(s));
+                    
+                    tagsToShow.forEach(
+                    (tag) => { tag.classList.remove('hidden'); }
+                    );
+
+0
                     displayQuestions(preResult);
                     document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
                     document.getElementById('postQ').style.transition = "all 1s";
@@ -528,6 +531,21 @@
             document.getElementById('postQ').addEventListener('click', function() {
                 
                 if (postResult) {
+
+                    // Remove next step, suggestion, and select-tasks button if post quiz is done
+                    const toRemove = [
+                    'p.next-step',
+                    'p.suggestion'
+                    ];
+                    
+                    const tagsToRemove = toRemove.map(s => document.querySelector(s));
+                    
+                    tagsToRemove.forEach(
+                    (tag) => { tag.remove() }
+                    );
+
+                    document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
+
                     displayQuestions(postResult);
                     document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                     document.getElementById('preQ').style.transition = "all 1s";
