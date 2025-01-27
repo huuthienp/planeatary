@@ -259,6 +259,19 @@
             const minDisplayTime = 2000; 
             let spinnerStartTime;
 
+            // Show next step, suggestion, and select-tasks button as default
+            const toshow = [
+            'p.next-step',
+            'p.suggestion',
+            'button.select-tasks'
+            ];
+
+            const tagsToShow = toshow.map(s => document.querySelector(s));
+
+            tagsToShow.forEach(
+            (tag) => { tag.classList.remove('hidden'); }
+            );
+
 
             // Retrieve tasks from localStorage or fetch if not available
             async function fetchTasks() {
@@ -301,6 +314,7 @@
                 comparison.innerHTML = ''; 
                 header.innerHTML='';
                 completion_date.innerHTML='';
+
 
                 if (!questionsData.pointArray || !Array.isArray(questionsData.pointArray)) {
                     document.getElementById('curr_score').textContent = 'No score available.';
@@ -440,12 +454,7 @@
             }
 
         if (postResult) {
-            displayQuestions(postResult);
-            document.getElementById('postQ').style.backgroundColor = '#02897A';
-            document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
-            document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
-            document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
-            
+
             // Remove next step, suggestion, and select-tasks button if post quiz is done
             const toRemove = [
             'p.next-step',
@@ -457,6 +466,12 @@
             tagsToRemove.forEach(
             (tag) => { tag.remove() }
             );
+
+            displayQuestions(postResult);
+            document.getElementById('postQ').style.backgroundColor = '#02897A';
+            document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
+            document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
+            document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
             
             // const challenge_tab = [ch, CH];
             // challenge_tab.forEach(
@@ -468,17 +483,22 @@
             //);
             
         } else if (preResult) {
-            displayQuestions(preResult);
 
-            // Attach single click listener for the start button navigation
-            selectButton.addEventListener('click', function(event) {
-                if(postResult) {
-                    window.location.href = "index.html";
-                } else {
-                    window.location.href = "manifesto_page.html";
-                }
-                
-            });
+            // Show next step, suggestion, and select-tasks button as default
+            const toshow = [
+            'p.next-step',
+            'p.suggestion',
+            'button.select-tasks'
+            ];
+
+            const tagsToShow = toshow.map(s => document.querySelector(s));
+
+            tagsToShow.forEach(
+            (tag) => { tag.classList.remove('hidden'); }
+            );
+
+            //display preresult by default
+            displayQuestions(preResult);
 
             ch.style.cursor = "pointer"; 
             ch.disabled = false; 
@@ -495,19 +515,6 @@
             
             document.getElementById('preQ').addEventListener('click', function() {
                 if (preResult) {
-                    const circle = document.querySelector(".circle");
-                    circle.classList.remove('hidden');
-                     // Show next step, suggestion, and select-tasks button if display tasks
-                     const toshow = [
-                    'p.next-step',
-                    'p.suggestion'
-                    ];
-                    
-                    const tagsToShow = toshow.map(s => document.querySelector(s));
-                    
-                    tagsToShow.forEach(
-                    (tag) => { tag.classList.remove('hidden'); }
-                    );
                     displayQuestions(preResult);
                     document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
                     document.getElementById('postQ').style.transition = "all 1s";
@@ -521,8 +528,6 @@
             document.getElementById('postQ').addEventListener('click', function() {
                 
                 if (postResult) {
-                    const circle = document.querySelector(".circle");
-                    circle.classList.remove('hidden');
                     displayQuestions(postResult);
                     document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                     document.getElementById('preQ').style.transition = "all 1s";
