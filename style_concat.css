@@ -285,7 +285,7 @@ body {
 
 /* Initially hide the spinner */
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 
@@ -853,10 +853,6 @@ body {
   z-index: 1000;
 }
 
-.hidden {
-  display: none;
-}
-
 .align {
   display: flex;
   justify-content: center;
@@ -911,7 +907,7 @@ body {
 }
 
 .hidden2 {
-  display: none;
+  display: none !important;
 }
 
 .align2 {
