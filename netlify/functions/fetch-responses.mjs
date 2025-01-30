@@ -1,54 +1,59 @@
-import axios from 'axios';
 import { CustomResponse } from '../../scripts/custom-classes.mjs';
+import { fetchData, fetchResponse, reformatResponseData } from '../../scripts/helpers.mjs';
 
 
-export default async (req) => {
-    try {
-        // Extract quizType from query parameters
-        const url = new URL(req.url.toLowerCase());
-        const quizType = url.searchParams.get('quiztype');
-        const quizTypeLower = quizType.toLowerCase();
-        // Determine the survey ID based on quiz type
-        const { ID_HEADER, PRE_QUIZ_ID, POST_QUIZ_ID } = process.env;
-        const surveyId = (quizTypeLower === 'pre') ? PRE_QUIZ_ID : POST_QUIZ_ID;
-        // Prepare API request to Qualtrics
-        const { QDC_ID, Q_API_TOKEN } = process.env;
-        const qUrl = `https://${QDC_ID}.qualtrics.com/API/v3/surveys/${surveyId}/responses/${id}`;
-        const options = {
-            method: methodUpper,
-            url: qUrl,
-            headers: {
-                Accept: 'application/json',
-                'X-API-TOKEN': Q_API_TOKEN
-            },
-        };
-        // Make API request to Qualtrics
-        const { data } = await axios.request(options);
-        // axios throws error when status code is not 2xx
-        // Return successful response
-        console.log(`A response is fetched.`);
-        return new CustomResponse(data); // default status is 200
-    } catch (error) {
-        // Handle any errors that occur during the process
-        if (error.response) {
-            // The request was made and the server responded with a non-2xx status code
-            const message = error.response.data.meta.error.errorMessage
-                || 'Server responded with error.';
-            console.error(message, '\n', error.response.data);
-            return new CustomResponse(message, error.response.status);
-        } else if (error.request) {
-            // The request was made but no response was received
-            const message = 'No response, try again.';
-            console.error(message, '\n', error.request);
-            return new CustomResponse(message, 503);
-        } else {
-            // Something happened in setting up the request that triggered an Error
-            const message = 'Internal error.';
-            console.error(error);
-            return new CustomResponse(message, 500);
-        }
-    }
+export default async (request, context) => {
+    const query = {};
+    const { env } = process;
+    const data = [];  // an array of fetched responses grouped by cycle and quiz type
+    query.length = 0;
+    query.lengthOk = 0;
+    try {  // authenticate request by token and fetch all responses
+        const requestUrl = new URL(request.url.toLowerCase());
+        query.requestedTypes = requestUrl.searchParams.get('quiztype') || ['pre', 'post'];
+        const targetUrl = context.site.url + '/.netlify/identity/user';
+        const nf_jwt = context.cookies.get('nf_jwt');
+        const authHeader = nf_jwt ? `Bearer ${nf_jwt}` : request.headers.get('Authorization');
+        if (!authHeader) {  // when neither nf_jwt cookie nor auth header can be found
+            return new CustomResponse('Unauthorised!', 401);
+        }  // else, send token for verification
+        const { id, user_metadata: { responseHistory } } = await fetchData(targetUrl, {
+            method: 'GET',
+            headers: { Authorization: authHeader },
+        });  // get id of user and their response history
+        console.log(`${id} authorised for fetching responses!`);
+        for (let cycle of responseHistory) {
+            const { preId, postId } = cycle;
+            const preResponse = await tryDecideFetchResponse(query, 'pre', preId, env);
+            const postResponse = await tryDecideFetchResponse(query, 'post', postId, env);
+            data.push(({ preResponse, postResponse }));
+        }  // end of fetching all cycles
+        console.log('Fetching is done!', query.lengthOk, '/', query.length);
+        return new CustomResponse(data, query.lengthOk === query.length ? 200 : query.lengthOk === 0 ? 404 : 207);
+    } catch(breakError) {  // e.g. invalid token
+        console.warn('Caught', breakError);
+        const { message, name, stack, status } = breakError;
+        return new CustomResponse(stack || name + ': ' + message, status || 500);
+    }  // end of catching breaking error, which interrupts fetching
+};
+
+
+export const config = { method: 'GET', path: '/api/fetch-responses' };
+
+
+async function tryDecideFetchResponse(query, quizType, responseId, env) {
+    try {  // decide whether to fetch a quiz response
+        if (query.requestedTypes.includes(quizType) && responseId) {
+            query.length += 1;
+            const fetchedResponse = reformatResponseData(await fetchResponse(responseId, quizType, env));
+            query.lengthOk += 1;
+            console.log(responseId, 'is fetched!');
+            return fetchedResponse;
+        } else {  // when the request specifies just either 'pre' or 'post'
+            return null;  // skip fetching
+        }  //  or when response ID is not found in history (user has not done post-quiz)
+    } catch (fetchError) {  // not breaking, moving on to next quiz type or cycle
+        console.warn('Caught', fetchError);
+        return ({ fetchError });
+    }  // end of try deciding to fetch a response
 }
-
-
-export const config = { path: '/api/fetch-response-aws' }
