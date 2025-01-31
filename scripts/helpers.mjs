@@ -27,7 +27,7 @@ export function initiateSurvey(quizType, quizFrame) {
     }
     if (quizType === 'post') {
         try {
-            quizUrl += `&preResposneId=${localStorage['preResult'].responseId || ''}`;
+            quizUrl += `&preResponseId=${JSON.parse(localStorage['preResult']).responseId || ''}`;
         } catch(noPreResultError) {
             console.warn(`Caught ${noPreResultError}\nPre-quiz result is not found!`);
         }
