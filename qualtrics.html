@@ -170,15 +170,6 @@
                 updateAnchor(navDashboard);
                 updateAnchor(navNext);
             }
-            function displayQuiz(frame, span, display=true) {
-                if (display) {
-                    frame.style.display = null;
-                    span.innerText = '';
-                } else {
-                    frame.style.display = 'none';
-                    span.innerText = 'You have already finished the pre-quiz!';
-                }
-            }
         </script>
         <script defer type="module">
             import { initiateSurvey } from './scripts/helpers.mjs';
@@ -187,12 +178,12 @@
             try {
                 const preResult = JSON.parse(localStorage['preResult']);
                 enableButtons();
-                displayQuiz(quizFrame, quizSpan, false);
+                quizSpan.innerText = 'You have already finished the pre-quiz!';
                 console.log('Found pre-quiz result in storage!\n', preResult);
             } catch(error) {
                 console.warn('Caught', error, '\nPre-quiz result is not found!');
                 disableButtons();
-                displayQuiz(quizFrame, quizSpan);
+                quizSpan.innerText = '';
             }
             // Listen to preResult change in localStorage
             window.addEventListener('localStorageChange', (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
@@ -207,12 +198,11 @@
                     } catch(error) {
                         console.warn('Caught', error, '\nPre-quiz result is not found!');
                         disableButtons();
-                        displayQuiz(quizFrame, quizSpan);
+                        quizSpan.innerText = '';
                     }
                 }
             });
             restartBtn.addEventListener('click', () => {
-                quizFrame.style.display = null;
                 quizFrame.contentWindow.location = quizUrl;  // reload quiz frame
             });
         </script>
