@@ -91,18 +91,6 @@
             const minDisplayTime = 1000;
             let spinnerStartTime;
             const bOverlay = document.getElementById("spinnerOverlay");
-                        
-            function updateAnchor(anchor, url=null) {
-                if (url) {
-                    anchor.removeAttribute('disabled');
-                    anchor.href = url;
-                    anchor.style.cursor = 'pointer';
-                } else {
-                    anchor.removeAttribute('href');
-                    anchor.disabled = true;
-                    anchor.style.cursor = 'not-allowed';
-                }
-            }
 
             function showSpinner() {
                 console.log("Showing spinner...");
@@ -146,43 +134,36 @@
                 hideSpinner();
             });
             
-            const navChallenge = document.getElementById('navChallenge');
-            const navDashboard = document.getElementById('navDashboard');
-            const navNext = document.querySelector('div.btn-next > a');
             const nextButton = document.getElementById('nextButt');
             const restartBtn = document.getElementById('restartBtn');
             const quizFrame = document.querySelector('div.content > iframe.quiz');
             const quizSpan = document.querySelector('div.content > span.void');
             
-            function enableButtons() {
-                nextButton.style.backgroundColor = '#02897A';
-                nextButton.style.borderColor = '#02897A';
-                nextButton.style.cursor = 'pointer';
-                updateAnchor(navChallenge, 'manifesto_page');
-                updateAnchor(navDashboard, 'result_page');
-                updateAnchor(navNext, 'result_page');
-            }
-            function disableButtons() {
-                nextButton.style.backgroundColor = 'grey';
-                nextButton.style.borderColor = 'grey';
-                nextButton.style.cursor = 'not-allowed';
-                updateAnchor(navChallenge);
-                updateAnchor(navDashboard);
-                updateAnchor(navNext);
-            }
+            const anchors = [
+                document.getElementById('navChallenge'),
+                document.getElementById('navDashboard'),
+                document.querySelector('div.btn-next > a'),  // inside next button
+            ];
+            const hrefs = [
+                'manifesto_page',
+                'result_page',
+                'result_page',
+            ];
         </script>
         <script defer type="module">
-            import { initiateSurvey } from './scripts/helpers.mjs';
+            import { initiateSurvey, updateAnchors, updateButton } from './scripts/helpers.mjs';
             initiateSurvey('pre', quizFrame);
             // Initial preResult check
             try {
                 const preResult = JSON.parse(localStorage['preResult']);
-                enableButtons();
+                updateAnchors(anchors, hrefs);
+                updateButton(nextButton, '#02897A', 'pointer');
                 quizSpan.innerText = 'You have already finished the pre-quiz!';
                 console.log('Found pre-quiz result in storage!\n', preResult);
             } catch(error) {
                 console.warn('Caught', error, '\nPre-quiz result is not found!');
-                disableButtons();
+                updateAnchors(anchors);
+                updateButton(nextButton, 'grey', 'not-allowed');
                 quizSpan.innerText = '';
             }
             // Listen to preResult change in localStorage
@@ -192,12 +173,14 @@
                 if (key === 'preResult' && oldValue !== newValue) {
                     try {
                         JSON.parse(newValue || undefined);  // force null -> undefined to throw error
-                        enableButtons();
+                        updateAnchors(anchors, hrefs);
+                        updateButton(nextButton, '#02897A', 'pointer');
                         quizSpan.innerText = 'Thank you for your response!';
                         console.log('Found pre-quiz result in storage!\n', newValue);
                     } catch(error) {
                         console.warn('Caught', error, '\nPre-quiz result is not found!');
-                        disableButtons();
+                        updateAnchors(anchors);
+                        updateButton(nextButton, 'grey', 'not-allowed');
                         quizSpan.innerText = '';
                     }
                 }

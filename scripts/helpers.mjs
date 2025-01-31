@@ -36,6 +36,29 @@ export function initiateSurvey(quizType, quizFrame) {
 }
 
 
+export function updateAnchors(anchors, hrefs=[]) {
+    for (const [i, a] of Object.entries(anchors)) {
+        const h = hrefs[i];
+        if (h) {
+            a.removeAttribute('disabled');
+            a.href = h;
+            a.style.cursor = 'pointer';
+        } else {
+            a.removeAttribute('href');
+            a.disabled = true;
+            a.style.cursor = 'not-allowed';
+        }
+    }
+}
+
+
+export function updateButton(button, color='buttonface', cursor='default') {
+    button.style.backgroundColor = color;
+    button.style.borderColor = color;
+    button.style.cursor = cursor;
+}
+
+
 export async function fetchData(url, options) {
     try {
         const response = await fetch(url, options);
