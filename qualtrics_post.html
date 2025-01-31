@@ -70,7 +70,7 @@
                 </nav>
             </div>
             <div class="content">
-                <iframe class="quiz" src="https://uow.au1.qualtrics.com/jfe/form/SV_5njEnh46h0tSueG" title="Planeatary quiz"></iframe>
+                <iframe class="quiz" title="PlanEATary Post-Quiz"></iframe>
                 <div class="btn-next">
                     <button type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button>
                 </div>
@@ -173,5 +173,10 @@
                 
                 
         </script>      
+        <script defer type="module">
+            import { initiateSurvey } from './scripts/helpers.mjs';
+            const quizFrame = document.querySelector('div.content > iframe.quiz');
+            const quizUrl = initiateSurvey('post', quizFrame);
+        </script>
     </body>
 </html>
