@@ -33,6 +33,7 @@ export function initiateSurvey(quizType, quizFrame) {
         }
     }
     quizFrame.contentWindow.location = quizUrl;  // load quiz frame, safer than src
+    return quizUrl;
 }
 
 

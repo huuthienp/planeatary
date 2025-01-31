@@ -152,7 +152,7 @@
         </script>
         <script defer type="module">
             import { initiateSurvey, updateAnchors, updateButton } from './scripts/helpers.mjs';
-            initiateSurvey('pre', quizFrame);
+            const quizUrl = initiateSurvey('pre', quizFrame);
             // Initial preResult check
             try {
                 const preResult = JSON.parse(localStorage['preResult']);
