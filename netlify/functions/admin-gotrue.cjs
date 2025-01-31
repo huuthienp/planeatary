@@ -10,7 +10,7 @@ exports.handler = async function (event, context) {
                 statusCode: 401,
             };  // skip request to admin
         }  // end of function if unauthorized
-        const response = await fetch(`${identity.url}/admin/users/${user_id}`, {
+        const response = await fetch(`${identity.url}/admin/users/${user_id || undefined}`, {  // prevent getting all users
             method: httpMethod,
             headers: { Authorization: `Bearer ${identity.token}` },
             body: JSON.stringify(body ? JSON.parse(body) : undefined),
