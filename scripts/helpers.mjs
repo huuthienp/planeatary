@@ -81,22 +81,13 @@ export function reformatResponseData(data) {
 }
 
 
-export function storeResponse(data) {
-    // Iterate over each key-value pair in the parsed data
-    const { quizType } = data;
-    const storageService = new LocalStorageService();
-    for (const [key, value] of Object.entries(data)) {
-        try {
-            // Capitalize the first letter of the key
-            const titleCaseKey = key.charAt(0).toUpperCase() + key.slice(1);
-            // Process the value and store in localStorage
-            const valueAsStr = typeof value === 'string';
-            const strValue = valueAsStr ? value : JSON.stringify(value);
-            storageService.setItem(quizType + titleCaseKey, strValue);
-        } catch (storageError) {
-            console.warn('Caught', storageError, `\nCannot store ${key} as ${value}!`);
-            continue;
-        }
+export function storeResponseData(reformattedData) {
+    try {  // store response data locally as 'preResult' or 'postResult'
+        const { quizType } = reformattedData;
+        const storageService = new LocalStorageService();  // trigger 'localStorageChange' event
+        storageService.setItem(quizType + 'Result', JSON.stringify(reformattedData));
+    } catch (anyError) {  // e.g. storage error
+        console.warn(`Caught ${anyError}\nwhile trying to store\n${reformattedData}`);
     }
 }
 
