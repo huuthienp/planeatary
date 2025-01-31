@@ -1,5 +1,5 @@
 // /listen-to-qualtrics.mjs
-import { storeResponse } from './helpers.mjs';
+import { storeResponseData } from './helpers.mjs';
 // Initialize a set to store allowed origins
 const allowedOrigins = new Set();
 
@@ -30,7 +30,7 @@ window.addEventListener('message', (event) => {
             // Parse the JSON data from the event
             const data = JSON.parse(event.data); // error handled below
             console.log(`Parsed message from ${event.origin}!\n`, data);
-            storeResponse(data);
+            storeResponseData(data);
         } catch (error) {
             console.warn('Caught', error, `\nfrom ${event.origin}!\n${event.data}`);
         }
