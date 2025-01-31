@@ -83,10 +83,8 @@
 
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script>
-            const getUserId = () => JSON.parse(localStorage['gotrue.user']).id || '';
             //May modification for the case that another user sign up on the same device as previous user did the pre-quiz. 
             // The pre-quiz page needs to acknowledge different users and allow doing pre-quiz
-            const getResult = () => JSON.parse(localStorage['preResult']);
 
             const spinner = document.getElementById('spinner');
             let isLoading = false;
@@ -187,14 +185,14 @@
             const qSurveyId = 'SV_8es3au3sYKpwaii';
             let quizUrl = `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}`;
             try {
-                quizUrl += `?userId=${getUserId()}`;  // contains sensitive info
+                quizUrl += `?userId=${JSON.parse(localStorage['gotrue.user']).id || ''}`;  // contains sensitive info
             } catch(error) {
                 console.warn('Caught', error, '\nYou are not logged in!');
             }
             quizFrame.contentWindow.location = quizUrl;  // load quiz frame, safer than src
             // Initial preResult check
             try {
-                const preResult = getResult();
+                const preResult = JSON.parse(localStorage['preResult']);
                 enableButtons();
                 displayQuiz(quizFrame, quizSpan, false);
                 console.log('Found pre-quiz result in storage!\n', preResult);
