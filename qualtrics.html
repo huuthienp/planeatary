@@ -181,15 +181,8 @@
             }
         </script>
         <script defer type="module">
-            const qDataCtId = 'uow.syd1';
-            const qSurveyId = 'SV_8es3au3sYKpwaii';
-            let quizUrl = `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}`;
-            try {
-                quizUrl += `?userId=${JSON.parse(localStorage['gotrue.user']).id || ''}`;  // contains sensitive info
-            } catch(error) {
-                console.warn('Caught', error, '\nYou are not logged in!');
-            }
-            quizFrame.contentWindow.location = quizUrl;  // load quiz frame, safer than src
+            import { initiateSurvey } from './scripts/helpers.mjs';
+            initiateSurvey('pre', quizFrame);
             // Initial preResult check
             try {
                 const preResult = JSON.parse(localStorage['preResult']);

@@ -16,6 +16,26 @@ export class LocalStorageService {
 }
 
 
+export function initiateSurvey(quizType, quizFrame) {
+    const qDataCtId = 'uow.syd1';
+    const qSurveyId = quizType === 'pre' ? 'SV_8es3au3sYKpwaii' : quizType === 'post' ? 'SV_5njEnh46h0tSueG' : undefined;
+    let quizUrl = `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}`;
+    try {
+        quizUrl += `?userId=${JSON.parse(localStorage['gotrue.user']).id || ''}`;  // contains sensitive info
+    } catch(nonUserError) {
+        console.warn(`Caught ${nonUserError}'\nYou are not logged in!`);
+    }
+    if (quizType === 'post') {
+        try {
+            quizUrl += `&preResposneId=${localStorage['preResult'].responseId || ''}`;
+        } catch(noPreResultError) {
+            console.warn(`Caught ${noPreResultError}\nPre-quiz result is not found!`);
+        }
+    }
+    quizFrame.contentWindow.location = quizUrl;  // load quiz frame, safer than src
+}
+
+
 export async function fetchData(url, options) {
     try {
         const response = await fetch(url, options);
