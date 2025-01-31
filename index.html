@@ -604,7 +604,7 @@
                 
                 console.log('Successful fetch.', '\n', data);
                 
-                return reformatResponseData(data, 'response');
+                return reformatResponseData(data);
             } catch (error) {
                 console.error(error);
                 throw error;
