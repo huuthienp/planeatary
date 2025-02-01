@@ -3,283 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>PlanEATary Account Management</title>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: white;
-            transition: background-color .5s;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 2vw 2vh;
-            border-bottom: 0.2em solid #02897A;
-            gap: 1vw;
-        }
-        .header .logo {
-            font-weight: Bold;
-            color: #02897A;
-            font-size: 2em;
-        }
-        .header nav ul {
-            list-style: none;
-            margin: auto auto;
-            padding: 0;
-            gap: 1vw;
-        }
-        .header nav ul li {
-            display: inline-block;
-            font-size: 1em;
-        }
-        .header nav ul li a {
-            text-decoration: none;
-            color: #02897A;
-            font-weight: bold;
-        }
-        .account-page {
-            padding: 2em;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .account-page h1 {
-            color: #02897A;
-            text-align: center;
-        }
-        .account-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5em;
-        }
-        .account-form label {
-            font-weight: bold;
-            margin-bottom: 0.5em;
-        }
-        .account-form input, .account-form select, .account-form button {
-            padding: 0.5em;
-            font-size: 1em;
-            border: 1px solid #ccc;
-            border-radius: 0.5em;
-        }
-        .account-form button {
-            background-color: #02897A;
-            color: white;
-            cursor: pointer;
-        }
-        .account-form button:hover {
-            background-color: #0cbba6;
-        }
 
-        #form_validate_msg {
-            color: red;
-        }
-
-        /* For password warning text*/
-        .password-message-item {
-            gap: 0;
-        }
-
-        #password-message {
-            display: none;
-        }
-
-        .invalid {
-            color: red;
-        }
-
-        .invalid:before {
-            position: relative;
-            content: "✖";
-        }
-
-        .valid {
-            color: green;
-        }
-
-        .valid:before {
-            position: relative;
-            content: "✔";
-        }
-
-    </style>
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
+    <link href="style_concat.css" rel="stylesheet" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Icon CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
     <!-- Header Section -->
-    <header class="header">
-        <div class="logo">PlanEATary</div>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#account">Account</a></li>
-                <li><a href="#">About</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Account Management Section -->
-    <div id="account" class="account-page">
-        <h1>Manage Your Account</h1>
-        <form class="account-form" onsubmit="return validate_form()">
-            <label for="name">Name:</label>
-            <input type="text" id="name" placeholder="Enter your name">
-
-			<label for="age">Age:</label>
-            <input type="number" id="age" placeholder="Enter your age" min="0">            
-			
-			<label for="gender">Gender:</label>
-            <select id="gender">
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-            </select>
-
-            <label for="email">Change Additional Email Address:</label>
-            <input type="email" id="email" placeholder="Enter your email">
-
-            <label for="user-type">User Type:</label>
-            <select id="user-type">
-                <option value="student">Student</option>
-                <option value="other">Dietician</option>
-                <option value="other">Academic staff</option>
-                <option value="other">Other</option>
-            </select>
-
-            <label for="password">Change Password:</label>
-            <input type="password" id="password" placeholder="Enter new password">
-            
-            <div id="password-message">
-                <span>Password must contain:</span>
-                <span class="password-message-item invalid">At least <b>one lowercase letter</b> </span>
-                <span class="password-message-item invalid">At least <b>one uppercase letter</b> </span>
-                <span class="password-message-item invalid">At least <b>one number</b> </span>
-                <span class="password-message-item invalid">Minimum  <b>8 characters</b> </span>
+    <div class="Header">
+        <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="index.html">
+                    <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
+                    <strong>Planeatary</strong>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header" style="background-color: #096358;">
+                        <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>planeatary</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body" style="background-color: #02897A;">
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.html"><i class="fa fa-home"></i> Home</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-edit"></i>  <strong>Quiz</strong>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                    <li><a class="dropdown-item disabled" href="qualtrics.html">Pre-quiz</a></li>
+                                    <li><a class="dropdown-item disabled" href="qualtrics_post.html">Post-quiz</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="ch" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
+                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                    <li><a class="dropdown-item" href="account manage.html">My account</a></li>
+                                    <li><a class="dropdown-item" id="logOut">Log out</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-
-            <span id="form_validate_msg"></span>
-            <button type="submit">Save Changes</button>
-        </form>
+        </nav>
     </div>
 
+    <div class="container-sm">
+    <!-- Account Management Section -->
+        <div id="account" class="account-page">
+            <h1 class="display-5">Manage Your Account</h1>
+            <form class="account-form needs-validation" onsubmit="return validate_form()" novalidate>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                    <div class="invalid-feedback">
+                        Please type in correct name
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="age" class="form-label">Age:</label>
+                    <input type="number" class="form-control" id="age" placeholder="Enter your age" min="0" required>
+                    <div class="invalid-feedback">
+                        Please type in correct age
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="gender" class="form-label">Gender:</label>
+                    <select id="gender" class="form-select mb-3" aria-label="Select gender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Change Additional Email Address:</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                    <div class="invalid-feedback">
+                        Please type in valid email
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="user-type" class="form-label">User Type:</label>
+                    <select id="user-type" class="form-select mb-3" aria-label="User type" required>
+                        <option value="student">Student</option>
+                        <option value="other">Dietician</option>
+                        <option value="other">Academic staff</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Change Password:</label>
+                    <input type="password" class="form-control" id="password" placeholder="Enter new password">
+                    <div id="passwordHelpBlock" class="form-text">
+                        Your password must be 8-20 characters long, contain at least one lowercase letter, one uppercase letter and one number
+                    </div>
+                    <div class="invalid-feedback">
+                        Please use stronger password.
+                    </div>
+                </div>
+
+                <div class="mb-3 d-none" id="password-message">
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-danger" id="password-msg-lowercase">
+                            <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                            <i class="fa fa-check text-success d-none" aria-hidden="true"></i>
+                            At least <b>one lowercase letter</b>
+                        </li>
+                        <li class="list-group-item list-group-item-danger" id="password-msg-uppercase">
+                            <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                            <i class="fa fa-check text-success d-none" aria-hidden="true"></i>
+                            At least <b>one uppercase letter</b>
+                        </li>
+                        <li class="list-group-item list-group-item-danger" id="password-msg-number">
+                            <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                            <i class="fa fa-check text-success d-none" aria-hidden="true"></i>
+                            At least <b>one number</b>
+                        </li>
+                        <li class="list-group-item list-group-item-danger" id="password-msg-minchar">
+                            <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                            <i class="fa fa-check text-success d-none" aria-hidden="true"></i>
+                            Minimum  <b>8 characters</b>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div id="form_validate_msg"></div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+
+
+  
+        </div>
+    </div>
+    
     <script>
-        // JavaScript for form handling or additional interactivity
-        var password_check_valid = 0;
-
-        // Input fields validate
-        function validate_form() {
-            // Collecting input fields
-            var name_field     = document.getElementById("name");
-            var email_field    = document.getElementById("email");
-            var password_field = document.getElementById("password");
-            var msg_string     = "";
-            var validate_flag = 1;
-            //----------Checking name fields----------------
-            if (name_field.value == "") {
-                validate_flag = 0;
-                msg_string = msg_string + "**Name is blank."
-            }
-            //-----------Checking email fields-------------
-            if (email_field.value == "") {
-                validate_flag = 0;
-                msg_string = msg_string + "<br />" + "**Email is blank."
-            }
-
-            //----------Checking password fields------------
-            if (password_field.value.length > 0) {
-                let uppercaseRegex = /[A-Z]/g;
-                if (!password_field.value.match(uppercaseRegex)) {
-                    validate_flag = 0;
-                }
-    
-                // checking lowercase letters
-                let lowercaseRegex = /[a-z]/g;
-                if (!password_field.value.match(lowercaseRegex)) {
-                    validate_flag = 0;
-                }
-    
-                // checking the number
-                let numbersRegex = /[0-9]/g;
-                if (!password_field.value.match(numbersRegex)) {
-                    validate_flag = 0;
-                }
-    
-                // Checking length of the password
-                if (!password_field.value.length >= 8) {
-                    validate_flag = 0;
-                }
-            }
-
-            //----------Printing warning message for user------------
-            document.getElementById("form_validate_msg").innerHTML = msg_string;
-            console.log(msg_string);
-
-            if (validate_flag) {
-                alert('Account information saved!');
-                window.location.href = 'https://planeatary.netlify.app/'; //redirect to homepage
-            }
-            else {
-                alert('Some fields are not valid. Please check your input again!');
-            }
-            return false;
-        }
+        // RegEx for checking password
+        let uppercaseRegex = /[A-Z]/g;
+        let lowercaseRegex = /[a-z]/g;
+        let numbersRegex = /[0-9]/g;
 
         // Password validate
         var passwordInput = document.getElementById("password");
         var passwordMessageItems = document.getElementsByClassName("password-message-item");
         var passwordMessage = document.getElementById("password-message");
+        var form_check = 0;
 
-        function password_display_check() {
-            if (passwordInput.value.length == 0)
-                passwordMessage.style.display = "none";
-            else if (passwordInput.value.length > 0) {
-                passwordMessage.style.display = "contents";
+        passwordInput.addEventListener("focus", () => {
+            passwordMessage.classList.remove("d-none");
+            if (!password.classList.contains("is-valid")) {
+                password.classList.add("is-invalid");
             }
+        });
+
+        passwordInput.addEventListener("input", () => {
+            document.getElementById("password-msg-lowercase").classList.toggle("d-none", passwordInput.value.match(lowercaseRegex));
+            document.getElementById("password-msg-uppercase").classList.toggle("d-none", passwordInput.value.match(uppercaseRegex));
+            document.getElementById("password-msg-number").classList.toggle("d-none", passwordInput.value.match(numbersRegex));
+            document.getElementById("password-msg-minchar").classList.toggle("d-none", (passwordInput.value.length >= 8));
+        });
+
+        passwordInput.addEventListener("blur", () => {
+            passwordMessage.classList.add("d-none");
+            if (passwordInput.classList.contains("is-invalid") && passwordInput.value.length == 0) {
+                passwordInput.classList.remove("is-invalid");
+            }
+        });
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+                form_check = 0;
+            }
+            else  
+            {
+                form_check = 1;
+                console.log("validate form2");
+                alert('Account information saved!');
+                window.location.href = 'https://planeatary.netlify.app/'; //redirect to homepage if form check success
+            }
+
+            form.classList.add('was-validated')
+        }, false)
+        })
+
+        function validate_form()
+        {
+            return false;
         }
 
-        passwordInput.onkeyup = function () {
-            password_display_check()
-
-            // checking uppercase letters
-            let uppercaseRegex = /[A-Z]/g;
-            if (passwordInput.value.match(uppercaseRegex)) {
-                passwordMessageItems[1].classList.remove("invalid");
-                passwordMessageItems[1].classList.add("valid");
-            } else {
-                passwordMessageItems[1].classList.remove("valid");
-                passwordMessageItems[1].classList.add("invalid");
-            }
-
-            // checking lowercase letters
-            let lowercaseRegex = /[a-z]/g;
-            if (passwordInput.value.match(lowercaseRegex)) {
-                passwordMessageItems[0].classList.remove("invalid");
-                passwordMessageItems[0].classList.add("valid");
-            } else {
-                passwordMessageItems[0].classList.remove("valid");
-                passwordMessageItems[0].classList.add("invalid");
-            }
-
-            // checking the number
-            let numbersRegex = /[0-9]/g;
-            if (passwordInput.value.match(numbersRegex)) {
-                passwordMessageItems[2].classList.remove("invalid");
-                passwordMessageItems[2].classList.add("valid");
-            } else {
-                passwordMessageItems[2].classList.remove("valid");
-                passwordMessageItems[2].classList.add("invalid");
-            }
-
-            // Checking length of the password
-            if (passwordInput.value.length >= 8) {
-                passwordMessageItems[3].classList.remove("invalid");
-                passwordMessageItems[3].classList.add("valid");
-            } else {
-                passwordMessageItems[3].classList.remove("valid");
-                passwordMessageItems[3].classList.add("invalid");
-            }
-        }
     </script>
 </body>
 </html>
