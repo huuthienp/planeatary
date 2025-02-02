@@ -115,16 +115,20 @@
     <script type="module">
         import { fetchTaskStatus } from './scripts/helpers.mjs';
         
-        let scores = [];
         
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            
+            const ch = document.getElementById('ch');
+            const CH = document.getElementById('CH');
+
+            let scores = [];
         
         const spinner = document.getElementById('spinner');
         let spinnerStartTime;
         let isLoading;
         const minDisplayTime = 2000; 
         const bOverlay = document.getElementById("spinnerOverlay");
-        //should be a userId
-        let preResponseId = localStorage.getItem('preResponseId');
 
         //require a function that can have taskArray based on a selected cycle
 
@@ -153,8 +157,29 @@
                 return null;
             }
         }
-
+       
         
+        function showSpinner() {
+            spinner.classList.remove('hidden');
+            bOverlay.classList.remove('hidden');
+            isLoading = true;
+            spinnerStartTime = Date.now();
+        };
+        
+        function hideSpinner() {
+            const elapsedTime = Date.now() - spinnerStartTime;
+            if (elapsedTime < minDisplayTime) {
+                setTimeout(() => {
+                    spinner.classList.add('hidden');
+                    bOverlay.classList.add('hidden');
+                    isLoading = false;
+                }, minDisplayTime - elapsedTime);
+                spinner.classList.add('hidden');
+                bOverlay.classList.add('hidden');
+                isLoading = false;
+            }
+        }
+
         async function extractHistory() {
             const user = netlifyIdentity.gotrue.currentUser();
             const metadata = user.user_metadata;
@@ -178,26 +203,64 @@
             })
             return history
         }
-        
-        function showSpinner() {
-            spinner.classList.remove('hidden');
-            bOverlay.classList.remove('hidden');
-            isLoading = true;
-            spinnerStartTime = Date.now();
-        };
-        
-        function hideSpinner() {
-            const elapsedTime = Date.now() - spinnerStartTime;
-            if (elapsedTime < minDisplayTime) {
-                setTimeout(() => {
-                    spinner.classList.add('hidden');
-                    bOverlay.classList.add('hidden');
-                    isLoading = false;
-                }, minDisplayTime - elapsedTime);
-                spinner.classList.add('hidden');
-                bOverlay.classList.add('hidden');
-                isLoading = false;
-            }
+
+        async function displayTable() {
+                const history = await extractHistory();
+                const table = document.getElementById('h-table');
+
+                Object.keys(history).forEach((cycleKey) =>{
+                    const cycle = history[cycleKey];
+                    
+                    const cycleDiv = document.createElement('tr');
+                    const prescore = document.createElement('td');
+                    const predate = document.createElement('td');
+                    const postscore = document.createElement('td');
+                    const postdate = document.createElement('td');
+                    const taskcycle = document.createElement('td');
+                    const view = document.createElement('td');
+                    
+                    if (cycle.lastTask && cycle.lastTask !== null) {
+                        const timeTask = cycle.lastTask.split("@");
+                        let time = timeTask[1];
+                        let date = new Date(time * 1000);
+                        let localHours = String(date.getHours()).padStart(2, "0");
+                        let localMinutes = String(date.getMinutes()).padStart(2, "0");
+                        let year = date.getFullYear();
+                        let month = String(date.getMonth() + 1).padStart(2, '0'); 
+                        let day = String(date.getDate()).padStart(2, '0');
+                        taskcycle.textContent = `at ${localHours}:${localMinutes} on ${day}/${month}/${year}`;
+                    } else {
+                        taskcycle.textContent = "";
+                    }
+
+                    if (cycle.preResponse && cycle.preResponse !== null) {
+                        prescore.textContent = cycle.preResponse.result.totalScore;
+                        predate.textContent = cycle.preResponse.recordedDate;
+                    } else if (cycle.postResponse && cycle.postResponse !== null) {
+                        postscore.textContent = cycle.postResponse.result.totalScore;
+                        postdate.textContent = cycle.postResponse.recordedDate;
+                    } else {
+                        prescore.textContent = 'no available information to be displayed';
+                        predate.textContent = 'no available information to be displayed';
+                        postscore.textContent = 'no available information to be displayed';
+                        postdate.textContent = 'no available information to be displayed';
+                    }
+                    
+                    view.innerHTML = '<button type="button" class="btn btn-success track-back">View</button>';
+                    cycleDiv.appendChild(prescore);
+                    cycleDiv.appendChild(predate);
+                    cycleDiv.appendChild(postscore);
+                    cycleDiv.appendChild(postdate);
+                    cycleDiv.appendChild(taskcycle);
+                    cycleDiv.appendChild(view);
+                    table.appendChild(cycleDiv);
+
+                    view.addEventListener('click', () => {
+                        localStorage.setItem('selectedCycle', JSON.stringify(cycle));
+                        window.location.href = "result_page.html";
+                    })
+
+                })                  
         }
         
         function logOut() {
@@ -211,82 +274,19 @@
                 console.log("No user is logged in!");
             }
         }
-        
+
+        displayTable();
+
         document.getElementById('logOut').addEventListener('click', () => {
             alert("Do you really want to sign out?");
             showSpinner();
             logOut();
             hideSpinner();
         });
-        
-        function displayTable() {
-            const history = extractHistory();
-            const table = document.getElementById('h-table');
-
-            Object.keys(history).forEach((cycleKey) =>{
-                const cycle = history[cycleKey];
-                
-                const cycleDiv = document.createElement('tr');
-                const prescore = document.createElement('td');
-                const predate = document.createElement('td');
-                const postscore = document.createElement('td');
-                const postdate = document.createElement('td');
-                const taskcycle = document.createElement('td');
-                const view = document.createElement('td');
-                
-                if (cycle.lastTask) {
-                    const timeTask = cycle.lastTask.split("@");
-                    let time = timeTask[1];
-                    let date = new Date(time * 1000);
-                    let localHours = String(date.getHours()).padStart(2, "0");
-                    let localMinutes = String(date.getMinutes()).padStart(2, "0");
-                    let year = date.getFullYear();
-                    let month = String(date.getMonth() + 1).padStart(2, '0'); 
-                    let day = String(date.getDate()).padStart(2, '0');
-                    taskcycle.textContent = `at ${localHours}:${localMinutes} on ${day}/${month}/${year}`;
-                } else {
-                    taskcycle.textContent = "";
-                }
-
-                if (cycle.preResponse && cycle.preResponse !== null) {
-                    prescore.textContent = cycle.preResponse.result.totalScore;
-                    predate.textContent = cycle.preResponse.recordedDate;
-                } else if (cycle.postResponse && cycle.postResponse !== null) {
-                    postscore.textContent = cycle.postResponse.result.totalScore;
-                    postdate.textContent = cycle.postResponse.recordedDate;
-                } else {
-                    prescore.textContent = 'no available information to be displayed';
-                    predate.textContent = 'no available information to be displayed';
-                    postscore.textContent = 'no available information to be displayed';
-                    postdate.textContent = 'no available information to be displayed';
-                }
-                
-                view.innerHTML = '<button type="button" class="btn btn-success track-back">View</button>';
-                cycleDiv.appendChild(prescore);
-                cycleDiv.appendChild(predate);
-                cycleDiv.appendChild(postscore);
-                cycleDiv.appendChild(postdate);
-                cycleDiv.appendChild(taskcycle);
-                cycleDiv.appendChild(view);
-                table.appendChild(cycleDiv);
-
-                view.addEventListener('click', () => {
-                    localStorage.setItem('selectedCycle', JSON.stringify(cycle));
-                    window.location.href = "result_page.html";
-                })
-
-            })                  
-        }
-        
-        document.addEventListener("DOMContentLoaded", async function() {
-            
-            
-            const ch = document.getElementById('ch');
-            const CH = document.getElementById('CH');
-
-            displayTable();
             
         });
+
+       
     </script>
     </body>
 </html>
