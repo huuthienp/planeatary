@@ -246,8 +246,9 @@
                 localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
                 detailed = com_tasks; 
                 
+            } else {
+                var task_rec = detailed.time;
             }
-            const task_rec = detailed.time;
 
             document.getElementById('postQ').style.color = 'white';
             document.getElementById('preQ').style.color = 'white';
