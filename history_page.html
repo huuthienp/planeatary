@@ -197,13 +197,16 @@
                     
                     Object.keys(responseHistory).forEach((cycleKey) =>{
                         const taskCycle = responseHistory[cycleKey].lastTask;
-                        const responseCycle = allResponses[cycleKey];
+                        var responseCycle = allResponses[cycleKey];
                         responseCycle.task = taskCycle;
                     })
+
+                    return localStorage.setItem('allResponses', responseCycle)
                 }
                 
                 function displayTable() {
-                    const history = JSON.parse(localStorage.getItem('allResponses'));
+
+                    const history = localStorage.getItem('allResponses');
                     const table = document.getElementById('h-table');
                     
                     Object.keys(history).forEach((cycleKey) =>{
@@ -228,7 +231,7 @@
                             let day = String(date.getDate()).padStart(2, '0');
                             taskcycle.textContent = `at ${localHours}:${localMinutes} on ${day}/${month}/${year}`;
                         } else {
-                            taskcycle.textContent = "";
+                            taskcycle.textContent = 'no available information to be displayed';
                         }
                         
                         if (cycle.preResponse && cycle.preResponse !== null) {
@@ -242,10 +245,14 @@
                             const minutes = String(dateObj.getMinutes()).padStart(2, '0');
 
                             prescore.textContent = cycle.preResponse.result.totalScore;
-                            predate.textContent = `${day}/${month}/${year} ${hours}:${minutes}`;
-                        } else if (cycle.postResponse && cycle.postResponse !== null) {
+                            predate.textContent = `at ${hours}:${minutes} on ${day}/${month}/${year}`;
+                        } else {
+                            prescore.textContent = 'no available information to be displayed';
+                            predate.textContent = 'no available information to be displayed';
+                        }
+
+                        if (cycle.postResponse && cycle.postResponse !== null) {
                             const isoString = cycle.postResponse.recordedDate; 
-                            
                             const dateObj = new Date(isoString);
                             const day = String(dateObj.getDate()).padStart(2, '0');
                             const month = String(dateObj.getMonth() + 1).padStart(2, '0');
@@ -254,10 +261,8 @@
                             const minutes = String(dateObj.getMinutes()).padStart(2, '0');
 
                             postscore.textContent = cycle.postResponse.result.totalScore;
-                            postdate.textContent = `${day}/${month}/${year} ${hours}:${minutes}`;
+                            postdate.textContent = `at ${hours}:${minutes} on ${day}/${month}/${year}`;
                         } else {
-                            prescore.textContent = 'no available information to be displayed';
-                            predate.textContent = 'no available information to be displayed';
                             postscore.textContent = 'no available information to be displayed';
                             postdate.textContent = 'no available information to be displayed';
                         }
