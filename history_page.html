@@ -247,12 +247,20 @@
                 } else {
                     taskcycle.textContent = "";
                 }
-                
-                prescore.textContent = cycle.preResponse.result.totalScore;
-                predate.textContent = cycle.preResponse.recordedDate;
-                postscore.textContent = cycle.postResponse.result.totalScore;
-                postdate.textContent = cycle.postResponse.recordedDate;;
 
+                if (cycle.preResponse && cycle.preResponse !== null) {
+                    prescore.textContent = cycle.preResponse.result.totalScore;
+                    predate.textContent = cycle.preResponse.recordedDate;
+                } else if (cycle.postResponse && cycle.postResponse !== null) {
+                    postscore.textContent = cycle.postResponse.result.totalScore;
+                    postdate.textContent = cycle.postResponse.recordedDate;
+                } else {
+                    prescore.textContent = 'no available information to be displayed';
+                    predate.textContent = 'no available information to be displayed';
+                    postscore.textContent = 'no available information to be displayed';
+                    postdate.textContent = 'no available information to be displayed';
+                }
+                
                 view.innerHTML = '<button type="button" class="btn btn-success track-back">View</button>';
                 cycleDiv.appendChild(prescore);
                 cycleDiv.appendChild(predate);
@@ -276,7 +284,6 @@
             const ch = document.getElementById('ch');
             const CH = document.getElementById('CH');
 
-            
             displayTable();
             
         });
