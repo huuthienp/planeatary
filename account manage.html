@@ -157,6 +157,10 @@
     </div>
     
     <script>
+
+        //ensure the data's cycle selected from history page is always removed
+        localStorage.removeItem('selectedCycle');
+        
         // RegEx for checking password
         let uppercaseRegex = /[A-Z]/g;
         let lowercaseRegex = /[a-z]/g;

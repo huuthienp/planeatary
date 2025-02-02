@@ -138,7 +138,7 @@
                     const { ok, status } = response;
                     if (!ok) {
                         throw new Error(JSON.stringify({
-                            status: status,  // fix error object
+                            status: status,  
                             response: await response.text(),
                         }));
                     }
@@ -235,10 +235,10 @@
                             // format as needed
                             taskcycle.textContent = date.toLocaleString();
                         } else {
-                            taskcycle.textContent = 'no available information to be displayed';
+                            taskcycle.textContent = 'N/A';
                         }
                     } else {
-                        taskcycle.textContent = 'no available information to be displayed';
+                        taskcycle.textContent = 'N/A';
                     }
                     
                     // preResponse

@@ -83,8 +83,8 @@
 
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script>
-            //May modification for the case that another user sign up on the same device as previous user did the pre-quiz. 
-            // The pre-quiz page needs to acknowledge different users and allow doing pre-quiz
+            //ensure the data's cycle selected from history page is always removed
+            localStorage.removeItem('selectedCycle');
 
             const spinner = document.getElementById('spinner');
             let isLoading = false;

@@ -102,6 +102,9 @@
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script type="module">
             import { fetchTaskStatus, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
+
+            //ensure the data's cycle selected from history page is always removed
+            localStorage.removeItem('selectedCycle');
             
             let time =  [];
             let scores = [];

@@ -80,103 +80,106 @@
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
             
         <script>
-                
-                const ch = document.getElementById("ch");
-                const nextButton = document.querySelector('.next');
 
-                const spinner = document.getElementById('spinner');
-                const bOverlay = document.getElementById("spinnerOverlay");
-                let isLoading = false;
-                const minDisplayTime = 1000;
-                let spinnerStartTime;
+            //ensure the data's cycle selected from history page is always removed
+            localStorage.removeItem('selectedCycle');
 
-                let chosen_tasks = [];
-                let status_tasks = [];
-                
-                function showSpinner() {
-                    console.log("Showing spinner...");
-                    spinner.classList.remove('hidden');
-                    bOverlay.classList.remove('hidden');
-                    isLoading = true;
-                    spinnerStartTime = Date.now();
-                };
-                
-                function hideSpinner() {
-                    const elapsedTime = Date.now() - spinnerStartTime;
-                    if (elapsedTime < minDisplayTime) {
-                        setTimeout(() => {
-                            console.log("Hiding spinner after min time...");
-                            spinner.classList.add('hidden');
-                            bOverlay.classList.add('hidden');
-                            isLoading = false;
-                        }, minDisplayTime - elapsedTime);
+            const ch = document.getElementById("ch");
+            const nextButton = document.querySelector('.next');
+
+            const spinner = document.getElementById('spinner');
+            const bOverlay = document.getElementById("spinnerOverlay");
+            let isLoading = false;
+            const minDisplayTime = 1000;
+            let spinnerStartTime;
+
+            let chosen_tasks = [];
+            let status_tasks = [];
+
+            function showSpinner() {
+                console.log("Showing spinner...");
+                spinner.classList.remove('hidden');
+                bOverlay.classList.remove('hidden');
+                isLoading = true;
+                spinnerStartTime = Date.now();
+            };
+
+            function hideSpinner() {
+                const elapsedTime = Date.now() - spinnerStartTime;
+                if (elapsedTime < minDisplayTime) {
+                    setTimeout(() => {
+                        console.log("Hiding spinner after min time...");
                         spinner.classList.add('hidden');
                         bOverlay.classList.add('hidden');
                         isLoading = false;
-                    }
+                    }, minDisplayTime - elapsedTime);
+                    spinner.classList.add('hidden');
+                    bOverlay.classList.add('hidden');
+                    isLoading = false;
                 }
-                
-                function logOut() {
-                    if (netlifyIdentity.gotrue.currentUser() !== null) {
-                        let user = netlifyIdentity.gotrue.currentUser();
-                        user.logout().then(() => {
-                            console.log('User has been logged out!');
-                            window.location.href = "index.html";
-                        });
-                    } else {
-                        console.log("No user is logged in!");
-                    }
+            }
+
+            function logOut() {
+                if (netlifyIdentity.gotrue.currentUser() !== null) {
+                    let user = netlifyIdentity.gotrue.currentUser();
+                    user.logout().then(() => {
+                        console.log('User has been logged out!');
+                        window.location.href = "index.html";
+                    });
+                } else {
+                    console.log("No user is logged in!");
                 }
+            }
+
+            document.getElementById('logOut').addEventListener('click', () => {
+                alert("Do you really want to sign out?");
+                showSpinner();
+                logOut();
+                showSpinner();
+            });
+            function updateNextButton() {
+                let postResult = JSON.parse(localStorage.getItem('postResult'));
                 
-                document.getElementById('logOut').addEventListener('click', () => {
-                    alert("Do you really want to sign out?");
-                    showSpinner();
-                    logOut();
-                    showSpinner();
-                });
-                function updateNextButton() {
-                    let postResult = JSON.parse(localStorage.getItem('postResult'));
+                if (postResult) {
+                    // If postResult exists, enable the button and navigate to the results page
+                    nextButton.style.backgroundColor = '#02897A'; 
+                    nextButton.style.cursor = 'pointer';   
+                    nextButton.disabled = false;
+                    ch.style.color = 'grey'; 
+                    ch.style.cursor = "not-allowed"; 
+                    ch.disabled = true; 
+                    nextButton.addEventListener("click", function() {
+                        window.location.href = "result_page.html";
+                    });
+                } else {
+                    ch.addEventListener("click", function() {
+                        window.location.href = "manifesto.html";
+                    });
                     
-                    if (postResult) {
-                        // If postResult exists, enable the button and navigate to the results page
-                        nextButton.style.backgroundColor = '#02897A'; 
-                        nextButton.style.cursor = 'pointer';   
-                        nextButton.disabled = false;
-                        ch.style.color = 'grey'; 
-                        ch.style.cursor = "not-allowed"; 
-                        ch.disabled = true; 
-                        nextButton.addEventListener("click", function() {
-                            window.location.href = "result_page.html";
-                        });
-                    } else {
-                        ch.addEventListener("click", function() {
-                            window.location.href = "manifesto.html";
-                        });
-                        
-                        ch.style.cursor = "pointer"; 
-                        ch.style.color = 'white'; 
-                        ch.disabled = false; 
-                        // Disable the button if postResult does not exist
-                        nextButton.style.backgroundColor = 'grey';
-                        nextButton.style.borderColor = 'grey';
-                        nextButton.style.cursor = 'not-allowed';
-                        nextButton.disabled = true;
-                        
-                    }
+                    ch.style.cursor = "pointer"; 
+                    ch.style.color = 'white'; 
+                    ch.disabled = false; 
+                    // Disable the button if postResult does not exist
+                    nextButton.style.backgroundColor = 'grey';
+                    nextButton.style.borderColor = 'grey';
+                    nextButton.style.cursor = 'not-allowed';
+                    nextButton.disabled = true;
+                    
                 }
-                
-                // Initial check for preResult
-                updateNextButton();
-                
-                // Set up an interval to check for changes in localStorage
-                setInterval(updateNextButton, 1000);
-                
-                
+            }
+
+            // Initial check for preResult
+            updateNextButton();
+
+            // Set up an interval to check for changes in localStorage
+            setInterval(updateNextButton, 1000);
+
+
         </script>      
         <script defer type="module">
             import { initiateSurvey } from './scripts/helpers.mjs';
             const quizFrame = document.querySelector('div.content > iframe.quiz');
             const quizUrl = initiateSurvey('post', quizFrame);
         </script>
-    </body>
+</body>
 </html>

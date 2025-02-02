@@ -233,7 +233,7 @@
 
             if (!tasks) {
                 showSpinner();
-                tasks = await fetchTasks();  // no 'let' here
+                tasks = await fetchTasks();  
                 hideSpinner();
                 localStorage.setItem('tasks', JSON.stringify(tasks));
                 tasks = JSON.parse(localStorage.getItem('tasks'));
@@ -282,9 +282,15 @@
                 pre_rec = preObject.recordedDate;
                 preResponseId = preResult.responseId;
                 
-                postObject = storedCycle.preResponse;
+                postObject = storedCycle.postResponse;
                 postResult = postObject.result;
                 post_rec = postObject.recordedDate;
+
+                showSpinner();
+                let selectTasks = await fetchTaskStatus(preResponseId);
+                hideSpinner();
+                localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
+                detailed = selectTasks; 
                 
             }
 
