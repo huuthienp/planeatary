@@ -271,9 +271,11 @@
 
             const tagsToShow = toshow.map(s => document.querySelector(s));
 
-            tagsToShow.forEach(
-            (tag) => { tag.classList.remove('hidden'); }
-            );
+            if (tagsToShow) {
+                tagsToShow.forEach(
+                (tag) => { tag.classList.remove('hidden'); }
+                );
+            }
 
             if (storedCycle) {
                 
@@ -409,10 +411,12 @@
                 ];
                 
                 const tagsToHide = tohide.map(s => document.querySelector(s));
-                
-                tagsToHide.forEach(
-                (tag) => { tag.classList.add('hidden'); }
-                );
+
+                if(tagsToHide) {
+                    tagsToHide.forEach(
+                    (tag) => { tag.classList.add('hidden'); }
+                    );
+                }
 
                 if (!detailed) {
                     cardContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us to fix it.';
@@ -481,10 +485,12 @@
             ];
             
             const tagsToRemove = toRemove.map(s => document.querySelector(s));
-            
-            tagsToRemove.forEach(
-            (tag) => { tag.remove() }
-            );
+
+            if(tagsToRemove) {
+                tagsToRemove.forEach(
+                (tag) => { tag.classList.add('hidden');}
+                );
+            }
 
             ch.classList.add('disabled');
 
@@ -506,9 +512,12 @@
 
             const tagsToShow = toshow.map(s => document.querySelector(s));
 
-            tagsToShow.forEach(
-            (tag) => { tag.classList.remove('hidden'); }
-            );
+            if(tagsToShow) {
+                tagsToShow.forEach(
+                (tag) => { tag.classList.remove('hidden'); }
+                );
+            }
+            
 
             ch.classList.remove('disabled');
             ch.style.cursor = "pointer"; 
@@ -524,6 +533,7 @@
         };
             
             document.getElementById('preQ').addEventListener('click', function() {
+
                 if (preResult) {
                     const toshow = [
                     'p.next-step',
@@ -533,10 +543,13 @@
                     ];
                     
                     const tagsToShow = toshow.map(s => document.querySelector(s));
+
+                    if (tagsToShow) {
+                        tagsToShow.forEach(
+                        (tag) => { tag.classList.remove('hidden');}
+                        );
+                    }
                     
-                    tagsToShow.forEach(
-                    (tag) => { tag.classList.remove('hidden'); }
-                    );
 
                     displayQuestions(preResult);
                     document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
@@ -560,10 +573,12 @@
                     
                     const tagsToRemove = toRemove.map(s => document.querySelector(s));
                     
-                    tagsToRemove.forEach(
-                    (tag) => { tag.remove() }
-                    );
-
+                    if (tagsToRemove) {
+                        tagsToRemove.forEach(
+                        (tag) => { tag.classList.remove('hidden'); }
+                        );
+                    }
+                    
                     document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
 
                     displayQuestions(postResult);
