@@ -137,7 +137,6 @@
         
         const closeButt = document.querySelector('.close');
 
-
         const comparison = document.getElementById('improvement');
 
         const spinner = document.getElementById('spinner');
@@ -145,6 +144,9 @@
         let spinnerStartTime;
         let isLoading;
         const bOverlay = document.getElementById("spinnerOverlay");
+
+        //from history page
+        const storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
         
         // Function to show the modal
         function showModal(title, description) {
@@ -216,16 +218,16 @@
                 
         document.addEventListener("DOMContentLoaded", async function() {
             
-            const preObject = JSON.parse(localStorage.getItem('preResult') || "{}");
+            let preObject = JSON.parse(localStorage.getItem('preResult') || "{}");
 
-            const preResult = preObject.result;
-            const pre_rec = preObject.recordedDate;
+            let preResult = preObject.result;
+            let pre_rec = preObject.recordedDate;
             let preResponseId = preResult.responseId;
 
-            const postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
+            let postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
 
-            const postResult = postObject.result;
-            const post_rec = postObject.recordedDate;
+            let postResult = postObject.result;
+            let post_rec = postObject.recordedDate;
 
             let tasks = JSON.parse(localStorage.getItem('tasks'));
 
@@ -273,6 +275,18 @@
             (tag) => { tag.classList.remove('hidden'); }
             );
 
+            if (storedCycle) {
+                
+                preObject = storedCycle.preResponse;
+                preResult = preObject.result;
+                pre_rec = preObject.recordedDate;
+                preResponseId = preResult.responseId;
+                
+                postObject = storedCycle.preResponse;
+                postResult = postObject.result;
+                post_rec = postObject.recordedDate;
+                
+            }
 
             // Retrieve tasks from localStorage or fetch if not available
             async function fetchTasks() {
@@ -322,6 +336,7 @@
                     cardContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us to fix it.';
                     return;
                 }
+
                 
                 if (postResult) {
                     let date = new Date(post_rec);
@@ -348,10 +363,7 @@
                     document.getElementById('curr_score').textContent = questionsData.totalScore;
                     document.getElementById('total').textContent = 60;
                     completion_date.innerHTML = `Pre quiz was completed at ${localHours}:${localMinutes} on ${day}/${month}/${year}`
-                } else {
-                    //Need logic for result page after history page or home page right away
-                }
-
+                } 
                 
                 // Iterate over each question in the pointArray
                 questionsData.pointArray.forEach((score, index) => {

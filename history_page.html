@@ -165,7 +165,7 @@
                     isLoading = true;
                     spinnerStartTime = Date.now();
                 };
-
+                
                 function hideSpinner() {
                     const elapsedTime = Date.now() - spinnerStartTime;
                     if (elapsedTime < minDisplayTime) {
@@ -180,39 +180,72 @@
                         isLoading = false;
                     }
                 }
-
+                
                 async function extractHistory() {
                     const user = netlifyIdentity.gotrue.currentUser();
+                    if (!user) return null; 
+                    
+                    const userId = user.id;
                     const metadata = user.user_metadata;
                     const responseHistory = metadata.responseHistory;
                     
-                    const userId = user.id;
-                    
                     showSpinner();
-                    const all_responses = await fetchResponses(userId);
-                    const allResponses = JSON.parse(localStorage.getItem('allResponses'));
-                    console.log('All responses', allResponses);
-                    hideSpinner();
                     
                     
-                    Object.keys(responseHistory).forEach((cycleKey) =>{
+                    await fetchResponses(userId);
+                    const allResponses = JSON.parse(localStorage.getItem('allResponses')) || {};
+                    
+                    
+                    Object.keys(responseHistory).forEach((cycleKey) => {
                         const taskCycle = responseHistory[cycleKey].lastTask;
-                        var responseCycle = allResponses[cycleKey];
-                        responseCycle.task = taskCycle;
-                    })
-
-                    return localStorage.setItem('allResponses', responseCycle)
+                        if (!allResponses[cycleKey]) {
+                            allResponses[cycleKey] = {};
+                        }
+                        allResponses[cycleKey].lastTask = taskCycle;
+                    });
+                    
+                    
+                    localStorage.setItem('allResponses', JSON.stringify(allResponses));
+                    
+                    hideSpinner();
+                    return allResponses;
+                }
+                
+                async function fetchResponses(userId) {
+                    try {
+                        const response = await fetch('/api/fetch-responses', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Q-RESPONSE-ID': userId,
+                            }
+                        });
+                        if (!response.ok) {
+                            const { status } = response;
+                            const text = await response.text();
+                            throw new Error(JSON.stringify({ status, text }));
+                        }
+                        const data = await response.json();
+                        localStorage.setItem('allResponses', JSON.stringify(data));
+                        return data;
+                    } catch (error) {
+                        console.warn('Caught error fetching responses:', error);
+                        return null;
+                    }
                 }
                 
                 function displayTable() {
-
-                    const history = localStorage.getItem('allResponses');
+                    const history = JSON.parse(localStorage.getItem('allResponses'));  // parse JSON
                     const table = document.getElementById('h-table');
+                    if (!history || Object.keys(history).length === 0) {
+                        document.querySelector(".404").classList.remove('hidden');
+                        return;
+                    }
                     
-                    Object.keys(history).forEach((cycleKey) =>{
+                    Object.keys(history).forEach((cycleKey) => {
                         const cycle = history[cycleKey];
                         
-                        const cycleDiv = document.createElement('tr');
+                        const cycleRow = document.createElement('tr');
                         const prescore = document.createElement('td');
                         const predate = document.createElement('td');
                         const postscore = document.createElement('td');
@@ -220,93 +253,68 @@
                         const taskcycle = document.createElement('td');
                         const view = document.createElement('td');
                         
-                        if (cycle.lastTask && cycle.lastTask !== null) {
-                            const timeTask = cycle.lastTask.split("@");
-                            let time = timeTask[1];
-                            let date = new Date(time * 1000);
-                            let localHours = String(date.getHours()).padStart(2, "0");
-                            let localMinutes = String(date.getMinutes()).padStart(2, "0");
-                            let year = date.getFullYear();
-                            let month = String(date.getMonth() + 1).padStart(2, '0'); 
-                            let day = String(date.getDate()).padStart(2, '0');
-                            taskcycle.textContent = `at ${localHours}:${localMinutes} on ${day}/${month}/${year}`;
+                        // lastTask
+                        if (cycle.lastTask) {
+                            const [taskId, unixSec] = cycle.lastTask.split('@');
+                            if (unixSec) {
+                                const date = new Date(parseInt(unixSec, 10) * 1000);
+                                // format as needed
+                                taskcycle.textContent = date.toLocaleString();
+                            } else {
+                                taskcycle.textContent = 'no available information to be displayed';
+                            }
                         } else {
                             taskcycle.textContent = 'no available information to be displayed';
                         }
                         
-                        if (cycle.preResponse && cycle.preResponse !== null) {
-                            const isoString = cycle.preResponse.recordedDate; 
-                            
-                            const dateObj = new Date(isoString);  
-                            const day = String(dateObj.getDate()).padStart(2, '0');
-                            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-                            const year = dateObj.getFullYear();
-                            const hours = String(dateObj.getHours()).padStart(2, '0');
-                            const minutes = String(dateObj.getMinutes()).padStart(2, '0');
-
-                            prescore.textContent = cycle.preResponse.result.totalScore;
-                            predate.textContent = `at ${hours}:${minutes} on ${day}/${month}/${year}`;
-                        } else {
-                            prescore.textContent = 'no available information to be displayed';
-                            predate.textContent = 'no available information to be displayed';
-                        }
-
-                        if (cycle.postResponse && cycle.postResponse !== null) {
-                            const isoString = cycle.postResponse.recordedDate; 
+                        // preResponse
+                        if (cycle.preResponse) {
+                            const isoString = cycle.preResponse.recordedDate;
                             const dateObj = new Date(isoString);
-                            const day = String(dateObj.getDate()).padStart(2, '0');
-                            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-                            const year = dateObj.getFullYear();
-                            const hours = String(dateObj.getHours()).padStart(2, '0');
-                            const minutes = String(dateObj.getMinutes()).padStart(2, '0');
-
-                            postscore.textContent = cycle.postResponse.result.totalScore;
-                            postdate.textContent = `at ${hours}:${minutes} on ${day}/${month}/${year}`;
+                            prescore.textContent = cycle.preResponse.result.totalScore;
+                            predate.textContent = dateObj.toLocaleString();
                         } else {
-                            postscore.textContent = 'no available information to be displayed';
-                            postdate.textContent = 'no available information to be displayed';
+                            prescore.textContent = 'N/A';
+                            predate.textContent = 'N/A';
                         }
                         
-                        view.innerHTML = '<button type="button" class="btn btn-success track-back">View</button>';
-                        cycleDiv.appendChild(prescore);
-                        cycleDiv.appendChild(predate);
-                        cycleDiv.appendChild(postscore);
-                        cycleDiv.appendChild(postdate);
-                        cycleDiv.appendChild(taskcycle);
-                        cycleDiv.appendChild(view);
-                        table.appendChild(cycleDiv);
+                        // postResponse
+                        if (cycle.postResponse) {
+                            const isoString = cycle.postResponse.recordedDate;
+                            const dateObj = new Date(isoString);
+                            postscore.textContent = cycle.postResponse.result.totalScore;
+                            postdate.textContent = dateObj.toLocaleString();
+                        } else {
+                            postscore.textContent = 'N/A';
+                            postdate.textContent = 'N/A';
+                        }
                         
+                        // view button
+                        view.innerHTML = '<button type="button" class="btn btn-success track-back">View</button>';
                         view.addEventListener('click', () => {
+                            // store cycle
                             localStorage.setItem('selectedCycle', JSON.stringify(cycle));
                             window.location.href = "result_page.html";
-                        })
-                        
-                    })                  
-                }
-                
-                function logOut() {
-                    if (netlifyIdentity.gotrue.currentUser() !== null) {
-                        let user = netlifyIdentity.gotrue.currentUser();
-                        user.logout().then(() => {
-                            console.log('User has been logged out!');
-                            window.location.href = "index.html";
                         });
-                    } else {
-                        console.log("No user is logged in!");
-                    }
+                        
+                        cycleRow.append(prescore, predate, postscore, postdate, taskcycle, view);
+                        table.appendChild(cycleRow);
+                    });
                 }
                 
-                displayTable();
-                
-                document.getElementById('logOut').addEventListener('click', () => {
-                    alert("Do you really want to sign out?");
-                    showSpinner();
-                    logOut();
-                    hideSpinner();
+                document.addEventListener("DOMContentLoaded", async () => {
+                    await extractHistory();
+                    displayTable();
+                    
+                    document.getElementById('logOut').addEventListener('click', () => {
+                        alert("Do you really want to sign out?");
+                        showSpinner();
+                        logOut(); 
+                        hideSpinner();
+                    });
                 });
                 
             });
-            
             
         </script>
     </body>
