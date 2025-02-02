@@ -146,7 +146,8 @@
                 }
                 const data = await response.json();
                 console.log('Responses fetched!\n', data);
-                return data;
+                return localStorage.setItem('allResponses', JSON.stringify(data));
+
             } catch (error) {
                 console.warn('Caught', error, '\nin fetchResponse');
                 return null;
@@ -154,15 +155,26 @@
         }
 
         
-        function ExtractHistory() {
+        async function extractHistory() {
             const user = netlifyIdentity.gotrue.currentUser();
             const metadata = user.user_metadata;
             const responseHistory = metadata.responseHistory;
+
+            const userId = user.id;
+
+            showSpinner();
+            const all_responses = await fetchResponses(userId);
+            const allResponses = JSON.parse(localStorage.getItem(all_responses));
+            console.log('All responses', all_responses);
+            hideSpinner();
+
             let history = [];
             
             Object.keys(responseHistory).forEach((cycleKey) =>{
-                const cycle = responseHistory[cycleKey];
-                history.push(cycle);
+                const taskCycle = responseHistory[cycleKey].lastTask;
+                const responseCycle = allResponses[cycleKey];
+                responseCycle.task = taskCycle;
+                history.push(responseCycle);
             })
             return history
         }
@@ -208,7 +220,7 @@
         });
         
         function displayTable() {
-            const history = ExtractHistory();
+            const history = extractHistory();
             const table = document.getElementById('h-table');
 
             Object.keys(history).forEach((cycleKey) =>{
@@ -236,10 +248,10 @@
                     taskcycle.textContent = "";
                 }
                 
-                prescore.textContent = 0;
-                predate.textContent = "";
-                postscore.textContent = 0;
-                postdate.textContent = "";
+                prescore.textContent = cycle.preResponse.result.totalScore;
+                predate.textContent = cycle.preResponse.recordedDate;
+                postscore.textContent = cycle.postResponse.result.totalScore;
+                postdate.textContent = cycle.postResponse.recordedDate;;
 
                 view.innerHTML = '<button type="button" class="btn btn-success track-back">View</button>';
                 cycleDiv.appendChild(prescore);
@@ -264,10 +276,7 @@
             const ch = document.getElementById('ch');
             const CH = document.getElementById('CH');
 
-            const user = netlifyIdentity.gotrue.currentUser();
-            const userId = user.id;
-
-            const all_responses = await fetchResponses(userId);
+            
             
             displayTable();
             
