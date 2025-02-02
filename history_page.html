@@ -127,6 +127,32 @@
         let preResponseId = localStorage.getItem('preResponseId');
 
         //require a function that can have taskArray based on a selected cycle
+
+        async function fetchResponses(userId) {
+            try {
+                const response = await fetch('/api/fetch-responses', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Q-RESPONSE-ID': userId,
+                    }
+                });
+                const { ok, status } = response;
+                if (!ok) {
+                    throw new Error(JSON.stringify({
+                        status: status,  // fix error object
+                        response: await response.text(),
+                    }));
+                }
+                const data = await response.json();
+                console.log('Responses fetched!\n', data);
+                return data;
+            } catch (error) {
+                console.warn('Caught', error, '\nin fetchResponse');
+                return null;
+            }
+        }
+
         
         function ExtractHistory() {
             const user = netlifyIdentity.gotrue.currentUser();
@@ -232,11 +258,16 @@
             })                  
         }
         
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", async function() {
             
             
             const ch = document.getElementById('ch');
             const CH = document.getElementById('CH');
+
+            const user = netlifyIdentity.gotrue.currentUser();
+            const userId = user.id;
+
+            const all_responses = await fetchResponses(userId);
             
             displayTable();
             
