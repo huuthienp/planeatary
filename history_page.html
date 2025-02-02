@@ -115,204 +115,201 @@
         <script type="module">
             import { fetchTaskStatus } from './scripts/helpers.mjs';
             
+            const ch = document.getElementById('ch');
+            const CH = document.getElementById('CH');
             
-            document.addEventListener("DOMContentLoaded", () => {
-                
-                
-                const ch = document.getElementById('ch');
-                const CH = document.getElementById('CH');
-                
-                let scores = [];
-                
-                const spinner = document.getElementById('spinner');
-                let spinnerStartTime;
-                let isLoading;
-                const minDisplayTime = 2000; 
-                const bOverlay = document.getElementById("spinnerOverlay");
-                
-                //require a function that can have taskArray based on a selected cycle
-                
-                async function fetchResponses(userId) {
-                    try {
-                        const response = await fetch('/api/fetch-responses', {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Q-RESPONSE-ID': userId,
-                            }
-                        });
-                        const { ok, status } = response;
-                        if (!ok) {
-                            throw new Error(JSON.stringify({
-                                status: status,  // fix error object
-                                response: await response.text(),
-                            }));
+            let scores = [];
+            
+            const spinner = document.getElementById('spinner');
+            let spinnerStartTime;
+            let isLoading;
+            const minDisplayTime = 2000; 
+            const bOverlay = document.getElementById("spinnerOverlay");
+            
+            //require a function that can have taskArray based on a selected cycle
+            
+            async function fetchResponses(userId) {
+                try {
+                    const response = await fetch('/api/fetch-responses', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Q-RESPONSE-ID': userId,
                         }
-                        const data = await response.json();
-                        console.log('Responses fetched!\n', data);
-                        return localStorage.setItem('allResponses', JSON.stringify(data));
-                        
-                    } catch (error) {
-                        console.warn('Caught', error, '\nin fetchResponse');
-                        return null;
+                    });
+                    const { ok, status } = response;
+                    if (!ok) {
+                        throw new Error(JSON.stringify({
+                            status: status,  // fix error object
+                            response: await response.text(),
+                        }));
                     }
+                    const data = await response.json();
+                    console.log('Responses fetched!\n', data);
+                    return localStorage.setItem('allResponses', JSON.stringify(data));
+                    
+                } catch (error) {
+                    console.warn('Caught', error, '\nin fetchResponse');
+                    return null;
                 }
-                
-                
-                function showSpinner() {
-                    spinner.classList.remove('hidden');
-                    bOverlay.classList.remove('hidden');
-                    isLoading = true;
-                    spinnerStartTime = Date.now();
-                };
-                
-                function hideSpinner() {
-                    const elapsedTime = Date.now() - spinnerStartTime;
-                    if (elapsedTime < minDisplayTime) {
-                        setTimeout(() => {
-                            spinner.classList.add('hidden');
-                            bOverlay.classList.add('hidden');
-                            isLoading = false;
-                        }, minDisplayTime - elapsedTime);
-                    } else {
+            }
+            
+            
+            function showSpinner() {
+                spinner.classList.remove('hidden');
+                bOverlay.classList.remove('hidden');
+                isLoading = true;
+                spinnerStartTime = Date.now();
+            };
+            
+            function hideSpinner() {
+                const elapsedTime = Date.now() - spinnerStartTime;
+                if (elapsedTime < minDisplayTime) {
+                    setTimeout(() => {
                         spinner.classList.add('hidden');
                         bOverlay.classList.add('hidden');
                         isLoading = false;
-                    }
+                    }, minDisplayTime - elapsedTime);
+                } else {
+                    spinner.classList.add('hidden');
+                    bOverlay.classList.add('hidden');
+                    isLoading = false;
                 }
+            }
+            
+            async function extractHistory() {
+                const user = netlifyIdentity.gotrue.currentUser();
+                if (!user) return null; 
                 
-                async function extractHistory() {
-                    const user = netlifyIdentity.gotrue.currentUser();
-                    if (!user) return null; 
-                    
-                    const userId = user.id;
-                    const metadata = user.user_metadata;
-                    const responseHistory = metadata.responseHistory;
-                    
-                    showSpinner();
-                    
-                    
-                    await fetchResponses(userId);
-                    const allResponses = JSON.parse(localStorage.getItem('allResponses')) || {};
-                    
-                    
-                    Object.keys(responseHistory).forEach((cycleKey) => {
-                        const taskCycle = responseHistory[cycleKey].lastTask;
-                        if (!allResponses[cycleKey]) {
-                            allResponses[cycleKey] = {};
+                const userId = user.id;
+                const metadata = user.user_metadata;
+                const responseHistory = metadata.responseHistory;
+                
+                showSpinner();
+                
+                
+                await fetchResponses(userId);
+                const allResponses = JSON.parse(localStorage.getItem('allResponses')) || {};
+                
+                
+                Object.keys(responseHistory).forEach((cycleKey) => {
+                    const taskCycle = responseHistory[cycleKey].lastTask;
+                    if (!allResponses[cycleKey]) {
+                        allResponses[cycleKey] = {};
+                    }
+                    allResponses[cycleKey].lastTask = taskCycle;
+                });
+                
+                
+                localStorage.setItem('allResponses', JSON.stringify(allResponses));
+                
+                hideSpinner();
+                return allResponses;
+            }
+            
+            async function fetchResponses(userId) {
+                try {
+                    const response = await fetch('/api/fetch-responses', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Q-RESPONSE-ID': userId,
                         }
-                        allResponses[cycleKey].lastTask = taskCycle;
                     });
-                    
-                    
-                    localStorage.setItem('allResponses', JSON.stringify(allResponses));
-                    
-                    hideSpinner();
-                    return allResponses;
+                    if (!response.ok) {
+                        const { status } = response;
+                        const text = await response.text();
+                        throw new Error(JSON.stringify({ status, text }));
+                    }
+                    const data = await response.json();
+                    localStorage.setItem('allResponses', JSON.stringify(data));
+                    return data;
+                } catch (error) {
+                    console.warn('Caught error fetching responses:', error);
+                    return null;
+                }
+            }
+            
+            function displayTable() {
+                const history = JSON.parse(localStorage.getItem('allResponses'));  
+                const table = document.getElementById('h-table');
+                
+                if (!history || Object.keys(history).length === 0) {
+                    document.querySelector(".404").classList.remove('hidden');
+                    return;
                 }
                 
-                async function fetchResponses(userId) {
-                    try {
-                        const response = await fetch('/api/fetch-responses', {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Q-RESPONSE-ID': userId,
-                            }
-                        });
-                        if (!response.ok) {
-                            const { status } = response;
-                            const text = await response.text();
-                            throw new Error(JSON.stringify({ status, text }));
-                        }
-                        const data = await response.json();
-                        localStorage.setItem('allResponses', JSON.stringify(data));
-                        return data;
-                    } catch (error) {
-                        console.warn('Caught error fetching responses:', error);
-                        return null;
-                    }
-                }
-                
-                function displayTable() {
-                    const history = JSON.parse(localStorage.getItem('allResponses'));  // parse JSON
-                    const table = document.getElementById('h-table');
-                    if (!history || Object.keys(history).length === 0) {
-                        document.querySelector(".404").classList.remove('hidden');
-                        return;
-                    }
+                Object.keys(history).forEach((cycleKey) => {
+                    const cycle = history[cycleKey];
                     
-                    Object.keys(history).forEach((cycleKey) => {
-                        const cycle = history[cycleKey];
-                        
-                        const cycleRow = document.createElement('tr');
-                        const prescore = document.createElement('td');
-                        const predate = document.createElement('td');
-                        const postscore = document.createElement('td');
-                        const postdate = document.createElement('td');
-                        const taskcycle = document.createElement('td');
-                        const view = document.createElement('td');
-                        
-                        // lastTask
-                        if (cycle.lastTask) {
-                            const [taskId, unixSec] = cycle.lastTask.split('@');
-                            if (unixSec) {
-                                const date = new Date(parseInt(unixSec, 10) * 1000);
-                                // format as needed
-                                taskcycle.textContent = date.toLocaleString();
-                            } else {
-                                taskcycle.textContent = 'no available information to be displayed';
-                            }
+                    const cycleRow = document.createElement('tr');
+                    const prescore = document.createElement('td');
+                    const predate = document.createElement('td');
+                    const postscore = document.createElement('td');
+                    const postdate = document.createElement('td');
+                    const taskcycle = document.createElement('td');
+                    const view = document.createElement('td');
+                    
+                    // lastTask
+                    if (cycle.lastTask) {
+                        const [taskId, unixSec] = cycle.lastTask.split('@');
+                        if (unixSec) {
+                            const date = new Date(parseInt(unixSec, 10) * 1000);
+                            // format as needed
+                            taskcycle.textContent = date.toLocaleString();
                         } else {
                             taskcycle.textContent = 'no available information to be displayed';
                         }
-                        
-                        // preResponse
-                        if (cycle.preResponse) {
-                            const isoString = cycle.preResponse.recordedDate;
-                            const dateObj = new Date(isoString);
-                            prescore.textContent = cycle.preResponse.result.totalScore;
-                            predate.textContent = dateObj.toLocaleString();
-                        } else {
-                            prescore.textContent = 'N/A';
-                            predate.textContent = 'N/A';
-                        }
-                        
-                        // postResponse
-                        if (cycle.postResponse) {
-                            const isoString = cycle.postResponse.recordedDate;
-                            const dateObj = new Date(isoString);
-                            postscore.textContent = cycle.postResponse.result.totalScore;
-                            postdate.textContent = dateObj.toLocaleString();
-                        } else {
-                            postscore.textContent = 'N/A';
-                            postdate.textContent = 'N/A';
-                        }
-                        
-                        // view button
-                        view.innerHTML = '<button type="button" class="btn btn-success track-back">View</button>';
-                        view.addEventListener('click', () => {
-                            // store cycle
-                            localStorage.setItem('selectedCycle', JSON.stringify(cycle));
-                            window.location.href = "result_page.html";
-                        });
-                        
-                        cycleRow.append(prescore, predate, postscore, postdate, taskcycle, view);
-                        table.appendChild(cycleRow);
-                    });
-                }
-                
-                document.addEventListener("DOMContentLoaded", async () => {
-                    await extractHistory();
-                    displayTable();
+                    } else {
+                        taskcycle.textContent = 'no available information to be displayed';
+                    }
                     
-                    document.getElementById('logOut').addEventListener('click', () => {
-                        alert("Do you really want to sign out?");
-                        showSpinner();
-                        logOut(); 
-                        hideSpinner();
+                    // preResponse
+                    if (cycle.preResponse) {
+                        const isoString = cycle.preResponse.recordedDate;
+                        const dateObj = new Date(isoString);
+                        prescore.textContent = cycle.preResponse.result.totalScore;
+                        predate.textContent = dateObj.toLocaleString();
+                    } else {
+                        prescore.textContent = 'N/A';
+                        predate.textContent = 'N/A';
+                    }
+                    
+                    // postResponse
+                    if (cycle.postResponse) {
+                        const isoString = cycle.postResponse.recordedDate;
+                        const dateObj = new Date(isoString);
+                        postscore.textContent = cycle.postResponse.result.totalScore;
+                        postdate.textContent = dateObj.toLocaleString();
+                    } else {
+                        postscore.textContent = 'N/A';
+                        postdate.textContent = 'N/A';
+                    }
+                    
+                    // view button
+                    view.innerHTML = '<button type="button" class="btn btn-success track-back">View</button>';
+                    view.addEventListener('click', () => {
+                        // store cycle
+                        localStorage.setItem('selectedCycle', JSON.stringify(cycle));
+                        window.location.href = "result_page.html";
                     });
+                    
+                    cycleRow.append(prescore, predate, postscore, postdate, taskcycle, view);
+                    table.appendChild(cycleRow);
                 });
+            }
+            
+            document.addEventListener("DOMContentLoaded", async () => {
+                
+                document.getElementById('logOut').addEventListener('click', () => {
+                    alert("Do you really want to sign out?");
+                    showSpinner();
+                    logOut(); 
+                    hideSpinner();
+                });
+
+                await extractHistory();
+                displayTable();
                 
             });
             
