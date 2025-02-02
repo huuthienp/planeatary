@@ -331,7 +331,7 @@
                 }
             }
 
-            function displayQuestions(questionsData) {
+            function displayQuestions(questionsData, type) {
                 showSpinner();
                 cardContainer.innerHTML = ''; 
                 comparison.innerHTML = ''; 
@@ -339,39 +339,25 @@
                 completion_date.innerHTML='';
 
 
-                if (!questionsData.pointArray || !Array.isArray(questionsData.pointArray)) {
+                if (!questionsData.result.pointArray || !Array.isArray(questionsData.result.pointArray)) {
                     document.getElementById('curr_score').textContent = 'No score available.';
                     cardContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us to fix it.';
                     return;
                 }
 
-                
-                if (postResult) {
-                    let date = new Date(post_rec);
-                    header.innerHTML = 'POST-QUIZ RESULT';
+                    let date = new Date(questionsData.recordedDate);
+                    header.innerHTML = `${type}-QUIZ RESULT`;
                     let localHours = String(date.getHours()).padStart(2, "0");
                     let localMinutes = String(date.getMinutes()).padStart(2, "0");
                     let year = date.getFullYear();
                     let month = String(date.getMonth() + 1).padStart(2, '0'); 
                     let day = String(date.getDate()).padStart(2, '0');
                      
-                    document.getElementById('curr_score').textContent = questionsData.totalScore;
+                    document.getElementById('curr_score').textContent = questionsData.result.totalScore;
                     document.getElementById('total').textContent = 60;
                     completion_date.innerHTML = `Post quiz was completed at ${localHours}:${localMinutes} on ${day}/${month}/${year}`
                 
-                } else if (preResult) {
-                    let date = new Date(pre_rec);
-                    header.innerHTML = 'PRE-QUIZ RESULT';
-                    let localHours = String(date.getHours()).padStart(2, "0");
-                    let localMinutes = String(date.getMinutes()).padStart(2, "0");
-                    let year = date.getFullYear();
-                    let month = String(date.getMonth() + 1).padStart(2, '0'); 
-                    let day = String(date.getDate()).padStart(2, '0');
-
-                    document.getElementById('curr_score').textContent = questionsData.totalScore;
-                    document.getElementById('total').textContent = 60;
-                    completion_date.innerHTML = `Pre quiz was completed at ${localHours}:${localMinutes} on ${day}/${month}/${year}`
-                } 
+               
                 
                 // Iterate over each question in the pointArray
                 questionsData.pointArray.forEach((score, index) => {
@@ -406,9 +392,12 @@
                 const tohide = [
                 'div.circle',
                 'p.next-step',
+                'p.improvement',
                 'p.suggestion',
                 'button.select-tasks'
                 ];
+
+                header.innerHTML = 'Completed tasks';
                 
                 const tagsToHide = tohide.map(s => document.querySelector(s));
 
@@ -494,13 +483,14 @@
 
             ch.classList.add('disabled');
 
-            displayQuestions(postResult);
+            displayQuestions(postObject, 'POST');
             document.getElementById('postQ').style.backgroundColor = '#02897A';
             document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
             document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
+            document.querySelector("button.select-tasks > a").href = 'index.html';
             
-        } else if (preResult) {
+        } else if (preResult && !postResult) {
 
             // Show next step, suggestion, and select-tasks button as default
             const toshow = [
@@ -523,18 +513,18 @@
             ch.style.cursor = "pointer"; 
 
             //display preresult by default
-            displayQuestions(preResult);
+            displayQuestions(preObject, 'PRE');
 
             document.getElementById('preQ').style.backgroundColor = '#02897A';   
             document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
             document.getElementById('postQ').disabled = true; 
-            //displayQuestions(preResult);
+
         };
             
             document.getElementById('preQ').addEventListener('click', function() {
 
-                if (preResult) {
+                if (preResult && !postResult) {
                     const toshow = [
                     'p.next-step',
                     'p.suggestion',
@@ -549,16 +539,18 @@
                         (tag) => { tag.classList.remove('hidden');}
                         );
                     }
-                    
 
-                    displayQuestions(preResult);
-                    document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
-                    document.getElementById('postQ').style.transition = "all 1s";
-                    document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
-                    document.getElementById('com-tasks').style.transition = "all 1s";
-                    document.getElementById('preQ').style.backgroundColor = '#02897A';    
-                    document.getElementById('preQ').style.transition = "all 1s";
+                    document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';
+                    
                 }
+
+                displayQuestions(preObject, 'PRE');
+                document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
+                document.getElementById('postQ').style.transition = "all 1s";
+                document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
+                document.getElementById('com-tasks').style.transition = "all 1s";
+                document.getElementById('preQ').style.backgroundColor = '#02897A';    
+                document.getElementById('preQ').style.transition = "all 1s";
             });
             
             document.getElementById('postQ').addEventListener('click', function() {
@@ -575,13 +567,13 @@
                     
                     if (tagsToRemove) {
                         tagsToRemove.forEach(
-                        (tag) => { tag.classList.remove('hidden'); }
+                        (tag) => { tag.classList.add('hidden'); }
                         );
                     }
                     
                     document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
 
-                    displayQuestions(postResult);
+                    displayQuestions(postObject, 'POST');
                     document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                     document.getElementById('preQ').style.transition = "all 1s";
                     document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
