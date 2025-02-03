@@ -329,37 +329,34 @@
 
                 let tasks = JSON.parse(localStorage.getItem('tasks')); 
                 let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                
+                showSpinner();
                 if (!tasks) {
                     tasks = await fetchTasks();
                     localStorage.setItem('tasks', JSON.stringify(tasks));
                     tasks = JSON.parse(localStorage.getItem('tasks'));
                 }
                 
-                if (!fetched_tasks || fetched_tasks == null) {
-                    showSpinner();
+                if (!fetched_tasks) {
+                    
+                    await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
                     fetched_tasks = await fetchTaskStatus(preResponseId); 
                     localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
-                    hideSpinner();
                     fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+
                 } else {
                     if (!fetched_tasks.done || !fetched_tasks.chosen) {
-                        showSpinner();
                         fetched_tasks = await fetchTaskStatus(preResponseId); 
                         localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
-                        hideSpinner();
                         fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                     }
                 }
-                
-                
-                //console.log(fetched_tasks.chosen);
-                //console.log(fetched_tasks.status);
+
                 
                 if (!tasks || !preResult) {
                     QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
                     return;
                 }
+                hideSpinner();
                 
                 // Iterate over each question
                 Object.keys(tasks).forEach((questionKey, i) => {

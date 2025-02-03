@@ -218,53 +218,6 @@
                 
         document.addEventListener("DOMContentLoaded", async function() {
             
-            let preObject = JSON.parse(localStorage.getItem('preResult') || "{}");
-
-            let preResult = preObject.result;
-            let pre_rec = preObject.recordedDate;
-            let preResponseId = preObject.responseId;
-
-            let postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
-
-            let postResult = postObject.result;
-            let post_rec = postObject.recordedDate;
-
-            let tasks = JSON.parse(localStorage.getItem('tasks'));
-
-            if (!tasks) {
-                showSpinner();
-                tasks = await fetchTasks();  
-                hideSpinner();
-                localStorage.setItem('tasks', JSON.stringify(tasks));
-                tasks = JSON.parse(localStorage.getItem('tasks'));
-            }
-
-            //Ensure up-to-date whether the user use the same device, but beware of API rate limits
-            try {
-                showSpinner();
-                var com_tasks = await fetchTaskStatus(preResponseId);
-                hideSpinner();
-                
-                if (!com_tasks || com_tasks.status === 403) {
-                    console.warn("Error fetching task status:", com_tasks);
-                    alert("The system isn't working properly. Please return to home page and try again");
-                    window.location.href = "index.html";
-                    hideSpinner();
-                    return;
-                }
-                
-                localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
-                var detailed = com_tasks;
-                var task_rec = detailed.time; 
-                
-                
-            } catch (err) {
-                console.error("Caught error from fetchTaskStatus:", err);
-                alert("The system isn't working properly. Please return to home page and try again");
-                window.location.href = "index.html";
-                hideSpinner();
-            }
-            
 
             document.getElementById('postQ').style.color = 'white';
             document.getElementById('preQ').style.color = 'white';
@@ -289,24 +242,19 @@
             (tag) => { if(tag) {tag.classList.remove('hidden');} }
             );
 
-            if (storedCycle) {
-                
-                preObject = storedCycle.preResponse;
-                preResult = preObject.result;
-                pre_rec = preObject.recordedDate;
-                preResponseId = preObject.responseId;
-                
-                postObject = storedCycle.postResponse;
-                postResult = postObject.result;
-                post_rec = postObject.recordedDate;
+            let preObject = JSON.parse(localStorage.getItem('preResult') || "{}");
 
-                showSpinner();
-                let selectTasks = await fetchTaskStatus(preResponseId);
-                hideSpinner();
-                localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
-                detailed = selectTasks; 
-                
-            }
+            let preResult = preObject.result;
+            let pre_rec = preObject.recordedDate;
+            let preResponseId = preObject.responseId;
+
+            let postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
+
+            let postResult = postObject.result;
+            let post_rec = postObject.recordedDate;
+
+            var tasks = JSON.parse(localStorage.getItem('tasks'));
+            var com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
 
             // Retrieve tasks from localStorage or fetch if not available
             async function fetchTasks() {
@@ -330,8 +278,61 @@
                 }
                 return JSON.parse(taskData);
             }
-               
 
+            //Ensure up-to-date whether the user use the same device, but beware of API rate limits
+            try {
+                showSpinner();
+                await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
+                
+                if (!tasks) {
+                    tasks = await fetchTasks();  
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    tasks = JSON.parse(localStorage.getItem('tasks'));
+                }
+
+                if (!com_tasks) {
+                    com_tasks = await fetchTaskStatus(preResponseId);
+                    localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
+                    com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                }
+                
+                if (com_tasks.status === 403) {
+                    console.warn("Error fetching task status:", com_tasks);
+                    alert("The system isn't working properly. Please return to home page and try again");
+                    window.location.href = "index.html";
+                    return;
+                }
+                
+                if (storedCycle) {
+                    
+                    preObject = storedCycle.preResponse;
+                    preResult = preObject.result;
+                    pre_rec = preObject.recordedDate;
+                    preResponseId = preObject.responseId;
+                    
+                    postObject = storedCycle.postResponse;
+                    postResult = postObject.result;
+                    post_rec = postObject.recordedDate;
+                    
+                    var selectTasks = await fetchTaskStatus(preResponseId);
+                    localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
+                    var detailed = selectTasks; 
+                    var task_rec = detailed.time; 
+                    return;
+                }
+    
+                var detailed = com_tasks;
+                var task_rec = detailed.time; 
+                
+            } catch (err) {
+                console.error("Caught error from fetchTaskStatus:", err);
+                alert("The system isn't working properly. Please return to home page and try again");
+                window.location.href = "index.html";
+            } finally {
+                hideSpinner();
+            }
+
+            
             function compareScores() {
                 let preQuizTotal = preResult.totalScore;
                 if (postResult) {
