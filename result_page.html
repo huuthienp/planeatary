@@ -305,7 +305,6 @@
                     localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
                     var detailed = selectTasks; 
                     var task_rec = detailed.time; 
-                    return;
                 }
 
                 if (!tasks) {
@@ -318,6 +317,8 @@
                     com_tasks = await fetchTaskStatus(preResponseId);
                     localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
                     com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    var detailed = com_tasks;
+                    var task_rec = detailed.time; 
                 }
     
                 var detailed = com_tasks;
