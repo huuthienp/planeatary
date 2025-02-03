@@ -192,6 +192,8 @@
                     bOverlay.classList.add('hidden');
                     isLoading = false;
                 }, minDisplayTime - elapsedTime);
+                
+                // You hide spinner immediately again, skipping the delay:
                 spinner.classList.add('hidden');
                 bOverlay.classList.add('hidden');
                 isLoading = false;
@@ -352,7 +354,7 @@
             }
 
             function displayQuestions(questionsData, type) {
-                showSpinner();
+
                 cardContainer.innerHTML = ''; 
                 comparison.innerHTML = ''; 
                 header.innerHTML='';
@@ -400,7 +402,7 @@
                     cardContainer.appendChild(questionDiv);
                 });
                 compareScores();
-                hideSpinner();
+
 
             }
 
@@ -525,10 +527,10 @@
             ];
 
             const tagsToShow = toshow.map(s => document.querySelector(s));
-
-                tagsToShow.forEach(
-                (tag) => { if(tag) {tag.classList.remove('hidden');} }
-                );
+            
+            tagsToShow.forEach(
+            (tag) => { if(tag) {tag.classList.remove('hidden');} }
+            );
             
 
             ch.classList.remove('disabled');
@@ -556,9 +558,9 @@
                     
                     const tagsToShow = toshow.map(s => document.querySelector(s));
 
-                        tagsToShow.forEach(
-                        (tag) => { if (tag) {tag.classList.remove('hidden');}}
-                        );
+                    tagsToShow.forEach(
+                    (tag) => { if (tag) {tag.classList.remove('hidden');}}
+                    );
 
                     document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';
                     
