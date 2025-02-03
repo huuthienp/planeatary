@@ -9,9 +9,10 @@ exports.handler = async function (event, context) {
             && ('DELETE' === httpMethod.toUpperCase() || hasDanger(JSON.parse(eventBody)));
         const authDanger = danger && iamAdmin;
         const authNormal = !danger && (hasAuth || iamAdmin);
+        const userId = 'POST' === httpMethod.toUpperCase() ? '' : user_id || 'must-not-be-empty';  // prevent getting all users
         let headers = {};
         if (authDanger || authNormal) {
-            const response = await fetch(`${identity.url}/admin/users/${user_id || undefined}`/* prevent getting all users */, {
+            const response = await fetch(`${identity.url}/admin/users/${userId}`, {
                 method: httpMethod,
                 headers: { Authorization: `Bearer ${identity.token}` },
                 body: JSON.stringify(eventBody ? JSON.parse(eventBody) : undefined),
