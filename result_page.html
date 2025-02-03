@@ -98,13 +98,13 @@
             </div>
         </div>
         
-        <section class="overlay hidden" id="modalOverlay">
-            <div class="align">
-                <div class="modal hidden" id="taskModal"> 
+        <section class="overlay2 hidden2" id="modalOverlay">
+            <div class="align2">
+                <div class="modal2 hidden2" id="taskModal"> 
                     <div class="btn">
                         <button class="close">x</button>
                     </div>
-                    <div class="modal-content">
+                    <div class="modal_content">
                         <h2 id="modalTitle" style="padding: 0 20px;"></h2>
                         <p id="modalDescription" style="padding: 0 20px;"></p>
                     </div>
@@ -150,19 +150,19 @@
         
         // Function to show the modal
         function showModal(title, description) {
-            closeButt.classList.remove('hidden');
+            closeButt.classList.remove('hidden2');
             modalTitle.textContent = title;
             modalDescription.innerHTML = description;
-            tmodal.classList.remove("hidden");
+            tmodal.classList.remove("hidden2");
             tmodal.style.backgroundColor = 'white';
-            modalOverlay.classList.remove("hidden");
+            modalOverlay.classList.remove("hidden2");
         }
 
         // Function to close the modal
         function closeModal() {
-            closeButt.classList.remove('hidden');
-            tmodal.classList.add("hidden");
-            modalOverlay.classList.add("hidden");
+            closeButt.classList.remove('hidden2');
+            tmodal.classList.add("hidden2");
+            modalOverlay.classList.add("hidden2");
         }
 
         // Close modal when user clicks the close button
@@ -287,6 +287,26 @@
             try {
 
                 showSpinner();
+
+                if (storedCycle) {
+                    
+                    preObject = storedCycle.preResponse;
+                    preResult = preObject.result;
+                    pre_rec = preObject.recordedDate;
+                    preResponseId = preObject.responseId;
+                    
+                    postObject = storedCycle.postResponse;
+                    postResult = postObject.result;
+                    post_rec = postObject.recordedDate;
+                    
+                    var selectTasks = await fetchTaskStatus(preResponseId);
+                    localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
+                    var detailed = selectTasks; 
+                    var task_rec = detailed.time; 
+                    return;
+
+                }
+
                 await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
                 
                 if (!tasks) {
@@ -305,24 +325,6 @@
                     console.warn("Error fetching task status:", com_tasks);
                     alert("The system isn't working properly. Please return to home page and try again");
                     window.location.href = "index.html";
-                    return;
-                }
-                
-                if (storedCycle) {
-                    
-                    preObject = storedCycle.preResponse;
-                    preResult = preObject.result;
-                    pre_rec = preObject.recordedDate;
-                    preResponseId = preObject.responseId;
-                    
-                    postObject = storedCycle.postResponse;
-                    postResult = postObject.result;
-                    post_rec = postObject.recordedDate;
-                    
-                    var selectTasks = await fetchTaskStatus(preResponseId);
-                    localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
-                    var detailed = selectTasks; 
-                    var task_rec = detailed.time; 
                     return;
                 }
     
@@ -466,9 +468,13 @@
                             
                         });
                     });
+
+                    var firstNullIndex = detailed.time.findIndex(function(el) {
+                        return el == null;
+                    });
                     
                     //Check if all chosen tasks are completed.
-                    if (detailed.done.length == detailed.chosen.length) {
+                    if (firstNullIndex === -1) {
                         const latestTimestamp = Math.max(...task_rec);
                         let date = new Date(latestTimestamp);
                         let day = String(date.getDate()).padStart(2, '0');      
