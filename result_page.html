@@ -245,7 +245,7 @@
             hideSpinner();
 
             localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
-            detailed = com_tasks; 
+            var detailed = com_tasks; 
             var task_rec = detailed.time;
 
             document.getElementById('postQ').style.color = 'white';
