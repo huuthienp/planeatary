@@ -8,7 +8,7 @@ exports.handler = async function (event, context) {
         const danger = 'DELETE' === httpMethod.toUpperCase() || hasDanger(JSON.parse(eventBody));
         const authDanger = danger && iamAdmin;
         const authNormal = !danger && (hasAuth || iamAdmin);
-        let headers;
+        let headers = {};
         if (authDanger || authNormal) {
             const response = await fetch(`${identity.url}/admin/users/${user_id || undefined}`/* prevent getting all users */, {
                 method: httpMethod,
