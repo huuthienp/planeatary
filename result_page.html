@@ -238,19 +238,15 @@
                 localStorage.setItem('tasks', JSON.stringify(tasks));
                 tasks = JSON.parse(localStorage.getItem('tasks'));
             }
-            
-            let detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
-            
-            if (detailed == null || !detailed.done) {
-                showSpinner();
-                const com_tasks = await fetchTaskStatus(preResponseId);
-                hideSpinner();
-                localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
-                detailed = com_tasks; 
-                
-            } else {
-                var task_rec = detailed.time;
-            }
+
+            //Ensure up-to-date whether the user use the same device, but beware of API rate limits
+            showSpinner();
+            const com_tasks = await fetchTaskStatus(preResponseId);
+            hideSpinner();
+
+            localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
+            detailed = com_tasks; 
+            var task_rec = detailed.time;
 
             document.getElementById('postQ').style.color = 'white';
             document.getElementById('preQ').style.color = 'white';
@@ -270,12 +266,10 @@
             ];
 
             const tagsToShow = toshow.map(s => document.querySelector(s));
-
-            if (tagsToShow) {
-                tagsToShow.forEach(
-                (tag) => { tag.classList.remove('hidden'); }
-                );
-            }
+            
+            tagsToShow.forEach(
+            (tag) => { if(tag) {tag.classList.remove('hidden');} }
+            );
 
             if (storedCycle) {
                 
