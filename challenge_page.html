@@ -101,7 +101,7 @@
         
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script type="module">
-            import { fetchTaskStatus, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
+            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
 
             //ensure the data's cycle selected from history page is always removed
             localStorage.removeItem('selectedCycle');
@@ -169,7 +169,7 @@
                 alert("Do you really want to sign out?");
                 showSpinner();
                 logOut();
-                showSpinner();
+                hideSpinner();
             });
 
             // Retrieve tasks from localStorage or fetch if not available
@@ -214,21 +214,6 @@
             
             document.addEventListener("DOMContentLoaded", async function() {
 
-                // Retrieve tasks from localStorage
-                let tasks = JSON.parse(localStorage.getItem('tasks'));
-                
-                let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
-                
-                //fetch up-to-date info
-                if (!Tstatus.done || !Tstatus.chosen) {
-                    showSpinner();
-                    let Tstatus = await fetchTaskStatus(preResponseId);
-                    hideSpinner();
-                    
-                    localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
-                }
-
-                
 
                 const modalOverlay = document.getElementById("modalOverlay");
                 const modalTitle = document.getElementById("modalTitle");
@@ -265,8 +250,33 @@
                 // Function to display selected tasks and allow status update
                 async function displaySelectedTasks(tasks) {
                     cardContainer.innerHTML = '';  
-                    
-                    Object.keys(tasks).forEach(questionKey => {
+                    showSpinner();
+                    //fetch up-to-date info
+                    try {
+                        
+                         // Retrieve tasks from localStorage
+                        var tasks = JSON.parse(localStorage.getItem('tasks'));
+                        var fetched = await fetchTaskStatus(preResponseId);
+                        hideSpinner();
+
+                        if(!tasks) {
+                            tasks = await fetchTasks();
+                            localStorage.setItem('tasks', JSON.stringify(tasks));
+                            tasks = JSON.parse(localStorage.getItem('tasks'));
+                        }
+                        
+                        if (!fetched || fetched.status === 403) {
+                            console.warn("Error fetching task status:", fetched);
+                            alert("The system isn't working properly. Please return to home page and try again");
+                            window.location.href = "index.html";
+                            hideSpinner();
+                            return;
+                        }
+                        
+                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched));
+                        var Tstatus = fetched;
+
+                        Object.keys(tasks).forEach(questionKey => {
                         const taskGroup = tasks[questionKey].tasks;
                         
                         // Filter tasks that are selected
@@ -335,55 +345,48 @@
                                         completion.innerHTML = "Completed";
                                         let timestamp = Date.now();
                                         task.finishTime = timestamp;
+                                        Tstatus.done.push(String(task.taskNumber));
+                                        Tstatus.time.push(timestamp);
                                     } else {
                                         taskCard.style.color = 'rgb(71, 71, 71)';
                                         taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
                                         taskName.style.textDecoration = "none";
                                         completion.innerHTML = "Done";
-                                        task.finishTime = '';
+                                        task.finishTime = "";
+                                        let doneIndex = Tstatus.done.indexOf(String(task.taskNumber));
+                                        let timeIndex = Tstatus.time.indexOf(String(task.taskNumber));
+                                        Tstatus.done.slice(timeIndex, 1);
+                                        Tstatus.time.slice(timeIndex, 1);
                                         
                                     }
                                     // Update task in localStorage
                                     localStorage.setItem('tasks', JSON.stringify(tasks));
+                                    localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                                     updateNextButton();  
                                     
-                                });
-                                
-                                localStorage.setItem('tasks', JSON.stringify(tasks));
-                                showSpinner();
-                                updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
-                                hideSpinner();
-                                updateNextButton();                 
+                                });              
                             }
                         });
                     });
                     
-                    cardContainer.appendChild(nextButtonContainer);
-
                     localStorage.setItem('tasks', JSON.stringify(tasks));
-                    showSpinner();
-                    updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
-                    let Taskstatus = await fetchTaskStatus(preResponseId);
-                    localStorage.setItem('fetched_tasks', JSON.stringify(Taskstatus));
-                    Tstatus = Taskstatus;
-                    hideSpinner();
+                    localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
+                    await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
                     updateNextButton(); 
-                }
-
-                // Check if tasks exist in localStorage
-                if (tasks) {
-                    displaySelectedTasks(tasks); // Display tasks
-                } else {
-                    let tasks = await fetchTasks();
-                    localStorage.setItem('tasks', JSON.stringify(tasks));
-                    tasks = JSON.parse(localStorage.getItem('tasks'));
-                    showSpinner();
-                    let fetchedTasks = await fetchTaskStatus(preResponseId); 
+                    
+                    cardContainer.appendChild(nextButtonContainer);
+                    
+                } catch (err) {
+                    console.error("Caught error from fetchTaskStatus:", err);
+                    alert("The system isn't working properly. Please return to home page and try again");
+                    window.location.href = "index.html";
+                } finally {
                     hideSpinner();
-                    localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks)); 
-                    let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    displaySelectedTasks(tasks);
                 }
+                
+                }
+                    
+                displaySelectedTasks(tasks);
                 
                 // Function to update the Next button's state
                 function updateNextButton() {
@@ -404,6 +407,7 @@
                         btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
                         btn_next.style.cursor = "pointer";
                         btn_next.disabled = false;
+                        updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
                     } else {
                         btn_next.style.pointerEvents = "none"; // Disable the next button
                         btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed

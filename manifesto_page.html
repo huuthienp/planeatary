@@ -339,15 +339,15 @@
                 if (!fetched_tasks || fetched_tasks == null) {
                     showSpinner();
                     fetched_tasks = await fetchTaskStatus(preResponseId); 
-                    hideSpinner();
                     localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
+                    hideSpinner();
                     fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                } else if (fetched_tasks !== null) {
+                } else {
                     if (!fetched_tasks.done || !fetched_tasks.chosen) {
                         showSpinner();
                         fetched_tasks = await fetchTaskStatus(preResponseId); 
-                        hideSpinner();
                         localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
+                        hideSpinner();
                         fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                     }
                 }

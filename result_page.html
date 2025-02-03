@@ -118,7 +118,7 @@
     </div>
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script type="module">
-        import { fetchTaskStatus,  extractTaskData } from './scripts/helpers.mjs';
+        import { fetchTaskStatus, extractTaskData } from './scripts/helpers.mjs';
 
         const Qbuttoncontainer = document.querySelector(".pre-postQ");
         const Pre_Q = document.querySelector("#preQ");
@@ -250,7 +250,6 @@
                     alert("The system isn't working properly. Please return to home page and try again");
                     window.location.href = "index.html";
                     hideSpinner();
-                    
                     return;
                 }
                 
@@ -295,7 +294,7 @@
                 preObject = storedCycle.preResponse;
                 preResult = preObject.result;
                 pre_rec = preObject.recordedDate;
-                preResponseId = preResult.responseId;
+                preResponseId = preObject.responseId;
                 
                 postObject = storedCycle.postResponse;
                 postResult = postObject.result;
