@@ -250,33 +250,8 @@
                 // Function to display selected tasks and allow status update
                 async function displaySelectedTasks(tasks) {
                     cardContainer.innerHTML = '';  
-                    showSpinner();
-                    //fetch up-to-date info
-                    try {
-                        
-                         // Retrieve tasks from localStorage
-                        var tasks = JSON.parse(localStorage.getItem('tasks'));
-                        var fetched = await fetchTaskStatus(preResponseId);
-                        hideSpinner();
-
-                        if(!tasks) {
-                            tasks = await fetchTasks();
-                            localStorage.setItem('tasks', JSON.stringify(tasks));
-                            tasks = JSON.parse(localStorage.getItem('tasks'));
-                        }
-                        
-                        if (!fetched || fetched.status === 403) {
-                            console.warn("Error fetching task status:", fetched);
-                            alert("The system isn't working properly. Please return to home page and try again");
-                            window.location.href = "index.html";
-                            hideSpinner();
-                            return;
-                        }
-                        
-                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched));
-                        var Tstatus = fetched;
-
-                        Object.keys(tasks).forEach(questionKey => {
+                    
+                    Object.keys(tasks).forEach(questionKey => {
                         const taskGroup = tasks[questionKey].tasks;
                         
                         // Filter tasks that are selected
@@ -355,8 +330,8 @@
                                         task.finishTime = "";
                                         let doneIndex = Tstatus.done.indexOf(String(task.taskNumber));
                                         let timeIndex = Tstatus.time.indexOf(String(task.taskNumber));
-                                        Tstatus.done.slice(timeIndex, 1);
-                                        Tstatus.time.slice(timeIndex, 1);
+                                        Tstatus.done.splice(doneIndex, 1);
+                                        Tstatus.time.splice(timeIndex, 1);
                                         
                                     }
                                     // Update task in localStorage
@@ -373,21 +348,10 @@
                     localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                     await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
                     updateNextButton(); 
-                    
                     cardContainer.appendChild(nextButtonContainer);
                     
-                } catch (err) {
-                    console.error("Caught error from fetchTaskStatus:", err);
-                    alert("The system isn't working properly. Please return to home page and try again");
-                    window.location.href = "index.html";
-                } finally {
-                    hideSpinner();
                 }
-                
-                }
-                    
-                displaySelectedTasks(tasks);
-                
+
                 // Function to update the Next button's state
                 function updateNextButton() {
                     let allCompleted = true;
@@ -407,7 +371,6 @@
                         btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
                         btn_next.style.cursor = "pointer";
                         btn_next.disabled = false;
-                        updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
                     } else {
                         btn_next.style.pointerEvents = "none"; // Disable the next button
                         btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
@@ -415,6 +378,38 @@
                         btn_next.disabled = true;
                     }
                 }
+
+                showSpinner();
+                try {
+  
+                    var tasks = JSON.parse(localStorage.getItem('tasks'));
+                    var fetched = await fetchTaskStatus(preResponseId);
+                    
+                    if(!tasks) {
+                        tasks = await fetchTasks();
+                        localStorage.setItem('tasks', JSON.stringify(tasks));
+                        tasks = JSON.parse(localStorage.getItem('tasks'));
+                    }
+                    
+                    if (!fetched || fetched.status === 403) {
+                        console.warn("Error fetching task status:", fetched);
+                        alert("The system isn't working properly. Please return to home page and try again");
+                        window.location.href = "index.html";
+                        return;
+                    }
+                    
+                    localStorage.setItem('fetched_tasks', JSON.stringify(fetched));
+                    var Tstatus = fetched;
+                    displaySelectedTasks(tasks);
+                    
+                } catch (err) {
+                    console.error("Caught error from fetchTaskStatus:", err);
+                    alert("The system isn't working properly. Please return to home page and try again");
+                    window.location.href = "index.html";
+                } finally {
+                    hideSpinner();
+                }
+                
             });
         </script>
     </body>
