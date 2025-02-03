@@ -113,6 +113,7 @@
                         bOverlay.classList.add('hidden');
                         isLoading = false;
                     }, minDisplayTime - elapsedTime);
+                } else {
                     spinner.classList.add('hidden');
                     bOverlay.classList.add('hidden');
                     isLoading = false;
@@ -170,16 +171,59 @@
 
             // Initial check for preResult
             updateNextButton();
-
             // Set up an interval to check for changes in localStorage
             setInterval(updateNextButton, 1000);
-
 
         </script>      
         <script defer type="module">
             import { initiateSurvey } from './scripts/helpers.mjs';
             const quizFrame = document.querySelector('div.content > iframe.quiz');
-            const quizUrl = initiateSurvey('post', quizFrame);
+
+            function checkLastTaskStatus() {
+                const user = netlifyIdentity.gotrue.currentUser();
+                const metadata = user.user_metadata;
+                const responseHistory = metadata.responseHistory;
+                let latest_pre = "";
+                let latest_post = "";
+                let latest_task = "";
+                let history = [];
+                
+                //handle first-time user
+                if (!metadata || !metadata.responseHistory) {
+                    console.warn("No responseHistory found for this user.");
+                    return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
+                }
+                
+                Object.keys(responseHistory).forEach((cycleKey) =>{
+                    const entry = responseHistory[cycleKey];
+                    history.push(entry);
+                    if (entry.preId && entry.postId) {
+                        latest_pre = entry.preId;
+                        latest_post = entry.postId;
+                    }
+                    if (!entry.postId) {
+                        latest_pre = entry.preId;
+                        latest_post = "";
+                    }
+                    if (!entry.lastTask) {
+                        lastest_task = entry.lastTask;
+                    }
+                    
+                })
+                const cycle = {lastPre: latest_pre, lastPost: latest_post, lastTask: lastest_task};
+                return cycle
+            }
+
+            const taskCheck = checkLastTaskStatus();
+            if (taskCheck.lastPre !== null || "") {
+                if (taskCheck.lastTask !== "" && taskCheck.lastPost == "") {
+                    var quizUrl = initiateSurvey('post', quizFrame);
+                } else {
+                    //Unsure about this logic yet
+                    quizFrame.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
+                }
+            }
+            
         </script>
 </body>
 </html>

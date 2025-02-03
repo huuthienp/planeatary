@@ -554,8 +554,6 @@
         * between d8be6a5dfcab3936113b39596591a055af44e578
         *     and f4cae0a8896a980fb9607449a47df37c841c56f7 */
         
-        //let preResponseId = localStorage.getItem('preResponseId'); 
-        
         
         function showSpinner() {
             spinner.classList.remove('hidden');
@@ -705,8 +703,7 @@
             } else if (quizObj.lastPre !== "") {
                 let quizData = await fetchResponseIdFromNetlify("pre", quizObj.lastPre);
                 localStorage.setItem("preResult", JSON.stringify(quizData));
-            }
-            
+            } 
         }
         
         function showSignInModal() {
@@ -904,7 +901,9 @@
             netlifyIdentity.gotrue.signup(emailInput.value, passwordInput.value, {full_name: nameField.value})
             .then((r) => {
                 console.log('Successful signup!', emailInput.value);
-                window.location.href = "account manage.html";
+
+                //Please add more logic according to your completed code
+                //window.location.href = "account manage.html";
             })
             .catch((e) => {
                 console.error('Caught', e)
