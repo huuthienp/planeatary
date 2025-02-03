@@ -102,7 +102,7 @@
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script type="module">
             import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
-
+            
             //ensure the data's cycle selected from history page is always removed
             localStorage.removeItem('selectedCycle');
             
@@ -119,102 +119,10 @@
             
             const cardContainer = document.querySelector(".card");
             
-            let preResult = JSON.parse(localStorage.getItem('preResult')); 
-            let preResponseId =  preResult.responseId;
-            
-            function delay(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
-            
-            function showSpinner() {
-                //console.log("Showing spinner...");
-                spinner.classList.remove('hidden');
-                spOver.classList.remove('hidden');
-                isLoading = true;
-                spinnerStartTime = Date.now();
-            }
-            
-            // Function to hide the spinner
-            function hideSpinner() {
-                const elapsedTime = Date.now() - spinnerStartTime;
-                
-                if (elapsedTime < minDisplayTime) {
-                    // Delay hiding spinner until the minimum display time
-                    setTimeout(() => {
-                        spinner.classList.add('hidden');
-                        spOver.classList.add('hidden');
-                        isLoading = false;
-                    }, minDisplayTime - elapsedTime);
-                } else {
-                    spinner.classList.add('hidden');
-                    spOver.classList.add('hidden');
-                    isLoading = false;
-                }
-                
-            }
-            
-            function logOut() {
-                if (netlifyIdentity.gotrue.currentUser() !== null) {
-                    let user = netlifyIdentity.gotrue.currentUser();
-                    user.logout().then(() => {
-                        console.log('User has been logged out!');
-                        window.location.href = "index.html";
-                    });
-                } else {
-                    console.log("No user is logged in!");
-                }
-            }
-            
-            document.getElementById('logOut').addEventListener('click', () => {
-                alert("Do you really want to sign out?");
-                showSpinner();
-                logOut();
-                hideSpinner();
-            });
-
-            // Retrieve tasks from localStorage or fetch if not available
-            async function fetchTasks() {
-                    const taskData = localStorage.getItem('tasks');
-                    if (!taskData) {
-                        try {
-                            const response = await fetch('updated_tasks_final.json');
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok ' + response.statusText);
-                            }
-                            const data = await response.json();
-                            return data;
-                        } catch (error) {
-                            console.error('Fetch error:', error);
-                            alert('Failed to load tasks. Please try again later.');
-                            return null;
-                        };
-                        
-                    }
-                    return JSON.parse(taskData);
-                }
-                
-                
-                 
-                const nextButtonContainer = document.querySelector(".btn-next");
-                const btn_next = document.querySelector(".next")
-                btn_next.id = "btn_next";
-                btn_next.style.pointerEvents = "none"; 
-                btn_next.style.backgroundColor = "grey"; 
-                btn_next.style.cursor = "not-allowed"; 
-                
-                nextButtonContainer.appendChild(btn_next);
-                
-                btn_next.addEventListener("click", function () {
-                    if (btn_next.style.pointerEvents === "auto") {
-                        window.location.href = "congrat_page.html";
-                    }
-                });
-                
-            
             
             document.addEventListener("DOMContentLoaded", async function() {
-
-
+                
+                
                 const modalOverlay = document.getElementById("modalOverlay");
                 const modalTitle = document.getElementById("modalTitle");
                 const modalDescription = document.getElementById("modalDescription");
@@ -235,7 +143,7 @@
                     modal.classList.add("hidden2");
                     modalOverlay.classList.add("hidden2");
                 }
-
+                
                 
                 // Close modal when user clicks the close button
                 document.querySelector(".close").addEventListener("click", closeModal);
@@ -246,6 +154,95 @@
                         closeModal();
                     }
                 });
+                
+                const nextButtonContainer = document.querySelector(".btn-next");
+                const btn_next = document.querySelector(".next")
+                btn_next.id = "btn_next";
+                btn_next.style.pointerEvents = "none"; 
+                btn_next.style.backgroundColor = "grey"; 
+                btn_next.style.cursor = "not-allowed"; 
+                
+                nextButtonContainer.appendChild(btn_next);
+                
+                btn_next.addEventListener("click", function () {
+                    if (btn_next.style.pointerEvents === "auto") {
+                        window.location.href = "congrat_page.html";
+                    }
+                });
+                
+                var preResult = JSON.parse(localStorage.getItem('preResult')); 
+                var preResponseId =  preResult.responseId;
+                
+                function delay(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                }
+                
+                function showSpinner() {
+                    //console.log("Showing spinner...");
+                    spinner.classList.remove('hidden');
+                    spOver.classList.remove('hidden');
+                    isLoading = true;
+                    spinnerStartTime = Date.now();
+                }
+                
+                // Function to hide the spinner
+                function hideSpinner() {
+                    const elapsedTime = Date.now() - spinnerStartTime;
+                    
+                    if (elapsedTime < minDisplayTime) {
+                        // Delay hiding spinner until the minimum display time
+                        setTimeout(() => {
+                            spinner.classList.add('hidden');
+                            spOver.classList.add('hidden');
+                            isLoading = false;
+                        }, minDisplayTime - elapsedTime);
+                    } else {
+                        spinner.classList.add('hidden');
+                        spOver.classList.add('hidden');
+                        isLoading = false;
+                    }
+                    
+                }
+                
+                function logOut() {
+                    if (netlifyIdentity.gotrue.currentUser() !== null) {
+                        let user = netlifyIdentity.gotrue.currentUser();
+                        user.logout().then(() => {
+                            console.log('User has been logged out!');
+                            window.location.href = "index.html";
+                        });
+                    } else {
+                        console.log("No user is logged in!");
+                    }
+                }
+                
+                document.getElementById('logOut').addEventListener('click', () => {
+                    alert("Do you really want to sign out?");
+                    showSpinner();
+                    logOut();
+                    hideSpinner();
+                });
+                
+                // Retrieve tasks from localStorage or fetch if not available
+                async function fetchTasks() {
+                    const taskData = localStorage.getItem('tasks');
+                    if (!taskData) {
+                        try {
+                            const response = await fetch('updated_tasks_final.json');
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok ' + response.statusText);
+                            }
+                            const data = await response.json();
+                            return data;
+                        } catch (error) {
+                            console.error('Fetch error:', error);
+                            alert('Failed to load tasks. Please try again later.');
+                            return null;
+                        };
+                        
+                    }
+                    return JSON.parse(taskData);
+                }
                 
                 // Function to display selected tasks and allow status update
                 async function displaySelectedTasks(tasks) {
@@ -351,7 +348,7 @@
                     cardContainer.appendChild(nextButtonContainer);
                     
                 }
-
+                
                 // Function to update the Next button's state
                 function updateNextButton() {
                     let allCompleted = true;
@@ -378,10 +375,10 @@
                         btn_next.disabled = true;
                     }
                 }
-
-                showSpinner();
+                
+                
                 try {
-  
+                    showSpinner();
                     var tasks = JSON.parse(localStorage.getItem('tasks'));
                     var fetched = await fetchTaskStatus(preResponseId);
                     

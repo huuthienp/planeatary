@@ -244,11 +244,11 @@
             (tag) => { if(tag) {tag.classList.remove('hidden');} }
             );
 
-            let preObject = JSON.parse(localStorage.getItem('preResult') || "{}");
+            var preObject = JSON.parse(localStorage.getItem('preResult') || "{}");
 
-            let preResult = preObject.result;
-            let pre_rec = preObject.recordedDate;
-            let preResponseId = preObject.responseId;
+            var preResult = preObject.result;
+            var pre_rec = preObject.recordedDate;
+            var preResponseId = preObject.responseId;
 
             if (!preResult || !preResponseId) {
                 alert("No pre quiz found. Please do the quiz first.");
@@ -256,10 +256,10 @@
                 return;
             }
 
-            let postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
+            var postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
 
-            let postResult = postObject.result;
-            let post_rec = postObject.recordedDate;
+            var postResult = postObject.result;
+            var post_rec = postObject.recordedDate;
 
             var tasks = JSON.parse(localStorage.getItem('tasks'));
             var com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
@@ -285,7 +285,6 @@
                 return JSON.parse(taskData);
             }
 
-            //Ensure up-to-date whether the user use the same device, but beware of API rate limits
             try {
 
                 showSpinner();
@@ -306,28 +305,22 @@
                     var detailed = selectTasks; 
                     var task_rec = detailed.time; 
                     return;
-
                 }
 
-                await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
-                
                 if (!tasks) {
                     tasks = await fetchTasks();  
                     localStorage.setItem('tasks', JSON.stringify(tasks));
                     tasks = JSON.parse(localStorage.getItem('tasks'));
                 }
 
-                if (!com_tasks) {
+                if (preResponseId && tasks) {
+                    await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
+                }
+
+                if (!com_tasks && preResponseId) {
                     com_tasks = await fetchTaskStatus(preResponseId);
                     localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
                     com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                }
-                
-                if (com_tasks.status === 403) {
-                    console.warn("Error fetching task status:", com_tasks);
-                    alert("The system isn't working properly. Please return to home page and try again");
-                    window.location.href = "index.html";
-                    return;
                 }
     
                 var detailed = com_tasks;
@@ -377,7 +370,7 @@
                      
                     document.getElementById('curr_score').textContent = questionsData.result.totalScore;
                     document.getElementById('total').textContent = 60;
-                    completion_date.innerHTML = `Post quiz was completed at ${localHours}:${localMinutes} on ${day}/${month}/${year}`
+                    completion_date.innerHTML = `${type}-quiz was completed at ${localHours}:${localMinutes} on ${day}/${month}/${year}`
                 
                
                 
@@ -428,7 +421,7 @@
                     );
 
                 if (!detailed) {
-                    cardContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us to fix it.';
+                    cardContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us sometime to fix it.';
                     return;
                 }
 
@@ -472,7 +465,7 @@
                     });
 
                     var firstNullIndex = detailed.time.findIndex(function(el) {
-                        return el == null;
+                        return el == "";
                     });
                     
                     //Check if all chosen tasks are completed.
@@ -559,7 +552,7 @@
                     const tagsToShow = toshow.map(s => document.querySelector(s));
 
                     tagsToShow.forEach(
-                    (tag) => { if (tag) {tag.classList.remove('hidden');}}
+                    (tag) => { if (tag) {tag.classList.remove('hidden');} }
                     );
 
                     document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';

@@ -165,8 +165,8 @@
         const minDisplayTime = 2000; 
         let spinnerStartTime;
 
-        let preResult = JSON.parse(localStorage.getItem('preResult')); 
-        let preResponseId =  preResult.responseId;
+        var preResult = JSON.parse(localStorage.getItem('preResult')); 
+        var preResponseId =  preResult.responseId;
 
         function showSpinner() {
             spinner.classList.remove('hidden');
@@ -228,8 +228,6 @@
             let spinnerStartTime;
             let scores = [];
             let task_counts = 0;
-            
-            
             
             function Modal(source) {
                 close.classList.remove('hidden');
@@ -315,9 +313,6 @@
             
             async function renderQuestions(condition) {
                 QContainer.innerHTML = '';
-                let preResult = JSON.parse(localStorage.getItem('preResult')); 
-                let preResponseId =  preResult.responseId;
-                
                 
                 if(!preResult && !preResponseId) {
                     QContainer.innerHTML = '<p>No available information to be displayed</p>';
