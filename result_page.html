@@ -144,9 +144,6 @@
         let spinnerStartTime;
         let isLoading;
         const bOverlay = document.getElementById("spinnerOverlay");
-
-        //from history page
-        const storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
         
         // Function to show the modal
         function showModal(title, description) {
@@ -246,22 +243,6 @@
             (tag) => { if(tag) {tag.classList.remove('hidden');} }
             );
 
-            var preObject = JSON.parse(localStorage.getItem('preResult') || "{}");
-
-            var preResult = preObject.result;
-            var pre_rec = preObject.recordedDate;
-            var preResponseId = preObject.responseId;
-
-            if (!preResult || !preResponseId) {
-                alert("No pre quiz found. Please do the quiz first.");
-                window.location.href = "index.html";
-                return;
-            }
-
-            var postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
-
-            var postResult = postObject.result;
-            var post_rec = postObject.recordedDate;
 
             var tasks = JSON.parse(localStorage.getItem('tasks'));
             var com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
@@ -290,6 +271,24 @@
             try {
 
                 showSpinner();
+                var preObject = JSON.parse(localStorage.getItem('preResult') || "{}");
+
+                var preResult = preObject.result;
+                var pre_rec = preObject.recordedDate;
+                var preResponseId = preObject.responseId;
+                //from history page
+                var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+
+                if (!preResult || !preResponseId) {
+                    alert("No pre quiz found. Please do the quiz first.");
+                    window.location.href = "index.html";
+                    return;
+                }
+
+                var postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
+
+                var postResult = postObject.result;
+                var post_rec = postObject.recordedDate;
 
                 if (storedCycle) {
                     
@@ -555,6 +554,19 @@
 
                     document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';
                     
+                } else {
+                    const toshow = [
+                    'button.select-tasks',
+                    'div.circle'
+                    ];
+                    
+                    const tagsToShow = toshow.map(s => document.querySelector(s));
+
+                    tagsToShow.forEach(
+                    (tag) => { if (tag) {tag.classList.remove('hidden');} }
+                    );
+
+                    document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
                 }
 
                 displayQuestions(preObject, 'PRE');
@@ -578,11 +590,23 @@
                     
                     const tagsToRemove = toRemove.map(s => document.querySelector(s));
                     
-                        tagsToRemove.forEach(
-                        (tag) => { if (tag) {tag.classList.add('hidden');} }
-                        );
+                    tagsToRemove.forEach(
+                    (tag) => { if (tag) {tag.classList.add('hidden');} }
+                    );
+
+                    const toshow = [
+                    'button.select-tasks',
+                    'div.circle'
+                    ];
                     
+                    const tagsToShow = toshow.map(s => document.querySelector(s));
+
+                    tagsToShow.forEach(
+                    (tag) => { if (tag) {tag.classList.remove('hidden');} }
+                    );
+
                     document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
+
 
                     displayQuestions(postObject, 'POST');
                     document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
