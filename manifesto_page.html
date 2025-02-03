@@ -516,11 +516,11 @@
 
             // Attach single click listener for the start button navigation
             // update task status on `startButton` click
-            startButton.addEventListener('click', function(event) {
+            startButton.addEventListener('click', async function(event) {
                 let preResult = JSON.parse(localStorage.getItem('preResult')); 
                 let preResponseId =  preResult.responseId;
                 showSpinner();
-                updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
+                await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
                 hideSpinner();
                 if (task_counts >= 3) {
                     window.location.href = "challenge_page.html";

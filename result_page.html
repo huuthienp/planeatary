@@ -222,7 +222,7 @@
 
             let preResult = preObject.result;
             let pre_rec = preObject.recordedDate;
-            let preResponseId = preResult.responseId;
+            let preResponseId = preObject.responseId;
 
             let postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
 
@@ -240,13 +240,32 @@
             }
 
             //Ensure up-to-date whether the user use the same device, but beware of API rate limits
-            showSpinner();
-            const com_tasks = await fetchTaskStatus(preResponseId);
-            hideSpinner();
-
-            localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
-            var detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
-            var task_rec = detailed.time;
+            try {
+                showSpinner();
+                var com_tasks = await fetchTaskStatus(preResponseId);
+                hideSpinner();
+                
+                if (!com_tasks || com_tasks.status === 403) {
+                    console.warn("Error fetching task status:", com_tasks);
+                    alert("The system isn't working properly. Please return to home page and try again");
+                    window.location.href = "index.html";
+                    hideSpinner();
+                    
+                    return;
+                }
+                
+                localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
+                var detailed = com_tasks;
+                var task_rec = detailed.time; 
+                
+                
+            } catch (err) {
+                console.error("Caught error from fetchTaskStatus:", err);
+                alert("The system isn't working properly. Please return to home page and try again");
+                window.location.href = "index.html";
+                hideSpinner();
+            }
+            
 
             document.getElementById('postQ').style.color = 'white';
             document.getElementById('preQ').style.color = 'white';

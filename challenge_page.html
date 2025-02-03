@@ -217,6 +217,8 @@
                 // Retrieve tasks from localStorage
                 let tasks = JSON.parse(localStorage.getItem('tasks'));
                 
+                let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+                
                 //fetch up-to-date info
                 if (!Tstatus.done || !Tstatus.chosen) {
                     showSpinner();
@@ -226,7 +228,7 @@
                     localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
                 }
 
-                Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+                
 
                 const modalOverlay = document.getElementById("modalOverlay");
                 const modalTitle = document.getElementById("modalTitle");
