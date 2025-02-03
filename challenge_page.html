@@ -89,7 +89,7 @@
                     <div class="btn">
                         <button class="close">x</button>
                     </div>
-                    <div class="modal-content">
+                    <div class="modal_content">
                         <h2 id="modalTitle" style="padding: 0 20px;"></h2>
                         <p id="modalDescription" style="padding: 0 20px;"></p>
                     </div>
@@ -141,13 +141,11 @@
                 if (elapsedTime < minDisplayTime) {
                     // Delay hiding spinner until the minimum display time
                     setTimeout(() => {
-                        //console.log("Hiding spinner after min time...");
                         spinner.classList.add('hidden');
                         spOver.classList.add('hidden');
                         isLoading = false;
                     }, minDisplayTime - elapsedTime);
                 } else {
-                    //console.log("Hiding spinner...");
                     spinner.classList.add('hidden');
                     spOver.classList.add('hidden');
                     isLoading = false;
@@ -211,39 +209,7 @@
                     
                 }
                 
-                const modalOverlay = document.getElementById("modalOverlay");
-                const modalTitle = document.getElementById("modalTitle");
-                const modalDescription = document.getElementById("modalDescription");
-                
-                // Function to show the modal
-                function showModal(title, description) {
-                    closeButt.classList.remove('hidden');
-                    modalTitle.textContent = title;
-                    modalDescription.innerHTML = description;
-                    modal.classList.remove("hidden");
-                    modal.style.backgroundColor = 'white';
-                    modalOverlay.classList.remove("hidden");
-                }
-                
-                // Function to close the modal
-                function closeModal() {
-                    closeButt.classList.remove('hidden');
-                    modal.classList.add("hidden");
-                    modalOverlay.classList.add("hidden");
-                }
-
-                
-                // Close modal when user clicks the close button
-                document.querySelector(".close").addEventListener("click", closeModal);
-                
-                // Close modal when user clicks outside the modal
-                window.addEventListener("click", function(event) {
-                    if (event.target === modalOverlay) {
-                        closeModal();
-                    }
-                });
-                
-                
+                 
                 const nextButtonContainer = document.querySelector(".btn-next");
                 const btn_next = document.querySelector(".next")
                 btn_next.id = "btn_next";
@@ -262,11 +228,43 @@
             
             
             document.addEventListener("DOMContentLoaded", async function() {
+
+                const modalOverlay = document.getElementById("modalOverlay");
+                const modalTitle = document.getElementById("modalTitle");
+                const modalDescription = document.getElementById("modalDescription");
+                
+                // Function to show the modal
+                function showModal(title, description) {
+                    closeButt.classList.remove('hidden2');
+                    modalTitle.textContent = title;
+                    modalDescription.innerHTML = description;
+                    modal.classList.remove("hidden2");
+                    modal.style.backgroundColor = 'white';
+                    modalOverlay.classList.remove("hidden2");
+                }
+                
+                // Function to close the modal
+                function closeModal() {
+                    closeButt.classList.add('hidden2');
+                    modal.classList.add("hidden2");
+                    modalOverlay.classList.add("hidden2");
+                }
+
+                
+                // Close modal when user clicks the close button
+                document.querySelector(".close").addEventListener("click", closeModal);
+                
+                // Close modal when user clicks outside the modal
+                window.addEventListener("click", function(event) {
+                    if (event.target === modalOverlay) {
+                        closeModal();
+                    }
+                });
                 
                 
                 // Function to display selected tasks and allow status update
                 async function displaySelectedTasks(tasks) {
-                    cardContainer.innerHTML = '';  // Clear any existing content
+                    cardContainer.innerHTML = '';  
                     
                     Object.keys(tasks).forEach(questionKey => {
                         const taskGroup = tasks[questionKey].tasks;
@@ -288,6 +286,7 @@
                                 
                                 // Set the click event for the info icon to show the modal
                                 infoIcon.addEventListener('click', function(event) {
+                                    event.preventDefault();
                                     event.stopPropagation(); 
                                     showModal(task.taskName, task.taskDescription);
                                 });

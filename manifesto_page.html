@@ -106,7 +106,7 @@
                 <div class="btn">
                     <button class="close" id = "close">x</button>
                 </div>
-                <div class="modal-content">
+                <div class="modal_content">
                     <img id="visual_info" />
                 </div>
             </div>
@@ -233,7 +233,7 @@
             
             function Modal(source) {
                 close.classList.remove('hidden');
-                const modalContent = document.querySelector(".modal-content");
+                const modalContent = document.querySelector(".modal_content");
                 const image = document.getElementById("visual_info");
                 image.src = source;
                 modal.classList.remove('hidden');
@@ -478,10 +478,9 @@
                             checkbox.checked = task.choice === "chosen";
                             localStorage.setItem('tasks', JSON.stringify(tasks)); 
                             // update task status on `startButton` click
-                            // updateTaskStatus(task);
-                            // showSpinner();
-                            // updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
-                            // hideSpinner();
+                            showSpinner();
+                            updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
+                            hideSpinner();
                             updateStartButton(); 
                         });
                         

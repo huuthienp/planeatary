@@ -878,7 +878,7 @@ body {
   justify-content: flex-end;
 }
 
-.modal-content {
+.modal_content {
   display: flex;
   width: 80%;
   max-height: 90%;
