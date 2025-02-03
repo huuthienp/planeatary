@@ -19,12 +19,12 @@ exports.handler = async function (event, context) {
             const __log = ok ? console.log : console.error;
             __log(httpMethod, danger?'DANGER':'NORMAL', statusCode);
             const body = await response.text();
-            if (isJSON(body)) { headers = { 'Content-Type': 'application/json' }; }
+            headers = addContentType(body, headers);
             return ({ body, headers, statusCode });
         } else {  // auth fails
             const statusCode = 401, statusText = 'Unauthorized';
             const body = JSON.stringify({ code: statusCode, msg: statusText });  // imitate netlify identity endpoints
-            if (isJSON(body)) { headers = { 'Content-Type': 'application/json' }; }
+            headers = addContentType(body, headers);
             console.error(httpMethod, danger?'DANGER':'NORMAL', statusCode);
             return ({ body, headers, statusCode, statusText });  // skip request to admin
         }
@@ -37,15 +37,16 @@ exports.handler = async function (event, context) {
 
 
 function hasDanger(obj, safeString='metadata') {
-    for (const k of Object.keys(obj)) {
-        if (!k.includes(safeString)) {
-            return true;
-        }
-    }
+    for (const key of Object.keys(obj)) {
+        if (!key.includes(safeString)) { return true; }
+    }  // return true if any key lacks safe string in its name
     return false;
 }
 
 
-function isJSON(body) {
-    try { JSON.parse(body); return true; } catch(parseError) { return false; }
+function addContentType(body, headers) {
+    try {  // parse body as JSON and add proper content type
+        JSON.parse(body);
+        return { ...headers, 'Content-Type': 'application/json' };
+    } catch(parseError) { return headers; }
 }
