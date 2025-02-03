@@ -350,7 +350,7 @@
                 }
                 
                 // Function to update the Next button's state
-                function updateNextButton() {
+                async function updateNextButton() {
                     let allCompleted = true;
                     
                     Object.keys(tasks).forEach(questionKey => {
@@ -368,6 +368,7 @@
                         btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
                         btn_next.style.cursor = "pointer";
                         btn_next.disabled = false;
+                        await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
                     } else {
                         btn_next.style.pointerEvents = "none"; // Disable the next button
                         btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed

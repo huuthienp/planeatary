@@ -192,8 +192,10 @@
                     bOverlay.classList.add('hidden');
                     isLoading = false;
                 }, minDisplayTime - elapsedTime);
-                
-                // You hide spinner immediately again, skipping the delay:
+                spinner.classList.add('hidden');
+                bOverlay.classList.add('hidden');
+                isLoading = false;
+            } else {
                 spinner.classList.add('hidden');
                 bOverlay.classList.add('hidden');
                 isLoading = false;
@@ -311,10 +313,6 @@
                     tasks = await fetchTasks();  
                     localStorage.setItem('tasks', JSON.stringify(tasks));
                     tasks = JSON.parse(localStorage.getItem('tasks'));
-                }
-
-                if (preResponseId && tasks) {
-                    await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
                 }
 
                 if (!com_tasks && preResponseId) {
