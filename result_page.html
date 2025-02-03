@@ -199,6 +199,24 @@
             }
         }
 
+        function detectAndParseTimestamp(ts) {
+            const length = String(ts).length;
+            
+            if (length <= 10) {
+                // 10 digits => seconds
+                return new Date(ts * 1000);
+            } else if (length === 13) {
+                // 13 digits => milliseconds
+                return new Date(ts);
+            } else {
+                const asSeconds = new Date(ts * 1000);
+                const asMillis = new Date(ts);
+                
+                // If asSeconds is around 1970 or 1971, and asMillis is more near current date, pick asMillis
+                return asMillis; 
+            }
+        }
+
         async function logOut() {
             if (netlifyIdentity.gotrue.currentUser() !== null) {
                 let user = netlifyIdentity.gotrue.currentUser();
@@ -468,8 +486,8 @@
                     
                     //Check if all chosen tasks are completed.
                     if (firstNullIndex === -1) {
-                        const latestTimestamp = Math.max(...task_rec);
-                        let date = new Date(latestTimestamp);
+                        let latestTimestamp = Math.max(...task_rec);
+                        let date = detectAndParseTimestamp(latestTimestamp);
                         let day = String(date.getDate()).padStart(2, '0');      
                         let month = String(date.getMonth() + 1).padStart(2, '0'); 
                         let year = date.getFullYear();                       

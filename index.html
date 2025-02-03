@@ -695,8 +695,10 @@
             return {quizObj: quizPair, historyObj: history}
         }
         
+        const {quizObj, historyObj} = ExtractUserMetadata();
+        
         async function ExtractQuizInfo() {
-            const {quizObj, historyObj} = ExtractUserMetadata();
+            
             if (quizObj.lastPost !== "") {
                 let postquizData = await fetchResponseIdFromNetlify("post", quizObj.lastPost);
                 localStorage.setItem("postResult", JSON.stringify(postquizData));
@@ -705,7 +707,11 @@
             } else if (quizObj.lastPre !== "") {
                 let quizData = await fetchResponseIdFromNetlify("pre", quizObj.lastPre);
                 localStorage.setItem("preResult", JSON.stringify(quizData));
-            } 
+            } else {
+                //handle a potentially first-time user
+                alert("Seems like you've not done any quiz before. Let's start with the pre-quiz!");
+                window.location.href = "qualtrics.html";
+            }
         }
         
         function showSignInModal() {
@@ -791,7 +797,7 @@
             alert("Do you really want to sign out?");
             showSpinner();
             logOut();
-            showSpinner();
+            hideSpinner();
         });
         
     })
