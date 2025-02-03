@@ -145,7 +145,7 @@
 
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script type="module">
-        import { fetchTaskStatus, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
+        import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
 
         //ensure the data's cycle selected from history page is always removed
         localStorage.removeItem('selectedCycle');
@@ -477,10 +477,8 @@
                             
                             checkbox.checked = task.choice === "chosen";
                             localStorage.setItem('tasks', JSON.stringify(tasks)); 
-                            // update task status on `startButton` click
-                            showSpinner();
-                            updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
-                            hideSpinner();
+                            
+                            
                             updateStartButton(); 
                         });
                         
@@ -501,6 +499,7 @@
             function updateStartButton() {
                 const startButton = document.querySelector(".start");
                 const persuade = document.getElementById("threetask");
+
                 if (task_counts >= 3) {
                     persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
                     persuade.style.color = 'black';
@@ -514,14 +513,16 @@
                 }
             }
             renderQuestions((score) => score < 3);
+
             // Attach single click listener for the start button navigation
+            // update task status on `startButton` click
             startButton.addEventListener('click', function(event) {
                 let preResult = JSON.parse(localStorage.getItem('preResult')); 
                 let preResponseId =  preResult.responseId;
+                showSpinner();
+                updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
+                hideSpinner();
                 if (task_counts >= 3) {
-                    showSpinner();
-                    updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
-                    hideSpinner();
                     window.location.href = "challenge_page.html";
                 }
             });

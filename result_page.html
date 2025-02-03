@@ -118,7 +118,7 @@
     </div>
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script type="module">
-        import { fetchTaskStatus } from './scripts/helpers.mjs';
+        import { fetchTaskStatus,  extractTaskData } from './scripts/helpers.mjs';
 
         const Qbuttoncontainer = document.querySelector(".pre-postQ");
         const Pre_Q = document.querySelector("#preQ");
@@ -245,7 +245,7 @@
             hideSpinner();
 
             localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
-            var detailed = com_tasks; 
+            var detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
             var task_rec = detailed.time;
 
             document.getElementById('postQ').style.color = 'white';
