@@ -139,13 +139,17 @@
                 
                 
                 var preObject = JSON.parse(localStorage.getItem('preResult'));
-                var preResult = preObject.result;
-                var pre_rec = preObject.recordedDate;
-                var preResponseId = preObject.responseId;
+                if(preObject) {
+                    var preResult = preObject.result;
+                    var pre_rec = preObject.recordedDate;
+                    var preResponseId = preObject.responseId;
+                }
                 
                 var postObject = JSON.parse(localStorage.getItem('postResult'));
-                var postResult = postObject.result;
-                var post_rec = postObject.recordedDate;
+                if (postObject) {
+                    var postResult = postObject.result;
+                    var post_rec = postObject.recordedDate;
+                }
                 
                 var tasks = JSON.parse(localStorage.getItem('tasks'));
                 var com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
