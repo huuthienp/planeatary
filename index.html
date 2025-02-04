@@ -715,8 +715,6 @@
             let allResponses = JSON.parse(localStorage.getItem('allResponses')) || {};
 
             if (quizObj.lastPost !== "" && allResponses) {
-                //let postquizData = await fetchResponseIdFromNetlify("post", quizObj.lastPost);
-                //let prequizData = await fetchResponseIdFromNetlify("pre", quizObj.lastPre);
                 Object.keys(allResponses).forEach((cycleKey) => {
                     const preQuiz = allResponses[cycleKey].preResponse;
                     const postQuiz = allResponses[cycleKey].postResponse;
@@ -729,7 +727,6 @@
                 });
 
             } else if (quizObj.lastPre !== "" && allResponses) {
-                //let quizData = await fetchResponseIdFromNetlify("pre", quizObj.lastPre);
                 Object.keys(allResponses).forEach((cycleKey) => {
                     const preQuiz = allResponses[cycleKey].preResponse;
                     if (preQuiz.responseId == quizObj.lastPre) {
@@ -756,13 +753,13 @@
                 const passwordInput2 = document.getElementById('passwordInput');
                 // Wait for login
                 const loginResult = await netlifyIdentity.gotrue.login(
-                emailInput2.value,
-                passwordInput2.value,
-                true
+                    emailInput2.value,
+                    passwordInput2.value,
+                    true
                 );
                 
                 document.querySelector(".home-hide").style.display = "flex";
-                document.querySelector(".button-hide").style.display = "none";
+                document.querySelector(".button-hide").style.visibility = "hidden";
                 console.log("Successful login!", emailInput2.value);
                 
                 // Wait for quiz info
