@@ -362,23 +362,30 @@
                         const taskCheck = checkLastTaskStatus();
 
                         if (postObject) {
-                            quizFrame.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
+                            quizFrame.style.display = 'none'; 
+                            document.querySelector('.btn-next').style.display = 'none';
+                            const fallbackMessage = document.createElement('div');
+                            fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
+                            quizFrame.parentElement.appendChild(fallbackMessage);
                         } else if (taskCheck.lastPre !== "") {
                             if (taskCheck.lastTask !== "" && taskCheck.lastPost == "") {
                                 var quizUrl = initiateSurvey('post', quizFrame);
                             } else if (taskCheck.lastTask !== "" && taskCheck.lastPost !== "") {
                                 quizFrame.style.display = 'none'; 
+                                document.querySelector('.btn-next').style.display = 'none';
                                 const fallbackMessage = document.createElement('div');
                                 fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                             } else {
                                 quizFrame.style.display = 'none'; 
+                                document.querySelector('.btn-next').style.display = 'none';
                                 const fallbackMessage = document.createElement('div');
                                 fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                             }
                         } else if (postQuiz) {
                             quizFrame.style.display = 'none'; 
+                            document.querySelector('.btn-next').style.display = 'none';
                             const fallbackMessage = document.createElement('div');
                             fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                             quizFrame.parentElement.appendChild(fallbackMessage);
@@ -390,7 +397,8 @@
                         
                     } catch (err) {
                         console.error("Caught error: ", err);
-                        quizFrame.style.display = 'none'; // Hide the iframe
+                        quizFrame.style.display = 'none';
+                        document.querySelector('.btn-next').style.display = 'none';
                         const fallbackMessage = document.createElement('div');
                         fallbackMessage.innerHTML = "Content cannot be displayed. Please try again later.";
                         fallbackMessage.style.color = "red";
