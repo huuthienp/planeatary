@@ -299,7 +299,7 @@
                         //from history page
                         var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
 
-                        await fetchResponses(userId);
+                        allRes = await fetchResponses(userId);
                         let allResponses = JSON.parse(localStorage.getItem('allResponses'));
                         let postQuiz = {};
                         let preQuiz = {};
