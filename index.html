@@ -767,6 +767,7 @@
                 
                 // Wait for quiz info
                 await ExtractQuizInfo();
+                alert("Form is valid, proceeding");
                 // Redirect
                 window.location.href = "result_page.html";
                 
@@ -803,11 +804,8 @@
                 passwordInput2.classList.remove('is-invalid');
             }
             
-            // If valid, submit the form or proceed further
             if (isValid) {
-                alert('Form is valid. Proceeding...');
                 signInAndRedirect();
-
             }
             
         });
