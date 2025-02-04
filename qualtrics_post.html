@@ -273,19 +273,22 @@
                             return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
                         }
                         
+                        //handle a user navigating directly from home page
                         Object.keys(responseHistory).forEach((cycleKey) =>{
                             const entry = responseHistory[cycleKey];
                             history.push(entry);
                             if (entry.preId && entry.postId) {
                                 latest_pre = entry.preId;
                                 latest_post = entry.postId;
-                            }
-                            if (!entry.postId) {
+                                latest_task = entry.lastTask;
+                            } else if (!entry.postId && entry.lastTask) {
                                 latest_pre = entry.preId;
                                 latest_post = "";
-                            }
-                            if (!entry.lastTask) {
                                 latest_task = entry.lastTask;
+                            } else if (!entry.lastTask && !entry.postId) {
+                                latest_pre = entry.preId;
+                                latest_post = "";
+                                latest_task = "";
                             }
                             
                         })
@@ -296,9 +299,8 @@
                     
                     try { 
                         showSpinner();
-                        //from history page
+                        //handle a user directly from the history page
                         var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
-
                         var allRes = await fetchResponses(userId);
                         let allResponses = JSON.parse(localStorage.getItem('allResponses'));
                         let postQuiz = {};
@@ -334,7 +336,7 @@
                                 post_rec = postObject.recordedDate;
                                 
                             } catch(err) {
-                                console.log("Couldn't find previous info:", err);
+                                console.log("Couldn't find previous info from history:", err);
                             }
                         }
 
@@ -358,15 +360,14 @@
                         }
                         
                         const taskCheck = checkLastTaskStatus();
-                        
 
                         if (postObject) {
                             quizFrame.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                         } else if (taskCheck.lastPre !== null || taskCheck.lastPre !== "") {
-                            if (taskCheck.lastTask !== "" && taskCheck.lastPost == "") {
+                            if (taskCheck.lastTask && !taskCheck.lastPost) {
                                 var quizUrl = initiateSurvey('post', quizFrame);
                             } else {
-                                quizFrame.style.display = 'none'; // Hide the iframe
+                                quizFrame.style.display = 'none'; 
                                 const fallbackMessage = document.createElement('div');
                                 fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                                 quizFrame.parentElement.appendChild(fallbackMessage);
@@ -388,6 +389,7 @@
                         const fallbackMessage = document.createElement('div');
                         fallbackMessage.innerHTML = "Content cannot be displayed. Please try again later.";
                         fallbackMessage.style.color = "red";
+                        nextButton.style.display = "none";
                         quizFrame.parentElement.appendChild(fallbackMessage);
                     } finally {
                         hideSpinner();
