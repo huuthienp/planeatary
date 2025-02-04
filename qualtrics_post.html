@@ -136,9 +136,7 @@
             <script defer type="module">
                 import { initiateSurvey } from './scripts/helpers.mjs';
                 const quizFrame = document.querySelector('div.content > iframe.quiz');
-                const user = netlifyIdentity.gotrue.currentUser();
-                const metadata = user.user_metadata;
-                const responseHistory = metadata.responseHistory;
+                
                 
                 var preObject = JSON.parse(localStorage.getItem('preResult'));
                 var preResult = preObject.result;
@@ -160,6 +158,11 @@
                 let history = [];
                 
                 document.addEventListener("DOMContentLoaded", () => {
+                    
+                    const netlifyIdentity = window.netlifyIdentity;
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
                     
                     function updateNextButton() {                  
                         if (postResult) {
