@@ -549,11 +549,11 @@
             document.querySelectorAll(".home-hide").forEach(element => {
                 element.style.display = "flex";
             });
+            document.querySelectorAll(".button-hide").forEach(element => {
+                element.style.display = "none";
+            });
         }
-        /* removed some javascript
-        * between d8be6a5dfcab3936113b39596591a055af44e578
-        *     and f4cae0a8896a980fb9607449a47df37c841c56f7 */
-        
+
         
         function showSpinner() {
             spinner.classList.remove('hidden');
@@ -759,7 +759,9 @@
                 );
                 
                 document.querySelector(".home-hide").style.display = "flex";
-                document.querySelector(".button-hide").style.visibility = "hidden";
+                document.querySelectorAll(".button-hide").forEach(button => {
+                    button.style.display = "none";
+                });
                 console.log("Successful login!", emailInput2.value);
                 
                 // Wait for quiz info

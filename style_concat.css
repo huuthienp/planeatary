@@ -29,7 +29,6 @@ body {
   display: flex;
 }
 
-
 /* styles for larger screens */
 @media (min-width: 992px) {
 
