@@ -48,14 +48,8 @@
                                     </ul>
                                 </li>
                                 </li>
-                                <li class="nav-item dropdown active">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa fa-rocket"></i> Challenge
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item active" aria-current="page" href="manifesto_page.html">Select Challenges</a></li>
-                                        <li><a class="dropdown-item disabled" id="ch" href="challenge_page.html">Complete Challenges</a></li>
-                                    </ul>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -162,9 +156,6 @@
         const minDisplayTime = 2000; 
         let spinnerStartTime;
 
-        var preResult = JSON.parse(localStorage.getItem('preResult')); 
-        var preResponseId =  preResult.responseId;
-
         function showSpinner() {
             spinner.classList.remove('hidden');
             spOver.classList.remove('hidden');
@@ -224,9 +215,12 @@
             let isLoading = false;
             const minDisplayTime = 2000; 
             let spinnerStartTime;
+            
+            
             let scores = [];
+            
+            
             let task_counts = 0;
-
             let tasks = JSON.parse(localStorage.getItem('tasks')); 
             let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
 
@@ -260,6 +254,9 @@
             const responseHistory = metadata.responseHistory;
             const userId = user.id;
 
+            var preResult = JSON.parse(localStorage.getItem('preResult'));
+            var preResponseId; 
+
             //handle first-time user
             if (!metadata || !metadata.responseHistory) {
                 console.warn("No responseHistory found for this user.");
@@ -268,13 +265,13 @@
                 const fallbackMessage = document.createElement('div');
                 fallbackMessage.innerHTML = "Opp! No information available";
                 document.querySelector(".task-content").parentElement.appendChild(fallbackMessage);
-                
             }
 
             try {
                 showSpinner();
                 //from history page
                 var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+                preResponseId =  preResult.responseId;
                 
                 if (!preResult || !preResponseId) {
                     alert("No pre quiz found. Please do the quiz first.");

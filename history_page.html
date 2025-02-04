@@ -207,38 +207,37 @@
                 const metadata = user.user_metadata;
                 const responseHistory = metadata.responseHistory;
                 
-                showSpinner();
-                
                 await fetchResponses(userId);
                 let allResponses = JSON.parse(localStorage.getItem('allResponses')) || {};
                 
-                
-                Object.keys(responseHistory).forEach((cycleKey) => {
-                    const taskCycle = responseHistory[cycleKey].lastTask;
-                    if (!allResponses[cycleKey]) {
-                        allResponses[cycleKey] = {};
-                    }
-                    allResponses[cycleKey].lastTask = taskCycle;
-                });  
+                if (responseHistory) {
+                    Object.keys(responseHistory).forEach((cycleKey) => {
+                        const taskCycle = responseHistory[cycleKey].lastTask;
+                        if (!allResponses[cycleKey]) {
+                            allResponses[cycleKey] = {};
+                        }
+                        allResponses[cycleKey].lastTask = taskCycle;
+                    });  
+                }
                 
                 localStorage.setItem('allResponses', JSON.stringify(allResponses));
-                hideSpinner();
                 return allResponses;
             }
             
             
             function displayTable() {
+
                 const history = JSON.parse(localStorage.getItem('allResponses'));  
                 const table = document.getElementById('h-table');
                 
                 if (!history || Object.keys(history).length === 0) {
+                    document.querySelector('div.history-table > table').style.display = 'none';
                     document.querySelector(".404").classList.remove('hidden');
                     return;
                 }
                 
                 Object.keys(history).forEach((cycleKey) => {
                     const cycle = history[cycleKey];
-                    
                     const cycleRow = document.createElement('tr');
                     const prescore = document.createElement('td');
                     const predate = document.createElement('td');
@@ -267,6 +266,7 @@
                         const dateObj = new Date(isoString);
                         prescore.textContent = cycle.preResponse.result.totalScore;
                         predate.textContent = dateObj.toLocaleString();
+
                     } else {
                         prescore.textContent = 'N/A';
                         predate.textContent = 'N/A';
@@ -278,6 +278,7 @@
                         const dateObj = new Date(isoString);
                         postscore.textContent = cycle.postResponse.result.totalScore;
                         postdate.textContent = dateObj.toLocaleString();
+
                     } else {
                         postscore.textContent = 'N/A';
                         postdate.textContent = 'N/A';
