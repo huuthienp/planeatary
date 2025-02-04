@@ -127,10 +127,11 @@
     }
     
     document.getElementById('logOut').addEventListener('click', () => {
-        alert("Do you really want to sign out?");
-        showSpinner();
-        logOut();
-        hideSpinner();
+        if(confirm("Do you really want to sign out?") == true) {
+            showSpinner();
+            logOut();
+            hideSpinner();
+        }
     });
 </script>
 </body>

@@ -126,10 +126,11 @@
                 }
                 
                 document.getElementById('logOut').addEventListener('click', () => {
-                    alert("Do you really want to sign out?");
-                    showSpinner();
-                    logOut();
-                    showSpinner();
+                    if(confirm("Do you really want to sign out?") == true) {
+                        showSpinner();
+                        logOut();
+                        hideSpinner();
+                    }
                 });
                 
             </script>      
@@ -195,11 +196,36 @@
                         return null;
                     }
                 }
+
+                function isTokenExpired(token) {
+                    if (!token) return true;
+                    
+                    const base64Payload = token.split('.')[1]; 
+                    const decodedPayload = JSON.parse(atob(base64Payload));
+                    const exp = decodedPayload.exp; 
+                    
+                    // Compare current time with expiration time
+                    const now = Math.floor(Date.now()/1000); 
+                    return exp < now; // Returns true if token is expired
+                }
                 
                 document.addEventListener("DOMContentLoaded", async () => {
                     
                     const netlifyIdentity = window.netlifyIdentity;
                     const user = netlifyIdentity.gotrue.currentUser();
+
+                    if (user) {
+                        user.jwt().then(token => {
+                            if (isTokenExpired(token)) {
+                                console.log("Token expired. Prompting user to re-login...");
+                                netlifyIdentity.logout();
+                                window.location.href = "index.html";
+                            } else {
+                                console.log("Token is valid.");
+                            }
+                        });
+                    }
+
                     const metadata = user.user_metadata;
                     const responseHistory = metadata.responseHistory;
                     const userId = user.id;

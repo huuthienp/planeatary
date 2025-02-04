@@ -598,13 +598,6 @@
             return JSON.parse(taskData);
         }
         
-        
-        // function setupNavBar() {
-        //     const quiz = document.getElementById('Q');
-        //     const challenge = document.getElementById('CH');
-        //     const dashboard = document.getElementById('D');
-        // }
-        
         function disableButton(button) {
             button.disabled = true;
             button.classList.add('disabled');
@@ -617,6 +610,19 @@
                 button.innerHTML = `<a href="${href}">${button.textContent}</a>`;
             }
         }
+
+        function isTokenExpired(token) {
+            if (!token) return true;
+            
+            const base64Payload = token.split('.')[1]; 
+            const decodedPayload = JSON.parse(atob(base64Payload));
+            const exp = decodedPayload.exp; 
+            
+            // Compare current time with expiration time
+            const now = Math.floor(Date.now()/1000); 
+            return exp < now; // Returns true if token is expired
+        }
+
         heroButton.addEventListener('click', function () {
             if (netlifyIdentity.gotrue.currentUser()) {
                 alert("Let's see your latest result");
@@ -632,6 +638,18 @@
 
         function ExtractUserMetadata() {
             const user = netlifyIdentity.gotrue.currentUser();
+            
+            if (user) {
+                user.jwt().then(token => {
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                    } else {
+                        console.log("Token is valid.");
+                    }
+                });
+            }
+
             const metadata = user.user_metadata;
             const responseHistory = metadata.responseHistory;
             let latest_pre = "";
