@@ -735,10 +735,14 @@
                 });
             } else {
                 //handle a potentially first-time user
-                alert("Seems like you've not done any quiz before. Let's start with the pre-quiz!");
-                window.location.href = "qualtrics.html";
-                return;
+                confirm("Seems like you've not done any quiz before. Are you the first-timers?");
+                //clear unwanted existings in local storage
+                localStorage.removeItem('preResult');
+                localStorage.removeItem('fetched_tasks');
+                localStorage.removeItem('postResult');
+                return false;
             }
+            return true;
         }
         
         function showSignInModal() {
@@ -765,10 +769,14 @@
                 console.log("Successful login!", emailInput2.value);
                 
                 // Wait for quiz info
-                await ExtractQuizInfo();
-                alert("Form is valid, proceeding");
-                // Redirect
-                window.location.href = "result_page.html";
+                r = await ExtractQuizInfo();
+                if(r == true) {
+                    alert("Form is valid, proceeding");
+                    window.location.href = "result_page.html";
+                } else {
+                    window.location.href = "account manage.html";
+                }
+                
                 
             } catch (error) {
                 console.error("Caught error:", error);
@@ -938,7 +946,6 @@
             netlifyIdentity.gotrue.signup(emailInput.value, passwordInput.value, {full_name: nameField.value})
             .then((r) => {
                 console.log('Successful signup!', emailInput.value);
-
                 //Please add more logic according to your completed code
                 //window.location.href = "account manage.html";
             })

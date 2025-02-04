@@ -321,7 +321,6 @@
                                 preResponseId = preQuiz.responseId;
                             });
                         }
-                        
 
                         if (storedCycle) {
                             
@@ -380,7 +379,7 @@
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
                                 const fallbackMessage = document.createElement('div');
-                                fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
+                                fallbackMessage.innerHTML = "Please finish pre-quiz and then all selected tasks before doing the post quiz";
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                             }
                         } else if (postQuiz) {
