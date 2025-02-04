@@ -324,6 +324,7 @@
                         task_rec = detailed.time; 
                      } catch(err) {
                         console.log("Couldn't find previous tasks' info:", err);
+                        selectTasks = {};
                      }
                 }
 
@@ -341,6 +342,7 @@
                         task_rec = detailed.time; 
                     } catch (err) {
                         console.error("Couldn't find previous tasks' info:", err);
+                        com_tasks = {};
                     }
                 }
                 

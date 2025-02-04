@@ -267,10 +267,10 @@
                     tasks = JSON.parse(localStorage.getItem('tasks'));
                 }
                 
-                if (!com_tasks && preResponseId) {
+                if (!fetched_tasks && preResponseId) {
                     try {
-                        com_tasks = await fetchTaskStatus(preResponseId);
-                        localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
+                        fetched_tasks = await fetchTaskStatus(preResponseId);
+                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
                         fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                         task_rec = fetched_tasks.time; 
                     } catch (err) {
@@ -280,7 +280,6 @@
                 
             } catch (err) {
                 console.error("Caught error: ", err);
-                alert("The system isn't working properly. Please return to home page and try again");
             } finally {
                 hideSpinner();
             }

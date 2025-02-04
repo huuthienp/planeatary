@@ -150,6 +150,7 @@
                         localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
                     } catch (err) {
                         console.log(err);
+                        selectTasks = {};
                     }    
                 } 
      
@@ -328,6 +329,7 @@
                         }
                         
                         const taskCheck = checkLastTaskStatus();
+                        
 
                         if (postObject) {
                             quizFrame.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
@@ -335,10 +337,16 @@
                             if (taskCheck.lastTask !== "" && taskCheck.lastPost == "") {
                                 var quizUrl = initiateSurvey('post', quizFrame);
                             } else {
-                                quizFrame.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
+                                quizFrame.style.display = 'none'; // Hide the iframe
+                                const fallbackMessage = document.createElement('div');
+                                fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
+                                quizFrame.parentElement.appendChild(fallbackMessage);
                             }
                         } else if (postQuiz) {
-                            quizFrame.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
+                            quizFrame.style.display = 'none'; // Hide the iframe
+                            const fallbackMessage = document.createElement('div');
+                            fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
+                            quizFrame.parentElement.appendChild(fallbackMessage);
                         } else if (!postObject || postObject == "") {
                             var quizUrl = initiateSurvey('post', quizFrame);
                         } else {
@@ -347,8 +355,11 @@
                         
                     } catch (err) {
                         console.error("Caught error: ", err);
-                        alert("The system isn't working properly. Please return to home page and try again");
-                        quizFrame.innerHTML = "The system is in maintenance. Please allow us sometime to fix it";
+                        quizFrame.style.display = 'none'; // Hide the iframe
+                        const fallbackMessage = document.createElement('div');
+                        fallbackMessage.innerHTML = "Content cannot be displayed. Please try again later.";
+                        fallbackMessage.style.color = "red";
+                        quizFrame.parentElement.appendChild(fallbackMessage);
                     } finally {
                         hideSpinner();
                     } 

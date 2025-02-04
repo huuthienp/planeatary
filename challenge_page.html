@@ -376,9 +376,12 @@
                     displaySelectedTasks(tasks);
                     
                 } catch (err) {
-                    console.error("Caught error from fetchTaskStatus:", err);
-                    alert("The system isn't working properly. Please return to home page and try again");
-                    window.location.href = "index.html";
+                    console.error("Caught error: ", err);
+                    // alert("The system isn't working properly. Please return to home page and try again");
+                    // const fallbackMessage = document.createElement('div');
+                    // fallbackMessage.innerHTML = "tasks cannot be displayed. Please try again later.";
+                    // fallbackMessage.style.color = "red";
+                    // cardContainer.parentElement.appendChild(fallbackMessage);
                 } finally {
                     hideSpinner();
                 }
