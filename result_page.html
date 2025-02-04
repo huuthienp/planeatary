@@ -158,22 +158,27 @@
         var com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
         var detailed = {};
         var task_rec = "";
+
+        const modalEl = [closeButt, tmodal, modalOverlay];
+        const spinnerEl = [spinner, bOverlay];
         
         // Function to show the modal
         function showModal(title, description) {
-            closeButt.classList.remove('hidden2');
+            const tagsToRemove = modalEl.map(e => document.querySelector(e));
+            tagsToRemove.forEach(
+            (tag) => { if (tag) {tag.classList.remove('hidden2');} }
+            );
             modalTitle.textContent = title;
             modalDescription.innerHTML = description;
-            tmodal.classList.remove("hidden2");
             tmodal.style.backgroundColor = 'white';
-            modalOverlay.classList.remove("hidden2");
         }
 
         // Function to close the modal
         function closeModal() {
-            closeButt.classList.remove('hidden2');
-            tmodal.classList.add("hidden2");
-            modalOverlay.classList.add("hidden2");
+            const tagsTo = modalEl.map(e => document.querySelector(e));
+            tagsToRemove.forEach(
+            (tag) => { if (tag) {tag.classList.add('hidden2');} }
+            );
         }
 
         // Close modal when user clicks the close button
@@ -225,7 +230,6 @@
             } else {
                 const asSeconds = new Date(ts * 1000);
                 const asMillis = new Date(ts);
-                
                 // If asSeconds is around 1970 or 1971, and asMillis is more near current date, pick asMillis
                 return asMillis; 
             }

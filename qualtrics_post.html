@@ -241,7 +241,7 @@
                             return;
                         }
                         
-                        if (storedCycle.postResponse) {
+                        if (storedCycle) {
                             
                             try {
                                 preObject = storedCycle.preResponse;
@@ -280,8 +280,7 @@
                         quizFrame.innerHTML = "The system is in maintenance. Please allow us sometime to fix it";
                     } finally {
                         hideSpinner();
-                    }
-                    
+                    } 
                 });
             </script>
         </body>

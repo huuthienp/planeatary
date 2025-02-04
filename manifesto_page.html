@@ -307,14 +307,14 @@
             };
             
             function Close() {
-                close.classList.remove('hidden');
+                close.classList.add('hidden');
                 modal.classList.add("hidden");
                 overlay.classList.add('hidden');
                 
             };
             
             function CloseDes() {
-                closeDes.classList.remove('hidden');
+                closeDes.classList.add('hidden2');
                 modal2.classList.add("hidden2");
                 overlay2.classList.add('hidden2');
             };
@@ -371,13 +371,11 @@
                 
                 if(!preResult && !preResponseId) {
                     QContainer.innerHTML = '<p>No available information to be displayed</p>';
-                }else{
+                } else {
                     let preTotalScore = preResult.result.totalScore; 
                     scores = preResult.result.pointArray;
-                    console.log(scores);
                 }
 
-                
                 if (!tasks) {
                     tasks = await fetchTasks();
                     localStorage.setItem('tasks', JSON.stringify(tasks));

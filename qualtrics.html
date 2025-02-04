@@ -83,15 +83,13 @@
 
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script>
-            //ensure the data's cycle selected from history page is always removed
-            localStorage.removeItem('selectedCycle');
 
             const spinner = document.getElementById('spinner');
+            const bOverlay = document.getElementById("spinnerOverlay");
             let isLoading = false;
             const minDisplayTime = 1000;
             let spinnerStartTime;
-            const bOverlay = document.getElementById("spinnerOverlay");
-
+            
             function showSpinner() {
                 console.log("Showing spinner...");
                 spinner.classList.remove('hidden');
@@ -158,13 +156,13 @@
                 const preResult = JSON.parse(localStorage['preResult']);
                 updateAnchors(anchors, hrefs);
                 updateButton(nextButton, '#02897A', 'pointer');
-                quizSpan.innerText = 'You have already finished the pre-quiz!';
+                quizUrl.innerHTML = 'You have already finished the pre-quiz!';
                 console.log('Found pre-quiz result in storage!\n', preResult);
             } catch(error) {
                 console.warn('Caught', error, '\nPre-quiz result is not found!');
                 updateAnchors(anchors);
                 updateButton(nextButton, 'grey', 'not-allowed');
-                quizSpan.innerText = '';
+                quizUrl.innerHTML = '';
             }
             // Listen to preResult change in localStorage
             window.addEventListener('localStorageChange', (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
