@@ -134,18 +134,25 @@
                 
             </script>      
             <script defer type="module">
-                import { initiateSurvey } from './scripts/helpers.mjs';
+                import { initiateSurvey, fetchTaskStatus, extractTaskData } from './scripts/helpers.mjs';
+
                 const quizFrame = document.querySelector('div.content > iframe.quiz');
-                
-                
                 var preObject = JSON.parse(localStorage.getItem('preResult'));
+                var postObject = JSON.parse(localStorage.getItem('postResult'));
+                
+
                 if(preObject) {
                     var preResult = preObject.result;
                     var pre_rec = preObject.recordedDate;
                     var preResponseId = preObject.responseId;
-                }
-                
-                var postObject = JSON.parse(localStorage.getItem('postResult'));
+                    try {
+                        var selectTasks = await fetchTaskStatus(preResponseId);
+                        localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
+                    } catch (err) {
+                        console.log(err);
+                    }    
+                } 
+     
                 if (postObject) {
                     var postResult = postObject.result;
                     var post_rec = postObject.recordedDate;
@@ -160,13 +167,41 @@
                 let latest_post = "";
                 let latest_task = "";
                 let history = [];
+
+                async function fetchResponses(userId) {
+                    try {
+                        const response = await fetch('/api/fetch-responses', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Q-RESPONSE-ID': userId,
+                            }
+                        });
+                        const { ok, status } = response;
+                        if (!ok) {
+                            throw new Error(JSON.stringify({
+                                status: status,  
+                                response: await response.text(),
+                            }));
+                        }
+                        const data = await response.json();
+                        console.log('Responses fetched!\n', data);
+                        localStorage.setItem('allResponses', JSON.stringify(data));
+                        return data
+                        
+                    } catch (error) {
+                        console.warn('Caught', error, '\nin fetchResponse');
+                        return null;
+                    }
+                }
                 
-                document.addEventListener("DOMContentLoaded", () => {
+                document.addEventListener("DOMContentLoaded", async () => {
                     
                     const netlifyIdentity = window.netlifyIdentity;
                     const user = netlifyIdentity.gotrue.currentUser();
                     const metadata = user.user_metadata;
                     const responseHistory = metadata.responseHistory;
+                    const userId = user.id;
                     
                     function updateNextButton() {                  
                         if (postResult) {
@@ -178,6 +213,8 @@
                             ch.style.cursor = "not-allowed"; 
                             ch.disabled = true; 
                             nextButton.addEventListener("click", function() {
+                                //ensure the data's cycle selected from history page is always removed
+                                localStorage.removeItem('selectedCycle');
                                 window.location.href = "result_page.html";
                             });
                         } else {
@@ -193,7 +230,6 @@
                             nextButton.style.borderColor = 'grey';
                             nextButton.style.cursor = 'not-allowed';
                             nextButton.disabled = true;
-                            
                         }
                     }
                     
@@ -226,6 +262,7 @@
                             }
                             
                         })
+
                         const cycle = {lastPre: latest_pre, lastPost: latest_post, lastTask: latest_task};
                         return cycle
                     }
@@ -234,13 +271,26 @@
                         showSpinner();
                         //from history page
                         var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+
+                        await fetchResponses(userId);
+                        let allResponses = JSON.parse(localStorage.getItem('allResponses'));
+                        let postQuiz = {};
+                        let preQuiz = {};
                         
-                        if (!preResult || !preResponseId) {
-                            alert("No pre quiz found. Please do the quiz first.");
-                            window.location.href = "index.html";
-                            return;
-                        }
-                        
+                        Object.keys(allResponses).forEach((cycleKey) => {
+                            if (allResponses[cycleKey].postResponse && allResponses[cycleKey].preResponse) {
+                                preQuiz = allResponses[cycleKey].preResponse;
+                                postQuiz = allResponses[cycleKey].postResponse;
+                                postObject = postQuiz;
+                                preResponseId = postQuiz.responseId;
+                            } else {
+                                preQuiz = allResponses[cycleKey].preResponse;
+                                postQuiz = {};
+                            }
+                            preObject = preQuiz;
+                            preResponseId = preQuiz.responseId;
+                        });
+
                         if (storedCycle) {
                             
                             try {
@@ -257,16 +307,37 @@
                                 console.log("Couldn't find previous info:", err);
                             }
                         }
+
+                        if (preResult && preResponseId) {
+                            try {
+                                let selectTasks = await fetchTaskStatus(preResponseId);
+                                localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
+                                selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                                var firstNullIndex = selectTasks.time.findIndex(function(el) {
+                                    return el == "";
+                                });
+                                if (firstNullIndex !== -1) {
+                                    alert("Please finish all the chosen tasks before doing post-quiz.");
+                                    window.location.href = "challenge_page.html";
+                                }
+
+                            } catch(err) {
+                                alert("No pre quiz found. Please do the quiz first.");
+                                window.location.href = "index.html";
+                            }
+                        }
                         
                         const taskCheck = checkLastTaskStatus();
-                        if (taskCheck.lastPre !== null || taskCheck.lastPre !== "") {
+
+                        if (postObject) {
+                            quizFrame.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
+                        } else if (taskCheck.lastPre !== null || taskCheck.lastPre !== "") {
                             if (taskCheck.lastTask !== "" && taskCheck.lastPost == "") {
                                 var quizUrl = initiateSurvey('post', quizFrame);
                             } else {
-                                //Unsure about this logic yet
                                 quizFrame.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                             }
-                        } else if (postObject) {
+                        } else if (postQuiz) {
                             quizFrame.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                         } else if (!postObject || postObject == "") {
                             var quizUrl = initiateSurvey('post', quizFrame);
