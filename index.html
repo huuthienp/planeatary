@@ -63,10 +63,10 @@
                                         <li><a class="dropdown-item" id="logOut">Log out</a></li>
                                     </ul>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item button-hide">
                                     <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signInModal">Sign in</button>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item button-hide">
                                     <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signUpModal">Sign up</button>
                                 </li>
                             </ul>
@@ -490,6 +490,7 @@
 <!-- spinner overlay-->
 <section class="overlay hidden" id="spinnerOverlay"></section>
 
+<script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
 <script>
     document.getElementById('resetPasswordButton').addEventListener('click', function () {
@@ -523,7 +524,6 @@
     });
 </script>
 
-<script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script type="module">
     
     import { fetchResponse, fetchData, reformatResponseData, mergeTaskArrays, fetchTaskStatus } from './scripts/helpers.mjs';
@@ -549,11 +549,11 @@
             document.querySelectorAll(".home-hide").forEach(element => {
                 element.style.display = "flex";
             });
+            document.querySelectorAll(".button-hide").forEach(element => {
+                element.style.display = "none";
+            });
         }
-        /* removed some javascript
-        * between d8be6a5dfcab3936113b39596591a055af44e578
-        *     and f4cae0a8896a980fb9607449a47df37c841c56f7 */
-        
+
         
         function showSpinner() {
             spinner.classList.remove('hidden');
@@ -578,41 +578,6 @@
             }
         }
         
-        //In operation
-        // async function fetchResponseIdFromNetlify(quizType, responseId) {
-        //     try {
-                
-        //         const endpoint = `/api/fetch-response?quizType=${quizType}`;
-        //         const options = {
-        //             method: 'GET',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'Q-RESPONSE-ID': responseId,
-        //             },
-        //         };
-                
-        //         // Fetch the responseId from the Netlify endpoint
-        //         const response = await fetch(endpoint, options);
-                
-        //         // Check if the response is successful
-        //         if (!response.ok) {
-        //             throw new Error(`${response.status}: ${await response.text() || response.body}`);
-        //         }
-                
-        //         // Parse the JSON response
-        //         const data = await response.json();
-                
-        //         data.quizType = quizType;
-                
-        //         console.log('Successful fetch.', '\n', data);
-                
-        //         return reformatResponseData(data);
-        //     } catch (error) {
-        //         console.error(error);
-        //         throw error;
-        //     }
-        // }
-        
         // Retrieve tasks from localStorage or fetch if not available
         async function fetchTasks() {
             const taskData = localStorage.getItem('tasks');
@@ -633,13 +598,6 @@
             return JSON.parse(taskData);
         }
         
-        
-        // function setupNavBar() {
-        //     const quiz = document.getElementById('Q');
-        //     const challenge = document.getElementById('CH');
-        //     const dashboard = document.getElementById('D');
-        // }
-        
         function disableButton(button) {
             button.disabled = true;
             button.classList.add('disabled');
@@ -652,6 +610,19 @@
                 button.innerHTML = `<a href="${href}">${button.textContent}</a>`;
             }
         }
+
+        function isTokenExpired(token) {
+            if (!token) return true;
+            
+            const base64Payload = token.split('.')[1]; 
+            const decodedPayload = JSON.parse(atob(base64Payload));
+            const exp = decodedPayload.exp; 
+            
+            // Compare current time with expiration time
+            const now = Math.floor(Date.now()/1000); 
+            return exp < now; // Returns true if token is expired
+        }
+
         heroButton.addEventListener('click', function () {
             if (netlifyIdentity.gotrue.currentUser()) {
                 alert("Let's see your latest result");
@@ -665,9 +636,20 @@
             
         });
 
-        
         function ExtractUserMetadata() {
             const user = netlifyIdentity.gotrue.currentUser();
+            
+            if (user) {
+                user.jwt().then(token => {
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                    } else {
+                        console.log("Token is valid.");
+                    }
+                });
+            }
+
             const metadata = user.user_metadata;
             const responseHistory = metadata.responseHistory;
             let latest_pre = "";
@@ -719,7 +701,7 @@
                 const data = await response.json();
                 console.log('Responses fetched!\n', data);
                 localStorage.setItem('allResponses', JSON.stringify(data));
-                return data
+                return data;
                 
             } catch (error) {
                 console.warn('Caught', error, '\nin fetchResponse');
@@ -733,8 +715,6 @@
             let allResponses = JSON.parse(localStorage.getItem('allResponses')) || {};
 
             if (quizObj.lastPost !== "" && allResponses) {
-                //let postquizData = await fetchResponseIdFromNetlify("post", quizObj.lastPost);
-                //let prequizData = await fetchResponseIdFromNetlify("pre", quizObj.lastPre);
                 Object.keys(allResponses).forEach((cycleKey) => {
                     const preQuiz = allResponses[cycleKey].preResponse;
                     const postQuiz = allResponses[cycleKey].postResponse;
@@ -747,7 +727,6 @@
                 });
 
             } else if (quizObj.lastPre !== "" && allResponses) {
-                //let quizData = await fetchResponseIdFromNetlify("pre", quizObj.lastPre);
                 Object.keys(allResponses).forEach((cycleKey) => {
                     const preQuiz = allResponses[cycleKey].preResponse;
                     if (preQuiz.responseId == quizObj.lastPre) {
@@ -758,6 +737,7 @@
                 //handle a potentially first-time user
                 alert("Seems like you've not done any quiz before. Let's start with the pre-quiz!");
                 window.location.href = "qualtrics.html";
+                return;
             }
         }
         
@@ -767,25 +747,26 @@
         }
 
         
-
-        
         async function signInAndRedirect() {
             try {
                 const emailInput2 = document.getElementById('emailInput2');
                 const passwordInput2 = document.getElementById('passwordInput');
                 // Wait for login
                 const loginResult = await netlifyIdentity.gotrue.login(
-                emailInput2.value,
-                passwordInput2.value,
-                true
+                    emailInput2.value,
+                    passwordInput2.value,
+                    true
                 );
                 
                 document.querySelector(".home-hide").style.display = "flex";
+                document.querySelectorAll(".button-hide").forEach(button => {
+                    button.style.display = "none";
+                });
                 console.log("Successful login!", emailInput2.value);
                 
                 // Wait for quiz info
                 await ExtractQuizInfo();
-                
+                alert("Form is valid, proceeding");
                 // Redirect
                 window.location.href = "result_page.html";
                 
@@ -822,9 +803,7 @@
                 passwordInput2.classList.remove('is-invalid');
             }
             
-            // If valid, submit the form or proceed further
             if (isValid) {
-                alert('Form is valid. Proceeding...');
                 signInAndRedirect();
             }
             
@@ -843,10 +822,12 @@
         }
         
         document.getElementById('logOut').addEventListener('click', () => {
-            alert("Do you really want to sign out?");
-            showSpinner();
-            logOut();
-            hideSpinner();
+            if(confirm("Do you really want to sign out?") == true) {
+                showSpinner();
+                logOut();
+                hideSpinner();
+            }
+            
         });
         
     })
@@ -861,7 +842,6 @@
             alert('Please enter your email.');
             return;
         }
-        
         // Simulate server request to send a reset link
         alert('A password reset link has been sent to: ' + emailInput);
         

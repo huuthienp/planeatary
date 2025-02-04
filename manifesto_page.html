@@ -201,10 +201,11 @@
         }
 
         document.getElementById('logOut').addEventListener('click', () => {
-            alert("Do you really want to sign out?");
-            showSpinner();
-            logOut();
-            hideSpinner();
+            if(confirm("Do you really want to sign out?") == true) {
+                showSpinner();
+                logOut();
+                hideSpinner();
+            }
         });
         
         document.addEventListener("DOMContentLoaded", async function() {
@@ -228,6 +229,47 @@
 
             let tasks = JSON.parse(localStorage.getItem('tasks')); 
             let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+
+            function isTokenExpired(token) {
+                if (!token) return true;
+                
+                const base64Payload = token.split('.')[1]; 
+                const decodedPayload = JSON.parse(atob(base64Payload));
+                const exp = decodedPayload.exp; 
+                
+                // Compare current time with expiration time
+                const now = Math.floor(Date.now()/1000); 
+                return exp < now; // Returns true if token is expired
+            }
+            
+            const user = netlifyIdentity.gotrue.currentUser();
+            
+            if (user) {
+                user.jwt().then(token => {
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                        window.location.href = "index.html";
+                    } else {
+                        console.log("Token is valid.");
+                    }
+                });
+            }
+            
+            const metadata = user.user_metadata;
+            const responseHistory = metadata.responseHistory;
+            const userId = user.id;
+
+            //handle first-time user
+            if (!metadata || !metadata.responseHistory) {
+                console.warn("No responseHistory found for this user.");
+                document.querySelector(".button2").style.display = "none";
+                document.querySelector(".improvement").style.display = "none";
+                const fallbackMessage = document.createElement('div');
+                fallbackMessage.innerHTML = "Opp! No information available";
+                document.querySelector(".task-content").parentElement.appendChild(fallbackMessage);
+                
+            }
 
             try {
                 showSpinner();
