@@ -264,6 +264,9 @@
 
             var tasks = JSON.parse(localStorage.getItem('tasks'));
             var com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+            var detailed = {};
+            var task_rec = "";
+
 
             // Retrieve tasks from localStorage or fetch if not available
             async function fetchTasks() {
@@ -321,8 +324,8 @@
                     
                     var selectTasks = await fetchTaskStatus(preResponseId);
                     localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
-                    var detailed = selectTasks; 
-                    var task_rec = detailed.time; 
+                    detailed = selectTasks; 
+                    task_rec = detailed.time; 
                 }
 
                 if (!tasks) {
@@ -332,25 +335,25 @@
                 }
 
                 if (!com_tasks && preResponseId) {
-                    com_tasks = await fetchTaskStatus(preResponseId);
-                    localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
-                    com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    var detailed = com_tasks;
-                    var task_rec = detailed.time; 
+                    try {
+                        com_tasks = await fetchTaskStatus(preResponseId);
+                        localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
+                        com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                        detailed = com_tasks;
+                        task_rec = detailed.time; 
+                    } catch (err) {
+                        console.error("Couldn't find previous tasks' info:", err);
+                    }
                 }
-    
-                var detailed = com_tasks;
-                var task_rec = detailed.time; 
                 
             } catch (err) {
-                console.error("Caught error from fetchTaskStatus:", err);
+                console.error("Caught error: ", err);
                 alert("The system isn't working properly. Please return to home page and try again");
                 window.location.href = "index.html";
             } finally {
                 hideSpinner();
             }
 
-            
             function compareScores() {
                 let preQuizTotal = preResult.totalScore;
                 if (postResult) {
