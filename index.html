@@ -693,9 +693,10 @@
                 
             })
             const quizPair = {lastPre: latest_pre, lastPost: latest_post};
+            console.log("responseId pre", quizPair.lastPre);
+            console.log("responseId post", quizPair.lastPost);
             return {quizObj: quizPair, historyObj: history, userId: id}
         }
-        
         
         
         async function ExtractQuizInfo() {
