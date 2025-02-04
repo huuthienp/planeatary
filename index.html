@@ -671,6 +671,7 @@
             let latest_pre = "";
             let latest_post = "";
             let history = [];
+            let id = user.id;
             
             //handle first-time user
             if (!metadata || !metadata.responseHistory) {
@@ -692,13 +693,13 @@
                 
             })
             const quizPair = {lastPre: latest_pre, lastPost: latest_post};
-            return {quizObj: quizPair, historyObj: history}
+            return {quizObj: quizPair, historyObj: history, userId: id}
         }
         
-        const {quizObj, historyObj} = ExtractUserMetadata();
+        
         
         async function ExtractQuizInfo() {
-            
+            const {quizObj, historyObj, userId} = ExtractUserMetadata();
             if (quizObj.lastPost !== "") {
                 let postquizData = await fetchResponseIdFromNetlify("post", quizObj.lastPost);
                 localStorage.setItem("postResult", JSON.stringify(postquizData));
@@ -712,11 +713,39 @@
                 alert("Seems like you've not done any quiz before. Let's start with the pre-quiz!");
                 window.location.href = "qualtrics.html";
             }
+            await fetchResponses(userId);
         }
         
         function showSignInModal() {
             const modal = new bootstrap.Modal(document.getElementById('signInModal'));
             modal.show();
+        }
+
+        async function fetchResponses(userId) {
+            try {
+                const response = await fetch('/api/fetch-responses', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Q-RESPONSE-ID': userId,
+                    }
+                });
+                const { ok, status } = response;
+                if (!ok) {
+                    throw new Error(JSON.stringify({
+                        status: status,  
+                        response: await response.text(),
+                    }));
+                }
+                const data = await response.json();
+                console.log('Responses fetched!\n', data);
+                localStorage.setItem('allResponses', JSON.stringify(data));
+                return data
+                
+            } catch (error) {
+                console.warn('Caught', error, '\nin fetchResponse');
+                return null;
+            }
         }
         
         
