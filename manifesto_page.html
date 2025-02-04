@@ -323,8 +323,6 @@
 
                 let tasks = JSON.parse(localStorage.getItem('tasks')); 
                 let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-
-                showSpinner();
                 if (!tasks) {
                     tasks = await fetchTasks();
                     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -357,8 +355,6 @@
                     QContainer.innerHTML = "<p>Error: Unable to load tasks or scores.</p>";
                     return;
                 }
-                hideSpinner();
-
                 // Iterate over each question
                 Object.keys(tasks).forEach((questionKey, i) => {
                     const taskGroup = tasks[questionKey].tasks;

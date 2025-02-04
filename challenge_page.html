@@ -172,6 +172,7 @@
                 
                 var preResult = JSON.parse(localStorage.getItem('preResult')); 
                 var preResponseId =  preResult.responseId;
+                var Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
                 
                 function delay(ms) {
                     return new Promise(resolve => setTimeout(resolve, ms));
@@ -223,27 +224,6 @@
                     hideSpinner();
                 });
                 
-                // Retrieve tasks from localStorage or fetch if not available
-                async function fetchTasks() {
-                    const taskData = localStorage.getItem('tasks');
-                    if (!taskData) {
-                        try {
-                            const response = await fetch('updated_tasks_final.json');
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok ' + response.statusText);
-                            }
-                            const data = await response.json();
-                            return data;
-                        } catch (error) {
-                            console.error('Fetch error:', error);
-                            alert('Failed to load tasks. Please try again later.');
-                            return null;
-                        };
-                        
-                    }
-                    return JSON.parse(taskData);
-                }
-                
                 // Function to display selected tasks and allow status update
                 async function displaySelectedTasks(tasks) {
                     cardContainer.innerHTML = '';  
@@ -291,15 +271,18 @@
                                 cardContainer.appendChild(taskCard);
                                 
                                 // Set task choice and status based on local storage
-                                if (Tstatus.chosen && Tstatus.done) {
-                                    
-                                    if (Tstatus.chosen.includes(String(task.taskNumber))) {
-                                        if (Tstatus.done.includes(String(task.taskNumber))) {
-                                            taskCard.classList.add("card_completed");
-                                            taskName.style.textDecoration = "line-through";
+                                if (Tstatus) {
+                                    if (Tstatus.chosen && Tstatus.done) {
+                                        
+                                        if (Tstatus.chosen.includes(String(task.taskNumber))) {
+                                            if (Tstatus.done.includes(String(task.taskNumber))) {
+                                                taskCard.classList.add("card_completed");
+                                                taskName.style.textDecoration = "line-through";
+                                            }
                                         }
                                     }
                                 }
+                                
                                 
                                 // Add event listener to task card to update status
                                 taskCard.addEventListener('click', async (event) => {
@@ -317,23 +300,27 @@
                                         completion.innerHTML = "Completed";
                                         let timestamp = Date.now();
                                         task.finishTime = timestamp;
-                                        Tstatus.done.push(String(task.taskNumber));
-                                        Tstatus.time.push(timestamp);
+                                        if (Tstatus) {
+                                            Tstatus.done.push(String(task.taskNumber));
+                                            Tstatus.time.push(timestamp);
+                                        }
+                                        
                                     } else {
                                         taskCard.style.color = 'rgb(71, 71, 71)';
                                         taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
                                         taskName.style.textDecoration = "none";
                                         completion.innerHTML = "Done";
                                         task.finishTime = "";
-                                        let doneIndex = Tstatus.done.indexOf(String(task.taskNumber));
-                                        let timeIndex = Tstatus.time.indexOf(String(task.taskNumber));
-                                        Tstatus.done.splice(doneIndex, 1);
-                                        Tstatus.time.splice(timeIndex, 1);
-                                        
+                                        if (Tstatus) {
+                                            let doneIndex = Tstatus.done.indexOf(String(task.taskNumber));
+                                            let timeIndex = Tstatus.time.indexOf(String(task.taskNumber));
+                                            Tstatus.done.splice(doneIndex, 1);
+                                            Tstatus.time.splice(timeIndex, 1);
+                                        }
                                     }
                                     // Update task in localStorage
                                     localStorage.setItem('tasks', JSON.stringify(tasks));
-                                    localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
+                                    if (Tstatus) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));}
                                     updateNextButton();  
                                     
                                 });              
@@ -342,7 +329,7 @@
                     });
                     
                     localStorage.setItem('tasks', JSON.stringify(tasks));
-                    localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
+                    if (Tstatus) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));} 
                     await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
                     updateNextButton(); 
                     cardContainer.appendChild(nextButtonContainer);
@@ -381,23 +368,14 @@
                 try {
                     showSpinner();
                     var tasks = JSON.parse(localStorage.getItem('tasks'));
-                    var fetched = await fetchTaskStatus(preResponseId);
-                    
-                    if(!tasks) {
-                        tasks = await fetchTasks();
-                        localStorage.setItem('tasks', JSON.stringify(tasks));
-                        tasks = JSON.parse(localStorage.getItem('tasks'));
+                    try {
+                        var fetched = await fetchTaskStatus(preResponseId);
+                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched));
+                        Tstatus = fetched;
+                    } catch(err) {
+                        console.log(err);
                     }
-                    
-                    if (!fetched || fetched.status === 403) {
-                        console.warn("Error fetching task status:", fetched);
-                        alert("The system isn't working properly. Please return to home page and try again");
-                        window.location.href = "index.html";
-                        return;
-                    }
-                    
-                    localStorage.setItem('fetched_tasks', JSON.stringify(fetched));
-                    var Tstatus = fetched;
+    
                     displaySelectedTasks(tasks);
                     
                 } catch (err) {
