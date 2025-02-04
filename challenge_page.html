@@ -103,9 +103,6 @@
         <script type="module">
             import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
             
-            //ensure the data's cycle selected from history page is always removed
-            localStorage.removeItem('selectedCycle');
-            
             let time =  [];
             let scores = [];
             let spinnerStartTime;
@@ -118,6 +115,10 @@
             const spOver = document.getElementById("spinnerOverlay");
             
             const cardContainer = document.querySelector(".card");
+            
+            var preResult = JSON.parse(localStorage.getItem('preResult')); 
+            var preResponseId =  preResult.responseId;
+            var Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
             
             
             document.addEventListener("DOMContentLoaded", async function() {
@@ -169,10 +170,6 @@
                         window.location.href = "congrat_page.html";
                     }
                 });
-                
-                var preResult = JSON.parse(localStorage.getItem('preResult')); 
-                var preResponseId =  preResult.responseId;
-                var Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
                 
                 function delay(ms) {
                     return new Promise(resolve => setTimeout(resolve, ms));

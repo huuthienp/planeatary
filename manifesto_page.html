@@ -21,7 +21,7 @@
             <!-- Sidebar -->
             <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
                 <div class="container-fluid">
-                    <a class="navbar-brand d-flex align-items-center" href="#">
+                    <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
                         <strong>PlanEATary</strong>
                     </a>
@@ -146,9 +146,6 @@
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script type="module">
         import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
-
-        //ensure the data's cycle selected from history page is always removed
-        localStorage.removeItem('selectedCycle');
         
         const QContainer = document.querySelector(".q-task");
         
@@ -228,6 +225,65 @@
             let spinnerStartTime;
             let scores = [];
             let task_counts = 0;
+
+            let tasks = JSON.parse(localStorage.getItem('tasks')); 
+            let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+
+            try {
+                showSpinner();
+                //from history page
+                var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+                
+                if (!preResult || !preResponseId) {
+                    alert("No pre quiz found. Please do the quiz first.");
+                    window.location.href = "index.html";
+                    return;
+                }
+                
+                if (storedCycle) {
+                    
+                    preObject = storedCycle.preResponse;
+                    preResult = preObject.result;
+                    pre_rec = preObject.recordedDate;
+                    preResponseId = preObject.responseId;
+                    
+                    postObject = storedCycle.postResponse;
+                    postResult = postObject.result;
+                    post_rec = postObject.recordedDate;
+                    
+                    try {
+                        var selectTasks = await fetchTaskStatus(preResponseId);
+                        localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
+                        fetched_tasks = selectTasks; 
+                        task_rec = fetched_tasks.time; 
+                    } catch(err) {
+                        console.log("Couldn't find previous tasks' info:", err);
+                    }
+                }
+                
+                if (!tasks) {
+                    tasks = await fetchTasks();  
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    tasks = JSON.parse(localStorage.getItem('tasks'));
+                }
+                
+                if (!com_tasks && preResponseId) {
+                    try {
+                        com_tasks = await fetchTaskStatus(preResponseId);
+                        localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
+                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                        task_rec = fetched_tasks.time; 
+                    } catch (err) {
+                        console.error("Couldn't find previous tasks' info:", err);
+                    }
+                }
+                
+            } catch (err) {
+                console.error("Caught error: ", err);
+                alert("The system isn't working properly. Please return to home page and try again");
+            } finally {
+                hideSpinner();
+            }
             
             function Modal(source) {
                 close.classList.remove('hidden');
@@ -321,8 +377,7 @@
                     console.log(scores);
                 }
 
-                let tasks = JSON.parse(localStorage.getItem('tasks')); 
-                let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                
                 if (!tasks) {
                     tasks = await fetchTasks();
                     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -511,8 +566,6 @@
             // Attach single click listener for the start button navigation
             // update task status on `startButton` click
             startButton.addEventListener('click', async function(event) {
-                let preResult = JSON.parse(localStorage.getItem('preResult')); 
-                let preResponseId =  preResult.responseId;
                 showSpinner();
                 await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
                 hideSpinner();

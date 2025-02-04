@@ -78,11 +78,7 @@
             <!-- spinner overlay-->
             <section class="overlay hidden" id="spinnerOverlay"></section>
             <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-            
             <script>
-                
-                //ensure the data's cycle selected from history page is always removed
-                localStorage.removeItem('selectedCycle');
                 
                 const ch = document.getElementById("ch");
                 const nextButton = document.querySelector('.next');
@@ -92,9 +88,6 @@
                 let isLoading = false;
                 const minDisplayTime = 1000;
                 let spinnerStartTime;
-                
-                let chosen_tasks = [];
-                let status_tasks = [];
                 
                 function showSpinner() {
                     console.log("Showing spinner...");
@@ -181,15 +174,66 @@
                 const user = netlifyIdentity.gotrue.currentUser();
                 const metadata = user.user_metadata;
                 const responseHistory = metadata.responseHistory;
+
+                var preObject = JSON.parse(localStorage.getItem('preResult'));
+                var preResult = preObject.result;
+                var pre_rec = preObject.recordedDate;
+                var preResponseId = preObject.responseId;
+                
+                var postObject = JSON.parse(localStorage.getItem('postResult'));
+                var postResult = postObject.result;
+                var post_rec = postObject.recordedDate;
+                
+                var tasks = JSON.parse(localStorage.getItem('tasks'));
+                var com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                var detailed = {};
+                var task_rec = "";
+
+                let latest_pre = "";
+                let latest_post = "";
+                let latest_task = "";
+                let history = [];
+
+                try {
+                    
+                    showSpinner();
+                    //from history page
+                    var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+                    
+                    if (!preResult || !preResponseId) {
+                        alert("No pre quiz found. Please do the quiz first.");
+                        window.location.href = "index.html";
+                        return;
+                    }
+                    
+                    if (storedCycle.postResponse) {
+                        
+                        try {
+                            preObject = storedCycle.preResponse;
+                            preResult = preObject.result;
+                            pre_rec = preObject.recordedDate;
+                            preResponseId = preObject.responseId;
+                            
+                            postObject = storedCycle.postResponse;
+                            postResult = postObject.result;
+                            post_rec = postObject.recordedDate;
+
+                        } catch(err) {
+                            console.log("Couldn't find previous info:", err);
+                        }
+                    }
+                    
+                } catch (err) {
+                    console.error("Caught error: ", err);
+                    alert("The system isn't working properly. Please return to home page and try again");
+                    window.location.href = "index.html";
+                } finally {
+                    hideSpinner();
+                }
                 
                 document.addEventListener("DOMContentLoaded", () => {
                     
                     function checkLastTaskStatus() {
-                        
-                        let latest_pre = "";
-                        let latest_post = "";
-                        let latest_task = "";
-                        let history = [];
                         
                         //handle first-time user
                         if (!metadata || !metadata.responseHistory) {
@@ -218,13 +262,19 @@
                     }
                     
                     const taskCheck = checkLastTaskStatus();
-                    if (taskCheck.lastPre !== null || "") {
+                    if (taskCheck.lastPre !== null || taskCheck.lastPre !== "") {
                         if (taskCheck.lastTask !== "" && taskCheck.lastPost == "") {
                             var quizUrl = initiateSurvey('post', quizFrame);
                         } else {
                             //Unsure about this logic yet
                             quizFrame.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                         }
+                    } else if (postObject) {
+                        quizFrame.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
+                    } else if (!postObject || postObject == "") {
+                        var quizUrl = initiateSurvey('post', quizFrame);
+                    } else {
+                        var quizUrl = initiateSurvey('post', quizFrame);
                     }
                 });
             </script>

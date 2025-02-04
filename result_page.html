@@ -144,6 +144,20 @@
         let spinnerStartTime;
         let isLoading;
         const bOverlay = document.getElementById("spinnerOverlay");
+
+        var preObject = JSON.parse(localStorage.getItem('preResult') || "{}");
+        var preResult = preObject.result;
+        var pre_rec = preObject.recordedDate;
+        var preResponseId = preObject.responseId;
+        
+        var postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
+        var postResult = postObject.result;
+        var post_rec = postObject.recordedDate;
+        
+        var tasks = JSON.parse(localStorage.getItem('tasks'));
+        var com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+        var detailed = {};
+        var task_rec = "";
         
         // Function to show the modal
         function showModal(title, description) {
@@ -227,13 +241,6 @@
                 console.log("No user is logged in!");
             }
         }
-
-        document.getElementById('logOut').addEventListener('click', () => {
-            alert("Do you really want to sign out?");
-            showSpinner();
-            logOut();
-            hideSpinner();
-        });
                 
         document.addEventListener("DOMContentLoaded", async function() {
             
@@ -261,13 +268,6 @@
             (tag) => { if(tag) {tag.classList.remove('hidden');} }
             );
 
-
-            var tasks = JSON.parse(localStorage.getItem('tasks'));
-            var com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-            var detailed = {};
-            var task_rec = "";
-
-
             // Retrieve tasks from localStorage or fetch if not available
             async function fetchTasks() {
                 const taskData = localStorage.getItem('tasks');
@@ -292,11 +292,7 @@
             try {
 
                 showSpinner();
-                var preObject = JSON.parse(localStorage.getItem('preResult') || "{}");
-
-                var preResult = preObject.result;
-                var pre_rec = preObject.recordedDate;
-                var preResponseId = preObject.responseId;
+                
                 //from history page
                 var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
 
@@ -305,11 +301,6 @@
                     window.location.href = "index.html";
                     return;
                 }
-
-                var postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
-
-                var postResult = postObject.result;
-                var post_rec = postObject.recordedDate;
 
                 if (storedCycle) {
                     
@@ -321,11 +312,15 @@
                     postObject = storedCycle.postResponse;
                     postResult = postObject.result;
                     post_rec = postObject.recordedDate;
-                    
-                    var selectTasks = await fetchTaskStatus(preResponseId);
-                    localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
-                    detailed = selectTasks; 
-                    task_rec = detailed.time; 
+
+                     try {
+                        var selectTasks = await fetchTaskStatus(preResponseId);
+                        localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
+                        detailed = selectTasks; 
+                        task_rec = detailed.time; 
+                     } catch(err) {
+                        console.log("Couldn't find previous tasks' info:", err);
+                     }
                 }
 
                 if (!tasks) {
@@ -338,8 +333,7 @@
                     try {
                         com_tasks = await fetchTaskStatus(preResponseId);
                         localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
-                        com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                        detailed = com_tasks;
+                        detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
                         task_rec = detailed.time; 
                     } catch (err) {
                         console.error("Couldn't find previous tasks' info:", err);
@@ -651,6 +645,13 @@
                 document.getElementById('com-tasks').style.transition = "all 1s";
             });
             
+        });
+
+        document.getElementById('logOut').addEventListener('click', () => {
+            alert("Do you really want to sign out?");
+            showSpinner();
+            logOut();
+            hideSpinner();
         });
         </script>
     </body>
