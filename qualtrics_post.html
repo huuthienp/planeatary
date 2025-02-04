@@ -321,19 +321,18 @@
                                 preResponseId = preQuiz.responseId;
                             });
                         }
-                        
 
                         if (storedCycle) {
-                            
                             try {
+
                                 preObject = storedCycle.preResponse;
                                 preResult = preObject.result;
                                 pre_rec = preObject.recordedDate;
                                 preResponseId = preObject.responseId;
                                 
-                                postObject = storedCycle.postResponse;
-                                postResult = postObject.result;
-                                post_rec = postObject.recordedDate;
+                                postObject = storedCycle.postResponse || null;
+                                postResult = postObject.result || null;
+                                post_rec = postObject.recordedDate || null;
                                 
                             } catch(err) {
                                 console.log("Couldn't find previous info from history:", err);
@@ -380,7 +379,7 @@
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
                                 const fallbackMessage = document.createElement('div');
-                                fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
+                                fallbackMessage.innerHTML = "Please finish pre-quiz and then all selected tasks before doing the post quiz";
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                             }
                         } else if (postQuiz) {

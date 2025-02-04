@@ -219,11 +219,9 @@
                         allResponses[cycleKey] = {};
                     }
                     allResponses[cycleKey].lastTask = taskCycle;
-                });
-                
+                });  
                 
                 localStorage.setItem('allResponses', JSON.stringify(allResponses));
-                
                 hideSpinner();
                 return allResponses;
             }
