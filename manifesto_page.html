@@ -419,28 +419,28 @@
                             taskItem.appendChild(label);
                             taskList.appendChild(taskItem);
                             
-                            // Set task choice and status based on local storage
-                            // and finish time
-                            if (fetched_tasks.chosen && fetched_tasks.done) {
-                                if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
-                                    task.choice = 'chosen';
-                                    checkbox.checked = true;
-                                    // for incomplete task, finish time is empty string ''
-                                    const _index = fetched_tasks.chosen.indexOf(task.taskNumber);
-                                    // `chosen` and `time` are parallel
-                                    task.finishTime = fetched_tasks.time[_index];
-                                    if (fetched_tasks.done.includes(String(task.taskNumber))) {
-                                        task.status = 'Completed';
-                                        checkbox.disabled = true; // Disable the checkbox if the task is completed
+                            // Set task choice and status based on local storage and finish time
+                            if (fetched_tasks) {
+                                if (fetched_tasks.chosen && fetched_tasks.done) {
+                                    if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
+                                        task.choice = 'chosen';
+                                        checkbox.checked = true;
+                                        // for incomplete task, finish time is empty string ''
+                                        const _index = fetched_tasks.chosen.indexOf(task.taskNumber);
+                                        // `chosen` and `time` are parallel
+                                        task.finishTime = fetched_tasks.time[_index];
+                                        if (fetched_tasks.done.includes(String(task.taskNumber))) {
+                                            task.status = 'Completed';
+                                            checkbox.disabled = true; // Disable the checkbox if the task is completed
+                                        }
                                     }
                                 }
+                                //Also double-check task status in local storage
+                                checkbox.disabled = task.status === 'Completed';
+                                localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
                             }
                             
-                            //Also double-check task status in local storage
                             checkbox.disabled = task.status === 'Completed';
-                            
-                            
-                            localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
                             
                             // Update task count and localStorage on checkbox change
                             checkbox.addEventListener('change', function() {
