@@ -299,24 +299,27 @@
                         //from history page
                         var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
 
-                        allRes = await fetchResponses(userId);
+                        var allRes = await fetchResponses(userId);
                         let allResponses = JSON.parse(localStorage.getItem('allResponses'));
                         let postQuiz = {};
                         let preQuiz = {};
                         
-                        Object.keys(allResponses).forEach((cycleKey) => {
-                            if (allResponses[cycleKey].postResponse && allResponses[cycleKey].preResponse) {
-                                preQuiz = allResponses[cycleKey].preResponse;
-                                postQuiz = allResponses[cycleKey].postResponse;
-                                postObject = postQuiz;
-                                preResponseId = postQuiz.responseId;
-                            } else {
-                                preQuiz = allResponses[cycleKey].preResponse;
-                                postQuiz = {};
-                            }
-                            preObject = preQuiz;
-                            preResponseId = preQuiz.responseId;
-                        });
+                        if (allResponses) {
+                            Object.keys(allResponses).forEach((cycleKey) => {
+                                if (allResponses[cycleKey].postResponse && allResponses[cycleKey].preResponse) {
+                                    preQuiz = allResponses[cycleKey].preResponse;
+                                    postQuiz = allResponses[cycleKey].postResponse;
+                                    postObject = postQuiz;
+                                    preResponseId = postQuiz.responseId;
+                                } else {
+                                    preQuiz = allResponses[cycleKey].preResponse;
+                                    postQuiz = {};
+                                }
+                                preObject = preQuiz;
+                                preResponseId = preQuiz.responseId;
+                            });
+                        }
+                        
 
                         if (storedCycle) {
                             
