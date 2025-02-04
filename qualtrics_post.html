@@ -323,16 +323,16 @@
                         }
 
                         if (storedCycle) {
-                            
                             try {
+
                                 preObject = storedCycle.preResponse;
                                 preResult = preObject.result;
                                 pre_rec = preObject.recordedDate;
                                 preResponseId = preObject.responseId;
                                 
-                                postObject = storedCycle.postResponse;
-                                postResult = postObject.result;
-                                post_rec = postObject.recordedDate;
+                                postObject = storedCycle.postResponse || null;
+                                postResult = postObject.result || null;
+                                post_rec = postObject.recordedDate || null;
                                 
                             } catch(err) {
                                 console.log("Couldn't find previous info from history:", err);

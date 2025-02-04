@@ -296,7 +296,6 @@
             try {
 
                 showSpinner();
-                
                 //from history page
                 var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
 
@@ -323,7 +322,7 @@
                         detailed = selectTasks; 
                         task_rec = detailed.time; 
                      } catch(err) {
-                        console.log("Couldn't find previous tasks' info:", err);
+                        console.warn("Couldn't find previous tasks' info:", err);
                         selectTasks = {};
                      }
                 }
@@ -414,7 +413,6 @@
                     cardContainer.appendChild(questionDiv);
                 });
                 compareScores();
-
 
             }
 
@@ -556,7 +554,27 @@
             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
             document.getElementById('postQ').disabled = true; 
 
-        };
+        } else {
+            // hide next step, suggestion, and select-tasks button as an empty state
+            const tohide = [
+            'p.next-step',
+            'p.suggestion',
+            'button.select-tasks',
+            'div.circle',
+            'div.pre-postQ'
+            ];
+
+            const tagsToHide = tohide.map(s => document.querySelector(s));
+            
+            tagsToHide.forEach(
+            (tag) => { if(tag) {tag.classList.add('hidden');} }
+            );
+
+            const fallbackMessage = document.createElement('div');
+            fallbackMessage.innerHTML = "Opps! no results available";
+            fallbackMessage.style.color = "red";
+            document.querySelector('div.m-content').parentElement.appendChild(fallbackMessage);
+        }
             
             document.getElementById('preQ').addEventListener('click', function() {
 
