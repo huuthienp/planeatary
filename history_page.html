@@ -188,7 +188,7 @@
                 
                 
                 await fetchResponses(userId);
-                const allResponses = JSON.parse(localStorage.getItem('allResponses')) || {};
+                let allResponses = JSON.parse(localStorage.getItem('allResponses')) || {};
                 
                 
                 Object.keys(responseHistory).forEach((cycleKey) => {

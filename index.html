@@ -578,39 +578,40 @@
             }
         }
         
-        async function fetchResponseIdFromNetlify(quizType, responseId) {
-            try {
+        //In operation
+        // async function fetchResponseIdFromNetlify(quizType, responseId) {
+        //     try {
                 
-                const endpoint = `/api/fetch-response?quizType=${quizType}`;
-                const options = {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Q-RESPONSE-ID': responseId,
-                    },
-                };
+        //         const endpoint = `/api/fetch-response?quizType=${quizType}`;
+        //         const options = {
+        //             method: 'GET',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Q-RESPONSE-ID': responseId,
+        //             },
+        //         };
                 
-                // Fetch the responseId from the Netlify endpoint
-                const response = await fetch(endpoint, options);
+        //         // Fetch the responseId from the Netlify endpoint
+        //         const response = await fetch(endpoint, options);
                 
-                // Check if the response is successful
-                if (!response.ok) {
-                    throw new Error(`${response.status}: ${await response.text() || response.body}`);
-                }
+        //         // Check if the response is successful
+        //         if (!response.ok) {
+        //             throw new Error(`${response.status}: ${await response.text() || response.body}`);
+        //         }
                 
-                // Parse the JSON response
-                const data = await response.json();
+        //         // Parse the JSON response
+        //         const data = await response.json();
                 
-                data.quizType = quizType;
+        //         data.quizType = quizType;
                 
-                console.log('Successful fetch.', '\n', data);
+        //         console.log('Successful fetch.', '\n', data);
                 
-                return reformatResponseData(data);
-            } catch (error) {
-                console.error(error);
-                throw error;
-            }
-        }
+        //         return reformatResponseData(data);
+        //     } catch (error) {
+        //         console.error(error);
+        //         throw error;
+        //     }
+        // }
         
         // Retrieve tasks from localStorage or fetch if not available
         async function fetchTasks() {
@@ -663,6 +664,7 @@
             }
             
         });
+
         
         function ExtractUserMetadata() {
             const user = netlifyIdentity.gotrue.currentUser();
@@ -697,30 +699,6 @@
             console.log("responseId post", quizPair.lastPost);
             return {quizObj: quizPair, historyObj: history, userId: id}
         }
-        
-        
-        async function ExtractQuizInfo() {
-            const {quizObj, historyObj, userId} = ExtractUserMetadata();
-            if (quizObj.lastPost !== "") {
-                let postquizData = await fetchResponseIdFromNetlify("post", quizObj.lastPost);
-                localStorage.setItem("postResult", JSON.stringify(postquizData));
-                let prequizData = await fetchResponseIdFromNetlify("pre", quizObj.lastPre);
-                localStorage.setItem("preResult", JSON.stringify(prequizData));
-            } else if (quizObj.lastPre !== "") {
-                let quizData = await fetchResponseIdFromNetlify("pre", quizObj.lastPre);
-                localStorage.setItem("preResult", JSON.stringify(quizData));
-            } else {
-                //handle a potentially first-time user
-                alert("Seems like you've not done any quiz before. Let's start with the pre-quiz!");
-                window.location.href = "qualtrics.html";
-            }
-            await fetchResponses(userId);
-        }
-        
-        function showSignInModal() {
-            const modal = new bootstrap.Modal(document.getElementById('signInModal'));
-            modal.show();
-        }
 
         async function fetchResponses(userId) {
             try {
@@ -749,6 +727,47 @@
             }
         }
         
+        async function ExtractQuizInfo() {
+            const {quizObj, historyObj, userId} = ExtractUserMetadata();
+            await fetchResponses(userId);
+            let allResponses = JSON.parse(localStorage.getItem('allResponses')) || {};
+
+            if (quizObj.lastPost !== "" && allResponses) {
+                //let postquizData = await fetchResponseIdFromNetlify("post", quizObj.lastPost);
+                //let prequizData = await fetchResponseIdFromNetlify("pre", quizObj.lastPre);
+                Object.keys(allResponses).forEach((cycleKey) => {
+                    const preQuiz = allResponses[cycleKey].preResponse;
+                    const postQuiz = allResponses[cycleKey].postResponse;
+                    if (preQuiz.responseId == quizObj.lastPre) {
+                        localStorage.setItem("preResult", JSON.stringify(preQuiz));
+                    }
+                    if (postQuiz.responseId == quizObj.lastPost) {
+                        localStorage.setItem("postResult", JSON.stringify(postQuiz));
+                    }
+                });
+
+            } else if (quizObj.lastPre !== "" && allResponses) {
+                //let quizData = await fetchResponseIdFromNetlify("pre", quizObj.lastPre);
+                Object.keys(allResponses).forEach((cycleKey) => {
+                    const preQuiz = allResponses[cycleKey].preResponse;
+                    if (preQuiz.responseId == quizObj.lastPre) {
+                        localStorage.setItem("preResult", JSON.stringify(preQuiz));
+                    }
+                });
+            } else {
+                //handle a potentially first-time user
+                alert("Seems like you've not done any quiz before. Let's start with the pre-quiz!");
+                window.location.href = "qualtrics.html";
+            }
+        }
+        
+        function showSignInModal() {
+            const modal = new bootstrap.Modal(document.getElementById('signInModal'));
+            modal.show();
+        }
+
+        
+
         
         async function signInAndRedirect() {
             try {
