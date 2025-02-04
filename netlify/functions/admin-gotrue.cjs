@@ -5,7 +5,8 @@ exports.handler = async function (event, context) {
         const { ADMIN_UUID, SECRET_AUTH_HEADER } = process.env;
         const hasAuth = SECRET_AUTH_HEADER === eventAuth;
         const iamAdmin = user && ADMIN_UUID === user.sub;
-        const danger = 'DELETE' === httpMethod.toUpperCase() || hasDanger(JSON.parse(eventBody));
+        const danger = 'GET' !== httpMethod.toUpperCase()
+            && ('DELETE' === httpMethod.toUpperCase() || hasDanger(JSON.parse(eventBody)));
         const authDanger = danger && iamAdmin;
         const authNormal = !danger && (hasAuth || iamAdmin);
         let headers = {};
