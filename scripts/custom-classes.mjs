@@ -1,22 +1,12 @@
 export class CustomResponse extends Response {
   constructor(body = 'Success', status = 200) {
-    const strBody = typeof body === 'string' ? body
-      : JSON.stringify(body);
-
-    let contentType;
-
-    try {
-      JSON.parse(strBody);
-      contentType = 'application/json';
-    } catch {
-      contentType = 'text/plain';
-    }
-
-    const options = {
-      status: status,
-      headers: { 'Content-Type': contentType }
-    };
-
-    super(strBody, options);
+    const bodyStr = typeof body === 'string' ? body : JSON.stringify(body);
+    let headers = {};
+    try {  // v2
+      JSON.parse(bodyStr);
+      headers = { 'Content-Type': 'application/json' };
+    } catch { console.warn('Body is not JSON, but ok!'); }
+    const options = ({ status, headers });
+    super(bodyStr, options);
   }
 }
