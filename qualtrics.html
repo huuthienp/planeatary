@@ -36,7 +36,7 @@
                             <div class="offcanvas-body" style="background-color: #02897A;">
                                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                     <li class="nav-item">
-                                        <a class="nav-link disabled" href="index.html"><i class="fa fa-home"></i> Home</a>
+                                        <a class="nav-link" href="index.html"><i class="fa fa-home"></i> Home</a>
                                     </li>
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle active" href="#" aria-current="page" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -154,6 +154,7 @@
         <script defer type="module">
             import { initiateSurvey, updateAnchors, updateButton } from './scripts/helpers.mjs';
             const quizUrl = initiateSurvey('pre', quizFrame);
+
             var preObject = JSON.parse(localStorage.getItem('preResult'));
             var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
             
@@ -172,17 +173,18 @@
                     } catch(err) {
                         console.warn("Couldn't find previous info from history:", err);
                     }
+                } else if (preObject) {
+                    updateAnchors(anchors, hrefs);
+                    updateButton(nextButton, '#02897A', 'pointer');
+                    quizSpan.innerHTML = 'You have already finished the pre-quiz!';
+                    console.log('Found pre-quiz result in storage!\n', preObject);
                 }
-
-                updateAnchors(anchors, hrefs);
-                updateButton(nextButton, '#02897A', 'pointer');
-                quizUrl.innerHTML = 'You have already finished the pre-quiz!';
-                console.log('Found pre-quiz result in storage!\n', preObject);
+                
             } catch(error) {
                 console.warn('Caught', error, '\nPre-quiz result is not found!');
                 updateAnchors(anchors);
                 updateButton(nextButton, 'grey', 'not-allowed');
-                quizFrame.style.display = "none";
+                quizUrl = initiateSurvey('pre', quizFrame);
                 
             }
             // Listen to preResult change in localStorage

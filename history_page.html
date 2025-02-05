@@ -116,7 +116,6 @@
             import { fetchTaskStatus } from './scripts/helpers.mjs';
             
             const ch = document.getElementById('ch');
-            const CH = document.getElementById('CH');
             
             let scores = [];
             
@@ -232,7 +231,7 @@
                 
                 if (!history || Object.keys(history).length === 0) {
                     document.querySelector('div.history-table > table').style.display = 'none';
-                    document.querySelector('div.history-table > p.404').classList.remove('hidden');
+                    document.querySelector('div.history-table > p').classList.remove('hidden');
                     return;
                 }
                 
@@ -295,6 +294,18 @@
                     cycleRow.append(prescore, predate, postscore, postdate, taskcycle, view);
                     table.appendChild(cycleRow);
                 });
+            }
+
+            function logOut() {
+                if (netlifyIdentity.gotrue.currentUser() !== null) {
+                    let user = netlifyIdentity.gotrue.currentUser();
+                    user.logout().then(() => {
+                        console.log('User has been logged out!');
+                        window.location.href = "index.html";
+                    });
+                } else {
+                    console.log("No user is logged in!");
+                }
             }
             
             document.addEventListener("DOMContentLoaded", async () => {

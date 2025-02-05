@@ -217,22 +217,14 @@
                             nextButton.style.backgroundColor = '#02897A'; 
                             nextButton.style.cursor = 'pointer';   
                             nextButton.disabled = false;
-                            ch.style.color = 'grey'; 
-                            ch.style.cursor = "not-allowed"; 
-                            ch.disabled = true; 
+
                             nextButton.addEventListener("click", function() {
                                 //ensure the data's cycle selected from history page is always removed
                                 localStorage.removeItem('selectedCycle');
                                 window.location.href = "result_page.html";
                             });
                         } else {
-                            ch.addEventListener("click", function() {
-                                window.location.href = "manifesto.html";
-                            });
-                            
-                            ch.style.cursor = "pointer"; 
-                            ch.style.color = 'white'; 
-                            ch.disabled = false; 
+
                             // Disable the button if postResult does not exist
                             nextButton.style.backgroundColor = 'grey';
                             nextButton.style.borderColor = 'grey';
@@ -284,8 +276,8 @@
                         var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
                         var allRes = await fetchResponses(userId);
                         let allResponses = JSON.parse(localStorage.getItem('allResponses'));
-                        let postQuiz;
-                        let preQuiz;
+                        let postQuiz = null;
+                        let preQuiz = null;
                         
                         if(preObject) {
                             var preResult = preObject.result;

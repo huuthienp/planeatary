@@ -36,7 +36,7 @@
                         <div class="offcanvas-body" style="background-color: #02897A;">
                             <ul class="navbar-nav justify-content-end align-items-center flex-grow-1 pe-3 gap-3">
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                    <a class="nav-link active" aria-current="page" href="index.html">Home</a>
                                 </li>
                                 <li class="nav-item dropdown home-hide">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -44,17 +44,17 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
                                         <li><a class="dropdown-item" href="qualtrics.html">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item first-timer" href="qualtrics_post.html" aria-disabled="false">Post-quiz</a></li>
+                                        <li><a class="btn dropdown-item first-timer" aria-disabled="false" href="qualtrics_post.html">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item home-hide">
-                                    <a class="nav-link  first-timer" href="manifesto_page.html" aria-disabled="false"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link  first-timer" aria-disabled="false" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item home-hide">
-                                    <a class="nav-link  first-timer" href="result_page.html" aria-disabled="false"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                    <a class="nav-link first-timer" aria-disabled="false" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
                                 </li>
                                 <li class="nav-item home-hide">
-                                    <a class="nav-link first-timer" href="history_page.html" aria-disabled="false"><i class="fa fa-calendar-check-o"></i> History</a>
+                                    <a class="nav-link first-timer" aria-disabled="false" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
                                 </li>
                                 <li class="nav-item dropdown home-hide">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
@@ -546,18 +546,27 @@
 
         const disableFirstTimers = () => {
             document.querySelectorAll("a.first-timer").forEach(a => {
-                a.classList.add('disabled');
-                a.setAttribute("aria-disabled", "true");
+                a.classList.add('Disabled');
+                a.setAttribute("href", "#");
+                a.setAttribute("data-bs-toggle", "tooltip");
+                a.setAttribute("data-bs-placement", "bottom");
                 a.setAttribute("title", "Complete the pre-quiz first.");
+                console.log("Disabling tabs");
             });
         };
 
-        const ableFirstTimers = () => {
-            document.querySelectorAll("a.first-timer").forEach(a => {
-                a.classList.remove('disabled');
-                a.setAttribute("aria-disabled", "false");
-            });
-        };
+        const enableFirstTimers = () => {
+            const anchor = ["qualtrics_post.html", "manifesto_page.html", "result_page.html", "history_page.html"];
+            document.querySelectorAll("a.first-timer").forEach((a, index) => {
+                a.classList.remove('Disabled');
+                a.removeAttribute("data-bs-toggle");
+                a.removeAttribute("data-bs-placement");
+                a.href = anchor[index];
+                console.log("Enabling tabs");
+            })
+        }
+        
+        var preObject = JSON.parse(localStorage.getItem('preResult'));
 
         if(netlifyIdentity.gotrue.currentUser() !== null) {
             document.querySelectorAll(".home-hide").forEach(element => {
@@ -566,8 +575,12 @@
             document.querySelectorAll(".button-hide").forEach(element => {
                 element.style.display = "none";
             });
+            if(preObject) {
+                enableFirstTimers();
+            } else {
+                disableFirstTimers();
+            }
         }
-
         
         function showSpinner() {
             spinner.classList.remove('hidden');
@@ -652,7 +665,6 @@
 
         function ExtractUserMetadata() {
             const user = netlifyIdentity.gotrue.currentUser();
-            
             if (user) {
                 user.jwt().then(token => {
                     if (isTokenExpired(token)) {
@@ -672,7 +684,7 @@
             let id = user.id;
             
             //handle first-time user
-            if (!metadata || !metadata.responseHistory) {
+            if (!metadata.responseHistory) {
                 console.warn("No responseHistory found for this user.");
                 return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
             }
@@ -724,6 +736,7 @@
         }
         
         async function ExtractQuizInfo() {
+
             const {quizObj, historyObj, userId} = ExtractUserMetadata();
             await fetchResponses(userId);
             let allResponses = JSON.parse(localStorage.getItem('allResponses')) || {};
@@ -750,16 +763,14 @@
             } else {
                 //handle a potentially first-time user
                 if(confirm("Seems like you've not done any quiz before. Are you a first-timer?") == true) {
-                    disableFirstTimers();
+                    //clear unwanted existings in local storage
+                    localStorage.removeItem('preResult');
+                    localStorage.removeItem('fetched_tasks');
+                    localStorage.removeItem('postResult');
+                    localStorage.removeItem('allResponses');
+                    return false;
                 }
-                //clear unwanted existings in local storage
-                localStorage.removeItem('preResult');
-                localStorage.removeItem('fetched_tasks');
-                localStorage.removeItem('postResult');
-                localStorage.removeItem('allResponses');
-                return false;
             }
-            ableFirstTimers();
             return true;
         }
         
@@ -792,26 +803,20 @@
                 const user = netlifyIdentity.currentUser();
                 if (!user) throw new Error("Login failed: No user object found");
                 console.log("Successful login!", emailInput2.value);
+                
                 //Need lana to check hiding sign-in modal and maybe editing
                 hideSignInModal();
-                
-                
-                // UI Updates
-                document.querySelector(".home-hide").style.display = "flex";
-                document.querySelectorAll(".button-hide").forEach(button => {
-                    button.style.display = "none";
-                });
-                
                 
                 // Wait for quiz info
                 let r = await ExtractQuizInfo();
             
                 if (r === true) {
-                    ableFirstTimers();
+                    enableFirstTimers();
                     alert("Form is valid, proceeding");
                     window.location.href = "result_page.html";
                 } else {
                     disableFirstTimers();
+                    alert("Form is valid, proceeding");
                     // Delay navigation slightly
                     setTimeout(() => {
                         //Needs confirmation from Linh about the flow here

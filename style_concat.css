@@ -28,10 +28,10 @@ body {
 .button-hide {
   display: flex;
 }
-.disabled {
-  pointer-events: none;
-  opacity: 0.5;
-  cursor: not-allowed;
+
+.Disabled {
+  opacity: 0.7;
+  cursor: not-allowed !important;
 }
 
 /* styles for larger screens */
@@ -1212,6 +1212,7 @@ body {
   position: relative;
   padding: 1vh 1vw;
   margin: 5vh auto;
+  overflow-x: auto;
 }
 #h-table {
   position: relative;
