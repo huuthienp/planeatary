@@ -1207,10 +1207,12 @@ body {
     border-left: 0.5em solid #2ecc71;
 }
 
+.void-space {
+  padding: 5vh 0;
+}
+
 .history-table {
-  padding: 1vh 1vw;
   position: relative;
-  margin: 5vh auto;
 }
 
 #h-table {

@@ -184,7 +184,7 @@
             var preObject = JSON.parse(localStorage.getItem('preResult'));
             var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
             var quizUrl;
-            
+
             try {
                 var allRes = await fetchResponses(userId);
                 let allResponses = JSON.parse(localStorage.getItem('allResponses'));
@@ -204,6 +204,7 @@
                 } else if (preObject) {
                     updateAnchors(anchors, hrefs);
                     updateButton(nextButton, '#02897A', 'pointer');
+                    quizFrame.style.display = 'none';
                     quizSpan.innerHTML = 'You have already finished the pre-quiz!';
                     console.log('Found pre-quiz result in storage!\n', preObject);
                 } else {
