@@ -746,19 +746,16 @@
         }
         
         function showSignInModal() {
-<<<<<<< Updated upstream
-            const modal = new bootstrap.Modal(document.getElementById('signInModal'));
-            modal.show();
-=======
+
             const signInModal = new bootstrap.Modal(document.getElementById('signInModal'));
+            document.getElementById('signInModal').style.display = 'flex';
             signInModal.show();
         }
 
         function hideSignInModal() {
             const signInModal = new bootstrap.Modal(document.getElementById('signInModal'));
-            document.getElementById('signUpModal').style.display = 'none';
+            document.getElementById('signInModal').style.display = 'none';
             signInModal.hide();
->>>>>>> Stashed changes
         }
 
         
@@ -875,19 +872,17 @@
 <script>
     
     function showSignUpModal() {
-        const modal = new bootstrap.Modal(document.getElementById('signUpModal'));
-        modal.show();
+        const signUpModal = new bootstrap.Modal(document.getElementById('signUpModal'));
+        signUpModal.style.display = 'flex';
+        signUpModal.show();
     }
-<<<<<<< Updated upstream
-=======
 
     function hideSignUpModal() {
         const signUpModal = new bootstrap.Modal(document.getElementById('signUpModal'));
-        document.getElementById('signUpModal').style.display = 'none';
+        signUpModal.style.display = 'none';
         signUpModal.hide();
     }
 
->>>>>>> Stashed changes
     function validate_form() {
         let nameField = document.getElementById("name");
         let emailField = document.getElementById("email");
