@@ -550,6 +550,7 @@
                 a.style.pointerEvents = "none";
                 a.style.opacity = "0.5";
                 a.style.cursor = "not-allowed";
+                a.classList.add("disabled");
                 a.setAttribute("aria-disabled", "true");
                 a.setAttribute("href", "#");
                 a.setAttribute("title", "Complete the pre-quiz first.");
@@ -560,6 +561,7 @@
         const enableFirstTimers = () => {
             const anchor = ["qualtrics_post.html", "manifesto_page.html", "result_page.html", "history_page.html"];
             document.querySelectorAll("a.first-timer").forEach((a, index) => {
+                a.classList.remove("disabled");
                 a.style.pointerEvents = "auto";
                 a.style.opacity = "1";
                 a.style.cursor = "pointer";
@@ -681,7 +683,7 @@
             let id = user.id;
             
             //handle first-time user
-            if (!metadata || !metadata.responseHistory) {
+            if (!metadata.responseHistory) {
                 console.warn("No responseHistory found for this user.");
                 return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
             }
@@ -760,7 +762,6 @@
             } else {
                 //handle a potentially first-time user
                 if(confirm("Seems like you've not done any quiz before. Are you a first-timer?") == true) {
-                    disableFirstTimers();
                     //clear unwanted existings in local storage
                     localStorage.removeItem('preResult');
                     localStorage.removeItem('fetched_tasks');
@@ -769,7 +770,6 @@
                     return false;
                 }
             }
-            enableFirstTimers();
             return true;
         }
         
