@@ -755,14 +755,13 @@
         function showSignInModal() {
 
             const signInModal = new bootstrap.Modal(document.getElementById('signInModal'));
-            document.getElementById('signInModal').style.display = 'flex';
-            const signInModal = new bootstrap.Modal(document.getElementById('signInModal'));
+            signInModal.style.display = 'flex';
             signInModal.show();
         }
 
         function hideSignInModal() {
             const signInModal = new bootstrap.Modal(document.getElementById('signInModal'));
-            document.getElementById('signInModal').style.display = 'none';
+            signInModal.style.display = 'none';
             signInModal.hide();
         }
 
