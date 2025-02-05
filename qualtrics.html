@@ -185,7 +185,34 @@
             var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
             var quizUrl;
 
+            function isTokenExpired(token) {
+                if (!token) return true;
+                
+                const base64Payload = token.split('.')[1]; 
+                const decodedPayload = JSON.parse(atob(base64Payload));
+                const exp = decodedPayload.exp; 
+                
+                // Compare current time with expiration time
+                const now = Math.floor(Date.now()/1000); 
+                return exp < now; // Returns true if token is expired
+            }
+
             try {
+                const user = netlifyIdentity.gotrue.currentUser();
+                if (user) {
+                    user.jwt().then(token => {
+                        if (isTokenExpired(token)) {
+                            console.log("Token expired. Prompting user to re-login...");
+                            netlifyIdentity.logout();
+                        } else {
+                            console.log("Token is valid.");
+                        }
+                    });
+                }
+                
+                const metadata = user.user_metadata;
+                const responseHistory = metadata.responseHistory;
+                const userId = user.id;
                 var allRes = await fetchResponses(userId);
                 let allResponses = JSON.parse(localStorage.getItem('allResponses'));
                 
