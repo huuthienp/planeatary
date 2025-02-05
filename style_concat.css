@@ -28,6 +28,11 @@ body {
 .button-hide {
   display: flex;
 }
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 /* styles for larger screens */
 @media (min-width: 992px) {
