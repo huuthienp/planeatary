@@ -44,17 +44,17 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
                                         <li><a class="dropdown-item" href="qualtrics.html">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item first-timer" href="qualtrics_post.html" aria-disabled="false">Post-quiz</a></li>
+                                        <li><a class="dropdown-item first-timer" aria-disabled="false">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item home-hide">
-                                    <a class="nav-link  first-timer" href="manifesto_page.html" aria-disabled="false"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link  first-timer" aria-disabled="false"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item home-hide">
-                                    <a class="nav-link  first-timer" href="result_page.html" aria-disabled="false"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                    <a class="nav-link  first-timer" aria-disabled="false"><i class="fa fa-line-chart"></i> Dashboard</a>
                                 </li>
                                 <li class="nav-item home-hide">
-                                    <a class="nav-link first-timer" href="history_page.html" aria-disabled="false"><i class="fa fa-calendar-check-o"></i> History</a>
+                                    <a class="nav-link first-timer" aria-disabled="false"><i class="fa fa-calendar-check-o"></i> History</a>
                                 </li>
                                 <li class="nav-item dropdown home-hide">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
@@ -543,21 +543,25 @@
         
         const greetingDiv = document.querySelector('.greeting');
         const heroButton = document.querySelector('.herobtn');
+        
+        const anchor = ["qualtrics_post.html", "manifesto_page.html", "result_page.html", "history_page.html"]
 
         const disableFirstTimers = () => {
             document.querySelectorAll("a.first-timer").forEach(a => {
-                a.classList.add('pe-none');
-                a.classList.add('disabled');
+                a.style.pointerEvents = "none";
+                a.style.opacity = "0.5";
                 a.setAttribute("aria-disabled", "true");
+                a.href = "#";
                 a.setAttribute("title", "Complete the pre-quiz first.");
                 console.log("Disabling tabs");
             });
         };
 
         const enableFirstTimers = () => {
-            document.querySelectorAll("a.first-timer").forEach(a => {
-                a.classList.remove('disabled');
-                a.classList.remove('pe-none');
+            document.querySelectorAll("a.first-timer").forEach((a, index) => {
+                a.style.pointerEvents = "auto";
+                a.style.opacity = "1";
+                a.href = anchor[index];
                 a.setAttribute("aria-disabled", "false");
                 console.log("Enabling tabs");
             });
@@ -816,6 +820,7 @@
                     window.location.href = "result_page.html";
                 } else {
                     disableFirstTimers();
+                    alert("Form is valid, proceeding");
                     // Delay navigation slightly
                     setTimeout(() => {
                         //Needs confirmation from Linh about the flow here
