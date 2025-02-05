@@ -1208,12 +1208,11 @@ body {
 }
 
 .history-table {
-  display: flex;
-  position: relative;
   padding: 1vh 1vw;
+  position: relative;
   margin: 5vh auto;
-  overflow-x: auto;
 }
+
 #h-table {
   position: relative;
 }

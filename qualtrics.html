@@ -114,6 +114,33 @@
                     }
             }
 
+            async function fetchResponses(userId) {
+                try {
+                    const response = await fetch('/api/fetch-responses', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Q-RESPONSE-ID': userId,
+                        }
+                    });
+                    const { ok, status } = response;
+                    if (!ok) {
+                        throw new Error(JSON.stringify({
+                            status: status,  
+                            response: await response.text(),
+                        }));
+                    }
+                    const data = await response.json();
+                    console.log('Responses fetched!\n', data);
+                    localStorage.setItem('allResponses', JSON.stringify(data));
+                    return data;
+                    
+                } catch (error) {
+                    console.warn('Caught', error, '\nin fetchResponse');
+                    return null;
+                }
+            }
+
             function logOut() {
                 if (netlifyIdentity.gotrue.currentUser() !== null) {
                     let user = netlifyIdentity.gotrue.currentUser();
@@ -153,10 +180,10 @@
         </script>
         <script defer type="module">
             import { initiateSurvey, updateAnchors, updateButton } from './scripts/helpers.mjs';
-            const quizUrl = initiateSurvey('pre', quizFrame);
 
             var preObject = JSON.parse(localStorage.getItem('preResult'));
             var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+            var quizUrl;
             
             try {
                 var allRes = await fetchResponses(userId);
@@ -173,11 +200,16 @@
                     } catch(err) {
                         console.warn("Couldn't find previous info from history:", err);
                     }
+
                 } else if (preObject) {
                     updateAnchors(anchors, hrefs);
                     updateButton(nextButton, '#02897A', 'pointer');
                     quizSpan.innerHTML = 'You have already finished the pre-quiz!';
                     console.log('Found pre-quiz result in storage!\n', preObject);
+                } else {
+                    quizUrl = initiateSurvey('pre', quizFrame);
+                    updateAnchors(anchors);
+                    updateButton(nextButton, 'grey', 'not-allowed');
                 }
                 
             } catch(error) {
