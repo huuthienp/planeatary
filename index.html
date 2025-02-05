@@ -44,17 +44,17 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
                                         <li><a class="dropdown-item" href="qualtrics.html">Pre-quiz</a></li>
-                                        <li><a class="btn dropdown-item first-timer" role="button" aria-disabled="false" href="quatrics_post.html">Post-quiz</a></li>
+                                        <li><a class="btn dropdown-item first-timer" aria-disabled="false" href="quatrics_post.html">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item home-hide">
-                                    <a class="btn nav-link  first-timer" role="button" aria-disabled="false" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link  first-timer" aria-disabled="false" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item home-hide">
-                                    <a class="btn nav-link  first-timer" role="button" aria-disabled="false" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                    <a class="nav-link first-timer" aria-disabled="false" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
                                 </li>
                                 <li class="nav-item home-hide">
-                                    <a class="btn nav-link first-timer" role="button" aria-disabled="false" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
+                                    <a class="nav-link first-timer" aria-disabled="false" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
                                 </li>
                                 <li class="nav-item dropdown home-hide">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
@@ -543,17 +543,11 @@
         
         const greetingDiv = document.querySelector('.greeting');
         const heroButton = document.querySelector('.herobtn');
-        
 
         const disableFirstTimers = () => {
             document.querySelectorAll("a.first-timer").forEach(a => {
-                a.disabled = true;
-                a.setAttribute("tabindex", "-1");
-                a.setAttribute("aria-disabled", "true");
+                a.classList.add('disabled');
                 a.setAttribute("href", "#");
-                a.style.pointerEvents = "none";
-                a.style.opacity = "0.5";
-                a.style.cursor = "not-allowed";
                 a.setAttribute("title", "Complete the pre-quiz first.");
                 console.log("Disabling tabs");
             });
@@ -562,16 +556,13 @@
         const enableFirstTimers = () => {
             const anchor = ["qualtrics_post.html", "manifesto_page.html", "result_page.html", "history_page.html"];
             document.querySelectorAll("a.first-timer").forEach((a, index) => {
-                a.disabled = false;
-                a.removeAttribute("tabindex");
-                a.style.pointerEvents = "auto";
-                a.style.opacity = "1";
-                a.style.cursor = "pointer";
-                a.setAttribute("href", anchor[index]);
-                a.removeAttribute("aria-disabled");
+                a.classList.remove('disabled');
+                a.href = anchor[index];
                 console.log("Enabling tabs");
-            });
-        };
+            })
+        }
+        
+        var preObject = JSON.parse(localStorage.getItem('preResult'));
 
         if(netlifyIdentity.gotrue.currentUser() !== null) {
             document.querySelectorAll(".home-hide").forEach(element => {
@@ -580,8 +571,12 @@
             document.querySelectorAll(".button-hide").forEach(element => {
                 element.style.display = "none";
             });
+            if(preObject) {
+                enableFirstTimers();
+            } else {
+                disableFirstTimers();
+            }
         }
-
         
         function showSpinner() {
             spinner.classList.remove('hidden');
@@ -804,14 +799,9 @@
                 const user = netlifyIdentity.currentUser();
                 if (!user) throw new Error("Login failed: No user object found");
                 console.log("Successful login!", emailInput2.value);
+                
                 //Need lana to check hiding sign-in modal and maybe editing
                 hideSignInModal();
-                
-                // UI Updates
-                document.querySelector(".home-hide").style.display = "flex";
-                document.querySelectorAll(".button-hide").forEach(button => {
-                    button.style.display = "none";
-                });
                 
                 // Wait for quiz info
                 let r = await ExtractQuizInfo();
