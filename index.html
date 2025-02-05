@@ -546,16 +546,20 @@
 
         const disableFirstTimers = () => {
             document.querySelectorAll("a.first-timer").forEach(a => {
+                a.classList.add('pe-none');
                 a.classList.add('disabled');
                 a.setAttribute("aria-disabled", "true");
                 a.setAttribute("title", "Complete the pre-quiz first.");
+                console.log("Disabling tabs");
             });
         };
 
-        const ableFirstTimers = () => {
+        const enableFirstTimers = () => {
             document.querySelectorAll("a.first-timer").forEach(a => {
                 a.classList.remove('disabled');
+                a.classList.remove('pe-none');
                 a.setAttribute("aria-disabled", "false");
+                console.log("Enabling tabs");
             });
         };
 
@@ -759,7 +763,7 @@
                 localStorage.removeItem('allResponses');
                 return false;
             }
-            ableFirstTimers();
+            enableFirstTimers();
             return true;
         }
         
@@ -807,7 +811,7 @@
                 let r = await ExtractQuizInfo();
             
                 if (r === true) {
-                    ableFirstTimers();
+                    enableFirstTimers();
                     alert("Form is valid, proceeding");
                     window.location.href = "result_page.html";
                 } else {
