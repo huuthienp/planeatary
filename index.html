@@ -548,6 +548,8 @@
             document.querySelectorAll("a.first-timer").forEach(a => {
                 a.classList.add('disabled');
                 a.setAttribute("href", "#");
+                a.setAttribute("data-bs-toggle", "tooltip");
+                a.setAttribute("data-bs-placement", "bottom");
                 a.setAttribute("title", "Complete the pre-quiz first.");
                 console.log("Disabling tabs");
             });
@@ -557,6 +559,8 @@
             const anchor = ["qualtrics_post.html", "manifesto_page.html", "result_page.html", "history_page.html"];
             document.querySelectorAll("a.first-timer").forEach((a, index) => {
                 a.classList.remove('disabled');
+                a.removeAttribute("data-bs-toggle");
+                a.removeAttribute("data-bs-placement");
                 a.href = anchor[index];
                 console.log("Enabling tabs");
             })
