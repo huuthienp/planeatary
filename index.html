@@ -753,12 +753,16 @@
         }
         
         function showSignInModal() {
+
+            const signInModal = new bootstrap.Modal(document.getElementById('signInModal'));
+            document.getElementById('signInModal').style.display = 'flex';
             const signInModal = new bootstrap.Modal(document.getElementById('signInModal'));
             signInModal.show();
         }
 
         function hideSignInModal() {
             const signInModal = new bootstrap.Modal(document.getElementById('signInModal'));
+            document.getElementById('signInModal').style.display = 'none';
             signInModal.hide();
         }
 
@@ -792,7 +796,7 @@
                 
                 // Wait for quiz info
                 let r = await ExtractQuizInfo();
-                
+            
                 if (r === true) {
                     alert("Form is valid, proceeding");
                     window.location.href = "result_page.html";
@@ -897,11 +901,13 @@
     
     function showSignUpModal() {
         const signUpModal = new bootstrap.Modal(document.getElementById('signUpModal'));
+        signUpModal.style.display = 'flex';
         signUpModal.show();
     }
 
     function hideSignUpModal() {
         const signUpModal = new bootstrap.Modal(document.getElementById('signUpModal'));
+        signUpModal.style.display = 'none';
         signUpModal.hide();
     }
 

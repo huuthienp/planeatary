@@ -141,25 +141,6 @@
                 var preObject = JSON.parse(localStorage.getItem('preResult'));
                 var postObject = JSON.parse(localStorage.getItem('postResult'));
                 
-
-                if(preObject) {
-                    var preResult = preObject.result;
-                    var pre_rec = preObject.recordedDate;
-                    var preResponseId = preObject.responseId;
-                    try {
-                        var selectTasks = await fetchTaskStatus(preResponseId);
-                        localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
-                    } catch (err) {
-                        console.log(err);
-                        selectTasks = {};
-                    }    
-                } 
-     
-                if (postObject) {
-                    var postResult = postObject.result;
-                    var post_rec = postObject.recordedDate;
-                }
-                
                 var tasks = JSON.parse(localStorage.getItem('tasks'));
                 var com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                 var detailed = {};
@@ -303,10 +284,40 @@
                         var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
                         var allRes = await fetchResponses(userId);
                         let allResponses = JSON.parse(localStorage.getItem('allResponses'));
-                        let postQuiz = {};
-                        let preQuiz = {};
+                        let postQuiz;
+                        let preQuiz;
                         
-                        if (allResponses) {
+                        if(preObject) {
+                            var preResult = preObject.result;
+                            var pre_rec = preObject.recordedDate;
+                            var preResponseId = preObject.responseId;  
+                        } 
+                        if (preResult && preResponseId) {
+                            try {
+                                let selectTasks = await fetchTaskStatus(preResponseId);
+                                localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
+                                selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                                var firstNullIndex = selectTasks.time.findIndex(function(el) {
+                                    return el == "";
+                                });
+                                if (firstNullIndex !== -1) {
+                                    alert("Please finish all the chosen tasks before doing post-quiz.");
+                                    window.location.href = "challenge_page.html";
+                                }
+
+                            } catch(err) {
+                                alert("No pre quiz found. Please do the quiz first.");
+                                window.location.href = "qualtrics.html";
+                            }
+                        }
+                        
+                        if (postObject) {
+                            var postResult = postObject.result;
+                            var post_rec = postObject.recordedDate;
+                        }
+                
+                        
+                        if (allResponses && !preObject) {
                             Object.keys(allResponses).forEach((cycleKey) => {
                                 if (allResponses[cycleKey].postResponse && allResponses[cycleKey].preResponse) {
                                     preQuiz = allResponses[cycleKey].preResponse;
@@ -315,7 +326,7 @@
                                     preResponseId = postQuiz.responseId;
                                 } else {
                                     preQuiz = allResponses[cycleKey].preResponse;
-                                    postQuiz = {};
+                                    postQuiz = null;
                                 }
                                 preObject = preQuiz;
                                 preResponseId = preQuiz.responseId;
@@ -339,24 +350,6 @@
                             }
                         }
 
-                        if (preResult && preResponseId) {
-                            try {
-                                let selectTasks = await fetchTaskStatus(preResponseId);
-                                localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
-                                selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                                var firstNullIndex = selectTasks.time.findIndex(function(el) {
-                                    return el == "";
-                                });
-                                if (firstNullIndex !== -1) {
-                                    alert("Please finish all the chosen tasks before doing post-quiz.");
-                                    window.location.href = "challenge_page.html";
-                                }
-
-                            } catch(err) {
-                                alert("No pre quiz found. Please do the quiz first.");
-                                window.location.href = "index.html";
-                            }
-                        }
                         
                         const taskCheck = checkLastTaskStatus();
 
