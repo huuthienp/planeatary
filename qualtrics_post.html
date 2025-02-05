@@ -353,7 +353,7 @@
                         
                         const taskCheck = checkLastTaskStatus();
 
-                        if (postObject) {
+                        if (postObject && Object.keys(postObject).length !== 0) {
                             quizFrame.style.display = 'none'; 
                             document.querySelector('.btn-next').style.display = 'none';
                             const fallbackMessage = document.createElement('div');
@@ -375,13 +375,13 @@
                                 fallbackMessage.innerHTML = "Please finish pre-quiz and then all selected tasks before doing the post quiz";
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                             }
-                        } else if (postQuiz) {
+                        } else if (Object.keys(postQuiz).length !== 0) {
                             quizFrame.style.display = 'none'; 
                             document.querySelector('.btn-next').style.display = 'none';
                             const fallbackMessage = document.createElement('div');
                             fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                             quizFrame.parentElement.appendChild(fallbackMessage);
-                        } else if (!postObject || postObject == "") {
+                        } else if (!postObject || Object.keys(postObject).length == 0) {
                             var quizUrl = initiateSurvey('post', quizFrame);
                         } else {
                             var quizUrl = initiateSurvey('post', quizFrame);
