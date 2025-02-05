@@ -777,7 +777,7 @@
                 console.log("Successful login!", emailInput2.value);
                 
                 // Wait for quiz info
-                r = await ExtractQuizInfo();
+                let r = await ExtractQuizInfo();
                 if(r == true) {
                     alert("Form is valid, proceeding");
                     window.location.href = "result_page.html";
