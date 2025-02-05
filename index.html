@@ -755,14 +755,13 @@
         function showSignInModal() {
 
             const signInModal = new bootstrap.Modal(document.getElementById('signInModal'));
-            signInModal.style.display = 'flex';
             signInModal.show();
         }
 
         function hideSignInModal() {
-            const signInModal = new bootstrap.Modal(document.getElementById('signInModal'));
-            signInModal.style.display = 'none';
-            signInModal.hide();
+            const signInModal = document.getElementById('signInModal');
+            const modalInstance = bootstrap.Modal.getInstance(signInModal); 
+            modalInstance.hide();
         }
 
         
@@ -905,9 +904,9 @@
     }
 
     function hideSignUpModal() {
-        const signUpModal = new bootstrap.Modal(document.getElementById('signUpModal'));
-        signUpModal.style.display = 'none';
-        signUpModal.hide();
+        const signUpModal = document.getElementById('signUpModal');
+        const modalInstance = bootstrap.Modal.getInstance(signUpModal); 
+        modalInstance.hide();
     }
 
     function validate_form() {
