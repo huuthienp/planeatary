@@ -262,22 +262,21 @@
                 console.warn("No responseHistory found for this user.");
                 document.querySelector(".button2").style.display = "none";
                 document.querySelector(".improvement").style.display = "none";
-                const fallbackMessage = document.createElement('div');
-                fallbackMessage.innerHTML = "Opp! No information available";
-                document.querySelector(".task-content").parentElement.appendChild(fallbackMessage);
+                QContainer.innerHTML = "<p>Opp! No information available</p>";
             }
 
             try {
                 showSpinner();
                 //from history page
                 var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
-                preResponseId =  preResult.responseId;
                 
-                if (!preResult || !preResponseId) {
+                if (!preResult) {
                     alert("No pre quiz found. Please do the quiz first.");
                     window.location.href = "index.html";
                     return;
                 }
+
+                preResponseId =  preResult.responseId;
                 
                 if (storedCycle) {
                     
@@ -407,8 +406,9 @@
             async function renderQuestions(condition) {
                 QContainer.innerHTML = '';
                 
-                if(!preResult && !preResponseId) {
+                if(!preResult) {
                     QContainer.innerHTML = '<p>No available information to be displayed</p>';
+                    return;
                 } else {
                     let preTotalScore = preResult.result.totalScore; 
                     scores = preResult.result.pointArray;

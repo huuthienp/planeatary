@@ -72,7 +72,7 @@
                 <iframe class="quiz" title="Planeatary quiz"></iframe>
                 <span class="void"></span>
                 <div class="btn-next">
-                    <button class="btn btn-success" id="restartBtn" style="width: 150px;">Restart</button>
+                    <!-- <button class="btn btn-success" id="restartBtn" style="width: 150px;">Restart</button> -->
                     <a><button id="nextButt" type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button></a>
                 </div>
             </div>
@@ -101,16 +101,17 @@
             function hideSpinner() {
                 const elapsedTime = Date.now() - spinnerStartTime;
                 if (elapsedTime < minDisplayTime) {
-                    setTimeout(() => {
-                        console.log("Hiding spinner after min time...");
+                        setTimeout(() => {
+                            console.log("Hiding spinner after min time...");
+                            spinner.classList.add('hidden');
+                            bOverlay.classList.add('hidden');
+                            isLoading = false;
+                        }, minDisplayTime - elapsedTime);
+                    } else {
                         spinner.classList.add('hidden');
                         bOverlay.classList.add('hidden');
                         isLoading = false;
-                    }, minDisplayTime - elapsedTime);
-                    spinner.classList.add('hidden');
-                    bOverlay.classList.add('hidden');
-                    isLoading = false;
-                }
+                    }
             }
 
             function logOut() {
@@ -134,7 +135,7 @@
             });
             
             const nextButton = document.getElementById('nextButt');
-            const restartBtn = document.getElementById('restartBtn');
+            // const restartBtn = document.getElementById('restartBtn');
             const quizFrame = document.querySelector('div.content > iframe.quiz');
             const quizSpan = document.querySelector('div.content > span.void');
             
@@ -148,22 +149,41 @@
                 'result_page',
                 'result_page',
             ];
+
         </script>
         <script defer type="module">
             import { initiateSurvey, updateAnchors, updateButton } from './scripts/helpers.mjs';
             const quizUrl = initiateSurvey('pre', quizFrame);
-            // Initial preResult check
+            var preObject = JSON.parse(localStorage.getItem('preResult'));
+            var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+            
             try {
-                const preResult = JSON.parse(localStorage['preResult']);
+                var allRes = await fetchResponses(userId);
+                let allResponses = JSON.parse(localStorage.getItem('allResponses'));
+                
+                if (storedCycle) {
+                    try {
+                        
+                        preObject = storedCycle.preResponse;
+                        preResult = preObject.result;
+                        pre_rec = preObject.recordedDate;
+                        preResponseId = preObject.responseId;
+                        
+                    } catch(err) {
+                        console.warn("Couldn't find previous info from history:", err);
+                    }
+                }
+
                 updateAnchors(anchors, hrefs);
                 updateButton(nextButton, '#02897A', 'pointer');
                 quizUrl.innerHTML = 'You have already finished the pre-quiz!';
-                console.log('Found pre-quiz result in storage!\n', preResult);
+                console.log('Found pre-quiz result in storage!\n', preObject);
             } catch(error) {
                 console.warn('Caught', error, '\nPre-quiz result is not found!');
                 updateAnchors(anchors);
                 updateButton(nextButton, 'grey', 'not-allowed');
-                quizUrl.innerHTML = '';
+                quizFrame.style.display = "none";
+                
             }
             // Listen to preResult change in localStorage
             window.addEventListener('localStorageChange', (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
@@ -180,13 +200,14 @@
                         console.warn('Caught', error, '\nPre-quiz result is not found!');
                         updateAnchors(anchors);
                         updateButton(nextButton, 'grey', 'not-allowed');
+                        quizFrame.style.display = "none";
                         quizSpan.innerText = '';
                     }
                 }
             });
-            restartBtn.addEventListener('click', () => {
-                quizFrame.contentWindow.location = quizUrl;  // reload quiz frame
-            });
+            // restartBtn.addEventListener('click', () => {
+            //     quizFrame.contentWindow.location = quizUrl;  // reload quiz frame
+            // });
         </script>
     </body>
 </html>
