@@ -44,17 +44,17 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
                                         <li><a class="dropdown-item" href="qualtrics.html">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item" href="qualtrics_post.html">Post-quiz</a></li>
+                                        <li><a class="dropdown-item first-timer" href="qualtrics_post.html">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item home-hide">
-                                    <a class="nav-link" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link first-timer" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item home-hide">
-                                    <a class="nav-link" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                    <a class="nav-link first-timer" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
                                 </li>
                                 <li class="nav-item home-hide">
-                                    <a class="nav-link disabled" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
+                                    <a class="nav-link first-timer" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
                                 </li>
                                 <li class="nav-item dropdown home-hide">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
@@ -734,7 +734,7 @@
                 });
             } else {
                 //handle a potentially first-time user
-                confirm("Seems like you've not done any quiz before. Are you the first-timers?");
+                confirm("Seems like you've not done any quiz before. Are you a first-timer?");
                 //clear unwanted existings in local storage
                 localStorage.removeItem('preResult');
                 localStorage.removeItem('fetched_tasks');
@@ -768,11 +768,14 @@
                 console.log("Successful login!", emailInput2.value);
                 
                 // Wait for quiz info
-                r = await ExtractQuizInfo();
+                let r = await ExtractQuizInfo();
                 if(r == true) {
                     alert("Form is valid, proceeding");
                     window.location.href = "result_page.html";
                 } else {
+                    document.querySelectorAll("a.first-timer").forEach(a => {
+                        a.classList.add('disabled');
+                    });
                     window.location.href = "account manage.html";
                 }
                 
