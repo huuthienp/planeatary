@@ -1212,6 +1212,7 @@ body {
   position: relative;
   padding: 1vh 1vw;
   margin: 5vh auto;
+  overflow-x: auto;
 }
 #h-table {
   position: relative;
