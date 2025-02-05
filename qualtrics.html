@@ -80,7 +80,6 @@
 
         <!-- spinner overlay-->
         <section class="overlay hidden" id="spinnerOverlay"></section>
-
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script>
 
@@ -184,6 +183,9 @@
             var preObject = JSON.parse(localStorage.getItem('preResult'));
             var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
             var quizUrl;
+            var preResult;
+            var preResponseId;
+
 
             function isTokenExpired(token) {
                 if (!token) return true;
@@ -197,31 +199,32 @@
                 return exp < now; // Returns true if token is expired
             }
 
-            try {
-                const user = netlifyIdentity.gotrue.currentUser();
-                if (user) {
-                    user.jwt().then(token => {
-                        if (isTokenExpired(token)) {
-                            console.log("Token expired. Prompting user to re-login...");
-                            netlifyIdentity.logout();
-                        } else {
-                            console.log("Token is valid.");
-                        }
-                    });
-                }
+            const user = netlifyIdentity.gotrue.currentUser();
+            if (user) {
+                user.jwt().then(token => {
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                    } else {
+                        console.log("Token is valid.");
+                    }
+                });
+            }
                 
-                const metadata = user.user_metadata;
-                const responseHistory = metadata.responseHistory;
-                const userId = user.id;
+            const metadata = user.user_metadata;
+            const responseHistory = metadata.responseHistory;
+            const userId = user.id;
+
+            try {
+                
                 var allRes = await fetchResponses(userId);
                 let allResponses = JSON.parse(localStorage.getItem('allResponses'));
                 
                 if (storedCycle) {
                     try {
-                        
+        
                         preObject = storedCycle.preResponse;
                         preResult = preObject.result;
-                        pre_rec = preObject.recordedDate;
                         preResponseId = preObject.responseId;
                         
                     } catch(err) {
@@ -232,8 +235,25 @@
                     updateAnchors(anchors, hrefs);
                     updateButton(nextButton, '#02897A', 'pointer');
                     quizFrame.style.display = 'none';
-                    quizSpan.innerHTML = 'You have already finished the pre-quiz!';
+                    quizSpan.innerText = 'You have already finished the pre-quiz!';
                     console.log('Found pre-quiz result in storage!\n', preObject);
+
+                } else if (allResponses) {
+                    Object.keys(allResponses).forEach((cycleKey) => {
+                        if (allResponses[cycleKey].preResponse) {
+                            //get the latest preResponse
+                            preQuiz = allResponses[cycleKey].preResponse;
+                        } 
+                    });
+
+                    preObject = preQuiz;
+                    preResponseId = preQuiz.responseId;
+                    updateAnchors(anchors, hrefs);
+                    updateButton(nextButton, '#02897A', 'pointer');
+                    quizFrame.style.display = 'none';
+                    quizSpan.innerText = 'You have already finished the pre-quiz!';
+                    console.log('Found pre-quiz result in storage!\n', preObject);
+                    
                 } else {
                     quizUrl = initiateSurvey('pre', quizFrame);
                     updateAnchors(anchors);
@@ -256,14 +276,15 @@
                         JSON.parse(newValue || undefined);  // force null -> undefined to throw error
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
+                        quizFrame.style.display = 'none';
                         quizSpan.innerText = 'Thank you for your response!';
                         console.log('Found pre-quiz result in storage!\n', newValue);
                     } catch(error) {
                         console.warn('Caught', error, '\nPre-quiz result is not found!');
                         updateAnchors(anchors);
                         updateButton(nextButton, 'grey', 'not-allowed');
-                        quizFrame.style.display = "none";
-                        quizSpan.innerText = '';
+                        quizUrl = initiateSurvey('pre', quizFrame);
+                        // quizSpan.innerText = 'An error occurred. Please try again later.';
                     }
                 }
             });
