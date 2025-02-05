@@ -44,17 +44,17 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
                                         <li><a class="dropdown-item" href="qualtrics.html">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item first-timer" href="qualtrics_post.html">Post-quiz</a></li>
+                                        <li class="first-timer"><a class="dropdown-item" href="qualtrics_post.html">Post-quiz</a></li>
                                     </ul>
                                 </li>
-                                <li class="nav-item home-hide">
-                                    <a class="nav-link first-timer" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                                <li class="nav-item home-hide first-timer">
+                                    <a class="nav-link" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
-                                <li class="nav-item home-hide">
-                                    <a class="nav-link first-timer" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                <li class="nav-item home-hide first-timer">
+                                    <a class="nav-link" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
                                 </li>
-                                <li class="nav-item home-hide">
-                                    <a class="nav-link first-timer" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
+                                <li class="nav-item home-hide first-timer">
+                                    <a class="nav-link" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
                                 </li>
                                 <li class="nav-item dropdown home-hide">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
@@ -749,36 +749,55 @@
             modal.show();
         }
 
+        function hideSignInModal() {
+            const modal = new bootstrap.Modal(document.getElementById('signInModal'));
+            modal.hide();
+        }
+
         
         async function signInAndRedirect() {
             try {
                 const emailInput2 = document.getElementById('emailInput2');
                 const passwordInput2 = document.getElementById('passwordInput');
-                // Wait for login
+                
                 const loginResult = await netlifyIdentity.gotrue.login(
-                    emailInput2.value,
-                    passwordInput2.value,
-                    true
+                emailInput2.value,
+                passwordInput2.value,
+                true
                 );
                 
+                // Wait for Netlify to update user data
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                const user = netlifyIdentity.currentUser();
+                if (!user) throw new Error("Login failed: No user object found");
+                console.log("Successful login!", emailInput2.value);
+
+                //Need lana to check hiding sign-in modal and maybe editing
+                hideSignInModal();
+                
+                // UI Updates
                 document.querySelector(".home-hide").style.display = "flex";
                 document.querySelectorAll(".button-hide").forEach(button => {
                     button.style.display = "none";
                 });
-                console.log("Successful login!", emailInput2.value);
+                
                 
                 // Wait for quiz info
                 let r = await ExtractQuizInfo();
-                if(r == true) {
+                
+                if (r === true) {
                     alert("Form is valid, proceeding");
                     window.location.href = "result_page.html";
                 } else {
-                    document.querySelectorAll("a.first-timer").forEach(a => {
-                        a.classList.add('disabled');
+                    document.querySelectorAll("li.first-timer").forEach(li => {
+                        li.classList.add('disabled');
                     });
-                    window.location.href = "account manage.html";
+                    // Delay navigation slightly
+                    setTimeout(() => {
+                        //Needs confirmation from Linh about the flow here
+                        window.location.href = "account manage.html";
+                    }, 500);
                 }
-                
                 
             } catch (error) {
                 console.error("Caught error:", error);
@@ -869,6 +888,12 @@
         const modal = new bootstrap.Modal(document.getElementById('signUpModal'));
         modal.show();
     }
+
+    function hideSignUpModal() {
+        const modal = new bootstrap.Modal(document.getElementById('signUpModal'));
+        modal.hide();
+    }
+
     function validate_form() {
         let nameField = document.getElementById("name");
         let emailField = document.getElementById("email");
@@ -948,8 +973,7 @@
             netlifyIdentity.gotrue.signup(emailInput.value, passwordInput.value, {full_name: nameField.value})
             .then((r) => {
                 console.log('Successful signup!', emailInput.value);
-                //Please add more logic according to your completed code
-                //window.location.href = "account manage.html";
+                hideSignUpModal();
             })
             .catch((e) => {
                 console.error('Caught', e)
