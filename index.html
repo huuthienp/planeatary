@@ -549,9 +549,9 @@
             document.querySelectorAll("a.first-timer").forEach(a => {
                 a.style.pointerEvents = "none";
                 a.style.opacity = "0.5";
-                a.cursor = "not-allowed";
+                a.style.cursor = "not-allowed";
                 a.setAttribute("aria-disabled", "true");
-                a.href = "#";
+                a.setAttribute("href", "#");
                 a.setAttribute("title", "Complete the pre-quiz first.");
                 console.log("Disabling tabs");
             });
@@ -562,8 +562,8 @@
             document.querySelectorAll("a.first-timer").forEach((a, index) => {
                 a.style.pointerEvents = "auto";
                 a.style.opacity = "1";
-                a.cursor = "pointer";
-                a.href = anchor[index];
+                a.style.cursor = "pointer";
+                a.setAttribute("href", anchor[index]);
                 a.setAttribute("aria-disabled", "false");
                 console.log("Enabling tabs");
             });
