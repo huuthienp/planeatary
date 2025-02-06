@@ -156,7 +156,7 @@
             
             var tasks = JSON.parse(localStorage.getItem('tasks'));
             var detailed = JSON.parse(localStorage.getItem('fetched_tasks')) || null;
-            var task_rec = "";
+            var task_rec = detailed.time || [];
             
             const modalEl = [closeButt, tmodal, modalOverlay];
             const spinnerEl = [spinner, bOverlay];
@@ -227,9 +227,7 @@
                     // 13 digits => milliseconds
                     return new Date(ts);
                 } else {
-                    const asSeconds = new Date(ts * 1000);
                     const asMillis = new Date(ts);
-                    // If asSeconds is around 1970 or 1971, and asMillis is more near current date, pick asMillis
                     return asMillis; 
                 }
             }
@@ -343,7 +341,7 @@
                         task_rec = detailed.time; 
                     } catch(err) {
                         console.warn("Couldn't find previous tasks' info:", err);
-                        selectTasks = {};
+                        selectTasks = null;
                     }
                 }
                 
@@ -508,6 +506,8 @@
                 var firstNullIndex = detailed.time.findIndex(function(el) {
                     return el == "";
                 });
+
+                console.log("time array:", task_rec);
                 
                 //Check if all chosen tasks are completed.
                 if (firstNullIndex === -1) {
