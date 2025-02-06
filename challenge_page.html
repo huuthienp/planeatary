@@ -229,7 +229,8 @@
                         const taskGroup = tasks[questionKey].tasks;
                         
                         // Filter tasks that are selected
-                        taskGroup.forEach(task => {
+                        taskGroup.forEach(task => 
+                        {
                             if (task.choice === 'chosen') {
                                 // Create and append a card for each selected task
                                 const taskCard = document.createElement("div");
@@ -274,6 +275,10 @@
                                             if (Tstatus.done.includes(String(task.taskNumber))) {
                                                 taskCard.classList.add("card_completed");
                                                 taskName.style.textDecoration = "line-through";
+                                                //in case that backend does not allow fetching task status
+                                                let index = Tstatus.done.indexOf(String(task.taskNumber));
+                                                Tstatus.done.splice(index, 0, String(task.taskNumber));
+                                                Tstatus.time.splice(index, 0, task.finishTime);
                                             }
                                         }
                                     } else {
@@ -283,8 +288,8 @@
                                             Tstatus.done.push(String(task.taskNumber));
                                             Tstatus.time.push(task.finishTime);
                                         }
-                                        localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                                     }
+                                    localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                                 }
                                 
                                 // Add event listener to task card to update status

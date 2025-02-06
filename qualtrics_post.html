@@ -150,6 +150,7 @@
                 let latest_post = "";
                 let latest_task = "";
                 let history = [];
+                const fallbackMessage = document.createElement('div');
 
                 async function fetchResponses(userId) {
                     try {
@@ -269,6 +270,9 @@
                         const cycle = {lastPre: latest_pre, lastPost: latest_post, lastTask: latest_task};
                         return cycle
                     }
+
+                    //clear any existing message
+                    fallbackMessage.innerHTML = "";
                     
                     try { 
                         showSpinner();
@@ -277,10 +281,6 @@
                         var allResponses = JSON.parse(localStorage.getItem('allResponses'));
                         let postQuiz = null;
                         let preQuiz = null;
-
-                        //clear any existing message
-                        const fallbackMessage = document.createElement('div');
-                        fallbackMessage.innerHTML = "";
                         
                         if(preObject) {
                             var preResult = preObject.result;
@@ -357,7 +357,6 @@
                                 console.log("Couldn't find previous info from history:", err);
                             }
                         }
-
                         
                         const taskCheck = checkLastTaskStatus();
 
@@ -403,6 +402,26 @@
                         hideSpinner();
                     } 
                 });
+
+                // Listen to postResult change in localStorage
+                window.addEventListener('localStorageChange', (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
+                    const { type, detail: { key, oldValue, newValue } } = event;
+                    console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
+                    if (key === 'postResult' && oldValue !== newValue) {
+                        try {
+                            JSON.parse(newValue || undefined);  // force null -> undefined to throw error
+                            quizFrame.style.display = 'none';
+                            fallbackMessage.innerHTML = 'Thank you for your response!';
+                            quizFrame.parentElement.appendChild(fallbackMessage);
+                            console.log('Found post-quiz result in storage!\n', newValue);
+                        } catch(error) {
+                            console.warn('Caught', error, '\nPost-quiz result is not found!');
+                            var quizUrl = initiateSurvey('post', quizFrame);
+                            // quizSpan.innerText = 'An error occurred. Please try again later.';
+                        }
+                    }
+                });
+
             </script>
             <script defer type="module" src="./scripts/listen-to-qualtrics.mjs"></script>
         </body>
