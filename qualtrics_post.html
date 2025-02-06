@@ -142,7 +142,7 @@
                 var postObject = JSON.parse(localStorage.getItem('postResult'));
                 
                 var tasks = JSON.parse(localStorage.getItem('tasks'));
-                var com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                var selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                 var detailed = {};
                 var task_rec = "";
                 
@@ -285,12 +285,8 @@
                         if(preObject) {
                             var preResult = preObject.result;
                             var pre_rec = preObject.recordedDate;
-                            var preResponseId = preObject.responseId;  
-                        } 
-                        if (preResult && preResponseId) {
+                            var preResponseId = preObject.responseId;
                             try {
-                                let tasks = JSON.parse(localStorage.getItem('tasks'));
-                                let selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                                 if (!selectTasks) {
                                     selectTasks = await fetchTaskStatus(preResponseId);
                                     localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
@@ -302,10 +298,10 @@
                                         alert("Please finish all the chosen tasks before doing post-quiz.");
                                         quizFrame.style.display = 'none'; 
                                         document.querySelector('.btn-next').style.display = 'none';
-                                        const fallbackMessage = document.createElement('div');
                                         fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
                                         quizFrame.parentElement.appendChild(fallbackMessage);
                                         window.location.href = "challenge_page.html";
+                                        return;
                                     }
                                 }
 
@@ -313,12 +309,12 @@
                                 alert("No pre quiz found. Please do the quiz first.");
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
-                                const fallbackMessage = document.createElement('div');
                                 fallbackMessage.innerHTML = "Please finish pre-quiz and then all selected tasks before doing the post quiz";
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                                 window.location.href = "qualtrics.html";
-                            }
-                        }
+                                return;
+                            }  
+                        } 
                         
                         if (postObject) {
                             var postResult = postObject.result;
@@ -369,7 +365,6 @@
                         if (postObject && Object.keys(postObject).length !== 0) {
                             quizFrame.style.display = 'none'; 
                             document.querySelector('.btn-next').style.display = 'none';
-                            const fallbackMessage = document.createElement('div');
                             fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                             quizFrame.parentElement.appendChild(fallbackMessage);
                         } else if (taskCheck.lastPre !== "") {
@@ -378,20 +373,17 @@
                             } else if (taskCheck.lastTask !== "" && taskCheck.lastPost !== "") {
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
-                                const fallbackMessage = document.createElement('div');
                                 fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                             } else {
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
-                                const fallbackMessage = document.createElement('div');
                                 fallbackMessage.innerHTML = "Please finish pre-quiz and then all selected tasks before doing the post quiz";
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                             }
                         } else if (Object.keys(postQuiz).length !== 0) {
                             quizFrame.style.display = 'none'; 
                             document.querySelector('.btn-next').style.display = 'none';
-                            const fallbackMessage = document.createElement('div');
                             fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                             quizFrame.parentElement.appendChild(fallbackMessage);
                         } else if (!postObject || Object.keys(postObject).length == 0) {
@@ -404,7 +396,6 @@
                         console.error("Caught error: ", err);
                         quizFrame.style.display = 'none';
                         document.querySelector('.btn-next').style.display = 'none';
-                        const fallbackMessage = document.createElement('div');
                         fallbackMessage.innerHTML = "Content cannot be displayed. Please try again later.";
                         fallbackMessage.style.color = "red";
                         nextButton.style.display = "none";

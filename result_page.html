@@ -439,7 +439,11 @@
             
             // Function to display completed tasks 
             async function displaySelectedTasks(tasks) {
+                
                 cardContainer.innerHTML = ''; 
+                comparison.innerHTML = ''; 
+                header.innerHTML='';
+                completion_date.innerHTML='';
                 
                 // Remove next step, suggestion, and select-tasks button if display tasks
                 const tohide = [
