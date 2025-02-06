@@ -134,7 +134,7 @@
                 });
                 
             </script>      
-            <script defer type="module">
+            <script defer type="module" src="./scripts/listen-to-qualtrics.mjs">
                 import { initiateSurvey, fetchTaskStatus, extractTaskData } from './scripts/helpers.mjs';
 
                 const quizFrame = document.querySelector('div.content > iframe.quiz');
@@ -315,7 +315,7 @@
                                     preQuiz = allResponses[cycleKey].preResponse;
                                     postQuiz = allResponses[cycleKey].postResponse;
                                     postObject = postQuiz;
-                                    preResponseId = postQuiz.responseId;
+                                    preResponseId = preQuiz.responseId;
                                 } else {
                                     preQuiz = allResponses[cycleKey].preResponse;
                                     postQuiz = null;

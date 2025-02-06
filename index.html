@@ -652,8 +652,15 @@
 
         heroButton.addEventListener('click', function () {
             if (netlifyIdentity.gotrue.currentUser()) {
-                alert("Let's see your latest result");
-                window.location.href = "result_page.html";
+                let preObject = localStorage.getItem('preResult')
+                if(preObject) {
+                    alert("Let's see your latest result");
+                    window.location.href = "result_page.html";
+                } else {
+                    alert("Let's do your very first pre-quiz!");
+                    window.location.href = "qualtrics.html";
+                }
+                
             } else {
                 document.getElementById('e-toast').textContent = 'Please sign in or sign up first';
                 const toastEl = document.getElementById('liveToast');
@@ -766,6 +773,7 @@
                     //clear unwanted existings in local storage
                     localStorage.removeItem('preResult');
                     localStorage.removeItem('fetched_tasks');
+                    localStorage.removeItem('tasks');
                     localStorage.removeItem('postResult');
                     localStorage.removeItem('allResponses');
                     return false;

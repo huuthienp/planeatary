@@ -1207,13 +1207,14 @@ body {
     border-left: 0.5em solid #2ecc71;
 }
 
-.history-table {
-  display: flex;
-  position: relative;
-  padding: 1vh 1vw;
-  margin: 5vh auto;
-  overflow-x: auto;
+.void-space {
+  padding: 5vh 0;
 }
+
+.history-table {
+  position: relative;
+}
+
 #h-table {
   position: relative;
 }
