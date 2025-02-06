@@ -257,25 +257,26 @@
             var preResult = JSON.parse(localStorage.getItem('preResult'));
             var preResponseId; 
 
-            //handle first-time user
-            if (!metadata || !metadata.responseHistory) {
-                console.warn("No responseHistory found for this user.");
-                document.querySelector(".button2").style.display = "none";
-                document.querySelector(".improvement").style.display = "none";
-                QContainer.innerHTML = "<p>Opp! No information available</p>";
-            }
 
             try {
                 showSpinner();
-                //from history page
-                var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
-                
-                if (!preResult) {
+                //handle first-time user
+                if (!metadata.responseHistory && !preResult) {
+                    console.warn("No responseHistory found for this user.");
+                    document.querySelector(".button2").style.display = "none";
+                    document.querySelector(".improvement").style.display = "none";
+                    document.getElementById("threetask").innerHTML = "";
+
+                    QContainer.innerHTML = "<p>Opp! No information available</p>";
                     alert("No pre quiz found. Please do the quiz first.");
                     window.location.href = "index.html";
                     return;
-                }
 
+                } else if (preResult) {
+                    document.querySelector(".button2").style.display = "flex";
+                    document.querySelector(".improvement").style.display = "flex";
+                }
+                
                 preResponseId =  preResult.responseId;
                 
                 if (storedCycle) {
@@ -617,7 +618,7 @@
                 renderQuestions(condition);
                 var tContent = document.querySelector(".task-content");
                 if (tContent.innerHTML == '') {
-                    tContent.innerHTML == '<p>None of your answer got good score</p>';
+                    tContent.innerHTML == '<p>None of your answers got good score</p>';
                 }
                 good.style.backgroundColor = '#02897A';
                 bad.style.backgroundColor = '#a9d1cd';
@@ -630,7 +631,7 @@
                 renderQuestions(condition);
                 var tContent = document.querySelector(".task-content");
                 if (tContent.innerHTML == '') {
-                    tContent.innerHTML == '<p>None of your answer got bad score</p>';
+                    tContent.innerHTML == '<p>None of your answers got bad score</p>';
                 }
                 good.style.backgroundColor = '#a9d1cd';
                 bad.style.backgroundColor = '#02897A';
