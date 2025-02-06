@@ -155,8 +155,7 @@
             var post_rec = postObject.recordedDate;
             
             var tasks = JSON.parse(localStorage.getItem('tasks'));
-            var com_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-            var detailed = {};
+            var detailed = JSON.parse(localStorage.getItem('fetched_tasks')) || null;
             var task_rec = "";
             
             const modalEl = [closeButt, tmodal, modalOverlay];
@@ -354,15 +353,15 @@
                     tasks = JSON.parse(localStorage.getItem('tasks'));
                 }
                 
-                if (!com_tasks && preResponseId) {
+                if (!detailed && preResponseId) {
                     try {
-                        com_tasks = await fetchTaskStatus(preResponseId);
+                        var com_tasks = await fetchTaskStatus(preResponseId);
                         localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
                         detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
                         task_rec = detailed.time; 
                     } catch (err) {
                         console.error("Couldn't find previous tasks' info:", err);
-                        com_tasks = {};
+                        detailed = null;
                     }
                 }
                 
@@ -439,7 +438,7 @@
             
             // Function to display completed tasks 
             async function displaySelectedTasks(tasks) {
-                
+
                 cardContainer.innerHTML = ''; 
                 comparison.innerHTML = ''; 
                 header.innerHTML='';
