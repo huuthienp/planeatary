@@ -44,7 +44,7 @@
                                         <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item disabled" href="qualtrics.html">Pre-quiz</a></li>
+                                        <li><a class="dropdown-item" href="qualtrics.html">Pre-quiz</a></li>
                                         <li><a class="dropdown-item disabled" href="qualtrics_post.html">Post-quiz</a></li>
                                     </ul>
                                 </li>
@@ -229,7 +229,8 @@
                         const taskGroup = tasks[questionKey].tasks;
                         
                         // Filter tasks that are selected
-                        taskGroup.forEach(task => {
+                        taskGroup.forEach(task => 
+                        {
                             if (task.choice === 'chosen') {
                                 // Create and append a card for each selected task
                                 const taskCard = document.createElement("div");
@@ -269,17 +270,29 @@
                                 
                                 // Set task choice and status based on local storage
                                 if (Tstatus) {
-                                    if (Tstatus.chosen && Tstatus.done) {
-                                        
+                                    if (Tstatus.chosen.length !==0 && Tstatus.done.length !==0) {
                                         if (Tstatus.chosen.includes(String(task.taskNumber))) {
                                             if (Tstatus.done.includes(String(task.taskNumber))) {
                                                 taskCard.classList.add("card_completed");
                                                 taskName.style.textDecoration = "line-through";
                                             }
+                                        } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) == -1) {
+                                            //in case that backend does not allow fetching task status
+                                            Tstatus.chosen.push(String(task.taskNumber));
+                                            let index = Tstatus.chosen.indexOf(String(task.taskNumber));
+                                            Tstatus.done.splice(index, 0, String(task.taskNumber));
+                                            Tstatus.time.splice(index, 0, task.finishTime);
+                                        }
+                                    } else {
+                                        //manually update fetched_tasks in local storage if found empty
+                                        Tstatus.chosen.push(String(task.taskNumber));
+                                        if (task.status === "Completed") {
+                                            Tstatus.done.push(String(task.taskNumber));
+                                            Tstatus.time.push(task.finishTime);
                                         }
                                     }
+                                    localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                                 }
-                                
                                 
                                 // Add event listener to task card to update status
                                 taskCard.addEventListener('click', async (event) => {
@@ -308,7 +321,7 @@
                                         taskName.style.textDecoration = "none";
                                         completion.innerHTML = "Done";
                                         task.finishTime = "";
-                                        if (Tstatus) {
+                                        if (Tstatus || Object.keys(Tstatus).length !== 0) {
                                             let doneIndex = Tstatus.done.indexOf(String(task.taskNumber));
                                             let timeIndex = Tstatus.time.indexOf(String(task.taskNumber));
                                             Tstatus.done.splice(doneIndex, 1);
@@ -317,7 +330,7 @@
                                     }
                                     // Update task in localStorage
                                     localStorage.setItem('tasks', JSON.stringify(tasks));
-                                    if (Tstatus) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));}
+                                    if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));}
                                     updateNextButton();  
                                     
                                 });              
@@ -326,7 +339,7 @@
                     });
                     
                     localStorage.setItem('tasks', JSON.stringify(tasks));
-                    if (Tstatus) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));} 
+                    if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));} 
                     await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
                     updateNextButton(); 
                     cardContainer.appendChild(nextButtonContainer);
@@ -342,7 +355,7 @@
                         taskGroup.forEach(task => {
                             if (task.choice === "chosen" && task.status !== "Completed") {
                                 allCompleted = false; // If any selected task is not "Completed", set false
-                            }
+                            } 
                         });
                     });
                     
@@ -368,11 +381,15 @@
                     try {
                         var fetched = await fetchTaskStatus(preResponseId);
                         localStorage.setItem('fetched_tasks', JSON.stringify(fetched));
-                        Tstatus = fetched;
+                        Tstatus = fetched || {};
+                        if (Object.keys(Tstatus).length === 0) {
+                            Tstatus.done = [];
+                            Tstatus.chosen = [];
+                            Tstatus.time = [];
+                        }
                     } catch(err) {
                         console.log(err);
                     }
-    
                     displaySelectedTasks(tasks);
                     
                 } catch (err) {

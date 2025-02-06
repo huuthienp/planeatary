@@ -72,7 +72,7 @@
                 <iframe class="quiz" title="Planeatary quiz"></iframe>
                 <span class="void"></span>
                 <div class="btn-next">
-                    <!-- <button class="btn btn-success" id="restartBtn" style="width: 150px;">Restart</button> -->
+                    <button class="btn btn-success" id="restartBtn" style="width: 150px;" disabled>Restart</button>
                     <a><button id="nextButt" type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button></a>
                 </div>
             </div>
@@ -161,7 +161,7 @@
             });
             
             const nextButton = document.getElementById('nextButt');
-            // const restartBtn = document.getElementById('restartBtn');
+            const restartBtn = document.getElementById('restartBtn');
             const quizFrame = document.querySelector('div.content > iframe.quiz');
             const quizSpan = document.querySelector('div.content > span.void');
             
@@ -177,7 +177,7 @@
             ];
             
         </script>
-        <script defer type="module" src="./scripts/listen-to-qualtrics.mjs">
+        <script defer type="module">
             import { initiateSurvey, updateAnchors, updateButton } from './scripts/helpers.mjs';
             
             var preObject = JSON.parse(localStorage.getItem('preResult'));
@@ -185,9 +185,14 @@
             var quizUrl;
             var preResult;
             var preResponseId;
+            var postObject = JSON.parse(localStorage.getItem('postResult'));
+            var postResult;
+            var postResponseId;
             
             document.addEventListener('DOMContentLoaded', async () => {
                 
+                updateButton(restartBtn, 'grey', 'not-allowed');
+
                 function isTokenExpired(token) {
                     if (!token) return true;
                     
@@ -222,11 +227,13 @@
                     let allResponses = JSON.parse(localStorage.getItem('allResponses'));
                     
                     if (storedCycle) {
-                        try {
-                            
+                        try {            
                             preObject = storedCycle.preResponse;
                             preResult = preObject.result;
                             preResponseId = preObject.responseId;
+                            postObject = storedCycle.postResponse || null;
+                            postResult = postObject.result || null;
+                            postResponseId = postObject.responseId || null;
                             
                         } catch(err) {
                             console.warn("Couldn't find previous info from history:", err);
@@ -243,28 +250,55 @@
                         Object.keys(allResponses).forEach((cycleKey) => {
                             if (allResponses[cycleKey].preResponse) {
                                 //get the latest preResponse
-                                preQuiz = allResponses[cycleKey].preResponse;
+                                var preQuiz = allResponses[cycleKey].preResponse;
+                                if (allResponses[cycleKey].postResponse) {
+                                    var postQuiz = allResponses[cycleKey].postResponse;
+                                } else {
+                                    var postQuiz;
+                                }
                             } 
                         });
                         
                         preObject = preQuiz;
                         preResponseId = preQuiz.responseId;
+                        postObject = postQuiz || null;
+                        postResponseId = postQuiz.responseId || null;
+
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
                         quizSpan.innerText = 'You have already finished the pre-quiz!';
                         console.log('Found pre-quiz result in storage!\n', preObject);
+
+                        if(postObject) {
+                            if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
+                                restartBtn.disabled = false;
+                                updateButton(restartBtn, '#02897A', 'pointer');
+                                restartBtn.addEventListener('click', () => {
+                                    localStorage.removeItem('preResult');
+                                    localStorage.removeItem('fetched_tasks');
+                                    localStorage.removeItem('tasks');
+                                    localStorage.removeItem('postResult');
+                                    quizFrame.contentWindow.location = quizUrl;  // reload quiz frame
+                                });
+                            }
+                        }
                         
                     } else {
+
                         quizUrl = initiateSurvey('pre', quizFrame);
                         updateAnchors(anchors);
                         updateButton(nextButton, 'grey', 'not-allowed');
+                        restartBtn.disabled = true;
+                        updateButton(restartBtn, 'grey', 'not-allowed');
                     }
                     
                 } catch(error) {
                     console.warn('Caught', error, '\nPre-quiz result is not found!');
                     updateAnchors(anchors);
                     updateButton(nextButton, 'grey', 'not-allowed');
+                    restartBtn.disabled = true;
+                    updateButton(restartBtn, 'grey', 'not-allowed');
                     quizUrl = initiateSurvey('pre', quizFrame);
                     
                 }
@@ -284,15 +318,15 @@
                             console.warn('Caught', error, '\nPre-quiz result is not found!');
                             updateAnchors(anchors);
                             updateButton(nextButton, 'grey', 'not-allowed');
+                            restartBtn.disabled = true;
+                            updateButton(restartBtn, 'grey', 'not-allowed');
                             quizUrl = initiateSurvey('pre', quizFrame);
                             // quizSpan.innerText = 'An error occurred. Please try again later.';
                         }
                     }
                 });
-                // restartBtn.addEventListener('click', () => {
-                //     quizFrame.contentWindow.location = quizUrl;  // reload quiz frame
-                // });
             });
         </script>
+        <script defer type="module" src="./scripts/listen-to-qualtrics.mjs"></script>
     </body>
     </html>
