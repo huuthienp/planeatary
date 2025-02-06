@@ -230,11 +230,14 @@
                     return 0;
                 }
             }
-            
+
             async function logOut() {
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+
                 if (netlifyIdentity.gotrue.currentUser() !== null) {
                     let user = netlifyIdentity.gotrue.currentUser();
                     const logoutResult = await user.logout();
+                    offcanvas.hide();
                     console.log('User has been logged out!');
                     window.location.href = "index.html";
                 } else {

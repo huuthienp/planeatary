@@ -114,9 +114,12 @@
                 }
                 
                 function logOut() {
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    
                     if (netlifyIdentity.gotrue.currentUser() !== null) {
                         let user = netlifyIdentity.gotrue.currentUser();
                         user.logout().then(() => {
+                            offcanvas.hide();
                             console.log('User has been logged out!');
                             window.location.href = "index.html";
                         });
