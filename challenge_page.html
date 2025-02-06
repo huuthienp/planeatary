@@ -279,6 +279,10 @@
                                     } else {
                                         //manually update fetched_tasks in local storage if found empty
                                         Tstatus.chosen.push(String(task.taskNumber));
+                                        if (task.status === "Completed") {
+                                            Tstatus.done.push(String(task.taskNumber));
+                                            Tstatus.time.push(task.finishTime);
+                                        }
                                         localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                                     }
                                 }
@@ -344,7 +348,7 @@
                         taskGroup.forEach(task => {
                             if (task.choice === "chosen" && task.status !== "Completed") {
                                 allCompleted = false; // If any selected task is not "Completed", set false
-                            }
+                            } 
                         });
                     });
                     
