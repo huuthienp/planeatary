@@ -36,38 +36,38 @@
                         <div class="offcanvas-body" style="background-color: #02897A;">
                             <ul class="navbar-nav justify-content-end align-items-center flex-grow-1 pe-3 gap-3">
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                                    <a class="nav-link active" aria-current="page" data-bs-dismiss="offcanvas" href="index.html">Home</a>
                                 </li>
                                 <li class="nav-item dropdown home-hide">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item" href="qualtrics.html">Pre-quiz</a></li>
-                                        <li><a class="btn dropdown-item first-timer" aria-disabled="false" href="qualtrics_post.html">Post-quiz</a></li>
+                                        <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
+                                        <li><a class="btn dropdown-item first-timer" aria-disabled="false" data-bs-dismiss="offcanvas" href="qualtrics_post.html">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item home-hide">
-                                    <a class="nav-link  first-timer" aria-disabled="false" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link  first-timer" aria-disabled="false" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item home-hide">
-                                    <a class="nav-link first-timer" aria-disabled="false" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                    <a class="nav-link first-timer" aria-disabled="false" data-bs-dismiss="offcanvas" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
                                 </li>
                                 <li class="nav-item home-hide">
-                                    <a class="nav-link first-timer" aria-disabled="false" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
+                                    <a class="nav-link first-timer" aria-disabled="false" data-bs-dismiss="offcanvas" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
                                 </li>
                                 <li class="nav-item dropdown home-hide">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item" href="account manage.html">My account</a></li>
+                                        <li><a class="dropdown-item" href="account manage.html" data-bs-dismiss="offcanvas">My account</a></li>
                                         <li><a class="dropdown-item" id="logOut">Log out</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item button-hide">
-                                    <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signInModal">Sign in</button>
+                                    <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-dismiss="offcanvas" data-bs-target="#signInModal">Sign in</button>
                                 </li>
                                 <li class="nav-item button-hide">
-                                    <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signUpModal">Sign up</button>
+                                    <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-dismiss="offcanvas" data-bs-target="#signUpModal">Sign up</button>
                                 </li>
                             </ul>
                         </div>
@@ -544,6 +544,22 @@
         const greetingDiv = document.querySelector('.greeting');
         const heroButton = document.querySelector('.herobtn');
 
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+
+        offcanvasLinks.forEach(li => {
+            li.addEventListener('click', event => {
+                const targetHref = li.getAttribute('href');
+                
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+                
+                if (targetHref && targetHref !== '#') {
+                    window.location.href = targetHref; 
+                }
+            });
+        });
+
         const disableFirstTimers = () => {
             document.querySelectorAll("a.first-timer").forEach(a => {
                 a.classList.add('Disabled');
@@ -694,21 +710,22 @@
             if (!metadata.responseHistory) {
                 console.warn("No responseHistory found for this user.");
                 return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
+            } else {
+                Object.keys(responseHistory).forEach((cycleKey) =>{
+                    const entry = responseHistory[cycleKey];
+                    history.push(entry);
+                    if (entry.preId && entry.postId) {
+                        latest_pre = entry.preId;
+                        latest_post = entry.postId;
+                    }
+                    if (!entry.postId) {
+                        latest_pre = entry.preId;
+                        latest_post = "";
+                    }
+                    
+                })
             }
             
-            Object.keys(responseHistory).forEach((cycleKey) =>{
-                const entry = responseHistory[cycleKey];
-                history.push(entry);
-                if (entry.preId && entry.postId) {
-                    latest_pre = entry.preId;
-                    latest_post = entry.postId;
-                }
-                if (!entry.postId) {
-                    latest_pre = entry.preId;
-                    latest_post = "";
-                }
-                
-            })
             const quizPair = {lastPre: latest_pre, lastPost: latest_post};
             console.log("responseId pre", quizPair.lastPre);
             console.log("responseId post", quizPair.lastPost);
@@ -871,10 +888,14 @@
             
         });
         
+        //allow a user to log out
         function logOut() {
+            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            
             if (netlifyIdentity.gotrue.currentUser() !== null) {
                 let user = netlifyIdentity.gotrue.currentUser();
                 user.logout().then(() => {
+                    offcanvas.hide();
                     console.log('User has been logged out!');
                     window.location.href = "index.html";
                 });
