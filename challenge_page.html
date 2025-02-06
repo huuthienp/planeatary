@@ -269,19 +269,19 @@
                                 
                                 // Set task choice and status based on local storage
                                 if (Tstatus) {
-                                    if (Tstatus.chosen && Tstatus.done) {
-                                        
+                                    if (Tstatus.chosen.length !==0 && Tstatus.done.length !==0) {
                                         if (Tstatus.chosen.includes(String(task.taskNumber))) {
                                             if (Tstatus.done.includes(String(task.taskNumber))) {
                                                 taskCard.classList.add("card_completed");
                                                 taskName.style.textDecoration = "line-through";
                                             }
                                         }
+                                    } else {
+                                        //manually update fetched_tasks in local storage if found empty
+                                        Tstatus.chosen.push(String(task.taskNumber));
+                                        localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                                     }
-                                } else {
-                                    Tstatus = {};
                                 }
-                                
                                 
                                 // Add event listener to task card to update status
                                 taskCard.addEventListener('click', async (event) => {
@@ -299,7 +299,7 @@
                                         completion.innerHTML = "Completed";
                                         let timestamp = Date.now();
                                         task.finishTime = timestamp;
-                                        if (Tstatus || Object.keys(Tstatus).length === 0) {
+                                        if (Tstatus) {
                                             Tstatus.done.push(String(task.taskNumber));
                                             Tstatus.time.push(timestamp);
                                         }
@@ -319,7 +319,7 @@
                                     }
                                     // Update task in localStorage
                                     localStorage.setItem('tasks', JSON.stringify(tasks));
-                                    if (Tstatus) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));}
+                                    if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));}
                                     updateNextButton();  
                                     
                                 });              
@@ -328,7 +328,7 @@
                     });
                     
                     localStorage.setItem('tasks', JSON.stringify(tasks));
-                    if (Tstatus) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));} 
+                    if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));} 
                     await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
                     updateNextButton(); 
                     cardContainer.appendChild(nextButtonContainer);
@@ -370,11 +370,15 @@
                     try {
                         var fetched = await fetchTaskStatus(preResponseId);
                         localStorage.setItem('fetched_tasks', JSON.stringify(fetched));
-                        Tstatus = fetched;
+                        Tstatus = fetched || {};
+                        if (Object.keys(Tstatus).length === 0) {
+                            Tstatus.done = [];
+                            Tstatus.chosen = [];
+                            Tstatus.time = [];
+                        }
                     } catch(err) {
                         console.log(err);
                     }
-    
                     displaySelectedTasks(tasks);
                     
                 } catch (err) {
