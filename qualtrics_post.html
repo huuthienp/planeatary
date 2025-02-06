@@ -134,7 +134,7 @@
                 });
                 
             </script>      
-            <script defer type="module" src="./scripts/listen-to-qualtrics.mjs">
+            <script defer type="module">
                 import { initiateSurvey, fetchTaskStatus, extractTaskData } from './scripts/helpers.mjs';
 
                 const quizFrame = document.querySelector('div.content > iframe.quiz');
@@ -393,5 +393,6 @@
                     } 
                 });
             </script>
+            <script defer type="module" src="./scripts/listen-to-qualtrics.mjs"></script>
         </body>
         </html>

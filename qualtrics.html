@@ -177,7 +177,7 @@
             ];
             
         </script>
-        <script defer type="module" src="./scripts/listen-to-qualtrics.mjs">
+        <script defer type="module">
             import { initiateSurvey, updateAnchors, updateButton } from './scripts/helpers.mjs';
             
             var preObject = JSON.parse(localStorage.getItem('preResult'));
@@ -294,5 +294,6 @@
                 // });
             });
         </script>
+        <script defer type="module" src="./scripts/listen-to-qualtrics.mjs"></script>
     </body>
     </html>
