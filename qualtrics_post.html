@@ -274,10 +274,13 @@
                         showSpinner();
                         //handle a user directly from the history page
                         var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
-                        var allRes = await fetchResponses(userId);
-                        let allResponses = JSON.parse(localStorage.getItem('allResponses'));
+                        var allResponses = JSON.parse(localStorage.getItem('allResponses'));
                         let postQuiz = null;
                         let preQuiz = null;
+
+                        //clear any existing message
+                        const fallbackMessage = document.createElement('div');
+                        fallbackMessage.innerHTML = "";
                         
                         if(preObject) {
                             var preResult = preObject.result;
@@ -321,9 +324,13 @@
                             var postResult = postObject.result;
                             var post_rec = postObject.recordedDate;
                         }
-                
                         
-                        if (allResponses && !preObject) {
+                        if (!allResponses && !preObject) {
+                            var allRes = await fetchResponses(userId);
+                            allResponses = JSON.parse(localStorage.getItem('allResponses'));
+                        }
+
+                        if (allResponses) {
                             Object.keys(allResponses).forEach((cycleKey) => {
                                 if (allResponses[cycleKey].postResponse && allResponses[cycleKey].preResponse) {
                                     preQuiz = allResponses[cycleKey].preResponse;
@@ -338,7 +345,7 @@
                                 preResponseId = preQuiz.responseId;
                             });
                         }
-
+                        
                         if (storedCycle) {
                             try {
 
