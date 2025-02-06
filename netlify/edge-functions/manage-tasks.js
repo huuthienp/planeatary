@@ -1,111 +1,61 @@
-import axios from 'axios';
-import { getStore } from '@netlify/blobs';
-import { CustomResponse } from '../../classes/http.mjs';
+import { CustomResponse } from '../../scripts/custom-classes.mjs';
+import { fetchData } from '../../scripts/helpers.mjs';
 
 
-export default async (req) => {
-  try {
-    // Ensure the request method is POST
-    const methodUpper = req.method.toUpperCase();
-    if (methodUpper !== 'GET' && methodUpper !== 'PUT') {
-      const message = `Method not allowed: ${methodUpper}.`;
-      console.error(message);
-      return new CustomResponse(message, 405);
-    }
-
-    // Check if id exists in Netlify Blobs
-    const { ID_HEADER, PRE_QUIZ_ID } = process.env;
-    const id = req.headers.get(ID_HEADER);
-
-    if (!id) {
-      const message = 'Unauthorized.';
-      console.error(message, '\n', req.headers);
-      return new CustomResponse(message, 401);
-    }
-
-    // Search Netlify Blobs for ID
-    const preQuizResponses = getStore(PRE_QUIZ_ID);
-
-    const entry = await preQuizResponses.get(id, { consistency: 'strong' });
-
-    if (entry === null) {
-      const message = 'Invalid ID.';
-      console.error(message);
-      return new CustomResponse(message, 403);
-    }
-
-    // Prepare API request to Qualtrics
-    const { QDC_ID, Q_API_TOKEN, TASKS_IDP_ID } = process.env;
-
-    const qUrl = `https://${QDC_ID}.qualtrics.com/API/v3/imported-data-projects/${TASKS_IDP_ID}/records/${id}`
-
-    let options = {
-      method: methodUpper,
-      url: qUrl,
-      headers: {
-        Accept: 'application/json',
-        'X-API-TOKEN': Q_API_TOKEN
-      },
-    };
-
-    if (methodUpper === 'PUT') {
-      const parsed = await req.json(); // error handled below
-
-      const expected = ['id', 'chosen'];
-
-      const missing = expected.filter(prop => !Object.hasOwn(parsed, prop));
-
-      if (missing.length > 0) {
-        const message = `Body of request is missing: ${missing}`;
-        console.error(message, parsed);
-        return new CustomResponse(message, 400);
-
-      } else {
-        options.headers['Content-Type'] = 'application/json';
-        options.params = {nonDestructive: 'true'};
-        options.data = parsed;
-      }
-    }
-
-    // Make API request to Qualtrics
-    const { data } = await axios.request(options);
-    // axios throws error when status code is not 2xx
-
-    // Return successful response
-    console.log('Some user tasks are managed.', methodUpper);
-    return new CustomResponse(data); // default status is 200
-
-  } catch (error) {
-    // Handle any errors that occur during the process
-    if (error.response) {
-      // The request was made and the server responded with a non-2xx status code
-      const message = error.response.data.meta.error.errorMessage
-        || 'Server responded with error.';
-      console.error(message, '\n', error.response.data);
-      return new CustomResponse(message, error.response.status);
-
-    } else if (error.request) {
-      // The request was made but no response was received
-      const message = 'No response, try again.';
-      console.error(message, '\n', error.request);
-      return new CustomResponse(message, 503);
-
-    } else if (error instanceof SyntaxError &&
-      error.message.toLowerCase().includes('json')) {
-      // Handle error from req.json()
-      const message = 'Body is empty or not JSON.'
-      console.error(message);
-      return new CustomResponse(message, 400);
-
-    } else {
-      // Something happened in setting up the request that triggered an Error
-      const message = 'Internal error.';
-      console.error(error);
-      return new CustomResponse(message, 500);
-    }
-  }
-  // end of try-catch
-}
+export default async (request) => {
+    try {  // validate user request and fetch task data from Qualtrics
+        const { headers: reqHeaders, method: reqMethod } = request;
+        const id = reqHeaders.get('q-response-id');
+        const userId = reqHeaders.get('user-id');
+        if (!id || !userId) {
+            const message = `Bad headers: ${id?id:'empty q-response-id'}, ${userId?userId:'empty user-id'}`;
+            console.error(message);
+            return new CustomResponse(message, 400);
+        }
+        const { env } = Netlify;  // follow Netlify's documentation
+        const method = 'GET';
+        const url = new URL(`https://${env.get('QDC_ID')}.qualtrics.com`);
+        const headers = new Headers();
+        url.pathname = `/API/v3/imported-data-projects/${env.get('TASKS_IDP_ID')}/records/${id}`;
+        headers.set('accept', 'application/json');
+        headers.set('x-api-token', env.get('Q_API_TOKEN'));
+        const options = ({ method, headers });
+        let qResponse = await fetchData(url, options);
+        if (userId !== qResponse.result.userId) {
+            const message = 'User ID does not match!';
+            console.warn(message);
+            return new CustomResponse(message, 401);
+        } // end of matching user ID
+        if ('PUT' === reqMethod.toUpperCase()) {
+            const reqJSON = await request.json();  // error caught below
+            validateTaskData(reqJSON);  // error caught below
+            url.searchParams.append('nonDestructive', true);
+            options.method = reqMethod;
+            options.headers.set('content-type', 'application/json');
+            options.body = JSON.stringify(reqJSON);
+            qResponse = await fetchData(url, options);
+        }  // end of updating task data
+        console.log(reqMethod, id);
+        return new CustomResponse(qResponse); // default status is 200
+    } catch (manageTaskError) {  // e.g. invalid task data, response not ok
+        console.error('Caught:', manageTaskError);
+        const { message, status } = manageTaskError;
+        return new CustomResponse(message, status || 500);
+    }  // end of catching error when managing task
+};
 
 
-export const config = { path: '/api/manage-tasks' }
+export const config = { method: ['GET', 'PUT'], path: '/api/manage-tasks' };
+
+
+function validateTaskData(data, requiredKeys = ['chosen']) {
+    const missingKeys = requiredKeys.filter(key => !Object.hasOwn(data, key));
+    if (missingKeys.length == 0) {
+        return true;
+    } else {  // throw invalid task data error
+        const dataError = new Error(`Task data is missing: ${missingKeys.join(', ')}`);
+        dataError.name = 'InvalidTaskDataError';
+        dataError.status = 400;
+        throw dataError;
+    }  // interrupt fetching
+}  // end of validateTaskData
