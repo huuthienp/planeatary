@@ -196,7 +196,7 @@
 
                 offcanvasLinks.forEach(li => {
                     li.addEventListener('click', event => {
-                        const targetHref = link.getAttribute('href');
+                        const targetHref = li.getAttribute('href');
                         
                         const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                         offcanvas.hide();
