@@ -286,19 +286,33 @@
                         } 
                         if (preResult && preResponseId) {
                             try {
-                                let selectTasks = await fetchTaskStatus(preResponseId);
-                                localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
-                                selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                                var firstNullIndex = selectTasks.time.findIndex(function(el) {
-                                    return el == "";
-                                });
-                                if (firstNullIndex !== -1) {
-                                    alert("Please finish all the chosen tasks before doing post-quiz.");
-                                    window.location.href = "challenge_page.html";
+                                let tasks = JSON.parse(localStorage.getItem('tasks'));
+                                let selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                                if (!selectTasks) {
+                                    selectTasks = await fetchTaskStatus(preResponseId);
+                                    localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
+                                    selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                                    var firstNullIndex = selectTasks.time.findIndex(function(el) {
+                                        return el == "";
+                                    });
+                                    if (!selectTasks || firstNullIndex !== -1) {
+                                        alert("Please finish all the chosen tasks before doing post-quiz.");
+                                        quizFrame.style.display = 'none'; 
+                                        document.querySelector('.btn-next').style.display = 'none';
+                                        const fallbackMessage = document.createElement('div');
+                                        fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
+                                        quizFrame.parentElement.appendChild(fallbackMessage);
+                                        window.location.href = "challenge_page.html";
+                                    }
                                 }
 
                             } catch(err) {
                                 alert("No pre quiz found. Please do the quiz first.");
+                                quizFrame.style.display = 'none'; 
+                                document.querySelector('.btn-next').style.display = 'none';
+                                const fallbackMessage = document.createElement('div');
+                                fallbackMessage.innerHTML = "Please finish pre-quiz and then all selected tasks before doing the post quiz";
+                                quizFrame.parentElement.appendChild(fallbackMessage);
                                 window.location.href = "qualtrics.html";
                             }
                         }
