@@ -31,9 +31,9 @@ export default async (request, context) => {
         console.log('Fetching is done!', query.lengthOk, '/', query.length);
         return new CustomResponse(data, query.lengthOk === query.length ? 200 : query.lengthOk === 0 ? 404 : 207);
     } catch(breakError) {  // e.g. invalid token
-        console.warn('Caught', breakError);
-        const { message, stack, status } = breakError;
-        return new CustomResponse(stack || message, status || 500);
+        console.warn('Caught:', breakError);
+        const { message, status } = breakError;
+        return new CustomResponse(message, status || 500);
     }  // end of catching breaking error, which interrupts fetching
 };
 

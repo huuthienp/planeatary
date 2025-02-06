@@ -21,22 +21,15 @@ export async function fetchData(url, options) {
         const response = await fetch(url, options);
         const { ok, status } = response;
         if (ok) {
-            const data = await response.json();
-            return data;
-        } else {
-            throw {
-                message: await response.text(),
-                name: 'ResponseNotOkError',
-                status: status,
-            };
-        }
-    } catch(error) {
-        throw {
-            message: error.message,
-            name: error.name,
-            stack: error.stack || '',
-            status: error.status || 500,
-        };
+            return await response.json();  // error caught below
+        } else {  // throw error
+            const notOkError = new Error(await response.text());
+            notOkError.name = 'ResponseNotOkError';
+            notOkError.status = status;
+            throw notOkError;  // error caught below
+        }  // v1.1
+    } catch(fetchError) {
+        throw fetchError;
     }
 }
 
