@@ -278,6 +278,8 @@
                                             }
                                         }
                                     }
+                                } else {
+                                    Tstatus = {};
                                 }
                                 
                                 
@@ -297,7 +299,7 @@
                                         completion.innerHTML = "Completed";
                                         let timestamp = Date.now();
                                         task.finishTime = timestamp;
-                                        if (Tstatus) {
+                                        if (Tstatus || Object.keys(Tstatus).length === 0) {
                                             Tstatus.done.push(String(task.taskNumber));
                                             Tstatus.time.push(timestamp);
                                         }
@@ -308,7 +310,7 @@
                                         taskName.style.textDecoration = "none";
                                         completion.innerHTML = "Done";
                                         task.finishTime = "";
-                                        if (Tstatus) {
+                                        if (Tstatus || Object.keys(Tstatus).length !== 0) {
                                             let doneIndex = Tstatus.done.indexOf(String(task.taskNumber));
                                             let timeIndex = Tstatus.time.indexOf(String(task.taskNumber));
                                             Tstatus.done.splice(doneIndex, 1);

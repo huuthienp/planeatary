@@ -306,12 +306,11 @@
                                 }
 
                             } catch(err) {
-                                alert("No pre quiz found. Please do the quiz first.");
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
-                                fallbackMessage.innerHTML = "Please finish pre-quiz and then all selected tasks before doing the post quiz";
+                                fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
                                 quizFrame.parentElement.appendChild(fallbackMessage);
-                                window.location.href = "qualtrics.html";
+                                window.location.href = "challenge_page.html";
                                 return;
                             }  
                         } 
