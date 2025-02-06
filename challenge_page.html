@@ -44,7 +44,7 @@
                                         <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item disabled" href="qualtrics.html">Pre-quiz</a></li>
+                                        <li><a class="dropdown-item" href="qualtrics.html">Pre-quiz</a></li>
                                         <li><a class="dropdown-item disabled" href="qualtrics_post.html">Post-quiz</a></li>
                                     </ul>
                                 </li>
@@ -275,11 +275,13 @@
                                             if (Tstatus.done.includes(String(task.taskNumber))) {
                                                 taskCard.classList.add("card_completed");
                                                 taskName.style.textDecoration = "line-through";
-                                                //in case that backend does not allow fetching task status
-                                                let index = Tstatus.done.indexOf(String(task.taskNumber));
-                                                Tstatus.done.splice(index, 0, String(task.taskNumber));
-                                                Tstatus.time.splice(index, 0, task.finishTime);
                                             }
+                                        } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) == -1) {
+                                            //in case that backend does not allow fetching task status
+                                            Tstatus.chosen.push(String(task.taskNumber));
+                                            let index = Tstatus.chosen.indexOf(String(task.taskNumber));
+                                            Tstatus.done.splice(index, 0, String(task.taskNumber));
+                                            Tstatus.time.splice(index, 0, task.finishTime);
                                         }
                                     } else {
                                         //manually update fetched_tasks in local storage if found empty

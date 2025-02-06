@@ -191,6 +191,8 @@
             
             document.addEventListener('DOMContentLoaded', async () => {
                 
+                updateButton(restartBtn, 'grey', 'not-allowed');
+
                 function isTokenExpired(token) {
                     if (!token) return true;
                     
@@ -271,6 +273,7 @@
                         if(postObject) {
                             if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
                                 restartBtn.disabled = false;
+                                updateButton(restartBtn, '#02897A', 'pointer');
                                 restartBtn.addEventListener('click', () => {
                                     localStorage.removeItem('preResult');
                                     localStorage.removeItem('fetched_tasks');
@@ -282,15 +285,20 @@
                         }
                         
                     } else {
+
                         quizUrl = initiateSurvey('pre', quizFrame);
                         updateAnchors(anchors);
                         updateButton(nextButton, 'grey', 'not-allowed');
+                        restartBtn.disabled = true;
+                        updateButton(restartBtn, 'grey', 'not-allowed');
                     }
                     
                 } catch(error) {
                     console.warn('Caught', error, '\nPre-quiz result is not found!');
                     updateAnchors(anchors);
                     updateButton(nextButton, 'grey', 'not-allowed');
+                    restartBtn.disabled = true;
+                    updateButton(restartBtn, 'grey', 'not-allowed');
                     quizUrl = initiateSurvey('pre', quizFrame);
                     
                 }
@@ -310,6 +318,8 @@
                             console.warn('Caught', error, '\nPre-quiz result is not found!');
                             updateAnchors(anchors);
                             updateButton(nextButton, 'grey', 'not-allowed');
+                            restartBtn.disabled = true;
+                            updateButton(restartBtn, 'grey', 'not-allowed');
                             quizUrl = initiateSurvey('pre', quizFrame);
                             // quizSpan.innerText = 'An error occurred. Please try again later.';
                         }
