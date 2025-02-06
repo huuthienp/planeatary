@@ -200,6 +200,23 @@
         });
         
         document.addEventListener("DOMContentLoaded", async function() {
+
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+
+            offcanvasLinks.forEach(li => {
+                li.addEventListener('click', event => {
+                    const targetHref = link.getAttribute('href');
+                    
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    
+                    if (targetHref && targetHref !== '#') {
+                        window.location.href = targetHref; 
+                    }
+                });
+            });
+
             const startButton = document.querySelector(".start");
             
             const modal = document.querySelector(".modal");

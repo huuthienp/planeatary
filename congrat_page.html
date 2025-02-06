@@ -127,6 +127,23 @@
     }
     
     document.getElementById('logOut').addEventListener('click', () => {
+
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+
+        offcanvasLinks.forEach(li => {
+            li.addEventListener('click', event => {
+                const targetHref = link.getAttribute('href');
+                
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+                
+                if (targetHref && targetHref !== '#') {
+                    window.location.href = targetHref; 
+                }
+            });
+        });
+
         if(confirm("Do you really want to sign out?") == true) {
             showSpinner();
             logOut();

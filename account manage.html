@@ -160,6 +160,23 @@
 
         //ensure the data's cycle selected from history page is always removed
         localStorage.removeItem('selectedCycle');
+
+        //Dismiss the offcanvas bar after click and execute
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+
+        offcanvasLinks.forEach(li => {
+            li.addEventListener('click', event => {
+                const targetHref = link.getAttribute('href');
+                
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+                
+                if (targetHref && targetHref !== '#') {
+                    window.location.href = targetHref; 
+                }
+            });
+        });
         
         // RegEx for checking password
         let uppercaseRegex = /[A-Z]/g;

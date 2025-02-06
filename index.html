@@ -544,6 +544,22 @@
         const greetingDiv = document.querySelector('.greeting');
         const heroButton = document.querySelector('.herobtn');
 
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+
+        offcanvasLinks.forEach(li => {
+            li.addEventListener('click', event => {
+                const targetHref = link.getAttribute('href');
+                
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+                
+                if (targetHref && targetHref !== '#') {
+                    window.location.href = targetHref; 
+                }
+            });
+        });
+
         const disableFirstTimers = () => {
             document.querySelectorAll("a.first-timer").forEach(a => {
                 a.classList.add('Disabled');

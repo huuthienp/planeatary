@@ -192,6 +192,22 @@
                 }
                 
                 document.addEventListener("DOMContentLoaded", async () => {
+
+                    const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+                    const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+
+                    offcanvasLinks.forEach(li => {
+                        li.addEventListener('click', event => {
+                            const targetHref = link.getAttribute('href');
+                            
+                            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                            offcanvas.hide();
+                            
+                            if (targetHref && targetHref !== '#') {
+                                window.location.href = targetHref; 
+                            }
+                        });
+                    });
                     
                     const netlifyIdentity = window.netlifyIdentity;
                     const user = netlifyIdentity.gotrue.currentUser();
