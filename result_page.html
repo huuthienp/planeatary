@@ -37,31 +37,31 @@
                         <div class="offcanvas-body" style="background-color: #02897A;">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="index.html"><i class="fa fa-home"></i> Home</a>
+                                    <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item" href="qualtrics.html">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item" href="qualtrics_post.html">Post-quiz</a></li>
+                                        <li><a class="dropdown-item" data-bs-dismiss="offcanvas" href="qualtrics.html">Pre-quiz</a></li>
+                                        <li><a class="dropdown-item" data-bs-dismiss="offcanvas" href="qualtrics_post.html">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" id="ch" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link disabled" data-bs-dismiss="offcanvas" id="ch" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                    <a class="nav-link active" aria-current="page" data-bs-dismiss="offcanvas" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" aria-current="page" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
+                                    <a class="nav-link" data-bs-dismiss="offcanvas" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item" href="account manage.html">My account</a></li>
-                                        <li><a class="dropdown-item" id="logOut">Log out</a></li>
+                                        <li><a class="dropdown-item" data-bs-dismiss="offcanvas" href="account manage.html">My account</a></li>
+                                        <li><a class="dropdown-item" data-bs-dismiss="offcanvas" id="logOut">Log out</a></li>
                                     </ul>
                                 </li>
                             </div>
@@ -145,18 +145,6 @@
             let isLoading;
             const bOverlay = document.getElementById("spinnerOverlay");
             
-            var preObject = JSON.parse(localStorage.getItem('preResult') || "{}");
-            var preResult = preObject.result;
-            var pre_rec = preObject.recordedDate;
-            var preResponseId = preObject.responseId;
-            
-            var postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
-            var postResult = postObject.result;
-            var post_rec = postObject.recordedDate;
-            
-            var tasks = JSON.parse(localStorage.getItem('tasks'));
-            var detailed = JSON.parse(localStorage.getItem('fetched_tasks')) || null;
-            var task_rec = detailed.time || [];
             
             const modalEl = [closeButt, tmodal, modalOverlay];
             const spinnerEl = [spinner, bOverlay];
@@ -306,6 +294,19 @@
                     showSpinner();
                     //from history page
                     var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+
+                    var preObject = JSON.parse(localStorage.getItem('preResult') || "{}");
+                    var preResult = preObject.result;
+                    var pre_rec = preObject.recordedDate;
+                    var preResponseId = preObject.responseId;
+
+                    var postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
+                    var postResult = postObject.result;
+                    var post_rec = postObject.recordedDate;
+
+                    var tasks = JSON.parse(localStorage.getItem('tasks'));
+                    var detailed = JSON.parse(localStorage.getItem('fetched_tasks')) || null;
+                    var task_rec = detailed.time || [];
                     
                     // if (!preResult || !preResponseId) {
                     //     alert("No pre quiz found. Please do the quiz first.");
