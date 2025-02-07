@@ -358,7 +358,7 @@
                     
                     localStorage.setItem('tasks', JSON.stringify(tasks));
                     if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));} 
-                    await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
                     updateNextButton(); 
                     cardContainer.appendChild(nextButtonContainer);
                     
@@ -383,7 +383,7 @@
                         btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
                         btn_next.style.cursor = "pointer";
                         btn_next.disabled = false;
-                        await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
+                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
                     } else {
                         btn_next.style.pointerEvents = "none"; // Disable the next button
                         btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
@@ -395,9 +395,25 @@
                 
                 try {
                     showSpinner();
-                    var tasks = JSON.parse(localStorage.getItem('tasks'));
+
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    if (user) {
+                        user.jwt().then(token => {
+                            if (isTokenExpired(token)) {
+                                console.log("Token expired. Prompting user to re-login...");
+                                netlifyIdentity.logout();
+                            } else {
+                                console.log("Token is valid.");
+                            }
+                        });
+                    }
+
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
+                    const userId = user.id;
+
                     try {
-                        var fetched = await fetchTaskStatus(preResponseId);
+                        var fetched = await fetchTaskStatus(preResponseId, userId);
                         localStorage.setItem('fetched_tasks', JSON.stringify(fetched));
                         Tstatus = fetched || {};
                         if (Object.keys(Tstatus).length === 0) {
