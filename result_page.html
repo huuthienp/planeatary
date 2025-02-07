@@ -118,7 +118,7 @@
         </div>
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script type="module">
-            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
+            import { fetchTaskStatus, extractTaskData } from './scripts/helpers.mjs';
             
             const Qbuttoncontainer = document.querySelector(".pre-postQ");
             const Pre_Q = document.querySelector("#preQ");
@@ -401,7 +401,7 @@
                     
                     if (!detailed && preResponseId) {
                         try {
-                            var com_tasks = await fetchTaskStatus(preResponseId);
+                            var com_tasks = await fetchTaskStatus(preResponseId. userId);
                             localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
                             detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
                             task_rec = detailed.time; 
