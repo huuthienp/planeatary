@@ -197,6 +197,7 @@
             //hard-code updating responseHistory
             function updateResponseHistory(preObject, metadata) {
                 let responseHistory = metadata.responseHistory || [];
+                var gotrueUser = JSON.parse(localStorage.getItem('gotrue.user'));
                 if (preObject) {
                     preResponseId = preObject.responseId;
                 }
@@ -261,25 +262,23 @@
                 
                 updateButton(restartBtn, 'grey', 'not-allowed');
                 
-                const user = netlifyIdentity.gotrue.currentUser();
-                if (user) {
-                    user.jwt().then(token => {
-                        if (isTokenExpired(token)) {
-                            console.log("Token expired. Prompting user to re-login...");
-                            netlifyIdentity.logout();
-                        } else {
-                            console.log("Token is valid.");
-                        }
-                    });
-                    var gotrueUser = JSON.parse(localStorage.getItem('gotrue.user'));
-                }
-                
-                const metadata = gotrueUser.user_metadata;
-                const responseHistory = metadata.responseHistory;
-                const userId = user.id;
-                
                 try {
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    if (user) {
+                        user.jwt().then(token => {
+                            if (isTokenExpired(token)) {
+                                console.log("Token expired. Prompting user to re-login...");
+                                netlifyIdentity.logout();
+                            } else {
+                                console.log("Token is valid.");
+                            }
+                        });
+                    }
                     
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
+                    const userId = user.id;
+
                     var allRes = await fetchResponses(userId);
                     let allResponses = JSON.parse(localStorage.getItem('allResponses'));
                     
@@ -344,7 +343,6 @@
                         }
                         
                     } else {
-
                         quizUrl = initiateSurvey('pre', quizFrame);
                         updateAnchors(anchors);
                         updateButton(nextButton, 'grey', 'not-allowed');
