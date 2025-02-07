@@ -255,9 +255,18 @@
                     console.log('User has been logged out!');
                     window.location.href = "index.html";
                 } else {
+                    window.location.href = "index.html";
                     console.log("No user is logged in!");
                 }
             }
+            
+            document.getElementById('logOut').addEventListener('click', () => {
+                if(confirm("Do you really want to sign out?") == true) {
+                    showSpinner();
+                    logOut();
+                    hideSpinner();
+                }
+            });
             
             document.addEventListener("DOMContentLoaded", async function() {
 
@@ -271,7 +280,7 @@
                         const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                         offcanvas.hide();
                         
-                        if (targetHref && targetHref !== '#') {
+                        if (targetHref) {
                             window.location.href = targetHref; 
                         }
                     });
@@ -395,11 +404,10 @@
                         try {
                             var selectTasks = await fetchTaskStatus(preResponseId, userId);
                             localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
-                            detailed = selectTasks; 
+                            detailed = JSON.parse(localStorage.getItem('fetched_tasks') || null);
                             task_rec = detailed.time; 
                         } catch(err) {
-                            console.warn("Couldn't find previous tasks' info:", err);
-                            selectTasks = null;
+                            console.warn("Couldn't find history tasks' info:", err);
                         }
                     }
                     
@@ -563,7 +571,7 @@
                 );
                 
                 if (!detailed) {
-                    cardContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us sometime to fix it.';
+                    cardContainer.innerHTML = "<div style='margin: auto auto; display: flex; justify-content: center; text-align: justify; font-size: 2em;'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
                     return;
                 }
                 
@@ -723,13 +731,7 @@
             
         });
         
-        document.getElementById('logOut').addEventListener('click', () => {
-            if(confirm("Do you really want to sign out?") == true) {
-                showSpinner();
-                logOut();
-                hideSpinner();
-            }
-        });
+        
     </script>
 </body>
 </html>

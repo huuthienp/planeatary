@@ -155,7 +155,7 @@
   
         </div>
     </div>
-    
+    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script>
 
         //ensure the data's cycle selected from history page is always removed
@@ -251,6 +251,7 @@
                     window.location.href = "index.html";
                 });
             } else {
+                window.location.href = "index.html";
                 console.log("No user is logged in!");
             }
         }
@@ -258,9 +259,7 @@
         //logging out if click
         document.getElementById('logOut').addEventListener('click', () => {
             if(confirm("Do you really want to sign out?") == true) {
-                showSpinner();
                 logOut();
-                hideSpinner();
             }
         });
 

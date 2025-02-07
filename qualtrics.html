@@ -70,7 +70,7 @@
             </div>
             <div class="content">
                 <iframe class="quiz" title="Planeatary quiz"></iframe>
-                <span class="void"></span>
+                <span class="void" style="margin:auto auto; display: flex; justify-content: center; text-align: justify;"></span>
                 <div class="btn-next">
                     <button class="btn btn-success" id="restartBtn" style="width: 150px;" disabled>Restart</button>
                     <a><button id="nextButt" type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button></a>
@@ -139,6 +139,22 @@
                     return null;
                 }
             }
+
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+
+            offcanvasLinks.forEach(li => {
+                li.addEventListener('click', event => {
+                    const targetHref = li.getAttribute('href');
+                    
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    
+                    if (targetHref && targetHref !== '#') {
+                        window.location.href = targetHref; 
+                    }
+                });
+            });
             
             function logOut() {
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -151,6 +167,7 @@
                         window.location.href = "index.html";
                     });
                 } else {
+                    window.location.href = "index.html";
                     console.log("No user is logged in!");
                 }
             }
@@ -191,28 +208,44 @@
             var postObject = JSON.parse(localStorage.getItem('postResult'));
             var postResult;
             var postResponseId;
-            
-            document.addEventListener('DOMContentLoaded', async () => {
 
-                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-                const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+            //hard-code updating responseHistory
+            function updateResponseHistory(preObject, metadata) {
+                let responseHistory = metadata.responseHistory || [];
+                var gotrueUser = JSON.parse(localStorage.getItem('gotrue.user'));
+                if (preObject) {
+                    preResponseId = preObject.responseId;
+                }
+                let index = -1;
 
-                offcanvasLinks.forEach(li => {
-                    li.addEventListener('click', event => {
-                        const targetHref = li.getAttribute('href');
-                        
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
-                        
-                        if (targetHref && targetHref !== '#') {
-                            window.location.href = targetHref; 
+                //Recheck if a user has completed at least one pre-quiz before
+                if (responseHistory.length !== 0) {
+                    Object.keys(responseHistory).forEach((cycleKey) => {
+                        if (responseHistory[cycleKey].preId === preResponseId) {
+                            index = cycleKey;
+                        } else {
+                            index = -1;
                         }
-                    });
-                });
+                    })
+                } else {
+                    index = -1;
+                }
                 
-                updateButton(restartBtn, 'grey', 'not-allowed');
+                //If find no duplicate preResponseId, add it to responseHistory
+                if (index == -1) {
+                    responseHistory = [...responseHistory, {preId: preResponseId}];
+                    metadata.responseHistory = responseHistory;
+                    
+                    // Safely update the user metadata
+                    gotrueUser.user_metadata = {
+                        ...gotrueUser.user_metadata,
+                        responseHistory: responseHistory, 
+                    };
+                    localStorage.setItem('gotrue.user', JSON.stringify(gotrueUser));
+                }
+            }
 
-                function isTokenExpired(token) {
+            function isTokenExpired(token) {
                     if (!token) return true;
                     
                     const base64Payload = token.split('.')[1]; 
@@ -223,25 +256,28 @@
                     const now = Math.floor(Date.now()/1000); 
                     return exp < now; // Returns true if token is expired
                 }
+            
+            document.addEventListener('DOMContentLoaded', async () => {
                 
-                const user = netlifyIdentity.gotrue.currentUser();
-                if (user) {
-                    user.jwt().then(token => {
-                        if (isTokenExpired(token)) {
-                            console.log("Token expired. Prompting user to re-login...");
-                            netlifyIdentity.logout();
-                        } else {
-                            console.log("Token is valid.");
-                        }
-                    });
-                }
-                
-                const metadata = user.user_metadata;
-                const responseHistory = metadata.responseHistory;
-                const userId = user.id;
+                updateButton(restartBtn, 'grey', 'not-allowed');
                 
                 try {
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    if (user) {
+                        user.jwt().then(token => {
+                            if (isTokenExpired(token)) {
+                                console.log("Token expired. Prompting user to re-login...");
+                                netlifyIdentity.logout();
+                            } else {
+                                console.log("Token is valid.");
+                            }
+                        });
+                    }
                     
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
+                    const userId = user.id;
+
                     var allRes = await fetchResponses(userId);
                     let allResponses = JSON.parse(localStorage.getItem('allResponses'));
                     
@@ -263,6 +299,7 @@
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
                         quizSpan.innerText = 'You have already finished the pre-quiz!';
+                        updateResponseHistory(preObject, metadata)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         
                     } else if (allResponses) {
@@ -290,6 +327,7 @@
                         console.log('Found pre-quiz result in storage!\n', preObject);
 
                         if(postObject) {
+                            updateResponseHistory(preObject, metadata);
                             if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
                                 restartBtn.disabled = false;
                                 updateButton(restartBtn, '#02897A', 'pointer');
@@ -304,7 +342,6 @@
                         }
                         
                     } else {
-
                         quizUrl = initiateSurvey('pre', quizFrame);
                         updateAnchors(anchors);
                         updateButton(nextButton, 'grey', 'not-allowed');

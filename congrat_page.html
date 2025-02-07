@@ -86,12 +86,15 @@
     
     const spinner = document.getElementById('spinner');
     const minDisplayTime = 2000; 
+    const bOverlay = document.getElementById("spinnerOverlay");
     let spinnerStartTime;
     let isLoading;
-    const bOverlay = document.getElementById("spinnerOverlay");
 
     //ensure the data's cycle selected from history page is always removed
     localStorage.removeItem('selectedCycle');
+
+    const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+    const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
     
     function showSpinner() {
         spinner.classList.remove('hidden');
@@ -108,11 +111,12 @@
                 bOverlay.classList.add('hidden');
                 isLoading = false;
             }, minDisplayTime - elapsedTime);
-            spinner.classList.add('hidden');
-            bOverlay.classList.add('hidden');
-            isLoading = false;
+        } else {
+                    spinner.classList.add('hidden');
+                    spOver.classList.add('hidden');
+                    isLoading = false;
+                }
         }
-    }
     
     function logOut() {
         const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -125,14 +129,12 @@
                 window.location.href = "index.html";
             });
         } else {
+            window.location.href = "index.html";
             console.log("No user is logged in!");
         }
     }
     
     document.getElementById('logOut').addEventListener('click', () => {
-
-        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
 
         offcanvasLinks.forEach(li => {
             li.addEventListener('click', event => {

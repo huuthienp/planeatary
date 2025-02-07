@@ -100,9 +100,7 @@
         <section class="overlay hidden" id="spinnerOverlay"></section>
         
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-        <script type="module">
-            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
-            
+        <script>
             let time =  [];
             let scores = [];
             let spinnerStartTime;
@@ -119,6 +117,14 @@
             const modalOverlay = document.getElementById("modalOverlay");
             const modalTitle = document.getElementById("modalTitle");
             const modalDescription = document.getElementById("modalDescription");
+
+            let preObject = JSON.parse(localStorage.getItem('preResult')); 
+            let tasks = JSON.parse(localStorage.getItem('tasks'));
+            let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks') || null);
+            let storedCycle = JSON.parse(localStorage.getItem('selectedCycle') || null);
+
+            const nextButtonContainer = document.querySelector(".btn-next");
+            const btn_next = document.querySelector(".next")
             
             // Function to show the modal
             function showModal(title, description) {
@@ -190,6 +196,13 @@
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
             
+        </script>
+        <script type="module">
+            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
+
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+            
             function logOut() {
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                 
@@ -201,6 +214,7 @@
                         window.location.href = "index.html";
                     });
                 } else {
+                    window.location.href = "index.html";
                     console.log("No user is logged in!");
                 }
             }
@@ -212,25 +226,45 @@
                 hideSpinner();
             });
             
-            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-            const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-            
-            offcanvasLinks.forEach(li => {
-                li.addEventListener('click', event => {
-                    const targetHref = li.getAttribute('href');
-                    
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                    
-                    if (targetHref && targetHref !== '#') {
-                        window.location.href = targetHref; 
-                    }
+            //Function to update the Next button's state
+            async function updateNextButton(preResponseId, userId, tasks) {
+                let allCompleted = true;
+                preObject = JSON.parse(localStorage.getItem('preResult')); 
+                tasks = JSON.parse(localStorage.getItem('tasks'));
+                Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+                
+                Object.keys(tasks).forEach(questionKey => {
+                    const taskGroup = tasks[questionKey].tasks;
+                    taskGroup.forEach(task => {
+                        if (task.choice === "chosen" && task.status !== "Completed") {
+                            allCompleted = false; // If any selected task is not "Completed", set false
+                        } 
+                    });
                 });
-            });
+                
+                // Enable or disable the next button based on task completion status
+                if (allCompleted) {
+                    btn_next.style.pointerEvents = "auto"; // Enable the next button
+                    btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
+                    btn_next.style.cursor = "pointer";
+                    btn_next.disabled = false;
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
+                } else {
+                    btn_next.style.pointerEvents = "none"; // Disable the next button
+                    btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
+                    btn_next.style.cursor = "not-allowed";
+                    btn_next.disabled = true;
+                }
+            }
             
             // Function to display selected tasks and allow status update
             async function displaySelectedTasks(preResponseId, userId, tasks) {
                 cardContainer.innerHTML = '';  
+
+                //Handle no tasks information from previous page
+                if(!tasks) {
+                    cardContainer.innerHTML = "<div style='margin: auto auto; display: flex; justify-content: center; text-align: justify; font-size: 2em;'>The system is down. Please try again later</div>";
+                }
                 
                 Object.keys(tasks).forEach(questionKey => {
                     const taskGroup = tasks[questionKey].tasks;
@@ -338,7 +372,7 @@
                                 // Update task in localStorage
                                 localStorage.setItem('tasks', JSON.stringify(tasks));
                                 if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));}
-                                updateNextButton();  
+                                updateNextButton(preResponseId, userId, tasks);
                                 
                             });              
                         }
@@ -348,43 +382,14 @@
                 localStorage.setItem('tasks', JSON.stringify(tasks));
                 if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));} 
                 await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
-                updateNextButton(); 
+                updateNextButton(preResponseId, userId, tasks)
                 cardContainer.appendChild(nextButtonContainer);
                 
             }
             
-            // Function to update the Next button's state
-            async function updateNextButton(preResponseId, userId, tasks) {
-                let allCompleted = true;
-                
-                Object.keys(tasks).forEach(questionKey => {
-                    const taskGroup = tasks[questionKey].tasks;
-                    taskGroup.forEach(task => {
-                        if (task.choice === "chosen" && task.status !== "Completed") {
-                            allCompleted = false; // If any selected task is not "Completed", set false
-                        } 
-                    });
-                });
-                
-                // Enable or disable the next button based on task completion status
-                if (allCompleted) {
-                    btn_next.style.pointerEvents = "auto"; // Enable the next button
-                    btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
-                    btn_next.style.cursor = "pointer";
-                    btn_next.disabled = false;
-                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
-                } else {
-                    btn_next.style.pointerEvents = "none"; // Disable the next button
-                    btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
-                    btn_next.style.cursor = "not-allowed";
-                    btn_next.disabled = true;
-                }
-            }
             
             document.addEventListener("DOMContentLoaded", async function() {
                 
-                const nextButtonContainer = document.querySelector(".btn-next");
-                const btn_next = document.querySelector(".next")
                 btn_next.id = "btn_next";
                 btn_next.style.pointerEvents = "none"; 
                 btn_next.style.backgroundColor = "grey"; 
@@ -398,14 +403,23 @@
                     }
                 });
                 
+                offcanvasLinks.forEach(li => {
+                    li.addEventListener('click', event => {
+                        const targetHref = li.getAttribute('href');
+                        
+                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
+                        
+                        if (targetHref && targetHref !== '#') {
+                            window.location.href = targetHref; 
+                        }
+                    });
+                });
+                
                 try {
                     showSpinner();
-                    
-                    let preResult = JSON.parse(localStorage.getItem('preResult')); 
-                    let preResponseId =  preResult.responseId;
-                    let tasks = JSON.parse(localStorage.getItem('tasks'));
-                    var Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    
+                    var preResponseId =  preObject.responseId;
+
                     const user = netlifyIdentity.gotrue.currentUser();
                     if (user) {
                         user.jwt().then(token => {
@@ -421,12 +435,37 @@
                     const metadata = user.user_metadata;
                     const responseHistory = metadata.responseHistory;
                     const userId = user.id;
+
+                    if (storedCycle) {
+                        
+                        preObject = storedCycle.preResponse;
+                        preResult = preObject.result;
+                        pre_rec = preObject.recordedDate;
+                        preResponseId = preObject.responseId;
+                        
+                        postObject = storedCycle.postResponse;
+                        postResult = postObject.result;
+                        post_rec = postObject.recordedDate;
+                        
+                        try {
+                            Tstatus = await fetchTaskStatus(preResponseId, userId);
+                            localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
+                            Tstatus = JSON.parse(localStorage.getItem('fetched_tasks') || {});
+                            if (Object.keys(Tstatus).length === 0) {
+                                Tstatus.done = [];
+                                Tstatus.chosen = [];
+                                Tstatus.time = [];
+                            }
+                        } catch(err) {
+                            console.log("Couldn't find history tasks' info:", err);
+                        }
+                    }
                     
                     if(!Tstatus) {
                         try {
                             var fetched = await fetchTaskStatus(preResponseId, userId);
                             localStorage.setItem('fetched_tasks', JSON.stringify(fetched));
-                            Tstatus = fetched || {};
+                            Tstatus = JSON.parse(localStorage.getItem('fetched_tasks') || {});;
                             if (Object.keys(Tstatus).length === 0) {
                                 Tstatus.done = [];
                                 Tstatus.chosen = [];
@@ -436,16 +475,10 @@
                             console.log(err);
                         }
                     }
-                    
-                    displaySelectedTasks(tasks,  preResponseId);
+                    displaySelectedTasks(preResponseId, userId, tasks);
                     
                 } catch (err) {
                     console.error("Caught error: ", err);
-                    // alert("The system isn't working properly. Please return to home page and try again");
-                    // const fallbackMessage = document.createElement('div');
-                    // fallbackMessage.innerHTML = "tasks cannot be displayed. Please try again later.";
-                    // fallbackMessage.style.color = "red";
-                    // cardContainer.parentElement.appendChild(fallbackMessage);
                 } finally {
                     hideSpinner();
                 }
