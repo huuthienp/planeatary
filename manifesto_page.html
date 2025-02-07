@@ -156,6 +156,9 @@
         const minDisplayTime = 2000; 
         let spinnerStartTime;
 
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+
         function showSpinner() {
             spinner.classList.remove('hidden');
             spOver.classList.remove('hidden');
@@ -215,9 +218,6 @@
         });
         
         document.addEventListener("DOMContentLoaded", async function() {
-
-            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-            const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
 
             offcanvasLinks.forEach(li => {
                 li.addEventListener('click', event => {

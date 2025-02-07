@@ -140,7 +140,21 @@
                 }
             }
 
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
 
+            offcanvasLinks.forEach(li => {
+                li.addEventListener('click', event => {
+                    const targetHref = li.getAttribute('href');
+                    
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    
+                    if (targetHref && targetHref !== '#') {
+                        window.location.href = targetHref; 
+                    }
+                });
+            });
             
             function logOut() {
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -243,22 +257,6 @@
                 }
             
             document.addEventListener('DOMContentLoaded', async () => {
-
-                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-                const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-
-                offcanvasLinks.forEach(li => {
-                    li.addEventListener('click', event => {
-                        const targetHref = li.getAttribute('href');
-                        
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
-                        
-                        if (targetHref && targetHref !== '#') {
-                            window.location.href = targetHref; 
-                        }
-                    });
-                });
                 
                 updateButton(restartBtn, 'grey', 'not-allowed');
                 

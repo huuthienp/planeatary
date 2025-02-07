@@ -199,6 +199,9 @@
         </script>
         <script type="module">
             import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
+
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
             
             function logOut() {
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -222,22 +225,6 @@
                 hideSpinner();
             });
             
-            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-            const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-            
-            offcanvasLinks.forEach(li => {
-                li.addEventListener('click', event => {
-                    const targetHref = li.getAttribute('href');
-                    
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                    
-                    if (targetHref && targetHref !== '#') {
-                        window.location.href = targetHref; 
-                    }
-                });
-            });
-
             //Function to update the Next button's state
             async function updateNextButton(preResponseId, userId, tasks) {
                 let allCompleted = true;
@@ -413,6 +400,19 @@
                     if (btn_next.style.pointerEvents === "auto") {
                         window.location.href = "congrat_page.html";
                     }
+                });
+                
+                offcanvasLinks.forEach(li => {
+                    li.addEventListener('click', event => {
+                        const targetHref = li.getAttribute('href');
+                        
+                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
+                        
+                        if (targetHref && targetHref !== '#') {
+                            window.location.href = targetHref; 
+                        }
+                    });
                 });
                 
                 try {

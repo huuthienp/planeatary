@@ -153,8 +153,12 @@
                 let latest_post = "";
                 let latest_task = "";
                 let history = [];
+                
                 const fallbackMessage = document.createElement('div');
                 fallbackMessage.classList.add("empty-state");
+
+                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+                const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
 
                 async function fetchResponses(userId) {
                     try {
@@ -196,9 +200,6 @@
                 }
                 
                 document.addEventListener("DOMContentLoaded", async () => {
-
-                    const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-                    const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
 
                     offcanvasLinks.forEach(li => {
                         li.addEventListener('click', event => {

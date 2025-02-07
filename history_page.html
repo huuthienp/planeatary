@@ -124,6 +124,9 @@
             let isLoading;
             const minDisplayTime = 2000; 
             const bOverlay = document.getElementById("spinnerOverlay");
+
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
             
             async function fetchResponses(userId) {
                 try {
@@ -321,9 +324,6 @@
             });
             
             document.addEventListener("DOMContentLoaded", async () => {
-
-                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-                const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
 
                 offcanvasLinks.forEach(li => {
                     li.addEventListener('click', event => {

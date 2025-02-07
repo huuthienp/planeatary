@@ -92,6 +92,9 @@
 
     //ensure the data's cycle selected from history page is always removed
     localStorage.removeItem('selectedCycle');
+
+    const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+    const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
     
     function showSpinner() {
         spinner.classList.remove('hidden');
@@ -130,9 +133,6 @@
     }
     
     document.getElementById('logOut').addEventListener('click', () => {
-
-        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
 
         offcanvasLinks.forEach(li => {
             li.addEventListener('click', event => {

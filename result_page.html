@@ -259,6 +259,14 @@
                 }
             }
             
+            document.getElementById('logOut').addEventListener('click', () => {
+                if(confirm("Do you really want to sign out?") == true) {
+                    showSpinner();
+                    logOut();
+                    hideSpinner();
+                }
+            });
+            
             document.addEventListener("DOMContentLoaded", async function() {
 
                 const offcanvasNavbar = document.getElementById('offcanvasNavbar');
@@ -722,13 +730,7 @@
             
         });
         
-        document.getElementById('logOut').addEventListener('click', () => {
-            if(confirm("Do you really want to sign out?") == true) {
-                showSpinner();
-                logOut();
-                hideSpinner();
-            }
-        });
+        
     </script>
 </body>
 </html>
