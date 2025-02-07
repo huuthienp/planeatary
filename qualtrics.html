@@ -139,6 +139,8 @@
                     return null;
                 }
             }
+
+
             
             function logOut() {
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -191,6 +193,47 @@
             var postObject = JSON.parse(localStorage.getItem('postResult'));
             var postResult;
             var postResponseId;
+
+            //hard-code updating responseHistory
+            function updateResponseHistory(preObject, metadata) {
+                responseHistory = metadata.responseHistory;
+                if (preObject) {
+                    preResponseId = preObject.responseId;
+                }
+                let index = -1;
+
+                Object.keys(responseHistory).forEach((cycleKey) => {
+                    if (responseHistory[cycleKey].preId === preResponseId) {
+                        index = cycleKey;
+                    } else {
+                        index = -1;
+                    }
+                });
+                //If find no duplicate preResponseId, add it to responseHistory
+                if (index == -1) {
+                    responseHistory = [...responseHistory, {preId: preResponseId}];
+                    metadata.responseHistory = responseHistory;
+                    
+                    // Safely update the user metadata
+                    gotrueUser.user_metadata = {
+                        ...gotrueUser.user_metadata,
+                        responseHistory: responseHistory, 
+                    };
+                    localStorage.setItem('gotrue.user', JSON.stringify(gotrueUser));
+                }
+            }
+
+            function isTokenExpired(token) {
+                    if (!token) return true;
+                    
+                    const base64Payload = token.split('.')[1]; 
+                    const decodedPayload = JSON.parse(atob(base64Payload));
+                    const exp = decodedPayload.exp; 
+                    
+                    // Compare current time with expiration time
+                    const now = Math.floor(Date.now()/1000); 
+                    return exp < now; // Returns true if token is expired
+                }
             
             document.addEventListener('DOMContentLoaded', async () => {
 
@@ -211,18 +254,6 @@
                 });
                 
                 updateButton(restartBtn, 'grey', 'not-allowed');
-
-                function isTokenExpired(token) {
-                    if (!token) return true;
-                    
-                    const base64Payload = token.split('.')[1]; 
-                    const decodedPayload = JSON.parse(atob(base64Payload));
-                    const exp = decodedPayload.exp; 
-                    
-                    // Compare current time with expiration time
-                    const now = Math.floor(Date.now()/1000); 
-                    return exp < now; // Returns true if token is expired
-                }
                 
                 const user = netlifyIdentity.gotrue.currentUser();
                 if (user) {
@@ -234,9 +265,10 @@
                             console.log("Token is valid.");
                         }
                     });
+                    var gotrueUser = JSON.parse(localStorage.getItem('gotrue.user'));
                 }
                 
-                const metadata = user.user_metadata;
+                const metadata = gotrueUser.user_metadata;
                 const responseHistory = metadata.responseHistory;
                 const userId = user.id;
                 
@@ -263,6 +295,7 @@
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
                         quizSpan.innerText = 'You have already finished the pre-quiz!';
+                        updateResponseHistory(preObject, metadata)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         
                     } else if (allResponses) {
@@ -290,6 +323,7 @@
                         console.log('Found pre-quiz result in storage!\n', preObject);
 
                         if(postObject) {
+                            updateResponseHistory(preObject, metadata);
                             if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
                                 restartBtn.disabled = false;
                                 updateButton(restartBtn, '#02897A', 'pointer');
@@ -332,6 +366,7 @@
                             updateButton(nextButton, '#02897A', 'pointer');
                             quizFrame.style.display = 'none';
                             quizSpan.innerText = 'Thank you for your response!';
+                            updateResponseHistory(newValue, metadata);
                             console.log('Found pre-quiz result in storage!\n', newValue);
                         } catch(error) {
                             console.warn('Caught', error, '\nPre-quiz result is not found!');
