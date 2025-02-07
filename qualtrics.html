@@ -196,7 +196,7 @@
 
             //hard-code updating responseHistory
             function updateResponseHistory(preObject, metadata) {
-                responseHistory = metadata.responseHistory || [];
+                let responseHistory = metadata.responseHistory || [];
                 if (preObject) {
                     preResponseId = preObject.responseId;
                 }
