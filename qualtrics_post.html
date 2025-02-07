@@ -154,6 +154,7 @@
                 let latest_task = "";
                 let history = [];
                 const fallbackMessage = document.createElement('div');
+                fallbackMessage.classList.add("empty-state");
 
                 async function fetchResponses(userId) {
                     try {

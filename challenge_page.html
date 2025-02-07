@@ -237,6 +237,37 @@
                     }
                 });
             });
+
+            //Function to update the Next button's state
+            async function updateNextButton(preResponseId, userId, tasks) {
+                let allCompleted = true;
+                preObject = JSON.parse(localStorage.getItem('preResult')); 
+                tasks = JSON.parse(localStorage.getItem('tasks'));
+                Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+                
+                Object.keys(tasks).forEach(questionKey => {
+                    const taskGroup = tasks[questionKey].tasks;
+                    taskGroup.forEach(task => {
+                        if (task.choice === "chosen" && task.status !== "Completed") {
+                            allCompleted = false; // If any selected task is not "Completed", set false
+                        } 
+                    });
+                });
+                
+                // Enable or disable the next button based on task completion status
+                if (allCompleted) {
+                    btn_next.style.pointerEvents = "auto"; // Enable the next button
+                    btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
+                    btn_next.style.cursor = "pointer";
+                    btn_next.disabled = false;
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
+                } else {
+                    btn_next.style.pointerEvents = "none"; // Disable the next button
+                    btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
+                    btn_next.style.cursor = "not-allowed";
+                    btn_next.disabled = true;
+                }
+            }
             
             // Function to display selected tasks and allow status update
             async function displaySelectedTasks(preResponseId, userId, tasks) {
@@ -244,7 +275,7 @@
 
                 //Handle no tasks information from previous page
                 if(!tasks) {
-                    cardContainer.innerHTML = 'The system is down. Please try again later';
+                    cardContainer.innerHTML = "<div style='margin: auto auto; display: flex; justify-content: center; text-align: justify; font-size: 2em;'>The system is down. Please try again later</div>";
                 }
                 
                 Object.keys(tasks).forEach(questionKey => {
@@ -353,7 +384,7 @@
                                 // Update task in localStorage
                                 localStorage.setItem('tasks', JSON.stringify(tasks));
                                 if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));}
-                                updateNextButton();  
+                                updateNextButton(preResponseId, userId, tasks);
                                 
                             });              
                         }
@@ -363,38 +394,11 @@
                 localStorage.setItem('tasks', JSON.stringify(tasks));
                 if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));} 
                 await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
-                updateNextButton(); 
+                updateNextButton(preResponseId, userId, tasks)
                 cardContainer.appendChild(nextButtonContainer);
                 
             }
             
-            // Function to update the Next button's state
-            async function updateNextButton(preResponseId, userId, tasks) {
-                let allCompleted = true;
-                
-                Object.keys(tasks).forEach(questionKey => {
-                    const taskGroup = tasks[questionKey].tasks;
-                    taskGroup.forEach(task => {
-                        if (task.choice === "chosen" && task.status !== "Completed") {
-                            allCompleted = false; // If any selected task is not "Completed", set false
-                        } 
-                    });
-                });
-                
-                // Enable or disable the next button based on task completion status
-                if (allCompleted) {
-                    btn_next.style.pointerEvents = "auto"; // Enable the next button
-                    btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
-                    btn_next.style.cursor = "pointer";
-                    btn_next.disabled = false;
-                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
-                } else {
-                    btn_next.style.pointerEvents = "none"; // Disable the next button
-                    btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
-                    btn_next.style.cursor = "not-allowed";
-                    btn_next.disabled = true;
-                }
-            }
             
             document.addEventListener("DOMContentLoaded", async function() {
                 
@@ -470,15 +474,10 @@
                             console.log(err);
                         }
                     }
-                    displaySelectedTasks(tasks,  preResponseId);
+                    displaySelectedTasks(preResponseId, userId, tasks);
                     
                 } catch (err) {
                     console.error("Caught error: ", err);
-                    // alert("The system isn't working properly. Please return to home page and try again");
-                    // const fallbackMessage = document.createElement('div');
-                    // fallbackMessage.innerHTML = "tasks cannot be displayed. Please try again later.";
-                    // fallbackMessage.style.color = "red";
-                    // cardContainer.parentElement.appendChild(fallbackMessage);
                 } finally {
                     hideSpinner();
                 }

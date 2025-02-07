@@ -1218,3 +1218,11 @@ body {
 #h-table {
   position: relative;
 }
+
+.empty-state {
+  display: flex;
+  justify-content: center;
+  text-align: justify;
+  margin: auto auto;
+  font-size: 2em;
+}
