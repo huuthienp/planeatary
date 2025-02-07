@@ -258,9 +258,7 @@
         //logging out if click
         document.getElementById('logOut').addEventListener('click', () => {
             if(confirm("Do you really want to sign out?") == true) {
-                showSpinner();
                 logOut();
-                hideSpinner();
             }
         });
 
