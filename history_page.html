@@ -311,6 +311,14 @@
                     console.log("No user is logged in!");
                 }
             }
+
+            document.getElementById('logOut').addEventListener('click', () => {
+                if(confirm("Do you really want to sign out?") == true) {
+                    showSpinner();
+                    logOut();
+                    hideSpinner();
+                }
+            });
             
             document.addEventListener("DOMContentLoaded", async () => {
 
@@ -328,14 +336,6 @@
                             window.location.href = targetHref; 
                         }
                     });
-                });
-                
-                document.getElementById('logOut').addEventListener('click', () => {
-                    if(confirm("Do you really want to sign out?") == true) {
-                        showSpinner();
-                        logOut();
-                        hideSpinner();
-                    }
                 });
 
                 await extractHistory();
