@@ -122,6 +122,9 @@
             let tasks = JSON.parse(localStorage.getItem('tasks'));
             let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks') || null);
             let storedCycle = JSON.parse(localStorage.getItem('selectedCycle') || null);
+
+            const nextButtonContainer = document.querySelector(".btn-next");
+            const btn_next = document.querySelector(".next")
             
             // Function to show the modal
             function showModal(title, description) {
@@ -238,10 +241,6 @@
             // Function to display selected tasks and allow status update
             async function displaySelectedTasks(preResponseId, userId, tasks) {
                 cardContainer.innerHTML = '';  
-
-                preObject = JSON.parse(localStorage.getItem('preResult')); 
-                tasks = JSON.parse(localStorage.getItem('tasks'));
-                Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
 
                 //Handle no tasks information from previous page
                 if(!tasks) {
@@ -399,8 +398,6 @@
             
             document.addEventListener("DOMContentLoaded", async function() {
                 
-                const nextButtonContainer = document.querySelector(".btn-next");
-                const btn_next = document.querySelector(".next")
                 btn_next.id = "btn_next";
                 btn_next.style.pointerEvents = "none"; 
                 btn_next.style.backgroundColor = "grey"; 
