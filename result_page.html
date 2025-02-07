@@ -255,6 +255,7 @@
                     console.log('User has been logged out!');
                     window.location.href = "index.html";
                 } else {
+                    window.location.href = "index.html";
                     console.log("No user is logged in!");
                 }
             }
@@ -279,7 +280,7 @@
                         const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                         offcanvas.hide();
                         
-                        if (targetHref && targetHref !== '#') {
+                        if (targetHref) {
                             window.location.href = targetHref; 
                         }
                     });
