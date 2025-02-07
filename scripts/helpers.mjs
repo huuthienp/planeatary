@@ -130,7 +130,7 @@ export function storeResponseData(reformattedData) {
 
 
 // Function to update task status using the API
-export async function updateTaskStatus(preResponseId, taskData) {
+export async function updateTaskStatus(preResponseId, userId, taskData) {
     try {
         // showSpinner();  // to be called outside
         // const taskData = JSON.parse(localStorage.getItem('tasks'));  // to be called outside
@@ -146,6 +146,7 @@ export async function updateTaskStatus(preResponseId, taskData) {
             headers: {
                 'Content-Type': 'application/json',
                 'Q-RESPONSE-ID': preResponseId,
+                'user-id': userId,
             },
             body: JSON.stringify(requestBody),
         });
@@ -216,7 +217,7 @@ export function mergeTaskArrays(data, separator = '@') {
 
 
 // Function to get task status from the API
-export async function fetchTaskStatus(preResponseId) {
+export async function fetchTaskStatus(preResponseId, userId) {
     try {
         // showSpinner(); // put this outside
         const response = await fetch('/api/manage-tasks', {
@@ -224,6 +225,8 @@ export async function fetchTaskStatus(preResponseId) {
             headers: {
                 'Content-Type': 'application/json',
                 'Q-RESPONSE-ID': preResponseId,
+                'user-id': userId,
+
             }
         });
         const { ok, status } = response;

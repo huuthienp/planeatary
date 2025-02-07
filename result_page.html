@@ -205,6 +205,18 @@
                 }
             }
             
+            function compareScores(preResult, postResult) {
+                let preQuizTotal = preResult.totalScore;
+                if (postResult && preQuizTotal) {
+                    let postQuizTotal = postResult.totalScore;
+                    comparison.textContent = `Your score improved by ${postQuizTotal - preQuizTotal}`;
+                }
+                else {
+                    comparison.textContent = "";
+                }
+            }
+
+
             function detectAndParseTimestamp(ts) {
                 const length = String(ts).length;
                 
@@ -219,17 +231,7 @@
                     return asMillis; 
                 }
             }
-            
-            function compareScores() {
-                let preQuizTotal = preResult.totalScore;
-                if (postResult) {
-                    let postQuizTotal = postResult.totalScore;
-                    comparison.textContent = `Your score improved by ${postQuizTotal - preQuizTotal}`;
-                }
-                else {
-                    return 0;
-                }
-            }
+
 
             async function logOut() {
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -313,19 +315,35 @@
                     //from history page
                     var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
 
-                    var preObject = JSON.parse(localStorage.getItem('preResult') || "{}");
+                    var preObject = JSON.parse(localStorage.getItem('preResult') || null);
                     var preResult = preObject.result;
                     var pre_rec = preObject.recordedDate;
                     var preResponseId = preObject.responseId;
 
-                    var postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
+                    var postObject = JSON.parse(localStorage.getItem('postResult') || null);
                     var postResult = postObject.result;
                     var post_rec = postObject.recordedDate;
 
                     var tasks = JSON.parse(localStorage.getItem('tasks'));
-                    var detailed = JSON.parse(localStorage.getItem('fetched_tasks')) || null;
+                    var detailed = JSON.parse(localStorage.getItem('fetched_tasks') || null);
                     var task_rec = [];
-                    
+
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    if (user) {
+                        user.jwt().then(token => {
+                            if (isTokenExpired(token)) {
+                                console.log("Token expired. Prompting user to re-login...");
+                                netlifyIdentity.logout();
+                            } else {
+                                console.log("Token is valid.");
+                            }
+                        });
+                    }
+
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
+                    let userId = user.id;
+
                     // if (!preResult || !preResponseId) {
                     //     alert("No pre quiz found. Please do the quiz first.");
                     //     window.location.href = "index.html";
@@ -365,7 +383,7 @@
                         post_rec = postObject.recordedDate;
                         
                         try {
-                            var selectTasks = await fetchTaskStatus(preResponseId);
+                            var selectTasks = await fetchTaskStatus(preResponseId, userId);
                             localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
                             detailed = selectTasks; 
                             task_rec = detailed.time; 
@@ -483,8 +501,6 @@
                 document.getElementById('total').textContent = 60;
                 completion_date.innerHTML = `${type}-quiz was completed at ${localHours}:${localMinutes} on ${day}/${month}/${year}`
                 
-                
-                
                 // Iterate over each question in the pointArray
                 questionsData.result.pointArray.forEach((score, index) => {
                     const questionDiv = document.createElement('div');
@@ -505,8 +521,7 @@
                     
                     cardContainer.appendChild(questionDiv);
                 });
-                compareScores();
-                
+
             }
             
             // Function to display completed tasks 
