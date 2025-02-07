@@ -372,7 +372,6 @@
                             updateButton(nextButton, '#02897A', 'pointer');
                             quizFrame.style.display = 'none';
                             quizSpan.innerText = 'Thank you for your response!';
-                            updateResponseHistory(newValue, metadata);
                             console.log('Found pre-quiz result in storage!\n', newValue);
                         } catch(error) {
                             console.warn('Caught', error, '\nPre-quiz result is not found!');
