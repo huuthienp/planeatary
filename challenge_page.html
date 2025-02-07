@@ -100,9 +100,7 @@
         <section class="overlay hidden" id="spinnerOverlay"></section>
         
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-        <script type="module">
-            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
-            
+        <script>
             let time =  [];
             let scores = [];
             let spinnerStartTime;
@@ -119,6 +117,10 @@
             const modalOverlay = document.getElementById("modalOverlay");
             const modalTitle = document.getElementById("modalTitle");
             const modalDescription = document.getElementById("modalDescription");
+
+            let preObject = JSON.parse(localStorage.getItem('preResult')); 
+            let tasks = JSON.parse(localStorage.getItem('tasks'));
+            var Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
             
             // Function to show the modal
             function showModal(title, description) {
@@ -189,6 +191,10 @@
             function delay(ms) {
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
+            
+        </script>
+        <script type="module">
+            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
             
             function logOut() {
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -400,12 +406,7 @@
                 
                 try {
                     showSpinner();
-                    
-                    let preResult = JSON.parse(localStorage.getItem('preResult')); 
-                    let preResponseId =  preResult.responseId;
-                    let tasks = JSON.parse(localStorage.getItem('tasks'));
-                    var Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    
+                    let preResponseId =  preObject.responseId;
                     const user = netlifyIdentity.gotrue.currentUser();
                     if (user) {
                         user.jwt().then(token => {
@@ -436,7 +437,6 @@
                             console.log(err);
                         }
                     }
-                    
                     displaySelectedTasks(tasks,  preResponseId);
                     
                 } catch (err) {
