@@ -120,7 +120,8 @@
 
             let preObject = JSON.parse(localStorage.getItem('preResult')); 
             let tasks = JSON.parse(localStorage.getItem('tasks'));
-            var Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+            let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks') || null);
+            let storedCycle = JSON.parse(localStorage.getItem('selectedCycle') || null);
             
             // Function to show the modal
             function showModal(title, description) {
@@ -237,6 +238,15 @@
             // Function to display selected tasks and allow status update
             async function displaySelectedTasks(preResponseId, userId, tasks) {
                 cardContainer.innerHTML = '';  
+
+                preObject = JSON.parse(localStorage.getItem('preResult')); 
+                tasks = JSON.parse(localStorage.getItem('tasks'));
+                Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+
+                //Handle no tasks information from previous page
+                if(!tasks) {
+                    cardContainer.innerHTML = 'The system is down. Please try again later';
+                }
                 
                 Object.keys(tasks).forEach(questionKey => {
                     const taskGroup = tasks[questionKey].tasks;
@@ -406,7 +416,8 @@
                 
                 try {
                     showSpinner();
-                    let preResponseId =  preObject.responseId;
+                    var preResponseId =  preObject.responseId;
+
                     const user = netlifyIdentity.gotrue.currentUser();
                     if (user) {
                         user.jwt().then(token => {
@@ -422,12 +433,37 @@
                     const metadata = user.user_metadata;
                     const responseHistory = metadata.responseHistory;
                     const userId = user.id;
+
+                    if (storedCycle) {
+                        
+                        preObject = storedCycle.preResponse;
+                        preResult = preObject.result;
+                        pre_rec = preObject.recordedDate;
+                        preResponseId = preObject.responseId;
+                        
+                        postObject = storedCycle.postResponse;
+                        postResult = postObject.result;
+                        post_rec = postObject.recordedDate;
+                        
+                        try {
+                            Tstatus = await fetchTaskStatus(preResponseId, userId);
+                            localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
+                            Tstatus = JSON.parse(localStorage.getItem('fetched_tasks') || {});
+                            if (Object.keys(Tstatus).length === 0) {
+                                Tstatus.done = [];
+                                Tstatus.chosen = [];
+                                Tstatus.time = [];
+                            }
+                        } catch(err) {
+                            console.log("Couldn't find history tasks' info:", err);
+                        }
+                    }
                     
                     if(!Tstatus) {
                         try {
                             var fetched = await fetchTaskStatus(preResponseId, userId);
                             localStorage.setItem('fetched_tasks', JSON.stringify(fetched));
-                            Tstatus = fetched || {};
+                            Tstatus = JSON.parse(localStorage.getItem('fetched_tasks') || {});;
                             if (Object.keys(Tstatus).length === 0) {
                                 Tstatus.done = [];
                                 Tstatus.chosen = [];

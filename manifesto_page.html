@@ -248,9 +248,7 @@
             const minDisplayTime = 2000; 
             let spinnerStartTime;
             
-            
             let scores = [];
-            
             
             let task_counts = 0;
             let tasks = JSON.parse(localStorage.getItem('tasks')); 
@@ -274,15 +272,15 @@
             const responseHistory = metadata.responseHistory;
             const userId = user.id;
 
-            var preResult = JSON.parse(localStorage.getItem('preResult'));
+            var preObject = JSON.parse(localStorage.getItem('preResult'));
             var preResponseId; 
-
+            var storedCycle = JSON.parse(localStorage.getItem('selectedCycle') || null);
 
             try {
                 showSpinner();
 
                 //handle first-time user
-                if (!metadata.responseHistory && !preResult) {
+                if (!metadata.responseHistory && !preObject) {
                     console.warn("No responseHistory found for this user.");
                     document.querySelector(".button2").style.display = "none";
                     document.querySelector(".improvement").style.display = "none";
@@ -293,10 +291,11 @@
                     window.location.href = "index.html";
                     return;
 
-                } else if (preResult) {
+                } else if (preObject) {
                     document.querySelector(".button2").style.display = "flex";
                     document.querySelector(".improvement").style.display = "flex";
-                    preResponseId =  preResult.responseId;
+                    var preResult = preObject.result;
+                    preResponseId =  preObject.responseId;
                 }
                 
                 if (storedCycle) {
@@ -313,7 +312,7 @@
                     try {
                         var selectTasks = await fetchTaskStatus(preResponseId, userId);
                         localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
-                        fetched_tasks = selectTasks; 
+                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));; 
                         task_rec = fetched_tasks.time; 
                     } catch(err) {
                         console.log("Couldn't find previous tasks' info:", err);

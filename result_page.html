@@ -395,11 +395,10 @@
                         try {
                             var selectTasks = await fetchTaskStatus(preResponseId, userId);
                             localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
-                            detailed = selectTasks; 
+                            detailed = JSON.parse(localStorage.getItem('fetched_tasks') || null);
                             task_rec = detailed.time; 
                         } catch(err) {
-                            console.warn("Couldn't find previous tasks' info:", err);
-                            selectTasks = null;
+                            console.warn("Couldn't find history tasks' info:", err);
                         }
                     }
                     
