@@ -116,11 +116,6 @@
             
             const cardContainer = document.querySelector(".card");
             
-            var preResult = JSON.parse(localStorage.getItem('preResult')); 
-            var preResponseId =  preResult.responseId;
-            var Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
-            
-            
             document.addEventListener("DOMContentLoaded", async function() {
 
                 const offcanvasNavbar = document.getElementById('offcanvasNavbar');
@@ -407,6 +402,11 @@
                 try {
                     showSpinner();
 
+                    let preResult = JSON.parse(localStorage.getItem('preResult')); 
+                    let preResponseId =  preResult.responseId;
+                    let tasks = JSON.parse(localStorage.getItem('tasks'));
+                    var Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+
                     const user = netlifyIdentity.gotrue.currentUser();
                     if (user) {
                         user.jwt().then(token => {
@@ -423,18 +423,21 @@
                     const responseHistory = metadata.responseHistory;
                     const userId = user.id;
 
-                    try {
-                        var fetched = await fetchTaskStatus(preResponseId, userId);
-                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched));
-                        Tstatus = fetched || {};
-                        if (Object.keys(Tstatus).length === 0) {
-                            Tstatus.done = [];
-                            Tstatus.chosen = [];
-                            Tstatus.time = [];
+                    if(!Tstatus) {
+                        try {
+                            var fetched = await fetchTaskStatus(preResponseId, userId);
+                            localStorage.setItem('fetched_tasks', JSON.stringify(fetched));
+                            Tstatus = fetched || {};
+                            if (Object.keys(Tstatus).length === 0) {
+                                Tstatus.done = [];
+                                Tstatus.chosen = [];
+                                Tstatus.time = [];
+                            }
+                        } catch(err) {
+                            console.log(err);
                         }
-                    } catch(err) {
-                        console.log(err);
                     }
+
                     displaySelectedTasks(tasks);
                     
                 } catch (err) {
