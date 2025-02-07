@@ -215,6 +215,18 @@
                     comparison.textContent = "";
                 }
             }
+            
+            function isTokenExpired(token) {
+                if (!token) return true;
+                
+                const base64Payload = token.split('.')[1]; 
+                const decodedPayload = JSON.parse(atob(base64Payload));
+                const exp = decodedPayload.exp; 
+                
+                // Compare current time with expiration time
+                const now = Math.floor(Date.now()/1000); 
+                return exp < now; // Returns true if token is expired
+            }
 
 
             function detectAndParseTimestamp(ts) {
@@ -428,7 +440,7 @@
                             }
                         });
                         
-                        ch.classList.add('disabled');
+                        //ch.classList.add('disabled');
                         
                         displayQuestions(postObject, 'POST');
                         document.getElementById('postQ').style.backgroundColor = '#02897A';
@@ -454,8 +466,8 @@
                         );
                         
                         
-                        ch.classList.remove('disabled');
-                        ch.style.cursor = "pointer"; 
+                        //ch.classList.remove('disabled');
+                        //ch.style.cursor = "pointer"; 
                         
                         //display preresult by default
                         displayQuestions(preObject, 'PRE');

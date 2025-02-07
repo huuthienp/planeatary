@@ -214,7 +214,18 @@
                         spOver.classList.add('hidden');
                         isLoading = false;
                     }
+                }
+
+                function isTokenExpired(token) {
+                    if (!token) return true;
                     
+                    const base64Payload = token.split('.')[1]; 
+                    const decodedPayload = JSON.parse(atob(base64Payload));
+                    const exp = decodedPayload.exp; 
+                    
+                    // Compare current time with expiration time
+                    const now = Math.floor(Date.now()/1000); 
+                    return exp < now; // Returns true if token is expired
                 }
                 
                 function logOut() {
