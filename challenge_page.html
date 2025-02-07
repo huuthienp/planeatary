@@ -116,60 +116,272 @@
             
             const cardContainer = document.querySelector(".card");
             
-            var preResult = JSON.parse(localStorage.getItem('preResult')); 
-            var preResponseId =  preResult.responseId;
-            var Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+            const modalOverlay = document.getElementById("modalOverlay");
+            const modalTitle = document.getElementById("modalTitle");
+            const modalDescription = document.getElementById("modalDescription");
+            
+            // Function to show the modal
+            function showModal(title, description) {
+                closeButt.classList.remove('hidden2');
+                modalTitle.textContent = title;
+                modalDescription.innerHTML = description;
+                modal.classList.remove("hidden2");
+                modal.style.backgroundColor = 'white';
+                modalOverlay.classList.remove("hidden2");
+            }
+            
+            // Function to close the modal
+            function closeModal() {
+                closeButt.classList.add('hidden2');
+                modal.classList.add("hidden2");
+                modalOverlay.classList.add("hidden2");
+            }
             
             
-            document.addEventListener("DOMContentLoaded", async function() {
-
-                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-                const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-
-                offcanvasLinks.forEach(li => {
-                    li.addEventListener('click', event => {
-                        const targetHref = li.getAttribute('href');
-                        
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            // Close modal when user clicks the close button
+            document.querySelector(".close").addEventListener("click", closeModal);
+            
+            // Close modal when user clicks outside the modal
+            window.addEventListener("click", function(event) {
+                if (event.target === modalOverlay) {
+                    closeModal();
+                }
+            });
+            
+            function showSpinner() {
+                //console.log("Showing spinner...");
+                spinner.classList.remove('hidden');
+                spOver.classList.remove('hidden');
+                isLoading = true;
+                spinnerStartTime = Date.now();
+            }
+            
+            // Function to hide the spinner
+            function hideSpinner() {
+                const elapsedTime = Date.now() - spinnerStartTime;
+                
+                if (elapsedTime < minDisplayTime) {
+                    // Delay hiding spinner until the minimum display time
+                    setTimeout(() => {
+                        spinner.classList.add('hidden');
+                        spOver.classList.add('hidden');
+                        isLoading = false;
+                    }, minDisplayTime - elapsedTime);
+                } else {
+                    spinner.classList.add('hidden');
+                    spOver.classList.add('hidden');
+                    isLoading = false;
+                }
+            }
+            
+            function isTokenExpired(token) {
+                if (!token) return true;
+                
+                const base64Payload = token.split('.')[1]; 
+                const decodedPayload = JSON.parse(atob(base64Payload));
+                const exp = decodedPayload.exp; 
+                
+                // Compare current time with expiration time
+                const now = Math.floor(Date.now()/1000); 
+                return exp < now; // Returns true if token is expired
+            }
+            
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            
+            function logOut() {
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                
+                if (netlifyIdentity.gotrue.currentUser() !== null) {
+                    let user = netlifyIdentity.gotrue.currentUser();
+                    user.logout().then(() => {
                         offcanvas.hide();
-                        
-                        if (targetHref && targetHref !== '#') {
-                            window.location.href = targetHref; 
+                        console.log('User has been logged out!');
+                        window.location.href = "index.html";
+                    });
+                } else {
+                    console.log("No user is logged in!");
+                }
+            }
+            
+            document.getElementById('logOut').addEventListener('click', () => {
+                alert("Do you really want to sign out?");
+                showSpinner();
+                logOut();
+                hideSpinner();
+            });
+            
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+            
+            offcanvasLinks.forEach(li => {
+                li.addEventListener('click', event => {
+                    const targetHref = li.getAttribute('href');
+                    
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    
+                    if (targetHref && targetHref !== '#') {
+                        window.location.href = targetHref; 
+                    }
+                });
+            });
+            
+            // Function to display selected tasks and allow status update
+            async function displaySelectedTasks(preResponseId, userId, tasks) {
+                cardContainer.innerHTML = '';  
+                
+                Object.keys(tasks).forEach(questionKey => {
+                    const taskGroup = tasks[questionKey].tasks;
+                    
+                    // Filter tasks that are selected
+                    taskGroup.forEach(task => 
+                    {
+                        if (task.choice === 'chosen') {
+                            // Create and append a card for each selected task
+                            const taskCard = document.createElement("div");
+                            taskCard.classList.add("task-card", task.status === "Completed" ? "card_completed" : "card_incompleted");
+                            
+                            const taskName = document.createElement("span");
+                            taskName.textContent = task.taskName + " ";
+                            
+                            // Add an info icon for task description
+                            const infoIcon = document.createElement("span");
+                            infoIcon.classList.add("info-icon");
+                            infoIcon.innerHTML = "&#9432;"; 
+                            
+                            // Set the click event for the info icon to show the modal
+                            infoIcon.addEventListener('click', function(event) {
+                                event.preventDefault();
+                                event.stopPropagation(); 
+                                showModal(task.taskName, task.taskDescription);
+                            });
+                            
+                            const completion = document.createElement("span");
+                            completion.classList.add("completion");
+                            completion.textContent = task.status === "Completed" ? "Completed" : "Done";
+                            
+                            // Set card styles based on status
+                            if (task.status === "Completed") {
+                                taskCard.classList.add("card_completed");
+                                taskName.style.textDecoration = "line-through";
+                            } else {
+                                taskCard.classList.add("card_incompleted");
+                            }
+                            
+                            taskCard.appendChild(taskName);
+                            taskCard.appendChild(infoIcon); // Add info icon to the card
+                            taskCard.appendChild(completion);
+                            cardContainer.appendChild(taskCard);
+                            
+                            // Set task choice and status based on local storage
+                            if (Tstatus) {
+                                if (Tstatus.chosen.length !==0 && Tstatus.done.length !==0) {
+                                    if (Tstatus.chosen.includes(String(task.taskNumber))) {
+                                        if (Tstatus.done.includes(String(task.taskNumber))) {
+                                            taskCard.classList.add("card_completed");
+                                            taskName.style.textDecoration = "line-through";
+                                        }
+                                    } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) == -1) {
+                                        //in case that backend does not allow fetching task status
+                                        Tstatus.chosen.push(String(task.taskNumber));
+                                        let index = Tstatus.chosen.indexOf(String(task.taskNumber));
+                                        Tstatus.done.splice(index, 0, String(task.taskNumber));
+                                        Tstatus.time.splice(index, 0, task.finishTime);
+                                    }
+                                } else {
+                                    //manually update fetched_tasks in local storage if found empty
+                                    Tstatus.chosen.push(String(task.taskNumber));
+                                    if (task.status === "Completed") {
+                                        Tstatus.done.push(String(task.taskNumber));
+                                        Tstatus.time.push(task.finishTime);
+                                    }
+                                }
+                                localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
+                            }
+                            
+                            // Add event listener to task card to update status
+                            taskCard.addEventListener('click', async (event) => {
+                                
+                                completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
+                                await delay(700);
+                                
+                                // Toggle task status between "Done" and "Completed"
+                                task.status = task.status === "Done" ? "Completed" : "Done";
+                                
+                                if (task.status === "Completed") {
+                                    taskCard.style.color = 'black';
+                                    taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
+                                    taskName.style.textDecoration = "line-through";
+                                    completion.innerHTML = "Completed";
+                                    let timestamp = Date.now();
+                                    task.finishTime = timestamp;
+                                    if (Tstatus) {
+                                        Tstatus.done.push(String(task.taskNumber));
+                                        Tstatus.time.push(timestamp);
+                                    }
+                                    
+                                } else {
+                                    taskCard.style.color = 'rgb(71, 71, 71)';
+                                    taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
+                                    taskName.style.textDecoration = "none";
+                                    completion.innerHTML = "Done";
+                                    task.finishTime = "";
+                                    if (Tstatus || Object.keys(Tstatus).length !== 0) {
+                                        let doneIndex = Tstatus.done.indexOf(String(task.taskNumber));
+                                        let timeIndex = Tstatus.time.indexOf(String(task.taskNumber));
+                                        Tstatus.done.splice(doneIndex, 1);
+                                        Tstatus.time.splice(timeIndex, 1);
+                                    }
+                                }
+                                // Update task in localStorage
+                                localStorage.setItem('tasks', JSON.stringify(tasks));
+                                if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));}
+                                updateNextButton();  
+                                
+                            });              
                         }
                     });
                 });
                 
-                const modalOverlay = document.getElementById("modalOverlay");
-                const modalTitle = document.getElementById("modalTitle");
-                const modalDescription = document.getElementById("modalDescription");
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));} 
+                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
+                updateNextButton(); 
+                cardContainer.appendChild(nextButtonContainer);
                 
-                // Function to show the modal
-                function showModal(title, description) {
-                    closeButt.classList.remove('hidden2');
-                    modalTitle.textContent = title;
-                    modalDescription.innerHTML = description;
-                    modal.classList.remove("hidden2");
-                    modal.style.backgroundColor = 'white';
-                    modalOverlay.classList.remove("hidden2");
-                }
+            }
+            
+            // Function to update the Next button's state
+            async function updateNextButton(preResponseId, userId, tasks) {
+                let allCompleted = true;
                 
-                // Function to close the modal
-                function closeModal() {
-                    closeButt.classList.add('hidden2');
-                    modal.classList.add("hidden2");
-                    modalOverlay.classList.add("hidden2");
-                }
-                
-                
-                // Close modal when user clicks the close button
-                document.querySelector(".close").addEventListener("click", closeModal);
-                
-                // Close modal when user clicks outside the modal
-                window.addEventListener("click", function(event) {
-                    if (event.target === modalOverlay) {
-                        closeModal();
-                    }
+                Object.keys(tasks).forEach(questionKey => {
+                    const taskGroup = tasks[questionKey].tasks;
+                    taskGroup.forEach(task => {
+                        if (task.choice === "chosen" && task.status !== "Completed") {
+                            allCompleted = false; // If any selected task is not "Completed", set false
+                        } 
+                    });
                 });
+                
+                // Enable or disable the next button based on task completion status
+                if (allCompleted) {
+                    btn_next.style.pointerEvents = "auto"; // Enable the next button
+                    btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
+                    btn_next.style.cursor = "pointer";
+                    btn_next.disabled = false;
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
+                } else {
+                    btn_next.style.pointerEvents = "none"; // Disable the next button
+                    btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
+                    btn_next.style.cursor = "not-allowed";
+                    btn_next.disabled = true;
+                }
+            }
+            
+            document.addEventListener("DOMContentLoaded", async function() {
                 
                 const nextButtonContainer = document.querySelector(".btn-next");
                 const btn_next = document.querySelector(".next")
@@ -186,229 +398,46 @@
                     }
                 });
                 
-                function delay(ms) {
-                    return new Promise(resolve => setTimeout(resolve, ms));
-                }
-                
-                function showSpinner() {
-                    //console.log("Showing spinner...");
-                    spinner.classList.remove('hidden');
-                    spOver.classList.remove('hidden');
-                    isLoading = true;
-                    spinnerStartTime = Date.now();
-                }
-                
-                // Function to hide the spinner
-                function hideSpinner() {
-                    const elapsedTime = Date.now() - spinnerStartTime;
-                    
-                    if (elapsedTime < minDisplayTime) {
-                        // Delay hiding spinner until the minimum display time
-                        setTimeout(() => {
-                            spinner.classList.add('hidden');
-                            spOver.classList.add('hidden');
-                            isLoading = false;
-                        }, minDisplayTime - elapsedTime);
-                    } else {
-                        spinner.classList.add('hidden');
-                        spOver.classList.add('hidden');
-                        isLoading = false;
-                    }
-                    
-                }
-                
-                function logOut() {
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    
-                    if (netlifyIdentity.gotrue.currentUser() !== null) {
-                        let user = netlifyIdentity.gotrue.currentUser();
-                        user.logout().then(() => {
-                            offcanvas.hide();
-                            console.log('User has been logged out!');
-                            window.location.href = "index.html";
-                        });
-                    } else {
-                        console.log("No user is logged in!");
-                    }
-                }
-                
-                document.getElementById('logOut').addEventListener('click', () => {
-                    alert("Do you really want to sign out?");
-                    showSpinner();
-                    logOut();
-                    hideSpinner();
-                });
-                
-                // Function to display selected tasks and allow status update
-                async function displaySelectedTasks(tasks) {
-                    cardContainer.innerHTML = '';  
-                    
-                    Object.keys(tasks).forEach(questionKey => {
-                        const taskGroup = tasks[questionKey].tasks;
-                        
-                        // Filter tasks that are selected
-                        taskGroup.forEach(task => 
-                        {
-                            if (task.choice === 'chosen') {
-                                // Create and append a card for each selected task
-                                const taskCard = document.createElement("div");
-                                taskCard.classList.add("task-card", task.status === "Completed" ? "card_completed" : "card_incompleted");
-                                
-                                const taskName = document.createElement("span");
-                                taskName.textContent = task.taskName + " ";
-                                
-                                // Add an info icon for task description
-                                const infoIcon = document.createElement("span");
-                                infoIcon.classList.add("info-icon");
-                                infoIcon.innerHTML = "&#9432;"; 
-                                
-                                // Set the click event for the info icon to show the modal
-                                infoIcon.addEventListener('click', function(event) {
-                                    event.preventDefault();
-                                    event.stopPropagation(); 
-                                    showModal(task.taskName, task.taskDescription);
-                                });
-                                
-                                const completion = document.createElement("span");
-                                completion.classList.add("completion");
-                                completion.textContent = task.status === "Completed" ? "Completed" : "Done";
-                                
-                                // Set card styles based on status
-                                if (task.status === "Completed") {
-                                    taskCard.classList.add("card_completed");
-                                    taskName.style.textDecoration = "line-through";
-                                } else {
-                                    taskCard.classList.add("card_incompleted");
-                                }
-                                
-                                taskCard.appendChild(taskName);
-                                taskCard.appendChild(infoIcon); // Add info icon to the card
-                                taskCard.appendChild(completion);
-                                cardContainer.appendChild(taskCard);
-                                
-                                // Set task choice and status based on local storage
-                                if (Tstatus) {
-                                    if (Tstatus.chosen.length !==0 && Tstatus.done.length !==0) {
-                                        if (Tstatus.chosen.includes(String(task.taskNumber))) {
-                                            if (Tstatus.done.includes(String(task.taskNumber))) {
-                                                taskCard.classList.add("card_completed");
-                                                taskName.style.textDecoration = "line-through";
-                                            }
-                                        } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) == -1) {
-                                            //in case that backend does not allow fetching task status
-                                            Tstatus.chosen.push(String(task.taskNumber));
-                                            let index = Tstatus.chosen.indexOf(String(task.taskNumber));
-                                            Tstatus.done.splice(index, 0, String(task.taskNumber));
-                                            Tstatus.time.splice(index, 0, task.finishTime);
-                                        }
-                                    } else {
-                                        //manually update fetched_tasks in local storage if found empty
-                                        Tstatus.chosen.push(String(task.taskNumber));
-                                        if (task.status === "Completed") {
-                                            Tstatus.done.push(String(task.taskNumber));
-                                            Tstatus.time.push(task.finishTime);
-                                        }
-                                    }
-                                    localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
-                                }
-                                
-                                // Add event listener to task card to update status
-                                taskCard.addEventListener('click', async (event) => {
-                                    
-                                    completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
-                                    await delay(700);
-                                    
-                                    // Toggle task status between "Done" and "Completed"
-                                    task.status = task.status === "Done" ? "Completed" : "Done";
-                                    
-                                    if (task.status === "Completed") {
-                                        taskCard.style.color = 'black';
-                                        taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
-                                        taskName.style.textDecoration = "line-through";
-                                        completion.innerHTML = "Completed";
-                                        let timestamp = Date.now();
-                                        task.finishTime = timestamp;
-                                        if (Tstatus) {
-                                            Tstatus.done.push(String(task.taskNumber));
-                                            Tstatus.time.push(timestamp);
-                                        }
-                                        
-                                    } else {
-                                        taskCard.style.color = 'rgb(71, 71, 71)';
-                                        taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
-                                        taskName.style.textDecoration = "none";
-                                        completion.innerHTML = "Done";
-                                        task.finishTime = "";
-                                        if (Tstatus || Object.keys(Tstatus).length !== 0) {
-                                            let doneIndex = Tstatus.done.indexOf(String(task.taskNumber));
-                                            let timeIndex = Tstatus.time.indexOf(String(task.taskNumber));
-                                            Tstatus.done.splice(doneIndex, 1);
-                                            Tstatus.time.splice(timeIndex, 1);
-                                        }
-                                    }
-                                    // Update task in localStorage
-                                    localStorage.setItem('tasks', JSON.stringify(tasks));
-                                    if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));}
-                                    updateNextButton();  
-                                    
-                                });              
-                            }
-                        });
-                    });
-                    
-                    localStorage.setItem('tasks', JSON.stringify(tasks));
-                    if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));} 
-                    await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
-                    updateNextButton(); 
-                    cardContainer.appendChild(nextButtonContainer);
-                    
-                }
-                
-                // Function to update the Next button's state
-                async function updateNextButton() {
-                    let allCompleted = true;
-                    
-                    Object.keys(tasks).forEach(questionKey => {
-                        const taskGroup = tasks[questionKey].tasks;
-                        taskGroup.forEach(task => {
-                            if (task.choice === "chosen" && task.status !== "Completed") {
-                                allCompleted = false; // If any selected task is not "Completed", set false
-                            } 
-                        });
-                    });
-                    
-                    // Enable or disable the next button based on task completion status
-                    if (allCompleted) {
-                        btn_next.style.pointerEvents = "auto"; // Enable the next button
-                        btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
-                        btn_next.style.cursor = "pointer";
-                        btn_next.disabled = false;
-                        await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
-                    } else {
-                        btn_next.style.pointerEvents = "none"; // Disable the next button
-                        btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
-                        btn_next.style.cursor = "not-allowed";
-                        btn_next.disabled = true;
-                    }
-                }
-                
-                
                 try {
                     showSpinner();
-                    var tasks = JSON.parse(localStorage.getItem('tasks'));
-                    try {
-                        var fetched = await fetchTaskStatus(preResponseId);
-                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched));
-                        Tstatus = fetched || {};
-                        if (Object.keys(Tstatus).length === 0) {
-                            Tstatus.done = [];
-                            Tstatus.chosen = [];
-                            Tstatus.time = [];
-                        }
-                    } catch(err) {
-                        console.log(err);
+                    
+                    let preResult = JSON.parse(localStorage.getItem('preResult')); 
+                    let preResponseId =  preResult.responseId;
+                    let tasks = JSON.parse(localStorage.getItem('tasks'));
+                    var Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    if (user) {
+                        user.jwt().then(token => {
+                            if (isTokenExpired(token)) {
+                                console.log("Token expired. Prompting user to re-login...");
+                                netlifyIdentity.logout();
+                            } else {
+                                console.log("Token is valid.");
+                            }
+                        });
                     }
-                    displaySelectedTasks(tasks);
+                    
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
+                    const userId = user.id;
+                    
+                    if(!Tstatus) {
+                        try {
+                            var fetched = await fetchTaskStatus(preResponseId, userId);
+                            localStorage.setItem('fetched_tasks', JSON.stringify(fetched));
+                            Tstatus = fetched || {};
+                            if (Object.keys(Tstatus).length === 0) {
+                                Tstatus.done = [];
+                                Tstatus.chosen = [];
+                                Tstatus.time = [];
+                            }
+                        } catch(err) {
+                            console.log(err);
+                        }
+                    }
+                    
+                    displaySelectedTasks(tasks,  preResponseId);
                     
                 } catch (err) {
                     console.error("Caught error: ", err);

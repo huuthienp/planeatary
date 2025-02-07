@@ -49,7 +49,7 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" id="ch" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link disabled" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link active" aria-current="page" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -118,7 +118,7 @@
         </div>
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script type="module">
-            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
+            import { fetchTaskStatus, extractTaskData } from './scripts/helpers.mjs';
             
             const Qbuttoncontainer = document.querySelector(".pre-postQ");
             const Pre_Q = document.querySelector("#preQ");
@@ -205,6 +205,30 @@
                 }
             }
             
+            function compareScores(preResult, postResult) {
+                let preQuizTotal = preResult.totalScore;
+                if (postResult && preQuizTotal) {
+                    let postQuizTotal = postResult.totalScore;
+                    comparison.textContent = `Your score improved by ${postQuizTotal - preQuizTotal}`;
+                }
+                else {
+                    comparison.textContent = "";
+                }
+            }
+            
+            function isTokenExpired(token) {
+                if (!token) return true;
+                
+                const base64Payload = token.split('.')[1]; 
+                const decodedPayload = JSON.parse(atob(base64Payload));
+                const exp = decodedPayload.exp; 
+                
+                // Compare current time with expiration time
+                const now = Math.floor(Date.now()/1000); 
+                return exp < now; // Returns true if token is expired
+            }
+
+
             function detectAndParseTimestamp(ts) {
                 const length = String(ts).length;
                 
@@ -219,17 +243,7 @@
                     return asMillis; 
                 }
             }
-            
-            function compareScores() {
-                let preQuizTotal = preResult.totalScore;
-                if (postResult) {
-                    let postQuizTotal = postResult.totalScore;
-                    comparison.textContent = `Your score improved by ${postQuizTotal - preQuizTotal}`;
-                }
-                else {
-                    return 0;
-                }
-            }
+
 
             async function logOut() {
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -311,21 +325,35 @@
                     
                     showSpinner();
                     //from history page
-                    var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+                    var storedCycle = JSON.parse(localStorage.getItem('selectedCycle') || null);
 
-                    var preObject = JSON.parse(localStorage.getItem('preResult') || "{}");
+                    var preObject = JSON.parse(localStorage.getItem('preResult') || null);
                     var preResult = preObject.result;
                     var pre_rec = preObject.recordedDate;
                     var preResponseId = preObject.responseId;
 
-                    var postObject = JSON.parse(localStorage.getItem('postResult') || "{}");
-                    var postResult = postObject.result;
-                    var post_rec = postObject.recordedDate;
+                    var postObject = JSON.parse(localStorage.getItem('postResult') || null);
 
                     var tasks = JSON.parse(localStorage.getItem('tasks'));
-                    var detailed = JSON.parse(localStorage.getItem('fetched_tasks')) || null;
+                    var detailed = JSON.parse(localStorage.getItem('fetched_tasks') || null);
                     var task_rec = [];
-                    
+
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    if (user) {
+                        user.jwt().then(token => {
+                            if (isTokenExpired(token)) {
+                                console.log("Token expired. Prompting user to re-login...");
+                                netlifyIdentity.logout();
+                            } else {
+                                console.log("Token is valid.");
+                            }
+                        });
+                    }
+
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
+                    let userId = user.id;
+
                     // if (!preResult || !preResponseId) {
                     //     alert("No pre quiz found. Please do the quiz first.");
                     //     window.location.href = "index.html";
@@ -361,11 +389,11 @@
                         preResponseId = preObject.responseId;
                         
                         postObject = storedCycle.postResponse;
-                        postResult = postObject.result;
-                        post_rec = postObject.recordedDate;
+                        var postResult = postObject.result;
+                        var post_rec = postObject.recordedDate;
                         
                         try {
-                            var selectTasks = await fetchTaskStatus(preResponseId);
+                            var selectTasks = await fetchTaskStatus(preResponseId, userId);
                             localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
                             detailed = selectTasks; 
                             task_rec = detailed.time; 
@@ -383,7 +411,7 @@
                     
                     if (!detailed && preResponseId) {
                         try {
-                            var com_tasks = await fetchTaskStatus(preResponseId);
+                            var com_tasks = await fetchTaskStatus(preResponseId. userId);
                             localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
                             detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
                             task_rec = detailed.time; 
@@ -393,7 +421,10 @@
                         }
                     }
                     
-                    if (postResult) {
+                    if (postObject) {
+
+                        var postResult = postObject.result;
+                        var post_rec = postObject.recordedDate;
                         
                         // Remove next step, suggestion, and select-tasks button if post quiz is done
                         const toRemove = [
@@ -409,7 +440,7 @@
                             }
                         });
                         
-                        ch.classList.add('disabled');
+                        //ch.classList.add('disabled');
                         
                         displayQuestions(postObject, 'POST');
                         document.getElementById('postQ').style.backgroundColor = '#02897A';
@@ -435,8 +466,8 @@
                         );
                         
                         
-                        ch.classList.remove('disabled');
-                        ch.style.cursor = "pointer"; 
+                        //ch.classList.remove('disabled');
+                        //ch.style.cursor = "pointer"; 
                         
                         //display preresult by default
                         displayQuestions(preObject, 'PRE');
@@ -449,11 +480,12 @@
                     }
                 
             } catch (err) {
+                //Debugging handling errors
                 console.error("Caught error: ", err);
-                alert("The system isn't working properly. Please return to home page and try again");
-                window.location.href = "index.html";
+                
             } finally {
                 hideSpinner();
+                displayQuestions(preObject, 'PRE');
             }
             
             function displayQuestions(questionsData, type) {
@@ -482,8 +514,6 @@
                 document.getElementById('total').textContent = 60;
                 completion_date.innerHTML = `${type}-quiz was completed at ${localHours}:${localMinutes} on ${day}/${month}/${year}`
                 
-                
-                
                 // Iterate over each question in the pointArray
                 questionsData.result.pointArray.forEach((score, index) => {
                     const questionDiv = document.createElement('div');
@@ -504,8 +534,7 @@
                     
                     cardContainer.appendChild(questionDiv);
                 });
-                compareScores();
-                
+
             }
             
             // Function to display completed tasks 

@@ -307,7 +307,7 @@
                             var preResponseId = preObject.responseId;
                             try {
                                 if (!selectTasks) {
-                                    selectTasks = await fetchTaskStatus(preResponseId);
+                                    selectTasks = await fetchTaskStatus(preResponseId, userId);
                                     localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
                                     selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                                     var firstNullIndex = selectTasks.time.findIndex(function(el) {

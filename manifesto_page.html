@@ -179,6 +179,18 @@
             }
         }
 
+        function isTokenExpired(token) {
+            if (!token) return true;
+            
+            const base64Payload = token.split('.')[1]; 
+            const decodedPayload = JSON.parse(atob(base64Payload));
+            const exp = decodedPayload.exp; 
+            
+            // Compare current time with expiration time
+            const now = Math.floor(Date.now()/1000); 
+            return exp < now; // Returns true if token is expired
+        }
+
         function logOut() {
             const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
             
@@ -243,18 +255,6 @@
             let task_counts = 0;
             let tasks = JSON.parse(localStorage.getItem('tasks')); 
             let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-
-            function isTokenExpired(token) {
-                if (!token) return true;
-                
-                const base64Payload = token.split('.')[1]; 
-                const decodedPayload = JSON.parse(atob(base64Payload));
-                const exp = decodedPayload.exp; 
-                
-                // Compare current time with expiration time
-                const now = Math.floor(Date.now()/1000); 
-                return exp < now; // Returns true if token is expired
-            }
             
             const user = netlifyIdentity.gotrue.currentUser();
             
@@ -280,6 +280,7 @@
 
             try {
                 showSpinner();
+
                 //handle first-time user
                 if (!metadata.responseHistory && !preResult) {
                     console.warn("No responseHistory found for this user.");
@@ -311,7 +312,7 @@
                     post_rec = postObject.recordedDate;
                     
                     try {
-                        var selectTasks = await fetchTaskStatus(preResponseId);
+                        var selectTasks = await fetchTaskStatus(preResponseId, userId);
                         localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
                         fetched_tasks = selectTasks; 
                         task_rec = fetched_tasks.time; 
@@ -328,7 +329,7 @@
                 
                 if (!fetched_tasks && preResponseId) {
                     try {
-                        fetched_tasks = await fetchTaskStatus(preResponseId);
+                        fetched_tasks = await fetchTaskStatus(preResponseId, userId);
                         localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
                         fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                         task_rec = fetched_tasks.time; 
@@ -443,8 +444,8 @@
                 
                 if (!fetched_tasks) {
                     try {
-                        await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
-                        fetched_tasks = await fetchTaskStatus(preResponseId); 
+                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
+                        fetched_tasks = await fetchTaskStatus(preResponseId, userId); 
                         localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
                         fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                     } catch(err) {
@@ -454,7 +455,7 @@
                 } else {
                     if (!fetched_tasks.done || !fetched_tasks.chosen) {
                         try {
-                            fetched_tasks = await fetchTaskStatus(preResponseId); 
+                            fetched_tasks = await fetchTaskStatus(preResponseId, userId); 
                             localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
                             fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                         } catch(err) {
@@ -624,7 +625,7 @@
             // update task status on `startButton` click
             startButton.addEventListener('click', async function(event) {
                 showSpinner();
-                await updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
+                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
                 hideSpinner();
                 if (task_counts >= 3) {
                     window.location.href = "challenge_page.html";
