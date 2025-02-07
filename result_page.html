@@ -449,11 +449,12 @@
                     }
                 
             } catch (err) {
+                //Debugging handling errors
                 console.error("Caught error: ", err);
-                alert("The system isn't working properly. Please return to home page and try again");
-                window.location.href = "index.html";
+                
             } finally {
                 hideSpinner();
+                displayQuestions(preObject, 'PRE');
             }
             
             function displayQuestions(questionsData, type) {

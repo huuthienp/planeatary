@@ -829,7 +829,6 @@
                 if (!user) throw new Error("Login failed: No user object found");
                 console.log("Successful login!", emailInput2.value);
                 
-                //Need lana to check hiding sign-in modal and maybe editing
                 hideSignInModal();
                 
                 // Wait for quiz info
@@ -837,6 +836,7 @@
             
                 if (r === true) {
                     enableFirstTimers();
+                    //Need lana to test and edit the flow here if neccessary
                     alert("Form is valid, proceeding");
                     window.location.href = "result_page.html";
                 } else {
