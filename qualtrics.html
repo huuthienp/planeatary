@@ -196,19 +196,25 @@
 
             //hard-code updating responseHistory
             function updateResponseHistory(preObject, metadata) {
-                responseHistory = metadata.responseHistory;
+                responseHistory = metadata.responseHistory || [];
                 if (preObject) {
                     preResponseId = preObject.responseId;
                 }
                 let index = -1;
 
-                Object.keys(responseHistory).forEach((cycleKey) => {
-                    if (responseHistory[cycleKey].preId === preResponseId) {
-                        index = cycleKey;
-                    } else {
-                        index = -1;
-                    }
-                });
+                //Recheck if a user has completed at least one pre-quiz before
+                if (responseHistory.length !== 0) {
+                    Object.keys(responseHistory).forEach((cycleKey) => {
+                        if (responseHistory[cycleKey].preId === preResponseId) {
+                            index = cycleKey;
+                        } else {
+                            index = -1;
+                        }
+                    })
+                } else {
+                    index = -1;
+                }
+                
                 //If find no duplicate preResponseId, add it to responseHistory
                 if (index == -1) {
                     responseHistory = [...responseHistory, {preId: preResponseId}];
