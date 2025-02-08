@@ -47,7 +47,7 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link active" aria-current="page" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -133,10 +133,9 @@
             
             let scores = [];
             
-            const closeButt = document.querySelector('.close');
-            
             const comparison = document.getElementById('improvement');
             
+            const closeButt = document.querySelector('.close');
             const spinner = document.getElementById('spinner');
             const minDisplayTime = 2000; 
             let spinnerStartTime;
@@ -144,7 +143,7 @@
             const bOverlay = document.getElementById("spinnerOverlay");
             
             
-            const modalEl = ['.close', ".modal2", "overlay2"];
+            const modalEl = ['.close', ".modal2", ".overlay2"];
             const spinnerEl = [spinner, bOverlay];
             
             // Function to show the modal
@@ -225,8 +224,8 @@
                 const now = Math.floor(Date.now()/1000); 
                 return exp < now; // Returns true if token is expired
             }
-
-
+            
+            
             function detectAndParseTimestamp(ts) {
                 const length = String(ts).length;
                 
@@ -241,11 +240,11 @@
                     return asMillis; 
                 }
             }
-
-
+            
+            
             async function logOut() {
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-
+                
                 if (netlifyIdentity.gotrue.currentUser() !== null) {
                     let user = netlifyIdentity.gotrue.currentUser();
                     const logoutResult = await user.logout();
@@ -267,14 +266,27 @@
             });
             
             document.addEventListener("DOMContentLoaded", async function() {
-
+                
                 const offcanvasNavbar = document.getElementById('offcanvasNavbar');
                 const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-
+                const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+                
                 offcanvasLinks.forEach(li => {
                     li.addEventListener('click', event => {
                         const targetHref = li.getAttribute('href');
                         
+                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
+                        
+                        if (targetHref) {
+                            window.location.href = targetHref; 
+                        }
+                    });
+                });
+                
+                offcanvasDropdown.forEach(li => {
+                    li.addEventListener('click', event => {
+                        const targetHref = li.getAttribute('href');
                         const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                         offcanvas.hide();
                         
@@ -328,23 +340,149 @@
                     return JSON.parse(taskData);
                 }
                 
+                function displayQuestions(questionsData, type) {
+                    
+                    cardContainer.innerHTML = ''; 
+                    comparison.innerHTML = ''; 
+                    header.innerHTML='';
+                    completion_date.innerHTML='';
+                    
+                    
+                    if (!questionsData.result.pointArray || !Array.isArray(questionsData.result.pointArray)) {
+                        document.getElementById('curr_score').textContent = 'No score available.';
+                        cardContainer.innerHTML = '<div class="empty-state">Sorry, there is something wrong in the system. Please allow us to fix it.</div>';
+                        return;
+                    }
+                    
+                    let date = new Date(questionsData.recordedDate);
+                    header.innerHTML = `${type}-QUIZ RESULT`;
+                    let localHours = String(date.getHours()).padStart(2, "0");
+                    let localMinutes = String(date.getMinutes()).padStart(2, "0");
+                    let year = date.getFullYear();
+                    let month = String(date.getMonth() + 1).padStart(2, '0'); 
+                    let day = String(date.getDate()).padStart(2, '0');
+                    
+                    document.getElementById('curr_score').textContent = questionsData.result.totalScore;
+                    document.getElementById('total').textContent = 60;
+                    completion_date.innerHTML = `${type}-quiz was completed at ${localHours}:${localMinutes} on ${day}/${month}/${year}`
+                    
+                    // Iterate over each question in the pointArray
+                    questionsData.result.pointArray.forEach((score, index) => {
+                        const questionDiv = document.createElement('div');
+                        questionDiv.classList.add('question');
+                        
+                        // Apply styling based on score
+                        if (score <= 2) {
+                            questionDiv.classList.add('red');
+                        } else if (score >= 3) {
+                            questionDiv.classList.add('green');
+                        }
+                        
+                        // Create and append question title
+                        const questionTitle = document.createElement('h3');
+                        questionTitle.textContent = `Question ${index + 1} - ${score} points`;
+                        //Later we may add info of each question (question and selected choice)
+                        questionDiv.appendChild(questionTitle);
+                        
+                        cardContainer.appendChild(questionDiv);
+                    });
+                    
+                }
+                
+                // Function to display completed tasks 
+                async function displaySelectedTasks(tasks) {
+                    
+                    cardContainer.innerHTML = ''; 
+                    comparison.innerHTML = ''; 
+                    header.innerHTML='';
+                    completion_date.innerHTML='';
+                    
+                    // Remove next step, suggestion, and select-tasks button if display tasks
+                    const tohide = [
+                    'div.circle',
+                    'p.next-step',
+                    'p.improvement',
+                    'p.suggestion',
+                    'button.select-tasks'
+                    ];
+                    
+                    header.innerHTML = 'Completed tasks';
+                    
+                    const tagsToHide = tohide.map(s => document.querySelector(s));
+                    
+                    tagsToHide.forEach(
+                    (tag) => { if(tag) {tag.classList.add('hidden');} }
+                    );
+                    
+                    if (!detailed) {
+                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
+                        return;
+                    }
+                    
+                    Object.keys(tasks).forEach(questionKey => {
+                        header.innerHTML = '<img src="./images/battery.png"/>'+'All tasks you have completed';
+                        const taskGroup = tasks[questionKey].tasks;
+                        
+                        // Filter tasks that are selected
+                        taskGroup.forEach(task => {
+                            if (detailed.done.includes(String(task.taskNumber))) {
+                                // Create and append a card for each completed task
+                                const taskCard = document.createElement("div");
+                                taskCard.classList.add("card_completed");
+                                
+                                const taskName = document.createElement("span");
+                                taskName.textContent = task.taskName + " ";
+                                
+                                // Add an info icon for task description
+                                const infoIcon = document.createElement("span");
+                                infoIcon.classList.add("info-icon");
+                                infoIcon.innerHTML = "&#9432;"; 
+                                
+                                // Set the click event for the info icon to show the modal
+                                infoIcon.addEventListener('click', function(event) {
+                                    event.preventDefault();
+                                    event.stopPropagation();
+                                    showModal(task.taskName, task.taskDescription);
+                                });
+                                
+                                const completion = document.createElement("span");
+                                completion.classList.add("completion");
+                                completion.textContent = "Completed";
+                                
+                                taskCard.appendChild(taskName);
+                                taskCard.appendChild(infoIcon); 
+                                taskCard.appendChild(completion);
+                                cardContainer.appendChild(taskCard);
+                                
+                            }
+                            
+                        });
+                    });
+                    
+                    var firstNullIndex = detailed.time.findIndex(fel => el == "");
+                    
+                    console.log("time array:", task_rec);
+                    
+                    //Check if all chosen tasks are completed.
+                    if (firstNullIndex === -1) {
+                        let latestTimestamp = Math.max(...task_rec);
+                        let date = detectAndParseTimestamp(latestTimestamp);
+                        let day = String(date.getDate()).padStart(2, '0');      
+                        let month = String(date.getMonth() + 1).padStart(2, '0'); 
+                        let year = date.getFullYear();                       
+                        let hours = String(date.getHours()).padStart(2, '0');  
+                        let minutes = String(date.getMinutes()).padStart(2, '0'); 
+                        
+                        completion_date.innerHTML = `Last task was completed at ${hours}:${minutes} on ${day}/${month}/${year}`;
+                    } else {
+                        completion_date.innerHTML = '';
+                    }
+                }
+                
                 try {
                     
                     showSpinner();
-                    //from history page
-                    var storedCycle = JSON.parse(localStorage.getItem('selectedCycle') || null);
-
-                    var preObject = JSON.parse(localStorage.getItem('preResult') || null);
-                    var preResult = preObject.result;
-                    var pre_rec = preObject.recordedDate;
-                    var preResponseId = preObject.responseId;
-
-                    var postObject = JSON.parse(localStorage.getItem('postResult') || null);
-
-                    var tasks = JSON.parse(localStorage.getItem('tasks'));
-                    var detailed = JSON.parse(localStorage.getItem('fetched_tasks') || null);
-                    var task_rec = detailed.time || [];
-
+                    
                     const user = netlifyIdentity.gotrue.currentUser();
                     if (user) {
                         user.jwt().then(token => {
@@ -356,18 +494,38 @@
                             }
                         });
                     }
-
+                    
                     const metadata = user.user_metadata;
                     const responseHistory = metadata.responseHistory;
-                    let userId = user.id;
-
+                    const userId = user.id;
+                    
+                    //from history page
+                    var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+                    
+                    var preObject = JSON.parse(localStorage.getItem('preResult'));
+                    var preResult;
+                    var pre_rec;
+                    var preResponseId;
+                    if(preObject) {
+                        preResult = preObject.result;
+                        pre_rec = preObject.recordedDate;
+                        preResponseId =preObject.responseId;
+                    }
+                    
+                    var postObject = JSON.parse(localStorage.getItem('postResult'));
+                    
+                    var tasks = JSON.parse(localStorage.getItem('tasks'));
+                    var detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    var task_rec;
+                    if (detailed) { task_rec = detailed.time } else { task_rec = [] };
+                    
                     // if (!preResult || !preResponseId) {
                     //     alert("No pre quiz found. Please do the quiz first.");
                     //     window.location.href = "index.html";
                     //     return;
                     // }
                     
-                    if (!preResult || !preResponseId) {
+                    if (!preResult) {
                         // hide next step, suggestion, and select-tasks button as an empty state
                         const tohide = [
                         'p.next-step',
@@ -402,7 +560,7 @@
                         try {
                             var selectTasks = await fetchTaskStatus(preResponseId, userId);
                             localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
-                            detailed = JSON.parse(localStorage.getItem('fetched_tasks') || null);
+                            detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
                             task_rec = detailed.time; 
                         } catch(err) {
                             console.warn("Couldn't find history tasks' info:", err);
@@ -417,7 +575,7 @@
                     
                     if (!detailed && preResponseId) {
                         try {
-                            var com_tasks = await fetchTaskStatus(preResponseId. userId);
+                            var com_tasks = await fetchTaskStatus(preResponseId, userId);
                             localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
                             detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
                             task_rec = detailed.time; 
@@ -428,7 +586,7 @@
                     }
                     
                     if (postObject) {
-
+                        
                         var postResult = postObject.result;
                         var post_rec = postObject.recordedDate;
                         
@@ -471,7 +629,6 @@
                         (tag) => { if(tag) {tag.classList.remove('hidden');} }
                         );
                         
-                        
                         //ch.classList.remove('disabled');
                         //ch.style.cursor = "pointer"; 
                         
@@ -484,254 +641,131 @@
                         document.getElementById('postQ').disabled = true; 
                         
                     }
-                
-            } catch (err) {
-                //Debugging handling errors
-                console.error("Caught error: ", err);
-                
-            } finally {
-                hideSpinner();
-                displayQuestions(preObject, 'PRE');
-            }
-            
-            function displayQuestions(questionsData, type) {
-                
-                cardContainer.innerHTML = ''; 
-                comparison.innerHTML = ''; 
-                header.innerHTML='';
-                completion_date.innerHTML='';
-                
-                
-                if (!questionsData.result.pointArray || !Array.isArray(questionsData.result.pointArray)) {
-                    document.getElementById('curr_score').textContent = 'No score available.';
-                    cardContainer.innerHTML = 'Sorry, there is something wrong in the system. Please allow us to fix it.';
-                    return;
+                    
+                } catch (err) {
+                    //Debugging handling errors
+                    console.error("Caught error: ", err);
+                    // hide next step, suggestion, and select-tasks button as an empty state
+                    const tohide = [
+                        'p.next-step',
+                        'p.suggestion',
+                        'button.select-tasks',
+                        'div.circle',
+                        'div.pre-postQ'
+                        ];
+                        
+                        const tagsToHide = tohide.map(s => document.querySelector(s));
+                        
+                        tagsToHide.forEach(
+                        (tag) => { if(tag) {tag.classList.add('hidden');} }
+                        );
+                        
+                        const fallbackMessage = document.createElement('div');
+                        fallbackMessage.innerHTML = "Opps! no results available";
+                        fallbackMessage.style.color = "red";
+                        document.querySelector('div.m-content').parentElement.appendChild(fallbackMessage);
+                    
+                } finally {
+                    hideSpinner();
                 }
                 
-                let date = new Date(questionsData.recordedDate);
-                header.innerHTML = `${type}-QUIZ RESULT`;
-                let localHours = String(date.getHours()).padStart(2, "0");
-                let localMinutes = String(date.getMinutes()).padStart(2, "0");
-                let year = date.getFullYear();
-                let month = String(date.getMonth() + 1).padStart(2, '0'); 
-                let day = String(date.getDate()).padStart(2, '0');
-                
-                document.getElementById('curr_score').textContent = questionsData.result.totalScore;
-                document.getElementById('total').textContent = 60;
-                completion_date.innerHTML = `${type}-quiz was completed at ${localHours}:${localMinutes} on ${day}/${month}/${year}`
-                
-                // Iterate over each question in the pointArray
-                questionsData.result.pointArray.forEach((score, index) => {
-                    const questionDiv = document.createElement('div');
-                    questionDiv.classList.add('question');
+                document.getElementById('preQ').addEventListener('click', function() {
                     
-                    // Apply styling based on score
-                    if (score <= 2) {
-                        questionDiv.classList.add('red');
-                    } else if (score >= 3) {
-                        questionDiv.classList.add('green');
+                    if (preResult && !postResult) {
+                        const toshow = [
+                        'p.next-step',
+                        'p.suggestion',
+                        'button.select-tasks',
+                        'div.circle'
+                        ];
+                        
+                        const tagsToShow = toshow.map(s => document.querySelector(s));
+                        
+                        tagsToShow.forEach(
+                        (tag) => { if (tag) {tag.classList.remove('hidden');} }
+                        );
+                        
+                        document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';
+                        
+                    } else {
+                        const toshow = [
+                        'button.select-tasks',
+                        'div.circle'
+                        ];
+                        
+                        const tagsToShow = toshow.map(s => document.querySelector(s));
+                        
+                        tagsToShow.forEach(
+                        (tag) => { if (tag) {tag.classList.remove('hidden');} }
+                        );
+                        
+                        document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
                     }
                     
-                    // Create and append question title
-                    const questionTitle = document.createElement('h3');
-                    questionTitle.textContent = `Question ${index + 1} - ${score} points`;
-                    //Later we may add info of each question (question and selected choice)
-                    questionDiv.appendChild(questionTitle);
-                    
-                    cardContainer.appendChild(questionDiv);
-                });
-
-            }
-            
-            // Function to display completed tasks 
-            async function displaySelectedTasks(tasks) {
-
-                cardContainer.innerHTML = ''; 
-                comparison.innerHTML = ''; 
-                header.innerHTML='';
-                completion_date.innerHTML='';
-                
-                // Remove next step, suggestion, and select-tasks button if display tasks
-                const tohide = [
-                'div.circle',
-                'p.next-step',
-                'p.improvement',
-                'p.suggestion',
-                'button.select-tasks'
-                ];
-                
-                header.innerHTML = 'Completed tasks';
-                
-                const tagsToHide = tohide.map(s => document.querySelector(s));
-                
-                tagsToHide.forEach(
-                (tag) => { if(tag) {tag.classList.add('hidden');} }
-                );
-                
-                if (!detailed) {
-                    cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
-                    return;
-                }
-                
-                Object.keys(tasks).forEach(questionKey => {
-                    header.innerHTML = '<img src="./images/battery.png"/>'+'All tasks you have completed';
-                    const taskGroup = tasks[questionKey].tasks;
-                    
-                    // Filter tasks that are selected
-                    taskGroup.forEach(task => {
-                        if (detailed.done.includes(String(task.taskNumber))) {
-                            // Create and append a card for each completed task
-                            const taskCard = document.createElement("div");
-                            taskCard.classList.add("card_completed");
-                            
-                            const taskName = document.createElement("span");
-                            taskName.textContent = task.taskName + " ";
-                            
-                            // Add an info icon for task description
-                            const infoIcon = document.createElement("span");
-                            infoIcon.classList.add("info-icon");
-                            infoIcon.innerHTML = "&#9432;"; 
-                            
-                            // Set the click event for the info icon to show the modal
-                            infoIcon.addEventListener('click', function(event) {
-                                event.preventDefault();
-                                event.stopPropagation();
-                                showModal(task.taskName, task.taskDescription);
-                            });
-                            
-                            const completion = document.createElement("span");
-                            completion.classList.add("completion");
-                            completion.textContent = "Completed";
-                            
-                            taskCard.appendChild(taskName);
-                            taskCard.appendChild(infoIcon); 
-                            taskCard.appendChild(completion);
-                            cardContainer.appendChild(taskCard);
-                            
-                        }
-                        
-                    });
-                });
-                
-                var firstNullIndex = detailed.time.findIndex(function(el) {
-                    return el == "";
-                });
-
-                console.log("time array:", task_rec);
-                
-                //Check if all chosen tasks are completed.
-                if (firstNullIndex === -1) {
-                    let latestTimestamp = Math.max(...task_rec);
-                    let date = detectAndParseTimestamp(latestTimestamp);
-                    let day = String(date.getDate()).padStart(2, '0');      
-                    let month = String(date.getMonth() + 1).padStart(2, '0'); 
-                    let year = date.getFullYear();                       
-                    let hours = String(date.getHours()).padStart(2, '0');  
-                    let minutes = String(date.getMinutes()).padStart(2, '0'); 
-                    
-                    completion_date.innerHTML = `Last task was completed at ${hours}:${minutes} on ${day}/${month}/${year}`;
-                } else {
-                    completion_date.innerHTML = '';
-                }
-            }
-            
-            document.getElementById('preQ').addEventListener('click', function() {
-                
-                if (preResult && !postResult) {
-                    const toshow = [
-                    'p.next-step',
-                    'p.suggestion',
-                    'button.select-tasks',
-                    'div.circle'
-                    ];
-                    
-                    const tagsToShow = toshow.map(s => document.querySelector(s));
-                    
-                    tagsToShow.forEach(
-                    (tag) => { if (tag) {tag.classList.remove('hidden');} }
-                    );
-                    
-                    document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';
-                    
-                } else {
-                    const toshow = [
-                    'button.select-tasks',
-                    'div.circle'
-                    ];
-                    
-                    const tagsToShow = toshow.map(s => document.querySelector(s));
-                    
-                    tagsToShow.forEach(
-                    (tag) => { if (tag) {tag.classList.remove('hidden');} }
-                    );
-                    
-                    document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
-                }
-                
-                displayQuestions(preObject, 'PRE');
-                document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
-                document.getElementById('postQ').style.transition = "all 1s";
-                document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
-                document.getElementById('com-tasks').style.transition = "all 1s";
-                document.getElementById('preQ').style.backgroundColor = '#02897A';    
-                document.getElementById('preQ').style.transition = "all 1s";
-            });
-            
-            document.getElementById('postQ').addEventListener('click', function() {
-                
-                if (postResult) {
-                    
-                    // Remove next step, suggestion, and select-tasks button if post quiz is done
-                    const toRemove = [
-                    'p.next-step',
-                    'p.suggestion'
-                    ];
-                    
-                    const tagsToRemove = toRemove.map(s => document.querySelector(s));
-                    
-                    tagsToRemove.forEach(
-                    (tag) => { if (tag) {tag.classList.add('hidden');} }
-                    );
-                    
-                    const toshow = [
-                    'button.select-tasks',
-                    'div.circle'
-                    ];
-                    
-                    const tagsToShow = toshow.map(s => document.querySelector(s));
-                    
-                    tagsToShow.forEach(
-                    (tag) => { if (tag) {tag.classList.remove('hidden');} }
-                    );
-                    
-                    document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
-                    
-                    
-                    displayQuestions(postObject, 'POST');
-                    document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
-                    document.getElementById('preQ').style.transition = "all 1s";
+                    displayQuestions(preObject, 'PRE');
+                    document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
+                    document.getElementById('postQ').style.transition = "all 1s";
                     document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
                     document.getElementById('com-tasks').style.transition = "all 1s";
-                    document.getElementById('postQ').style.backgroundColor = '#02897A';    
-                    document.getElementById('postQ').style.transition = "all 1s";
-                }
-            });
-            
-            document.getElementById('com-tasks').addEventListener('click', async function() {
+                    document.getElementById('preQ').style.backgroundColor = '#02897A';    
+                    document.getElementById('preQ').style.transition = "all 1s";
+                });
                 
-                displaySelectedTasks(tasks);
-                document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
-                document.getElementById('preQ').style.transition = "all 1s";
-                document.getElementById('postQ').style.backgroundColor = '#a9d1cd';    
-                document.getElementById('postQ').style.transition = "all 1s";
-                document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
-                document.getElementById('com-tasks').style.transition = "all 1s";
+                document.getElementById('postQ').addEventListener('click', function() {
+                    
+                    if (postResult) {
+                        
+                        // Remove next step, suggestion, and select-tasks button if post quiz is done
+                        const toRemove = [
+                        'p.next-step',
+                        'p.suggestion'
+                        ];
+                        
+                        const tagsToRemove = toRemove.map(s => document.querySelector(s));
+                        
+                        tagsToRemove.forEach(
+                        (tag) => { if (tag) {tag.classList.add('hidden');} }
+                        );
+                        
+                        const toshow = [
+                        'button.select-tasks',
+                        'div.circle'
+                        ];
+                        
+                        const tagsToShow = toshow.map(s => document.querySelector(s));
+                        
+                        tagsToShow.forEach(
+                        (tag) => { if (tag) {tag.classList.remove('hidden');} }
+                        );
+                        
+                        document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
+                        
+                        
+                        displayQuestions(postObject, 'POST');
+                        document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
+                        document.getElementById('preQ').style.transition = "all 1s";
+                        document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
+                        document.getElementById('com-tasks').style.transition = "all 1s";
+                        document.getElementById('postQ').style.backgroundColor = '#02897A';    
+                        document.getElementById('postQ').style.transition = "all 1s";
+                    }
+                });
+                
+                document.getElementById('com-tasks').addEventListener('click', async function() {
+                    
+                    displaySelectedTasks(tasks);
+                    document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
+                    document.getElementById('preQ').style.transition = "all 1s";
+                    document.getElementById('postQ').style.backgroundColor = '#a9d1cd';    
+                    document.getElementById('postQ').style.transition = "all 1s";
+                    document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
+                    document.getElementById('com-tasks').style.transition = "all 1s";
+                });
+                
             });
-            
-        });
-    </script>
-    <!-- Bootstrap Javascript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-
+        </script>
+        <!-- Bootstrap Javascript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+    </html>
+    
