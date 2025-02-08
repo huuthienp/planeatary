@@ -316,73 +316,59 @@
                                             taskName.style.textDecoration = "line-through";
                                         }
                                     } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) === -1) {
-                                        //in case that backend does not allow fetching task status
-                                        Tstatus.chosen.push(String(task.taskNumber));
                                         let index = Tstatus.chosen.indexOf(String(task.taskNumber));
                                         Tstatus.done.splice(index, 0, String(task.taskNumber));
                                         Tstatus.time.splice(index, 0, task.finishTime);
-                                        localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
-                                    }
-                                } else {
-                                    //manually update fetched_tasks in local storage if found empty
-                                    Tstatus.chosen.push(String(task.taskNumber));
-                                    if (task.status === "Completed") {
-                                        taskCard.style.color = 'black';
-                                        taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
-                                        taskName.style.textDecoration = "line-through";
-                                        Tstatus.done.push(String(task.taskNumber));
-                                        Tstatus.time.push(task.finishTime);
-                                        localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                                     }
                                 }
                             }
-
+                            localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                             taskCard.appendChild(taskName);
-                            taskCard.appendChild(infoIcon); // Add info icon to the card
+                            taskCard.appendChild(infoIcon); 
                             taskCard.appendChild(completion);
                             cardContainer.appendChild(taskCard);
                             
                             // Add event listener to task card to update status
-                            taskCard.addEventListener('click', async (event) => {
-                                
-                                completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
-                                await delay(700);
-                                
-                                // Toggle task status between "Done" and "Completed"
-                                task.status = task.status === "Done" ? "Completed" : "Done";
-                                
-                                if (task.status === "Completed") {
-                                    taskCard.style.color = 'black';
-                                    taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
-                                    taskName.style.textDecoration = "line-through";
-                                    completion.innerHTML = "Completed";
-                                    let timestamp = Date.now();
-                                    task.finishTime = timestamp;
-                                    if (Tstatus) {
-                                        Tstatus.done.push(String(task.taskNumber));
-                                        Tstatus.time.push(timestamp);
-                                    }
+                            requestAnimationFrame(() => {
+                                taskCard.addEventListener('click', async (event) => {
+                                    // Toggle task status between "Done" and "Completed"
+                                    await delay(700);
+                                    task.status = task.status === "Done" ? "Completed" : "Done";
+                                    completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';  
                                     
-                                } else {
-                                    taskCard.style.color = 'rgb(71, 71, 71)';
-                                    taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
-                                    taskName.style.textDecoration = "none";
-                                    completion.innerHTML = "Done";
-                                    task.finishTime = "";
-                                    if (Tstatus || Object.keys(Tstatus).length !== 0) {
-                                        let doneIndex = Tstatus.done.indexOf(String(task.taskNumber));
-                                        Tstatus.done.splice(doneIndex, 1);
-                                        Tstatus.time.splice(doneIndex, 1);
+                                    if (task.status === "Completed") {
+                                        taskCard.style.color = 'black';
+                                        taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
+                                        taskName.style.textDecoration = "line-through";
+                                        completion.innerHTML = task.status;
+                                        let timestamp = Date.now();
+                                        task.finishTime = timestamp;
+                                        if (Tstatus && Object.keys(Tstatus).length !== 0) {
+                                            let index = Tstatus.chosen.indexOf(String(task.taskNumber));
+                                            Tstatus.done[index] = String(task.taskNumber);
+                                            Tstatus.time[index] = task.finishTime;
+                                        }
+                                    } else {
+                                        taskCard.style.color = 'rgb(71, 71, 71)';
+                                        taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
+                                        taskName.style.textDecoration = "none";
+                                        completion.innerHTML = task.status;
+                                        task.finishTime = "";
+                                        if (Tstatus && Object.keys(Tstatus).length !== 0) {
+                                            let index = Tstatus.done.indexOf(String(task.taskNumber));
+                                            Tstatus.done[index] = "";
+                                            Tstatus.time[index] = task.finishTime;
+                                        }
                                     }
-                                }
-                                // Update task in localStorage
-                                localStorage.setItem('tasks', JSON.stringify(tasks));
-                                if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));}
-                                updateNextButton(preResponseId, userId, tasks);
-                                
-                            });              
+                                    // Update task in localStorage
+                                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                                    if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));}
+                                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
+                                    updateNextButton(preResponseId, userId, tasks);  
+                                })
+                            });          
                         }
-                    });
+                    });     
                 });
                 
                 localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -390,9 +376,7 @@
                 await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
                 updateNextButton(preResponseId, userId, tasks)
                 cardContainer.appendChild(nextButtonContainer);
-                
             }
-            
             
             document.addEventListener("DOMContentLoaded", async function() {
                 
