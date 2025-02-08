@@ -228,9 +228,9 @@
             //Function to update the Next button's state
             async function updateNextButton(preResponseId, userId, tasks) {
                 let allCompleted = true;
-                preObject = JSON.parse(localStorage.getItem('preResult')); 
-                tasks = JSON.parse(localStorage.getItem('tasks'));
-                Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+                // preObject = JSON.parse(localStorage.getItem('preResult')); 
+                // tasks = JSON.parse(localStorage.getItem('tasks'));
+                // Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
                 
                 Object.keys(tasks).forEach(questionKey => {
                     const taskGroup = tasks[questionKey].tasks;
@@ -333,8 +333,8 @@
                                 taskCard.addEventListener('click', async (event) => {
                                     // Toggle task status between "Done" and "Completed"
                                     await delay(700);
-                                    task.status = task.status === "Done" ? "Completed" : "Done";
                                     completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';  
+                                    task.status = task.status === "Done" ? "Completed" : "Done";
                                     
                                     if (task.status === "Completed") {
                                         taskCard.style.color = 'black';

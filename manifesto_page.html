@@ -369,15 +369,14 @@
                     persuade.style.color = 'black';
                     startButton.style.pointerEvents = "auto";
                     startButton.style.backgroundColor = "#02897A";
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
                 } else {
                     persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
                     persuade.style.color = 'grey';
                     startButton.style.pointerEvents = "none";
                     startButton.style.backgroundColor = "grey";
                 }
-                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
-                
-                
+                localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));        
             }
             
             async function renderQuestions(condition) {
@@ -470,15 +469,19 @@
                             
                             // Update task count and localStorage on checkbox change
                             checkbox.addEventListener('change', function() {
+                                let index = Tstatus.chosen.findIndex(el => el == String(task.taskNumber));
                                 if (!checkbox.disabled) {
                                     if (checkbox.checked) {
                                         task.choice = "chosen";
                                         task_counts += 1;
+                                        if (index === -1) {fetched_tasks.chosen.push(String(task.taskNumber))}
                                     } else {
                                         task.choice = "";                                         
                                         task_counts -= 1;
+                                        if (index !== -1) {fetched_tasks.chosen.splice(index, 1)}
                                     }
                                     localStorage.setItem('tasks', JSON.stringify(tasks)); 
+                                    localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
                                     updateStartButton(); 
                                 }
                             });
@@ -500,6 +503,7 @@
                             });
                             
                             checkbox.checked = task.choice === "chosen";
+                            //Check task status on local  storage
                             if (task.choice === "chosen") {task.status = task.status === "Completed"?"Completed":"Done";}
                             localStorage.setItem('tasks', JSON.stringify(tasks)); 
                             updateStartButton(); 
@@ -519,7 +523,7 @@
             // update task status on `startButton` click
             startButton.addEventListener('click', async function(event) {
                 showSpinner();
-                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
+                updateStartButton();
                 hideSpinner();
                 if (task_counts >= 3) {
                     window.location.href = "challenge_page.html";
