@@ -320,7 +320,9 @@
                                         alert("Please finish all the chosen tasks before doing post-quiz.");
                                         quizFrame.style.display = 'none'; 
                                         document.querySelector('.btn-next').style.display = 'none';
+                                        fallbackMessage.style.color = "#ff6b6b";
                                         fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
+
                                         quizFrame.parentElement.appendChild(fallbackMessage);
                                         window.location.href = "challenge_page.html";
                                         return;
@@ -330,7 +332,9 @@
                             } catch(err) {
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
+                                fallbackMessage.style.color = "#ff6b6b";
                                 fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
+
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                                 window.location.href = "challenge_page.html";
                                 return;
@@ -385,7 +389,9 @@
                         if (postObject && Object.keys(postObject).length !== 0) {
                             quizFrame.style.display = 'none'; 
                             document.querySelector('.btn-next').style.display = 'none';
+                            fallbackMessage.style.color = "#ff6b6b";
                             fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
+
                             quizFrame.parentElement.appendChild(fallbackMessage);
                         } else if (taskCheck.lastPre !== "") {
                             if (taskCheck.lastTask !== "" && taskCheck.lastPost == "") {
@@ -393,18 +399,23 @@
                             } else if (taskCheck.lastTask !== "" && taskCheck.lastPost !== "") {
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
+                                fallbackMessage.style.color = "#2ecc71";
                                 fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
+
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                             } else {
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
+                                fallbackMessage.style.color = "#ff6b6b";
                                 fallbackMessage.innerHTML = "Please finish pre-quiz and then all selected tasks before doing the post quiz";
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                             }
                         } else if (Object.keys(postQuiz).length !== 0) {
                             quizFrame.style.display = 'none'; 
                             document.querySelector('.btn-next').style.display = 'none';
+                            fallbackMessage.style.color = "#2ecc71";
                             fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
+
                             quizFrame.parentElement.appendChild(fallbackMessage);
                         } else if (!postObject || Object.keys(postObject).length == 0) {
                             var quizUrl = initiateSurvey('post', quizFrame);
@@ -417,7 +428,7 @@
                         quizFrame.style.display = 'none';
                         document.querySelector('.btn-next').style.display = 'none';
                         fallbackMessage.innerHTML = "Content cannot be displayed. Please try again later.";
-                        fallbackMessage.style.color = "red";
+                        fallbackMessage.style.color = "#ff6b6b";
                         nextButton.style.display = "none";
                         quizFrame.parentElement.appendChild(fallbackMessage);
                     } finally {
@@ -434,6 +445,7 @@
                             JSON.parse(newValue || undefined);  // force null -> undefined to throw error
                             quizFrame.style.display = 'none';
                             fallbackMessage.innerHTML = 'Thank you for your response!';
+                            fallbackMessage.style.color = "#2ecc71";
                             quizFrame.parentElement.appendChild(fallbackMessage);
                             console.log('Found post-quiz result in storage!\n', newValue);
                         } catch(error) {

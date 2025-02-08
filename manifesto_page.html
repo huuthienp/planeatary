@@ -427,12 +427,12 @@
             async function renderQuestions(condition) {
                 QContainer.innerHTML = '';
                 
-                if(!preResult) {
+                if(!preObject) {
                     QContainer.innerHTML = '<p>No available information to be displayed</p>';
                     return;
                 } else {
-                    let preTotalScore = preResult.result.totalScore; 
-                    scores = preResult.result.pointArray;
+                    let preTotalScore = preObject.result.totalScore; 
+                    scores = preObject.result.pointArray;
                 }
 
                 if (!tasks) {
@@ -464,7 +464,7 @@
                 }
                 
                 if (!tasks || !preResult) {
-                    QContainer.innerHTML = "<div style='margin: 0 auto; display: flex; justify-content: center; text-align: justify; font-size: 2em;'>Error: Unable to load tasks or scores.</div>";
+                    QContainer.innerHTML = "<div class='empty-state'>Error: Unable to load tasks or scores.</div>";
                     return;
                 }
                 // Iterate over each question

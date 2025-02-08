@@ -263,7 +263,7 @@
 
                 //Handle no tasks information from previous page
                 if(!tasks) {
-                    cardContainer.innerHTML = "<div style='margin: auto auto; display: flex; justify-content: center; text-align: justify; font-size: 2em;'>The system is down. Please try again later</div>";
+                    cardContainer.innerHTML = "<div class='empty-state'>The system is down. Please try again later</div>";
                 }
                 
                 Object.keys(tasks).forEach(questionKey => {

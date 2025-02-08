@@ -1221,8 +1221,20 @@ body {
 
 .empty-state {
   display: flex;
+  padding: 2vh 2vw;
   justify-content: center;
   text-align: justify;
   margin: auto auto;
   font-size: 2em;
+  color: #ff6b6b; 
+}
+
+.void {
+  display: flex;
+  padding: 2vh 2vw;
+  justify-content: center;
+  text-align: justify;
+  margin: auto auto;
+  font-size: 2em;
+  color: #2ecc71;
 }
