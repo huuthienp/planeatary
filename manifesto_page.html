@@ -154,10 +154,18 @@
         const minDisplayTime = 2000; 
         let spinnerStartTime;
         
+        const modal = document.querySelector(".modal");
+        const overlay = document.querySelector(".overlay");
+        const modal2 = document.querySelector(".modal2");
+        const overlay2 = document.querySelector(".overlay2");
+        const modalTitle = document.getElementById("modalTitle");
+        const close = document.getElementById('close');
+        const closeDes = document.getElementById('closeDes');
+        
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
         const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
-        
+
         function showSpinner() {
             spinner.classList.remove('hidden');
             spOver.classList.remove('hidden');
@@ -192,31 +200,7 @@
             const now = Math.floor(Date.now()/1000); 
             return exp < now; // Returns true if token is expired
         }
-        
-        function logOut() {
-            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-            
-            if (netlifyIdentity.gotrue.currentUser() !== null) {
-                let user = netlifyIdentity.gotrue.currentUser();
-                user.logout().then(() => {
-                    offcanvas.hide();
-                    console.log('User has been logged out!');
-                    window.location.href = "index.html";
-                });
-            } else {
-                window.location.href = "index.html";
-                console.log("No user is logged in!");
-            }
-        }
-        
-        document.getElementById('logOut').addEventListener('click', () => {
-            if(confirm("Do you really want to sign out?") == true) {
-                showSpinner();
-                logOut();
-                hideSpinner();
-            }
-        });
-        
+
         function Modal(source) {
             close.classList.remove('hidden');
             const modalContent = document.querySelector(".modal_content");
@@ -263,6 +247,29 @@
             }
         });
         
+        function logOut() {
+            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            
+            if (netlifyIdentity.gotrue.currentUser() !== null) {
+                let user = netlifyIdentity.gotrue.currentUser();
+                user.logout().then(() => {
+                    offcanvas.hide();
+                    console.log('User has been logged out!');
+                    window.location.href = "index.html";
+                });
+            } else {
+                window.location.href = "index.html";
+                console.log("No user is logged in!");
+            }
+        }
+        
+        document.getElementById('logOut').addEventListener('click', () => {
+            if(confirm("Do you really want to sign out?") == true) {
+                showSpinner();
+                logOut();
+                hideSpinner();
+            }
+        });
         
         // Retrieve tasks from localStorage or fetch if not available
         async function fetchTasks() {
@@ -327,20 +334,6 @@
             
             const startButton = document.querySelector(".start");
             
-            const modal = document.querySelector(".modal");
-            const overlay = document.querySelector(".overlay");
-            const modal2 = document.querySelector(".modal2");
-            const overlay2 = document.querySelector(".overlay2");
-            const modalTitle = document.getElementById("modalTitle");
-            const closeButt = document.querySelector('.close');
-            const close = document.getElementById('close');
-            const closeDes = document.getElementById('closeDes');
-            
-            const spinner = document.getElementById('spinner');
-            let isLoading = false;
-            const minDisplayTime = 2000; 
-            let spinnerStartTime;
-            
             let scores = [];
             
             let task_counts = 0;
@@ -366,9 +359,26 @@
             const responseHistory = metadata.responseHistory;
             const userId = user.id;
             
-            var preObject = JSON.parse(localStorage.getItem('preResult'));
-            var preResponseId; 
-            var storedCycle = JSON.parse(localStorage.getItem('selectedCycle') || null);
+            // Function to update the start button state based on selected tasks
+            async function updateStartButton() {
+                const startButton = document.querySelector(".start");
+                const persuade = document.getElementById("threetask");
+                
+                if (task_counts >= 3) {
+                    persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
+                    persuade.style.color = 'black';
+                    startButton.style.pointerEvents = "auto";
+                    startButton.style.backgroundColor = "#02897A";
+                } else {
+                    persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
+                    persuade.style.color = 'grey';
+                    startButton.style.pointerEvents = "none";
+                    startButton.style.backgroundColor = "grey";
+                }
+                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
+                
+                
+            }
             
             async function renderQuestions(condition) {
                 QContainer.innerHTML = '';
@@ -437,25 +447,24 @@
                             taskItem.appendChild(label);
                             taskList.appendChild(taskItem);
                             
-                            // Set task choice and status based on local storage and finish time
+                            // Set task choice and status based on local storage and finish time of fetched_tasks
                             if (fetched_tasks) {
                                 if (fetched_tasks.chosen && fetched_tasks.done) {
                                     if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
                                         task.choice = 'chosen';
                                         checkbox.checked = true;
-                                        // for incomplete task, finish time is empty string ''
                                         const _index = fetched_tasks.chosen.indexOf(task.taskNumber);
-                                        // `chosen` and `time` are parallel
                                         task.finishTime = fetched_tasks.time[_index];
                                         if (fetched_tasks.done.includes(String(task.taskNumber)) && fetched_tasks.time.includes(String(task.taskNumber))) {
                                             task.status = 'Completed';
-                                            checkbox.disabled = true; // Disable the checkbox if the task is completed
+                                            // Disable the checkbox if the task is completed
+                                            checkbox.disabled = true; 
                                         }
                                     }
                                 }
                                 //Also double-check task status in local storage
                                 checkbox.disabled = task.status === 'Completed';
-                                localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
+                                localStorage.setItem('tasks', JSON.stringify(tasks)); 
                             }
                             
                             checkbox.disabled = task.status === 'Completed';
@@ -494,7 +503,6 @@
                             checkbox.checked = task.choice === "chosen";
                             if (task.choice === "chosen") {task.status = task.status === "Completed"?"Completed":"Done";}
                             localStorage.setItem('tasks', JSON.stringify(tasks)); 
-                            
                             updateStartButton(); 
                         });
                         
@@ -502,35 +510,57 @@
                         QContainer.appendChild(questionDiv);
                         localStorage.setItem('tasks', JSON.stringify(tasks)); 
                     }
-                    localStorage.setItem('tasks', JSON.stringify(tasks)); 
-                    
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
                 });
                 
                 task_counts = calculateSelectedTasks(tasks);
                 updateStartButton(); 
             }
             
-            // Function to update the start button state based on selected tasks
-            function updateStartButton() {
-                const startButton = document.querySelector(".start");
-                const persuade = document.getElementById("threetask");
-                
+            // update task status on `startButton` click
+            startButton.addEventListener('click', async function(event) {
+                showSpinner();
+                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
+                hideSpinner();
                 if (task_counts >= 3) {
-                    persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
-                    persuade.style.color = 'black';
-                    startButton.style.pointerEvents = "auto";
-                    startButton.style.backgroundColor = "#02897A";
-                } else {
-                    persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
-                    persuade.style.color = 'grey';
-                    startButton.style.pointerEvents = "none";
-                    startButton.style.backgroundColor = "grey";
+                    window.location.href = "challenge_page.html";
                 }
-            }
+            });
+            
+            // Event listener for "good" button
+            document.getElementById('good').addEventListener('click', function() {
+                updateStartButton();
+                var condition = (score) => score >= 3;
+                renderQuestions(condition);
+                var tContent = document.querySelector(".task-content");
+                if (tContent.innerHTML == '') {
+                    tContent.innerHTML == '<p>None of your answers got good score</p>';
+                }
+                good.style.backgroundColor = '#02897A';
+                bad.style.backgroundColor = '#a9d1cd';
+            });
+            
+            // Event listener for "bad" button
+            document.getElementById('notyet').addEventListener('click', function() {
+                updateStartButton();
+                var condition = (score) => score < 3;
+                renderQuestions(condition);
+                var tContent = document.querySelector(".task-content");
+                if (tContent.innerHTML == '') {
+                    tContent.innerHTML == '<p>None of your answers got bad score</p>';
+                }
+                good.style.backgroundColor = '#a9d1cd';
+                bad.style.backgroundColor = '#02897A';
+            });
             
             try {
-                showSpinner();
                 
+                showSpinner();
+                var preObject = JSON.parse(localStorage.getItem('preResult')); 
+                var preResult;
+                var preResponseId;
+                var preTotalScore; 
+                var storedCycle = JSON.parse(localStorage.getItem('selectedCycle') || null);
                 //handle first-time user
                 if (!metadata.responseHistory && !preObject) {
                     console.warn("No responseHistory found for this user.");
@@ -538,72 +568,19 @@
                     document.querySelector(".improvement").style.display = "none";
                     document.getElementById("threetask").innerHTML = "";
                     
-                    QContainer.innerHTML = "<p>Opp! No information available</p>";
+                    QContainer.innerHTML = '<div class="empty-state">Opp! No information available</div>';
                     alert("No pre quiz found. Please do the quiz first.");
                     window.location.href = "index.html";
                     return;
                     
-                } else if (preObject) {
+                } else {
                     document.querySelector(".button2").style.display = "flex";
                     document.querySelector(".improvement").style.display = "flex";
-                    var preResult = preObject.result;
-                    preResponseId =  preObject.responseId;
-                } 
-                
-                if (storedCycle) {
-                    
-                    preObject = storedCycle.preResponse;
                     preResult = preObject.result;
-                    pre_rec = preObject.recordedDate;
-                    preResponseId = preObject.responseId;
-                    
-                    postObject = storedCycle.postResponse;
-                    postResult = postObject.result;
-                    post_rec = postObject.recordedDate;
-                    
-                    try {
-                        var selectTasks = await fetchTaskStatus(preResponseId, userId);
-                        localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
-                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));; 
-                        task_rec = fetched_tasks.time; 
-                    } catch(err) {
-                        console.log("Couldn't find previous tasks' info:", err);
-                    }
-                }
-                
-                if(!preObject) {
-                    QContainer.innerHTML = '<div class="empty-state">No available information to be displayed</div>';
-                    return;
-                }
-                
-                if (!tasks) {
-                    tasks = await fetchTasks();  
-                    localStorage.setItem('tasks', JSON.stringify(tasks));
-                    tasks = JSON.parse(localStorage.getItem('tasks'));
-                }
-                
-                if (!fetched_tasks && preResponseId) {
-                    try {
-                        fetched_tasks = await fetchTaskStatus(preResponseId, userId);
-                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
-                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                        task_rec = fetched_tasks.time; 
-                    } catch (err) {
-                        console.error("Couldn't find previous tasks' info:", err);
-                    }
-                }
-                
-            } catch (err) {
-                console.error("Caught error: ", err);
-            } finally {
-                hideSpinner();
-            }
-            
-            
-            try {
-                let preTotalScore = preObject.result.totalScore; 
-                scores = preObject.result.pointArray;
-                
+                    preResponseId =  preObject.responseId;
+                    preTotalScore = preObject.result.totalScore; 
+                    scores = preObject.result.pointArray;
+                } 
                 
                 if (!tasks) {
                     tasks = await fetchTasks();
@@ -613,7 +590,6 @@
                 
                 if (!fetched_tasks) {
                     try {
-                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
                         fetched_tasks = await fetchTaskStatus(preResponseId, userId); 
                         localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
                         fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
@@ -632,48 +608,50 @@
                         }
                     }
                 }
+                if (storedCycle) {
+                    
+                    preObject = storedCycle.preResponse;
+                    preResult = preObject.result;
+                    pre_rec = preObject.recordedDate;
+                    preResponseId = preObject.responseId;
+                    
+                    postObject = storedCycle.postResponse;
+                    postResult = postObject.result;
+                    post_rec = postObject.recordedDate;
+                    
+                    try {
+                        var selectTasks = await fetchTaskStatus(preResponseId, userId);
+                        localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
+                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                        task_rec = fetched_tasks.time; 
+                    } catch(err) {
+                        console.log("Couldn't find previous tasks' info:", err);
+                    }
+                }
                 
+                if (!tasks) {
+                    tasks = await fetchTasks();  
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    tasks = JSON.parse(localStorage.getItem('tasks'));
+                }
+                
+                if (!fetched_tasks && preResponseId) {
+                    try {
+                        fetched_tasks = await fetchTaskStatus(preResponseId, userId);
+                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
+                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                        task_rec = fetched_tasks.time; 
+                    } catch (err) {
+                        console.error("Couldn't find history tasks' info:", err);
+                    }
+                }
                 renderQuestions((score) => score < 3);
-                // update task status on `startButton` click
-                startButton.addEventListener('click', async function(event) {
-                    showSpinner();
-                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
-                    hideSpinner();
-                    if (task_counts >= 3) {
-                        window.location.href = "challenge_page.html";
-                    }
-                });
-                
-                // Event listener for "good" button
-                document.getElementById('good').addEventListener('click', function() {
-                    updateStartButton();
-                    var condition = (score) => score >= 3;
-                    renderQuestions(condition);
-                    var tContent = document.querySelector(".task-content");
-                    if (tContent.innerHTML == '') {
-                        tContent.innerHTML == '<p>None of your answers got good score</p>';
-                    }
-                    good.style.backgroundColor = '#02897A';
-                    bad.style.backgroundColor = '#a9d1cd';
-                });
-                
-                // Event listener for "bad" button
-                document.getElementById('notyet').addEventListener('click', function() {
-                    updateStartButton();
-                    var condition = (score) => score < 3;
-                    renderQuestions(condition);
-                    var tContent = document.querySelector(".task-content");
-                    if (tContent.innerHTML == '') {
-                        tContent.innerHTML == '<p>None of your answers got bad score</p>';
-                    }
-                    good.style.backgroundColor = '#a9d1cd';
-                    bad.style.backgroundColor = '#02897A';
-                });
                 
             } catch (err) {
-                console.log("Found error:", err);
-            }     
-            
+                console.error("Caught error: ", err);
+            } finally {
+                hideSpinner();
+            }      
         });
     </script>
     <!-- Bootstrap Javascript -->

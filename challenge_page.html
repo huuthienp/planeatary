@@ -118,7 +118,6 @@
 
             let preObject = JSON.parse(localStorage.getItem('preResult')); 
             let tasks = JSON.parse(localStorage.getItem('tasks'));
-            let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks') || null);
             let storedCycle = JSON.parse(localStorage.getItem('selectedCycle') || null);
 
             const nextButtonContainer = document.querySelector(".btn-next");
@@ -408,7 +407,6 @@
                 
                 try {
                     showSpinner();
-                    var preResponseId =  preObject.responseId;
 
                     const user = netlifyIdentity.gotrue.currentUser();
                     if (user) {
@@ -425,6 +423,9 @@
                     const metadata = user.user_metadata;
                     const responseHistory = metadata.responseHistory;
                     const userId = user.id;
+
+                    var preResponseId =  preObject.responseId;
+                    let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
 
                     if (storedCycle) {
                         

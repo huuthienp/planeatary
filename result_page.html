@@ -148,8 +148,8 @@
             
             // Function to show the modal
             function showModal(title, description) {
-                const tagsToRemove = modalEl.map(e => document.querySelector(e));
-                tagsToRemove.forEach(
+                const tagsToShow = modalEl.map(e => document.querySelector(e));
+                tagsToShow.forEach(
                 (tag) => { if (tag) {tag.classList.remove('hidden2');} }
                 );
                 modalTitle.textContent = title;
@@ -159,7 +159,7 @@
             
             // Function to close the modal
             function closeModal() {
-                const tagsTo = modalEl.map(e => document.querySelector(e));
+                const tagsToRemove = modalEl.map(e => document.querySelector(e));
                 tagsToRemove.forEach(
                 (tag) => { if (tag) {tag.classList.add('hidden2');} }
                 );
