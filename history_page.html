@@ -9,8 +9,6 @@
     <link href="style_concat.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Bootstrap Javascript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Icon CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -127,6 +125,7 @@
 
             const offcanvasNavbar = document.getElementById('offcanvasNavbar');
             const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+            const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
             
             async function fetchResponses(userId) {
                 try {
@@ -339,11 +338,25 @@
                     });
                 });
 
+                offcanvasDropdown.forEach(li => {
+                    li.addEventListener('click', event => {
+                        const targetHref = li.getAttribute('href');
+                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
+                        
+                        if (targetHref) {
+                            window.location.href = targetHref; 
+                        }
+                    });
+                });
+
                 await extractHistory();
                 displayTable();
                 
             });
             
         </script>
+        <!-- Bootstrap Javascript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
     </html>

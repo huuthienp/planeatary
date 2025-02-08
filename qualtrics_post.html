@@ -7,12 +7,9 @@
     <link href="style_concat.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Bootstrap Javascript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Icon CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>PlanEATary Quiz</title>
-    <script src="/scripts/listen-to-qualtrics.mjs" type="module"></script>  
+    <title>PlanEATary Quiz</title>  
 </head>
 <body>
     
@@ -113,6 +110,41 @@
                     }
                 }
                 
+                //hard-code updating responseHistory
+                function updateResponseHistory(postObject, user) {
+                    const responseHistory = user.user_metadata.responseHistory || [];
+                    if (postObject) {
+                        postResponseId = postObject.responseId;
+                    }
+                    let index = -1;
+                    
+                    //Recheck if a user has completed at least one pre-quiz before
+                    if (responseHistory.length !== 0) {
+                        Object.keys(responseHistory).forEach((cycleKey) => {
+                            if (responseHistory[cycleKey].postId === postResponseId) {
+                                index = cycleKey;
+                            } else {
+                                index = -1;
+                            }
+                        })
+                    } else {
+                        index = -1;
+                    }
+                    //If find no duplicate postResponseId, add it to responseHistory
+                    if (index == -1) {
+                        responseHistory = [...responseHistory, {postId: postResponseId}];
+                        user.update({
+                            user_metadata: {
+                                responseHistory: responseHistory  
+                            }
+                        }).then((updatedUser) => {
+                            console.log("User metadata updated:", updatedUser);
+                        }).catch((error) => {
+                            console.error("Error updating user metadata:", error);
+                        });
+                    }
+                }
+
                 function logOut() {
                     const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                     
@@ -235,7 +267,7 @@
                     const userId = user.id;
                     
                     function updateNextButton() {                  
-                        if (postResult) {
+                        if (postObject) {
                             // If postResult exists, enable the button and navigate to the results page
                             nextButton.style.backgroundColor = '#02897A'; 
                             nextButton.style.cursor = 'pointer';   
@@ -261,7 +293,7 @@
                     // Set up an interval to check for changes in localStorage
                     setInterval(updateNextButton, 1000);
                     
-                    function checkLastTaskStatus() {
+                    function checkLastTaskStatus(metadata) {
                         
                         //handle first-time user
                         if (!metadata || !metadata.responseHistory) {
@@ -320,7 +352,9 @@
                                         alert("Please finish all the chosen tasks before doing post-quiz.");
                                         quizFrame.style.display = 'none'; 
                                         document.querySelector('.btn-next').style.display = 'none';
+                                        fallbackMessage.style.color = "#ff6b6b";
                                         fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
+
                                         quizFrame.parentElement.appendChild(fallbackMessage);
                                         window.location.href = "challenge_page.html";
                                         return;
@@ -330,7 +364,9 @@
                             } catch(err) {
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
+                                fallbackMessage.style.color = "#ff6b6b";
                                 fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
+
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                                 window.location.href = "challenge_page.html";
                                 return;
@@ -385,25 +421,33 @@
                         if (postObject && Object.keys(postObject).length !== 0) {
                             quizFrame.style.display = 'none'; 
                             document.querySelector('.btn-next').style.display = 'none';
+                            fallbackMessage.style.color = "#ff6b6b";
                             fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                             quizFrame.parentElement.appendChild(fallbackMessage);
+
                         } else if (taskCheck.lastPre !== "") {
                             if (taskCheck.lastTask !== "" && taskCheck.lastPost == "") {
                                 var quizUrl = initiateSurvey('post', quizFrame);
                             } else if (taskCheck.lastTask !== "" && taskCheck.lastPost !== "") {
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
+                                // fallbackMessage.style.color = "#2ecc71";
+                                fallbackMessage.style.color = "#ff6b6b";
                                 fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
+
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                             } else {
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
+                                fallbackMessage.style.color = "#ff6b6b";
                                 fallbackMessage.innerHTML = "Please finish pre-quiz and then all selected tasks before doing the post quiz";
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                             }
-                        } else if (Object.keys(postQuiz).length !== 0) {
+                        } else if (postQuiz) {
                             quizFrame.style.display = 'none'; 
                             document.querySelector('.btn-next').style.display = 'none';
+                            //fallbackMessage.style.color = "#2ecc71";
+                            fallbackMessage.style.color = "#ff6b6b";
                             fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                             quizFrame.parentElement.appendChild(fallbackMessage);
                         } else if (!postObject || Object.keys(postObject).length == 0) {
@@ -417,7 +461,7 @@
                         quizFrame.style.display = 'none';
                         document.querySelector('.btn-next').style.display = 'none';
                         fallbackMessage.innerHTML = "Content cannot be displayed. Please try again later.";
-                        fallbackMessage.style.color = "red";
+                        fallbackMessage.style.color = "#ff6b6b";
                         nextButton.style.display = "none";
                         quizFrame.parentElement.appendChild(fallbackMessage);
                     } finally {
@@ -434,6 +478,7 @@
                             JSON.parse(newValue || undefined);  // force null -> undefined to throw error
                             quizFrame.style.display = 'none';
                             fallbackMessage.innerHTML = 'Thank you for your response!';
+                            fallbackMessage.style.color = "#2ecc71";
                             quizFrame.parentElement.appendChild(fallbackMessage);
                             console.log('Found post-quiz result in storage!\n', newValue);
                         } catch(error) {
@@ -445,6 +490,8 @@
                 });
 
             </script>
+            <!-- Bootstrap Javascript -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <script defer type="module" src="./scripts/listen-to-qualtrics.mjs"></script>
         </body>
         </html>

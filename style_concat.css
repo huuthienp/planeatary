@@ -332,7 +332,17 @@ body {
   flex-direction: row;
   align-items: center;
 }
+
 .card_completed {
+  padding: 3vh 3vw;
+  border: none;
+  color: rgb(3, 3, 3);
+  background: rgb(133, 132, 132);
+  border-radius: 1em;
+  text-align: center;
+}
+
+.card_completion {
   padding: 3vh 3vw;
   background: rgb(133, 132, 132);
   border: none;
@@ -1221,8 +1231,20 @@ body {
 
 .empty-state {
   display: flex;
+  padding: 2vh 2vw;
   justify-content: center;
   text-align: justify;
   margin: auto auto;
   font-size: 2em;
+  color: #ff6b6b; 
+}
+
+.void {
+  display: flex;
+  padding: 2vh 2vw;
+  justify-content: center;
+  text-align: justify;
+  margin: auto auto;
+  font-size: 2em;
+  color: #2ecc71;
 }

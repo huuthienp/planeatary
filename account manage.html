@@ -11,8 +11,6 @@
     <link href="style_concat.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Bootstrap Javascript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Icon CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -105,8 +103,8 @@
                     <label for="user-type" class="form-label">User Type:</label>
                     <select id="user-type" class="form-select mb-3" aria-label="User type" required>
                         <option value="student">Student</option>
-                        <option value="other">Dietician</option>
-                        <option value="other">Academic staff</option>
+                        <option value="dietician">Dietician</option>
+                        <option value="academic">Academic staff</option>
                         <option value="other">Other</option>
                     </select>
                 </div>
@@ -164,19 +162,21 @@
         //Dismiss the offcanvas bar after click and execute
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+        const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
 
-        offcanvasLinks.forEach(li => {
-            li.addEventListener('click', event => {
-                const targetHref = li.getAttribute('href');
-                
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
-                
-                if (targetHref && targetHref !== '#') {
-                    window.location.href = targetHref; 
-                }
+
+        // Load userdata to input boxes
+        document.addEventListener("DOMContentLoaded", async function() {
+            const user = netlifyIdentity.gotrue.currentUser();
+            const userData = user.user_metadata;
+            
+            window.addEventListener("load", (event) => {
+                document.getElementById("name").value       = userData.full_name;
+                document.getElementById("age").value        = userData.age;
+                document.getElementById("gender").value     = userData.gender;
+                document.getElementById("user-type").value  = userData.user_type;
             });
-        });
+        })
         
         // RegEx for checking password
         let uppercaseRegex = /[A-Z]/g;
@@ -239,6 +239,31 @@
             return false;
         }
 
+        offcanvasLinks.forEach(li => {
+            li.addEventListener('click', event => {
+                const targetHref = li.getAttribute('href');
+                
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+                
+                if (targetHref && targetHref !== '#') {
+                    window.location.href = targetHref; 
+                }
+            });
+        });
+
+        offcanvasDropdown.forEach(li => {
+            li.addEventListener('click', event => {
+                const targetHref = li.getAttribute('href');
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+                
+                if (targetHref) {
+                    window.location.href = targetHref; 
+                }
+            });
+        });
+
         //to log out when a user want to
         function logOut() {
             const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -264,5 +289,7 @@
         });
 
     </script>
+    <!-- Bootstrap Javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

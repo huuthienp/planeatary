@@ -9,9 +9,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Icon CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Bootstrap Javascript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/scripts/listen-to-qualtrics.mjs" type="module"></script> 
     <title>PlanEATary Quiz</title> 
 </head>
 <body>
@@ -70,7 +67,7 @@
             </div>
             <div class="content">
                 <iframe class="quiz" title="Planeatary quiz"></iframe>
-                <span class="void" style="margin:auto auto; display: flex; justify-content: center; text-align: justify;"></span>
+                <span class="void"></span>
                 <div class="btn-next">
                     <button class="btn btn-success" id="restartBtn" style="width: 150px;" disabled>Restart</button>
                     <a><button id="nextButt" type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button></a>
@@ -142,6 +139,7 @@
 
             const offcanvasNavbar = document.getElementById('offcanvasNavbar');
             const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+            const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
 
             offcanvasLinks.forEach(li => {
                 li.addEventListener('click', event => {
@@ -151,6 +149,18 @@
                     offcanvas.hide();
                     
                     if (targetHref && targetHref !== '#') {
+                        window.location.href = targetHref; 
+                    }
+                });
+            });
+
+            offcanvasDropdown.forEach(li => {
+                li.addEventListener('click', event => {
+                    const targetHref = li.getAttribute('href');
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    
+                    if (targetHref) {
                         window.location.href = targetHref; 
                     }
                 });
@@ -210,9 +220,8 @@
             var postResponseId;
 
             //hard-code updating responseHistory
-            function updateResponseHistory(preObject, metadata) {
-                let responseHistory = metadata.responseHistory || [];
-                var gotrueUser = JSON.parse(localStorage.getItem('gotrue.user'));
+            function updateResponseHistory(preObject, user) {
+                const responseHistory = user.user_metadata.responseHistory || [];
                 if (preObject) {
                     preResponseId = preObject.responseId;
                 }
@@ -234,14 +243,15 @@
                 //If find no duplicate preResponseId, add it to responseHistory
                 if (index == -1) {
                     responseHistory = [...responseHistory, {preId: preResponseId}];
-                    metadata.responseHistory = responseHistory;
-                    
-                    // Safely update the user metadata
-                    gotrueUser.user_metadata = {
-                        ...gotrueUser.user_metadata,
-                        responseHistory: responseHistory, 
-                    };
-                    localStorage.setItem('gotrue.user', JSON.stringify(gotrueUser));
+                    user.update({
+                        user_metadata: {
+                            responseHistory: responseHistory  
+                        }
+                    }).then((updatedUser) => {
+                        console.log("User metadata updated:", updatedUser);
+                    }).catch((error) => {
+                        console.error("Error updating user metadata:", error);
+                    });
                 }
             }
 
@@ -299,7 +309,7 @@
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
                         quizSpan.innerText = 'You have already finished the pre-quiz!';
-                        updateResponseHistory(preObject, metadata)
+                        updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         
                     } else if (allResponses) {
@@ -327,7 +337,7 @@
                         console.log('Found pre-quiz result in storage!\n', preObject);
 
                         if(postObject) {
-                            updateResponseHistory(preObject, metadata);
+                            updateResponseHistory(preObject, user);
                             if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
                                 restartBtn.disabled = false;
                                 updateButton(restartBtn, '#02897A', 'pointer');
@@ -384,5 +394,7 @@
             });
         </script>
         <script defer type="module" src="./scripts/listen-to-qualtrics.mjs"></script>
+        <!-- Bootstrap Javascript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
     </html>
