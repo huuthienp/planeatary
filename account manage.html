@@ -103,8 +103,8 @@
                     <label for="user-type" class="form-label">User Type:</label>
                     <select id="user-type" class="form-select mb-3" aria-label="User type" required>
                         <option value="student">Student</option>
-                        <option value="other">Dietician</option>
-                        <option value="other">Academic staff</option>
+                        <option value="dietician">Dietician</option>
+                        <option value="academic">Academic staff</option>
                         <option value="other">Other</option>
                     </select>
                 </div>
@@ -175,7 +175,18 @@
                 }
             });
         });
+
+        // Load userdata to input boxes
+        const user = netlifyIdentity.gotrue.currentUser();
+        const userData = user.user_metadata;
         
+        window.addEventListener("load", (event) => {
+            document.getElementById("name").value       = userData.full_name;
+            document.getElementById("age").value        = userData.age;
+            document.getElementById("gender").value     = userData.gender;
+            document.getElementById("user-type").value  = userData.user_type;
+        });
+
         // RegEx for checking password
         let uppercaseRegex = /[A-Z]/g;
         let lowercaseRegex = /[a-z]/g;
