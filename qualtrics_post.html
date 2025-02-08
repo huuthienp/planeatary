@@ -130,6 +130,19 @@
                     } else {
                         index = -1;
                     }
+                    //If find no duplicate postResponseId, add it to responseHistory
+                    if (index == -1) {
+                        responseHistory = [...responseHistory, {postId: postResponseId}];
+                        user.update({
+                            user_metadata: {
+                                responseHistory: responseHistory  
+                            }
+                        }).then((updatedUser) => {
+                            console.log("User metadata updated:", updatedUser);
+                        }).catch((error) => {
+                            console.error("Error updating user metadata:", error);
+                        });
+                    }
                 }
 
                 function logOut() {
@@ -254,7 +267,7 @@
                     const userId = user.id;
                     
                     function updateNextButton() {                  
-                        if (postResult) {
+                        if (postObject) {
                             // If postResult exists, enable the button and navigate to the results page
                             nextButton.style.backgroundColor = '#02897A'; 
                             nextButton.style.cursor = 'pointer';   
@@ -280,7 +293,7 @@
                     // Set up an interval to check for changes in localStorage
                     setInterval(updateNextButton, 1000);
                     
-                    function checkLastTaskStatus() {
+                    function checkLastTaskStatus(metadata) {
                         
                         //handle first-time user
                         if (!metadata || !metadata.responseHistory) {
@@ -410,15 +423,16 @@
                             document.querySelector('.btn-next').style.display = 'none';
                             fallbackMessage.style.color = "#ff6b6b";
                             fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
-
                             quizFrame.parentElement.appendChild(fallbackMessage);
+
                         } else if (taskCheck.lastPre !== "") {
                             if (taskCheck.lastTask !== "" && taskCheck.lastPost == "") {
                                 var quizUrl = initiateSurvey('post', quizFrame);
                             } else if (taskCheck.lastTask !== "" && taskCheck.lastPost !== "") {
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
-                                fallbackMessage.style.color = "#2ecc71";
+                                // fallbackMessage.style.color = "#2ecc71";
+                                fallbackMessage.style.color = "#ff6b6b";
                                 fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
 
                                 quizFrame.parentElement.appendChild(fallbackMessage);

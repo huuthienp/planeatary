@@ -343,7 +343,7 @@
 
                     var tasks = JSON.parse(localStorage.getItem('tasks'));
                     var detailed = JSON.parse(localStorage.getItem('fetched_tasks') || null);
-                    var task_rec = [];
+                    var task_rec = detailed.time || [];
 
                     const user = netlifyIdentity.gotrue.currentUser();
                     if (user) {

@@ -336,6 +336,8 @@ body {
 .card_completed {
   padding: 3vh 3vw;
   border: none;
+  color: rgb(3, 3, 3);
+  background: rgb(133, 132, 132);
   border-radius: 1em;
   text-align: center;
 }

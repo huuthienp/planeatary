@@ -581,6 +581,7 @@
                             });
                             
                             checkbox.checked = task.choice === "chosen";
+                            if (task.choice === "chosen") {task.status = "done";}
                             localStorage.setItem('tasks', JSON.stringify(tasks)); 
                             
                             
