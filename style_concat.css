@@ -332,7 +332,15 @@ body {
   flex-direction: row;
   align-items: center;
 }
+
 .card_completed {
+  padding: 3vh 3vw;
+  border: none;
+  border-radius: 1em;
+  text-align: center;
+}
+
+.card_completion {
   padding: 3vh 3vw;
   background: rgb(133, 132, 132);
   border: none;

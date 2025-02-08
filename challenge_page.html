@@ -273,7 +273,7 @@
                         if (task.choice === 'chosen') {
                             // Create and append a card for each selected task
                             const taskCard = document.createElement("div");
-                            taskCard.classList.add("task-card", task.status === "Completed" ? "card_completed" : "card_incompleted");
+                            taskCard.classList.add("task-card", "card_completion");
                             
                             const taskName = document.createElement("span");
                             taskName.textContent = task.taskName + " ";
@@ -296,10 +296,13 @@
                             
                             // Set card styles based on status
                             if (task.status === "Completed") {
-                                taskCard.classList.add("card_completed");
+                                taskCard.style.color = 'black';
+                                taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
                                 taskName.style.textDecoration = "line-through";
                             } else {
-                                taskCard.classList.add("card_incompleted");
+                                taskCard.style.color = 'rgb(71, 71, 71)';
+                                taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
+                                taskName.style.textDecoration = "none";
                             }
                             
                             taskCard.appendChild(taskName);
@@ -312,7 +315,8 @@
                                 if (Tstatus.chosen.length !== 0) {
                                     if (Tstatus.chosen.includes(String(task.taskNumber))) {
                                         if (Tstatus.done.includes(String(task.taskNumber))) {
-                                            taskCard.classList.add("card_completed");
+                                            taskCard.style.color = 'black';
+                                            taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
                                             taskName.style.textDecoration = "line-through";
                                         }
                                     } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) === -1) {
@@ -321,16 +325,20 @@
                                         let index = Tstatus.chosen.indexOf(String(task.taskNumber));
                                         Tstatus.done.splice(index, 0, String(task.taskNumber));
                                         Tstatus.time.splice(index, 0, task.finishTime);
+                                        localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                                     }
                                 } else {
                                     //manually update fetched_tasks in local storage if found empty
                                     Tstatus.chosen.push(String(task.taskNumber));
                                     if (task.status === "Completed") {
+                                        taskCard.style.color = 'black';
+                                        taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
+                                        taskName.style.textDecoration = "line-through";
                                         Tstatus.done.push(String(task.taskNumber));
                                         Tstatus.time.push(task.finishTime);
+                                        localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                                     }
                                 }
-                                localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                             }
                             
                             // Add event listener to task card to update status
@@ -462,7 +470,7 @@
                         try {
                             var fetched = await fetchTaskStatus(preResponseId, userId);
                             localStorage.setItem('fetched_tasks', JSON.stringify(fetched));
-                            Tstatus = JSON.parse(localStorage.getItem('fetched_tasks') || {});;
+                            Tstatus = JSON.parse(localStorage.getItem('fetched_tasks') || {});
                             if (Object.keys(Tstatus).length === 0) {
                                 Tstatus.done = [];
                                 Tstatus.chosen = [];
