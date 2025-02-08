@@ -144,7 +144,7 @@
             const bOverlay = document.getElementById("spinnerOverlay");
             
             
-            const modalEl = [closeButt, tmodal, modalOverlay];
+            const modalEl = ['.close', ".modal2", "overlay2"];
             const spinnerEl = [spinner, bOverlay];
             
             // Function to show the modal
@@ -594,7 +594,8 @@
                             
                             // Set the click event for the info icon to show the modal
                             infoIcon.addEventListener('click', function(event) {
-                                event.stopPropagation(); 
+                                event.preventDefault();
+                                event.stopPropagation();
                                 showModal(task.taskName, task.taskDescription);
                             });
                             

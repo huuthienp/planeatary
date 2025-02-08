@@ -162,19 +162,8 @@
         //Dismiss the offcanvas bar after click and execute
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+        const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
 
-        offcanvasLinks.forEach(li => {
-            li.addEventListener('click', event => {
-                const targetHref = li.getAttribute('href');
-                
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
-                
-                if (targetHref && targetHref !== '#') {
-                    window.location.href = targetHref; 
-                }
-            });
-        });
 
         // Load userdata to input boxes
         document.addEventListener("DOMContentLoaded", async function() {
@@ -249,6 +238,31 @@
         {
             return false;
         }
+
+        offcanvasLinks.forEach(li => {
+            li.addEventListener('click', event => {
+                const targetHref = li.getAttribute('href');
+                
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+                
+                if (targetHref && targetHref !== '#') {
+                    window.location.href = targetHref; 
+                }
+            });
+        });
+
+        offcanvasDropdown.forEach(li => {
+            li.addEventListener('click', event => {
+                const targetHref = li.getAttribute('href');
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+                
+                if (targetHref) {
+                    window.location.href = targetHref; 
+                }
+            });
+        });
 
         //to log out when a user want to
         function logOut() {

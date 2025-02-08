@@ -42,7 +42,7 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
                                         <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
-                                        <li><a class="btn dropdown-item first-timer" aria-disabled="false" data-bs-dismiss="offcanvas" href="qualtrics_post.html">Post-quiz</a></li>
+                                        <li><a class="dropdown-item first-timer" aria-disabled="false" data-bs-dismiss="offcanvas" href="qualtrics_post.html">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item home-hide">
@@ -543,11 +543,24 @@
 
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+        const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
 
         offcanvasLinks.forEach(li => {
             li.addEventListener('click', event => {
                 const targetHref = li.getAttribute('href');
                 
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+                
+                if (targetHref) {
+                    window.location.href = targetHref; 
+                }
+            });
+        });
+
+        offcanvasDropdown.forEach(li => {
+            li.addEventListener('click', event => {
+                const targetHref = li.getAttribute('href');
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                 offcanvas.hide();
                 

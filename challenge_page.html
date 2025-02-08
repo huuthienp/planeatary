@@ -305,11 +305,6 @@
                                 taskName.style.textDecoration = "none";
                             }
                             
-                            taskCard.appendChild(taskName);
-                            taskCard.appendChild(infoIcon); // Add info icon to the card
-                            taskCard.appendChild(completion);
-                            cardContainer.appendChild(taskCard);
-                            
                             // Set task choice and status based on local storage
                             if (Tstatus) {
                                 if (Tstatus.chosen.length !== 0) {
@@ -340,6 +335,11 @@
                                     }
                                 }
                             }
+
+                            taskCard.appendChild(taskName);
+                            taskCard.appendChild(infoIcon); // Add info icon to the card
+                            taskCard.appendChild(completion);
+                            cardContainer.appendChild(taskCard);
                             
                             // Add event listener to task card to update status
                             taskCard.addEventListener('click', async (event) => {

@@ -443,12 +443,12 @@
                                 fallbackMessage.innerHTML = "Please finish pre-quiz and then all selected tasks before doing the post quiz";
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                             }
-                        } else if (Object.keys(postQuiz).length !== 0) {
+                        } else if (postQuiz) {
                             quizFrame.style.display = 'none'; 
                             document.querySelector('.btn-next').style.display = 'none';
-                            fallbackMessage.style.color = "#2ecc71";
+                            //fallbackMessage.style.color = "#2ecc71";
+                            fallbackMessage.style.color = "#ff6b6b";
                             fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
-
                             quizFrame.parentElement.appendChild(fallbackMessage);
                         } else if (!postObject || Object.keys(postObject).length == 0) {
                             var quizUrl = initiateSurvey('post', quizFrame);
