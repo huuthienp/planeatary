@@ -177,16 +177,18 @@
         });
 
         // Load userdata to input boxes
-        const user = netlifyIdentity.gotrue.currentUser();
-        const userData = user.user_metadata;
+        document.addEventListener("DOMContentLoaded", async function() {
+            const user = netlifyIdentity.gotrue.currentUser();
+            const userData = user.user_metadata;
+            
+            window.addEventListener("load", (event) => {
+                document.getElementById("name").value       = userData.full_name;
+                document.getElementById("age").value        = userData.age;
+                document.getElementById("gender").value     = userData.gender;
+                document.getElementById("user-type").value  = userData.user_type;
+            });
+        })
         
-        window.addEventListener("load", (event) => {
-            document.getElementById("name").value       = userData.full_name;
-            document.getElementById("age").value        = userData.age;
-            document.getElementById("gender").value     = userData.gender;
-            document.getElementById("user-type").value  = userData.user_type;
-        });
-
         // RegEx for checking password
         let uppercaseRegex = /[A-Z]/g;
         let lowercaseRegex = /[a-z]/g;
