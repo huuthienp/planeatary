@@ -362,9 +362,8 @@
                                     task.finishTime = "";
                                     if (Tstatus || Object.keys(Tstatus).length !== 0) {
                                         let doneIndex = Tstatus.done.indexOf(String(task.taskNumber));
-                                        let timeIndex = Tstatus.time.indexOf(String(task.taskNumber));
                                         Tstatus.done.splice(doneIndex, 1);
-                                        Tstatus.time.splice(timeIndex, 1);
+                                        Tstatus.time.splice(doneIndex, 1);
                                     }
                                 }
                                 // Update task in localStorage
