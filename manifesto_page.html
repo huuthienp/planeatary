@@ -453,21 +453,20 @@
                                     if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
                                         task.choice = 'chosen';
                                         checkbox.checked = true;
-                                        const _index = fetched_tasks.chosen.indexOf(task.taskNumber);
-                                        task.finishTime = fetched_tasks.time[_index];
-                                        if (fetched_tasks.done.includes(String(task.taskNumber)) && fetched_tasks.time.includes(String(task.taskNumber))) {
+                                        if (fetched_tasks.done.includes(String(task.taskNumber))) {
+                                            const _index = fetched_tasks.done.indexOf(task.taskNumber);
+                                            task.finishTime = fetched_tasks.time[_index];
                                             task.status = 'Completed';
-                                            // Disable the checkbox if the task is completed
-                                            checkbox.disabled = true; 
+                                        } else {
+                                            task.finishTime = "";
+                                            task.status = 'Done';
                                         }
                                     }
                                 }
-                                //Also double-check task status in local storage
-                                checkbox.disabled = task.status === 'Completed';
-                                localStorage.setItem('tasks', JSON.stringify(tasks)); 
                             }
-                            
+                            //Also double-check task status in local storage
                             checkbox.disabled = task.status === 'Completed';
+                            localStorage.setItem('tasks', JSON.stringify(tasks)); 
                             
                             // Update task count and localStorage on checkbox change
                             checkbox.addEventListener('change', function() {
