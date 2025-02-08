@@ -252,6 +252,7 @@
             let task_counts = 0;
             let tasks = JSON.parse(localStorage.getItem('tasks')); 
             let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+            let task_rec; 
             
             const user = netlifyIdentity.gotrue.currentUser();
             

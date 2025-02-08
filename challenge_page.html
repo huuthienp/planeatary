@@ -309,13 +309,13 @@
                             
                             // Set task choice and status based on local storage
                             if (Tstatus) {
-                                if (Tstatus.chosen.length !==0 && Tstatus.done.length !==0) {
+                                if (Tstatus.chosen.length !== 0) {
                                     if (Tstatus.chosen.includes(String(task.taskNumber))) {
                                         if (Tstatus.done.includes(String(task.taskNumber))) {
                                             taskCard.classList.add("card_completed");
                                             taskName.style.textDecoration = "line-through";
                                         }
-                                    } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) == -1) {
+                                    } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) === -1) {
                                         //in case that backend does not allow fetching task status
                                         Tstatus.chosen.push(String(task.taskNumber));
                                         let index = Tstatus.chosen.indexOf(String(task.taskNumber));
