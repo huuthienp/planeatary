@@ -270,11 +270,24 @@
 
                 const offcanvasNavbar = document.getElementById('offcanvasNavbar');
                 const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+                const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
 
                 offcanvasLinks.forEach(li => {
                     li.addEventListener('click', event => {
                         const targetHref = li.getAttribute('href');
                         
+                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
+                        
+                        if (targetHref) {
+                            window.location.href = targetHref; 
+                        }
+                    });
+                });
+
+                offcanvasDropdown.forEach(li => {
+                    li.addEventListener('click', event => {
+                        const targetHref = li.getAttribute('href');
                         const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                         offcanvas.hide();
                         
@@ -343,7 +356,9 @@
 
                     var tasks = JSON.parse(localStorage.getItem('tasks'));
                     var detailed = JSON.parse(localStorage.getItem('fetched_tasks') || null);
-                    var task_rec = detailed.time || [];
+                    var task_rec;
+                    if (detailed) { task_rec = detailed.time } else { task_rec = [] };
+
 
                     const user = netlifyIdentity.gotrue.currentUser();
                     if (user) {

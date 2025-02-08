@@ -192,6 +192,7 @@
 
                 const offcanvasNavbar = document.getElementById('offcanvasNavbar');
                 const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+                const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
 
                 async function fetchResponses(userId) {
                     try {
@@ -246,6 +247,19 @@
                             }
                         });
                     });
+                    
+                    offcanvasDropdown.forEach(li => {
+                        li.addEventListener('click', event => {
+                            const targetHref = li.getAttribute('href');
+                            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                            offcanvas.hide();
+                            
+                            if (targetHref) {
+                                window.location.href = targetHref; 
+                            }
+                        });
+                    });
+
                     
                     const netlifyIdentity = window.netlifyIdentity;
                     const user = netlifyIdentity.gotrue.currentUser();
@@ -422,6 +436,7 @@
                             quizFrame.style.display = 'none'; 
                             document.querySelector('.btn-next').style.display = 'none';
                             fallbackMessage.style.color = "#ff6b6b";
+                            //fallbackMessage.style.color = "#2ecc71";
                             fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                             quizFrame.parentElement.appendChild(fallbackMessage);
 
@@ -431,8 +446,8 @@
                             } else if (taskCheck.lastTask !== "" && taskCheck.lastPost !== "") {
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
-                                // fallbackMessage.style.color = "#2ecc71";
-                                fallbackMessage.style.color = "#ff6b6b";
+                                fallbackMessage.style.color = "#2ecc71";
+                                //fallbackMessage.style.color = "#ff6b6b";
                                 fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
 
                                 quizFrame.parentElement.appendChild(fallbackMessage);
@@ -446,8 +461,8 @@
                         } else if (postQuiz) {
                             quizFrame.style.display = 'none'; 
                             document.querySelector('.btn-next').style.display = 'none';
-                            //fallbackMessage.style.color = "#2ecc71";
-                            fallbackMessage.style.color = "#ff6b6b";
+                            fallbackMessage.style.color = "#2ecc71";
+                            //fallbackMessage.style.color = "#ff6b6b";
                             fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                             quizFrame.parentElement.appendChild(fallbackMessage);
                         } else if (!postObject || Object.keys(postObject).length == 0) {
