@@ -112,12 +112,11 @@
                 
                 //hard-code updating responseHistory
                 function updateResponseHistory(postObject, user) {
+                    let index = -1;
                     const responseHistory = user.user_metadata.responseHistory || [];
                     if (postObject) {
                         postResponseId = postObject.responseId;
                     }
-                    let index = -1;
-                    
                     //Recheck if a user has completed at least one pre-quiz before
                     if (responseHistory.length !== 0) {
                         Object.keys(responseHistory).forEach((cycleKey) => {
@@ -179,13 +178,10 @@
                 
                 var tasks = JSON.parse(localStorage.getItem('tasks'));
                 var selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                var detailed = {};
-                var task_rec = "";
                 
                 let latest_pre = "";
                 let latest_post = "";
                 let latest_task = "";
-                let history = [];
                 
                 const fallbackMessage = document.createElement('div');
                 fallbackMessage.classList.add("empty-state");
@@ -235,6 +231,25 @@
                 
                 document.addEventListener("DOMContentLoaded", async () => {
 
+                    const netlifyIdentity = window.netlifyIdentity;
+                    const user = netlifyIdentity.gotrue.currentUser();
+
+                    if (user) {
+                        user.jwt().then(token => {
+                            if (isTokenExpired(token)) {
+                                console.log("Token expired. Prompting user to re-login...");
+                                netlifyIdentity.logout();
+                                window.location.href = "index.html";
+                            } else {
+                                console.log("Token is valid.");
+                            }
+                        });
+                    }
+
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
+                    const userId = user.id;
+
                     offcanvasLinks.forEach(li => {
                         li.addEventListener('click', event => {
                             const targetHref = li.getAttribute('href');
@@ -261,26 +276,7 @@
                     });
 
                     
-                    const netlifyIdentity = window.netlifyIdentity;
-                    const user = netlifyIdentity.gotrue.currentUser();
-
-                    if (user) {
-                        user.jwt().then(token => {
-                            if (isTokenExpired(token)) {
-                                console.log("Token expired. Prompting user to re-login...");
-                                netlifyIdentity.logout();
-                                window.location.href = "index.html";
-                            } else {
-                                console.log("Token is valid.");
-                            }
-                        });
-                    }
-
-                    const metadata = user.user_metadata;
-                    const responseHistory = metadata.responseHistory;
-                    const userId = user.id;
-                    
-                    function updateNextButton() {                  
+                    function updateNextButton(postObject) {                  
                         if (postObject) {
                             // If postResult exists, enable the button and navigate to the results page
                             nextButton.style.backgroundColor = '#02897A'; 
@@ -303,12 +299,12 @@
                     }
                     
                     // Initial check for preResult
-                    updateNextButton();
+                    updateNextButton(postObject);
                     // Set up an interval to check for changes in localStorage
                     setInterval(updateNextButton, 1000);
                     
                     function checkLastTaskStatus(metadata) {
-                        
+                        var responseHistory = metadata.responseHistory;
                         //handle first-time user
                         if (!metadata || !metadata.responseHistory) {
                             console.warn("No responseHistory found for this user.");
@@ -316,24 +312,15 @@
                         }
                         
                         //handle a user navigating directly from home page
-                        Object.keys(responseHistory).forEach((cycleKey) =>{
-                            const entry = responseHistory[cycleKey];
-                            history.push(entry);
-                            if (entry.preId && entry.postId) {
-                                latest_pre = entry.preId;
-                                latest_post = entry.postId;
-                                latest_task = entry.lastTask;
-                            } else if (!entry.postId && entry.lastTask) {
-                                latest_pre = entry.preId;
-                                latest_post = "";
-                                latest_task = entry.lastTask;
-                            } else if (!entry.lastTask && !entry.postId) {
-                                latest_pre = entry.preId;
-                                latest_post = "";
-                                latest_task = "";
-                            }
+                        const cycleKeys = Object.keys(responseHistory);
+                        if (cycleKeys.length > 0) {
+                            const latestCycleKey = cycleKeys[cycleKeys.length - 1];  // Get the last cycle
+                            const entry = responseHistory[latestCycleKey];
                             
-                        })
+                            latest_pre = entry.preId || "";
+                            latest_post = entry.postId || "";
+                            latest_task = entry.lastTask || "";
+                        }
 
                         const cycle = {lastPre: latest_pre, lastPost: latest_post, lastTask: latest_task};
                         return cycle
@@ -351,9 +338,9 @@
                         let preQuiz = null;
                         
                         if(preObject) {
-                            var preResult = preObject.result;
-                            var pre_rec = preObject.recordedDate;
-                            var preResponseId = preObject.responseId;
+                            var preResult = preObject.result || null;
+                            var pre_rec = preObject.recordedDate || null;
+                            var preResponseId = preObject.responseId || null;
                             try {
                                 if (!selectTasks) {
                                     selectTasks = await fetchTaskStatus(preResponseId, userId);
@@ -394,23 +381,18 @@
                         
                         if (!allResponses && !preObject) {
                             var allRes = await fetchResponses(userId);
-                            allResponses = JSON.parse(localStorage.getItem('allResponses'));
+                            allResponses = JSON.parse(localStorage.getItem('allResponses') || null);
                         }
-
+                        
                         if (allResponses) {
                             Object.keys(allResponses).forEach((cycleKey) => {
-                                if (allResponses[cycleKey].postResponse && allResponses[cycleKey].preResponse) {
-                                    preQuiz = allResponses[cycleKey].preResponse;
-                                    postQuiz = allResponses[cycleKey].postResponse;
-                                    postObject = postQuiz;
-                                    preResponseId = preQuiz.responseId;
-                                } else {
-                                    preQuiz = allResponses[cycleKey].preResponse;
-                                    postQuiz = null;
-                                }
-                                preObject = preQuiz;
-                                preResponseId = preQuiz.responseId;
+                                const entry = allResponses[cycleKey];
+                                preQuiz = entry.preResponse || null;
+                                postQuiz = entry.postResponse || null;
                             });
+                            preObject = preQuiz;
+                            postObject = postQuiz;
+                            preResponseId = preQuiz.responseId;
                         }
                         
                         if (storedCycle) {
@@ -430,15 +412,16 @@
                             }
                         }
                         
-                        const taskCheck = checkLastTaskStatus();
+                        const taskCheck = metadata ? checkLastTaskStatus(metadata) : { lastPre: "", lastTask: "", lastPost: "" };
 
-                        if (postObject && Object.keys(postObject).length !== 0) {
+                        if (postObject) {
                             quizFrame.style.display = 'none'; 
                             document.querySelector('.btn-next').style.display = 'none';
                             fallbackMessage.style.color = "#ff6b6b";
                             //fallbackMessage.style.color = "#2ecc71";
                             fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                             quizFrame.parentElement.appendChild(fallbackMessage);
+                            updateNextButton(postObject);
 
                         } else if (taskCheck.lastPre !== "") {
                             if (taskCheck.lastTask !== "" && taskCheck.lastPost == "") {
@@ -449,23 +432,17 @@
                                 fallbackMessage.style.color = "#2ecc71";
                                 //fallbackMessage.style.color = "#ff6b6b";
                                 fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
-
                                 quizFrame.parentElement.appendChild(fallbackMessage);
+                                updateNextButton(postObject);
                             } else {
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
                                 fallbackMessage.style.color = "#ff6b6b";
                                 fallbackMessage.innerHTML = "Please finish pre-quiz and then all selected tasks before doing the post quiz";
                                 quizFrame.parentElement.appendChild(fallbackMessage);
+                                updateNextButton(postObject);
                             }
-                        } else if (postQuiz) {
-                            quizFrame.style.display = 'none'; 
-                            document.querySelector('.btn-next').style.display = 'none';
-                            fallbackMessage.style.color = "#2ecc71";
-                            //fallbackMessage.style.color = "#ff6b6b";
-                            fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
-                            quizFrame.parentElement.appendChild(fallbackMessage);
-                        } else if (!postObject || Object.keys(postObject).length == 0) {
+                        } else if (!postObject || Object.keys(postObject).length === 0) {
                             var quizUrl = initiateSurvey('post', quizFrame);
                         } else {
                             var quizUrl = initiateSurvey('post', quizFrame);
@@ -495,6 +472,8 @@
                             fallbackMessage.innerHTML = 'Thank you for your response!';
                             fallbackMessage.style.color = "#2ecc71";
                             quizFrame.parentElement.appendChild(fallbackMessage);
+                            updateResponseHistory(postObject, user);
+                            updateNextButton(postObject);
                             console.log('Found post-quiz result in storage!\n', newValue);
                         } catch(error) {
                             console.warn('Caught', error, '\nPost-quiz result is not found!');
