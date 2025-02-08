@@ -110,6 +110,28 @@
                     }
                 }
                 
+                //hard-code updating responseHistory
+                function updateResponseHistory(postObject, user) {
+                    const responseHistory = user.user_metadata.responseHistory || [];
+                    if (postObject) {
+                        postResponseId = postObject.responseId;
+                    }
+                    let index = -1;
+                    
+                    //Recheck if a user has completed at least one pre-quiz before
+                    if (responseHistory.length !== 0) {
+                        Object.keys(responseHistory).forEach((cycleKey) => {
+                            if (responseHistory[cycleKey].postId === postResponseId) {
+                                index = cycleKey;
+                            } else {
+                                index = -1;
+                            }
+                        })
+                    } else {
+                        index = -1;
+                    }
+                }
+
                 function logOut() {
                     const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                     

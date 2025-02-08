@@ -207,9 +207,8 @@
             var postResponseId;
 
             //hard-code updating responseHistory
-            function updateResponseHistory(preObject, metadata) {
-                let responseHistory = metadata.responseHistory || [];
-                var gotrueUser = JSON.parse(localStorage.getItem('gotrue.user'));
+            function updateResponseHistory(preObject, user) {
+                const responseHistory = user.user_metadata.responseHistory || [];
                 if (preObject) {
                     preResponseId = preObject.responseId;
                 }
@@ -231,14 +230,15 @@
                 //If find no duplicate preResponseId, add it to responseHistory
                 if (index == -1) {
                     responseHistory = [...responseHistory, {preId: preResponseId}];
-                    metadata.responseHistory = responseHistory;
-                    
-                    // Safely update the user metadata
-                    gotrueUser.user_metadata = {
-                        ...gotrueUser.user_metadata,
-                        responseHistory: responseHistory, 
-                    };
-                    localStorage.setItem('gotrue.user', JSON.stringify(gotrueUser));
+                    user.update({
+                        user_metadata: {
+                            responseHistory: responseHistory  
+                        }
+                    }).then((updatedUser) => {
+                        console.log("User metadata updated:", updatedUser);
+                    }).catch((error) => {
+                        console.error("Error updating user metadata:", error);
+                    });
                 }
             }
 
@@ -296,7 +296,7 @@
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
                         quizSpan.innerText = 'You have already finished the pre-quiz!';
-                        updateResponseHistory(preObject, metadata)
+                        updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         
                     } else if (allResponses) {
@@ -324,7 +324,7 @@
                         console.log('Found pre-quiz result in storage!\n', preObject);
 
                         if(postObject) {
-                            updateResponseHistory(preObject, metadata);
+                            updateResponseHistory(preObject, user);
                             if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
                                 restartBtn.disabled = false;
                                 updateButton(restartBtn, '#02897A', 'pointer');
