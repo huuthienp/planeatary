@@ -664,11 +664,9 @@
                         document.querySelector('div.m-content').parentElement.appendChild(fallbackMessage);
                     
                 } finally {
-
                     hideSpinner();
                     //display preresult by default
-
-                    if (preObject) {displayQuestions(preObject, 'PRE')}
+                    if (preObject) {displayQuestions(preObject, 'PRE')} else if (postObject) {displayQuestions(postObject, 'POST')}
                 }
                 
                 document.getElementById('preQ').addEventListener('click', function() {

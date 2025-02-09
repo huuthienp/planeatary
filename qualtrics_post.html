@@ -138,6 +138,11 @@
                             }
                         }).then((updatedUser) => {
                             console.log("User metadata updated:", updatedUser);
+                            // Reload the current user to ensure it's up-to-date
+                            netlifyIdentity.gotrue.currentUser().reload().then(reloadedUser => {
+                                // Save the reloaded user to local storage
+                                localStorage.setItem('gotrue.user', JSON.stringify(reloadedUser));
+                            });
                         }).catch((error) => {
                             console.error("Error updating user metadata:", error);
                         });
