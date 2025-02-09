@@ -503,25 +503,19 @@
                     var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
                     
                     var preObject = JSON.parse(localStorage.getItem('preResult'));
-                    var preResult = preObject && preObject.result ? preObject.result : {};
-                    var pre_rec =  preObject && preObject.recordedDate ? preObject.recordedDate : "";
-                    var preResponseId =  preObject && preObject.responseId ? preObject.responseId : "";
+                    var preResult = preObject?.result ?? null;
+                    var pre_rec =  preObject?.recordedDate ?? null;
+                    var preResponseId =  preObject?.responseId ?? null;
                     
                     var postObject = JSON.parse(localStorage.getItem('postResult'));
-                    var postResult = postObject && postObject.result ? postObject.result : {};
-                    var post_rec = postObject && postObject.recordedDate ? postObject.recordedDate : "";
+                    var postResult = postObject?.result ?? null;
+                    var post_rec = postObject?.recordedDate ?? null;
                     
                     var tasks = JSON.parse(localStorage.getItem('tasks'));
                     var detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    var task_rec =  detailed && detailed.time ? detailed.time : "";
+                    var task_rec =  detailed?.time ?? null;
                     
-                    // if (!preResult || !preResponseId) {
-                    //     alert("No pre quiz found. Please do the quiz first.");
-                    //     window.location.href = "index.html";
-                    //     return;
-                    // }
-                    
-                    if (Object.keys(preResult).length === 0) {
+                    if (!preObject) {
                         // hide next step, suggestion, and select-tasks button as an empty state
                         const tohide = [
                         'p.next-step',
@@ -541,23 +535,24 @@
                         fallbackMessage.innerHTML = "<div class='empty-state'>Opps! no results available</div>";
                         fallbackMessage.style.color = "red";
                         document.querySelector('div.m-content').parentElement.appendChild(fallbackMessage);
-                    }
+                    } 
+
                     if (storedCycle) {
                         
-                        preObject = storedCycle && storedCycle.preResponse ? storedCycle.preResponse : {};
-                        preResult = preObject && preObject.result ? preObject.result : {};
-                        pre_rec = preObject && preObject.recordedDate ? preObject.recordedDate : "";
-                        preResponseId = preObject && preObject.responseId ? preObject.responseId : "";
+                        preObject = storedCycle?.preResponse ?? null;
+                        preResult = preObject?.result ?? null;
+                        pre_rec = preObject?.recordedDate ?? null;
+                        preResponseId = preObject?.responseId ?? null;
                         
-                        postObject = storedCycle && storedCycle.postResponse ? storedCycle.postResponse : {};
-                        postResult = postObject && postObject.result ? postObject.result : {};
-                        post_rec = postObject && postObject.recordedDate ? postObject.recordedDate : "";
+                        postObject = storedCycle?.postResponse ?? null;
+                        postResult = postObject?.result ?? null;
+                        post_rec = postObject?.recordedDate ?? null;
                         
                         try {
                             var selectTasks = await fetchTaskStatus(preResponseId, userId);
                             localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
                             detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
-                            task_rec = detailed && detailed.time ? detailed.time : []; 
+                            task_rec = detailed?.time ?? []; 
                         } catch(err) {
                             console.warn("Couldn't find history tasks' info:", err);
                         }
@@ -569,12 +564,12 @@
                         tasks = JSON.parse(localStorage.getItem('tasks'));
                     }
                     
-                    if (!detailed && preResponseId !=="") {
+                    if (!detailed && preResponseId) {
                         try {
                             var com_tasks = await fetchTaskStatus(preResponseId, userId);
                             localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
                             detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
-                            task_rec = detailed && detailed.time ? detailed.time : []; 
+                            task_rec = detailed?.time ?? []; 
                         } catch (err) {
                             console.error("Couldn't find previous tasks' info:", err);
                             detailed = {};
@@ -583,8 +578,8 @@
                     
                     if (postObject) {
                         
-                        postResult = postObject.result || {};
-                        post_rec = postObject.recordedDate || "";
+                        postResult = postObject?.result ?? null;
+                        post_rec = postObject?.recordedDate ?? null;
                         
                         // Remove next step, suggestion, and select-tasks button if post quiz is done
                         const toRemove = [
@@ -609,7 +604,7 @@
                         document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
                         document.querySelector("button.select-tasks > a").href = 'index.html';
                         
-                    } else if (Object.keys(preResult).length !== 0 && Object.keys(postResult).length === 0) {
+                    } else if (preObject && !postObject) {
                         
                         // Show next step, suggestion, and select-tasks button as default
                         const toshow = [
@@ -665,13 +660,11 @@
                     
                 } finally {
                     hideSpinner();
-                    //display preresult by default
-                    if (preObject) {displayQuestions(preObject, 'PRE')} else if (postObject) {displayQuestions(postObject, 'POST')}
                 }
                 
                 document.getElementById('preQ').addEventListener('click', function() {
                     
-                    if (Object.keys(preResult).legnth !== 0 && Object.keys(postResult).length === 0) {
+                    if (preResult && !postResult) {
                         const toshow = [
                         'p.next-step',
                         'p.suggestion',
@@ -715,7 +708,7 @@
                 
                 document.getElementById('postQ').addEventListener('click', function() {
                     
-                    if (Object.keys(postResult).length !== 0) {
+                    if (postResult) {
                         
                         // Remove next step, suggestion, and select-tasks button if post quiz is done
                         const toRemove = [
