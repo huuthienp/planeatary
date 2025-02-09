@@ -220,43 +220,39 @@
             var postResponseId;
 
             //hard-code updating responseHistory
-            function updateResponseHistory(preObject, user) {
-                const responseHistory = user.user_metadata.responseHistory || [];
-                if (preObject) {
-                    preResponseId = preObject.responseId;
+            async function updateResponseHistory(preObject, user) {
+                if (!user) {
+                    console.error("No user is logged in!");
+                    return;
                 }
-                let index = -1;
-
-                //Recheck if a user has completed at least one pre-quiz before
-                if (responseHistory.length !== 0) {
-                    Object.keys(responseHistory).forEach((cycleKey) => {
-                        if (responseHistory[cycleKey].preId === preResponseId) {
-                            index = cycleKey;
-                        } else {
-                            index = -1;
-                        }
-                    })
-                } else {
-                    index = -1;
+                const preResponseId = preObject?.responseId;
+                if (!preResponseId) {
+                    console.error("No preResponseId provided!");
+                    return;
                 }
+                let responseHistory = user.user_metadata.responseHistory || [];
+                const index = responseHistory.findIndex(cycle => cycle.preId === preResponseId);
                 
-                //If find no duplicate preResponseId, add it to responseHistory
-                if (index == -1) {
-                    responseHistory = [...responseHistory, {preId: preResponseId}];
-                    user.update({
-                        user_metadata: {
-                            responseHistory: responseHistory  
-                        }
-                    }).then((updatedUser) => {
-                        console.log("User metadata updated:", updatedUser);
-                        // Reload the current user to ensure it's up-to-date
-                        netlifyIdentity.gotrue.currentUser().reload().then(reloadedUser => {
-                            // Save the reloaded user to local storage
-                            localStorage.setItem('gotrue.user', JSON.stringify(reloadedUser));
+                // If the postResponseId is not already in the history, add it
+                if (index === -1) {
+                    responseHistory.push({ preId: preResponseId });
+                    
+                    try {
+                        // Update user metadata on Netlify
+                        const updatedUser = await user.update({
+                            user_metadata: { responseHistory }
                         });
-                    }).catch((error) => {
+                        
+                        console.log("User metadata updated:", updatedUser);
+                        
+                        // Reload the current user and sync with local storage
+                        const reloadedUser = await netlifyIdentity.gotrue.currentUser().reload();
+                        localStorage.setItem('gotrue.user', JSON.stringify(reloadedUser));
+                    } catch (error) {
                         console.error("Error updating user metadata:", error);
-                    });
+                    }
+                } else {
+                    console.log("Pre response ID already exists in response history.");
                 }
             }
 
@@ -298,12 +294,12 @@
                     
                     if (storedCycle) {
                         try {            
-                            preObject = storedCycle.preResponse;
-                            preResult = preObject && preObject.result ? preObject.result : null;
-                            preResponseId = preObject && preObject.responseId ? preObject.responseId : null;
-                            postObject = storedCycle && storedCycle.postResponse ? storedCycle.postResponse : null;
-                            postResult = postObject && postObject.result ? postObject.result : null;
-                            postResponseId = postObject && postObject.responseId ? postObject.responseId : null;
+                            preObject = storedCycle?.preResponse ?? null;
+                            preResult = preObject?.result ?? null;
+                            preResponseId = preObject?.responseId ?? null;
+                            postObject = storedCycle?.postResponse ?? null;
+                            postResult = postObject?.result ?? null;
+                            postResponseId = postObject?.responseId ?? null;
                             
                         } catch(err) {
                             console.warn("Couldn't find previous info from history:", err);

@@ -111,41 +111,42 @@
                 }
                 
                 //hard-code updating responseHistory
-                function updateResponseHistory(postObject, user) {
-                    let index = -1;
-                    const responseHistory = user.user_metadata.responseHistory || [];
-                    if (postObject) {
-                        postResponseId = postObject.responseId;
+                
+                async function updateResponseHistory(postObject, user) {
+                    if (!user) {
+                        console.error("No user is logged in!");
+                        return;
                     }
-                    //Recheck if a user has completed at least one pre-quiz before
-                    if (responseHistory.length !== 0) {
-                        Object.keys(responseHistory).forEach((cycleKey) => {
-                            if (responseHistory[cycleKey].postId === postResponseId) {
-                                index = cycleKey;
-                            } else {
-                                index = -1;
-                            }
-                        })
-                    } else {
-                        index = -1;
+                    
+                    const postResponseId = postObject?.responseId;
+                    if (!postResponseId) {
+                        console.error("No postResponseId provided!");
+                        return;
                     }
-                    //If find no duplicate postResponseId, add it to responseHistory
-                    if (index == -1) {
-                        responseHistory = [...responseHistory, {postId: postResponseId}];
-                        user.update({
-                            user_metadata: {
-                                responseHistory: responseHistory  
-                            }
-                        }).then((updatedUser) => {
-                            console.log("User metadata updated:", updatedUser);
-                            // Reload the current user to ensure it's up-to-date
-                            netlifyIdentity.gotrue.currentUser().reload().then(reloadedUser => {
-                                // Save the reloaded user to local storage
-                                localStorage.setItem('gotrue.user', JSON.stringify(reloadedUser));
+                    
+                    let responseHistory = user.user_metadata.responseHistory || [];
+                    const index = responseHistory.findIndex(cycle => cycle.postId === postResponseId);
+                    
+                    // If the postResponseId is not already in the history, add it
+                    if (index === -1) {
+                        responseHistory.push({ postId: postResponseId });
+                        
+                        try {
+                            // Update user metadata on Netlify
+                            const updatedUser = await user.update({
+                                user_metadata: { responseHistory }
                             });
-                        }).catch((error) => {
+                            
+                            console.log("User metadata updated:", updatedUser);
+                            
+                            // Reload the current user and sync with local storage
+                            const reloadedUser = await netlifyIdentity.gotrue.currentUser().reload();
+                            localStorage.setItem('gotrue.user', JSON.stringify(reloadedUser));
+                        } catch (error) {
                             console.error("Error updating user metadata:", error);
-                        });
+                        }
+                    } else {
+                        console.log("Post response ID already exists in response history.");
                     }
                 }
 
@@ -220,8 +221,8 @@
 
                     var preObject = JSON.parse(localStorage.getItem('preResult'));
                     var postObject = JSON.parse(localStorage.getItem('postResult'));
-                    var postResult = postObject && postObject.result ? postObject.result : null;
-                    var post_rec = postObject && postObject.recordedDate ? postObject.recordedDate : null;
+                    var postResult = postObject?.result ?? null;
+                    var post_rec = postObject?.recordedDate ?? null;
 
                     var tasks = JSON.parse(localStorage.getItem('tasks'));
                     var selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
@@ -408,7 +409,7 @@
                                     postQuiz = entry.postResponse || null;
                                     postObject = postQuiz;
                                     preObject = preQuiz;
-                                    preResponseId = preQuiz && preQuiz.responseId ? preQuiz.responseId : null;
+                                    preResponseId = preQuiz?.responseId ?? null;
                                     
                                     console.log('Last entry:', entry);
                                 }
@@ -417,13 +418,13 @@
                             if (storedCycle) {
                                 try {
                                     
-                                    preObject = storedCycle.preResponse;
-                                    preResult = preObject && preObject.result ? preObject.result : null;
-                                    preResponseId = preObject && preObject.responseId ? preObject.responseId : null;
+                                    preObject = storedCycle?.preResponse ?? null;
+                                    preResult = preObject?.result ?? null;
+                                    preResponseId =preObject?.responseId ?? null;
 
-                                    postObject = storedCycle && storedCycle.postResponse ? storedCycle.postResponse : null;
-                                    postResult = postObject && postObject.result ? postObject.result : null;
-                                    postResponseId = postObject && postObject.responseId ? postObject.responseId : null;
+                                    postObject = storedCycle?.postResponse ?? null;
+                                    postResult = postObject?.result ?? null;
+                                    postResponseId = postObject?.responseId ?? null;
                                     
                                 } catch(err) {
                                     console.log("Couldn't find previous info from history:", err);
@@ -486,7 +487,7 @@
                 });
 
                 // Listen to postResult change in localStorage
-                window.addEventListener('localStorageChange', (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
+                window.addEventListener('localStorageChange', async (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
                     const user = netlifyIdentity.gotrue.currentUser();
 
                     if (user) {
@@ -514,7 +515,7 @@
                             fallbackMessage.innerHTML = 'Thank you for your response!';
                             fallbackMessage.style.color = "#2ecc71";
                             quizFrame.parentElement.appendChild(fallbackMessage);
-                            updateResponseHistory(postObject, user);
+                            await updateResponseHistory(postObject, user);
                             updateNextButton(postObject);
                             console.log('Found post-quiz result in storage!\n', newValue);
                         } catch(error) {
