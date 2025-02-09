@@ -355,9 +355,9 @@
             const userId = user.id;
             console.log("your user id is ", userId);
             var preObject = JSON.parse(localStorage.getItem('preResult')); 
-            var preResult = preObject.result || [];
-            var preResponseId = preObject.responseId || "";
-            var preTotalScore = preResult.totalScore || ""; 
+            var preResult = preObject && preObject.result ? preObject.result : {};
+            var preResponseId = preObject && preObject.responseId ? preObject.responseId : "";
+            var preTotalScore = preResult && preResult.totalScore ? preResult.totalScore : ""; 
             var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
             
             let task_counts = 0;
@@ -590,9 +590,9 @@
                 const responseHistory = metadata.responseHistory;
                 const userId = user.id;
                 var preObject = JSON.parse(localStorage.getItem('preResult')); 
-                var preResult;
-                var preResponseId;
-                var preTotalScore; 
+                var preResult = preObject && preObject.result ? preObject.result : {};
+                var preResponseId = preObject && preObject.responseId ? preObject.responseId : "";
+                var preTotalScore = preResult && preResult.totalScore ? preResult.totalScore : "";
                 var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
                 //handle first-time user
                 if (!metadata.responseHistory && !preObject) {
@@ -648,8 +648,8 @@
                     pre_rec = preObject.recordedDate;
                     preResponseId = preObject.responseId;
                     
-                    postObject = storedCycle.postResponse;
-                    postResult = postObject.result;
+                    postObject = storedCycle && storedCycle.postResponse ? storedCycle.postResponse : {};
+                    postResult = postObject && postObject.result ? postObject.result : {};
                     post_rec = postObject.recordedDate;
                     
                     try {
