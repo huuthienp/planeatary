@@ -335,6 +335,29 @@
             const startButton = document.querySelector(".start");
             
             let scores = [];
+
+            const user = netlifyIdentity.gotrue.currentUser();
+
+            if (user) {
+                user.jwt().then(token => {
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                        window.location.href = "index.html";
+                    } else {
+                        console.log("Token is valid.");
+                    }
+                });
+            }
+
+            const metadata = user.user_metadata;
+            const responseHistory = metadata.responseHistory;
+            const userId = user.id;
+            var preObject = JSON.parse(localStorage.getItem('preResult')); 
+            var preResult = preObject.result || null;
+            var preResponseId = preObject.responseId || null;
+            var preTotalScore = preResult.totalScore || null; 
+            var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
             
             let task_counts = 0;
             let tasks = JSON.parse(localStorage.getItem('tasks')); 
@@ -342,7 +365,7 @@
             let task_rec; 
             
             // Function to update the start button state based on selected tasks
-            async function updateStartButton() {
+            async function updateStartButton(preResponseId, userId) {
                 const startButton = document.querySelector(".start");
                 const persuade = document.getElementById("threetask");
                 
@@ -451,7 +474,10 @@
                             
                             // Update task count and localStorage on checkbox change
                             checkbox.addEventListener('change', function() {
-                                let index = fetched_tasks.chosen.findIndex(el => el == String(task.taskNumber));
+                                let index = -1
+                                if (fetched_tasks.chosen) {
+                                    index = fetched_tasks.chosen.findIndex(el => el == String(task.taskNumber));
+                                }
                                 if (!checkbox.disabled) {
                                     if (checkbox.checked) {
                                         task.choice = "chosen";
@@ -464,7 +490,7 @@
                                     }
                                     localStorage.setItem('tasks', JSON.stringify(tasks)); 
                                     localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
-                                    updateStartButton(); 
+                                    updateStartButton(preResponseId, userId); 
                                 }
                             });
                             
@@ -488,7 +514,7 @@
                             //Check task status on local  storage
                             if (task.choice === "chosen") {task.status = task.status === "Completed"?"Completed":"Done";}
                             localStorage.setItem('tasks', JSON.stringify(tasks)); 
-                            updateStartButton(); 
+                            updateStartButton(preResponseId, userId); 
                         });
                         
                         questionDiv.appendChild(taskList);
@@ -499,13 +525,13 @@
                 });
                 
                 task_counts = calculateSelectedTasks(tasks);
-                updateStartButton(); 
+                updateStartButton(preResponseId, userId); 
             }
             
             // update task status on `startButton` click
             startButton.addEventListener('click', async function(event) {
                 showSpinner();
-                updateStartButton();
+                updateStartButton(preResponseId, userId);
                 hideSpinner();
                 if (task_counts >= 3) {
                     window.location.href = "challenge_page.html";
@@ -514,7 +540,7 @@
             
             // Event listener for "good" button
             document.getElementById('good').addEventListener('click', function() {
-                updateStartButton();
+                updateStartButton(preResponseId, userId);
                 var condition = (score) => score >= 3;
                 renderQuestions(condition);
                 var tContent = document.querySelector(".task-content");
@@ -527,7 +553,7 @@
             
             // Event listener for "bad" button
             document.getElementById('notyet').addEventListener('click', function() {
-                updateStartButton();
+                updateStartButton(preResponseId, userId);
                 var condition = (score) => score < 3;
                 renderQuestions(condition);
                 var tContent = document.querySelector(".task-content");
@@ -562,7 +588,7 @@
                 var preResult;
                 var preResponseId;
                 var preTotalScore; 
-                var storedCycle = JSON.parse(localStorage.getItem('selectedCycle') || null);
+                var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
                 //handle first-time user
                 if (!metadata.responseHistory && !preObject) {
                     console.warn("No responseHistory found for this user.");
