@@ -193,10 +193,6 @@
             function delay(ms) {
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
-            
-        </script>
-        <script type="module">
-            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
 
             const offcanvasNavbar = document.getElementById('offcanvasNavbar');
             const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
@@ -224,10 +220,14 @@
                     hideSpinner();
                 }
             });
+            
+        </script>
+        <script type="module">
+            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
 
             //hard-code updating responseHistory (incompleted)
-            function updateResponseHistory(preResponseId, lastTask, user) {
-                const user = netlifyIdentity.gotrue.currentUser();
+            function updateResponseHistory(preResponseId, lastTask) {
+                let user = netlifyIdentity.gotrue.currentUser();
                 if (user) {
                     user.jwt().then(token => {
                         if (isTokenExpired(token)) {
@@ -309,7 +309,7 @@
                     const lastTask = `${latestTask.taskNumber}@${latestTask.finishTime}`;
                     // Update response history
                     try {
-                        updateResponseHistory(preResponseId, lastTask, user);
+                        updateResponseHistory(preResponseId, lastTask);
                         console.log(`Response history updated with task: ${lastTask}`);
                     } catch (err) {
                         console.error("Error updating response history:", err);

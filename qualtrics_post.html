@@ -499,6 +499,7 @@
                     const metadata = user.user_metadata;
                     const responseHistory = metadata.responseHistory;
                     const userId = user.id;
+                    const quizFrame = document.querySelector('div.content > iframe.quiz');
                     const { type, detail: { key, oldValue, newValue } } = event;
                     console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
                     if (key === 'postResult' && oldValue !== newValue) {
