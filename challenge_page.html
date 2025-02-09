@@ -279,7 +279,7 @@
                     btn_next.disabled = false;
                     await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
                     console.log("time array:", Tstatus.time);
-                    let latestTimestamp = Math.max(...task_rec);
+                    let latestTimestamp = Math.max(...Tstatus.time);
                     const merged = mergeTaskArrays(tasks, separator = '@');
                     // Filter out tasks with finish times (those containing "@")
                     const tasksWithFinishTimes = merged.chosen.filter(task => task.includes("@"));

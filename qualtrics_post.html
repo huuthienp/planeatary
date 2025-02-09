@@ -172,26 +172,6 @@
             <script defer type="module">
                 import { initiateSurvey, fetchTaskStatus, extractTaskData } from './scripts/helpers.mjs';
 
-                const quizFrame = document.querySelector('div.content > iframe.quiz');
-                var preObject = JSON.parse(localStorage.getItem('preResult'));
-                var postObject = JSON.parse(localStorage.getItem('postResult'));
-                var postResult;
-                var post_rec;
-                
-                var tasks = JSON.parse(localStorage.getItem('tasks'));
-                var selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                
-                let latest_pre = "";
-                let latest_post = "";
-                let latest_task = "";
-                
-                const fallbackMessage = document.createElement('div');
-                fallbackMessage.classList.add("empty-state");
-
-                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-                const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-                const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
-
                 async function fetchResponses(userId) {
                     try {
                         const response = await fetch('/api/fetch-responses', {
@@ -232,6 +212,34 @@
                 }
                 
                 document.addEventListener("DOMContentLoaded", async () => {
+
+                    var preObject = JSON.parse(localStorage.getItem('preResult'));
+                    var postObject = JSON.parse(localStorage.getItem('postResult'));
+                    var postResult;
+                    var post_rec;
+
+                    var tasks = JSON.parse(localStorage.getItem('tasks'));
+                    var selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+
+                    const quizFrame = document.querySelector('div.content > iframe.quiz');
+                    var preObject = JSON.parse(localStorage.getItem('preResult'));
+                    var postObject = JSON.parse(localStorage.getItem('postResult'));
+                    var postResult;
+                    var post_rec;
+
+                    var tasks = JSON.parse(localStorage.getItem('tasks'));
+                    var selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+
+                    let latest_pre = "";
+                    let latest_post = "";
+                    let latest_task = "";
+
+                    const fallbackMessage = document.createElement('div');
+                    fallbackMessage.classList.add("empty-state");
+
+                    const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+                    const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+                    const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
 
                     const netlifyIdentity = window.netlifyIdentity;
                     const user = netlifyIdentity.gotrue.currentUser();
