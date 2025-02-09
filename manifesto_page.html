@@ -355,9 +355,9 @@
             const userId = user.id;
             console.log("your user id is ", userId);
             var preObject = JSON.parse(localStorage.getItem('preResult')); 
-            var preResult = preObject.result || null;
-            var preResponseId = preObject.responseId || null;
-            var preTotalScore = preResult.totalScore || null; 
+            var preResult = preObject.result || [];
+            var preResponseId = preObject.responseId || "";
+            var preTotalScore = preResult.totalScore || ""; 
             var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
             
             let task_counts = 0;
