@@ -118,7 +118,7 @@
 
             let preObject = JSON.parse(localStorage.getItem('preResult')); 
             let tasks = JSON.parse(localStorage.getItem('tasks'));
-            let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks') || null);
+            let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
             let storedCycle = JSON.parse(localStorage.getItem('selectedCycle') || null);
 
             const nextButtonContainer = document.querySelector(".btn-next");
@@ -224,13 +224,43 @@
                     hideSpinner();
                 }
             });
+
+            //hard-code updating responseHistory (incompleted)
+            function updateResponseHistory(preResponseId, lastTask, user) {
+                let index = -1;
+                const responseHistory = user.user_metadata.responseHistory || [];
+                //Recheck if a user has completed at least one pre-quiz before
+                if (responseHistory.length !== 0) {
+                    Object.keys(responseHistory).forEach((cycleKey) => {
+                        if (responseHistory[cycleKey].preId === preResponseId) {
+                            index = cycleKey;
+                        } else {
+                            index = -1;
+                        }
+                    })
+                } else {
+                    index = -1;
+                }
+                if (index == -1) {
+                    responseHistory = [...responseHistory, {lastTask: lastTask}];
+                    user.update({
+                        user_metadata: {
+                            responseHistory: responseHistory  
+                        }
+                    }).then((updatedUser) => {
+                        console.log("User metadata updated:", updatedUser);
+                    }).catch((error) => {
+                        console.error("Error updating user metadata:", error);
+                    });
+                }
+            }
             
             //Function to update the Next button's state
             async function updateNextButton(preResponseId, userId, tasks) {
                 let allCompleted = true;
-                preObject = JSON.parse(localStorage.getItem('preResult')); 
-                tasks = JSON.parse(localStorage.getItem('tasks'));
-                Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
+                // preObject = JSON.parse(localStorage.getItem('preResult')); 
+                // tasks = JSON.parse(localStorage.getItem('tasks'));
+                // Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
                 
                 Object.keys(tasks).forEach(questionKey => {
                     const taskGroup = tasks[questionKey].tasks;
@@ -248,6 +278,28 @@
                     btn_next.style.cursor = "pointer";
                     btn_next.disabled = false;
                     await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
+                    console.log("time array:", Tstatus.time);
+                    let latestTimestamp = Math.max(...Tstatus.time);
+                    const merged = mergeTaskArrays(tasks, separator = '@');
+                    // Filter out tasks with finish times (those containing "@")
+                    const tasksWithFinishTimes = merged.chosen.filter(task => task.includes("@"));
+                    // Map to extract finish times and task numbers
+                    const taskDetails = tasksWithFinishTimes.map(task => {
+                        const [taskNumber, finishTime] = task.split("@");
+                        return { taskNumber, finishTime: Number(finishTime) };
+                    });
+                    // Sort tasks by finishTime in descending order
+                    taskDetails.sort((a, b) => b.finishTime - a.finishTime);
+                    // Get the task with the latest finish time
+                    const latestTask = taskDetails[0];
+                    const lastTask = `${latestTask.taskNumber}@${latestTask.finishTime}`;
+                    // Update response history
+                    try {
+                        updateResponseHistory(preResponseId, lastTask, user);
+                        console.log(`Response history updated with task: ${lastTask}`);
+                    } catch (err) {
+                        console.error("Error updating response history:", err);
+                    }
                 } else {
                     btn_next.style.pointerEvents = "none"; // Disable the next button
                     btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
@@ -310,79 +362,68 @@
                             if (Tstatus) {
                                 if (Tstatus.chosen.length !== 0) {
                                     if (Tstatus.chosen.includes(String(task.taskNumber))) {
-                                        if (Tstatus.done.includes(String(task.taskNumber))) {
+                                        if (Tstatus.done.length !== 0 && Tstatus.done.includes(String(task.taskNumber))) {
                                             taskCard.style.color = 'black';
                                             taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
                                             taskName.style.textDecoration = "line-through";
                                         }
-                                    } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) === -1) {
-                                        //in case that backend does not allow fetching task status
-                                        Tstatus.chosen.push(String(task.taskNumber));
+                                    } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) !== -1) {
                                         let index = Tstatus.chosen.indexOf(String(task.taskNumber));
-                                        Tstatus.done.splice(index, 0, String(task.taskNumber));
-                                        Tstatus.time.splice(index, 0, task.finishTime);
-                                        localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
-                                    }
-                                } else {
-                                    //manually update fetched_tasks in local storage if found empty
-                                    Tstatus.chosen.push(String(task.taskNumber));
-                                    if (task.status === "Completed") {
+                                        Tstatus.done[index] = String(task.taskNumber);
+                                        Tstatus.time[index] = task.finishTime;
                                         taskCard.style.color = 'black';
                                         taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
                                         taskName.style.textDecoration = "line-through";
-                                        Tstatus.done.push(String(task.taskNumber));
-                                        Tstatus.time.push(task.finishTime);
-                                        localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                                     }
                                 }
                             }
-
+                            localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
                             taskCard.appendChild(taskName);
-                            taskCard.appendChild(infoIcon); // Add info icon to the card
+                            taskCard.appendChild(infoIcon); 
                             taskCard.appendChild(completion);
                             cardContainer.appendChild(taskCard);
                             
                             // Add event listener to task card to update status
-                            taskCard.addEventListener('click', async (event) => {
-                                
-                                completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
-                                await delay(700);
-                                
-                                // Toggle task status between "Done" and "Completed"
-                                task.status = task.status === "Done" ? "Completed" : "Done";
-                                
-                                if (task.status === "Completed") {
-                                    taskCard.style.color = 'black';
-                                    taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
-                                    taskName.style.textDecoration = "line-through";
-                                    completion.innerHTML = "Completed";
-                                    let timestamp = Date.now();
-                                    task.finishTime = timestamp;
-                                    if (Tstatus) {
-                                        Tstatus.done.push(String(task.taskNumber));
-                                        Tstatus.time.push(timestamp);
-                                    }
+                            requestAnimationFrame(() => {
+                                taskCard.addEventListener('click', async (event) => {
+                                    // Toggle task status between "Done" and "Completed"
+                                    await delay(700);
+                                    completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';  
+                                    task.status = task.status === "Done" ? "Completed" : "Done";
                                     
-                                } else {
-                                    taskCard.style.color = 'rgb(71, 71, 71)';
-                                    taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
-                                    taskName.style.textDecoration = "none";
-                                    completion.innerHTML = "Done";
-                                    task.finishTime = "";
-                                    if (Tstatus || Object.keys(Tstatus).length !== 0) {
-                                        let doneIndex = Tstatus.done.indexOf(String(task.taskNumber));
-                                        Tstatus.done.splice(doneIndex, 1);
-                                        Tstatus.time.splice(doneIndex, 1);
+                                    if (task.status === "Completed") {
+                                        taskCard.style.color = 'black';
+                                        taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
+                                        taskName.style.textDecoration = "line-through";
+                                        completion.innerHTML = task.status;
+                                        let timestamp = Date.now();
+                                        task.finishTime = timestamp;
+                                        if (Tstatus && Object.keys(Tstatus).length !== 0) {
+                                            let index = Tstatus.chosen.indexOf(String(task.taskNumber));
+                                            Tstatus.done[index] = String(task.taskNumber);
+                                            Tstatus.time[index] = task.finishTime;
+                                        }
+                                    } else {
+                                        taskCard.style.color = 'rgb(71, 71, 71)';
+                                        taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
+                                        taskName.style.textDecoration = "none";
+                                        completion.innerHTML = task.status;
+                                        task.finishTime = "";
+                                        if (Tstatus && Object.keys(Tstatus).length !== 0) {
+                                            let index = Tstatus.done.indexOf(String(task.taskNumber));
+                                            Tstatus.done[index] = "";
+                                            Tstatus.time[index] = task.finishTime;
+                                        }
                                     }
-                                }
-                                // Update task in localStorage
-                                localStorage.setItem('tasks', JSON.stringify(tasks));
-                                if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));}
-                                updateNextButton(preResponseId, userId, tasks);
-                                
-                            });              
+                                    // Update task in localStorage
+                                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                                    if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));}
+                                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
+                                    updateNextButton(preResponseId, userId, tasks);  
+                                })
+                            });          
                         }
-                    });
+                    });     
                 });
                 
                 localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -390,9 +431,7 @@
                 await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
                 updateNextButton(preResponseId, userId, tasks)
                 cardContainer.appendChild(nextButtonContainer);
-                
             }
-            
             
             document.addEventListener("DOMContentLoaded", async function() {
                 
@@ -424,7 +463,6 @@
                 
                 try {
                     showSpinner();
-                    var preResponseId =  preObject.responseId;
 
                     const user = netlifyIdentity.gotrue.currentUser();
                     if (user) {
@@ -441,6 +479,8 @@
                     const metadata = user.user_metadata;
                     const responseHistory = metadata.responseHistory;
                     const userId = user.id;
+
+                    var preResponseId =  preObject.responseId;
 
                     if (storedCycle) {
                         

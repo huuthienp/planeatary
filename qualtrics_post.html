@@ -172,24 +172,6 @@
             <script defer type="module">
                 import { initiateSurvey, fetchTaskStatus, extractTaskData } from './scripts/helpers.mjs';
 
-                const quizFrame = document.querySelector('div.content > iframe.quiz');
-                var preObject = JSON.parse(localStorage.getItem('preResult'));
-                var postObject = JSON.parse(localStorage.getItem('postResult'));
-                
-                var tasks = JSON.parse(localStorage.getItem('tasks'));
-                var selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                
-                let latest_pre = "";
-                let latest_post = "";
-                let latest_task = "";
-                
-                const fallbackMessage = document.createElement('div');
-                fallbackMessage.classList.add("empty-state");
-
-                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-                const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-                const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
-
                 async function fetchResponses(userId) {
                     try {
                         const response = await fetch('/api/fetch-responses', {
@@ -230,6 +212,34 @@
                 }
                 
                 document.addEventListener("DOMContentLoaded", async () => {
+
+                    var preObject = JSON.parse(localStorage.getItem('preResult'));
+                    var postObject = JSON.parse(localStorage.getItem('postResult'));
+                    var postResult;
+                    var post_rec;
+
+                    var tasks = JSON.parse(localStorage.getItem('tasks'));
+                    var selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+
+                    const quizFrame = document.querySelector('div.content > iframe.quiz');
+                    var preObject = JSON.parse(localStorage.getItem('preResult'));
+                    var postObject = JSON.parse(localStorage.getItem('postResult'));
+                    var postResult;
+                    var post_rec;
+
+                    var tasks = JSON.parse(localStorage.getItem('tasks'));
+                    var selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+
+                    let latest_pre = "";
+                    let latest_post = "";
+                    let latest_task = "";
+
+                    const fallbackMessage = document.createElement('div');
+                    fallbackMessage.classList.add("empty-state");
+
+                    const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+                    const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+                    const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
 
                     const netlifyIdentity = window.netlifyIdentity;
                     const user = netlifyIdentity.gotrue.currentUser();
@@ -316,7 +326,6 @@
                         if (cycleKeys.length > 0) {
                             const latestCycleKey = cycleKeys[cycleKeys.length - 1];  // Get the last cycle
                             const entry = responseHistory[latestCycleKey];
-                            
                             latest_pre = entry.preId || "";
                             latest_post = entry.postId || "";
                             latest_task = entry.lastTask || "";
@@ -328,7 +337,7 @@
 
                     //clear any existing message
                     fallbackMessage.innerHTML = "";
-                    
+
                     try { 
                         showSpinner();
                         //handle a user directly from the history page
@@ -346,108 +355,122 @@
                                     selectTasks = await fetchTaskStatus(preResponseId, userId);
                                     localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
                                     selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                                    var firstNullIndex = selectTasks.time.findIndex(function(el) {
-                                        return el == "";
-                                    });
                                     if (!selectTasks || firstNullIndex !== -1) {
                                         alert("Please finish all the chosen tasks before doing post-quiz.");
                                         quizFrame.style.display = 'none'; 
                                         document.querySelector('.btn-next').style.display = 'none';
                                         fallbackMessage.style.color = "#ff6b6b";
                                         fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
-
+                                        
+                                        quizFrame.parentElement.appendChild(fallbackMessage);
+                                        window.location.href = "challenge_page.html";
+                                        return;
+                                    }
+                                } else {
+                                    var firstNullIndex = selectTasks.time.findIndex(el => el == "");
+                                    if (firstNullIndex !== -1) {
+                                        alert("Please finish all the chosen tasks before doing post-quiz.");
+                                        quizFrame.style.display = 'none'; 
+                                        document.querySelector('.btn-next').style.display = 'none';
+                                        fallbackMessage.style.color = "#ff6b6b";
+                                        fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
                                         quizFrame.parentElement.appendChild(fallbackMessage);
                                         window.location.href = "challenge_page.html";
                                         return;
                                     }
                                 }
-
+                                
                             } catch(err) {
+                                console.log("Caugt error: ", err)
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
                                 fallbackMessage.style.color = "#ff6b6b";
-                                fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
-
+                                fallbackMessage.innerHTML = err;
+                                
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                                 window.location.href = "challenge_page.html";
                                 return;
                             }  
-                        } 
-                        
-                        if (postObject) {
-                            var postResult = postObject.result;
-                            var post_rec = postObject.recordedDate;
-                        }
-                        
-                        if (!allResponses && !preObject) {
-                            var allRes = await fetchResponses(userId);
-                            allResponses = JSON.parse(localStorage.getItem('allResponses') || null);
-                        }
-                        
-                        if (allResponses) {
-                            Object.keys(allResponses).forEach((cycleKey) => {
-                                const entry = allResponses[cycleKey];
-                                preQuiz = entry.preResponse || null;
-                                postQuiz = entry.postResponse || null;
-                            });
-                            preObject = preQuiz;
-                            postObject = postQuiz;
-                            preResponseId = preQuiz.responseId;
-                        }
-                        
-                        if (storedCycle) {
-                            try {
-
-                                preObject = storedCycle.preResponse;
-                                preResult = preObject.result;
-                                pre_rec = preObject.recordedDate;
-                                preResponseId = preObject.responseId;
-                                
-                                postObject = storedCycle.postResponse || null;
-                                postResult = postObject.result || null;
-                                post_rec = postObject.recordedDate || null;
-                                
-                            } catch(err) {
-                                console.log("Couldn't find previous info from history:", err);
+                            
+                            if (postObject) {
+                                postResult = postObject.result;
+                                post_rec = postObject.recordedDate;
                             }
-                        }
-                        
-                        const taskCheck = metadata ? checkLastTaskStatus(metadata) : { lastPre: "", lastTask: "", lastPost: "" };
+                            
+                            if (!allResponses && !preObject) {
+                                var allRes = await fetchResponses(userId);
+                                allResponses = JSON.parse(localStorage.getItem('allResponses') || null);
+                            } else if (allResponses) {
+                                const cycleKeys = Object.keys(allResponses);
+                                if (cycleKeys.length > 0) {
+                                    const entry = allResponses[cycleKey];
+                                    preQuiz = entry.preResponse || null;
+                                    postQuiz = entry.postResponse || null;
+                                    preObject = preQuiz;
+                                    postObject = postQuiz;
+                                    preResponseId = preQuiz.responseId;
+                                }
+                            }
+                            
+                            if (storedCycle) {
+                                try {
+                                    
+                                    preObject = storedCycle.preResponse;
+                                    preResult = preObject.result;
+                                    pre_rec = preObject.recordedDate;
+                                    preResponseId = preObject.responseId;
+                                    
+                                    postObject = storedCycle.postResponse || null;
+                                    postResult = postObject.result || null;
+                                    post_rec = postObject.recordedDate || null;
+                                    
+                                } catch(err) {
+                                    console.log("Couldn't find previous info from history:", err);
+                                }
+                            } 
 
-                        if (postObject) {
-                            quizFrame.style.display = 'none'; 
-                            document.querySelector('.btn-next').style.display = 'none';
-                            fallbackMessage.style.color = "#ff6b6b";
-                            //fallbackMessage.style.color = "#2ecc71";
-                            fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
-                            quizFrame.parentElement.appendChild(fallbackMessage);
-                            updateNextButton(postObject);
-
-                        } else if (taskCheck.lastPre !== "") {
-                            if (taskCheck.lastTask !== "" && taskCheck.lastPost == "") {
-                                var quizUrl = initiateSurvey('post', quizFrame);
-                            } else if (taskCheck.lastTask !== "" && taskCheck.lastPost !== "") {
-                                quizFrame.style.display = 'none'; 
-                                document.querySelector('.btn-next').style.display = 'none';
-                                fallbackMessage.style.color = "#2ecc71";
-                                //fallbackMessage.style.color = "#ff6b6b";
-                                fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
-                                quizFrame.parentElement.appendChild(fallbackMessage);
-                                updateNextButton(postObject);
-                            } else {
+                            if (postObject) {
                                 quizFrame.style.display = 'none'; 
                                 document.querySelector('.btn-next').style.display = 'none';
                                 fallbackMessage.style.color = "#ff6b6b";
-                                fallbackMessage.innerHTML = "Please finish pre-quiz and then all selected tasks before doing the post quiz";
+                                //fallbackMessage.style.color = "#2ecc71";
+                                fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
                                 quizFrame.parentElement.appendChild(fallbackMessage);
                                 updateNextButton(postObject);
+ 
+                            }  else if (!postObject || Object.keys(postObject).length === 0) {
+                                var quizUrl = initiateSurvey('post', quizFrame);
                             }
-                        } else if (!postObject || Object.keys(postObject).length === 0) {
-                            var quizUrl = initiateSurvey('post', quizFrame);
-                        } else {
-                            var quizUrl = initiateSurvey('post', quizFrame);
-                        }
                         
+                            // const taskCheck = metadata ? checkLastTaskStatus(metadata) : { lastPre: "", lastTask: "", lastPost: "" };
+                            // if (taskCheck.lastPre !== "") {
+                            //     if (taskCheck.lastTask !== "" && taskCheck.lastPost == "") {
+                            //         var quizUrl = initiateSurvey('post', quizFrame);
+                            //     } else if (taskCheck.lastTask !== "" && taskCheck.lastPost !== "") {
+                            //         quizFrame.style.display = 'none'; 
+                            //         document.querySelector('.btn-next').style.display = 'none';
+                            //         fallbackMessage.style.color = "#2ecc71";
+                            //         //fallbackMessage.style.color = "#ff6b6b";
+                            //         fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
+                            //         quizFrame.parentElement.appendChild(fallbackMessage);
+                            //         updateNextButton(postObject);
+                            //     } else {
+                            //         quizFrame.style.display = 'none'; 
+                            //         document.querySelector('.btn-next').style.display = 'none';
+                            //         fallbackMessage.style.color = "#ff6b6b";
+                            //         fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
+                            //         quizFrame.parentElement.appendChild(fallbackMessage);
+                            //         updateNextButton(postObject);
+                            //     }
+                            // } else {
+                            //     quizFrame.style.display = 'none'; 
+                            //     document.querySelector('.btn-next').style.display = 'none';
+                            //     fallbackMessage.style.color = "#ff6b6b";
+                            //     fallbackMessage.innerHTML = "Please finish pre-quiz and all selected tasks before doing the post quiz";
+                            //     quizFrame.parentElement.appendChild(fallbackMessage);
+                            //     updateNextButton(postObject);
+                            // }
+                        }  
                     } catch (err) {
                         console.error("Caught error: ", err);
                         quizFrame.style.display = 'none';
@@ -463,6 +486,23 @@
 
                 // Listen to postResult change in localStorage
                 window.addEventListener('localStorageChange', (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
+                    const user = netlifyIdentity.gotrue.currentUser();
+
+                    if (user) {
+                        user.jwt().then(token => {
+                            if (isTokenExpired(token)) {
+                                console.log("Token expired. Prompting user to re-login...");
+                                netlifyIdentity.logout();
+                                window.location.href = "index.html";
+                            } else {
+                                console.log("Token is valid.");
+                            }
+                        });
+                    }
+
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
+                    const userId = user.id;
                     const { type, detail: { key, oldValue, newValue } } = event;
                     console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
                     if (key === 'postResult' && oldValue !== newValue) {

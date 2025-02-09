@@ -226,8 +226,41 @@
             {
                 form_check = 1;
                 console.log("validate form2");
-                alert('Account information saved!');
-                window.location.href = 'https://planeatary.netlify.app/'; //redirect to homepage if form check success
+                const user = netlifyIdentity.gotrue.currentUser();
+
+                let user_full_name = document.getElementById("name").value;
+                let user_age       = document.getElementById("age").value;
+                let user_gender    = document.getElementById("gender").value;
+                let user_type      = document.getElementById("user-type").value;
+                let user_password  = document.getElementById("password").value;
+
+                if (user_password == "") {
+                    user.update({ data: { name: user_full_name, gender: user_gender, age: user_age, user_type: user_type} })
+                    .then((user) => {
+                        console.log('Updated user %s', user_full_name)
+                        alert('Account information saved!');
+                        window.location.href = 'https://planeatary.netlify.app/'; //redirect to homepage if form check success
+                    })
+                    .catch((error) => {
+                        console.log('Failed to update user: %o', error);
+                        alert('Failed to save account information!');
+                        throw error;
+                    });
+                }
+                else {
+                    user.update({ password: user_password, data: { name: user_full_name, gender: user_gender, age: user_age, user_type: user_type} })
+                    .then((user) => {
+                        console.log('Updated user %s', user_full_name)
+                        alert('Account information saved!');
+                        window.location.href = 'https://planeatary.netlify.app/'; //redirect to homepage if form check success
+                    })
+                    .catch((error) => {
+                        console.log('Failed to update user: %o', error);
+                        alert('Failed to save account information!');
+                        throw error;
+                    });
+                }
+                
             }
 
             form.classList.add('was-validated')
