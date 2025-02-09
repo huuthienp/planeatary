@@ -609,7 +609,7 @@
                         document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
                         document.querySelector("button.select-tasks > a").href = 'index.html';
                         
-                    } else if (Object.keys(preResult).length !== 0 && Object.keys(postResult).length !== 0) {
+                    } else if (Object.keys(preResult).length !== 0 && Object.keys(postResult).length === 0) {
                         
                         // Show next step, suggestion, and select-tasks button as default
                         const toshow = [
@@ -634,6 +634,8 @@
                         document.getElementById('preQ').style.backgroundColor = '#02897A';   
                         document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
                         document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
+                        document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';
+                        document.querySelector("button.select-tasks > a").href = 'manifesto_page.html';
                         document.getElementById('postQ').disabled = true; 
                         
                     }
@@ -662,12 +664,16 @@
                         document.querySelector('div.m-content').parentElement.appendChild(fallbackMessage);
                     
                 } finally {
+
                     hideSpinner();
+                    //display preresult by default
+
+                    if (preObject) {displayQuestions(preObject, 'PRE')}
                 }
                 
                 document.getElementById('preQ').addEventListener('click', function() {
                     
-                    if (Object.keys(preResult).legnth !== 0 && Object.keys(postResult).length !== 0) {
+                    if (Object.keys(preResult).legnth !== 0 && Object.keys(postResult).length === 0) {
                         const toshow = [
                         'p.next-step',
                         'p.suggestion',
@@ -682,6 +688,7 @@
                         );
                         
                         document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';
+                        document.querySelector("button.select-tasks > a").href = 'manifesto_page.html';
                         
                     } else {
                         const toshow = [
@@ -696,6 +703,7 @@
                         );
                         
                         document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
+                        document.querySelector("button.select-tasks > a").href = 'index.html';
                     }
                     
                     displayQuestions(preObject, 'PRE');
@@ -735,6 +743,7 @@
                         );
                         
                         document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
+                        document.querySelector("button.select-tasks > a").href = 'index.html';
                         
                         
                         displayQuestions(postObject, 'POST');
