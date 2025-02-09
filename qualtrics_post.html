@@ -367,7 +367,7 @@
                                         return;
                                     }
                                 } else {
-                                    var firstNullIndex = selectTasks.time.findIndex(el => e == "");
+                                    var firstNullIndex = selectTasks.time.findIndex(el => el == "");
                                     if (firstNullIndex !== -1) {
                                         alert("Please finish all the chosen tasks before doing post-quiz.");
                                         quizFrame.style.display = 'none'; 
