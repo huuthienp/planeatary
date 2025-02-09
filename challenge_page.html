@@ -193,10 +193,6 @@
             function delay(ms) {
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
-            
-        </script>
-        <script type="module">
-            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
 
             const offcanvasNavbar = document.getElementById('offcanvasNavbar');
             const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
@@ -224,43 +220,57 @@
                     hideSpinner();
                 }
             });
+            
+        </script>
+        <script type="module">
+            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
 
             //hard-code updating responseHistory (incompleted)
-            function updateResponseHistory(preResponseId, lastTask, user) {
-                let index = -1;
-                const responseHistory = user.user_metadata.responseHistory || [];
-                //Recheck if a user has completed at least one pre-quiz before
-                if (responseHistory.length !== 0) {
-                    Object.keys(responseHistory).forEach((cycleKey) => {
-                        if (responseHistory[cycleKey].preId === preResponseId) {
-                            index = cycleKey;
-                        } else {
-                            index = -1;
-                        }
-                    })
-                } else {
-                    index = -1;
+            async function updateResponseHistory(preResponseId, lastTask) {
+                const user = netlifyIdentity.gotrue.currentUser();
+                if (!user) {
+                    console.error("No user is logged in!");
+                    return;
                 }
-                if (index == -1) {
-                    responseHistory = [...responseHistory, {lastTask: lastTask}];
-                    user.update({
-                        user_metadata: {
-                            responseHistory: responseHistory  
-                        }
-                    }).then((updatedUser) => {
-                        console.log("User metadata updated:", updatedUser);
-                    }).catch((error) => {
-                        console.error("Error updating user metadata:", error);
+                
+                const token = await user.jwt();
+                if (isTokenExpired(token)) {
+                    console.log("Token expired. Prompting user to re-login...");
+                    netlifyIdentity.logout();
+                    return;
+                }
+                
+                console.log("Token is valid.");
+                let responseHistory = user.user_metadata.responseHistory || [];
+                let index = responseHistory.findIndex(cycle => cycle.preId === preResponseId);
+                
+                if (index === -1) {
+                    // New preResponseId, add it
+                    responseHistory.push({ lastTask: lastTask, preId: preResponseId });
+                } else if (!responseHistory[index].lastTask) {
+                    // Update existing entry with lastTask if it's missing
+                    responseHistory[index].lastTask = lastTask;
+                }
+
+                try {
+                    // Update user metadata
+                    const updatedUser = await user.update({
+                        user_metadata: { responseHistory }
                     });
+                    
+                    console.log("User metadata updated:", updatedUser);
+                    
+                    // Reload and sync with localStorage
+                    const reloadedUser = await netlifyIdentity.gotrue.currentUser().reload();
+                    localStorage.setItem('gotrue.user', JSON.stringify(reloadedUser));
+                } catch (error) {
+                    console.error("Error updating user metadata:", error);
                 }
             }
-            
+                
             //Function to update the Next button's state
-            async function updateNextButton(preResponseId, userId, tasks) {
+            async function updateNextButton(preResponseId, userId, tasks, Tstatus) {
                 let allCompleted = true;
-                // preObject = JSON.parse(localStorage.getItem('preResult')); 
-                // tasks = JSON.parse(localStorage.getItem('tasks'));
-                // Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
                 
                 Object.keys(tasks).forEach(questionKey => {
                     const taskGroup = tasks[questionKey].tasks;
@@ -296,7 +306,7 @@
                     const lastTask = `${latestTask.taskNumber}@${latestTask.finishTime}`;
                     // Update response history
                     try {
-                        updateResponseHistory(preResponseId, lastTask, user);
+                        await updateResponseHistory(preResponseId, lastTask);
                         console.log(`Response history updated with task: ${lastTask}`);
                     } catch (err) {
                         console.error("Error updating response history:", err);
@@ -418,9 +428,9 @@
                                     }
                                     // Update task in localStorage
                                     localStorage.setItem('tasks', JSON.stringify(tasks));
-                                    if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));}
+                                    if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus))}
                                     await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
-                                    updateNextButton(preResponseId, userId, tasks);  
+                                    updateNextButton(preResponseId, userId, tasks, Tstatus);  
                                 })
                             });          
                         }
@@ -428,9 +438,9 @@
                 });
                 
                 localStorage.setItem('tasks', JSON.stringify(tasks));
-                if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));} 
+                if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus))} 
                 await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
-                updateNextButton(preResponseId, userId, tasks)
+                updateNextButton(preResponseId, userId, tasks, Tstatus);
                 cardContainer.appendChild(nextButtonContainer);
             }
             
