@@ -309,12 +309,12 @@
             
             offcanvasLinks.forEach(li => {
                 li.addEventListener('click', event => {
-                    const targetHref = link.getAttribute('href');
+                    const targetHref = li.getAttribute('href');
                     
                     const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                     offcanvas.hide();
                     
-                    if (targetHref && targetHref !== '#') {
+                    if (targetHref) {
                         window.location.href = targetHref; 
                     }
                 });
@@ -361,7 +361,7 @@
             
             let task_counts = 0;
             let tasks = JSON.parse(localStorage.getItem('tasks')); 
-            let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+            let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks')) || { chosen: [], time: [] };
             let task_rec; 
             
             // Function to update the start button state based on selected tasks
@@ -452,7 +452,9 @@
                             taskList.appendChild(taskItem);
                             
                             // Set task choice and status based on local storage and finish time of fetched_tasks
-                            if (fetched_tasks) {
+                            if (!fetched_tasks || !fetched_tasks.chosen) {
+                                fetched_tasks = { chosen: [], time: [] }; 
+                            } else if (fetched_tasks) {
                                 if (fetched_tasks.chosen && fetched_tasks.done) {
                                     if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
                                         task.choice = 'chosen';
@@ -475,7 +477,9 @@
                             // Update task count and localStorage on checkbox change
                             checkbox.addEventListener('change', function() {
                                 let index = -1
-                                if (fetched_tasks.chosen) {
+                                if (!fetched_tasks || !fetched_tasks.chosen) {
+                                    fetched_tasks = { chosen: [], time: [] }; // Ensure it is properly initialized
+                                } else if (fetched_tasks.chosen) {
                                     index = fetched_tasks.chosen.findIndex(el => el == String(task.taskNumber));
                                 }
                                 if (!checkbox.disabled) {
