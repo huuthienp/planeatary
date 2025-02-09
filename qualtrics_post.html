@@ -393,14 +393,19 @@
                                 var allRes = await fetchResponses(userId);
                                 allResponses = JSON.parse(localStorage.getItem('allResponses') || null);
                             } else if (allResponses) {
-                                const cycleKeys = Object.keys(allResponses);
+                                const cycleKeys = Object.keys(allResponses); 
                                 if (cycleKeys.length > 0) {
-                                    const entry = allResponses[cycleKeys];
+                                    const lastKey = cycleKeys[cycleKeys.length - 1]; 
+                                    const entry = allResponses[lastKey] || {}; 
+                                    
+                                    // Access preQuiz and postQuiz safely
                                     preQuiz = entry.preResponse || null;
                                     postQuiz = entry.postResponse || null;
-                                    preObject = preQuiz;
                                     postObject = postQuiz;
-                                    preResponseId = preQuiz.responseId;
+                                    preObject = preQuiz;
+                                    preResponseId = preQuiz && preQuiz.responseId ? preQuiz.responseId : null;
+                                    
+                                    console.log('Last entry:', entry);
                                 }
                             }
                             

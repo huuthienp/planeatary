@@ -227,8 +227,21 @@
 
             //hard-code updating responseHistory (incompleted)
             function updateResponseHistory(preResponseId, lastTask, user) {
+                const user = netlifyIdentity.gotrue.currentUser();
+                if (user) {
+                    user.jwt().then(token => {
+                        if (isTokenExpired(token)) {
+                            console.log("Token expired. Prompting user to re-login...");
+                            netlifyIdentity.logout();
+                        } else {
+                            console.log("Token is valid.");
+                        }
+                    });
+                }
+                
+                const metadata = user.user_metadata;
+                const responseHistory = metadata.responseHistory;
                 let index = -1;
-                const responseHistory = user.user_metadata.responseHistory || [];
                 //Recheck if a user has completed at least one pre-quiz before
                 if (responseHistory.length !== 0) {
                     Object.keys(responseHistory).forEach((cycleKey) => {
