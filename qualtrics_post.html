@@ -215,20 +215,13 @@
 
                     var preObject = JSON.parse(localStorage.getItem('preResult'));
                     var postObject = JSON.parse(localStorage.getItem('postResult'));
-                    var postResult;
-                    var post_rec;
+                    var postResult = postObject && postObject.result ? postObject.result : null;
+                    var post_rec = postObject && postObject.recordedDate ? postObject.recordedDate : null;
 
                     var tasks = JSON.parse(localStorage.getItem('tasks'));
                     var selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
 
                     const quizFrame = document.querySelector('div.content > iframe.quiz');
-                    var preObject = JSON.parse(localStorage.getItem('preResult'));
-                    var postObject = JSON.parse(localStorage.getItem('postResult'));
-                    var postResult;
-                    var post_rec;
-
-                    var tasks = JSON.parse(localStorage.getItem('tasks'));
-                    var selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
 
                     let latest_pre = "";
                     let latest_post = "";
@@ -367,7 +360,7 @@
                                         return;
                                     }
                                 } else {
-                                    var firstNullIndex = selectTasks.time.findIndex(el => el == "");
+                                    var firstNullIndex = selectTasks && selectTasks.time.length !== 0 ? selectTasks.time.findIndex(el => el == "") : 0;
                                     if (firstNullIndex !== -1) {
                                         alert("Please finish all the chosen tasks before doing post-quiz.");
                                         quizFrame.style.display = 'none'; 
@@ -416,13 +409,12 @@
                                 try {
                                     
                                     preObject = storedCycle.preResponse;
-                                    preResult = preObject.result;
-                                    pre_rec = preObject.recordedDate;
-                                    preResponseId = preObject.responseId;
+                                    preResult = preObject && preObject.result ? preObject.result : null;
+                                    preResponseId = preObject && preObject.responseId ? preObject.responseId : null;
                                     
-                                    postObject = storedCycle.postResponse || null;
-                                    postResult = postObject.result || null;
-                                    post_rec = postObject.recordedDate || null;
+                                    postObject = storedCycle && storedCycle.postResponse ? storedCycle.postResponse : null;
+                                    postResult = postObject && postObject.result ? postObject.result : null;
+                                    postResponseId = postObject && postObject.responseId ? postObject.responseId : null;
                                     
                                 } catch(err) {
                                     console.log("Couldn't find previous info from history:", err);

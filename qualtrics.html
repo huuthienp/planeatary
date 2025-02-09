@@ -294,11 +294,11 @@
                     if (storedCycle) {
                         try {            
                             preObject = storedCycle.preResponse;
-                            preResult = preObject.result;
-                            preResponseId = preObject.responseId;
-                            postObject = storedCycle.postResponse || null;
-                            postResult = postObject.result || null;
-                            postResponseId = postObject.responseId || null;
+                            preResult = preObject && preObject.result ? preObject.result : null;
+                            preResponseId = preObject && preObject.responseId ? preObject.responseId : null;
+                            postObject = storedCycle && storedCycle.postResponse ? storedCycle.postResponse : null;
+                            postResult = postObject && postObject.result ? postObject.result : null;
+                            postResponseId = postObject && postObject.responseId ? postObject.responseId : null;
                             
                         } catch(err) {
                             console.warn("Couldn't find previous info from history:", err);
