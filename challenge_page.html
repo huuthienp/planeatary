@@ -273,6 +273,7 @@
                 
                 // Enable or disable the next button based on task completion status
                 if (allCompleted) {
+                    var separator = '@';
                     btn_next.style.pointerEvents = "auto"; // Enable the next button
                     btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
                     btn_next.style.cursor = "pointer";
@@ -280,7 +281,7 @@
                     await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
                     console.log("time array:", Tstatus.time);
                     let latestTimestamp = Math.max(...Tstatus.time);
-                    const merged = mergeTaskArrays(tasks, separator = '@');
+                    const merged = mergeTaskArrays(tasks, separator);
                     // Filter out tasks with finish times (those containing "@")
                     const tasksWithFinishTimes = merged.chosen.filter(task => task.includes("@"));
                     // Map to extract finish times and task numbers

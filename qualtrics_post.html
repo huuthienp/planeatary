@@ -307,21 +307,20 @@
                     setInterval(updateNextButton, 1000);
                     
                     function checkLastTaskStatus(metadata) {
-                        var responseHistory = metadata.responseHistory;
+                        var responseHistory = metadata && metadata.responseHistory ? metadata.responseHistory : null;
                         //handle first-time user
-                        if (!metadata || !metadata.responseHistory) {
+                        if (!metadata || !responseHistory) {
                             console.warn("No responseHistory found for this user.");
                             return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
-                        }
-                        
-                        //handle a user navigating directly from home page
-                        const cycleKeys = Object.keys(responseHistory);
-                        if (cycleKeys.length > 0) {
-                            const latestCycleKey = cycleKeys[cycleKeys.length - 1];  // Get the last cycle
-                            const entry = responseHistory[latestCycleKey];
-                            latest_pre = entry.preId || "";
-                            latest_post = entry.postId || "";
-                            latest_task = entry.lastTask || "";
+                        } else {
+                            const cycleKeys = Object.keys(responseHistory);
+                            if (cycleKeys.length > 0) {
+                                const latestCycleKey = cycleKeys[cycleKeys.length - 1];  // Get the last cycle
+                                const entry = responseHistory[latestCycleKey];
+                                latest_pre = entry.preId || "";
+                                latest_post = entry.postId || "";
+                                latest_task = entry.lastTask || "";
+                            }
                         }
 
                         const cycle = {lastPre: latest_pre, lastPost: latest_post, lastTask: latest_task};
@@ -411,7 +410,7 @@
                                     preObject = storedCycle.preResponse;
                                     preResult = preObject && preObject.result ? preObject.result : null;
                                     preResponseId = preObject && preObject.responseId ? preObject.responseId : null;
-                                    
+
                                     postObject = storedCycle && storedCycle.postResponse ? storedCycle.postResponse : null;
                                     postResult = postObject && postObject.result ? postObject.result : null;
                                     postResponseId = postObject && postObject.responseId ? postObject.responseId : null;
