@@ -362,15 +362,18 @@
                             if (Tstatus) {
                                 if (Tstatus.chosen.length !== 0) {
                                     if (Tstatus.chosen.includes(String(task.taskNumber))) {
-                                        if (Tstatus.done.includes(String(task.taskNumber))) {
+                                        if (Tstatus.done.length !== 0 && Tstatus.done.includes(String(task.taskNumber))) {
                                             taskCard.style.color = 'black';
                                             taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
                                             taskName.style.textDecoration = "line-through";
                                         }
-                                    } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) === -1) {
+                                    } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) !== -1) {
                                         let index = Tstatus.chosen.indexOf(String(task.taskNumber));
-                                        Tstatus.done.splice(index, 0, String(task.taskNumber));
-                                        Tstatus.time.splice(index, 0, task.finishTime);
+                                        Tstatus.done[index] = String(task.taskNumber);
+                                        Tstatus.time[index] = task.finishTime;
+                                        taskCard.style.color = 'black';
+                                        taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
+                                        taskName.style.textDecoration = "line-through";
                                     }
                                 }
                             }
