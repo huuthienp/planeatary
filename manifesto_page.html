@@ -341,24 +341,6 @@
             let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
             let task_rec; 
             
-            const user = netlifyIdentity.gotrue.currentUser();
-            
-            if (user) {
-                user.jwt().then(token => {
-                    if (isTokenExpired(token)) {
-                        console.log("Token expired. Prompting user to re-login...");
-                        netlifyIdentity.logout();
-                        window.location.href = "index.html";
-                    } else {
-                        console.log("Token is valid.");
-                    }
-                });
-            }
-            
-            const metadata = user.user_metadata;
-            const responseHistory = metadata.responseHistory;
-            const userId = user.id;
-            
             // Function to update the start button state based on selected tasks
             async function updateStartButton() {
                 const startButton = document.querySelector(".start");
@@ -469,7 +451,7 @@
                             
                             // Update task count and localStorage on checkbox change
                             checkbox.addEventListener('change', function() {
-                                let index = Tstatus.chosen.findIndex(el => el == String(task.taskNumber));
+                                let index = fetched_tasks.chosen.findIndex(el => el == String(task.taskNumber));
                                 if (!checkbox.disabled) {
                                     if (checkbox.checked) {
                                         task.choice = "chosen";
@@ -559,6 +541,23 @@
             try {
                 
                 showSpinner();
+                const user = netlifyIdentity.gotrue.currentUser();
+                
+                if (user) {
+                    user.jwt().then(token => {
+                        if (isTokenExpired(token)) {
+                            console.log("Token expired. Prompting user to re-login...");
+                            netlifyIdentity.logout();
+                            window.location.href = "index.html";
+                        } else {
+                            console.log("Token is valid.");
+                        }
+                    });
+                }
+                
+                const metadata = user.user_metadata;
+                const responseHistory = metadata.responseHistory;
+                const userId = user.id;
                 var preObject = JSON.parse(localStorage.getItem('preResult')); 
                 var preResult;
                 var preResponseId;
