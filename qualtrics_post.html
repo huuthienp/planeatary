@@ -403,7 +403,7 @@
                             } else if (allResponses) {
                                 const cycleKeys = Object.keys(allResponses);
                                 if (cycleKeys.length > 0) {
-                                    const entry = allResponses[cycleKey];
+                                    const entry = allResponses[cycleKeys];
                                     preQuiz = entry.preResponse || null;
                                     postQuiz = entry.postResponse || null;
                                     preObject = preQuiz;
