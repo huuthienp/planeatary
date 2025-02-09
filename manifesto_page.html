@@ -353,6 +353,7 @@
             const metadata = user.user_metadata;
             const responseHistory = metadata.responseHistory;
             const userId = user.id;
+            console.log("your user id is ", userId);
             var preObject = JSON.parse(localStorage.getItem('preResult')); 
             var preResult = preObject.result || null;
             var preResponseId = preObject.responseId || null;
@@ -361,7 +362,7 @@
             
             let task_counts = 0;
             let tasks = JSON.parse(localStorage.getItem('tasks')); 
-            let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks')) || { chosen: [], time: [] };
+            let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks')) || { chosen: [], done: [], time: [] };
             let task_rec; 
             
             // Function to update the start button state based on selected tasks
@@ -626,19 +627,19 @@
                         localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
                         fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
                     } catch(err) {
-                        console.log("Couldn't find previous tasks' info:", err);
+                        console.log("Found error: ", err);
                     }
                     
                 } else {
-                    if (!fetched_tasks.done || !fetched_tasks.chosen) {
-                        try {
-                            fetched_tasks = await fetchTaskStatus(preResponseId, userId); 
-                            localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
-                            fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                        } catch(err) {
-                            console.log("Couldn't find previous tasks' info:", err);
-                        }
-                    }
+                    // if (!fetched_tasks.done || !fetched_tasks.chosen) {
+                    //     try {
+                    //         fetched_tasks = await fetchTaskStatus(preResponseId, userId); 
+                    //         localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
+                    //         fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    //     } catch(err) {
+                    //         console.log("Found error: ", err);
+                    //     }
+                    // }
                 }
                 if (storedCycle) {
                     
