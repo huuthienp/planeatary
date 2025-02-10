@@ -253,20 +253,32 @@
                     // Update existing entry with lastTask if it's missing
                     responseHistory[index].lastTask = lastTask;
                 } else {
-
+                    
                 }
                 console.log("Updated responseHistory to save:", responseHistory);
-                user.update({
-                    user_metadata: { responseHistory: responseHistory },
-                }).then(async (updatedUser) => {
-                    console.log("User metadata updated:", updatedUser.user_metadata);
-                    // Fetch the latest user object instead of using reload()
-                    const updatedUserDetails = netlifyIdentity.gotrue.currentUser();
-                    localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
-                    console.log("Updated user saved to localStorage:", updatedUserDetails);
-                }).catch((error) => {
+                try {
+                    // Update user metadata
+                    const updatedUser = await user.update({
+                        user_metadata: { responseHistory: responseHistory },
+                    });
+                    
+                    console.log("User metadata successfully updated:", updatedUser.user_metadata);
+                    // Wait for 3 seconds
+                    await new Promise(resolve => setTimeout(resolve, 3000)); 
+                    // Fetch and save the latest user object to localStorage
+                    const updatedUserDetails = await netlifyIdentity.gotrue.currentUser();
+                    console.log("Fetched updated user:", updatedUserDetails.user_metadata);
+                    
+                    // Verify the updated responseHistory
+                    if (updatedUserDetails.user_metadata.responseHistory) {
+                        localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
+                        console.log("Updated user saved to localStorage:", updatedUserDetails);
+                    } else {
+                        console.warn("Updated responseHistory not found in the user object.");
+                    }
+                } catch (error) {
                     console.error("Error updating user metadata:", error);
-                });
+                }
             }
                 
             //Function to update the Next button's state
