@@ -349,62 +349,39 @@
                         var allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                         let postQuiz = null;
                         let preQuiz = null;
-                        
-                        if(preObject) {
-                            var preResult = preObject?.result ?? null;
-                            var pre_rec = preObject?.recordedDate ?? null;
-                            var preResponseId = preObject?.responseId ?? null;
+
+                        if (storedCycle) {
                             try {
-                                if (!selectTasks) {
-                                    selectTasks = await fetchTaskStatus(preResponseId, userId);
-                                    localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
-                                    selectTasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
-                                    if (!selectTasks || firstNullIndex !== -1) {
-                                        alert("Please finish all the chosen tasks before doing post-quiz.");
-                                        quizFrame.style.display = 'none'; 
-                                        document.querySelector('.btn-next').style.display = 'none';
-                                        fallbackMessage.style.color = "#ff6b6b";
-                                        fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
-                                        
-                                        quizFrame.parentElement.appendChild(fallbackMessage);
-                                        window.location.href = "challenge_page.html";
-                                        return;
-                                    }
-                                } else {
-                                    var firstNullIndex = selectTasks?.time?.length !== 0 ? selectTasks?.time?.findIndex(el => el == "") : 0;
-                                    if (firstNullIndex !== -1) {
-                                        alert("Please finish all the chosen tasks before doing post-quiz.");
-                                        quizFrame.style.display = 'none'; 
-                                        document.querySelector('.btn-next').style.display = 'none';
-                                        fallbackMessage.style.color = "#ff6b6b";
-                                        fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
-                                        quizFrame.parentElement.appendChild(fallbackMessage);
-                                        window.location.href = "challenge_page.html";
-                                        return;
-                                    }
-                                }
+                                
+                                preObject = storedCycle?.preResponse ?? null;
+                                preResult = preObject?.result ?? null;
+                                preResponseId =preObject?.responseId ?? null;
+                                
+                                postObject = storedCycle?.postResponse ?? null;
+                                postResult = postObject?.result ?? null;
+                                postResponseId = postObject?.responseId ?? null;
                                 
                             } catch(err) {
-                                console.log("Caugt error: ", err)
-                                quizFrame.style.display = 'none'; 
-                                document.querySelector('.btn-next').style.display = 'none';
-                                fallbackMessage.style.color = "#ff6b6b";
-                                fallbackMessage.innerHTML = err;
-                                
-                                quizFrame.parentElement.appendChild(fallbackMessage);
-                                window.location.href = "challenge_page.html";
-                                return;
-                            }  
-                            
-                            if (postObject) {
-                                postResult = postObject?.result ?? null;
-                                post_rec = postObject?.recordedDate ?? null;
+                                console.log("Couldn't find previous info from history:", err);
                             }
-                            
-                            if (!allResponses && !preObject) {
+                        } else if (allResponses) {
+                                const cycleKeys = Object.keys(allResponses); 
+                                if (cycleKeys.length > 0) {
+                                    const lastKey = cycleKeys[cycleKeys.length - 1]; 
+                                    const entry = allResponses?.[lastKey] ?? {}; 
+                                    
+                                    // Access preQuiz and postQuiz safely
+                                    preQuiz = entry?.preResponse ?? null;
+                                    postQuiz = entry?.postResponse ?? null;
+                                    postObject = postQuiz;
+                                    preObject = preQuiz;
+                                    preResponseId = preQuiz?.responseId ?? null;
+                                    
+                                    console.log('Last entry:', entry);
+                                }
+                            } else {
                                 var allRes = await fetchResponses(userId);
                                 allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
-                            } else if (allResponses) {
                                 const cycleKeys = Object.keys(allResponses); 
                                 if (cycleKeys.length > 0) {
                                     const lastKey = cycleKeys[cycleKeys.length - 1]; 
@@ -421,72 +398,60 @@
                                 }
                             }
                             
-                            if (storedCycle) {
-                                try {
-                                    
-                                    preObject = storedCycle?.preResponse ?? null;
-                                    preResult = preObject?.result ?? null;
-                                    preResponseId =preObject?.responseId ?? null;
-
-                                    postObject = storedCycle?.postResponse ?? null;
+                            if(preObject) {
+                                var preResult = preObject?.result ?? null;
+                                var pre_rec = preObject?.recordedDate ?? null;
+                                var preResponseId = preObject?.responseId ?? null;
+                                if (postObject) {
                                     postResult = postObject?.result ?? null;
-                                    postResponseId = postObject?.responseId ?? null;
-                                    
-                                } catch(err) {
-                                    console.log("Couldn't find previous info from history:", err);
-                                }
-                            } 
-
-                            if (postObject) {
-                                quizFrame.style.display = 'none'; 
-                                document.querySelector('.btn-next').style.display = 'none';
-                                fallbackMessage.style.color = "#ff6b6b";
-                                //fallbackMessage.style.color = "#2ecc71";
-                                fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
-                                quizFrame.parentElement.appendChild(fallbackMessage);
-                                updateNextButton(postObject);
- 
-                            }  else if (!postObject || Object.keys(postObject).length === 0) {
+                                    post_rec = postObject?.recordedDate ?? null;
+                                    quizFrame.style.display = 'none'; 
+                                    fallbackMessage.innerHTML = "<div class='void'>Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over. Or click next to see the result!</div>";
+                                    quizFrame.parentElement.appendChild(fallbackMessage);
+                                    updateNextButton(postObject);
+                                } else if (!postObject || Object.keys(postObject).length === 0) {
+                                    try {
+                                        if (!selectTasks) {
+                                            selectTasks = await fetchTaskStatus(preResponseId, userId);
+                                            localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
+                                            selectTasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                                        } else {
+                                            var firstNullIndex = selectTasks?.time?.length !== 0 ? selectTasks?.time?.findIndex(el => el == "") : 0;
+                                            if (firstNullIndex !== -1) {
+                                                alert("Please finish all the chosen tasks before doing post-quiz.");
+                                                quizFrame.style.display = 'none'; 
+                                                document.querySelector('.btn-next').style.display = 'none';
+                                                fallbackMessage.innerHTML = "<div class='empty-state'>Please finish all selected tasks before doing the post quiz.</div>";
+                                                quizFrame.parentElement.appendChild(fallbackMessage);
+                                                window.location.href = "challenge_page.html";
+                                                return;
+                                            } else {
+                                                var quizUrl = initiateSurvey('post', quizFrame);
+                                            }
+                                        }
+                                    } catch(err) {
+                                        console.log("Caugt error: ", err)
+                                        quizFrame.style.display = 'none'; 
+                                        document.querySelector('.btn-next').style.display = 'none';
+                                        fallbackMessage.style.color = "#ff6b6b";
+                                        fallbackMessage.innerHTML = err;
+                                        
+                                        quizFrame.parentElement.appendChild(fallbackMessage);
+                                        window.location.href = "challenge_page.html";
+                                        return;
+                                    }  
+                                } 
+                            } else {
+                                //unsure about this logic
                                 var quizUrl = initiateSurvey('post', quizFrame);
-                            }
-                        
-                            // const taskCheck = metadata ? checkLastTaskStatus(metadata) : { lastPre: "", lastTask: "", lastPost: "" };
-                            // if (taskCheck.lastPre !== "") {
-                            //     if (taskCheck.lastTask !== "" && taskCheck.lastPost == "") {
-                            //         var quizUrl = initiateSurvey('post', quizFrame);
-                            //     } else if (taskCheck.lastTask !== "" && taskCheck.lastPost !== "") {
-                            //         quizFrame.style.display = 'none'; 
-                            //         document.querySelector('.btn-next').style.display = 'none';
-                            //         fallbackMessage.style.color = "#2ecc71";
-                            //         //fallbackMessage.style.color = "#ff6b6b";
-                            //         fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
-                            //         quizFrame.parentElement.appendChild(fallbackMessage);
-                            //         updateNextButton(postObject);
-                            //     } else {
-                            //         quizFrame.style.display = 'none'; 
-                            //         document.querySelector('.btn-next').style.display = 'none';
-                            //         fallbackMessage.style.color = "#ff6b6b";
-                            //         fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
-                            //         quizFrame.parentElement.appendChild(fallbackMessage);
-                            //         updateNextButton(postObject);
-                            //     }
-                            // } else {
-                            //     quizFrame.style.display = 'none'; 
-                            //     document.querySelector('.btn-next').style.display = 'none';
-                            //     fallbackMessage.style.color = "#ff6b6b";
-                            //     fallbackMessage.innerHTML = "Please finish pre-quiz and all selected tasks before doing the post quiz";
-                            //     quizFrame.parentElement.appendChild(fallbackMessage);
-                            //     updateNextButton(postObject);
-                            // }
-                        }  
-                    } catch (err) {
-                        console.error("Caught error: ", err);
-                        quizFrame.style.display = 'none';
-                        document.querySelector('.btn-next').style.display = 'none';
-                        fallbackMessage.innerHTML = "Content cannot be displayed. Please try again later.";
-                        fallbackMessage.style.color = "#ff6b6b";
-                        nextButton.style.display = "none";
-                        quizFrame.parentElement.appendChild(fallbackMessage);
+                            } 
+                        } catch (err) {
+                            console.error("Caught error: ", err);
+                            quizFrame.style.display = 'none';
+                            document.querySelector('.btn-next').style.display = 'none';
+                            fallbackMessage.innerHTML = "<div class='empty-state'>Content cannot be displayed. Please try again later.</div>";
+                            nextButton.style.display = "none";
+                            quizFrame.parentElement.appendChild(fallbackMessage);
                     } finally {
                         hideSpinner();
                     } 
@@ -518,8 +483,7 @@
                         try {
                             JSON.parse(newValue || undefined);  // force null -> undefined to throw error
                             quizFrame.style.display = 'none';
-                            fallbackMessage.innerHTML = 'Thank you for your response!';
-                            fallbackMessage.style.color = "#2ecc71";
+                            fallbackMessage.innerHTML = '<div class="void">Thank you for your response!</div>';
                             quizFrame.parentElement.appendChild(fallbackMessage);
                             await updateResponseHistory(postObject, user);
                             updateNextButton(postObject);

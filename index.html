@@ -37,7 +37,7 @@
                                     <a class="nav-link active" aria-current="page" data-bs-dismiss="offcanvas" href="index.html">Home</a>
                                 </li>
                                 <li class="nav-item dropdown home-hide">
-                                    <a class="nav-link except dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
@@ -46,7 +46,7 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item home-hide">
-                                    <a class="nav-link  first-timer" aria-disabled="false" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link first-timer" aria-disabled="false" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item home-hide">
                                     <a class="nav-link first-timer" aria-disabled="false" data-bs-dismiss="offcanvas" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -472,6 +472,7 @@
     </div>
 </div>
 
+<!-- Error Warning Toast -->
 <div class="toast-container position-absolute top-0 end-0 p-3" aria-live="polite" aria-atomic="true">
     <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
         <div class="toast-header">
@@ -480,6 +481,16 @@
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body" id="e-toast"></div>
+    </div>
+</div>
+
+<!-- Warning Toast -->
+<div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+        <div class="toast-body">
+            Please finish your very first quiz before further proceeding.
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
 </div>
 
@@ -545,6 +556,13 @@
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
         const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
 
+        //For first-timer to see a reminder to do a very first quiz
+        function showToast() {
+            const toasty = document.getElementById('first-timer-toast');
+            const myToast = new bootstrap.Toast(toasty);
+            myToast.show();
+        }
+
         offcanvasLinks.forEach(li => {
             li.addEventListener('click', event => {
                 const targetHref = li.getAttribute('href');
@@ -552,11 +570,18 @@
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                 offcanvas.hide();
                 
-                if (targetHref) {
+                if (targetHref && targetHref !== "#") {
                     window.location.href = targetHref; 
+                } else {
+                    if (li.classList.contains('disabled')) {
+                        event.preventDefault(); 
+                        showToast();
+                        return;
+                    }
                 }
             });
         });
+
 
         offcanvasDropdown.forEach(li => {
             li.addEventListener('click', event => {
@@ -564,8 +589,14 @@
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                 offcanvas.hide();
                 
-                if (targetHref) {
+                if (targetHref && targetHref !== "#") {
                     window.location.href = targetHref; 
+                } else {
+                    if (li.classList.contains('disabled')) {
+                        event.preventDefault(); 
+                        showToast();
+                        return;
+                    }
                 }
             });
         });
@@ -574,7 +605,7 @@
             document.querySelectorAll("a.first-timer").forEach(a => {
                 a.classList.add('Disabled');
                 a.setAttribute("href", "#");
-                a.setAttribute("data-bs-toggle", "tooltip");
+                a.setAttribute("data-bs-toggle", "tooltips");
                 a.setAttribute("data-bs-placement", "bottom");
                 a.setAttribute("title", "Complete the pre-quiz first.");
                 console.log("Disabling tabs");
@@ -855,7 +886,7 @@
                     // Delay navigation slightly
                     setTimeout(() => {
                         //Needs confirmation from Linh about the flow here
-                        window.location.href = "account manage.html";
+                        window.location.href = "index.html";
                     }, 500);
                 }
                 
