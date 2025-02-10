@@ -242,6 +242,8 @@
                 
                 console.log("Token is valid.");
                 let responseHistory = user.user_metadata.responseHistory || [];
+                console.log("Current responseHistory:", responseHistory);
+                console.log("lastTask:", lastTask, "preResponseId:", preResponseId);
                 let index = responseHistory.findIndex(cycle => cycle.preId === preResponseId);
                 
                 if (index === -1) {
@@ -251,11 +253,11 @@
                     // Update existing entry with lastTask if it's missing
                     responseHistory[index].lastTask = lastTask;
                 }
-
+                console.log("Updated responseHistory to save:", responseHistory);
                 user.update({
                     user_metadata: { responseHistory: responseHistory,},
                 }).then((updatedUser) => {
-                    console.log("User metadata updated:", updatedUser);
+                    console.log("User metadata updated:", updatedUser.user_metadata);
                     // Fetch the latest user object instead of using reload()
                     netlifyIdentity.gotrue.currentUser()
                     .jwt()
