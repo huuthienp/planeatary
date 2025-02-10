@@ -252,20 +252,24 @@
                     responseHistory[index].lastTask = lastTask;
                 }
 
-                try {
-                    // Update user metadata
-                    const updatedUser = await user.update({
-                        user_metadata: { responseHistory }
-                    });
-                    
+                user.update({
+                    user_metadata: { responseHistory: responseHistory,},
+                }).then((updatedUser) => {
                     console.log("User metadata updated:", updatedUser);
-                    
-                    // Reload and sync with localStorage
-                    const reloadedUser = await netlifyIdentity.gotrue.currentUser().reload();
-                    localStorage.setItem('gotrue.user', JSON.stringify(reloadedUser));
-                } catch (error) {
+                    // Fetch the latest user object instead of using reload()
+                    netlifyIdentity.gotrue.currentUser()
+                    .jwt()
+                    .then((token) => {
+                        const updatedUserDetails = netlifyIdentity.gotrue.currentUser();
+                        localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
+                        console.log("Updated user saved to localStorage:", updatedUserDetails);
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching updated user details:", error);
+                    });
+                }).catch((error) => {
                     console.error("Error updating user metadata:", error);
-                }
+                });
             }
                 
             //Function to update the Next button's state
