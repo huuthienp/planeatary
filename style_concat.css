@@ -875,7 +875,7 @@ body {
 
 .toast-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   position: fixed;
   top: 0;
