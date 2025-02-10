@@ -774,15 +774,17 @@
             const {quizObj, historyObj, userId} = ExtractUserMetadata();
             await fetchResponses(userId);
             let allResponses = JSON.parse(localStorage.getItem('allResponses'));
-
             if (quizObj.lastPost !== "" && allResponses) {
                 Object.keys(allResponses).forEach((cycleKey) => {
-                    const preQuiz = allResponses[cycleKey]?.preResponse ?? null;
-                    const postQuiz = allResponses[cycleKey]?.postResponse ?? null;
-                    if (preQuiz.responseId && preQuiz.responseId == quizObj.lastPre) {
+                    const preQuiz = allResponses?.[cycleKey]?.preResponse ?? null;
+                    const postQuiz = allResponses?.[cycleKey]?.postResponse ?? null;
+                    //for debugging purpose
+                    console.log("Cycle Key:", cycleKey);
+                    console.log("allResponses[cycleKey]:", allResponses[cycleKey]);
+                    if (preQuiz?.responseId && preQuiz?.responseId == quizObj.lastPre) {
                         localStorage.setItem("preResult", JSON.stringify(preQuiz));
                     }
-                    if (postQuiz.responseId && postQuiz.responseId == quizObj.lastPost) {
+                    if (postQuiz?.responseId && postQuiz?.responseId == quizObj.lastPost) {
                         localStorage.setItem("postResult", JSON.stringify(postQuiz));
                     }
                 });

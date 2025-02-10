@@ -242,6 +242,8 @@
                 
                 console.log("Token is valid.");
                 let responseHistory = user.user_metadata.responseHistory || [];
+                console.log("Current responseHistory:", responseHistory);
+                console.log("lastTask:", lastTask, "preResponseId:", preResponseId);
                 let index = responseHistory.findIndex(cycle => cycle.preId === preResponseId);
                 
                 if (index === -1) {
@@ -250,19 +252,30 @@
                 } else if (!responseHistory[index].lastTask) {
                     // Update existing entry with lastTask if it's missing
                     responseHistory[index].lastTask = lastTask;
+                } else {
+                    
                 }
-
+                console.log("Updated responseHistory to save:", responseHistory);
                 try {
                     // Update user metadata
                     const updatedUser = await user.update({
-                        user_metadata: { responseHistory }
+                        user_metadata: { responseHistory: responseHistory },
                     });
                     
-                    console.log("User metadata updated:", updatedUser);
+                    console.log("User metadata successfully updated:", updatedUser.user_metadata);
+                    // Wait for 3 seconds
+                    await new Promise(resolve => setTimeout(resolve, 3000)); 
+                    // Fetch and save the latest user object to localStorage
+                    const updatedUserDetails = await netlifyIdentity.gotrue.currentUser();
+                    console.log("Fetched updated user:", updatedUserDetails.user_metadata);
                     
-                    // Reload and sync with localStorage
-                    const reloadedUser = await netlifyIdentity.gotrue.currentUser().reload();
-                    localStorage.setItem('gotrue.user', JSON.stringify(reloadedUser));
+                    // Verify the updated responseHistory
+                    if (updatedUserDetails.user_metadata.responseHistory) {
+                        localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
+                        console.log("Updated user saved to localStorage:", updatedUserDetails);
+                    } else {
+                        console.warn("Updated responseHistory not found in the user object.");
+                    }
                 } catch (error) {
                     console.error("Error updating user metadata:", error);
                 }

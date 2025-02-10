@@ -459,7 +459,7 @@
                         });
                     });
                     
-                    var firstNullIndex = detailed && detailed.time.length !== 0 ? detailed.time.findIndex(el => el == "") : 0;
+                    var firstNullIndex = detailed?.time.length !== 0 && detailed?.time.length ==  detailed?.chosen.length ? detailed?.time.findIndex(el => el == "") : 0;
                     console.log("time array:", task_rec);
                     console.log("firstNullIndex:", firstNullIndex);
                     
