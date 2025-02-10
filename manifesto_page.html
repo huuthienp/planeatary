@@ -364,7 +364,7 @@
             let task_counts = 0;
             let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
             let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
-            let task_rec = fetched_task?.time ?? []; 
+            let task_rec = fetched_tasks?.time ?? []; 
             
             // Function to update the start button state based on selected tasks
             async function updateStartButton(preResponseId, userId) {
