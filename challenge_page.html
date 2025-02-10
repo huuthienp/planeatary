@@ -252,23 +252,18 @@
                 } else if (!responseHistory[index].lastTask) {
                     // Update existing entry with lastTask if it's missing
                     responseHistory[index].lastTask = lastTask;
+                } else {
+
                 }
                 console.log("Updated responseHistory to save:", responseHistory);
                 user.update({
-                    user_metadata: { responseHistory: responseHistory,},
-                }).then((updatedUser) => {
+                    user_metadata: { responseHistory: responseHistory },
+                }).then(async (updatedUser) => {
                     console.log("User metadata updated:", updatedUser.user_metadata);
                     // Fetch the latest user object instead of using reload()
-                    netlifyIdentity.gotrue.currentUser()
-                    .jwt()
-                    .then((token) => {
-                        const updatedUserDetails = netlifyIdentity.gotrue.currentUser();
-                        localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
-                        console.log("Updated user saved to localStorage:", updatedUserDetails);
-                    })
-                    .catch((error) => {
-                        console.error("Error fetching updated user details:", error);
-                    });
+                    const updatedUserDetails = netlifyIdentity.gotrue.currentUser();
+                    localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
+                    console.log("Updated user saved to localStorage:", updatedUserDetails);
                 }).catch((error) => {
                     console.error("Error updating user metadata:", error);
                 });
