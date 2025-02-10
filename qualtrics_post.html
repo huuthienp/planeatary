@@ -391,13 +391,13 @@
                             }  
                             
                             if (postObject) {
-                                postResult = postObject.result;
-                                post_rec = postObject.recordedDate;
+                                postResult = postObject?.result ?? null;
+                                post_rec = postObject?.recordedDate ?? null;
                             }
                             
                             if (!allResponses && !preObject) {
                                 var allRes = await fetchResponses(userId);
-                                allResponses = JSON.parse(localStorage.getItem('allResponses') || null);
+                                allResponses = JSON.parse(localStorage.getItem('allResponses'));
                             } else if (allResponses) {
                                 const cycleKeys = Object.keys(allResponses); 
                                 if (cycleKeys.length > 0) {
