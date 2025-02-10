@@ -473,7 +473,7 @@
 </div>
 
 <!-- Error Warning Toast -->
-<div class="toast-container position-absolute top-0 end-0 p-3" aria-live="polite" aria-atomic="true">
+<div class="toast-container position-absolute top-10 end-0 p-3" aria-live="polite" aria-atomic="true">
     <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
         <div class="toast-header">
             <strong class="me-auto">PlanEatary</strong>
@@ -485,7 +485,7 @@
 </div>
 
 <!-- Warning Toast -->
-<div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0" role="alert" aria-live="assertive" aria-atomic="true">
+<div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 top-20 end-0 translate-middle-y" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="d-flex">
         <div class="toast-body">
             Please finish your very first quiz before further proceeding.
@@ -555,6 +555,8 @@
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
         const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+        const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar dropdown-menu > li');
 
         //For first-timer to see a reminder to do a very first quiz
         function showToast() {
@@ -562,27 +564,19 @@
             const myToast = new bootstrap.Toast(toasty);
             myToast.show();
         }
-
+        
         offcanvasLinks.forEach(li => {
             li.addEventListener('click', event => {
                 const targetHref = li.getAttribute('href');
-                
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                 offcanvas.hide();
                 
                 if (targetHref && targetHref !== "#") {
                     window.location.href = targetHref; 
-                } else {
-                    if (li.classList.contains('disabled')) {
-                        event.preventDefault(); 
-                        showToast();
-                        return;
-                    }
-                }
+                } 
             });
         });
-
-
+        
         offcanvasDropdown.forEach(li => {
             li.addEventListener('click', event => {
                 const targetHref = li.getAttribute('href');
@@ -591,16 +585,50 @@
                 
                 if (targetHref && targetHref !== "#") {
                     window.location.href = targetHref; 
-                } else {
-                    if (li.classList.contains('disabled')) {
-                        event.preventDefault(); 
-                        showToast();
-                        return;
-                    }
-                }
+                } 
             });
         });
-
+        
+        // Function to handle navigation or showing toast
+        offcanvasListItems.forEach(li => {
+            li.addEventListener('click', event => {
+                const link = li.querySelector('a.nav-link'); 
+                
+                if (link) {
+                    if (link.classList.contains('Disabled')) {
+                        showToast(); 
+                    } else {
+                        const targetHref = link.getAttribute('href');
+                        if (targetHref && targetHref !== '#') {
+                            window.location.href = targetHref;
+                        }
+                    }
+                }
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+            });
+        });
+        
+        // Function to handle navigation or showing toast
+        offcanvasDropdownItems.forEach(li => {
+            li.addEventListener('click', event => {
+                const link = li.querySelector('a.dropdown-item'); 
+                
+                if (link) {
+                    if (link.classList.contains('Disabled')) {
+                        showToast(); 
+                    } else {
+                        const targetHref = link.getAttribute('href');
+                        if (targetHref && targetHref !== '#') {
+                            window.location.href = targetHref;
+                        }
+                    }
+                }
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+            });
+        })
+        
         const disableFirstTimers = () => {
             document.querySelectorAll("a.first-timer").forEach(a => {
                 a.classList.add('Disabled');
@@ -611,7 +639,7 @@
                 console.log("Disabling tabs");
             });
         };
-
+        
         const enableFirstTimers = () => {
             const anchor = ["qualtrics_post.html", "manifesto_page.html", "result_page.html", "history_page.html"];
             document.querySelectorAll("a.first-timer").forEach((a, index) => {
@@ -624,7 +652,7 @@
         }
         
         var preObject = JSON.parse(localStorage.getItem('preResult'));
-
+        
         if(netlifyIdentity.gotrue.currentUser() !== null) {
             document.querySelectorAll(".home-hide").forEach(element => {
                 element.style.display = "flex";
