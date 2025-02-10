@@ -318,15 +318,13 @@
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         
                     } else if (allResponses) {
+                        var preQuiz;
+                        var postQuiz;
                         Object.keys(allResponses).forEach((cycleKey) => {
                             if (allResponses[cycleKey].preResponse) {
-                                //get the latest preResponse
-                                var preQuiz = allResponses[cycleKey].preResponse;
-                                if (allResponses[cycleKey].postResponse) {
-                                    var postQuiz = allResponses[cycleKey].postResponse;
-                                } else {
-                                    var postQuiz;
-                                }
+                                //get the latest preResponse and postResponse if any
+                                preQuiz = allResponses?.[cycleKey]?.preResponse ?? null;
+                                postQuiz = allResponses?.[cycleKey]?.postResponse ?? null;
                             } 
                         });
                         
@@ -342,14 +340,14 @@
                         console.log('Found pre-quiz result in storage!\n', preObject);
 
                         if(postObject) {
-                            updateResponseHistory(preObject, user);
+                            //updateResponseHistory(preObject, user);
                             if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
                                 restartBtn.disabled = false;
                                 updateButton(restartBtn, '#02897A', 'pointer');
                                 restartBtn.addEventListener('click', () => {
                                     localStorage.removeItem('preResult');
-                                    localStorage.removeItem('fetched_tasks');
-                                    localStorage.removeItem('tasks');
+                                    localStorage.removeItem(`${preResponseId}:fetched_tasks`);
+                                    localStorage.removeItem(`${preResponseId}:tasks`);
                                     localStorage.removeItem('postResult');
                                     quizFrame.contentWindow.location = quizUrl;  // reload quiz frame
                                 });
