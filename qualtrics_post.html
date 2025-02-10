@@ -406,10 +406,7 @@
                                     postResult = postObject?.result ?? null;
                                     post_rec = postObject?.recordedDate ?? null;
                                     quizFrame.style.display = 'none'; 
-                                    document.querySelector('.btn-next').style.display = 'none';
-                                    fallbackMessage.style.color = "#ff6b6b";
-                                    //fallbackMessage.style.color = "#2ecc71";
-                                    fallbackMessage.innerHTML = "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over";
+                                    fallbackMessage.innerHTML = "<div class='void'>Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over. Or click next to see the result!</div>";
                                     quizFrame.parentElement.appendChild(fallbackMessage);
                                     updateNextButton(postObject);
                                 } else if (!postObject || Object.keys(postObject).length === 0) {
@@ -424,8 +421,7 @@
                                                 alert("Please finish all the chosen tasks before doing post-quiz.");
                                                 quizFrame.style.display = 'none'; 
                                                 document.querySelector('.btn-next').style.display = 'none';
-                                                fallbackMessage.style.color = "#ff6b6b";
-                                                fallbackMessage.innerHTML = "Please finish all selected tasks before doing the post quiz";
+                                                fallbackMessage.innerHTML = "<div class='empty-state'>Please finish all selected tasks before doing the post quiz.</div>";
                                                 quizFrame.parentElement.appendChild(fallbackMessage);
                                                 window.location.href = "challenge_page.html";
                                                 return;
@@ -453,8 +449,7 @@
                             console.error("Caught error: ", err);
                             quizFrame.style.display = 'none';
                             document.querySelector('.btn-next').style.display = 'none';
-                            fallbackMessage.innerHTML = "Content cannot be displayed. Please try again later.";
-                            fallbackMessage.style.color = "#ff6b6b";
+                            fallbackMessage.innerHTML = "<div class='empty-state'>Content cannot be displayed. Please try again later.</div>";
                             nextButton.style.display = "none";
                             quizFrame.parentElement.appendChild(fallbackMessage);
                     } finally {
@@ -488,8 +483,7 @@
                         try {
                             JSON.parse(newValue || undefined);  // force null -> undefined to throw error
                             quizFrame.style.display = 'none';
-                            fallbackMessage.innerHTML = 'Thank you for your response!';
-                            fallbackMessage.style.color = "#2ecc71";
+                            fallbackMessage.innerHTML = '<div class="void">Thank you for your response!</div>';
                             quizFrame.parentElement.appendChild(fallbackMessage);
                             await updateResponseHistory(postObject, user);
                             updateNextButton(postObject);
