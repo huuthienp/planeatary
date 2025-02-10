@@ -358,7 +358,7 @@
             var preResult = preObject && preObject.result ? preObject.result : {};
             var preResponseId = preObject && preObject.responseId ? preObject.responseId : "";
             var preTotalScore = preResult && preResult.totalScore ? preResult.totalScore : ""; 
-            var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+            var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
             
             let task_counts = 0;
             let tasks = JSON.parse(localStorage.getItem('tasks')); 
@@ -593,7 +593,7 @@
                 var preResult = preObject && preObject.result ? preObject.result : {};
                 var preResponseId = preObject && preObject.responseId ? preObject.responseId : "";
                 var preTotalScore = preResult && preResult.totalScore ? preResult.totalScore : "";
-                var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+                var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
                 //handle first-time user
                 if (!metadata.responseHistory && !preObject) {
                     console.warn("No responseHistory found for this user.");
@@ -609,10 +609,10 @@
                 } else {
                     document.querySelector(".button2").style.display = "flex";
                     document.querySelector(".improvement").style.display = "flex";
-                    preResult = preObject.result;
-                    preResponseId =  preObject.responseId;
-                    preTotalScore = preObject.result.totalScore; 
-                    scores = preObject.result.pointArray;
+                    preResult = preObject?.result;
+                    preResponseId =  preObject?.responseId;
+                    preTotalScore = preObject?.result?.totalScore; 
+                    scores = preObject?.result?.pointArray;
                 } 
                 
                 if (!tasks) {
@@ -643,14 +643,14 @@
                 }
                 if (storedCycle) {
                     
-                    preObject = storedCycle.preResponse;
-                    preResult = preObject.result;
-                    pre_rec = preObject.recordedDate;
-                    preResponseId = preObject.responseId;
+                    preObject = storedCycle?.preResponse;
+                    preResult = preObject?.result;
+                    pre_rec = preObject?.recordedDate;
+                    preResponseId = preObject?.responseId;
                     
-                    postObject = storedCycle && storedCycle.postResponse ? storedCycle.postResponse : {};
-                    postResult = postObject && postObject.result ? postObject.result : {};
-                    post_rec = postObject.recordedDate;
+                    postObject = storedCycle?.postResponse ?? {};
+                    postResult = postObject?.result ?? {};
+                    post_rec = postObject?.recordedDate;
                     
                     try {
                         var selectTasks = await fetchTaskStatus(preResponseId, userId);
@@ -673,7 +673,7 @@
                         fetched_tasks = await fetchTaskStatus(preResponseId, userId);
                         localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
                         fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                        task_rec = fetched_tasks.time; 
+                        task_rec = fetched_tasks?.time ?? []; 
                     } catch (err) {
                         console.error("Couldn't find history tasks' info:", err);
                     }

@@ -211,7 +211,7 @@
             import { initiateSurvey, updateAnchors, updateButton } from './scripts/helpers.mjs';
             
             var preObject = JSON.parse(localStorage.getItem('preResult'));
-            var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+            var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
             var quizUrl;
             var preResult;
             var preResponseId;

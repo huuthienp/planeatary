@@ -500,7 +500,7 @@
                     const userId = user.id;
                     
                     //from history page
-                    var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+                    var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
                     
                     var preObject = JSON.parse(localStorage.getItem('preResult'));
                     var preResult = preObject?.result ?? null;

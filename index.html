@@ -536,7 +536,7 @@
     document.addEventListener("DOMContentLoaded", async function() {
 
         //ensure the data's cycle selected from history page is always removed
-        localStorage.removeItem('selectedCycle');
+        sessionStorage.removeItem('selectedCycle');
         
         const greetingDiv = document.querySelector('.greeting');
         const heroButton = document.querySelector('.herobtn');

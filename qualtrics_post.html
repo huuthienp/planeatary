@@ -298,7 +298,7 @@
 
                             nextButton.addEventListener("click", function() {
                                 //ensure the data's cycle selected from history page is always removed
-                                localStorage.removeItem('selectedCycle');
+                                sessionStorage.removeItem('selectedCycle');
                                 window.location.href = "result_page.html";
                             });
                         } else {
@@ -343,7 +343,7 @@
                     try { 
                         showSpinner();
                         //handle a user directly from the history page
-                        var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+                        var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
                         var allResponses = JSON.parse(localStorage.getItem('allResponses'));
                         let postQuiz = null;
                         let preQuiz = null;

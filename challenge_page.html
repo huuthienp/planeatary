@@ -504,18 +504,18 @@
                     const responseHistory = metadata.responseHistory;
                     const userId = user.id;
 
-                    var preResponseId =  preObject.responseId;
+                    var preResponseId =  preObject?.responseId;
 
                     if (storedCycle) {
                         
-                        preObject = storedCycle.preResponse;
-                        preResult = preObject.result;
-                        pre_rec = preObject.recordedDate;
-                        preResponseId = preObject.responseId;
+                        preObject = storedCycle?.preResponse;
+                        preResult = preObject?.result;
+                        pre_rec = preObject?.recordedDate;
+                        preResponseId = preObject?.responseId;
                         
-                        postObject = storedCycle.postResponse;
-                        postResult = postObject.result;
-                        post_rec = postObject.recordedDate;
+                        postObject = storedCycle?.postResponse;
+                        postResult = postObject?.result;
+                        post_rec = postObject?.recordedDate;
                         
                         try {
                             Tstatus = await fetchTaskStatus(preResponseId, userId);
