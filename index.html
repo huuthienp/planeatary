@@ -473,8 +473,8 @@
 </div>
 
 <!-- Error Warning Toast -->
-<div class="toast-container position-absolute top-0 end-0 p-3" aria-live="polite" aria-atomic="true">
-    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-end align-items-start w-100">
+    <div id="liveToast" class="toast p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
         <div class="toast-header">
             <strong class="me-auto">PlanEatary</strong>
             <!-- <small class="text-muted">just now</small> -->
@@ -485,8 +485,8 @@
 </div>
 
 <!-- Warning Toast -->
-<div class="toast-container position-absolute top-0 end-0 p-3" aria-live="polite" aria-atomic="true">
-    <div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0" role="alert" aria-live="assertive" aria-atomic="true">
+<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-end align-items-start w-100">
+    <div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 p-3" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
                 Please finish your very first quiz before further proceeding.
@@ -558,7 +558,7 @@
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
         const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
         const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
-        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar dropdown-menu > li');
+        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
 
         //For first-timer to see a reminder to do a very first quiz
         function showToast() {
