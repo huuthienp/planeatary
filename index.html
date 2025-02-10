@@ -37,7 +37,7 @@
                                     <a class="nav-link active" aria-current="page" data-bs-dismiss="offcanvas" href="index.html">Home</a>
                                 </li>
                                 <li class="nav-item dropdown home-hide">
-                                    <a class="nav-link except dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
@@ -573,10 +573,15 @@
                 if (targetHref && targetHref !== "#") {
                     window.location.href = targetHref; 
                 } else {
-                    showToast();
+                    if (li.classList.contains('disabled')) {
+                        event.preventDefault(); 
+                        showToast();
+                        return;
+                    }
                 }
             });
         });
+
 
         offcanvasDropdown.forEach(li => {
             li.addEventListener('click', event => {
@@ -587,7 +592,11 @@
                 if (targetHref && targetHref !== "#") {
                     window.location.href = targetHref; 
                 } else {
-                    showToast();
+                    if (li.classList.contains('disabled')) {
+                        event.preventDefault(); 
+                        showToast();
+                        return;
+                    }
                 }
             });
         });
