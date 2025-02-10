@@ -205,14 +205,13 @@
             'result_page',
             'result_page',
             ];
-            
+
         </script>
         <script defer type="module">
             import { initiateSurvey, updateAnchors, updateButton } from './scripts/helpers.mjs';
             
             var preObject = JSON.parse(localStorage.getItem('preResult'));
             var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
-            var quizUrl;
             var preResult;
             var preResponseId;
             var postObject = JSON.parse(localStorage.getItem('postResult'));
@@ -272,6 +271,7 @@
                 }
             
             document.addEventListener('DOMContentLoaded', async () => {
+                var quizUrl = initiateSurvey('pre', quizFrame);
                 
                 updateButton(restartBtn, 'grey', 'not-allowed');
                 
