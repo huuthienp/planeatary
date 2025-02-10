@@ -224,12 +224,14 @@
                 document.addEventListener("DOMContentLoaded", async () => {
 
                     var preObject = JSON.parse(localStorage.getItem('preResult'));
+                    var preResult = preObject?.result;
+                    var preResponseId = preObject?.responseId;
                     var postObject = JSON.parse(localStorage.getItem('postResult'));
                     var postResult = postObject?.result ?? null;
                     var post_rec = postObject?.recordedDate ?? null;
 
-                    var tasks = JSON.parse(localStorage.getItem('tasks'));
-                    var selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    var tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+                    var selectTasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
 
                     const quizFrame = document.querySelector('div.content > iframe.quiz');
 
@@ -349,14 +351,14 @@
                         let preQuiz = null;
                         
                         if(preObject) {
-                            var preResult = preObject.result || null;
-                            var pre_rec = preObject.recordedDate || null;
-                            var preResponseId = preObject.responseId || null;
+                            var preResult = preObject?.result ?? null;
+                            var pre_rec = preObject?.recordedDate ?? null;
+                            var preResponseId = preObject?.responseId ?? null;
                             try {
                                 if (!selectTasks) {
                                     selectTasks = await fetchTaskStatus(preResponseId, userId);
-                                    localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
-                                    selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                                    localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
+                                    selectTasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                                     if (!selectTasks || firstNullIndex !== -1) {
                                         alert("Please finish all the chosen tasks before doing post-quiz.");
                                         quizFrame.style.display = 'none'; 
@@ -369,7 +371,7 @@
                                         return;
                                     }
                                 } else {
-                                    var firstNullIndex = selectTasks && selectTasks.time.length !== 0 ? selectTasks.time.findIndex(el => el == "") : 0;
+                                    var firstNullIndex = selectTasks?.time?.length !== 0 ? selectTasks?.time?.findIndex(el => el == "") : 0;
                                     if (firstNullIndex !== -1) {
                                         alert("Please finish all the chosen tasks before doing post-quiz.");
                                         quizFrame.style.display = 'none'; 

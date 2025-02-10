@@ -320,8 +320,8 @@
                 );
                 
                 // Retrieve tasks from localStorage or fetch if not available
-                async function fetchTasks() {
-                    const taskData = localStorage.getItem('tasks');
+                async function fetchTasks(preResponseId) {
+                    const taskData = localStorage.getItem(`${preResponseId}:tasks`);
                     if (!taskData) {
                         try {
                             const response = await fetch('updated_tasks_final.json');
@@ -421,7 +421,7 @@
                     
                     Object.keys(tasks).forEach(questionKey => {
                         header.innerHTML = '<img src="./images/battery.png"/>'+'All tasks you have completed';
-                        const taskGroup = tasks[questionKey].tasks;
+                        const taskGroup = tasks?.[questionKey]?.tasks ?? [];
                         
                         // Filter tasks that are selected
                         taskGroup.forEach(task => {
@@ -459,7 +459,7 @@
                         });
                     });
                     
-                    var firstNullIndex = detailed?.time.length !== 0 && detailed?.time.length ==  detailed?.chosen.length ? detailed?.time.findIndex(el => el == "") : 0;
+                    var firstNullIndex = detailed?.time?.length !== 0 && detailed?.time?.length ==  detailed?.chosen?.length ? detailed?.time?.findIndex(el => el == "") : 0;
                     console.log("time array:", task_rec);
                     console.log("firstNullIndex:", firstNullIndex);
                     
@@ -513,7 +513,7 @@
                     
                     var tasks = JSON.parse(localStorage.getItem('tasks'));
                     var detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    var task_rec =  detailed?.time ?? null;
+                    var task_rec =  detailed?.time ?? [];
                     
                     if (!preObject) {
                         // hide next step, suggestion, and select-tasks button as an empty state
@@ -550,8 +550,8 @@
                         
                         try {
                             var selectTasks = await fetchTaskStatus(preResponseId, userId);
-                            localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
-                            detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
+                            localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
+                            detailed = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                             task_rec = detailed?.time ?? []; 
                         } catch(err) {
                             console.warn("Couldn't find history tasks' info:", err);
@@ -559,16 +559,16 @@
                     }
                     
                     if (!tasks) {
-                        tasks = await fetchTasks();  
-                        localStorage.setItem('tasks', JSON.stringify(tasks));
-                        tasks = JSON.parse(localStorage.getItem('tasks'));
+                        tasks = await fetchTasks(preResponseId);  
+                        localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                        tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
                     }
                     
                     if (!detailed && preResponseId) {
                         try {
                             var com_tasks = await fetchTaskStatus(preResponseId, userId);
-                            localStorage.setItem('fetched_tasks', JSON.stringify(com_tasks));
-                            detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
+                            localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(com_tasks));
+                            detailed = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                             task_rec = detailed?.time ?? []; 
                         } catch (err) {
                             console.error("Couldn't find previous tasks' info:", err);

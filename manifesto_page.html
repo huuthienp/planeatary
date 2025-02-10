@@ -272,8 +272,8 @@
         });
         
         // Retrieve tasks from localStorage or fetch if not available
-        async function fetchTasks() {
-            const taskData = localStorage.getItem('tasks');
+        async function fetchTasks(preResponseId) {
+            const taskData = localStorage.getItem(`${preResponseId}:tasks`);
             if (!taskData) {
                 try {
                     const response = await fetch('updated_tasks_final.json');
@@ -295,7 +295,7 @@
         function calculateSelectedTasks(tasks) {
             let count = 0;
             Object.keys(tasks).forEach((questionKey) => {
-                const taskGroup = tasks[questionKey].tasks;
+                const taskGroup = tasks?.[questionKey]?.tasks ?? [];
                 taskGroup.forEach(task => {
                     if (task.choice === 'chosen') {
                         count += 1;
@@ -361,9 +361,9 @@
             var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
             
             let task_counts = 0;
-            let tasks = JSON.parse(localStorage.getItem('tasks')); 
-            let fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks')) || { chosen: [], done: [], time: [] };
-            let task_rec; 
+            let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
+            let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
+            let task_rec = fetched_task?.time ?? []; 
             
             // Function to update the start button state based on selected tasks
             async function updateStartButton(preResponseId, userId) {
@@ -375,14 +375,14 @@
                     persuade.style.color = 'black';
                     startButton.style.pointerEvents = "auto";
                     startButton.style.backgroundColor = "#02897A";
-                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
                 } else {
                     persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
                     persuade.style.color = 'grey';
                     startButton.style.pointerEvents = "none";
                     startButton.style.backgroundColor = "grey";
                 }
-                localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));        
+                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));        
             }
             
             async function renderQuestions(condition) {
@@ -394,7 +394,7 @@
                 }
                 // Iterate over each question
                 Object.keys(tasks).forEach((questionKey, i) => {
-                    const taskGroup = tasks[questionKey].tasks;
+                    const taskGroup = tasks?.[questionKey]?.tasks ?? [];
                     const score = scores[i]; 
                     if (condition(score)) {
                         // Create a container for the question
@@ -473,7 +473,7 @@
                             }
                             //Also double-check task status in local storage
                             checkbox.disabled = task.status === 'Completed';
-                            localStorage.setItem('tasks', JSON.stringify(tasks)); 
+                            localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
                             
                             // Update task count and localStorage on checkbox change
                             checkbox.addEventListener('change', function() {
@@ -493,8 +493,8 @@
                                         task_counts -= 1;
                                         if (index !== -1) {fetched_tasks.chosen.splice(index, 1)}
                                     }
-                                    localStorage.setItem('tasks', JSON.stringify(tasks)); 
-                                    localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks)); 
+                                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
+                                    localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks)); 
                                     updateStartButton(preResponseId, userId); 
                                 }
                             });
@@ -518,15 +518,15 @@
                             checkbox.checked = task.choice === "chosen";
                             //Check task status on local  storage
                             if (task.choice === "chosen") {task.status = task.status === "Completed"?"Completed":"Done";}
-                            localStorage.setItem('tasks', JSON.stringify(tasks)); 
+                            localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
                             updateStartButton(preResponseId, userId); 
                         });
                         
                         questionDiv.appendChild(taskList);
                         QContainer.appendChild(questionDiv);
-                        localStorage.setItem('tasks', JSON.stringify(tasks)); 
+                        localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
                     }
-                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                 });
                 
                 task_counts = calculateSelectedTasks(tasks);
@@ -616,16 +616,16 @@
                 } 
                 
                 if (!tasks) {
-                    tasks = await fetchTasks();
-                    localStorage.setItem('tasks', JSON.stringify(tasks));
-                    tasks = JSON.parse(localStorage.getItem('tasks'));
+                    tasks = await fetchTasks(preReponseId);
+                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                    tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
                 }
                 
                 if (!fetched_tasks) {
                     try {
                         fetched_tasks = await fetchTaskStatus(preResponseId, userId); 
-                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
-                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                        localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
+                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                     } catch(err) {
                         console.log("Found error: ", err);
                     }
@@ -646,7 +646,7 @@
                     preObject = storedCycle?.preResponse;
                     preResult = preObject?.result;
                     pre_rec = preObject?.recordedDate;
-                    preResponseId = preObject?.responseId;
+                    preResponseId = preObject?.responseId ?? "";
                     
                     postObject = storedCycle?.postResponse ?? {};
                     postResult = postObject?.result ?? {};
@@ -654,25 +654,25 @@
                     
                     try {
                         var selectTasks = await fetchTaskStatus(preResponseId, userId);
-                        localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
-                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                        task_rec = fetched_tasks.time; 
+                        localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
+                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                        task_rec = fetched_tasks?.time ?? []; 
                     } catch(err) {
                         console.log("Couldn't find previous tasks' info:", err);
                     }
                 }
                 
                 if (!tasks) {
-                    tasks = await fetchTasks();  
-                    localStorage.setItem('tasks', JSON.stringify(tasks));
-                    tasks = JSON.parse(localStorage.getItem('tasks'));
+                    tasks = await fetchTasks(preResponseId);  
+                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                    tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
                 }
                 
                 if (!fetched_tasks && preResponseId) {
                     try {
                         fetched_tasks = await fetchTaskStatus(preResponseId, userId);
-                        localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
-                        fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                        localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
+                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                         task_rec = fetched_tasks?.time ?? []; 
                     } catch (err) {
                         console.error("Couldn't find history tasks' info:", err);

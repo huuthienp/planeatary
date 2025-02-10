@@ -632,8 +632,8 @@
         }
         
         // Retrieve tasks from localStorage or fetch if not available
-        async function fetchTasks() {
-            const taskData = localStorage.getItem('tasks');
+        async function fetchTasks(preResponseId) {
+            const taskData = localStorage.getItem(`${preResponseId}:tasks`);
             if (!taskData) {
                 try {
                     const response = await fetch('updated_tasks_final.json');
@@ -800,11 +800,11 @@
                 //handle a potentially first-time user
                 if(confirm("Seems like you've not done any quiz before. Are you a first-timer?") == true) {
                     //clear unwanted existings in local storage. This will be adjusted later on when they have their own unique keys
-                    localStorage.removeItem('preResult');
-                    localStorage.removeItem('fetched_tasks');
-                    localStorage.removeItem('tasks');
-                    localStorage.removeItem('postResult');
-                    localStorage.removeItem('allResponses');
+                    // localStorage.removeItem('preResult');
+                    // localStorage.removeItem('fetched_tasks');
+                    // localStorage.removeItem('tasks');
+                    // localStorage.removeItem('postResult');
+                    // localStorage.removeItem('allResponses');
                     return false;
                 }
             }
