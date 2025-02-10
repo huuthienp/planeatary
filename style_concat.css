@@ -282,8 +282,8 @@ body {
   top: 45%;
   left: 45%;
   transform: translate(-50%, -50%);
-  background-color: rgb(255, 249, 249);
-  z-index: 5000; /* Ensure it appears on top */
+  background-color: rgb(255, 249, 249, 0.1);
+  z-index: 3000; /* Ensure it appears on top */
 }
 
 /* Animation for the spinner */
@@ -871,6 +871,10 @@ body {
   height: 100%;
   background-color: rgb(255, 255, 255, 1) !important;
   z-index: 1000;
+}
+
+.toast {
+  z-index: 3000 !important;
 }
 
 .overlay {
