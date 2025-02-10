@@ -512,8 +512,8 @@
                     var postResult = postObject?.result ?? null;
                     var post_rec = postObject?.recordedDate ?? null;
                     
-                    var tasks = JSON.parse(localStorage.getItem('tasks'));
-                    var detailed = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    var tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+                    var detailed = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                     var task_rec =  detailed?.time ?? [];
                     
                     if (!preObject) {

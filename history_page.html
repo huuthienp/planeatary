@@ -127,6 +127,24 @@
             const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
             const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
             
+            const user = netlifyIdentity.gotrue.currentUser();
+            
+            if (user) {
+                user.jwt().then(token => {
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                        window.location.href = "index.html";
+                    } else {
+                        console.log("Token is valid.");
+                    }
+                });
+            }
+            
+            const userId = user.id;
+            const metadata = user.user_metadata;
+            const responseHistory = metadata.responseHistory;
+            
             async function fetchResponses(userId) {
                 try {
                     const response = await fetch('/api/fetch-responses', {
@@ -224,7 +242,7 @@
             }
             
             
-            function displayTable() {
+            function displayTable(userId) {
 
                 const history = JSON.parse(localStorage.getItem(`${userId}:allResponses`));  
                 const table = document.getElementById('h-table');
@@ -349,7 +367,9 @@
                 });
 
                 await extractHistory();
-                displayTable();
+                showSpinner();
+                displayTable(userId);
+                hideSpinner();
                 
             });
             

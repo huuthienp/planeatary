@@ -631,17 +631,8 @@
                         console.log("Found error: ", err);
                     }
                     
-                } else {
-                    // if (!fetched_tasks.done || !fetched_tasks.chosen) {
-                    //     try {
-                    //         fetched_tasks = await fetchTaskStatus(preResponseId, userId); 
-                    //         localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
-                    //         fetched_tasks = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    //     } catch(err) {
-                    //         console.log("Found error: ", err);
-                    //     }
-                    // }
-                }
+                } 
+
                 if (storedCycle) {
                     
                     preObject = storedCycle?.preResponse;
@@ -661,12 +652,6 @@
                     } catch(err) {
                         console.log("Couldn't find previous tasks' info:", err);
                     }
-                }
-                
-                if (!tasks) {
-                    tasks = await fetchTasks(preResponseId);  
-                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                    tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
                 }
                 
                 if (!fetched_tasks && preResponseId) {

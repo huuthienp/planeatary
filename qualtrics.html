@@ -294,6 +294,7 @@
 
                     var allRes = await fetchResponses(userId);
                     let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
+                    console.log("All responses fetched! ", allResponses);
                     
                     if (storedCycle) {
                         try {            
@@ -309,14 +310,6 @@
                             console.warn("Couldn't find previous info from history:", err);
                         }
                         
-                    } else if (preObject) {
-                        updateAnchors(anchors, hrefs);
-                        updateButton(nextButton, '#02897A', 'pointer');
-                        quizFrame.style.display = 'none';
-                        quizSpan.innerText = 'You have already finished the pre-quiz!';
-                        updateResponseHistory(preObject, user)
-                        console.log('Found pre-quiz result in storage!\n', preObject);
-                        
                     } else if (allResponses) {
                         var preQuiz;
                         var postQuiz;
@@ -330,8 +323,8 @@
                         
                         preObject = preQuiz;
                         preResponseId = preQuiz.responseId;
-                        postObject = postQuiz || null;
-                        postResponseId = postQuiz.responseId || null;
+                        postObject = postQuiz;
+                        postResponseId = postQuiz.responseId;
 
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
@@ -339,26 +332,52 @@
                         quizSpan.innerText = 'You have already finished the pre-quiz!';
                         console.log('Found pre-quiz result in storage!\n', preObject);
 
-                        if(postObject) {
+                        if(preObject && postObject) {
+                            console.log('Found post-quiz result in storage!\n', postObject);
                             //updateResponseHistory(preObject, user);
                             if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
-                                restartBtn.disabled = false;
                                 updateButton(restartBtn, '#02897A', 'pointer');
                                 restartBtn.addEventListener('click', () => {
                                     localStorage.removeItem('preResult');
                                     localStorage.removeItem(`${preResponseId}:fetched_tasks`);
                                     localStorage.removeItem(`${preResponseId}:tasks`);
                                     localStorage.removeItem('postResult');
-                                    quizFrame.contentWindow.location = quizUrl;  // reload quiz frame
+                                    quizFrame.contentWindow.location = quizUrl;  
                                 });
                             }
                         }
                         
+                    } else if (preObject && !postObject) {
+                        updateAnchors(anchors, hrefs);
+                        updateButton(nextButton, '#02897A', 'pointer');
+                        quizFrame.style.display = 'none';
+                        quizSpan.innerText = 'You have already finished the pre-quiz! Let"s continue!';
+                        updateResponseHistory(preObject, user)
+                        console.log('Found pre-quiz result in storage!\n', preObject);
+                    } else if (preObject && postObject) {
+                        updateAnchors(anchors, hrefs);
+                        updateButton(nextButton, '#02897A', 'pointer');
+                        updateButton(restartBtn, '#02897A', 'pointer');
+                        quizFrame.style.display = 'none';
+                        quizSpan.innerText = 'You have already finished the pre-quiz and the post-quiz!';
+                        updateResponseHistory(preObject, user)
+                        console.log('Found pre-quiz result in storage!\n', preObject);
+                        console.log('Found post-quiz result in storage!\n', postObject);
+
+                        if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
+                            updateButton(restartBtn, '#02897A', 'pointer');
+                            restartBtn.addEventListener('click', () => {
+                                localStorage.removeItem('preResult');
+                                localStorage.removeItem(`${preResponseId}:fetched_tasks`);
+                                localStorage.removeItem(`${preResponseId}:tasks`);
+                                localStorage.removeItem('postResult');
+                                quizFrame.contentWindow.location = quizUrl;  
+                            });
+                        }
                     } else {
                         quizUrl = initiateSurvey('pre', quizFrame);
                         updateAnchors(anchors);
                         updateButton(nextButton, 'grey', 'not-allowed');
-                        restartBtn.disabled = true;
                         updateButton(restartBtn, 'grey', 'not-allowed');
                     }
                     
@@ -366,7 +385,6 @@
                     console.warn('Caught', error, '\nPre-quiz result is not found!');
                     updateAnchors(anchors);
                     updateButton(nextButton, 'grey', 'not-allowed');
-                    restartBtn.disabled = true;
                     updateButton(restartBtn, 'grey', 'not-allowed');
                     quizUrl = initiateSurvey('pre', quizFrame);
                     
@@ -387,7 +405,6 @@
                             console.warn('Caught', error, '\nPre-quiz result is not found!');
                             updateAnchors(anchors);
                             updateButton(nextButton, 'grey', 'not-allowed');
-                            restartBtn.disabled = true;
                             updateButton(restartBtn, 'grey', 'not-allowed');
                             quizUrl = initiateSurvey('pre', quizFrame);
                             // quizSpan.innerText = 'An error occurred. Please try again later.';
