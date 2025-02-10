@@ -536,7 +536,7 @@
     document.addEventListener("DOMContentLoaded", async function() {
 
         //ensure the data's cycle selected from history page is always removed
-        localStorage.removeItem('selectedCycle');
+        sessionStorage.removeItem('selectedCycle');
         
         const greetingDiv = document.querySelector('.greeting');
         const heroButton = document.querySelector('.herobtn');
@@ -632,8 +632,8 @@
         }
         
         // Retrieve tasks from localStorage or fetch if not available
-        async function fetchTasks() {
-            const taskData = localStorage.getItem('tasks');
+        async function fetchTasks(preResponseId) {
+            const taskData = localStorage.getItem(`${preResponseId}:tasks`);
             if (!taskData) {
                 try {
                     const response = await fetch('updated_tasks_final.json');
@@ -760,7 +760,7 @@
                 }
                 const data = await response.json();
                 console.log('Responses fetched!\n', data);
-                localStorage.setItem('allResponses', JSON.stringify(data));
+                localStorage.setItem(`${userId}:allResponses`, JSON.stringify(data));
                 return data;
                 
             } catch (error) {
@@ -773,7 +773,7 @@
 
             const {quizObj, historyObj, userId} = ExtractUserMetadata();
             await fetchResponses(userId);
-            let allResponses = JSON.parse(localStorage.getItem('allResponses'));
+            let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
             if (quizObj.lastPost !== "" && allResponses) {
                 Object.keys(allResponses).forEach((cycleKey) => {
                     const preQuiz = allResponses?.[cycleKey]?.preResponse ?? null;
@@ -799,12 +799,10 @@
             } else {
                 //handle a potentially first-time user
                 if(confirm("Seems like you've not done any quiz before. Are you a first-timer?") == true) {
-                    //clear unwanted existings in local storage. This will be adjusted later on when they have their own unique keys
+                    //clear unwanted existings in local storage.
                     localStorage.removeItem('preResult');
-                    localStorage.removeItem('fetched_tasks');
-                    localStorage.removeItem('tasks');
                     localStorage.removeItem('postResult');
-                    localStorage.removeItem('allResponses');
+                    localStorage.removeItem(`${userId}:allResponses`);
                     return false;
                 }
             }

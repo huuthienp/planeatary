@@ -128,7 +128,7 @@
                     }
                     const data = await response.json();
                     console.log('Responses fetched!\n', data);
-                    localStorage.setItem('allResponses', JSON.stringify(data));
+                    localStorage.setItem(`${userId}:allResponses`, JSON.stringify(data));
                     return data;
                     
                 } catch (error) {
@@ -211,7 +211,7 @@
             import { initiateSurvey, updateAnchors, updateButton } from './scripts/helpers.mjs';
             
             var preObject = JSON.parse(localStorage.getItem('preResult'));
-            var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+            var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
             var quizUrl;
             var preResult;
             var preResponseId;
@@ -293,13 +293,14 @@
                     const userId = user.id;
 
                     var allRes = await fetchResponses(userId);
-                    let allResponses = JSON.parse(localStorage.getItem('allResponses'));
+                    let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                     
                     if (storedCycle) {
                         try {            
                             preObject = storedCycle?.preResponse ?? null;
                             preResult = preObject?.result ?? null;
                             preResponseId = preObject?.responseId ?? null;
+
                             postObject = storedCycle?.postResponse ?? null;
                             postResult = postObject?.result ?? null;
                             postResponseId = postObject?.responseId ?? null;

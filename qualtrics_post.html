@@ -200,7 +200,7 @@
                         }
                         const data = await response.json();
                         console.log('Responses fetched!\n', data);
-                        localStorage.setItem('allResponses', JSON.stringify(data));
+                        localStorage.setItem(`${userId}:allResponses`, JSON.stringify(data));
                         return data
                         
                     } catch (error) {
@@ -224,12 +224,14 @@
                 document.addEventListener("DOMContentLoaded", async () => {
 
                     var preObject = JSON.parse(localStorage.getItem('preResult'));
+                    var preResult = preObject?.result;
+                    var preResponseId = preObject?.responseId;
                     var postObject = JSON.parse(localStorage.getItem('postResult'));
                     var postResult = postObject?.result ?? null;
                     var post_rec = postObject?.recordedDate ?? null;
 
-                    var tasks = JSON.parse(localStorage.getItem('tasks'));
-                    var selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                    var tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+                    var selectTasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
 
                     const quizFrame = document.querySelector('div.content > iframe.quiz');
 
@@ -298,7 +300,7 @@
 
                             nextButton.addEventListener("click", function() {
                                 //ensure the data's cycle selected from history page is always removed
-                                localStorage.removeItem('selectedCycle');
+                                sessionStorage.removeItem('selectedCycle');
                                 window.location.href = "result_page.html";
                             });
                         } else {
@@ -343,20 +345,20 @@
                     try { 
                         showSpinner();
                         //handle a user directly from the history page
-                        var storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
-                        var allResponses = JSON.parse(localStorage.getItem('allResponses'));
+                        var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
+                        var allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                         let postQuiz = null;
                         let preQuiz = null;
                         
                         if(preObject) {
-                            var preResult = preObject.result || null;
-                            var pre_rec = preObject.recordedDate || null;
-                            var preResponseId = preObject.responseId || null;
+                            var preResult = preObject?.result ?? null;
+                            var pre_rec = preObject?.recordedDate ?? null;
+                            var preResponseId = preObject?.responseId ?? null;
                             try {
                                 if (!selectTasks) {
                                     selectTasks = await fetchTaskStatus(preResponseId, userId);
-                                    localStorage.setItem('fetched_tasks', JSON.stringify(selectTasks));
-                                    selectTasks = JSON.parse(localStorage.getItem('fetched_tasks'));
+                                    localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
+                                    selectTasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                                     if (!selectTasks || firstNullIndex !== -1) {
                                         alert("Please finish all the chosen tasks before doing post-quiz.");
                                         quizFrame.style.display = 'none'; 
@@ -369,7 +371,7 @@
                                         return;
                                     }
                                 } else {
-                                    var firstNullIndex = selectTasks && selectTasks.time.length !== 0 ? selectTasks.time.findIndex(el => el == "") : 0;
+                                    var firstNullIndex = selectTasks?.time?.length !== 0 ? selectTasks?.time?.findIndex(el => el == "") : 0;
                                     if (firstNullIndex !== -1) {
                                         alert("Please finish all the chosen tasks before doing post-quiz.");
                                         quizFrame.style.display = 'none'; 
@@ -401,16 +403,16 @@
                             
                             if (!allResponses && !preObject) {
                                 var allRes = await fetchResponses(userId);
-                                allResponses = JSON.parse(localStorage.getItem('allResponses'));
+                                allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                             } else if (allResponses) {
                                 const cycleKeys = Object.keys(allResponses); 
                                 if (cycleKeys.length > 0) {
                                     const lastKey = cycleKeys[cycleKeys.length - 1]; 
-                                    const entry = allResponses[lastKey] || {}; 
+                                    const entry = allResponses?.[lastKey] ?? {}; 
                                     
                                     // Access preQuiz and postQuiz safely
-                                    preQuiz = entry.preResponse || null;
-                                    postQuiz = entry.postResponse || null;
+                                    preQuiz = entry?.preResponse ?? null;
+                                    postQuiz = entry?.postResponse ?? null;
                                     postObject = postQuiz;
                                     preObject = preQuiz;
                                     preResponseId = preQuiz?.responseId ?? null;

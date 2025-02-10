@@ -116,10 +116,11 @@
             const modalTitle = document.getElementById("modalTitle");
             const modalDescription = document.getElementById("modalDescription");
 
-            let preObject = JSON.parse(localStorage.getItem('preResult')); 
-            let tasks = JSON.parse(localStorage.getItem('tasks'));
-            let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
-            let storedCycle = JSON.parse(localStorage.getItem('selectedCycle') || null);
+            let preObject = JSON.parse(localStorage.getItem('preResult'));
+            let preResponseId = preObject?.responseId ?? ""; 
+            let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+            let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+            let storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
 
             const nextButtonContainer = document.querySelector(".btn-next");
             const btn_next = document.querySelector(".next")
@@ -204,6 +205,7 @@
                     let user = netlifyIdentity.gotrue.currentUser();
                     user.logout().then(() => {
                         offcanvas.hide();
+                        sessionStorage.removeItem('selectedCycle');
                         console.log('User has been logged out!');
                         window.location.href = "index.html";
                     });
@@ -286,7 +288,7 @@
                 let allCompleted = true;
                 
                 Object.keys(tasks).forEach(questionKey => {
-                    const taskGroup = tasks[questionKey].tasks;
+                    const taskGroup = tasks?.[questionKey]?.tasks ?? [];
                     taskGroup.forEach(task => {
                         if (task.choice === "chosen" && task.status !== "Completed") {
                             allCompleted = false; // If any selected task is not "Completed", set false
@@ -301,7 +303,7 @@
                     btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
                     btn_next.style.cursor = "pointer";
                     btn_next.disabled = false;
-                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
                     console.log("time array:", Tstatus.time);
                     let latestTimestamp = Math.max(...Tstatus.time);
                     const merged = mergeTaskArrays(tasks, separator);
@@ -339,10 +341,11 @@
                 //Handle no tasks information from previous page
                 if(!tasks) {
                     cardContainer.innerHTML = "<div class='empty-state'>The system is down. Please try again later</div>";
+                    return;
                 }
                 
                 Object.keys(tasks).forEach(questionKey => {
-                    const taskGroup = tasks[questionKey].tasks;
+                    const taskGroup = tasks?.[questionKey]?.tasks ?? [];
                     
                     // Filter tasks that are selected
                     taskGroup.forEach(task => 
@@ -401,58 +404,55 @@
                                     }
                                 }
                             }
-                            localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
+                            localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
                             taskCard.appendChild(taskName);
                             taskCard.appendChild(infoIcon); 
                             taskCard.appendChild(completion);
                             cardContainer.appendChild(taskCard);
                             
-                            // Add event listener to task card to update status
-                            requestAnimationFrame(() => {
-                                taskCard.addEventListener('click', async (event) => {
-                                    // Toggle task status between "Done" and "Completed"
-                                    await delay(700);
-                                    completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';  
-                                    task.status = task.status === "Done" ? "Completed" : "Done";
-                                    
-                                    if (task.status === "Completed") {
-                                        taskCard.style.color = 'black';
-                                        taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
-                                        taskName.style.textDecoration = "line-through";
-                                        completion.innerHTML = task.status;
-                                        let timestamp = Date.now();
-                                        task.finishTime = timestamp;
-                                        if (Tstatus && Object.keys(Tstatus).length !== 0) {
-                                            let index = Tstatus.chosen.indexOf(String(task.taskNumber));
-                                            Tstatus.done[index] = String(task.taskNumber);
-                                            Tstatus.time[index] = task.finishTime;
-                                        }
-                                    } else {
-                                        taskCard.style.color = 'rgb(71, 71, 71)';
-                                        taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
-                                        taskName.style.textDecoration = "none";
-                                        completion.innerHTML = task.status;
-                                        task.finishTime = "";
-                                        if (Tstatus && Object.keys(Tstatus).length !== 0) {
-                                            let index = Tstatus.done.indexOf(String(task.taskNumber));
-                                            Tstatus.done[index] = "";
-                                            Tstatus.time[index] = task.finishTime;
-                                        }
+                            taskCard.addEventListener('click', async (event) => {
+                                // Toggle task status between "Done" and "Completed"
+                                await delay(500);
+                                completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';  
+                                task.status = task.status === "Done" ? "Completed" : "Done";
+                                
+                                if (task.status === "Completed") {
+                                    taskCard.style.color = 'black';
+                                    taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
+                                    taskName.style.textDecoration = "line-through";
+                                    completion.innerHTML = task.status;
+                                    let timestamp = Date.now();
+                                    task.finishTime = timestamp;
+                                    if (Tstatus && Object.keys(Tstatus).length !== 0) {
+                                        let index = Tstatus.chosen.indexOf(String(task.taskNumber));
+                                        Tstatus.done[index] = String(task.taskNumber);
+                                        Tstatus.time[index] = task.finishTime;
                                     }
-                                    // Update task in localStorage
-                                    localStorage.setItem('tasks', JSON.stringify(tasks));
-                                    if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus))}
-                                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
-                                    updateNextButton(preResponseId, userId, tasks, Tstatus);  
-                                })
-                            });          
+                                } else {
+                                    taskCard.style.color = 'rgb(71, 71, 71)';
+                                    taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
+                                    taskName.style.textDecoration = "none";
+                                    completion.innerHTML = task.status;
+                                    task.finishTime = "";
+                                    if (Tstatus && Object.keys(Tstatus).length !== 0) {
+                                        let index = Tstatus.done.indexOf(String(task.taskNumber));
+                                        Tstatus.done[index] = "";
+                                        Tstatus.time[index] = task.finishTime;
+                                    }
+                                }
+                                // Update task in localStorage
+                                localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                                if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
+                                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                                updateNextButton(preResponseId, userId, tasks, Tstatus);  
+                            })        
                         }
                     });     
                 });
                 
-                localStorage.setItem('tasks', JSON.stringify(tasks));
-                if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus))} 
-                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem('tasks')));
+                localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))} 
+                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
                 updateNextButton(preResponseId, userId, tasks, Tstatus);
                 cardContainer.appendChild(nextButtonContainer);
             }
@@ -504,23 +504,23 @@
                     const responseHistory = metadata.responseHistory;
                     const userId = user.id;
 
-                    var preResponseId =  preObject.responseId;
+                    var preResponseId =  preObject?.responseId;
 
                     if (storedCycle) {
                         
-                        preObject = storedCycle.preResponse;
-                        preResult = preObject.result;
-                        pre_rec = preObject.recordedDate;
-                        preResponseId = preObject.responseId;
+                        preObject = storedCycle?.preResponse;
+                        preResult = preObject?.result;
+                        pre_rec = preObject?.recordedDate;
+                        preResponseId = preObject?.responseId ?? "";
                         
-                        postObject = storedCycle.postResponse;
-                        postResult = postObject.result;
-                        post_rec = postObject.recordedDate;
+                        postObject = storedCycle?.postResponse;
+                        postResult = postObject?.result;
+                        post_rec = postObject?.recordedDate;
                         
                         try {
                             Tstatus = await fetchTaskStatus(preResponseId, userId);
-                            localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
-                            Tstatus = JSON.parse(localStorage.getItem('fetched_tasks') || {});
+                            localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
+                            Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`) ?? {});
                             if (Object.keys(Tstatus).length === 0) {
                                 Tstatus.done = [];
                                 Tstatus.chosen = [];
@@ -534,8 +534,8 @@
                     if(!Tstatus) {
                         try {
                             var fetched = await fetchTaskStatus(preResponseId, userId);
-                            localStorage.setItem('fetched_tasks', JSON.stringify(fetched));
-                            Tstatus = JSON.parse(localStorage.getItem('fetched_tasks') || {});
+                            localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched));
+                            Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`) ?? {});
                             if (Object.keys(Tstatus).length === 0) {
                                 Tstatus.done = [];
                                 Tstatus.chosen = [];

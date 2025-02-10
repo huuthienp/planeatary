@@ -91,9 +91,6 @@
     let spinnerStartTime;
     let isLoading;
 
-    //ensure the data's cycle selected from history page is always removed
-    localStorage.removeItem('selectedCycle');
-
     const offcanvasNavbar = document.getElementById('offcanvasNavbar');
     const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
     const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
@@ -127,6 +124,7 @@
             let user = netlifyIdentity.gotrue.currentUser();
             user.logout().then(() => {
                 offcanvas.hide();
+                sessionStorage.removeItem('selectedCycle');
                 console.log('User has been logged out!');
                 window.location.href = "index.html";
             });
