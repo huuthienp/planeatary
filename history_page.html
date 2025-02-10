@@ -145,7 +145,7 @@
                     }
                     const data = await response.json();
                     console.log('Responses fetched!\n', data);
-                    localStorage.setItem('allResponses', JSON.stringify(data));
+                    localStorage.setItem(`${userId}:allResponses`, JSON.stringify(data));
                     return data
                     
                 } catch (error) {
@@ -209,37 +209,34 @@
                 const responseHistory = metadata.responseHistory;
                 
                 await fetchResponses(userId);
-                let allResponses = JSON.parse(localStorage.getItem('allResponses')) || {};
+                let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                 
                 if (responseHistory) {
                     Object.keys(responseHistory).forEach((cycleKey) => {
                         const taskCycle = responseHistory[cycleKey].lastTask;
-                        if (!allResponses[cycleKey]) {
-                            allResponses[cycleKey] = {};
-                        }
+                        allResponses?.[cycleKey] ?? {};
                         allResponses[cycleKey].lastTask = taskCycle;
                     });  
                 }
                 
-                localStorage.setItem('allResponses', JSON.stringify(allResponses));
+                localStorage.setItem(`${userId}:allResponses`, JSON.stringify(allResponses));
                 return allResponses;
             }
             
             
             function displayTable() {
 
-                const history = JSON.parse(localStorage.getItem('allResponses'));  
+                const history = JSON.parse(localStorage.getItem(`${userId}:allResponses`));  
                 const table = document.getElementById('h-table');
                 
                 if (!history || Object.keys(history).length === 0) {
                     document.querySelector('div.history-table > table').style.display = 'none';
                     document.querySelector('div.history-table > p').classList.remove('hidden');
-
                     return;
                 }
                 
                 Object.keys(history).forEach((cycleKey) => {
-                    const cycle = history[cycleKey];
+                    const cycle = history?.[cycleKey] ?? {};
                     const cycleRow = document.createElement('tr');
                     const prescore = document.createElement('td');
                     const predate = document.createElement('td');
@@ -306,6 +303,7 @@
                     let user = netlifyIdentity.gotrue.currentUser();
                     user.logout().then(() => {
                         offcanvas.hide();
+                        sessionStorage.removeItem('selectedCycle');
                         console.log('User has been logged out!');
                         window.location.href = "index.html";
                     });

@@ -200,7 +200,7 @@
                         }
                         const data = await response.json();
                         console.log('Responses fetched!\n', data);
-                        localStorage.setItem('allResponses', JSON.stringify(data));
+                        localStorage.setItem(`${userId}:allResponses`, JSON.stringify(data));
                         return data
                         
                     } catch (error) {
@@ -346,7 +346,7 @@
                         showSpinner();
                         //handle a user directly from the history page
                         var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
-                        var allResponses = JSON.parse(localStorage.getItem('allResponses'));
+                        var allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                         let postQuiz = null;
                         let preQuiz = null;
                         
@@ -403,16 +403,16 @@
                             
                             if (!allResponses && !preObject) {
                                 var allRes = await fetchResponses(userId);
-                                allResponses = JSON.parse(localStorage.getItem('allResponses'));
+                                allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                             } else if (allResponses) {
                                 const cycleKeys = Object.keys(allResponses); 
                                 if (cycleKeys.length > 0) {
                                     const lastKey = cycleKeys[cycleKeys.length - 1]; 
-                                    const entry = allResponses[lastKey] || {}; 
+                                    const entry = allResponses?.[lastKey] ?? {}; 
                                     
                                     // Access preQuiz and postQuiz safely
-                                    preQuiz = entry.preResponse || null;
-                                    postQuiz = entry.postResponse || null;
+                                    preQuiz = entry?.preResponse ?? null;
+                                    postQuiz = entry?.postResponse ?? null;
                                     postObject = postQuiz;
                                     preObject = preQuiz;
                                     preResponseId = preQuiz?.responseId ?? null;

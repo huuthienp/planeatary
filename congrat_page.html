@@ -124,6 +124,7 @@
             let user = netlifyIdentity.gotrue.currentUser();
             user.logout().then(() => {
                 offcanvas.hide();
+                sessionStorage.removeItem('selectedCycle');
                 console.log('User has been logged out!');
                 window.location.href = "index.html";
             });

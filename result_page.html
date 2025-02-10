@@ -249,6 +249,7 @@
                     let user = netlifyIdentity.gotrue.currentUser();
                     const logoutResult = await user.logout();
                     offcanvas.hide();
+                    sessionStorage.removeItem('selectedCycle');
                     console.log('User has been logged out!');
                     window.location.href = "index.html";
                 } else {
