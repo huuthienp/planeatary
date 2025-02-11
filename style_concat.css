@@ -13,8 +13,8 @@ body {
 }
 
 .navbar {
-  position: sticky !important;
-  top: 0;
+  position: fixed !important;
+  width: 100%;
 }
 
 .b-example-divider {
@@ -880,13 +880,13 @@ body {
 
 .toast-container {
   display: flex;
-  position: sticky;
+  position: fixed !important;
   justify-content: flex-end;
-  top: 0;
-  left: 0;
-  width: 100%;
+  align-items: flex-start;
+  top: 5%;
+  margin: 0 auto;
+  width: 100% !important;
   height: 100%;
-  background-color: none;
   z-index: -1;
 }
 
