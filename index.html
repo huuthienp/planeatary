@@ -842,9 +842,9 @@
             var allRes = await fetchResponses(userId);
             let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
             if (quizObj.lastPost !== "" && allResponses) {
-                Object.keys(allResponses).forEach((cycleKey) => {
-                    const preQuiz = allResponses?.[cycleKey]?.preResponse ?? null;
-                    const postQuiz = allResponses?.[cycleKey]?.postResponse ?? null;
+                allResponses.forEach((cycleKey) => {
+                    const preQuiz = cycleKey?.preResponse ?? null;
+                    const postQuiz = cycleKey?.postResponse ?? null;
                     //for debugging purpose
                     console.log("Cycle Key:", cycleKey);
                     console.log("allResponses[cycleKey]:", allResponses[cycleKey]);
@@ -857,8 +857,8 @@
                 });
 
             } else if (quizObj.lastPre !== "" && allResponses) {
-                Object.keys(allResponses).forEach((cycleKey) => {
-                    const preQuiz = allResponses[cycleKey].preResponse;
+                allResponses.forEach((cycleKey) => {
+                    const preQuiz = cycleKey.preResponse;
                     if (preQuiz.responseId && preQuiz.responseId == quizObj.lastPre) {
                         localStorage.setItem("preResult", JSON.stringify(preQuiz));
                     }
