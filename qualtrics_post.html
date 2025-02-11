@@ -111,12 +111,13 @@
                 }
                 
                 //hard-code updating responseHistory
-                
                 async function updateResponseHistory(postObject, user) {
                     if (!user) {
                         console.error("No user is logged in!");
                         return;
                     }
+                    
+                    const userId = user.id;
                     
                     const postResponseId = postObject?.responseId;
                     if (!postResponseId) {
@@ -126,10 +127,11 @@
                     
                     let responseHistory = user.user_metadata.responseHistory || [];
                     const index = responseHistory.findIndex(cycle => cycle.postId === postResponseId);
-                    
+                    const mockResponseHistory = {id: userId};
                     // If the postResponseId is not already in the history, add it
                     if (index === -1) {
                         responseHistory.push({ postId: postResponseId });
+                        Object.assign(mockResponseHistory, { user_metadata: { responseHistory: responseHistory } });
                         user.update({
                             user_metadata: { responseHistory: responseHistory,},
                         }).then((updatedUser) => {
@@ -152,6 +154,7 @@
                     } else {
                         console.log("Post response ID already exists in response history.");
                     }
+                    localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
                 }
 
                 function logOut() {
@@ -479,7 +482,7 @@
 
                     const quizFrame = document.querySelector('div.content > iframe.quiz');
                     const fallbackMessage = document.createElement('div');
-                    
+
                     const { type, detail: { key, oldValue, newValue } } = event;
                     console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
                     if (key === 'postResult' && oldValue !== newValue) {

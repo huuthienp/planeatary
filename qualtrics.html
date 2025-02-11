@@ -290,12 +290,15 @@
                     console.error("No preResponseId provided!");
                     return;
                 }
+
+                const userId = user.id;
                 let responseHistory = user.user_metadata.responseHistory || [];
                 const index = responseHistory.findIndex(cycle => cycle.preId === preResponseId);
-                
+                const mockResponseHistory = {id: userId};
                 // If the postResponseId is not already in the history, add it
                 if (index === -1) {
                     responseHistory.push({ preId: preResponseId });
+                    Object.assign(mockResponseHistory, { user_metadata: { responseHistory: responseHistory } });
                     user.update({
                         user_metadata: { responseHistory: responseHistory,},
                     }).then((updatedUser) => {
@@ -317,6 +320,7 @@
                 } else {
                     console.log("Pre response ID already exists in response history.");
                 }
+                localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
             }
 
             function isTokenExpired(token) {

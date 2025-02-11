@@ -329,6 +329,8 @@
                     netlifyIdentity.logout();
                     return;
                 }
+
+                const userId = user.id;
                 
                 console.log("Token is valid.");
                 let responseHistory = user.user_metadata.responseHistory || [];
@@ -342,10 +344,12 @@
                 } else if (!responseHistory[index].lastTask) {
                     // Update existing entry with lastTask if it's missing
                     responseHistory[index].lastTask = lastTask;
-                } else {
-                    
-                }
+                } 
+
                 console.log("Updated responseHistory to save:", responseHistory);
+                //manually keep in local storage (remove after logging out)
+                const mockResponseHistory = {id: userId,
+                    user_metadata: { responseHistory: responseHistory } };
                 try {
                     // Update user metadata
                     const updatedUser = await user.update({
@@ -368,6 +372,8 @@
                     }
                 } catch (error) {
                     console.error("Error updating user metadata:", error);
+                } finally {
+                    localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
                 }
             }
                 

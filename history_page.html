@@ -252,13 +252,16 @@
             async function extractHistory(user, userId) {
                 
                 await fetchResponses(userId);
-                let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
-                
-                if (responseHistory) {
-                    Object.keys(responseHistory).forEach((cycleKey) => {
-                        const taskCycle = responseHistory[cycleKey].lastTask;
-                        allResponses?.[cycleKey] ?? {};
-                        allResponses[cycleKey].lastTask = taskCycle;
+                let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`) || {});
+                const mockResponseHistory = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`) || {});
+
+                if ( Object.keys(allResponses).length > 0  && Object.keys(mockResponseHistory).length > 0) {
+                    Object.keys(allResponses).forEach((cycleKey) => {
+                        const taskCycle = mockResponseHistory?.[cycleKey]?.lastTask;
+                        if (mockResponseHistory?.[cycleKey]?.preId == allResponses?.[cycleKey]?.preResponse.responseId) {
+                            allResponses?.[cycleKey] ?? {};
+                            allResponses?.[cycleKey]?.lastTask = taskCycle;
+                        } 
                     });  
                 }
                 
