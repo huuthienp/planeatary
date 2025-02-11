@@ -12,6 +12,11 @@ body {
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
+.navbar {
+  position: sticky !important;
+  top: 0;
+}
+
 .b-example-divider {
   width: 100%;
   height: 3rem;
@@ -876,7 +881,6 @@ body {
 .toast-container {
   display: flex;
   justify-content: flex-end;
-  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
@@ -887,6 +891,8 @@ body {
 }
 
 .toast {
+  position: sticky;
+  top: 10%;
   z-index: 3000 !important;
 }
 
