@@ -285,14 +285,15 @@
                                 const taskDone =  Array.isArray(fetched_tasks?.done) ? fetched_tasks.done : Object.values(fetched_tasks?.done ?? []);
                                 if (task_rec.length > 0) {
                                     const lastTaskTime = Math.max(...task_rec);
-                                    const index = task_rec.indexOf(lastTaskTime);
-                                    lastTask = `${taskDone[index]}@${lastTaskTime}`;
+                                    const index = fetched_tasks?.time?.findIndex(el => el == lastTaskTime);
+                                    const taskName = taskDone[index];
+                                    lastTask = `${taskName}@${lastTaskTime}`;
                                     cycleKey.preResponse.lastTask = lastTask;
                                     console.log("Here the time you will add ", lastTask);
                                 }
                                 
                             } catch(err) {
-                                console.warn("No fetched_tasks available!");
+                                console.warn("Found err: ", err);
                             }
                         }
                         return cycleKey;
