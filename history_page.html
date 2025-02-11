@@ -260,7 +260,7 @@
                         const taskCycle = mockResponseHistory?.[cycleKey]?.lastTask;
                         if (mockResponseHistory?.[cycleKey]?.preId == allResponses?.[cycleKey]?.preResponse.responseId) {
                             allResponses?.[cycleKey] ?? {};
-                            allResponses?.[cycleKey]?.lastTask = taskCycle;
+                            allResponses[cycleKey].lastTask = taskCycle;
                         } 
                     });  
                 }

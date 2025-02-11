@@ -68,6 +68,7 @@
             </div>
             <div class="content">
                 <iframe class="quiz" title="PlanEATary Post-Quiz"></iframe>
+                <span class="fallback"></span>
                 <div class="btn-next">
                     <button type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button>
                 </div>
@@ -125,13 +126,13 @@
                         return;
                     }
                     
-                    let responseHistory = user.user_metadata.responseHistory || [];
+                    let responseHistory = user.user_metadata.responseHistory || {};
                     const index = responseHistory.findIndex(cycle => cycle.postId === postResponseId);
-                    const mockResponseHistory = {id: userId};
+                    const mockResponseHistory = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`));
                     // If the postResponseId is not already in the history, add it
                     if (index === -1) {
                         responseHistory.push({ postId: postResponseId });
-                        Object.assign(mockResponseHistory, { user_metadata: { responseHistory: responseHistory } });
+                        Object.assign(mockResponseHistory.user_matadata, { postId: postResponseId });
                         user.update({
                             user_metadata: { responseHistory: responseHistory,},
                         }).then((updatedUser) => {
@@ -183,8 +184,7 @@
                 
             </script>      
             <script defer type="module">
-                import { initiateSurvey, fetchTaskStatus, extractTaskData } from './scripts/helpers.mjs';
-
+                import { initiateSurvey, fetchTaskStatus, extractTaskData, updateButton } from './scripts/helpers.mjs';
                 async function fetchResponses(userId) {
                     try {
                         const response = await fetch('/api/fetch-responses', {
@@ -242,7 +242,7 @@
                     let latest_post = "";
                     let latest_task = "";
 
-                    const fallbackMessage = document.createElement('div');
+                    const fallbackMessage = document.querySelector(".fallback");
                     fallbackMessage.classList.add("empty-state");
 
                     const offcanvasNavbar = document.getElementById('offcanvasNavbar');
@@ -294,30 +294,15 @@
                     });
 
                     
-                    function updateNextButton(postObject) {                  
-                        if (postObject) {
-                            // If postResult exists, enable the button and navigate to the results page
-                            nextButton.style.backgroundColor = '#02897A'; 
-                            nextButton.style.cursor = 'pointer';   
-                            nextButton.disabled = false;
-
-                            nextButton.addEventListener("click", function() {
-                                //ensure the data's cycle selected from history page is always removed
-                                sessionStorage.removeItem('selectedCycle');
-                                window.location.href = "result_page.html";
-                            });
-                        } else {
-
-                            // Disable the button if postResult does not exist
-                            nextButton.style.backgroundColor = 'grey';
-                            nextButton.style.borderColor = 'grey';
-                            nextButton.style.cursor = 'not-allowed';
-                            nextButton.disabled = true;
-                        }
-                    }
                     
                     // Initial check for preResult
-                    updateNextButton(postObject);
+                    updateButton(nextButton, 'grey', 'not-allowed');
+
+                    nextButton.addEventListener('click', () => {
+                        window.location.href = "result.page.html";
+                            
+                    });
+
                     // Set up an interval to check for changes in localStorage
                     setInterval(updateNextButton, 1000);
                     
@@ -408,10 +393,9 @@
                                 if (postObject) {
                                     postResult = postObject?.result ?? null;
                                     post_rec = postObject?.recordedDate ?? null;
+                                    updateButton(nextButton, '#02897A', 'pointer');
                                     quizFrame.style.display = 'none'; 
                                     fallbackMessage.innerHTML = "<div class='void'>Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over. Or click next to see the result!</div>";
-                                    quizFrame.parentElement.appendChild(fallbackMessage);
-                                    updateNextButton(postObject);
                                 } else if (!postObject || Object.keys(postObject).length === 0) {
                                     try {
                                         if (!selectTasks) {
@@ -425,7 +409,6 @@
                                                 quizFrame.style.display = 'none'; 
                                                 document.querySelector('.btn-next').style.display = 'none';
                                                 fallbackMessage.innerHTML = "<div class='empty-state'>Please finish all selected tasks before doing the post quiz.</div>";
-                                                quizFrame.parentElement.appendChild(fallbackMessage);
                                                 window.location.href = "challenge_page.html";
                                                 return;
                                             } else {
@@ -438,8 +421,6 @@
                                         document.querySelector('.btn-next').style.display = 'none';
                                         fallbackMessage.style.color = "#ff6b6b";
                                         fallbackMessage.innerHTML = err;
-                                        
-                                        quizFrame.parentElement.appendChild(fallbackMessage);
                                         window.location.href = "challenge_page.html";
                                         return;
                                     }  
@@ -452,9 +433,8 @@
                             console.error("Caught error: ", err);
                             quizFrame.style.display = 'none';
                             document.querySelector('.btn-next').style.display = 'none';
-                            fallbackMessage.innerHTML = "<div class='empty-state'>Content cannot be displayed. Please try again later.</div>";
+                            fallbackMessage.innerHTML = "Content cannot be displayed. Please try again later.";
                             nextButton.style.display = "none";
-                            quizFrame.parentElement.appendChild(fallbackMessage);
                     } finally {
                         hideSpinner();
                     } 
@@ -481,7 +461,8 @@
                     const userId = user.id;
 
                     const quizFrame = document.querySelector('div.content > iframe.quiz');
-                    const fallbackMessage = document.createElement('div');
+                    const fallbackMessage = document.querySelector(".fallback");
+                    fallbackMessage.classList.add("empty-state");
 
                     const { type, detail: { key, oldValue, newValue } } = event;
                     console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
@@ -490,12 +471,12 @@
                             JSON.parse(newValue || undefined);  // force null -> undefined to throw error
                             quizFrame.style.display = 'none';
                             fallbackMessage.innerHTML = '<div class="void">Thank you for your response!</div>';
-                            quizFrame.parentElement.appendChild(fallbackMessage);
                             await updateResponseHistory(postObject, user);
-                            updateNextButton(postObject);
+                            updateButton(nextButton, '#02897A', 'pointer');
                             console.log('Found post-quiz result in storage!\n', newValue);
                         } catch(error) {
                             console.warn('Caught', error, '\nPost-quiz result is not found!');
+                            updateButton(nextButton, 'grey', 'not-allowed');
                             var quizUrl = initiateSurvey('post', quizFrame);
                             // quizSpan.innerText = 'An error occurred. Please try again later.';
                         }
