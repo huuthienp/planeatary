@@ -272,14 +272,15 @@
                 const lastTask = "";
 
                 if ( allResponses.length > 0  && mockResponseHistory.length > 0) {
-                    allResponses.forEach((cycleKey, i) => {
-                        const taskCycle = mockResponseHistory[i]?.lastTask;
+                    allResponses.map((cycleKey) => {
+                        const taskCycle = mockResponseHistory?.lastTask;
                         
-                        if (mockResponseHistory[i]?.preId == cycleKey?.preResponse?.responseId) {
+                        if (mockResponseHistory?.preId == cycleKey?.preResponse?.responseId) {
                             cycleKey.preResponse.lastTask = taskCycle;
                         } else {
                             try {
-                                const fetched_tasks = JSON.parse(localStorage.getItem(`${cycleKey?.preResponse?.responseId}:fetched_tasks`)) || {};
+                                const fetched_tasks = JSON.parse(localStorage.getItem(`${cycleKey.preResponse.responseId}:fetched_tasks`)) || {};
+                                console.log("Here the fetch_tasks you will add ", fetched_tasks);
                                 const task_rec = fetched_tasks?.time ?? [];
                                 const taskDone = fetched_tasks?.done ?? [];
                                 if (task_rec.length > 0) {
@@ -287,13 +288,14 @@
                                     const index = task_rec.indexOf(lastTaskTime);
                                     lastTask = `${taskDone[index]}@${lastTaskTime}`;
                                     cycleKey.preResponse.lastTask = lastTask;
+                                    console.log("Here the time you will add ", lastTask);
                                 }
                                 
                             } catch(err) {
                                 console.warn("No fetched_tasks available!");
                             }
                         }
-                        allResponses[i] = cycleKey;
+                        return cycleKey;
                     }); 
                     localStorage.setItem(`${userId}:allResponses`, JSON.stringify(allResponses)); 
                 } 
