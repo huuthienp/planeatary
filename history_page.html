@@ -206,7 +206,7 @@
                     const data = await response.json();
                     console.log('Responses fetched!\n', data);
                     localStorage.setItem(`${userId}:allResponses`, JSON.stringify(data));
-                    return JSON.parse(data);
+                    return data;
                     
                 } catch (error) {
                     console.warn('Caught', error, '\nin fetchResponse');
@@ -284,7 +284,7 @@
                 const history = JSON.parse(localStorage.getItem(`${userId}:allResponses`));  
                 const table = document.getElementById('h-table');
                 
-                if (!history || Object.keys(history).length === 0) {
+                if (!history || history.length === 0) {
                     document.querySelector('div.history-table > table').style.display = 'none';
                     document.querySelector('div.history-table > p').classList.remove('hidden');
                     return;
