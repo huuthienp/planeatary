@@ -253,6 +253,14 @@
                 const now = Math.floor(Date.now()/1000); 
                 return exp < now; // Returns true if token is expired
             }
+
+            document.getElementById('logOut').addEventListener('click', () => {
+                    if(confirm("Do you really want to sign out?") == true) {
+                        showSpinner();
+                        logOut();
+                        hideSpinner();
+                    }
+                });
             
             async function extractHistory(user, userId) {
                 
@@ -284,9 +292,9 @@
             }
             
             
-            function displayTable(userId) {
+            async function displayTable(user, userId) {
 
-                const history = JSON.parse(localStorage.getItem(`${userId}:allResponses`));  
+                const history = await extractHistory(user, userId);
                 const table = document.getElementById('h-table');
                 
                 if (!history || history.length === 0) {
@@ -294,7 +302,8 @@
                     document.querySelector('div.history-table > p').classList.remove('hidden');
                     return;
                 }
-                
+                console.log("info to be displayed", history);
+
                 history.forEach((cycleKey) => {
                     const cycle = history?.[cycleKey] ?? {};
                     const cycleRow = document.createElement('tr');
@@ -393,18 +402,8 @@
                 const userId = user.id;
                 const metadata = user.user_metadata;
                 const responseHistory = metadata.responseHistory;
-                
 
-                document.getElementById('logOut').addEventListener('click', () => {
-                    if(confirm("Do you really want to sign out?") == true) {
-                        showSpinner();
-                        logOut();
-                        hideSpinner();
-                    }
-                });
-
-                await extractHistory(user, userId);
-                displayTable(userId);
+                await displayTable(user, userId);
                 hideSpinner();
                 
             });

@@ -167,41 +167,6 @@
                     localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
                 }
 
-                function logOut() {
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    
-                    if (netlifyIdentity.gotrue.currentUser() !== null) {
-                        let user = netlifyIdentity.gotrue.currentUser();
-                        user.logout().then(() => {
-                            offcanvas.hide();
-                            console.log('User has been logged out!');
-                            window.location.href = "index.html";
-                        });
-                    } else {
-                        window.location.href = "index.html";
-                        console.log("No user is logged in!");
-                    }
-                }
-                
-                document.getElementById('logOut').addEventListener('click', () => {
-                    if(confirm("Do you really want to sign out?") == true) {
-                        showSpinner();
-                        logOut();
-                        hideSpinner();
-                    }
-                });
-                
-            </script>      
-            <script defer type="module">
-                import { initiateSurvey, fetchTaskStatus, extractTaskData, updateButton } from './scripts/helpers.mjs';
-
-                var preObject = JSON.parse(localStorage.getItem('preResult'));
-                var preResult = preObject?.result;
-                var preResponseId = preObject?.responseId;
-                var postObject = JSON.parse(localStorage.getItem('postResult'));
-                var postResult = postObject?.result ?? null;
-                var post_rec = postObject?.recordedDate ?? null;
-
                 async function fetchResponses(userId) {
                     try {
                         const response = await fetch('/api/fetch-responses', {
@@ -262,6 +227,41 @@
                         return cycle
                     }
 
+
+                function logOut() {
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    
+                    if (netlifyIdentity.gotrue.currentUser() !== null) {
+                        let user = netlifyIdentity.gotrue.currentUser();
+                        user.logout().then(() => {
+                            offcanvas.hide();
+                            console.log('User has been logged out!');
+                            window.location.href = "index.html";
+                        });
+                    } else {
+                        window.location.href = "index.html";
+                        console.log("No user is logged in!");
+                    }
+                }
+                
+                document.getElementById('logOut').addEventListener('click', () => {
+                    if(confirm("Do you really want to sign out?") == true) {
+                        showSpinner();
+                        logOut();
+                        hideSpinner();
+                    }
+                });
+                
+            </script>      
+            <script defer type="module">
+                import { initiateSurvey, fetchTaskStatus, extractTaskData, updateButton } from './scripts/helpers.mjs';
+
+                var preObject = JSON.parse(localStorage.getItem('preResult'));
+                var preResult = preObject?.result;
+                var preResponseId = preObject?.responseId;
+                var postObject = JSON.parse(localStorage.getItem('postResult'));
+                var postResult = postObject?.result;
+                var post_rec = postObject?.recordedDate;
                 
                 document.addEventListener("DOMContentLoaded", async () => {
 

@@ -384,7 +384,7 @@
                     } else if (allResponses) {
                         var preQuiz;
                         var postQuiz;
-                        Object.keys(allResponses).forEach((cycleKey) => {
+                        allResponses.forEach((cycleKey) => {
                             if (allResponses[cycleKey].preResponse) {
                                 //get the latest preResponse and postResponse if any
                                 preQuiz = allResponses?.[cycleKey]?.preResponse ?? null;
