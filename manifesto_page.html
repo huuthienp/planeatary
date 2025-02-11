@@ -593,11 +593,7 @@
                 const metadata = user.user_metadata;
                 const responseHistory = metadata.responseHistory;
                 const userId = user.id;
-                var preObject = JSON.parse(localStorage.getItem('preResult')); 
-                var preResult = preObject && preObject.result ? preObject.result : {};
-                var preResponseId = preObject && preObject.responseId ? preObject.responseId : "";
-                var preTotalScore = preResult && preResult.totalScore ? preResult.totalScore : "";
-                var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
+
                 //handle first-time user
                 if (!metadata.responseHistory && !preObject) {
                     console.warn("No responseHistory found for this user.");
@@ -640,12 +636,7 @@
                     
                     preObject = storedCycle?.preResponse;
                     preResult = preObject?.result;
-                    pre_rec = preObject?.recordedDate;
                     preResponseId = preObject?.responseId ?? "";
-                    
-                    postObject = storedCycle?.postResponse ?? {};
-                    postResult = postObject?.result ?? {};
-                    post_rec = postObject?.recordedDate;
                     
                     try {
                         var selectTasks = await fetchTaskStatus(preResponseId, userId);
