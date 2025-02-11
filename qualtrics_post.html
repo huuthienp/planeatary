@@ -195,6 +195,13 @@
             <script defer type="module">
                 import { initiateSurvey, fetchTaskStatus, extractTaskData, updateButton } from './scripts/helpers.mjs';
 
+                var preObject = JSON.parse(localStorage.getItem('preResult'));
+                var preResult = preObject?.result;
+                var preResponseId = preObject?.responseId;
+                var postObject = JSON.parse(localStorage.getItem('postResult'));
+                var postResult = postObject?.result ?? null;
+                var post_rec = postObject?.recordedDate ?? null;
+
                 async function fetchResponses(userId) {
                     try {
                         const response = await fetch('/api/fetch-responses', {
@@ -259,13 +266,6 @@
                 document.addEventListener("DOMContentLoaded", async () => {
 
                     updateButton(nextButton, 'grey', 'not-allowed');
-
-                    var preObject = JSON.parse(localStorage.getItem('preResult'));
-                    var preResult = preObject?.result;
-                    var preResponseId = preObject?.responseId;
-                    var postObject = JSON.parse(localStorage.getItem('postResult'));
-                    var postResult = postObject?.result ?? null;
-                    var post_rec = postObject?.recordedDate ?? null;
 
                     var tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
                     var selectTasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
