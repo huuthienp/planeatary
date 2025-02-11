@@ -822,7 +822,7 @@
                 const data = await response.json();
                 console.log('Responses fetched!\n', data);
                 localStorage.setItem(`${userId}:allResponses`, JSON.stringify(data));
-                return data;
+                return JSON.parse(data);
                 
             } catch (error) {
                 console.warn('Caught', error, '\nin fetchResponse');
@@ -833,7 +833,7 @@
         async function ExtractQuizInfo() {
 
             const {quizObj, historyObj, userId} = ExtractUserMetadata();
-            await fetchResponses(userId);
+            var allRes = await fetchResponses(userId);
             let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
             if (quizObj.lastPost !== "" && allResponses) {
                 Object.keys(allResponses).forEach((cycleKey) => {

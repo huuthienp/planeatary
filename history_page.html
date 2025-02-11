@@ -251,11 +251,11 @@
             
             async function extractHistory(user, userId) {
                 
-                await fetchResponses(userId);
-                let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`) || {});
-                const mockResponseHistory = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`) || {});
+                var allRes = await fetchResponses(userId);
+                let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`) || "[]");
+                const mockResponseHistory = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`) || "{}");
 
-                if ( Object.keys(allResponses).length > 0  && Object.keys(mockResponseHistory).length > 0) {
+                if ( allResponses.length > 0  && mockResponseHistory) {
                     Object.keys(allResponses).forEach((cycleKey) => {
                         const taskCycle = mockResponseHistory?.[cycleKey]?.lastTask;
                         if (mockResponseHistory?.[cycleKey]?.preId == allResponses?.[cycleKey]?.preResponse.responseId) {
@@ -263,6 +263,8 @@
                             allResponses[cycleKey].lastTask = taskCycle;
                         } 
                     });  
+                } else {
+                    allResponses.push(mockResponseHistory);
                 }
                 
                 localStorage.setItem(`${userId}:allResponses`, JSON.stringify(allResponses));
