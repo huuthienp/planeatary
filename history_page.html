@@ -288,9 +288,9 @@
                 var lastTask = "";
 
                 if ( allResponses.length > 0  && mockResponseHistory.length > 0) {
-                    allResponses.map((cycleKey) => {
-                        const taskCycle = mockResponseHistory?.lastTask ?? "";
-                        if (mockResponseHistory?.preId == cycleKey?.preResponse?.responseId) {
+                    allResponses.map((cycleKey, i) => {
+                        const taskCycle = mockResponseHistory[i]?.lastTask ?? "";
+                        if (mockResponseHistory[i]?.preId == cycleKey?.preResponse?.responseId) {
                             cycleKey.preResponse.lastTask = taskCycle;
                             console.log("Here the last task you will add ", taskCycle);
                         } else {
@@ -347,8 +347,11 @@
                     if (cycle?.preResponse?.lastTask) {
                         const lastTask = cycle.preResponse.lastTask ?? "";
                         const [taskId, unixSec] = lastTask.includes("@") ? lastTask.split('@') : ["N/A", "N/A"];
+                        let date;
                         if (unixSec) {
-                            const date = detectAndParseTimestamp(unixSec);
+                            const length = String(unixSec).length;
+                            if (length <= 10) { date = new Date(parseInt(unixSec, 10)*1000) }
+                            else {date = new Date(parseInt(unixSec, 10))}
                             // format as needed
                             taskcycle.textContent = date.toLocaleString();
                         } else {
