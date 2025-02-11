@@ -128,12 +128,13 @@
                     
                     let responseHistory = user?.user_metadata?.responseHistory ?? [];
                     const index = responseHistory.findIndex(cycle => cycle.postId === postResponseId);
-                    const mockResponseHistory = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`));
+                    const mockResponseHistory = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`) || "{}");
 
                     // If the postResponseId is not already in the history, add it
                     if (index === -1) {
                         responseHistory.push({ postId: postResponseId });
-                        Object.assign(mockResponseHistory?.user_matadata?.responseHistory, { postId: postResponseId });
+                        console.log("The post-quiz updated",  responseHistory)
+                        Object.assign(mockResponseHistory?.user_metadata?.responseHistory[0], { postId: postResponseId });
                         user.update({
                             user_metadata: { responseHistory: responseHistory,},
                         }).then((updatedUser) => {
