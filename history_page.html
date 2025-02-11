@@ -269,7 +269,7 @@
                 const mockResponse = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`) || "{}");
                 const mockResponseHistory = mockResponse?.user_metadata?.responseHistory ?? [];
                 
-                const lastTask = "";
+                var lastTask = "";
 
                 if ( allResponses.length > 0  && mockResponseHistory.length > 0) {
                     allResponses.map((cycleKey) => {

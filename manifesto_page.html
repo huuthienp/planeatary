@@ -484,9 +484,7 @@
                             // Update task count and localStorage on checkbox change
                             checkbox.addEventListener('change', function() {
                                 let index = -1
-                                if (!fetched_tasks || !fetched_tasks.chosen) {
-                                    fetched_tasks = { chosen: [], done:[], time: [] }; // Ensure it is properly initialized
-                                } else if (fetched_tasks.chosen) {
+                                if (fetched_tasks.chosen) {
                                     index = fetched_tasks.chosen.findIndex(el => el == String(task.taskNumber));
                                 }
                                 if (!checkbox.disabled) {
