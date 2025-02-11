@@ -166,6 +166,31 @@
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
         const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
 
+        offcanvasLinks.forEach(li => {
+                li.addEventListener('click', event => {
+                    const targetHref = li.getAttribute('href');
+                    
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    
+                    if (targetHref) {
+                        window.location.href = targetHref; 
+                    }
+                });
+            });
+            
+            offcanvasDropdown.forEach(li => {
+                li.addEventListener('click', event => {
+                    const targetHref = li.getAttribute('href');
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    
+                    if (targetHref) {
+                        window.location.href = targetHref; 
+                    }
+                });
+            });
+
         function showSpinner() {
             spinner.classList.remove('hidden');
             spOver.classList.remove('hidden');
@@ -307,31 +332,6 @@
         }
         
         document.addEventListener("DOMContentLoaded", async function() {
-            
-            offcanvasLinks.forEach(li => {
-                li.addEventListener('click', event => {
-                    const targetHref = li.getAttribute('href');
-                    
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                    
-                    if (targetHref) {
-                        window.location.href = targetHref; 
-                    }
-                });
-            });
-            
-            offcanvasDropdown.forEach(li => {
-                li.addEventListener('click', event => {
-                    const targetHref = li.getAttribute('href');
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                    
-                    if (targetHref) {
-                        window.location.href = targetHref; 
-                    }
-                });
-            });
             
             const startButton = document.querySelector(".start");
             

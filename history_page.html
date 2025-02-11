@@ -122,10 +122,70 @@
             let isLoading;
             const minDisplayTime = 2000; 
             const bOverlay = document.getElementById("spinnerOverlay");
-
+            
             const offcanvasNavbar = document.getElementById('offcanvasNavbar');
             const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-            const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+            const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item > li');
+            
+            
+            const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+            const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
+
+            offcanvasLinks.forEach(li => {
+                li.addEventListener('click', event => {
+                    const targetHref = li.getAttribute('href');
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    
+                    if (targetHref && targetHref !== "#") {
+                        window.location.href = targetHref; 
+                    } 
+                });
+            });
+            
+            offcanvasDropdown.forEach(li => {
+                li.addEventListener('click', event => {
+                    const targetHref = li.getAttribute('href');
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    
+                    if (targetHref && targetHref !== "#") {
+                        window.location.href = targetHref; 
+                    } 
+                });
+            });
+            
+            // Function to handle navigation or showing toast
+            offcanvasListItems.forEach(li => {
+                li.addEventListener('click', event => {
+                    const link = li.querySelector('a.nav-link'); 
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    if (link) {
+                        const targetHref = link.getAttribute('href');
+                        if (targetHref && targetHref !== '#') {
+                            window.location.href = targetHref;
+                        }
+                    }
+                })
+                
+            });
+            
+            // Function to handle navigation or showing toast
+            offcanvasDropdownItems.forEach(li => {
+                li.addEventListener('click', event => {
+                    const link = li.querySelector('a.dropdown-item'); 
+                    
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    if (link) {
+                        const targetHref = link.getAttribute('href');
+                        if (targetHref && targetHref !== '#') {
+                            window.location.href = targetHref;
+                        }
+                    }
+                });
+            })
             
             const user = netlifyIdentity.gotrue.currentUser();
             

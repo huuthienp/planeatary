@@ -75,7 +75,7 @@
         </div>
         
         <!--Hero section at the top-->
-        <div class="hero">
+        <div class="hero pt-5">
             <div class="herocontent">
                 <div class="hero-text">
                     <h1>Welcome to the PlanEATary Quest!</h1>
@@ -962,11 +962,10 @@
         //allow a user to log out
         function logOut() {
             const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-            
+            offcanvas.hide();
             if (netlifyIdentity.gotrue.currentUser() !== null) {
                 let user = netlifyIdentity.gotrue.currentUser();
                 user.logout().then(() => {
-                    offcanvas.hide();
                     console.log('User has been logged out!');
                     window.location.href = "index.html";
                 });
@@ -974,6 +973,7 @@
                 window.location.href = "index.html";
                 console.log("No user is logged in!");
             }
+            
         }
         
         document.getElementById('logOut').addEventListener('click', () => {

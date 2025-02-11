@@ -267,7 +267,7 @@ body {
 .m-content {
   display: flex;
   justify-content: space-between;
-  padding: 3vh 0;
+  padding: 20vh 0;
   gap: 2vmax;
   flex-direction: column;
 }
@@ -1058,7 +1058,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 3vh 0;
+  padding-top: 20vh;
   gap: 2vmax;
   flex-direction: column;
 }
@@ -1252,7 +1252,7 @@ body {
 }
 
 .void-space {
-  padding: 5vh 0;
+  padding: 20vh 0;
 }
 
 .history-table {

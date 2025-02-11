@@ -43,7 +43,7 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
                                         <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item disabled" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
+                                        <li><a class="dropdown-item Disabled" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item">
@@ -96,6 +96,18 @@
         </section>
         <!-- spinner overlay-->
         <section class="overlay hidden" id="spinnerOverlay"></section>
+
+        <!-- Warning Toast -->
+        <div class="toast-container">
+            <div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Please finish your challenge before doing post-quiz.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
         
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script>
@@ -115,13 +127,13 @@
             const modalOverlay = document.getElementById("modalOverlay");
             const modalTitle = document.getElementById("modalTitle");
             const modalDescription = document.getElementById("modalDescription");
-
+            
             let preObject = JSON.parse(localStorage.getItem('preResult'));
             let preResponseId = preObject?.responseId ?? ""; 
             let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
             let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
             let storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
-
+            
             const nextButtonContainer = document.querySelector(".btn-next");
             const btn_next = document.querySelector(".next")
             
@@ -194,9 +206,85 @@
             function delay(ms) {
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
-
+            
             const offcanvasNavbar = document.getElementById('offcanvasNavbar');
             const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+            
+            const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+            const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+            const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
+            
+            
+            //For first-timer to see a reminder to do a very first quiz
+            function showToast() {
+                const toasty = document.getElementById('first-timer-toast');
+                const myToast = new bootstrap.Toast(toasty);
+                myToast.show();
+            }
+            
+            offcanvasLinks.forEach(li => {
+                li.addEventListener('click', event => {
+                    const targetHref = li.getAttribute('href');
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    
+                    if (targetHref && targetHref !== "#") {
+                        window.location.href = targetHref; 
+                    } 
+                });
+            });
+            
+            offcanvasDropdown.forEach(li => {
+                li.addEventListener('click', event => {
+                    const targetHref = li.getAttribute('href');
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    
+                    if (targetHref && targetHref !== "#") {
+                        window.location.href = targetHref; 
+                    } 
+                });
+            });
+            
+            // Function to handle navigation or showing toast
+            offcanvasListItems.forEach(li => {
+                li.addEventListener('click', event => {
+                    const link = li.querySelector('a.nav-link'); 
+                    
+                    if (link) {
+                        if (link.classList.contains('Disabled')) {
+                            showToast(); 
+                        } else {
+                            const targetHref = link.getAttribute('href');
+                            if (targetHref && targetHref !== '#') {
+                                window.location.href = targetHref;
+                            }
+                        }
+                    }
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                });
+            });
+            
+            // Function to handle navigation or showing toast
+            offcanvasDropdownItems.forEach(li => {
+                li.addEventListener('click', event => {
+                    const link = li.querySelector('a.dropdown-item'); 
+                    
+                    if (link) {
+                        if (link.classList.contains('Disabled')) {
+                            showToast(); 
+                        } else {
+                            const targetHref = link.getAttribute('href');
+                            if (targetHref && targetHref !== '#') {
+                                window.location.href = targetHref;
+                            }
+                        }
+                    }
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                });
+            })
             
             function logOut() {
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
