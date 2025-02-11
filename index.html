@@ -473,8 +473,8 @@
 </div>
 
 <!-- Error Warning Toast -->
-<div class="toast-container position-absolute top-10 end-0 p-3" aria-live="polite" aria-atomic="true">
-    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+<div class="toast-container">
+    <div id="liveToast" class="toast m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
         <div class="toast-header">
             <strong class="me-auto">PlanEatary</strong>
             <!-- <small class="text-muted">just now</small> -->
@@ -485,12 +485,14 @@
 </div>
 
 <!-- Warning Toast -->
-<div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 top-20 end-0 translate-middle-y" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="d-flex">
-        <div class="toast-body">
-            Please finish your very first quiz before further proceeding.
+<div class="toast-container">
+    <div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Please finish your very first quiz before further proceeding.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
 </div>
 
@@ -556,7 +558,7 @@
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
         const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
         const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
-        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar dropdown-menu > li');
+        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
 
         //For first-timer to see a reminder to do a very first quiz
         function showToast() {
