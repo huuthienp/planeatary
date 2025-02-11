@@ -293,9 +293,10 @@
                                 console.warn("No fetched_tasks available!");
                             }
                         }
-                    });  
+                        allResponses[i] = cycleKey;
+                    }); 
+                    localStorage.setItem(`${userId}:allResponses`, JSON.stringify(allResponses)); 
                 } 
-                localStorage.setItem(`${userId}:allResponses`, JSON.stringify(allResponses));
                 return allResponses;
             }
             
