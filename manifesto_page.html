@@ -368,7 +368,7 @@
             
             let task_counts = 0;
             let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
-            let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
+            let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
             let task_rec = fetched_tasks?.time ?? []; 
             
             // Function to update the start button state based on selected tasks
@@ -460,7 +460,7 @@
                             
                             // Set task choice and status based on local storage and finish time of fetched_tasks
                             if (!fetched_tasks || !fetched_tasks.chosen) {
-                                fetched_tasks = { chosen: [], time: [] }; 
+                                fetched_tasks = { chosen: [], done:[], time: [] }; 
                             } else if (fetched_tasks) {
                                 if (fetched_tasks.chosen && fetched_tasks.done) {
                                     if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
@@ -485,7 +485,7 @@
                             checkbox.addEventListener('change', function() {
                                 let index = -1
                                 if (!fetched_tasks || !fetched_tasks.chosen) {
-                                    fetched_tasks = { chosen: [], time: [] }; // Ensure it is properly initialized
+                                    fetched_tasks = { chosen: [], done:[], time: [] }; // Ensure it is properly initialized
                                 } else if (fetched_tasks.chosen) {
                                     index = fetched_tasks.chosen.findIndex(el => el == String(task.taskNumber));
                                 }
@@ -631,7 +631,7 @@
                     try {
                         fetched_tasks = await fetchTaskStatus(preResponseId, userId); 
                         localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
-                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
                     } catch(err) {
                         console.log("Found error: ", err);
                     }
@@ -652,7 +652,7 @@
                     try {
                         var selectTasks = await fetchTaskStatus(preResponseId, userId);
                         localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
-                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
                         task_rec = fetched_tasks?.time ?? []; 
                     } catch(err) {
                         console.log("Couldn't find previous tasks' info:", err);
@@ -663,7 +663,7 @@
                     try {
                         fetched_tasks = await fetchTaskStatus(preResponseId, userId);
                         localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
-                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
                         task_rec = fetched_tasks?.time ?? []; 
                     } catch (err) {
                         console.error("Couldn't find history tasks' info:", err);
