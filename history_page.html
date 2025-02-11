@@ -280,8 +280,8 @@
                         } else {
                             try {
                                 const fetched_tasks = JSON.parse(localStorage.getItem(`${cycleKey?.preResponse?.responseId}:fetched_tasks`)) || {};
-                                const task_rec = fetch_tasks?.time ?? [];
-                                const taskDone = fetch_tasks?.done ?? [];
+                                const task_rec = fetched_tasks?.time ?? [];
+                                const taskDone = fetched_tasks?.done ?? [];
                                 if (task_rec.length > 0) {
                                     const lastTaskTime = Math.max(...task_rec);
                                     const index = task_rec.indexOf(lastTaskTime);
