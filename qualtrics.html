@@ -385,10 +385,10 @@
                         var preQuiz;
                         var postQuiz;
                         allResponses.forEach((cycleKey) => {
-                            if (allResponses[cycleKey].preResponse) {
+                            if (cycleKey?.preResponse) {
                                 //get the latest preResponse and postResponse if any
-                                preQuiz = allResponses?.[cycleKey]?.preResponse ?? null;
-                                postQuiz = allResponses?.[cycleKey]?.postResponse ?? null;
+                                preQuiz = cycleKey?.preResponse ?? null;
+                                postQuiz = cycleKey?.postResponse ?? null;
                             } 
                         });
                         

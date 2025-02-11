@@ -364,7 +364,7 @@
                                 const cycleKeys = allResponses || []; 
                                 if (cycleKeys.length > 0) {
                                     const lastKey = cycleKeys[cycleKeys.length - 1]; 
-                                    const entry = allResponses?.[lastKey] ?? {}; 
+                                    const entry =  cycleKeys[lastKey] || {}; 
                                     
                                     // Access preQuiz and postQuiz safely
                                     preQuiz = entry?.preResponse ?? null;
@@ -381,7 +381,7 @@
                                 const cycleKeys = allResponses || []; 
                                 if (cycleKeys.length > 0) {
                                     const lastKey = cycleKeys[cycleKeys.length - 1]; 
-                                    const entry = allResponses?.[lastKey] ?? {}; 
+                                    const entry = cycleKeys[lastKey] || {}; 
                                     
                                     // Access preQuiz and postQuiz safely
                                     preQuiz = entry?.preResponse ?? null;

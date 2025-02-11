@@ -305,7 +305,7 @@
                 console.log("info to be displayed", history);
 
                 history.forEach((cycleKey) => {
-                    const cycle = history?.[cycleKey] ?? {};
+                    const cycle = cycleKey ?? {};
                     const cycleRow = document.createElement('tr');
                     const prescore = document.createElement('td');
                     const predate = document.createElement('td');
