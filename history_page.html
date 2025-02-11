@@ -345,7 +345,8 @@
                     
                     // lastTask
                     if (cycle?.preResponse?.lastTask) {
-                        const [taskId, unixSec] = cycle.lastTask.split('@');
+                        const lastTask = cycle.preResponse.lastTask ?? "";
+                        const [taskId, unixSec] = lastTask.includes("@") ? lastTask.split('@') : ["N/A", "N/A"];
                         if (unixSec) {
                             const date = detectAndParseTimestamp(unixSec);
                             // format as needed
@@ -357,25 +358,22 @@
                         taskcycle.textContent = 'N/A';
                     }
                     
-                    // preResponse
                     if (cycle?.preResponse) {
-                        const isoString = cycle.preResponse.recordedDate;
-                        const dateObj = new Date(isoString);
-                        prescore.textContent = cycle.preResponse.result.totalScore;
-                        predate.textContent = dateObj.toLocaleString();
-
+                        prescore.textContent = cycle.preResponse?.result?.totalScore ?? 'N/A';
+                        predate.textContent = cycle.preResponse?.recordedDate 
+                        ? new Date(cycle.preResponse.recordedDate).toLocaleString() 
+                        : 'N/A';
                     } else {
                         prescore.textContent = 'N/A';
                         predate.textContent = 'N/A';
                     }
                     
-                    // postResponse
-                    if (cycle?.postResponse) {
-                        const isoString = cycle.postResponse.recordedDate;
-                        const dateObj = new Date(isoString);
-                        postscore.textContent = cycle.postResponse.result.totalScore;
-                        postdate.textContent = dateObj.toLocaleString();
 
+                   if (cycle?.postResponse) {
+                        postscore.textContent = cycle.postResponse?.result?.totalScore ?? 'N/A';
+                        postdate.textContent = cycle.postResponse?.recordedDate 
+                        ? new Date(cycle.postResponse.recordedDate).toLocaleString() 
+                        : 'N/A';
                     } else {
                         postscore.textContent = 'N/A';
                         postdate.textContent = 'N/A';
