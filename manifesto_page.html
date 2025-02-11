@@ -14,7 +14,6 @@
 </head>
 <body>
     <div class="main-container">
-        <div class="spinner hidden" id="spinner"></div>
         <div class="Header">
             <!-- Sidebar -->
             <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
@@ -120,8 +119,14 @@
         </div>
     </section>
     
-    <!-- spinner overlay-->
-    <section class="overlay hidden" id="spinnerOverlay"></section>
+      <!-- spinner overlay-->
+      <section class="overlay hidden" id="spinnerOverlay">
+        <div class="spinner hidden" id="spinner">
+        </div>
+        <div>
+            <span>Loading</span>
+        </div>
+    </section>
     
     <!-- Warning Toast -->
     <div class="toast-container">

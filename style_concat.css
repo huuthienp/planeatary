@@ -292,11 +292,11 @@ body {
 }
 
 .spinner {
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   background-color: #02897A;
   border-radius: 50%;
-  position: relative;
+  position: fixed;
   box-shadow: 0 0 30px 4px rgba(0, 0, 0, 0.5) inset,
     0 5px 12px rgba(0, 0, 0, 0.15);
   overflow: hidden;
@@ -326,6 +326,7 @@ body {
     transform: rotate(360deg);
   }
 }
+
 
 /* Initially hide the spinner */
 .hidden {
@@ -901,13 +902,20 @@ margin-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   background-color: rgb(255, 255, 255, 1) !important;
   z-index: 1000;
+}
+
+#spinnerOverlay span {
+  position: relative;
+  z-index: 3001;
+  top: 70px;
+  left: auto;
+  font-family: 'Poppins', sans-serif;
+  color: #02897A; 
 }
 
 .toast-container {

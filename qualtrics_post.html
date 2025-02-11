@@ -14,7 +14,6 @@
 <body>
     
     <div class="main-container">
-        <div class="spinner hidden" id="spinner"></div>
         <div class="Header">
             <!-- Sidebar -->
             <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
@@ -73,8 +72,16 @@
                     <button id="nextButt" type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button>
                 </div>
             </div>
-            <!-- spinner overlay-->
-            <section class="overlay hidden" id="spinnerOverlay"></section>
+            
+              <!-- spinner overlay-->
+              <section class="overlay hidden" id="spinnerOverlay">
+                <div class="spinner hidden" id="spinner">
+                </div>
+                <div>
+                    <span>Loading</span>
+                </div>
+            </section>
+
             <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
             <script>
                 
