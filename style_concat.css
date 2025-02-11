@@ -880,8 +880,8 @@ body {
 
 .toast-container {
   display: flex;
+  position: sticky;
   justify-content: flex-end;
-  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -891,8 +891,6 @@ body {
 }
 
 .toast {
-  position: sticky;
-  top: 10%;
   z-index: 3000 !important;
 }
 
