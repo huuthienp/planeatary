@@ -342,7 +342,8 @@
                         //handle a user directly from the history page
                         var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
                         var allRes = await fetchResponses(userId);
-                        var allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
+                        let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
+                        console.log("All responses fetched! ", allResponses);
                         let postQuiz = null;
                         let preQuiz = null;
 
@@ -361,27 +362,27 @@
                                 console.log("Couldn't find previous info from history:", err);
                             }
                         } else if (allResponses) {
-                                const cycleKeys = allResponses || []; 
-                                if (cycleKeys.length > 0) {
-                                    const lastKey = cycleKeys[cycleKeys.length - 1]; 
-                                    const entry =  cycleKeys[lastKey] || {}; 
+                                if (allResponses.length > 0) {
+                                    const lastKey = allResponses.length - 1; 
+                                    const entry =  allResponses[lastKey]; 
                                     
                                     // Access preQuiz and postQuiz safely
                                     preQuiz = entry?.preResponse ?? null;
                                     postQuiz = entry?.postResponse ?? null;
                                     postObject = postQuiz;
                                     preObject = preQuiz;
-                                    preResponseId = preQuiz?.responseId ?? null;
+                                    preResponseId = preObject?.responseId ?? null;
+                                    postResponseId = postObject?.responseId ?? null;
                                     
                                     console.log('Last entry:', entry);
                                 }
                             } else {
                                 var allRes = await fetchResponses(userId);
-                                allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
-                                const cycleKeys = allResponses || []; 
+                                allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
+                                const cycleKeys = allResponses; 
                                 if (cycleKeys.length > 0) {
-                                    const lastKey = cycleKeys[cycleKeys.length - 1]; 
-                                    const entry = cycleKeys[lastKey] || {}; 
+                                    const lastKey = cycleKeys.length - 1; 
+                                    const entry = cycleKeys[lastKey]; 
                                     
                                     // Access preQuiz and postQuiz safely
                                     preQuiz = entry?.preResponse ?? null;

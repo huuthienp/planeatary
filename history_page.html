@@ -268,25 +268,33 @@
                 let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`) || "[]");
                 const mockResponse = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`) || "{}");
                 const mockResponseHistory = mockResponse?.user_metadata?.responseHistory ?? [];
+                
+                const lastTask = "";
 
-                if ( allResponses.length > 0  && Object.keys(mockResponseHistory).length > 0) {
-                    allResponses.forEach((cycleKey) => {
-                        const taskCycle = mockResponseHistory?.[cycleKey]?.lastTask;
-                        if (mockResponseHistory?.[cycleKey]?.preId == allResponses?.[cycleKey]?.preResponse?.responseId) {
-                            allResponses?.[cycleKey] ?? {};
-                            allResponses[cycleKey].preResponse.lastTask = taskCycle;
-                        } 
+                if ( allResponses.length > 0  && mockResponseHistor.length > 0) {
+                    allResponses.forEach((cycleKey, i) => {
+                        const taskCycle = mockResponseHistory[i]?.lastTask;
+                        
+                        if (mockResponseHistory[i]?.preId == cycleKey?.preResponse?.responseId) {
+                            cycleKey.preResponse.lastTask = taskCycle;
+                        } else {
+                            try {
+                                const fetched_tasks = JSON.parse(localStorage.getItem(`${cycleKey?.preResponse?.responseId}:fetched_tasks`)) || {};
+                                const task_rec = fetch_tasks?.time ?? [];
+                                const taskDone = fetch_tasks?.done ?? [];
+                                if (task_rec.length > 0) {
+                                    const lastTaskTime = Math.max(...task_rec);
+                                    const index = task_rec.indexOf(lastTaskTime);
+                                    lastTask = `${taskDone[index]}@${lastTaskTime}`;
+                                    cycleKey.preResponse.lastTask = lastTask;
+                                }
+                                
+                            } catch(err) {
+                                console.warn("No fetched_tasks available!");
+                            }
+                        }
                     });  
                 } 
-                
-                // else if (allResponses.length == 0 && mockResponseHistory.length > 0) {
-                //     mockResponseHistory.forEach((cycleKey) => {
-                //         const addition = mockResponseHistory?.[cycleKey];
-                //         const reArrange = {preResponse: {} }
-                //         allResponses.push(addition);
-                //     });   
-                // }
-                
                 localStorage.setItem(`${userId}:allResponses`, JSON.stringify(allResponses));
                 return allResponses;
             }
