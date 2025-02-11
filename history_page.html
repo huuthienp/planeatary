@@ -273,16 +273,16 @@
 
                 if ( allResponses.length > 0  && mockResponseHistory.length > 0) {
                     allResponses.map((cycleKey) => {
-                        const taskCycle = mockResponseHistory?.lastTask;
-                        
+                        const taskCycle = mockResponseHistory?.lastTask ?? "";
                         if (mockResponseHistory?.preId == cycleKey?.preResponse?.responseId) {
                             cycleKey.preResponse.lastTask = taskCycle;
+                            console.log("Here the last task you will add ", taskCycle);
                         } else {
                             try {
                                 const fetched_tasks = JSON.parse(localStorage.getItem(`${cycleKey.preResponse.responseId}:fetched_tasks`)) || {};
                                 console.log("Here the fetch_tasks you will add ", fetched_tasks);
-                                const task_rec = fetched_tasks?.time ?? [];
-                                const taskDone = fetched_tasks?.done ?? [];
+                                const task_rec = Array.isArray(fetched_tasks?.time) ? fetched_tasks.time : Object.values(fetched_tasks?.time ?? []);
+                                const taskDone =  Array.isArray(fetched_tasks?.done) ? fetched_tasks.done : Object.values(fetched_tasks?.done ?? []);
                                 if (task_rec.length > 0) {
                                     const lastTaskTime = Math.max(...task_rec);
                                     const index = task_rec.indexOf(lastTaskTime);
@@ -299,6 +299,7 @@
                     }); 
                     localStorage.setItem(`${userId}:allResponses`, JSON.stringify(allResponses)); 
                 } 
+                allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                 return allResponses;
             }
             

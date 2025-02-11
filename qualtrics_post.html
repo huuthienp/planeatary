@@ -141,7 +141,6 @@
                     if (index === -1) {
                         responseHistory.push({ postId: postResponseId });
                         console.log("The post-quiz updated",  responseHistory)
-                        Object.assign(mockResponseHistory?.user_metadata?.responseHistory[0], { postId: postResponseId });
                         user.update({
                             user_metadata: { responseHistory: responseHistory,},
                         }).then((updatedUser) => {
@@ -163,6 +162,7 @@
                         
                     } else {
                         console.log("Post response ID already exists in response history.");
+                        Object.assign(mockResponseHistory, { user_metadata: { responseHistory: responseHistory } });
                     }
                     localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
                 }
@@ -454,7 +454,26 @@
 
                 // Listen to postResult change in localStorage
                 window.addEventListener('localStorageChange', async (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
-            
+
+                    const netlifyIdentity = window.netlifyIdentity;
+                    const user = netlifyIdentity.gotrue.currentUser();
+
+                    if (user) {
+                        user.jwt().then(token => {
+                            if (isTokenExpired(token)) {
+                                console.log("Token expired. Prompting user to re-login...");
+                                netlifyIdentity.logout();
+                                window.location.href = "index.html";
+                            } else {
+                                console.log("Token is valid.");
+                            }
+                        });
+                    }
+
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
+                    const userId = user.id;
+                    
                     const quizFrame = document.querySelector('div.content > iframe.quiz');
                     const fallbackMessage = document.querySelector(".fallback");
                     fallbackMessage.classList.add("empty-state");
@@ -468,6 +487,7 @@
                             fallbackMessage.innerHTML = '<div class="void">Thank you for your response!</div>';
                             updateButton(nextButton, '#02897A', 'pointer');
                             console.log('Found post-quiz result in storage!\n', newValue);
+                            await updateResponseHistory(postObject, user);
                         } catch(error) {
                             console.warn('Caught', error, '\nPost-quiz result is not found!');
                             updateButton(nextButton, 'grey', 'not-allowed');

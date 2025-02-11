@@ -303,7 +303,6 @@
                 // If the preResponseId is not already in the history, add it
                 if (index === -1) {
                     responseHistory.push({ preId: preResponseId });
-                    Object.assign(mockResponseHistory, { user_metadata: { responseHistory: responseHistory } });
                     user.update({
                         user_metadata: { responseHistory: responseHistory,},
                     }).then((updatedUser) => {
@@ -325,6 +324,7 @@
                 } else {
                     console.log("Pre response ID already exists in response history.");
                 }
+                Object.assign(mockResponseHistory, { user_metadata: { responseHistory: responseHistory } });
                 localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
             }
 
@@ -462,10 +462,30 @@
                     
                 } finally {
                     hideSpinner();
+                    await updateResponseHistory(preObject, user);
                     
                 }
                 // Listen to preResult change in localStorage
-                window.addEventListener('localStorageChange', (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
+                window.addEventListener('localStorageChange', async (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
+                    const netlifyIdentity = window.netlifyIdentity;
+                    const user = netlifyIdentity.gotrue.currentUser();
+
+                    if (user) {
+                        user.jwt().then(token => {
+                            if (isTokenExpired(token)) {
+                                console.log("Token expired. Prompting user to re-login...");
+                                netlifyIdentity.logout();
+                                window.location.href = "index.html";
+                            } else {
+                                console.log("Token is valid.");
+                            }
+                        });
+                    }
+
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
+                    const userId = user.id;
+
                     const { type, detail: { key, oldValue, newValue } } = event;
                     console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
                     if (key === 'preResult' && oldValue !== newValue) {
@@ -476,6 +496,7 @@
                             quizFrame.style.display = 'none';
                             quizSpan.innerText = 'Thank you for your response!';
                             console.log('Found pre-quiz result in storage!\n', newValue);
+                            await updateResponseHistory(preObject, user);
                         } catch(error) {
                             console.warn('Caught', error, '\nPre-quiz result is not found!');
                             updateAnchors(anchors);
