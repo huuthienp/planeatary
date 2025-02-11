@@ -655,7 +655,7 @@
                         );
                         
                         const fallbackMessage = document.createElement('div');
-                        fallbackMessage.innerHTML = "Opps! no results available";
+                        fallbackMessage.innerHTML = "<div class='empty-state'>Opps! no results available</div>";
                         fallbackMessage.style.color = "red";
                         document.querySelector('div.m-content').parentElement.appendChild(fallbackMessage);
                     

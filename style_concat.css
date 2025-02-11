@@ -50,7 +50,6 @@ body {
     align-items: center;
     background: url('./images/welcome_background.png') center/cover no-repeat;
     margin: 0 auto;
-    padding: 10vh 10vw !important;
   }
 
   .hero .herocontent {

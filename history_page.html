@@ -187,24 +187,6 @@
                 });
             })
             
-            const user = netlifyIdentity.gotrue.currentUser();
-            
-            if (user) {
-                user.jwt().then(token => {
-                    if (isTokenExpired(token)) {
-                        console.log("Token expired. Prompting user to re-login...");
-                        netlifyIdentity.logout();
-                        window.location.href = "index.html";
-                    } else {
-                        console.log("Token is valid.");
-                    }
-                });
-            }
-            
-            const userId = user.id;
-            const metadata = user.user_metadata;
-            const responseHistory = metadata.responseHistory;
-            
             async function fetchResponses(userId) {
                 try {
                     const response = await fetch('/api/fetch-responses', {
@@ -267,24 +249,7 @@
                 return exp < now; // Returns true if token is expired
             }
             
-            async function extractHistory() {
-                const user = netlifyIdentity.gotrue.currentUser();
-            
-                if (user) {
-                    user.jwt().then(token => {
-                        if (isTokenExpired(token)) {
-                            console.log("Token expired. Prompting user to re-login...");
-                            netlifyIdentity.logout();
-                            window.location.href = "index.html";
-                        } else {
-                            console.log("Token is valid.");
-                        }
-                    });
-                }
-                
-                const userId = user.id;
-                const metadata = user.user_metadata;
-                const responseHistory = metadata.responseHistory;
+            async function extractHistory(user, userId) {
                 
                 await fetchResponses(userId);
                 let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
@@ -391,42 +356,36 @@
                 }
             }
 
-            document.getElementById('logOut').addEventListener('click', () => {
-                if(confirm("Do you really want to sign out?") == true) {
-                    showSpinner();
-                    logOut();
-                    hideSpinner();
-                }
-            });
             
             document.addEventListener("DOMContentLoaded", async () => {
-
-                offcanvasLinks.forEach(li => {
-                    li.addEventListener('click', event => {
-                        const targetHref = li.getAttribute('href');
-                        
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
-                        
-                        if (targetHref && targetHref !== '#') {
-                            window.location.href = targetHref; 
+                const user = netlifyIdentity.gotrue.currentUser();
+                
+                if (user) {
+                    user.jwt().then(token => {
+                        if (isTokenExpired(token)) {
+                            console.log("Token expired. Prompting user to re-login...");
+                            netlifyIdentity.logout();
+                            window.location.href = "index.html";
+                        } else {
+                            console.log("Token is valid.");
                         }
                     });
+                }
+                
+                const userId = user.id;
+                const metadata = user.user_metadata;
+                const responseHistory = metadata.responseHistory;
+                
+
+                document.getElementById('logOut').addEventListener('click', () => {
+                    if(confirm("Do you really want to sign out?") == true) {
+                        showSpinner();
+                        logOut();
+                        hideSpinner();
+                    }
                 });
 
-                offcanvasDropdown.forEach(li => {
-                    li.addEventListener('click', event => {
-                        const targetHref = li.getAttribute('href');
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
-                        
-                        if (targetHref) {
-                            window.location.href = targetHref; 
-                        }
-                    });
-                });
-
-                await extractHistory();
+                await extractHistory(user, userId);
                 showSpinner();
                 displayTable(userId);
                 hideSpinner();
