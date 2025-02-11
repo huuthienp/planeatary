@@ -344,24 +344,25 @@
                 var quizUrl = initiateSurvey('pre', quizFrame);
                 
                 updateButton(restartBtn, 'grey', 'not-allowed');
+
+                const user = netlifyIdentity.gotrue.currentUser();
+                if (user) {
+                    user.jwt().then(token => {
+                        if (isTokenExpired(token)) {
+                            console.log("Token expired. Prompting user to re-login...");
+                            netlifyIdentity.logout();
+                        } else {
+                            console.log("Token is valid.");
+                        }
+                    });
+                }
+
+                const metadata = user.user_metadata;
+                const responseHistory = metadata.responseHistory;
+                const userId = user.id;
                 
                 try {
                     showSpinner();
-                    const user = netlifyIdentity.gotrue.currentUser();
-                    if (user) {
-                        user.jwt().then(token => {
-                            if (isTokenExpired(token)) {
-                                console.log("Token expired. Prompting user to re-login...");
-                                netlifyIdentity.logout();
-                            } else {
-                                console.log("Token is valid.");
-                            }
-                        });
-                    }
-                    
-                    const metadata = user.user_metadata;
-                    const responseHistory = metadata.responseHistory;
-                    const userId = user.id;
 
                     var allRes = await fetchResponses(userId);
                     let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
@@ -460,7 +461,6 @@
                     quizUrl = initiateSurvey('pre', quizFrame);
                     
                 } finally {
-                    await updateResponseHistory(preObject, user);
                     hideSpinner();
                     
                 }
