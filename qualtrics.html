@@ -295,7 +295,7 @@
                 let responseHistory = user.user_metadata.responseHistory || [];
                 const index = responseHistory.findIndex(cycle => cycle.preId === preResponseId);
                 const mockResponseHistory = {id: userId};
-                // If the postResponseId is not already in the history, add it
+                // If the preResponseId is not already in the history, add it
                 if (index === -1) {
                     responseHistory.push({ preId: preResponseId });
                     Object.assign(mockResponseHistory, { user_metadata: { responseHistory: responseHistory } });

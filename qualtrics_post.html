@@ -126,13 +126,14 @@
                         return;
                     }
                     
-                    let responseHistory = user?.user_metadata?.responseHistory ?? {};
+                    let responseHistory = user?.user_metadata?.responseHistory ?? [];
                     const index = responseHistory.findIndex(cycle => cycle.postId === postResponseId);
                     const mockResponseHistory = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`));
+
                     // If the postResponseId is not already in the history, add it
                     if (index === -1) {
                         responseHistory.push({ postId: postResponseId });
-                        Object.assign(mockResponseHistory.user_matadata, { postId: postResponseId });
+                        Object.assign(mockResponseHistory?.user_matadata?.responseHistory, { postId: postResponseId });
                         user.update({
                             user_metadata: { responseHistory: responseHistory,},
                         }).then((updatedUser) => {
@@ -224,8 +225,32 @@
                     const now = Math.floor(Date.now()/1000); 
                     return exp < now; // Returns true if token is expired
                 }
+
+                function checkLastTaskStatus(metadata) {
+                        var responseHistory = metadata?.responseHistory ?? null;
+                        //handle first-time user
+                        if (!metadata || !responseHistory) {
+                            console.warn("No responseHistory found for this user.");
+                            return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
+                        } else {
+                            const cycleKeys = Object.keys(responseHistory || {});
+                            if (cycleKeys.length > 0) {
+                                const latestCycleKey = cycleKeys[cycleKeys.length - 1];  // Get the last cycle
+                                const entry = responseHistory[latestCycleKey];
+                                latest_pre = entry.preId || "";
+                                latest_post = entry.postId || "";
+                                latest_task = entry.lastTask || "";
+                            }
+                        }
+
+                        const cycle = {lastPre: latest_pre, lastPost: latest_post, lastTask: latest_task};
+                        return cycle
+                    }
+
                 
                 document.addEventListener("DOMContentLoaded", async () => {
+
+                    updateButton(nextButton, 'grey', 'not-allowed');
 
                     var preObject = JSON.parse(localStorage.getItem('preResult'));
                     var preResult = preObject?.result;
@@ -294,40 +319,14 @@
                         });
                     });
 
-                    
-                    
-                    // Initial check for preResult
-                    updateButton(nextButton, 'grey', 'not-allowed');
-
                     nextButton.addEventListener('click', () => {
                         window.location.href = "result_page.html";
                             
                     });
 
                     // Set up an interval to check for changes in localStorage
-                    setInterval(updateButton, 1000);
+                    //setInterval(updateButton, 1000);
                     
-                    function checkLastTaskStatus(metadata) {
-                        var responseHistory = metadata?.responseHistory ?? null;
-                        //handle first-time user
-                        if (!metadata || !responseHistory) {
-                            console.warn("No responseHistory found for this user.");
-                            return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
-                        } else {
-                            const cycleKeys = Object.keys(responseHistory || {});
-                            if (cycleKeys.length > 0) {
-                                const latestCycleKey = cycleKeys[cycleKeys.length - 1];  // Get the last cycle
-                                const entry = responseHistory[latestCycleKey];
-                                latest_pre = entry.preId || "";
-                                latest_post = entry.postId || "";
-                                latest_task = entry.lastTask || "";
-                            }
-                        }
-
-                        const cycle = {lastPre: latest_pre, lastPost: latest_post, lastTask: latest_task};
-                        return cycle
-                    }
-
                     //clear any existing message
                     fallbackMessage.innerHTML = "";
 
@@ -355,7 +354,7 @@
                                 console.log("Couldn't find previous info from history:", err);
                             }
                         } else if (allResponses) {
-                                const cycleKeys = Object.keys(allResponses || {}); 
+                                const cycleKeys = allResponses || []; 
                                 if (cycleKeys.length > 0) {
                                     const lastKey = cycleKeys[cycleKeys.length - 1]; 
                                     const entry = allResponses?.[lastKey] ?? {}; 
@@ -372,7 +371,7 @@
                             } else {
                                 var allRes = await fetchResponses(userId);
                                 allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
-                                const cycleKeys = Object.keys(allResponses || {}); 
+                                const cycleKeys = allResponses || []; 
                                 if (cycleKeys.length > 0) {
                                     const lastKey = cycleKeys[cycleKeys.length - 1]; 
                                     const entry = allResponses?.[lastKey] ?? {}; 

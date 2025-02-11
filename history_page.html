@@ -253,19 +253,26 @@
                 
                 var allRes = await fetchResponses(userId);
                 let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`) || "[]");
-                const mockResponseHistory = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`) || "{}");
+                const mockResponse = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`) || "{}");
+                const mockResponseHistory = mockResponse?.user_metadata?.responseHistory ?? [];
 
-                if ( allResponses.length > 0  && mockResponseHistory) {
+                if ( allResponses.length > 0  && mockResponseHistory.length > 0) {
                     Object.keys(allResponses).forEach((cycleKey) => {
                         const taskCycle = mockResponseHistory?.[cycleKey]?.lastTask;
-                        if (mockResponseHistory?.[cycleKey]?.preId == allResponses?.[cycleKey]?.preResponse.responseId) {
+                        if (mockResponseHistory?.[cycleKey]?.preId == allResponses?.[cycleKey]?.preResponse?.responseId) {
                             allResponses?.[cycleKey] ?? {};
                             allResponses[cycleKey].lastTask = taskCycle;
                         } 
                     });  
-                } else {
-                    allResponses.push(mockResponseHistory);
-                }
+                } 
+                
+                // else if (allResponses.length == 0 && mockResponseHistory.length > 0) {
+                //     mockResponseHistory.forEach((cycleKey) => {
+                //         const addition = mockResponseHistory?.[cycleKey];
+                //         const reArrange = {preResponse: {} }
+                //         allResponses.push(addition);
+                //     });   
+                // }
                 
                 localStorage.setItem(`${userId}:allResponses`, JSON.stringify(allResponses));
                 return allResponses;
