@@ -14,7 +14,7 @@
 <body>
     
     <div class="main-container">
-        <div class="spinner hidden" id="spinner"></div>
+        </div>
         <div class="Header">
             <!-- Sidebar -->
             <nav class="navbar navbar-dark navbar-expand-xl sticky-top" style="background-color: #02897A;">
@@ -497,7 +497,13 @@
 </div>
 
 <!-- spinner overlay-->
-<section class="overlay hidden" id="spinnerOverlay"></section>
+<section class="overlay hidden" id="spinnerOverlay">
+    <div class="spinner hidden" id="spinner">
+    </div>
+    <div>
+        <span>Loading</span>
+    </div>
+</section>
 
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
@@ -833,12 +839,12 @@
         async function ExtractQuizInfo() {
 
             const {quizObj, historyObj, userId} = ExtractUserMetadata();
-            await fetchResponses(userId);
+            var allRes = await fetchResponses(userId);
             let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
-            if (quizObj.lastPost !== "" && allResponses) {
-                Object.keys(allResponses).forEach((cycleKey) => {
-                    const preQuiz = allResponses?.[cycleKey]?.preResponse ?? null;
-                    const postQuiz = allResponses?.[cycleKey]?.postResponse ?? null;
+            if (quizObj.lastPost !== "" || allResponses) {
+                allResponses.forEach((cycleKey) => {
+                    const preQuiz = cycleKey?.preResponse ?? null;
+                    const postQuiz = cycleKey?.postResponse ?? null;
                     //for debugging purpose
                     console.log("Cycle Key:", cycleKey);
                     console.log("allResponses[cycleKey]:", allResponses[cycleKey]);
@@ -850,9 +856,9 @@
                     }
                 });
 
-            } else if (quizObj.lastPre !== "" && allResponses) {
-                Object.keys(allResponses).forEach((cycleKey) => {
-                    const preQuiz = allResponses[cycleKey].preResponse;
+            } else if (quizObj.lastPre !== "" || allResponses) {
+                allResponses.forEach((cycleKey) => {
+                    const preQuiz = cycleKey.preResponse;
                     if (preQuiz.responseId && preQuiz.responseId == quizObj.lastPre) {
                         localStorage.setItem("preResult", JSON.stringify(preQuiz));
                     }
@@ -962,11 +968,10 @@
         //allow a user to log out
         function logOut() {
             const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-            
+            offcanvas.hide();
             if (netlifyIdentity.gotrue.currentUser() !== null) {
                 let user = netlifyIdentity.gotrue.currentUser();
                 user.logout().then(() => {
-                    offcanvas.hide();
                     console.log('User has been logged out!');
                     window.location.href = "index.html";
                 });
@@ -974,6 +979,7 @@
                 window.location.href = "index.html";
                 console.log("No user is logged in!");
             }
+            
         }
         
         document.getElementById('logOut').addEventListener('click', () => {

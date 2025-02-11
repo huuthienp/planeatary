@@ -14,7 +14,6 @@
 <body>
     
     <div class="main-container">
-        <div class="spinner hidden" id="spinner"></div>
         <div class="Header">
             <!-- Sidebar -->
             <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
@@ -68,17 +67,26 @@
             </div>
             <div class="content">
                 <iframe class="quiz" title="PlanEATary Post-Quiz"></iframe>
+                <span class="fallback"></span>
                 <div class="btn-next">
-                    <button type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button>
+                    <button id="nextButt" type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button>
                 </div>
             </div>
-            <!-- spinner overlay-->
-            <section class="overlay hidden" id="spinnerOverlay"></section>
+            
+              <!-- spinner overlay-->
+              <section class="overlay hidden" id="spinnerOverlay">
+                <div class="spinner hidden" id="spinner">
+                </div>
+                <div>
+                    <span>Loading</span>
+                </div>
+            </section>
+
             <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
             <script>
                 
                 const ch = document.getElementById("ch");
-                const nextButton = document.querySelector('.next');
+                const nextButton = document.getElementById('nextButt');
                 
                 const spinner = document.getElementById('spinner');
                 const bOverlay = document.getElementById("spinnerOverlay");
@@ -111,12 +119,13 @@
                 }
                 
                 //hard-code updating responseHistory
-                
                 async function updateResponseHistory(postObject, user) {
                     if (!user) {
                         console.error("No user is logged in!");
                         return;
                     }
+                    
+                    const userId = user.id;
                     
                     const postResponseId = postObject?.responseId;
                     if (!postResponseId) {
@@ -124,12 +133,14 @@
                         return;
                     }
                     
-                    let responseHistory = user.user_metadata.responseHistory || [];
+                    let responseHistory = user?.user_metadata?.responseHistory ?? [];
                     const index = responseHistory.findIndex(cycle => cycle.postId === postResponseId);
-                    
+                    const mockResponseHistory = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`) || "{}");
+
                     // If the postResponseId is not already in the history, add it
                     if (index === -1) {
                         responseHistory.push({ postId: postResponseId });
+                        console.log("The post-quiz updated",  responseHistory)
                         user.update({
                             user_metadata: { responseHistory: responseHistory,},
                         }).then((updatedUser) => {
@@ -151,8 +162,71 @@
                         
                     } else {
                         console.log("Post response ID already exists in response history.");
+                        Object.assign(mockResponseHistory, { user_metadata: { responseHistory: responseHistory } });
+                    }
+                    localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
+                }
+
+                async function fetchResponses(userId) {
+                    try {
+                        const response = await fetch('/api/fetch-responses', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Q-RESPONSE-ID': userId,
+                            }
+                        });
+                        const { ok, status } = response;
+                        if (!ok) {
+                            throw new Error(JSON.stringify({
+                                status: status,  
+                                response: await response.text(),
+                            }));
+                        }
+                        const data = await response.json();
+                        console.log('Responses fetched!\n', data);
+                        localStorage.setItem(`${userId}:allResponses`, JSON.stringify(data));
+                        return data;
+                        
+                    } catch (error) {
+                        console.warn('Caught', error, '\nin fetchResponse');
+                        return null;
                     }
                 }
+
+                function isTokenExpired(token) {
+                    if (!token) return true;
+                    
+                    const base64Payload = token.split('.')[1]; 
+                    const decodedPayload = JSON.parse(atob(base64Payload));
+                    const exp = decodedPayload.exp; 
+                    
+                    // Compare current time with expiration time
+                    const now = Math.floor(Date.now()/1000); 
+                    return exp < now; // Returns true if token is expired
+                }
+
+                function checkLastTaskStatus(metadata) {
+                        var responseHistory = metadata?.responseHistory ?? null;
+                        //handle first-time user
+                        if (!metadata || !responseHistory) {
+                            console.warn("No responseHistory found for this user.");
+                            return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
+                        } else {
+                            const cycleKeys = Object.keys(responseHistory || {});
+                            if (cycleKeys.length > 0) {
+                                const latestCycleKey = cycleKeys[cycleKeys.length - 1];  // Get the last cycle
+                                const entry = responseHistory[latestCycleKey];
+                                latest_pre = entry.preId || "";
+                                latest_post = entry.postId || "";
+                                latest_task = entry.lastTask || "";
+                            }
+                        }
+
+                        const cycle = {lastPre: latest_pre, lastPost: latest_post, lastTask: latest_task};
+                        return cycle
+                    }
+
 
                 function logOut() {
                     const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -180,55 +254,19 @@
                 
             </script>      
             <script defer type="module">
-                import { initiateSurvey, fetchTaskStatus, extractTaskData } from './scripts/helpers.mjs';
+                import { initiateSurvey, fetchTaskStatus, extractTaskData, updateButton } from './scripts/helpers.mjs';
 
-                async function fetchResponses(userId) {
-                    try {
-                        const response = await fetch('/api/fetch-responses', {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Q-RESPONSE-ID': userId,
-                            }
-                        });
-                        const { ok, status } = response;
-                        if (!ok) {
-                            throw new Error(JSON.stringify({
-                                status: status,  
-                                response: await response.text(),
-                            }));
-                        }
-                        const data = await response.json();
-                        console.log('Responses fetched!\n', data);
-                        localStorage.setItem(`${userId}:allResponses`, JSON.stringify(data));
-                        return data
-                        
-                    } catch (error) {
-                        console.warn('Caught', error, '\nin fetchResponse');
-                        return null;
-                    }
-                }
-
-                function isTokenExpired(token) {
-                    if (!token) return true;
-                    
-                    const base64Payload = token.split('.')[1]; 
-                    const decodedPayload = JSON.parse(atob(base64Payload));
-                    const exp = decodedPayload.exp; 
-                    
-                    // Compare current time with expiration time
-                    const now = Math.floor(Date.now()/1000); 
-                    return exp < now; // Returns true if token is expired
-                }
+                var preObject = JSON.parse(localStorage.getItem('preResult'));
+                var preResult = preObject?.result;
+                var preResponseId = preObject?.responseId;
+                var postObject = JSON.parse(localStorage.getItem('postResult'));
+                var postResponseId = postObject?.responseId;
+                var postResult = postObject?.result;
+                var post_rec = postObject?.recordedDate;
                 
                 document.addEventListener("DOMContentLoaded", async () => {
 
-                    var preObject = JSON.parse(localStorage.getItem('preResult'));
-                    var preResult = preObject?.result;
-                    var preResponseId = preObject?.responseId;
-                    var postObject = JSON.parse(localStorage.getItem('postResult'));
-                    var postResult = postObject?.result ?? null;
-                    var post_rec = postObject?.recordedDate ?? null;
+                    updateButton(nextButton, 'grey', 'not-allowed');
 
                     var tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
                     var selectTasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
@@ -239,7 +277,7 @@
                     let latest_post = "";
                     let latest_task = "";
 
-                    const fallbackMessage = document.createElement('div');
+                    const fallbackMessage = document.querySelector(".fallback");
                     fallbackMessage.classList.add("empty-state");
 
                     const offcanvasNavbar = document.getElementById('offcanvasNavbar');
@@ -290,55 +328,13 @@
                         });
                     });
 
-                    
-                    function updateNextButton(postObject) {                  
-                        if (postObject) {
-                            // If postResult exists, enable the button and navigate to the results page
-                            nextButton.style.backgroundColor = '#02897A'; 
-                            nextButton.style.cursor = 'pointer';   
-                            nextButton.disabled = false;
+                    nextButton.addEventListener('click', () => {
+                        if (nextButton.style.cursor !== "not-allowed") { window.location.href = "result_page.html"; }
+                    });
 
-                            nextButton.addEventListener("click", function() {
-                                //ensure the data's cycle selected from history page is always removed
-                                sessionStorage.removeItem('selectedCycle');
-                                window.location.href = "result_page.html";
-                            });
-                        } else {
-
-                            // Disable the button if postResult does not exist
-                            nextButton.style.backgroundColor = 'grey';
-                            nextButton.style.borderColor = 'grey';
-                            nextButton.style.cursor = 'not-allowed';
-                            nextButton.disabled = true;
-                        }
-                    }
-                    
-                    // Initial check for preResult
-                    updateNextButton(postObject);
                     // Set up an interval to check for changes in localStorage
-                    setInterval(updateNextButton, 1000);
+                    //setInterval(updateButton, 1000);
                     
-                    function checkLastTaskStatus(metadata) {
-                        var responseHistory = metadata && metadata.responseHistory ? metadata.responseHistory : null;
-                        //handle first-time user
-                        if (!metadata || !responseHistory) {
-                            console.warn("No responseHistory found for this user.");
-                            return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
-                        } else {
-                            const cycleKeys = Object.keys(responseHistory);
-                            if (cycleKeys.length > 0) {
-                                const latestCycleKey = cycleKeys[cycleKeys.length - 1];  // Get the last cycle
-                                const entry = responseHistory[latestCycleKey];
-                                latest_pre = entry.preId || "";
-                                latest_post = entry.postId || "";
-                                latest_task = entry.lastTask || "";
-                            }
-                        }
-
-                        const cycle = {lastPre: latest_pre, lastPost: latest_post, lastTask: latest_task};
-                        return cycle
-                    }
-
                     //clear any existing message
                     fallbackMessage.innerHTML = "";
 
@@ -346,7 +342,9 @@
                         showSpinner();
                         //handle a user directly from the history page
                         var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
-                        var allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
+                        var allRes = await fetchResponses(userId);
+                        let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
+                        console.log("All responses fetched! ", allResponses);
                         let postQuiz = null;
                         let preQuiz = null;
 
@@ -365,27 +363,27 @@
                                 console.log("Couldn't find previous info from history:", err);
                             }
                         } else if (allResponses) {
-                                const cycleKeys = Object.keys(allResponses); 
-                                if (cycleKeys.length > 0) {
-                                    const lastKey = cycleKeys[cycleKeys.length - 1]; 
-                                    const entry = allResponses?.[lastKey] ?? {}; 
+                                if (allResponses.length > 0) {
+                                    const lastKey = allResponses.length - 1; 
+                                    const entry =  allResponses[lastKey]; 
                                     
                                     // Access preQuiz and postQuiz safely
                                     preQuiz = entry?.preResponse ?? null;
                                     postQuiz = entry?.postResponse ?? null;
                                     postObject = postQuiz;
                                     preObject = preQuiz;
-                                    preResponseId = preQuiz?.responseId ?? null;
+                                    preResponseId = preObject?.responseId ?? null;
+                                    postResponseId = postObject?.responseId ?? null;
                                     
                                     console.log('Last entry:', entry);
                                 }
                             } else {
                                 var allRes = await fetchResponses(userId);
-                                allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
-                                const cycleKeys = Object.keys(allResponses); 
+                                allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
+                                const cycleKeys = allResponses; 
                                 if (cycleKeys.length > 0) {
-                                    const lastKey = cycleKeys[cycleKeys.length - 1]; 
-                                    const entry = allResponses?.[lastKey] ?? {}; 
+                                    const lastKey = cycleKeys.length - 1; 
+                                    const entry = cycleKeys[lastKey]; 
                                     
                                     // Access preQuiz and postQuiz safely
                                     preQuiz = entry?.preResponse ?? null;
@@ -405,10 +403,10 @@
                                 if (postObject) {
                                     postResult = postObject?.result ?? null;
                                     post_rec = postObject?.recordedDate ?? null;
+                                    await updateResponseHistory(postObject, user);
+                                    updateButton(nextButton, '#02897A', 'pointer');
                                     quizFrame.style.display = 'none'; 
                                     fallbackMessage.innerHTML = "<div class='void'>Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over. Or click next to see the result!</div>";
-                                    quizFrame.parentElement.appendChild(fallbackMessage);
-                                    updateNextButton(postObject);
                                 } else if (!postObject || Object.keys(postObject).length === 0) {
                                     try {
                                         if (!selectTasks) {
@@ -422,7 +420,6 @@
                                                 quizFrame.style.display = 'none'; 
                                                 document.querySelector('.btn-next').style.display = 'none';
                                                 fallbackMessage.innerHTML = "<div class='empty-state'>Please finish all selected tasks before doing the post quiz.</div>";
-                                                quizFrame.parentElement.appendChild(fallbackMessage);
                                                 window.location.href = "challenge_page.html";
                                                 return;
                                             } else {
@@ -435,8 +432,6 @@
                                         document.querySelector('.btn-next').style.display = 'none';
                                         fallbackMessage.style.color = "#ff6b6b";
                                         fallbackMessage.innerHTML = err;
-                                        
-                                        quizFrame.parentElement.appendChild(fallbackMessage);
                                         window.location.href = "challenge_page.html";
                                         return;
                                     }  
@@ -449,16 +444,18 @@
                             console.error("Caught error: ", err);
                             quizFrame.style.display = 'none';
                             document.querySelector('.btn-next').style.display = 'none';
-                            fallbackMessage.innerHTML = "<div class='empty-state'>Content cannot be displayed. Please try again later.</div>";
+                            fallbackMessage.innerHTML = "Content cannot be displayed. Please try again later.";
                             nextButton.style.display = "none";
-                            quizFrame.parentElement.appendChild(fallbackMessage);
                     } finally {
+                        await updateResponseHistory(postObject, user);
                         hideSpinner();
                     } 
                 });
 
                 // Listen to postResult change in localStorage
                 window.addEventListener('localStorageChange', async (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
+
+                    const netlifyIdentity = window.netlifyIdentity;
                     const user = netlifyIdentity.gotrue.currentUser();
 
                     if (user) {
@@ -476,7 +473,11 @@
                     const metadata = user.user_metadata;
                     const responseHistory = metadata.responseHistory;
                     const userId = user.id;
+                    
                     const quizFrame = document.querySelector('div.content > iframe.quiz');
+                    const fallbackMessage = document.querySelector(".fallback");
+                    fallbackMessage.classList.add("empty-state");
+                    
                     const { type, detail: { key, oldValue, newValue } } = event;
                     console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
                     if (key === 'postResult' && oldValue !== newValue) {
@@ -484,12 +485,12 @@
                             JSON.parse(newValue || undefined);  // force null -> undefined to throw error
                             quizFrame.style.display = 'none';
                             fallbackMessage.innerHTML = '<div class="void">Thank you for your response!</div>';
-                            quizFrame.parentElement.appendChild(fallbackMessage);
-                            await updateResponseHistory(postObject, user);
-                            updateNextButton(postObject);
+                            updateButton(nextButton, '#02897A', 'pointer');
                             console.log('Found post-quiz result in storage!\n', newValue);
+                            await updateResponseHistory(postObject, user);
                         } catch(error) {
                             console.warn('Caught', error, '\nPost-quiz result is not found!');
+                            updateButton(nextButton, 'grey', 'not-allowed');
                             var quizUrl = initiateSurvey('post', quizFrame);
                             // quizSpan.innerText = 'An error occurred. Please try again later.';
                         }

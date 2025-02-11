@@ -13,7 +13,6 @@
 </head>
 <body>
     <div class="main-container">
-        <div class="spinner hidden" id="spinner"></div>
         <div class="Header">
             <!-- Sidebar -->
             <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
@@ -75,8 +74,27 @@
             </div>
         </div>
         
-        <!-- spinner overlay-->
-        <section class="overlay hidden" id="spinnerOverlay"></section>
+          <!-- spinner overlay-->
+          <section class="overlay hidden" id="spinnerOverlay">
+            <div class="spinner hidden" id="spinner">
+            </div>
+            <div>
+                <span>Loading</span>
+            </div>
+        </section>
+
+        <!-- Warning Toast -->
+        <div class="toast-container">
+            <div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Please finish your very first quiz before further proceeding.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script>
             
@@ -137,34 +155,82 @@
                 }
             }
 
-            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-            const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-            const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+        const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+        const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
 
-            offcanvasLinks.forEach(li => {
-                li.addEventListener('click', event => {
-                    const targetHref = li.getAttribute('href');
-                    
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                    
-                    if (targetHref && targetHref !== '#') {
-                        window.location.href = targetHref; 
-                    }
-                });
+        //For first-timer to see a reminder to do a very first quiz
+        function showToast() {
+            const toasty = document.getElementById('first-timer-toast');
+            const myToast = new bootstrap.Toast(toasty);
+            myToast.show();
+        }
+        
+        offcanvasLinks.forEach(li => {
+            li.addEventListener('click', event => {
+                const targetHref = li.getAttribute('href');
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+                
+                if (targetHref && targetHref !== "#") {
+                    window.location.href = targetHref; 
+                } 
             });
-
-            offcanvasDropdown.forEach(li => {
-                li.addEventListener('click', event => {
-                    const targetHref = li.getAttribute('href');
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                    
-                    if (targetHref) {
-                        window.location.href = targetHref; 
-                    }
-                });
+        });
+        
+        offcanvasDropdown.forEach(li => {
+            li.addEventListener('click', event => {
+                const targetHref = li.getAttribute('href');
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+                
+                if (targetHref && targetHref !== "#") {
+                    window.location.href = targetHref; 
+                } 
             });
+        });
+        
+        // Function to handle navigation or showing toast
+        offcanvasListItems.forEach(li => {
+            li.addEventListener('click', event => {
+                const link = li.querySelector('a.nav-link'); 
+                
+                if (link) {
+                    if (link.classList.contains('Disabled')) {
+                        showToast(); 
+                    } else {
+                        const targetHref = link.getAttribute('href');
+                        if (targetHref && targetHref !== '#') {
+                            window.location.href = targetHref;
+                        }
+                    }
+                }
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+            });
+        });
+        
+        // Function to handle navigation or showing toast
+        offcanvasDropdownItems.forEach(li => {
+            li.addEventListener('click', event => {
+                const link = li.querySelector('a.dropdown-item'); 
+                
+                if (link) {
+                    if (link.classList.contains('Disabled')) {
+                        showToast(); 
+                    } else {
+                        const targetHref = link.getAttribute('href');
+                        if (targetHref && targetHref !== '#') {
+                            window.location.href = targetHref;
+                        }
+                    }
+                }
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+            });
+        })
             
             function logOut() {
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -229,10 +295,12 @@
                     console.error("No preResponseId provided!");
                     return;
                 }
+
+                const userId = user.id;
                 let responseHistory = user.user_metadata.responseHistory || [];
                 const index = responseHistory.findIndex(cycle => cycle.preId === preResponseId);
-                
-                // If the postResponseId is not already in the history, add it
+                const mockResponseHistory = {id: userId};
+                // If the preResponseId is not already in the history, add it
                 if (index === -1) {
                     responseHistory.push({ preId: preResponseId });
                     user.update({
@@ -256,6 +324,8 @@
                 } else {
                     console.log("Pre response ID already exists in response history.");
                 }
+                Object.assign(mockResponseHistory, { user_metadata: { responseHistory: responseHistory } });
+                localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
             }
 
             function isTokenExpired(token) {
@@ -274,23 +344,25 @@
                 var quizUrl = initiateSurvey('pre', quizFrame);
                 
                 updateButton(restartBtn, 'grey', 'not-allowed');
+
+                const user = netlifyIdentity.gotrue.currentUser();
+                if (user) {
+                    user.jwt().then(token => {
+                        if (isTokenExpired(token)) {
+                            console.log("Token expired. Prompting user to re-login...");
+                            netlifyIdentity.logout();
+                        } else {
+                            console.log("Token is valid.");
+                        }
+                    });
+                }
+
+                const metadata = user.user_metadata;
+                const responseHistory = metadata.responseHistory;
+                const userId = user.id;
                 
                 try {
-                    const user = netlifyIdentity.gotrue.currentUser();
-                    if (user) {
-                        user.jwt().then(token => {
-                            if (isTokenExpired(token)) {
-                                console.log("Token expired. Prompting user to re-login...");
-                                netlifyIdentity.logout();
-                            } else {
-                                console.log("Token is valid.");
-                            }
-                        });
-                    }
-                    
-                    const metadata = user.user_metadata;
-                    const responseHistory = metadata.responseHistory;
-                    const userId = user.id;
+                    showSpinner();
 
                     var allRes = await fetchResponses(userId);
                     let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
@@ -313,11 +385,11 @@
                     } else if (allResponses) {
                         var preQuiz;
                         var postQuiz;
-                        Object.keys(allResponses).forEach((cycleKey) => {
-                            if (allResponses[cycleKey].preResponse) {
+                        allResponses.forEach((cycleKey) => {
+                            if (cycleKey?.preResponse) {
                                 //get the latest preResponse and postResponse if any
-                                preQuiz = allResponses?.[cycleKey]?.preResponse ?? null;
-                                postQuiz = allResponses?.[cycleKey]?.postResponse ?? null;
+                                preQuiz = cycleKey?.preResponse ?? null;
+                                postQuiz = cycleKey?.postResponse ?? null;
                             } 
                         });
                         
@@ -334,7 +406,7 @@
 
                         if(preObject && postObject) {
                             console.log('Found post-quiz result in storage!\n', postObject);
-                            //updateResponseHistory(preObject, user);
+                            await updateResponseHistory(preObject, user);
                             if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
                                 updateButton(restartBtn, '#02897A', 'pointer');
                                 restartBtn.addEventListener('click', () => {
@@ -352,7 +424,7 @@
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
                         quizSpan.innerText = 'You have already finished the pre-quiz! Let"s continue!';
-                        updateResponseHistory(preObject, user)
+                        await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                     } else if (preObject && postObject) {
                         updateAnchors(anchors, hrefs);
@@ -360,7 +432,7 @@
                         updateButton(restartBtn, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
                         quizSpan.innerText = 'You have already finished the pre-quiz and the post-quiz!';
-                        updateResponseHistory(preObject, user)
+                        await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         console.log('Found post-quiz result in storage!\n', postObject);
 
@@ -388,9 +460,32 @@
                     updateButton(restartBtn, 'grey', 'not-allowed');
                     quizUrl = initiateSurvey('pre', quizFrame);
                     
+                } finally {
+                    hideSpinner();
+                    await updateResponseHistory(preObject, user);
+                    
                 }
                 // Listen to preResult change in localStorage
-                window.addEventListener('localStorageChange', (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
+                window.addEventListener('localStorageChange', async (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
+                    const netlifyIdentity = window.netlifyIdentity;
+                    const user = netlifyIdentity.gotrue.currentUser();
+
+                    if (user) {
+                        user.jwt().then(token => {
+                            if (isTokenExpired(token)) {
+                                console.log("Token expired. Prompting user to re-login...");
+                                netlifyIdentity.logout();
+                                window.location.href = "index.html";
+                            } else {
+                                console.log("Token is valid.");
+                            }
+                        });
+                    }
+
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
+                    const userId = user.id;
+
                     const { type, detail: { key, oldValue, newValue } } = event;
                     console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
                     if (key === 'preResult' && oldValue !== newValue) {
@@ -401,6 +496,7 @@
                             quizFrame.style.display = 'none';
                             quizSpan.innerText = 'Thank you for your response!';
                             console.log('Found pre-quiz result in storage!\n', newValue);
+                            await updateResponseHistory(preObject, user);
                         } catch(error) {
                             console.warn('Caught', error, '\nPre-quiz result is not found!');
                             updateAnchors(anchors);

@@ -72,7 +72,6 @@
                     </div>
                 </nav>
             </div>
-            <div class="spinner hidden" id="spinner"></div>
             <div class="void-space"></div>
             <div class="table-responsive-sm history-table">
                 <p class="404 empty-state hidden">There is no information available</p>
@@ -107,7 +106,13 @@
         </div>
         
         <!-- spinner overlay-->
-        <section class="overlay hidden" id="spinnerOverlay"></section>
+        <section class="overlay hidden" id="spinnerOverlay">
+            <div class="spinner hidden" id="spinner">
+            </div>
+            <div>
+                <span>Loading</span>
+            </div>
+        </section>
         
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script type="module">
@@ -122,28 +127,70 @@
             let isLoading;
             const minDisplayTime = 2000; 
             const bOverlay = document.getElementById("spinnerOverlay");
-
+            
             const offcanvasNavbar = document.getElementById('offcanvasNavbar');
             const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-            const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+            const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item > li');
             
-            const user = netlifyIdentity.gotrue.currentUser();
             
-            if (user) {
-                user.jwt().then(token => {
-                    if (isTokenExpired(token)) {
-                        console.log("Token expired. Prompting user to re-login...");
-                        netlifyIdentity.logout();
-                        window.location.href = "index.html";
-                    } else {
-                        console.log("Token is valid.");
+            const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+            const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
+
+            offcanvasLinks.forEach(li => {
+                li.addEventListener('click', event => {
+                    const targetHref = li.getAttribute('href');
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    
+                    if (targetHref && targetHref !== "#") {
+                        window.location.href = targetHref; 
+                    } 
+                });
+            });
+            
+            offcanvasDropdown.forEach(li => {
+                li.addEventListener('click', event => {
+                    const targetHref = li.getAttribute('href');
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    
+                    if (targetHref && targetHref !== "#") {
+                        window.location.href = targetHref; 
+                    } 
+                });
+            });
+            
+            // Function to handle navigation or showing toast
+            offcanvasListItems.forEach(li => {
+                li.addEventListener('click', event => {
+                    const link = li.querySelector('a.nav-link'); 
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    if (link) {
+                        const targetHref = link.getAttribute('href');
+                        if (targetHref && targetHref !== '#') {
+                            window.location.href = targetHref;
+                        }
+                    }
+                })
+                
+            });
+            
+            // Function to handle navigation or showing toast
+            offcanvasDropdownItems.forEach(li => {
+                li.addEventListener('click', event => {
+                    const link = li.querySelector('a.dropdown-item'); 
+                    
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    if (link) {
+                        const targetHref = link.getAttribute('href');
+                        if (targetHref && targetHref !== '#') {
+                            window.location.href = targetHref;
+                        }
                     }
                 });
-            }
-            
-            const userId = user.id;
-            const metadata = user.user_metadata;
-            const responseHistory = metadata.responseHistory;
+            })
             
             async function fetchResponses(userId) {
                 try {
@@ -164,7 +211,7 @@
                     const data = await response.json();
                     console.log('Responses fetched!\n', data);
                     localStorage.setItem(`${userId}:allResponses`, JSON.stringify(data));
-                    return data
+                    return data;
                     
                 } catch (error) {
                     console.warn('Caught', error, '\nin fetchResponse');
@@ -207,6 +254,7 @@
                 return exp < now; // Returns true if token is expired
             }
 
+
             function detectAndParseTimestamp(ts) {
                 const length = String(ts).length;
                 
@@ -221,55 +269,72 @@
                     return asMillis; 
                 }
             }
-            
-            async function extractHistory() {
-                const user = netlifyIdentity.gotrue.currentUser();
-            
-                if (user) {
-                    user.jwt().then(token => {
-                        if (isTokenExpired(token)) {
-                            console.log("Token expired. Prompting user to re-login...");
-                            netlifyIdentity.logout();
-                            window.location.href = "index.html";
+          
+            document.getElementById('logOut').addEventListener('click', () => {
+                    if(confirm("Do you really want to sign out?") == true) {
+                        showSpinner();
+                        logOut();
+                        hideSpinner();
+                    }
+                });
+
+            async function extractHistory(user, userId) {
+                
+                var allRes = await fetchResponses(userId);
+                let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`) || "[]");
+                const mockResponse = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`) || "{}");
+                const mockResponseHistory = mockResponse?.user_metadata?.responseHistory ?? [];
+                
+                var lastTask = "";
+
+                if ( allResponses.length > 0  && mockResponseHistory.length > 0) {
+                    allResponses.map((cycleKey) => {
+                        const taskCycle = mockResponseHistory?.lastTask ?? "";
+                        if (mockResponseHistory?.preId == cycleKey?.preResponse?.responseId) {
+                            cycleKey.preResponse.lastTask = taskCycle;
+                            console.log("Here the last task you will add ", taskCycle);
                         } else {
-                            console.log("Token is valid.");
+                            try {
+                                const fetched_tasks = JSON.parse(localStorage.getItem(`${cycleKey.preResponse.responseId}:fetched_tasks`)) || {};
+                                console.log("Here the fetch_tasks you will add ", fetched_tasks);
+                                const task_rec = Array.isArray(fetched_tasks?.time) ? fetched_tasks.time : Object.values(fetched_tasks?.time ?? []);
+                                const taskDone =  Array.isArray(fetched_tasks?.done) ? fetched_tasks.done : Object.values(fetched_tasks?.done ?? []);
+                                if (task_rec.length > 0) {
+                                    const lastTaskTime = Math.max(...task_rec);
+                                    const index = fetched_tasks?.time?.findIndex(el => el == lastTaskTime);
+                                    const taskName = taskDone[index];
+                                    lastTask = `${taskName}@${lastTaskTime}`;
+                                    cycleKey.preResponse.lastTask = lastTask;
+                                    console.log("Here the time you will add ", lastTask);
+                                }
+                                
+                            } catch(err) {
+                                console.warn("Found err: ", err);
+                            }
                         }
-                    });
-                }
-                
-                const userId = user.id;
-                const metadata = user.user_metadata;
-                const responseHistory = metadata.responseHistory;
-                
-                await fetchResponses(userId);
-                let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
-                
-                if (responseHistory) {
-                    Object.keys(responseHistory).forEach((cycleKey) => {
-                        const taskCycle = responseHistory[cycleKey].lastTask;
-                        allResponses?.[cycleKey] ?? {};
-                        allResponses[cycleKey].lastTask = taskCycle;
-                    });  
-                }
-                
-                localStorage.setItem(`${userId}:allResponses`, JSON.stringify(allResponses));
+                        return cycleKey;
+                    }); 
+                    localStorage.setItem(`${userId}:allResponses`, JSON.stringify(allResponses)); 
+                } 
+                allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                 return allResponses;
             }
             
             
-            function displayTable(userId) {
+            async function displayTable(user, userId) {
 
-                const history = JSON.parse(localStorage.getItem(`${userId}:allResponses`));  
+                const history = await extractHistory(user, userId);
                 const table = document.getElementById('h-table');
                 
-                if (!history || Object.keys(history).length === 0) {
+                if (!history || history.length === 0) {
                     document.querySelector('div.history-table > table').style.display = 'none';
                     document.querySelector('div.history-table > p').classList.remove('hidden');
                     return;
                 }
-                
-                Object.keys(history).forEach((cycleKey) => {
-                    const cycle = history?.[cycleKey] ?? {};
+                console.log("info to be displayed", history);
+
+                history.forEach((cycleKey) => {
+                    const cycle = cycleKey ?? {};
                     const cycleRow = document.createElement('tr');
                     const prescore = document.createElement('td');
                     const predate = document.createElement('td');
@@ -305,7 +370,7 @@
                     }
                     
                     // postResponse
-                    if (cycle.postResponse) {
+                    if (cycle?.postResponse) {
                         const isoString = cycle.postResponse.recordedDate;
                         const dateObj = new Date(isoString);
                         postscore.textContent = cycle.postResponse.result.totalScore;
@@ -346,44 +411,28 @@
                 }
             }
 
-            document.getElementById('logOut').addEventListener('click', () => {
-                if(confirm("Do you really want to sign out?") == true) {
-                    showSpinner();
-                    logOut();
-                    hideSpinner();
-                }
-            });
             
             document.addEventListener("DOMContentLoaded", async () => {
-
-                offcanvasLinks.forEach(li => {
-                    li.addEventListener('click', event => {
-                        const targetHref = li.getAttribute('href');
-                        
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
-                        
-                        if (targetHref && targetHref !== '#') {
-                            window.location.href = targetHref; 
-                        }
-                    });
-                });
-
-                offcanvasDropdown.forEach(li => {
-                    li.addEventListener('click', event => {
-                        const targetHref = li.getAttribute('href');
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
-                        
-                        if (targetHref) {
-                            window.location.href = targetHref; 
-                        }
-                    });
-                });
-
-                await extractHistory();
                 showSpinner();
-                displayTable(userId);
+                const user = netlifyIdentity.gotrue.currentUser();
+                
+                if (user) {
+                    user.jwt().then(token => {
+                        if (isTokenExpired(token)) {
+                            console.log("Token expired. Prompting user to re-login...");
+                            netlifyIdentity.logout();
+                            window.location.href = "index.html";
+                        } else {
+                            console.log("Token is valid.");
+                        }
+                    });
+                }
+                
+                const userId = user.id;
+                const metadata = user.user_metadata;
+                const responseHistory = metadata.responseHistory;
+
+                await displayTable(user, userId);
                 hideSpinner();
                 
             });

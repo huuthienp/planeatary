@@ -41,7 +41,7 @@ export function updateAnchors(anchors, hrefs=[]) {
     for (const [i, a] of Object.entries(anchors)) {
         const h = hrefs[i];
         if (h) {
-            a.removeAttribute('disabled');
+            a.removeAttribute('Disabled');
             a.href = h;
             a.style.cursor = 'pointer';
         } else {

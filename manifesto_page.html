@@ -14,7 +14,6 @@
 </head>
 <body>
     <div class="main-container">
-        <div class="spinner hidden" id="spinner"></div>
         <div class="Header">
             <!-- Sidebar -->
             <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
@@ -120,8 +119,14 @@
         </div>
     </section>
     
-    <!-- spinner overlay-->
-    <section class="overlay hidden" id="spinnerOverlay"></section>
+      <!-- spinner overlay-->
+      <section class="overlay hidden" id="spinnerOverlay">
+        <div class="spinner hidden" id="spinner">
+        </div>
+        <div>
+            <span>Loading</span>
+        </div>
+    </section>
     
     <!-- Warning Toast -->
     <div class="toast-container">
@@ -165,6 +170,31 @@
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
         const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+
+        offcanvasLinks.forEach(li => {
+                li.addEventListener('click', event => {
+                    const targetHref = li.getAttribute('href');
+                    
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    
+                    if (targetHref) {
+                        window.location.href = targetHref; 
+                    }
+                });
+            });
+            
+            offcanvasDropdown.forEach(li => {
+                li.addEventListener('click', event => {
+                    const targetHref = li.getAttribute('href');
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    
+                    if (targetHref) {
+                        window.location.href = targetHref; 
+                    }
+                });
+            });
 
         function showSpinner() {
             spinner.classList.remove('hidden');
@@ -308,31 +338,6 @@
         
         document.addEventListener("DOMContentLoaded", async function() {
             
-            offcanvasLinks.forEach(li => {
-                li.addEventListener('click', event => {
-                    const targetHref = li.getAttribute('href');
-                    
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                    
-                    if (targetHref) {
-                        window.location.href = targetHref; 
-                    }
-                });
-            });
-            
-            offcanvasDropdown.forEach(li => {
-                li.addEventListener('click', event => {
-                    const targetHref = li.getAttribute('href');
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                    
-                    if (targetHref) {
-                        window.location.href = targetHref; 
-                    }
-                });
-            });
-            
             const startButton = document.querySelector(".start");
             
             let scores = [];
@@ -363,7 +368,7 @@
             
             let task_counts = 0;
             let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
-            let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
+            let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
             let task_rec = fetched_tasks?.time ?? []; 
             
             // Function to update the start button state based on selected tasks
@@ -455,7 +460,7 @@
                             
                             // Set task choice and status based on local storage and finish time of fetched_tasks
                             if (!fetched_tasks || !fetched_tasks.chosen) {
-                                fetched_tasks = { chosen: [], time: [] }; 
+                                fetched_tasks = { chosen: [], done:[], time: [] }; 
                             } else if (fetched_tasks) {
                                 if (fetched_tasks.chosen && fetched_tasks.done) {
                                     if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
@@ -479,9 +484,7 @@
                             // Update task count and localStorage on checkbox change
                             checkbox.addEventListener('change', function() {
                                 let index = -1
-                                if (!fetched_tasks || !fetched_tasks.chosen) {
-                                    fetched_tasks = { chosen: [], time: [] }; // Ensure it is properly initialized
-                                } else if (fetched_tasks.chosen) {
+                                if (fetched_tasks.chosen) {
                                     index = fetched_tasks.chosen.findIndex(el => el == String(task.taskNumber));
                                 }
                                 if (!checkbox.disabled) {
@@ -622,7 +625,7 @@
                     try {
                         fetched_tasks = await fetchTaskStatus(preResponseId, userId); 
                         localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
-                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
                     } catch(err) {
                         console.log("Found error: ", err);
                     }
@@ -638,7 +641,7 @@
                     try {
                         var selectTasks = await fetchTaskStatus(preResponseId, userId);
                         localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
-                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
                         task_rec = fetched_tasks?.time ?? []; 
                     } catch(err) {
                         console.log("Couldn't find previous tasks' info:", err);
@@ -649,7 +652,7 @@
                     try {
                         fetched_tasks = await fetchTaskStatus(preResponseId, userId);
                         localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
-                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
                         task_rec = fetched_tasks?.time ?? []; 
                     } catch (err) {
                         console.error("Couldn't find history tasks' info:", err);
