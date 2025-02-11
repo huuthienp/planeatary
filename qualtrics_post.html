@@ -320,8 +320,7 @@
                     });
 
                     nextButton.addEventListener('click', () => {
-                        window.location.href = "result_page.html";
-                            
+                        if (nextButton.style.cursor !== "not-allowed") { window.location.href = "result_page.html"; }
                     });
 
                     // Set up an interval to check for changes in localStorage
@@ -394,6 +393,7 @@
                                 if (postObject) {
                                     postResult = postObject?.result ?? null;
                                     post_rec = postObject?.recordedDate ?? null;
+                                    await updateResponseHistory(postObject, user);
                                     updateButton(nextButton, '#02897A', 'pointer');
                                     quizFrame.style.display = 'none'; 
                                     fallbackMessage.innerHTML = "<div class='void'>Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over. Or click next to see the result!</div>";
@@ -437,30 +437,14 @@
                             fallbackMessage.innerHTML = "Content cannot be displayed. Please try again later.";
                             nextButton.style.display = "none";
                     } finally {
+                        await updateResponseHistory(postObject, user);
                         hideSpinner();
                     } 
                 });
 
                 // Listen to postResult change in localStorage
                 window.addEventListener('localStorageChange', async (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
-                    const user = netlifyIdentity.gotrue.currentUser();
-
-                    if (user) {
-                        user.jwt().then(token => {
-                            if (isTokenExpired(token)) {
-                                console.log("Token expired. Prompting user to re-login...");
-                                netlifyIdentity.logout();
-                                window.location.href = "index.html";
-                            } else {
-                                console.log("Token is valid.");
-                            }
-                        });
-                    }
-
-                    const metadata = user.user_metadata;
-                    const responseHistory = metadata.responseHistory;
-                    const userId = user.id;
-
+            
                     const quizFrame = document.querySelector('div.content > iframe.quiz');
                     const fallbackMessage = document.querySelector(".fallback");
                     fallbackMessage.classList.add("empty-state");
@@ -472,7 +456,6 @@
                             JSON.parse(newValue || undefined);  // force null -> undefined to throw error
                             quizFrame.style.display = 'none';
                             fallbackMessage.innerHTML = '<div class="void">Thank you for your response!</div>';
-                            await updateResponseHistory(postObject, user);
                             updateButton(nextButton, '#02897A', 'pointer');
                             console.log('Found post-quiz result in storage!\n', newValue);
                         } catch(error) {

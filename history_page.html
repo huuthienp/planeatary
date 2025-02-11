@@ -261,7 +261,7 @@
                         const taskCycle = mockResponseHistory?.[cycleKey]?.lastTask;
                         if (mockResponseHistory?.[cycleKey]?.preId == allResponses?.[cycleKey]?.preResponse?.responseId) {
                             allResponses?.[cycleKey] ?? {};
-                            allResponses[cycleKey].lastTask = taskCycle;
+                            allResponses[cycleKey].preResponse.lastTask = taskCycle;
                         } 
                     });  
                 } 
@@ -291,7 +291,7 @@
                 }
                 
                 Object.keys(history).forEach((cycleKey) => {
-                    const cycle = history?.[cycleKey] ?? {};
+                    const cycle = history?.[cycleKey]?.preResponse ?? {};
                     const cycleRow = document.createElement('tr');
                     const prescore = document.createElement('td');
                     const predate = document.createElement('td');

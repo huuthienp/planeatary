@@ -341,6 +341,7 @@
                 updateButton(restartBtn, 'grey', 'not-allowed');
                 
                 try {
+                    showSpinner();
                     const user = netlifyIdentity.gotrue.currentUser();
                     if (user) {
                         user.jwt().then(token => {
@@ -399,7 +400,7 @@
 
                         if(preObject && postObject) {
                             console.log('Found post-quiz result in storage!\n', postObject);
-                            //updateResponseHistory(preObject, user);
+                            await updateResponseHistory(preObject, user);
                             if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
                                 updateButton(restartBtn, '#02897A', 'pointer');
                                 restartBtn.addEventListener('click', () => {
@@ -417,7 +418,7 @@
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
                         quizSpan.innerText = 'You have already finished the pre-quiz! Let"s continue!';
-                        updateResponseHistory(preObject, user)
+                        await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                     } else if (preObject && postObject) {
                         updateAnchors(anchors, hrefs);
@@ -425,7 +426,7 @@
                         updateButton(restartBtn, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
                         quizSpan.innerText = 'You have already finished the pre-quiz and the post-quiz!';
-                        updateResponseHistory(preObject, user)
+                        await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         console.log('Found post-quiz result in storage!\n', postObject);
 
@@ -452,6 +453,10 @@
                     updateButton(nextButton, 'grey', 'not-allowed');
                     updateButton(restartBtn, 'grey', 'not-allowed');
                     quizUrl = initiateSurvey('pre', quizFrame);
+                    
+                } finally {
+                    await updateResponseHistory(preObject, user);
+                    hideSpinner();
                     
                 }
                 // Listen to preResult change in localStorage
