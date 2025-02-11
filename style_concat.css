@@ -107,6 +107,18 @@ body {
     gap: 1vw;
   }
 
+  .content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-top: 10vh !important;
+    gap: 2vmax;
+    flex-direction: column;
+  }
+
+  .void-space {
+    padding: 10vh 0 !important;
+  }
    /*do you know section*/
    .do-you-know {
     display: flex;
@@ -302,6 +314,14 @@ body {
   display: none !important;
 }
 
+.m-content {
+  display: flex;
+  justify-content: space-between;
+  padding: 10vh 0 !important;
+  gap: 2vmax;
+  flex-direction: column;
+}
+
 
 .content .head {
   width: 100%;
@@ -409,7 +429,10 @@ body {
       text-align: justify;
       background: url('./images/welcome_background.png') center/cover no-repeat;
       margin: 0 auto;
-      padding: 5vh 5vw;
+      padding-top: 20vh;
+      padding-left: 5vw;
+      padding-right: 5vw;
+      padding-bottom: 10vh;
     }
   
     .hero .herocontent {
