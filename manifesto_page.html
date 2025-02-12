@@ -511,7 +511,6 @@
                     }
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                 });
-                task_counts = calculateSelectedTasks(tasks);
                 updateStartButton(preResponseId, userId); 
             }
 
@@ -519,20 +518,21 @@
          async function updateStartButton(preResponseId, userId) {
                 const startButton = document.querySelector(".start");
                 const persuade = document.getElementById("threetask");
+                var task_counts = calculateSelectedTasks(tasks);
                 
                 if (task_counts >= 3) {
                     persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
                     persuade.style.color = 'black';
                     startButton.style.pointerEvents = "auto";
                     startButton.style.backgroundColor = "#02897A";
-                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
                 } else {
                     persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
                     persuade.style.color = 'grey';
                     startButton.style.pointerEvents = "none";
                     startButton.style.backgroundColor = "grey";
                 }
-                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));        
+                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks)); 
+                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));       
             }
         
         // update task status on `startButton` click
@@ -564,6 +564,7 @@
             const responseHistory = metadata.responseHistory;
             const userId = user.id;
             console.log("your user id is ", userId);
+
             var preObject = JSON.parse(localStorage.getItem('preResult')); 
             var preResult = preObject && preObject.result ? preObject.result : {};
             var preResponseId = preObject && preObject.responseId ? preObject.responseId : "";
@@ -573,10 +574,9 @@
             let task_counts = 0;
             let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
             let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
-            let task_rec = fetched_tasks?.time ?? [];    
-            
+            let task_rec = fetched_tasks?.time ?? []; 
+               
             updateStartButton(preResponseId, userId);
-            task_counts = calculateSelectedTasks(tasks);
 
             // Event listener for "good" button
             document.getElementById('good').addEventListener('click', function() {
@@ -688,8 +688,6 @@
                     }
                 }
                 renderQuestions((score) => score < 3);
-                task_counts = calculateSelectedTasks(tasks);
-                updateStartButton(preResponseId, userId);
                 
             } catch (err) {
                 console.error("Caught error: ", err);
