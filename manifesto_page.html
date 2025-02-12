@@ -371,19 +371,22 @@
             return count;
         }
 
-        async function renderQuestions(condition) {
+        async function renderQuestions(condition, preObject) {
                 QContainer.innerHTML = '';
 
+                let preResult = preObject?.result;
+                let preResponseId = preObject.responseId;
                 let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
                 let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                 let task_rec = fetched_tasks?.time ?? []; 
-
                 
-                if (!tasks || !preResult) {
+                if (!tasks && !preResult) {
                     QContainer.innerHTML = "<div class='empty-state'>Error: Unable to load tasks or scores.</div>";
                     return;
                 }
 
+                let scores = preResult?.pointArray ?? [];
+                
                 // Iterate over each question
                 Object.keys(tasks).forEach((questionKey, i) => {
                     const taskGroup = tasks?.[questionKey]?.tasks ?? [];
@@ -550,8 +553,6 @@
         });
 
         document.addEventListener("DOMContentLoaded", async function() {
-            
-            let scores = [];
 
             const user = netlifyIdentity.gotrue.currentUser();
 
@@ -584,30 +585,6 @@
             let task_rec = fetched_tasks?.time ?? []; 
 
             updateStartButton(preResponseId, userId, tasks, fetched_tasks);
-
-            // Event listener for "good" button
-            document.getElementById('good').addEventListener('click', function() {
-                var condition = (score) => score >= 3;
-                renderQuestions(condition);
-                var tContent = document.querySelector(".task-content");
-                if (tContent.innerHTML == '') {
-                    tContent.innerHTML == '<p>None of your answers got good score</p>';
-                }
-                good.style.backgroundColor = '#02897A';
-                bad.style.backgroundColor = '#a9d1cd';
-            });
-            
-            // Event listener for "bad" button
-            document.getElementById('notyet').addEventListener('click', function() {
-                var condition = (score) => score < 3;
-                renderQuestions(condition);
-                var tContent = document.querySelector(".task-content");
-                if (tContent.innerHTML == '') {
-                    tContent.innerHTML == '<p>None of your answers got bad score</p>';
-                }
-                good.style.backgroundColor = '#a9d1cd';
-                bad.style.backgroundColor = '#02897A';
-            });
             
             try {
                 
@@ -631,7 +608,7 @@
                 const userId = user.id;
 
                 //handle first-time user
-                if (!metadata.responseHistory && !preObject) {
+                if (metadata.responseHistory.length === 0 && !preObject) {
                     console.warn("No responseHistory found for this user.");
                     document.querySelector(".button2").style.display = "none";
                     document.querySelector(".improvement").style.display = "none";
@@ -648,25 +625,8 @@
                     preResult = preObject?.result;
                     preResponseId =  preObject?.responseId;
                     preTotalScore = preObject?.result?.totalScore; 
-                    scores = preObject?.result?.pointArray;
                 } 
-                
-                if (!tasks) {
-                    tasks = await fetchTasks(presReponseId);
-                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                    tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
-                }
-                
-                if (!fetched_tasks) {
-                    try {
-                        fetched_tasks = await fetchTaskStatus(preResponseId, userId); 
-                        localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
-                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
-                    } catch(err) {
-                        console.log("Found error: ", err);
-                    }
-                    
-                } 
+
 
                 if (storedCycle) {
                     
@@ -675,6 +635,11 @@
                     preResponseId = preObject?.responseId ?? "";
                     
                     try {
+                        if (!tasks) {
+                            tasks = await fetchTasks(presReponseId);
+                            localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                            tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+                        }
                         var selectTasks = await fetchTaskStatus(preResponseId, userId);
                         localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
                         fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
@@ -682,6 +647,12 @@
                     } catch(err) {
                         console.log("Couldn't find previous tasks' info:", err);
                     }
+                }
+
+                if (!tasks) {
+                    tasks = await fetchTasks(presReponseId);
+                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                    tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
                 }
                 
                 if (!fetched_tasks && preResponseId) {
@@ -694,8 +665,32 @@
                         console.error("Couldn't find history tasks' info:", err);
                     }
                 }
-                renderQuestions((score) => score < 3);
+                var condition = (score) => score < 3;
+                renderQuestions(condition, preObject);
                 
+                // Event listener for "good" button
+                document.getElementById('good').addEventListener('click', function() {
+                    var condition = (score) => score >= 3;
+                    renderQuestions(condition, preObject);
+                    var tContent = document.querySelector(".task-content");
+                    if (tContent.innerHTML == '') {
+                        tContent.innerHTML == '<p>None of your answers got good score</p>';
+                    }
+                    good.style.backgroundColor = '#02897A';
+                    bad.style.backgroundColor = '#a9d1cd';
+                });
+                
+                // Event listener for "bad" button
+                document.getElementById('notyet').addEventListener('click', function() {
+                    var condition = (score) => score < 3;
+                    renderQuestions(condition, preObject);
+                    var tContent = document.querySelector(".task-content");
+                    if (tContent.innerHTML == '') {
+                        tContent.innerHTML == '<p>None of your answers got bad score</p>';
+                    }
+                    good.style.backgroundColor = '#a9d1cd';
+                    bad.style.backgroundColor = '#02897A';
+                });
                 
             } catch (err) {
                 console.error("Caught error: ", err);
