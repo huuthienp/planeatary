@@ -354,7 +354,7 @@
                 console.log("Updated responseHistory to save:", responseHistory);
                 //manually keep in local storage (remove after logging out)
                 const mockResponseHistory = {id: userId,
-                    user_metadata: { responseHistory: responseHistory } };
+                    data: { responseHistory: responseHistory } };
                 try {
                     // Update user metadata
                     const updatedUser = await user.update({

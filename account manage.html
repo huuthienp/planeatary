@@ -209,7 +209,83 @@
         //Dismiss the offcanvas bar after click and execute
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+        
         const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+        const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
+        
+        
+        //For first-timer to see a reminder to do a very first quiz
+        function showToast() {
+            const toasty = document.getElementById('first-timer-toast');
+            const myToast = new bootstrap.Toast(toasty);
+            myToast.show();
+        }
+        
+        offcanvasLinks.forEach(li => {
+            li.addEventListener('click', event => {
+                const targetHref = li.getAttribute('href');
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+                
+                if (targetHref && targetHref !== "#") {
+                    window.location.href = targetHref; 
+                } 
+            });
+        });
+        
+        offcanvasDropdown.forEach(li => {
+            li.addEventListener('click', event => {
+                const targetHref = li.getAttribute('href');
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+                
+                if (targetHref && targetHref !== "#") {
+                    window.location.href = targetHref; 
+                } 
+            });
+        });
+        
+        // Function to handle navigation or showing toast
+        offcanvasListItems.forEach(li => {
+            li.addEventListener('click', event => {
+                const link = li.querySelector('a.nav-link'); 
+                
+                if (link) {
+                    if (link.classList.contains('Disabled')) {
+                        showToast(); 
+                    } else {
+                        const targetHref = link.getAttribute('href');
+                        if (targetHref && targetHref !== '#') {
+                            window.location.href = targetHref;
+                        }
+                    }
+                }
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+            });
+        });
+        
+        // Function to handle navigation or showing toast
+        offcanvasDropdownItems.forEach(li => {
+            li.addEventListener('click', event => {
+                const link = li.querySelector('a.dropdown-item'); 
+                
+                if (link) {
+                    if (link.classList.contains('Disabled')) {
+                        showToast(); 
+                    } else {
+                        const targetHref = link.getAttribute('href');
+                        if (targetHref && targetHref !== '#') {
+                            window.location.href = targetHref;
+                        }
+                    }
+                }
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+            });
+        })
+
     </script>
 
     <script>
@@ -308,7 +384,7 @@
                     document.getElementById("name").value       = userData.full_name;
                     document.getElementById("age").value        = userData.age;
                     document.getElementById("gender").value     = userData.gender;
-                    document.getElementById("user-type").value  = userData.user_type;
+                    document.getElementById("user-type").value  = userData.status;
                 }
             }
         });
@@ -337,7 +413,7 @@
                 document.getElementById("name").value       = userData.full_name;
                 document.getElementById("age").value        = userData.age;
                 document.getElementById("gender").value     = userData.gender;
-                document.getElementById("user-type").value  = userData.user_type;
+                document.getElementById("user-type").value  = userData.status;
             }
             
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
