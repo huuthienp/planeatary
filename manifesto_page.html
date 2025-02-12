@@ -371,7 +371,7 @@
             return count;
         }
 
-        async function renderQuestions(condition, preObject) {
+        async function renderQuestions(condition, preObject, userId) {
                 QContainer.innerHTML = '';
 
                 let preResult = preObject?.result;
@@ -386,7 +386,7 @@
                 }
 
                 let scores = preResult?.pointArray ?? [];
-                
+
                 // Iterate over each question
                 Object.keys(tasks).forEach((questionKey, i) => {
                     const taskGroup = tasks?.[questionKey]?.tasks ?? [];
@@ -666,12 +666,12 @@
                     }
                 }
                 var condition = (score) => score < 3;
-                renderQuestions(condition, preObject);
+                renderQuestions(condition, preObject, userId);
                 
                 // Event listener for "good" button
                 document.getElementById('good').addEventListener('click', function() {
                     var condition = (score) => score >= 3;
-                    renderQuestions(condition, preObject);
+                    renderQuestions(condition, preObject, userId);
                     var tContent = document.querySelector(".task-content");
                     if (tContent.innerHTML == '') {
                         tContent.innerHTML == '<p>None of your answers got good score</p>';
@@ -683,7 +683,7 @@
                 // Event listener for "bad" button
                 document.getElementById('notyet').addEventListener('click', function() {
                     var condition = (score) => score < 3;
-                    renderQuestions(condition, preObject);
+                    renderQuestions(condition, preObject, userId);
                     var tContent = document.querySelector(".task-content");
                     if (tContent.innerHTML == '') {
                         tContent.innerHTML == '<p>None of your answers got bad score</p>';
