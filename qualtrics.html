@@ -167,6 +167,12 @@
             const myToast = new bootstrap.Toast(toasty);
             myToast.show();
         }
+
+        function enableRestartButton() {
+            restartBtn.removeAttribute("disabled");
+            restartBtn.style.pointerEvents = "auto";
+            restartBtn.style.backgroundColor = "#02897A";
+        }
         
         offcanvasLinks.forEach(li => {
             li.addEventListener('click', event => {
@@ -271,6 +277,15 @@
             'result_page',
             'result_page',
             ];
+
+            restartBtn.addEventListener('click', () => {
+                localStorage.removeItem('preResult');
+                localStorage.removeItem(`${preResponseId}:fetched_tasks`);
+                localStorage.removeItem(`${preResponseId}:tasks`);
+                localStorage.removeItem('postResult');
+                quizFrame.style.display = 'flex';
+                var quizUrl = initiateSurvey('pre', quizFrame);
+            });
 
         </script>
         <script defer type="module">
@@ -410,6 +425,7 @@
                             await updateResponseHistory(preObject, user);
                             if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
                                 updateButton(restartBtn, '#02897A', 'pointer');
+                                enableRestartButton();
                             }
                         }
                         
@@ -432,6 +448,7 @@
 
                         if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
                             updateButton(restartBtn, '#02897A', 'pointer');
+                            enableRestartButton();
                         }
                     } else {
                         quizUrl = initiateSurvey('pre', quizFrame);
@@ -450,15 +467,6 @@
                 } finally {
                     hideSpinner();
                     await updateResponseHistory(preObject, user);
-                    restartBtn.addEventListener('click', () => {
-                        localStorage.removeItem('preResult');
-                        localStorage.removeItem(`${preResponseId}:fetched_tasks`);
-                        localStorage.removeItem(`${preResponseId}:tasks`);
-                        localStorage.removeItem('postResult');
-                        quizFrame.style.display = 'flex';
-                        var quizUrl = initiateSurvey('pre', quizFrame);
-                    });
-                    
                 }
 
                 // Listen to preResult change in localStorage
