@@ -373,6 +373,11 @@
 
         async function renderQuestions(condition) {
                 QContainer.innerHTML = '';
+
+                let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
+                let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                let task_rec = fetched_tasks?.time ?? []; 
+
                 
                 if (!tasks || !preResult) {
                     QContainer.innerHTML = "<div class='empty-state'>Error: Unable to load tasks or scores.</div>";
@@ -480,7 +485,6 @@
                                     }
                                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
                                     localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks)); 
-                                    //updateStartButton(preResponseId, userId); 
                                 }
                             });
                             
@@ -505,7 +509,6 @@
                             if (task.choice === "chosen") {task.status = task.status === "Completed"?"Completed":"Done";}
                             localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
                             localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks)); 
-                            //updateStartButton(preResponseId, userId); 
                         });
                         
                         questionDiv.appendChild(taskList);
@@ -513,13 +516,13 @@
                         localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
                     }
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                    updateStartButton(preResponseId, userId, tasks); 
+                    updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
                 });
-                updateStartButton(preResponseId, userId, tasks); 
+                updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
             }
 
          // Function to update the start button state based on selected tasks
-         async function updateStartButton(preResponseId, userId, tasks) {
+         async function updateStartButton(preResponseId, userId, tasks, fetched_tasks) {
                 const startButton = document.querySelector(".start");
                 const persuade = document.getElementById("threetask");
                 var task_counts = calculateSelectedTasks(tasks);
@@ -580,7 +583,7 @@
             let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
             let task_rec = fetched_tasks?.time ?? []; 
 
-            updateStartButton(preResponseId, userId, tasks);
+            updateStartButton(preResponseId, userId, tasks, fetched_tasks);
 
             // Event listener for "good" button
             document.getElementById('good').addEventListener('click', function() {
