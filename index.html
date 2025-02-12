@@ -847,7 +847,6 @@
                     const postQuiz = cycleKey?.postResponse ?? null;
                     //for debugging purpose
                     console.log("Cycle Key:", cycleKey);
-                    console.log("allResponses[cycleKey]:", allResponses[cycleKey]);
                     if (preQuiz?.responseId && preQuiz?.responseId == quizObj.lastPre) {
                         localStorage.setItem("preResult", JSON.stringify(preQuiz));
                     }

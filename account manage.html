@@ -42,12 +42,12 @@
                                     <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                    <li><a class="dropdown-item disabled" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
-                                    <li><a class="dropdown-item disabled" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
+                                    <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
+                                    <li><a class="dropdown-item" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="ch" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                <a class="nav-link" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -193,6 +193,18 @@
                 isLoading = false;
             }
         }
+
+        function isTokenExpired(token) {
+            if (!token) return true;
+            
+            const base64Payload = token.split('.')[1]; 
+            const decodedPayload = JSON.parse(atob(base64Payload));
+            const exp = decodedPayload.exp; 
+            
+            // Compare current time with expiration time
+            const now = Math.floor(Date.now()/1000); 
+            return exp < now; // Returns true if token is expired
+        }
         
         //Dismiss the offcanvas bar after click and execute
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
@@ -202,30 +214,6 @@
 
     <script>
 
-        const user = netlifyIdentity.gotrue.currentUser();
-        const userData = user.user_metadata;
-        
-        if (!user) {
-            console.error("No user is logged in!");
-            netlifyIdentity.logout();
-        }
-        
-        if (user) {
-            user.jwt().then(token => {
-                if (isTokenExpired(token)) {
-                    console.log("Token expired. Prompting user to re-login...");
-                    netlifyIdentity.logout();
-                    window.location.href = "index.html";
-                } else {
-                    console.log("Token is valid.");
-                }
-            });
-            document.getElementById("name").value       = userData.full_name;
-            document.getElementById("age").value        = userData.age;
-            document.getElementById("gender").value     = userData.gender;
-            document.getElementById("user-type").value  = userData.user_type;
-        }
-        
         async function updatePassword(newPassword, user) {
             
             if (!user) {
@@ -258,18 +246,7 @@
                 alert("You are not authorized to change the password.");
             }
         }
-        
-        // Load userdata to input boxes
-        document.addEventListener("DOMContentLoaded", async function() {
-            
-            window.addEventListener("load", (event) => {
-                document.getElementById("name").value       = userData.full_name;
-                document.getElementById("age").value        = userData.age;
-                document.getElementById("gender").value     = userData.gender;
-                document.getElementById("user-type").value  = userData.user_type;
-            });
-        })
-        
+
         // RegEx for checking password
         let uppercaseRegex = /[A-Z]/g;
         let lowercaseRegex = /[a-z]/g;
@@ -302,91 +279,178 @@
             }
         });
         
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        const forms = document.querySelectorAll('.needs-validation')
-        
-        // Loop over them and prevent submission
-        Array.from(forms).forEach(form => {
-            form.addEventListener('submit', event => {
-                
-                if (!form.checkValidity()) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    form_check = 0;
-                }
-                else  
-                {
-                    form_check = 1;
-                    console.log("validate form2");
-                    
-                    
-                    let user_full_name = document.getElementById("name").value;
-                    let user_age       = document.getElementById("age").value;
-                    let user_gender    = document.getElementById("gender").value;
-                    let user_type      = document.getElementById("user-type").value;
-                    let user_password  = document.getElementById("password").value;
-                    const user_datail = { full_name: user_full_name, gender: user_gender, age: user_age, status: user_type };
-                    
-                    if (user_password == "") {
-                        user.update({ user_metadata: user_datail })
-                        .then((user) => {
-                            console.log('Updated user %s', user)
-                            alert('Account information saved!');
-                            window.location.href = 'index.html'; //redirect to homepage if form check success
-                            // Fetch the latest user object 
-                            netlifyIdentity.gotrue.currentUser()
-                            .jwt()
-                            .then((token) => {
-                                const updatedUserDetails = netlifyIdentity.gotrue.currentUser();
-                                localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
-                                console.log("Updated user saved to localStorage:", updatedUserDetails);
-                            })
-                            .catch((error) => {
-                                console.error("Error fetching updated user details:", error);
-                            });
-                        })
-                        .catch((error) => {
-                            console.log('Failed to update user: %o', error);
-                            alert('Failed to save account information!');
-                            throw error;
-                        });
-                    }
-                    else {
-                        updatePassword(user_password, user);
-                        user.update({ user_metadata: user_datail })
-                        .then((user) => {
-                            console.log('Updated user %s', user)
-                            alert('Account information saved!');
-                            window.location.href = 'index.html'; //redirect to homepage if form check success
-                            // Fetch the latest user object 
-                            netlifyIdentity.gotrue.currentUser()
-                            .jwt()
-                            .then((token) => {
-                                const updatedUserDetails = netlifyIdentity.gotrue.currentUser();
-                                localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
-                                console.log("Updated user saved to localStorage:", updatedUserDetails);
-                            })
-                            .catch((error) => {
-                                console.error("Error fetching updated user details:", error);
-                            });
-                        })
-                        .catch((error) => {
-                            console.log('Failed to update user: %o', error);
-                            alert('Failed to save account information!');
-                            throw error;
-                        });
-                    }
-                    
-                }
-                
-                form.classList.add('was-validated')
-            }, false)
-        })
+        function validate_form() { return false; }
 
-        function validate_form()
-        {
-            return false;
-        }
+        document.querySelector(".account-form").addEventListener("input", async function(event) {
+            const user = netlifyIdentity.gotrue.currentUser();
+
+            if (!user) {
+                console.error("No user is logged in!");
+                netlifyIdentity.logout();
+            }
+
+            const userData = user.user_metadata;
+
+            if (user) {
+                user.jwt().then(token => {
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                        window.location.href = "index.html";
+                        return;
+                    } else {
+                        console.log("Token is valid.");
+                    }
+                });
+                if (validate_form()) {
+                    event.currentTarget.dataset.modified = "true";
+                    console.log("Form has been modified.");
+                    document.getElementById("name").value       = userData.full_name;
+                    document.getElementById("age").value        = userData.age;
+                    document.getElementById("gender").value     = userData.gender;
+                    document.getElementById("user-type").value  = userData.user_type;
+                }
+            }
+        });
+        
+        // Load userdata to input boxes
+        document.addEventListener("DOMContentLoaded", async function() {
+            
+            const user = netlifyIdentity.gotrue.currentUser();
+            const userData = user.user_metadata;
+            
+            if (!user) {
+                console.error("No user is logged in!");
+                netlifyIdentity.logout();
+            }
+            
+            if (user) {
+                user.jwt().then(token => {
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                        window.location.href = "index.html";
+                    } else {
+                        console.log("Token is valid.");
+                    }
+                });
+                document.getElementById("name").value       = userData.full_name;
+                document.getElementById("age").value        = userData.age;
+                document.getElementById("gender").value     = userData.gender;
+                document.getElementById("user-type").value  = userData.user_type;
+            }
+            
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+            
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        form_check = 0;
+                    }
+                    else  
+                    {
+                        form_check = 1;
+                        console.log("validate form2");
+                        
+                        
+                        let user_full_name = document.getElementById("name").value;
+                        let user_age       = document.getElementById("age").value;
+                        let user_gender    = document.getElementById("gender").value;
+                        let user_type      = document.getElementById("user-type").value;
+                        let user_password  = document.getElementById("password").value;
+                        const user_datail = { full_name: user_full_name, gender: user_gender, age: user_age, status: user_type };
+                        
+                        if (user_password == "") {
+                            user.update({ user_metadata: user_datail })
+                            .then((user) => {
+                                console.log('Updated user %s', user)
+                                alert('Account information saved!');
+                                window.location.href = 'index.html'; //redirect to homepage if form check success
+                                // Fetch the latest user object 
+                                netlifyIdentity.gotrue.currentUser()
+                                .jwt()
+                                .then((token) => {
+                                    const updatedUserDetails = netlifyIdentity.gotrue.currentUser();
+                                    localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
+                                    console.log("Updated user saved to localStorage:", updatedUserDetails);
+                                })
+                                .catch((error) => {
+                                    console.error("Error fetching updated user details:", error);
+                                });
+                            })
+                            .catch((error) => {
+                                console.log('Failed to update user: %o', error);
+                                alert('Failed to save account information!');
+                                throw error;
+                            });
+                        }
+                        else {
+                            updatePassword(user_password, user);
+                            user.update({ user_metadata: user_datail })
+                            .then((user) => {
+                                console.log('Updated user %s', user)
+                                alert('Account information saved!');
+                                window.location.href = 'index.html'; //redirect to homepage if form check success
+                                // Fetch the latest user object 
+                                netlifyIdentity.gotrue.currentUser()
+                                .jwt()
+                                .then((token) => {
+                                    const updatedUserDetails = netlifyIdentity.gotrue.currentUser();
+                                    localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
+                                    console.log("Updated user saved to localStorage:", updatedUserDetails);
+                                })
+                                .catch((error) => {
+                                    console.error("Error fetching updated user details:", error);
+                                });
+                            })
+                            .catch((error) => {
+                                console.log('Failed to update user: %o', error);
+                                alert('Failed to save account information!');
+                                throw error;
+                            });
+                        }
+                        
+                    }
+                    
+                    form.classList.add('was-validated')
+                }, false)
+            })
+            
+        });
+
+
+        // window.addEventListener("load", (event) => {
+            
+        //     const user = netlifyIdentity.gotrue.currentUser();
+        //     const userData = user.user_metadata;
+            
+        //     if (!user) {
+        //         console.error("No user is logged in!");
+        //         netlifyIdentity.logout();
+        //     }
+            
+        //     if (user) {
+        //         user.jwt().then(token => {
+        //             if (isTokenExpired(token)) {
+        //                 console.log("Token expired. Prompting user to re-login...");
+        //                 netlifyIdentity.logout();
+        //                 window.location.href = "index.html";
+        //             } else {
+        //                 console.log("Token is valid.");
+        //             }
+        //         });
+        //         document.getElementById("name").value       = userData.full_name;
+        //         document.getElementById("age").value        = userData.age;
+        //         document.getElementById("gender").value     = userData.gender;
+        //         document.getElementById("user-type").value  = userData.user_type;
+        //     }
+            
+        // });
 
     </script>
     <!-- Bootstrap Javascript -->
