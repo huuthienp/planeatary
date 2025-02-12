@@ -784,12 +784,12 @@
             let id = user.id;
             
             //handle first-time user
-            if (metadata.responseHistory.length === 0) {
+            if (responseHistory.length === 0) {
                 console.warn("No responseHistory found for this user.");
                 return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
             } else {
-                Object.keys(responseHistory).forEach((cycleKey) =>{
-                    const entry = responseHistory[cycleKey];
+                responseHistory.forEach((cycleKey) =>{
+                    const entry = cycleKey;
                     history.push(entry);
                     if (entry.preId && entry.postId) {
                         latest_pre = entry.preId;
