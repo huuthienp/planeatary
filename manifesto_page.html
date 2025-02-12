@@ -386,6 +386,7 @@
                 }
 
                 let scores = preResult?.pointArray ?? [];
+                let task_counts = calculateSelectedTasks(tasks);
 
                 // Iterate over each question
                 Object.keys(tasks).forEach((questionKey, i) => {
