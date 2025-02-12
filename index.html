@@ -777,7 +777,7 @@
             }
 
             const metadata = user.user_metadata;
-            const responseHistory = metadata.responseHistory;
+            const responseHistory = metadata?.responseHistory ?? [];
             let latest_pre = "";
             let latest_post = "";
             let history = [];
