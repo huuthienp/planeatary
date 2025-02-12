@@ -402,7 +402,6 @@
                     btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
                     btn_next.style.cursor = "pointer";
                     btn_next.disabled = false;
-                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
                     console.log("time array:", Tstatus.time);
                     let latestTimestamp = Math.max(...Tstatus.time);
                     const merged = mergeTaskArrays(tasks, separator);
@@ -514,7 +513,8 @@
                                 // Toggle task status between "Done" and "Completed"
                                 
                                 completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
-                                await delay(500);  
+                                await delay(500); 
+
                                 task.status = task.status === "Done" ? "Completed" : "Done";
                                 
                                 if (task.status === "Completed") {

@@ -371,6 +371,26 @@
             return count;
         }
 
+        // Function to update the start button state based on selected tasks
+        async function updateStartButton(preResponseId, userId, tasks, fetched_tasks) {
+                const startButton = document.querySelector(".start");
+                const persuade = document.getElementById("threetask");
+                var task_counts = calculateSelectedTasks(tasks);
+                
+                if (task_counts >= 3) {
+                    persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
+                    persuade.style.color = 'black';
+                    startButton.style.pointerEvents = "auto";
+                    startButton.style.backgroundColor = "#02897A";     
+                } else {
+                    persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
+                    persuade.style.color = 'grey';
+                    startButton.style.pointerEvents = "none";
+                    startButton.style.backgroundColor = "grey";
+                }
+                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));   
+            }
+            
         async function renderQuestions(condition, preObject, userId) {
                 QContainer.innerHTML = '';
 
@@ -517,37 +537,19 @@
                         
                         questionDiv.appendChild(taskList);
                         QContainer.appendChild(questionDiv);
-                        localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
+                        localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                        updateStartButton(preResponseId, userId, tasks, fetched_tasks);  
                     }
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
                 });
                 updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
-            }
-
-         // Function to update the start button state based on selected tasks
-         async function updateStartButton(preResponseId, userId, tasks, fetched_tasks) {
-                const startButton = document.querySelector(".start");
-                const persuade = document.getElementById("threetask");
-                var task_counts = calculateSelectedTasks(tasks);
-                
-                if (task_counts >= 3) {
-                    persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
-                    persuade.style.color = 'black';
-                    startButton.style.pointerEvents = "auto";
-                    startButton.style.backgroundColor = "#02897A";
-                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));     
-                } else {
-                    persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
-                    persuade.style.color = 'grey';
-                    startButton.style.pointerEvents = "none";
-                    startButton.style.backgroundColor = "grey";
-                }
-                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));   
+                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)))
             }
         
         // update task status on `startButton` click
         startButton.addEventListener('click', async function(event) {
+            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
             if (task_counts >= 3) {
                 window.location.href = "challenge_page.html";
             }
