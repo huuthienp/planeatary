@@ -442,10 +442,11 @@
                     cardContainer.innerHTML = "<div class='empty-state'>The system is down. Please try again later</div>";
                     return;
                 }
+
+                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
                 
                 Object.keys(tasks).forEach(async (questionKey) => {
                     const taskGroup = tasks?.[questionKey]?.tasks ?? [];
-                    
                     // Filter tasks that are selected
                     taskGroup.forEach(task => 
                     {
@@ -547,8 +548,8 @@
                             localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                             if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}     
                         }
+                        updateNextButton(preResponseId, userId, tasks, Tstatus); 
                     });
-                    //await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
                     updateNextButton(preResponseId, userId, tasks, Tstatus);     
                 });
                 

@@ -367,69 +367,15 @@
             });
             return count;
         }
-        
-        document.addEventListener("DOMContentLoaded", async function() {
-            
-            const startButton = document.querySelector(".start");
-            
-            let scores = [];
 
-            const user = netlifyIdentity.gotrue.currentUser();
-
-            if (user) {
-                user.jwt().then(token => {
-                    if (isTokenExpired(token)) {
-                        console.log("Token expired. Prompting user to re-login...");
-                        netlifyIdentity.logout();
-                        window.location.href = "index.html";
-                    } else {
-                        console.log("Token is valid.");
-                    }
-                });
-            }
-
-            const metadata = user.user_metadata;
-            const responseHistory = metadata.responseHistory;
-            const userId = user.id;
-            console.log("your user id is ", userId);
-            var preObject = JSON.parse(localStorage.getItem('preResult')); 
-            var preResult = preObject && preObject.result ? preObject.result : {};
-            var preResponseId = preObject && preObject.responseId ? preObject.responseId : "";
-            var preTotalScore = preResult && preResult.totalScore ? preResult.totalScore : ""; 
-            var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
-            
-            let task_counts = 0;
-            let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
-            let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
-            let task_rec = fetched_tasks?.time ?? []; 
-            
-            // Function to update the start button state based on selected tasks
-            async function updateStartButton(preResponseId, userId) {
-                const startButton = document.querySelector(".start");
-                const persuade = document.getElementById("threetask");
-                
-                if (task_counts >= 3) {
-                    persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
-                    persuade.style.color = 'black';
-                    startButton.style.pointerEvents = "auto";
-                    startButton.style.backgroundColor = "#02897A";
-                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                } else {
-                    persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
-                    persuade.style.color = 'grey';
-                    startButton.style.pointerEvents = "none";
-                    startButton.style.backgroundColor = "grey";
-                }
-                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));        
-            }
-            
-            async function renderQuestions(condition) {
+        async function renderQuestions(condition) {
                 QContainer.innerHTML = '';
                 
                 if (!tasks || !preResult) {
                     QContainer.innerHTML = "<div class='empty-state'>Error: Unable to load tasks or scores.</div>";
                     return;
                 }
+
                 // Iterate over each question
                 Object.keys(tasks).forEach((questionKey, i) => {
                     const taskGroup = tasks?.[questionKey]?.tasks ?? [];
@@ -565,26 +511,79 @@
                     }
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                 });
-                
                 task_counts = calculateSelectedTasks(tasks);
                 updateStartButton(preResponseId, userId); 
             }
-            
-            // update task status on `startButton` click
-            startButton.addEventListener('click', async function(event) {
-                showSpinner();
-                updateStartButton(preResponseId, userId);
-                hideSpinner();
+
+         // Function to update the start button state based on selected tasks
+         async function updateStartButton(preResponseId, userId) {
+                const startButton = document.querySelector(".start");
+                const persuade = document.getElementById("threetask");
+                
                 if (task_counts >= 3) {
-                    window.location.href = "challenge_page.html";
+                    persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
+                    persuade.style.color = 'black';
+                    startButton.style.pointerEvents = "auto";
+                    startButton.style.backgroundColor = "#02897A";
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                } else {
+                    persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
+                    persuade.style.color = 'grey';
+                    startButton.style.pointerEvents = "none";
+                    startButton.style.backgroundColor = "grey";
                 }
-            });
+                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));        
+            }
+        
+        // update task status on `startButton` click
+        startButton.addEventListener('click', async function(event) {
+            if (task_counts >= 3) {
+                window.location.href = "challenge_page.html";
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", async function() {
+            
+            const startButton = document.querySelector(".start");
+            
+            let scores = [];
+
+            const user = netlifyIdentity.gotrue.currentUser();
+
+            if (user) {
+                user.jwt().then(token => {
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                        window.location.href = "index.html";
+                    } else {
+                        console.log("Token is valid.");
+                    }
+                });
+            }
+
+            const metadata = user.user_metadata;
+            const responseHistory = metadata.responseHistory;
+            const userId = user.id;
+            console.log("your user id is ", userId);
+            var preObject = JSON.parse(localStorage.getItem('preResult')); 
+            var preResult = preObject && preObject.result ? preObject.result : {};
+            var preResponseId = preObject && preObject.responseId ? preObject.responseId : "";
+            var preTotalScore = preResult && preResult.totalScore ? preResult.totalScore : ""; 
+            var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
+            
+            let task_counts = 0;
+            let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
+            let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+            let task_rec = fetched_tasks?.time ?? [];    
+            
+            updateStartButton(preResponseId, userId);
+            task_counts = calculateSelectedTasks(tasks);
             
             // Event listener for "good" button
             document.getElementById('good').addEventListener('click', function() {
                 var condition = (score) => score >= 3;
                 renderQuestions(condition);
-                updateStartButton(preResponseId, userId);
                 var tContent = document.querySelector(".task-content");
                 if (tContent.innerHTML == '') {
                     tContent.innerHTML == '<p>None of your answers got good score</p>';
@@ -597,7 +596,6 @@
             document.getElementById('notyet').addEventListener('click', function() {
                 var condition = (score) => score < 3;
                 renderQuestions(condition);
-                updateStartButton(preResponseId, userId);
                 var tContent = document.querySelector(".task-content");
                 if (tContent.innerHTML == '') {
                     tContent.innerHTML == '<p>None of your answers got bad score</p>';
