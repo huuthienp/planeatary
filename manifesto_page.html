@@ -370,197 +370,10 @@
             return count;
         }
 
-        // Function to update the start button state based on selected tasks
-        async function updateStartButton(preResponseId, userId, tasks, fetched_tasks) {
-                const startButton = document.querySelector(".start");
-                const persuade = document.getElementById("threetask");
-                
-                if (task_counts >= 3) {
-                    persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
-                    persuade.style.color = 'black';
-                    startButton.style.pointerEvents = "auto";
-                    startButton.style.backgroundColor = "#02897A";     
-                } else {
-                    persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
-                    persuade.style.color = 'grey';
-                    startButton.style.pointerEvents = "none";
-                    startButton.style.backgroundColor = "grey";
-                }
-                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));   
-            }
-            
-        async function renderQuestions(condition, preObject, userId) {
-                QContainer.innerHTML = '';
-
-                let preResult = preObject?.result;
-                let preResponseId = preObject.responseId;
-                let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
-                let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
-                let task_rec = fetched_tasks?.time ?? []; 
-                
-                
-                if (!tasks && !preResult) {
-                    QContainer.innerHTML = "<div class='empty-state'>Error: Unable to load tasks or scores.</div>";
-                    return;
-                }
-
-                let scores = preResult?.pointArray ?? [];
-                var task_counts = calculateSelectedTasks(tasks);
-                if (fetched_tasks) {
-                    updateStartButton(preResponseId, userId, tasks, fetched_tasks);
-                }
-
-                // Iterate over each question
-                Object.keys(tasks).forEach((questionKey, i) => {
-                    const taskGroup = tasks?.[questionKey]?.tasks ?? [];
-                    const score = scores[i]; 
-                    if (condition(score)) {
-                        // Create a container for the question
-                        const questionDiv = document.createElement('div');
-                        questionDiv.classList.add('question-block');
-                        
-                        // Display question number and score
-                        const questionTitle = document.createElement('h3');
-                        questionTitle.innerHTML = `Question ${i + 1} - ${score} points `;
-                        
-                        if (score < 3) {
-                            questionDiv.style.borderRadius = "20px";
-                            questionDiv.style.boxShadow = "10px 10px 10px rgb(178, 34, 34)";
-                            questionTitle.style.color = '#B22222';
-                        } else {
-                            questionDiv.style.borderRadius = "20px";
-                            questionDiv.style.boxShadow = "10px 10px 10px rgb(46, 139, 87)";
-                            questionTitle.style.color = '#2E8B57';
-                        }
-                        
-                        // Add the info icon with a click event to open the modal
-                        const infoIcon = document.createElement('img');
-                        infoIcon.src = './images/info.png';
-                        infoIcon.width = '20';
-                        infoIcon.style.cursor = 'pointer'; 
-                        
-                        questionTitle.appendChild(infoIcon); 
-                        questionDiv.appendChild(questionTitle);
-                        
-                        // Set the click event for the info icon to show the modal with the correct image
-                        infoIcon.addEventListener('click', function() {
-                            Modal(`./images/pop${i + 1}.jpg`); 
-                        });
-                        
-                        // Create a list to hold the tasks for this question
-                        const taskList = document.createElement('ul');
-                        
-                        // Iterate over tasks for the question
-                        taskGroup.forEach((task, j) => {
-                            const taskItem = document.createElement('li');
-                            const label = document.createElement('label');
-                            const checkbox = document.createElement('input');
-                            checkbox.type = 'checkbox';
-                            
-                            // Add an info icon for task description
-                            const infoIcon2 = document.createElement("span");
-                            infoIcon2.classList.add("info-icon");
-                            infoIcon2.innerHTML = "&#9432;"; 
-                            
-                            label.classList.add('task-label');
-                            
-                            label.appendChild(checkbox);
-                            label.appendChild(document.createTextNode(task.taskName));
-                            label.appendChild(infoIcon2);
-                            taskItem.appendChild(label);
-                            taskList.appendChild(taskItem);
-                            
-                            // Set task choice and status based on local storage and finish time of fetched_tasks
-                            if (!fetched_tasks || !fetched_tasks.chosen) {
-                                fetched_tasks = { chosen: [], done:[], time: [] }; 
-                            } else if (fetched_tasks) {
-                                if (fetched_tasks.chosen && fetched_tasks.done) {
-                                    if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
-                                        task.choice = 'chosen';
-                                        checkbox.checked = true;
-                                        if (fetched_tasks.done.includes(String(task.taskNumber))) {
-                                            const _index = fetched_tasks.done.indexOf(task.taskNumber);
-                                            task.finishTime = fetched_tasks.time[_index];
-                                            task.status = 'Completed';
-                                        } else {
-                                            task.finishTime = "";
-                                            task.status = 'Done';
-                                        }
-                                    }
-                                }
-                            }
-                            //Also double-check task status in local storage
-                            checkbox.disabled = task.status === 'Completed';
-                            localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
-                            
-                            // Update task count and localStorage on checkbox change
-                            checkbox.addEventListener('change', function() {
-                                let index = -1
-                                if (fetched_tasks.chosen) {
-                                    index = fetched_tasks.chosen.findIndex(el => el == String(task.taskNumber));
-                                }
-                                if (!checkbox.disabled) {
-                                    if (checkbox.checked) {
-                                        task.choice = "chosen";
-                                        task_counts += 1;
-                                        if (index === -1) {fetched_tasks.chosen.push(String(task.taskNumber))}
-                                    } else {
-                                        task.choice = "";                                         
-                                        task_counts -= 1;
-                                        if (index !== -1) {fetched_tasks.chosen.splice(index, 1)}
-                                    }
-                                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
-                                    localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));  
-                                }
-                                updateStartButton(preResponseId, userId, tasks, fetched_tasks);
-                            });
-                            
-                            label.addEventListener('click', (e) => {
-                                // If the input is disabled, show toast
-                                if (checkbox.disabled) {
-                                    const toasty = document.getElementById('task-toast');
-                                    const myToast = new bootstrap.Toast(toasty);
-                                    myToast.show();
-                                }
-                            });
-                            
-                            // Event listener for more info
-                            infoIcon2.addEventListener('click', function(event) {
-                                event.preventDefault();
-                                event.stopPropagation(); 
-                                ModalDes(task.taskName, task.taskDescription);
-                            });
-                            
-                            checkbox.checked = task.choice === "chosen";
-                            //Check task status on local  storage
-                            if (task.choice === "chosen") {task.status = task.status === "Completed"?"Completed":"Done";}
-                            localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
-                            localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
-                            updateStartButton(preResponseId, userId, tasks, fetched_tasks);
-                        });
-                        questionDiv.appendChild(taskList);
-                        QContainer.appendChild(questionDiv);
-                        localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                    }
-                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                    updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
-                });
-                var task_counts = calculateSelectedTasks(tasks);
-                updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
-                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)))
-            }
-        
-        // update task status on `startButton` click
-        startButton.addEventListener('click', async function(event) {
-            if (task_counts >= 3) {
-                window.location.href = "challenge_page.html";
-            }
-        });
-
         document.addEventListener("DOMContentLoaded", async function() {
-
+            
             const user = netlifyIdentity.gotrue.currentUser();
-
+            
             if (user) {
                 user.jwt().then(token => {
                     if (isTokenExpired(token)) {
@@ -572,18 +385,18 @@
                     }
                 });
             }
-
+            
             const metadata = user.user_metadata;
             const responseHistory = metadata.responseHistory;
             const userId = user.id;
             console.log("your user id is ", userId);
-
+            
             var preObject = JSON.parse(localStorage.getItem('preResult')); 
             var preResult = preObject && preObject.result ? preObject.result : {};
             var preResponseId = preObject && preObject.responseId ? preObject.responseId : "";
             var preTotalScore = preResult && preResult.totalScore ? preResult.totalScore : ""; 
             var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
-    
+            
             let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
             let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
             let task_rec = fetched_tasks?.time ?? []; 
@@ -609,7 +422,7 @@
                 const metadata = user.user_metadata;
                 const responseHistory = metadata.responseHistory;
                 const userId = user.id;
-
+                
                 //handle first-time user
                 if (metadata.responseHistory.length === 0 && !preObject) {
                     console.warn("No responseHistory found for this user.");
@@ -629,7 +442,7 @@
                     preResponseId =  preObject?.responseId;
                     preTotalScore = preObject?.result?.totalScore; 
                 } 
-
+                
                 if (storedCycle) {
                     
                     preObject = storedCycle?.preResponse;
@@ -650,7 +463,7 @@
                         console.log("Couldn't find previous tasks' info:", err);
                     }
                 }
-
+                
                 if (!tasks) {
                     tasks = await fetchTasks(presReponseId);
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
@@ -668,9 +481,191 @@
                     }
                 }
                 
+                // Function to update the start button state based on selected tasks
+                async function updateStartButton(preResponseId, userId, tasks, fetched_tasks) {
+                    const startButton = document.querySelector(".start");
+                    const persuade = document.getElementById("threetask");
+                    
+                    if (task_counts >= 3) {
+                        persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
+                        persuade.style.color = 'black';
+                        startButton.style.pointerEvents = "auto";
+                        startButton.style.backgroundColor = "#02897A";     
+                    } else {
+                        persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
+                        persuade.style.color = 'grey';
+                        startButton.style.pointerEvents = "none";
+                        startButton.style.backgroundColor = "grey";
+                    }
+                    localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));   
+                }
+                
+                async function renderQuestions(condition, preObject, userId) {
+                    QContainer.innerHTML = '';
+                    
+                    let preResult = preObject?.result;
+                    let preResponseId = preObject.responseId;
+                    let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
+                    let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                    let task_rec = fetched_tasks?.time ?? []; 
+                    
+                    
+                    if (!tasks && !preResult) {
+                        QContainer.innerHTML = "<div class='empty-state'>Error: Unable to load tasks or scores.</div>";
+                        return;
+                    }
+                    
+                    let scores = preResult?.pointArray ?? [];
+                    
+                    // Iterate over each question
+                    Object.keys(tasks).forEach((questionKey, i) => {
+                        const taskGroup = tasks?.[questionKey]?.tasks ?? [];
+                        const score = scores[i]; 
+                        if (condition(score)) {
+                            // Create a container for the question
+                            const questionDiv = document.createElement('div');
+                            questionDiv.classList.add('question-block');
+                            
+                            // Display question number and score
+                            const questionTitle = document.createElement('h3');
+                            questionTitle.innerHTML = `Question ${i + 1} - ${score} points `;
+                            
+                            if (score < 3) {
+                                questionDiv.style.borderRadius = "20px";
+                                questionDiv.style.boxShadow = "10px 10px 10px rgb(178, 34, 34)";
+                                questionTitle.style.color = '#B22222';
+                            } else {
+                                questionDiv.style.borderRadius = "20px";
+                                questionDiv.style.boxShadow = "10px 10px 10px rgb(46, 139, 87)";
+                                questionTitle.style.color = '#2E8B57';
+                            }
+                            
+                            // Add the info icon with a click event to open the modal
+                            const infoIcon = document.createElement('img');
+                            infoIcon.src = './images/info.png';
+                            infoIcon.width = '20';
+                            infoIcon.style.cursor = 'pointer'; 
+                            
+                            questionTitle.appendChild(infoIcon); 
+                            questionDiv.appendChild(questionTitle);
+                            
+                            // Set the click event for the info icon to show the modal with the correct image
+                            infoIcon.addEventListener('click', function() {
+                                Modal(`./images/pop${i + 1}.jpg`); 
+                            });
+                            
+                            // Create a list to hold the tasks for this question
+                            const taskList = document.createElement('ul');
+                            
+                            // Iterate over tasks for the question
+                            taskGroup.forEach((task, j) => {
+                                const taskItem = document.createElement('li');
+                                const label = document.createElement('label');
+                                const checkbox = document.createElement('input');
+                                checkbox.type = 'checkbox';
+                                
+                                // Add an info icon for task description
+                                const infoIcon2 = document.createElement("span");
+                                infoIcon2.classList.add("info-icon");
+                                infoIcon2.innerHTML = "&#9432;"; 
+                                
+                                label.classList.add('task-label');
+                                
+                                label.appendChild(checkbox);
+                                label.appendChild(document.createTextNode(task.taskName));
+                                label.appendChild(infoIcon2);
+                                taskItem.appendChild(label);
+                                taskList.appendChild(taskItem);
+                                
+                                // Set task choice and status based on local storage and finish time of fetched_tasks
+                                if (!fetched_tasks || !fetched_tasks.chosen) {
+                                    fetched_tasks = { chosen: [], done:[], time: [] }; 
+                                } else if (fetched_tasks) {
+                                    if (fetched_tasks.chosen && fetched_tasks.done) {
+                                        if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
+                                            task.choice = 'chosen';
+                                            checkbox.checked = true;
+                                            if (fetched_tasks.done.includes(String(task.taskNumber))) {
+                                                const _index = fetched_tasks.done.indexOf(task.taskNumber);
+                                                task.finishTime = fetched_tasks.time[_index];
+                                                task.status = 'Completed';
+                                            } else {
+                                                task.finishTime = "";
+                                                task.status = 'Done';
+                                            }
+                                        }
+                                    }
+                                }
+                                //Also double-check task status in local storage
+                                checkbox.disabled = task.status === 'Completed';
+                                localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
+                                
+                                // Update task count and localStorage on checkbox change
+                                checkbox.addEventListener('change', function() {
+                                    let index = -1
+                                    if (fetched_tasks.chosen) {
+                                        index = fetched_tasks.chosen.findIndex(el => el == String(task.taskNumber));
+                                    }
+                                    if (!checkbox.disabled) {
+                                        if (checkbox.checked) {
+                                            task.choice = "chosen";
+                                            task_counts += 1;
+                                            if (index === -1) {fetched_tasks.chosen.push(String(task.taskNumber))}
+                                        } else {
+                                            task.choice = "";                                         
+                                            task_counts -= 1;
+                                            if (index !== -1) {fetched_tasks.chosen.splice(index, 1)}
+                                        }
+                                        localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
+                                        localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));  
+                                    }
+                                    updateStartButton(preResponseId, userId, tasks, fetched_tasks);
+                                });
+                                
+                                label.addEventListener('click', (e) => {
+                                    // If the input is disabled, show toast
+                                    if (checkbox.disabled) {
+                                        const toasty = document.getElementById('task-toast');
+                                        const myToast = new bootstrap.Toast(toasty);
+                                        myToast.show();
+                                    }
+                                });
+                                
+                                // Event listener for more info
+                                infoIcon2.addEventListener('click', function(event) {
+                                    event.preventDefault();
+                                    event.stopPropagation(); 
+                                    ModalDes(task.taskName, task.taskDescription);
+                                });
+                                
+                                checkbox.checked = task.choice === "chosen";
+                                //Check task status on local  storage
+                                if (task.choice === "chosen") {task.status = task.status === "Completed"?"Completed":"Done";}
+                                localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
+                                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
+                                updateStartButton(preResponseId, userId, tasks, fetched_tasks);
+                            });
+                            questionDiv.appendChild(taskList);
+                            QContainer.appendChild(questionDiv);
+                            localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                        }
+                        localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                        updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
+                    });
+                    var task_counts = calculateSelectedTasks(tasks);
+                    updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)))
+                }
+                
+                // update task status on `startButton` click
+                startButton.addEventListener('click', async function(event) {
+                    if (task_counts >= 3) {
+                        window.location.href = "challenge_page.html";
+                    }
+                });
+                
                 // Event listener for "good" button
                 document.getElementById('good').addEventListener('click', function() {
-                    let task_counts = 0;
                     var condition = (score) => score >= 3;
                     renderQuestions(condition, preObject, userId);
                     var tContent = document.querySelector(".task-content");
@@ -683,7 +678,6 @@
                 
                 // Event listener for "bad" button
                 document.getElementById('notyet').addEventListener('click', function() {
-                    let task_counts = 0;
                     var condition = (score) => score < 3;
                     renderQuestions(condition, preObject, userId);
                     var tContent = document.querySelector(".task-content");
@@ -693,7 +687,7 @@
                     good.style.backgroundColor = '#a9d1cd';
                     bad.style.backgroundColor = '#02897A';
                 });
-
+                
                 var condition = (score) => score < 3;
                 renderQuestions(condition, preObject, userId);
                 
@@ -703,8 +697,8 @@
                 hideSpinner();
             }      
         });
-    </script>
-    <!-- Bootstrap Javascript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+        </script>
+        <!-- Bootstrap Javascript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </body>
+        </html>
