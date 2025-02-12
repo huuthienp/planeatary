@@ -542,6 +542,31 @@
                                 localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                                 if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
                                 updateNextButton(preResponseId, userId, tasks, Tstatus);
+                                console.log("time array:", Tstatus.time);
+                                if (Tstatus.time.findIndex(el => el === "") === -1) {
+                                    let latestTimestamp = Math.max(...Tstatus.time);
+                                    var separator = '@';
+                                    const merged = mergeTaskArrays(tasks, separator);
+                                    // Filter out tasks with finish times (those containing "@")
+                                    const tasksWithFinishTimes = merged.chosen.filter(task => task.includes("@"));
+                                    // Map to extract finish times and task numbers
+                                    const taskDetails = tasksWithFinishTimes.map(task => {
+                                        const [taskNumber, finishTime] = task.split("@");
+                                        return { taskNumber, finishTime: Number(finishTime) };
+                                    });
+                                    // Sort tasks by finishTime in descending order
+                                    taskDetails.sort((a, b) => b.finishTime - a.finishTime);
+                                    // Get the task with the latest finish time
+                                    const latestTask = taskDetails[0];
+                                    const lastTask = `${latestTask.taskNumber}@${latestTask.finishTime}`;
+                                    // Update response history
+                                    try {
+                                        await updateResponseHistory(preResponseId, lastTask);
+                                        console.log(`Response history updated with task: ${lastTask}`);
+                                    } catch (err) {
+                                        console.error("Error updating response history:", err);
+                                    }
+                                }
                             })      
                         }
                         localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
@@ -555,6 +580,32 @@
                 await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
                 updateNextButton(preResponseId, userId, tasks, Tstatus);
                 cardContainer.appendChild(nextButtonContainer);
+
+                console.log("time array:", Tstatus.time);
+                if (Tstatus.time.findIndex(el => el === "") === -1) {
+                    let latestTimestamp = Math.max(...Tstatus.time);
+                    var separator = '@';
+                    const merged = mergeTaskArrays(tasks, separator);
+                    // Filter out tasks with finish times (those containing "@")
+                    const tasksWithFinishTimes = merged.chosen.filter(task => task.includes("@"));
+                    // Map to extract finish times and task numbers
+                    const taskDetails = tasksWithFinishTimes.map(task => {
+                        const [taskNumber, finishTime] = task.split("@");
+                        return { taskNumber, finishTime: Number(finishTime) };
+                    });
+                    // Sort tasks by finishTime in descending order
+                    taskDetails.sort((a, b) => b.finishTime - a.finishTime);
+                    // Get the task with the latest finish time
+                    const latestTask = taskDetails[0];
+                    const lastTask = `${latestTask.taskNumber}@${latestTask.finishTime}`;
+                    // Update response history
+                    try {
+                        await updateResponseHistory(preResponseId, lastTask);
+                        console.log(`Response history updated with task: ${lastTask}`);
+                    } catch (err) {
+                        console.error("Error updating response history:", err);
+                    }
+                }
             }
             
             document.addEventListener("DOMContentLoaded", async function() {
@@ -627,29 +678,6 @@
                         }
                     }
                     displaySelectedTasks(preResponseId, userId, tasks, Tstatus);
-                    console.log("time array:", Tstatus.time);
-                    let latestTimestamp = Math.max(...Tstatus.time);
-                    var separator = '@';
-                    const merged = mergeTaskArrays(tasks, separator);
-                    // Filter out tasks with finish times (those containing "@")
-                    const tasksWithFinishTimes = merged.chosen.filter(task => task.includes("@"));
-                    // Map to extract finish times and task numbers
-                    const taskDetails = tasksWithFinishTimes.map(task => {
-                        const [taskNumber, finishTime] = task.split("@");
-                        return { taskNumber, finishTime: Number(finishTime) };
-                    });
-                    // Sort tasks by finishTime in descending order
-                    taskDetails.sort((a, b) => b.finishTime - a.finishTime);
-                    // Get the task with the latest finish time
-                    const latestTask = taskDetails[0];
-                    const lastTask = `${latestTask.taskNumber}@${latestTask.finishTime}`;
-                    // Update response history
-                    try {
-                        await updateResponseHistory(preResponseId, lastTask);
-                        console.log(`Response history updated with task: ${lastTask}`);
-                    } catch (err) {
-                        console.error("Error updating response history:", err);
-                    }
                     
                 } catch (err) {
                     console.error("Caught error: ", err);

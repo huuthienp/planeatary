@@ -171,8 +171,6 @@
         const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
         const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
 
-        let task_counts = 0;
-
         offcanvasLinks.forEach(li => {
                 li.addEventListener('click', event => {
                     const targetHref = li.getAttribute('href');
@@ -369,7 +367,6 @@
                 });
             });
             }
-            
             return count;
         }
 
@@ -513,9 +510,9 @@
                                         if (index !== -1) {fetched_tasks.chosen.splice(index, 1)}
                                     }
                                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
-                                    localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks)); 
-                                    updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
+                                    localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));  
                                 }
+                                updateStartButton(preResponseId, userId, tasks, fetched_tasks);
                             });
                             
                             label.addEventListener('click', (e) => {
@@ -541,12 +538,12 @@
                             localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
                             updateStartButton(preResponseId, userId, tasks, fetched_tasks);
                         });
-                        
                         questionDiv.appendChild(taskList);
                         QContainer.appendChild(questionDiv);
                         localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     }
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                    updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
                 });
                 var task_counts = calculateSelectedTasks(tasks);
                 updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
@@ -558,30 +555,6 @@
             if (task_counts >= 3) {
                 window.location.href = "challenge_page.html";
             }
-        });
-
-        // Event listener for "good" button
-        document.getElementById('good').addEventListener('click', function() {
-            var condition = (score) => score >= 3;
-            renderQuestions(condition, preObject, userId);
-            var tContent = document.querySelector(".task-content");
-            if (tContent.innerHTML == '') {
-                tContent.innerHTML == '<p>None of your answers got good score</p>';
-            }
-            good.style.backgroundColor = '#02897A';
-            bad.style.backgroundColor = '#a9d1cd';
-        });
-
-        // Event listener for "bad" button
-        document.getElementById('notyet').addEventListener('click', function() {
-            var condition = (score) => score < 3;
-            renderQuestions(condition, preObject, userId);
-            var tContent = document.querySelector(".task-content");
-            if (tContent.innerHTML == '') {
-                tContent.innerHTML == '<p>None of your answers got bad score</p>';
-            }
-            good.style.backgroundColor = '#a9d1cd';
-            bad.style.backgroundColor = '#02897A';
         });
 
         document.addEventListener("DOMContentLoaded", async function() {
@@ -614,6 +587,7 @@
             let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
             let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
             let task_rec = fetched_tasks?.time ?? []; 
+            let task_counts = 0;
             
             try {
                 
@@ -693,6 +667,31 @@
                         console.error("Couldn't find history tasks' info:", err);
                     }
                 }
+                
+                // Event listener for "good" button
+                document.getElementById('good').addEventListener('click', function() {
+                    var condition = (score) => score >= 3;
+                    renderQuestions(condition, preObject, userId);
+                    var tContent = document.querySelector(".task-content");
+                    if (tContent.innerHTML == '') {
+                        tContent.innerHTML == '<p>None of your answers got good score</p>';
+                    }
+                    good.style.backgroundColor = '#02897A';
+                    bad.style.backgroundColor = '#a9d1cd';
+                });
+                
+                // Event listener for "bad" button
+                document.getElementById('notyet').addEventListener('click', function() {
+                    var condition = (score) => score < 3;
+                    renderQuestions(condition, preObject, userId);
+                    var tContent = document.querySelector(".task-content");
+                    if (tContent.innerHTML == '') {
+                        tContent.innerHTML == '<p>None of your answers got bad score</p>';
+                    }
+                    good.style.backgroundColor = '#a9d1cd';
+                    bad.style.backgroundColor = '#02897A';
+                });
+
                 var condition = (score) => score < 3;
                 renderQuestions(condition, preObject, userId);
                 
