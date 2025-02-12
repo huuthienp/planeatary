@@ -443,7 +443,7 @@
                     return;
                 }
                 
-                Object.keys(tasks).forEach(questionKey => {
+                Object.keys(tasks).forEach(async (questionKey) => {
                     const taskGroup = tasks?.[questionKey]?.tasks ?? [];
                     
                     // Filter tasks that are selected
@@ -511,8 +511,9 @@
                             
                             taskCard.addEventListener('click', async (event) => {
                                 // Toggle task status between "Done" and "Completed"
-                                await delay(500);
-                                completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';  
+                                
+                                completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
+                                await delay(500);  
                                 task.status = task.status === "Done" ? "Completed" : "Done";
                                 
                                 if (task.status === "Completed") {
@@ -542,11 +543,13 @@
                                 // Update task in localStorage
                                 localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                                 if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
-                                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                                updateNextButton(preResponseId, userId, tasks, Tstatus);  
-                            })        
+                            })
+                            localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                            if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}     
                         }
-                    });     
+                    });
+                    //await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                    updateNextButton(preResponseId, userId, tasks, Tstatus);     
                 });
                 
                 localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
