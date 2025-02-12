@@ -95,10 +95,70 @@
     const bOverlay = document.getElementById("spinnerOverlay");
     let spinnerStartTime;
     let isLoading;
-
+    
     const offcanvasNavbar = document.getElementById('offcanvasNavbar');
     const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-    const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+    const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item > li');
+    
+    
+    const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+    const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
+    
+    offcanvasLinks.forEach(li => {
+        li.addEventListener('click', event => {
+            const targetHref = li.getAttribute('href');
+            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvas.hide();
+            
+            if (targetHref && targetHref !== "#") {
+                window.location.href = targetHref; 
+            } 
+        });
+    });
+    
+    offcanvasDropdown.forEach(li => {
+        li.addEventListener('click', event => {
+            const targetHref = li.getAttribute('href');
+            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvas.hide();
+            
+            if (targetHref && targetHref !== "#") {
+                window.location.href = targetHref; 
+            } 
+        });
+    });
+    
+    // Function to handle navigation or showing toast
+    offcanvasListItems.forEach(li => {
+        li.addEventListener('click', event => {
+            const link = li.querySelector('a.nav-link'); 
+            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvas.hide();
+            if (link) {
+                const targetHref = link.getAttribute('href');
+                if (targetHref && targetHref !== '#') {
+                    window.location.href = targetHref;
+                }
+            }
+        })
+        
+    });
+    
+    // Function to handle navigation or showing toast
+    offcanvasDropdownItems.forEach(li => {
+        li.addEventListener('click', event => {
+            const link = li.querySelector('a.dropdown-item'); 
+            
+            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvas.hide();
+            if (link) {
+                const targetHref = link.getAttribute('href');
+                if (targetHref && targetHref !== '#') {
+                    window.location.href = targetHref;
+                }
+            }
+        });
+    })
     
     function showSpinner() {
         spinner.classList.remove('hidden');
@@ -116,11 +176,11 @@
                 isLoading = false;
             }, minDisplayTime - elapsedTime);
         } else {
-                    spinner.classList.add('hidden');
-                    spOver.classList.add('hidden');
-                    isLoading = false;
-                }
+            spinner.classList.add('hidden');
+            spOver.classList.add('hidden');
+            isLoading = false;
         }
+    }
     
     function logOut() {
         const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -140,33 +200,7 @@
     }
     
     document.getElementById('logOut').addEventListener('click', () => {
-
-        offcanvasLinks.forEach(li => {
-            li.addEventListener('click', event => {
-                const targetHref = li.getAttribute('href');
-                
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
-                
-                if (targetHref && targetHref !== '#') {
-                    window.location.href = targetHref; 
-                }
-            });
-        });
         
-        offcanvasDropdown.forEach(li => {
-            li.addEventListener('click', event => {
-                const targetHref = li.getAttribute('href');
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
-                
-                if (targetHref) {
-                    window.location.href = targetHref; 
-                }
-            });
-        });
-        
-
         if(confirm("Do you really want to sign out?") == true) {
             showSpinner();
             logOut();

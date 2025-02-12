@@ -136,9 +136,14 @@ body {
     background-color: #f9f9f9;
   }
 
-  .do-you-know .content {
-    padding: 0 20px;
-    max-width: 40% !important;
+  .do-you-know .d-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-top: 10vh !important;
+    gap: 2vmax;
+    flex-direction: column;
+    max-width: 80%;
   }
   
   .do-you-know .video {
@@ -233,6 +238,7 @@ body {
   display: flex;
   justify-content: center;
   height: 5vh;
+  margin: 5vh auto;
 }
 .button_next .next{
   background-color: #02897A;
@@ -358,7 +364,7 @@ body {
   color: rgba(0,0,0,1);
   font-size: 1em;
 }
-.content .card {
+.content .Card {
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
@@ -554,8 +560,13 @@ body {
   text-align: justify;
 }
 
-.do-you-know .content {
-  flex: 1;
+.do-you-know .d-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-top: 5vh !important;
+  gap: 2vmax;
+  flex-direction: column;
   max-width: 80%;
 }
 
@@ -1082,7 +1093,8 @@ margin-top: 20px;
 .content .btn-next {
   display: flex;
   width: 100%;
-  justify-content: flex-end;
+  justify-content: center;
+  gap: 4vw;
 }
 .next {
   font-size: 1em;
@@ -1292,11 +1304,12 @@ margin-top: 20px;
 }
 
 .void-space {
-  padding: 20vh 0;
+  padding: 8vh 0;
 }
 
 .history-table {
   position: relative;
+  padding: 0 5vw;
 }
 
 #h-table {
@@ -1305,20 +1318,19 @@ margin-top: 20px;
 
 .empty-state {
   display: flex;
-  padding: 2vh 2vw;
+  padding: 30vh 10vw;
   justify-content: center;
-  text-align: justify;
   margin: auto auto;
-  font-size: 2em;
+  font-size: 1em;
   color: #ff6b6b; 
 }
 
 .void {
   display: flex;
-  padding: 2vh 2vw;
   justify-content: center;
   text-align: justify;
   margin: auto auto;
   font-size: 2em;
   color: #2ecc71;
+  padding: 30vh 10vw;
 }
