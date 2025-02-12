@@ -408,7 +408,7 @@
                 }
 
                 let scores = preResult?.pointArray ?? [];
-                let task_counts = calculateSelectedTasks(tasks);
+                task_counts = calculateSelectedTasks(tasks);
 
                 // Iterate over each question
                 Object.keys(tasks).forEach((questionKey, i) => {
@@ -545,14 +545,13 @@
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
                 });
-                
+                task_counts = calculateSelectedTasks(tasks);
                 updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
                 await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)))
             }
         
         // update task status on `startButton` click
         startButton.addEventListener('click', async function(event) {
-            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
             if (task_counts >= 3) {
                 window.location.href = "challenge_page.html";
             }
