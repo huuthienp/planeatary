@@ -316,6 +316,24 @@
                 }
             });
             
+            btn_next.addEventListener("click", function () {
+                if (btn_next.style.pointerEvents === "auto") {
+                    window.location.href = "congrat_page.html";
+                }
+            });
+            
+            offcanvasLinks.forEach(li => {
+                li.addEventListener('click', event => {
+                    const targetHref = li.getAttribute('href');
+                    
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                    
+                    if (targetHref && targetHref !== '#') {
+                        window.location.href = targetHref; 
+                    }
+                });
+            });
         </script>
         <script type="module">
             import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
@@ -397,33 +415,10 @@
                 
                 // Enable or disable the next button based on task completion status
                 if (allCompleted) {
-                    var separator = '@';
                     btn_next.style.pointerEvents = "auto"; // Enable the next button
                     btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
                     btn_next.style.cursor = "pointer";
                     btn_next.disabled = false;
-                    console.log("time array:", Tstatus.time);
-                    let latestTimestamp = Math.max(...Tstatus.time);
-                    const merged = mergeTaskArrays(tasks, separator);
-                    // Filter out tasks with finish times (those containing "@")
-                    const tasksWithFinishTimes = merged.chosen.filter(task => task.includes("@"));
-                    // Map to extract finish times and task numbers
-                    const taskDetails = tasksWithFinishTimes.map(task => {
-                        const [taskNumber, finishTime] = task.split("@");
-                        return { taskNumber, finishTime: Number(finishTime) };
-                    });
-                    // Sort tasks by finishTime in descending order
-                    taskDetails.sort((a, b) => b.finishTime - a.finishTime);
-                    // Get the task with the latest finish time
-                    const latestTask = taskDetails[0];
-                    const lastTask = `${latestTask.taskNumber}@${latestTask.finishTime}`;
-                    // Update response history
-                    try {
-                        await updateResponseHistory(preResponseId, lastTask);
-                        console.log(`Response history updated with task: ${lastTask}`);
-                    } catch (err) {
-                        console.error("Error updating response history:", err);
-                    }
                 } else {
                     btn_next.style.pointerEvents = "none"; // Disable the next button
                     btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
@@ -546,7 +541,8 @@
                                 if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
                             })
                             localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                            if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}     
+                            if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
+                            updateNextButton(preResponseId, userId, tasks, Tstatus);      
                         }
                         updateNextButton(preResponseId, userId, tasks, Tstatus); 
                     });
@@ -568,25 +564,6 @@
                 btn_next.style.cursor = "not-allowed"; 
                 
                 nextButtonContainer.appendChild(btn_next);
-                
-                btn_next.addEventListener("click", function () {
-                    if (btn_next.style.pointerEvents === "auto") {
-                        window.location.href = "congrat_page.html";
-                    }
-                });
-                
-                offcanvasLinks.forEach(li => {
-                    li.addEventListener('click', event => {
-                        const targetHref = li.getAttribute('href');
-                        
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
-                        
-                        if (targetHref && targetHref !== '#') {
-                            window.location.href = targetHref; 
-                        }
-                    });
-                });
                 
                 try {
                     showSpinner();
@@ -649,6 +626,29 @@
                         }
                     }
                     displaySelectedTasks(preResponseId, userId, tasks);
+                    console.log("time array:", Tstatus.time);
+                    let latestTimestamp = Math.max(...Tstatus.time);
+                    var separator = '@';
+                    const merged = mergeTaskArrays(tasks, separator);
+                    // Filter out tasks with finish times (those containing "@")
+                    const tasksWithFinishTimes = merged.chosen.filter(task => task.includes("@"));
+                    // Map to extract finish times and task numbers
+                    const taskDetails = tasksWithFinishTimes.map(task => {
+                        const [taskNumber, finishTime] = task.split("@");
+                        return { taskNumber, finishTime: Number(finishTime) };
+                    });
+                    // Sort tasks by finishTime in descending order
+                    taskDetails.sort((a, b) => b.finishTime - a.finishTime);
+                    // Get the task with the latest finish time
+                    const latestTask = taskDetails[0];
+                    const lastTask = `${latestTask.taskNumber}@${latestTask.finishTime}`;
+                    // Update response history
+                    try {
+                        await updateResponseHistory(preResponseId, lastTask);
+                        console.log(`Response history updated with task: ${lastTask}`);
+                    } catch (err) {
+                        console.error("Error updating response history:", err);
+                    }
                     
                 } catch (err) {
                     console.error("Caught error: ", err);

@@ -409,6 +409,9 @@
 
                 let scores = preResult?.pointArray ?? [];
                 task_counts = calculateSelectedTasks(tasks);
+                if (fetched_tasks) {
+                    updateStartButton(preResponseId, userId, tasks, fetched_tasks);
+                }
 
                 // Iterate over each question
                 Object.keys(tasks).forEach((questionKey, i) => {
@@ -534,7 +537,8 @@
                             //Check task status on local  storage
                             if (task.choice === "chosen") {task.status = task.status === "Completed"?"Completed":"Done";}
                             localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
-                            localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks)); 
+                            localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
+                            updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
                         });
                         
                         questionDiv.appendChild(taskList);
