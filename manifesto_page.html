@@ -357,7 +357,7 @@
         
         function calculateSelectedTasks(tasks) {
             let count = 0;
-            if(task && Object.keys(tasks).length > 0) {
+            if(tasks && Object.keys(tasks).length > 0) {
                 Object.keys(tasks).forEach((questionKey) => {
                 const taskGroup = tasks?.[questionKey]?.tasks ?? [];
                 taskGroup.forEach(task => {
