@@ -283,6 +283,7 @@
             var postObject = JSON.parse(localStorage.getItem('postResult'));
             var postResult;
             var postResponseId;
+            
 
             //hard-code updating responseHistory
             async function updateResponseHistory(preObject, user) {
@@ -342,6 +343,16 @@
             
             document.addEventListener('DOMContentLoaded', async () => {
                 var quizUrl = initiateSurvey('pre', quizFrame);
+                const quizFrame = document.querySelector('div.content > iframe.quiz');
+
+                restartBtn.addEventListener('click', () => {
+                    localStorage.removeItem('preResult');
+                    localStorage.removeItem(`${preResponseId}:fetched_tasks`);
+                    localStorage.removeItem(`${preResponseId}:tasks`);
+                    localStorage.removeItem('postResult');
+                    quizFrame.style.display = 'flex';
+                    quizUrl = initiateSurvey('pre', quizFrame); 
+                });
                 
                 updateButton(restartBtn, 'grey', 'not-allowed');
 
@@ -409,14 +420,6 @@
                             await updateResponseHistory(preObject, user);
                             if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
                                 updateButton(restartBtn, '#02897A', 'pointer');
-                                restartBtn.addEventListener('click', () => {
-                                    localStorage.removeItem('preResult');
-                                    localStorage.removeItem(`${preResponseId}:fetched_tasks`);
-                                    localStorage.removeItem(`${preResponseId}:tasks`);
-                                    localStorage.removeItem('postResult');
-                                    quizFrame.style.display = 'flex';
-                                    quizUrl = initiateSurvey('pre', quizFrame); 
-                                });
                             }
                         }
                         
