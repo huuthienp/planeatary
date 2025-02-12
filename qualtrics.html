@@ -414,8 +414,11 @@
                                     localStorage.removeItem(`${preResponseId}:fetched_tasks`);
                                     localStorage.removeItem(`${preResponseId}:tasks`);
                                     localStorage.removeItem('postResult');
-                                    quizFrame.contentWindow.location = quizUrl;  
+                                    quizFrame.style.display = 'flex';
+                                    quizUrl = initiateSurvey('pre', quizFrame); 
                                 });
+                                updateButton(nextButton, 'grey', 'not-allowed');
+                                updateButton(restartBtn, 'grey', 'not-allowed');
                             }
                         }
                         
@@ -443,8 +446,11 @@
                                 localStorage.removeItem(`${preResponseId}:fetched_tasks`);
                                 localStorage.removeItem(`${preResponseId}:tasks`);
                                 localStorage.removeItem('postResult');
-                                quizFrame.contentWindow.location = quizUrl;  
+                                quizFrame.style.display = 'flex';
+                                quizUrl = initiateSurvey('pre', quizFrame);
                             });
+                            updateButton(nextButton, 'grey', 'not-allowed');
+                            updateButton(restartBtn, 'grey', 'not-allowed');
                         }
                     } else {
                         quizUrl = initiateSurvey('pre', quizFrame);
