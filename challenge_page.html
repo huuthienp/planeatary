@@ -428,7 +428,7 @@
             }
             
             // Function to display selected tasks and allow status update
-            async function displaySelectedTasks(preResponseId, userId, tasks) {
+            async function displaySelectedTasks(preResponseId, userId, tasks, Tstatus) {
                 cardContainer.innerHTML = '';  
 
                 //Handle no tasks information from previous page
@@ -436,7 +436,7 @@
                     cardContainer.innerHTML = "<div class='empty-state'>The system is down. Please try again later</div>";
                     return;
                 }
-
+ 
                 await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
                 
                 Object.keys(tasks).forEach(async (questionKey) => {
@@ -497,12 +497,14 @@
                                         taskName.style.textDecoration = "line-through";
                                     }
                                 }
+                                updateNextButton(preResponseId, userId, tasks, Tstatus);
                             }
                             localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
                             taskCard.appendChild(taskName);
                             taskCard.appendChild(infoIcon); 
                             taskCard.appendChild(completion);
                             cardContainer.appendChild(taskCard);
+                            updateNextButton(preResponseId, userId, tasks, Tstatus); 
                             
                             taskCard.addEventListener('click', async (event) => {
                                 // Toggle task status between "Done" and "Completed"
@@ -539,14 +541,13 @@
                                 // Update task in localStorage
                                 localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                                 if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
-                            })
-                            localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                            if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
-                            updateNextButton(preResponseId, userId, tasks, Tstatus);      
+                                updateNextButton(preResponseId, userId, tasks, Tstatus);
+                            })      
                         }
+                        localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                        if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
                         updateNextButton(preResponseId, userId, tasks, Tstatus); 
-                    });
-                    updateNextButton(preResponseId, userId, tasks, Tstatus);     
+                    });   
                 });
                 
                 localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
@@ -625,7 +626,7 @@
                             console.log(err);
                         }
                     }
-                    displaySelectedTasks(preResponseId, userId, tasks);
+                    displaySelectedTasks(preResponseId, userId, tasks, Tstatus);
                     console.log("time array:", Tstatus.time);
                     let latestTimestamp = Math.max(...Tstatus.time);
                     var separator = '@';

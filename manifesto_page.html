@@ -514,6 +514,7 @@
                                     }
                                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
                                     localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks)); 
+                                    updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
                                 }
                             });
                             
@@ -538,18 +539,16 @@
                             if (task.choice === "chosen") {task.status = task.status === "Completed"?"Completed":"Done";}
                             localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
                             localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
-                            updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
+                            updateStartButton(preResponseId, userId, tasks, fetched_tasks);
                         });
                         
                         questionDiv.appendChild(taskList);
                         QContainer.appendChild(questionDiv);
                         localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                        updateStartButton(preResponseId, userId, tasks, fetched_tasks);  
                     }
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                    updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
                 });
-                task_counts = calculateSelectedTasks(tasks);
+                var task_counts = calculateSelectedTasks(tasks);
                 updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
                 await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)))
             }
@@ -559,6 +558,30 @@
             if (task_counts >= 3) {
                 window.location.href = "challenge_page.html";
             }
+        });
+
+        // Event listener for "good" button
+        document.getElementById('good').addEventListener('click', function() {
+            var condition = (score) => score >= 3;
+            renderQuestions(condition, preObject, userId);
+            var tContent = document.querySelector(".task-content");
+            if (tContent.innerHTML == '') {
+                tContent.innerHTML == '<p>None of your answers got good score</p>';
+            }
+            good.style.backgroundColor = '#02897A';
+            bad.style.backgroundColor = '#a9d1cd';
+        });
+
+        // Event listener for "bad" button
+        document.getElementById('notyet').addEventListener('click', function() {
+            var condition = (score) => score < 3;
+            renderQuestions(condition, preObject, userId);
+            var tContent = document.querySelector(".task-content");
+            if (tContent.innerHTML == '') {
+                tContent.innerHTML == '<p>None of your answers got bad score</p>';
+            }
+            good.style.backgroundColor = '#a9d1cd';
+            bad.style.backgroundColor = '#02897A';
         });
 
         document.addEventListener("DOMContentLoaded", async function() {
@@ -633,7 +656,6 @@
                     preTotalScore = preObject?.result?.totalScore; 
                 } 
 
-
                 if (storedCycle) {
                     
                     preObject = storedCycle?.preResponse;
@@ -673,30 +695,6 @@
                 }
                 var condition = (score) => score < 3;
                 renderQuestions(condition, preObject, userId);
-                
-                // Event listener for "good" button
-                document.getElementById('good').addEventListener('click', function() {
-                    var condition = (score) => score >= 3;
-                    renderQuestions(condition, preObject, userId);
-                    var tContent = document.querySelector(".task-content");
-                    if (tContent.innerHTML == '') {
-                        tContent.innerHTML == '<p>None of your answers got good score</p>';
-                    }
-                    good.style.backgroundColor = '#02897A';
-                    bad.style.backgroundColor = '#a9d1cd';
-                });
-                
-                // Event listener for "bad" button
-                document.getElementById('notyet').addEventListener('click', function() {
-                    var condition = (score) => score < 3;
-                    renderQuestions(condition, preObject, userId);
-                    var tContent = document.querySelector(".task-content");
-                    if (tContent.innerHTML == '') {
-                        tContent.innerHTML == '<p>None of your answers got bad score</p>';
-                    }
-                    good.style.backgroundColor = '#a9d1cd';
-                    bad.style.backgroundColor = '#02897A';
-                });
                 
             } catch (err) {
                 console.error("Caught error: ", err);
