@@ -171,6 +171,8 @@
         const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
         const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
 
+        let task_counts = 0;
+
         offcanvasLinks.forEach(li => {
                 li.addEventListener('click', event => {
                     const targetHref = li.getAttribute('href');
@@ -399,6 +401,7 @@
                 let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                 let task_rec = fetched_tasks?.time ?? []; 
                 
+                
                 if (!tasks && !preResult) {
                     QContainer.innerHTML = "<div class='empty-state'>Error: Unable to load tasks or scores.</div>";
                     return;
@@ -542,6 +545,7 @@
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
                 });
+                
                 updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
                 await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)))
             }
@@ -580,13 +584,10 @@
             var preResponseId = preObject && preObject.responseId ? preObject.responseId : "";
             var preTotalScore = preResult && preResult.totalScore ? preResult.totalScore : ""; 
             var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
-            
-            let task_counts = 0;
+    
             let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
             let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
             let task_rec = fetched_tasks?.time ?? []; 
-
-            updateStartButton(preResponseId, userId, tasks, fetched_tasks);
             
             try {
                 
