@@ -345,7 +345,8 @@
             
             // Loop over them and prevent submission
             Array.from(forms).forEach(form => {
-                form.addEventListener('submit', event => {
+                
+                form.addEventListener('submit', async (event) => {
                     
                     if (!form.checkValidity()) {
                         event.preventDefault();
@@ -365,54 +366,26 @@
                         let user_password  = document.getElementById("password").value;
                         const user_datail = { full_name: user_full_name, gender: user_gender, age: user_age, status: user_type };
                         
-                        if (user_password == "") {
-                            user.update({ user_metadata: user_datail })
-                            .then((user) => {
-                                console.log('Updated user %s', JSON.stringify(user))
-                                alert('Account information saved!');
-                                // Fetch the latest user object 
-                                netlifyIdentity.gotrue.currentUser()
-                                .jwt()
-                                .then((token) => {
-                                    const updatedUserDetails = netlifyIdentity.gotrue.currentUser();
-                                    localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
-                                    console.log("Updated user saved to localStorage:", updatedUserDetails);
-                                    window.location.href = 'index.html'; //redirect to homepage if form check success
-                                })
-                                .catch((error) => {
-                                    console.error("Error fetching updated user details:", error);
-                                });
-                            })
-                            .catch((error) => {
-                                console.log('Failed to update user: %o', error);
-                                alert('Failed to save account information!');
-                                throw error;
-                            });
-                        }
-                        else {
-                            updatePassword(user_password, user);
-                            user.update({ user_metadata: user_datail })
-                            .then((user) => {
-                                console.log('Updated user %s', user)
-                                alert('Account information saved!');
-                                // Fetch the latest user object 
-                                netlifyIdentity.gotrue.currentUser()
-                                .jwt()
-                                .then((token) => {
-                                    const updatedUserDetails = netlifyIdentity.gotrue.currentUser();
-                                    localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
-                                    console.log("Updated user saved to localStorage:", updatedUserDetails);
-                                    window.location.href = 'index.html'; //redirect to homepage if form check success
-                                })
-                                .catch((error) => {
-                                    console.error("Error fetching updated user details:", error);
-                                });
-                            })
-                            .catch((error) => {
-                                console.log('Failed to update user: %o', error);
-                                alert('Failed to save account information!');
-                                throw error;
-                            });
+                        try {
+                            // If password is provided, update it first
+                            if (user_password !== "") {
+                                await updatePassword(user_password, user);
+                            }
+                            
+                            // Update user metadata
+                            const updatedUser = await user.update({ user_metadata: user_datail });
+                            
+                            console.log("✅ Updated user:", JSON.stringify(updatedUser));
+                            alert("Account information saved!");
+                            
+                            // Fetch and store updated user details
+                            const updatedUserDetails = await netlifyIdentity.gotrue.currentUser();
+                            localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
+                            
+                            console.log("🔄 Updated user saved to localStorage:", updatedUserDetails);
+                        } catch (error) {
+                            console.error("❌ Failed to update user:", error);
+                            alert("Failed to save account information!");
                         }
                         
                     }
