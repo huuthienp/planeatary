@@ -145,7 +145,7 @@
         import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
         
         const QContainer = document.querySelector(".q-task");
-        
+        const startButton = document.querySelector(".start");
         const good = document.getElementById("good");
         const bad = document.getElementById("notyet");
         good.style.backgroundColor = '#a9d1cd';
@@ -544,8 +544,6 @@
 
         document.addEventListener("DOMContentLoaded", async function() {
             
-            const startButton = document.querySelector(".start");
-            
             let scores = [];
 
             const user = netlifyIdentity.gotrue.currentUser();
@@ -579,7 +577,7 @@
             
             updateStartButton(preResponseId, userId);
             task_counts = calculateSelectedTasks(tasks);
-            
+
             // Event listener for "good" button
             document.getElementById('good').addEventListener('click', function() {
                 var condition = (score) => score >= 3;
@@ -690,6 +688,8 @@
                     }
                 }
                 renderQuestions((score) => score < 3);
+                task_counts = calculateSelectedTasks(tasks);
+                updateStartButton(preResponseId, userId);
                 
             } catch (err) {
                 console.error("Caught error: ", err);
