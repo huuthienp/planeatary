@@ -499,7 +499,7 @@
                                     }
                                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
                                     localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks)); 
-                                    updateStartButton(preResponseId, userId); 
+                                    //updateStartButton(preResponseId, userId); 
                                 }
                             });
                             
@@ -523,7 +523,8 @@
                             //Check task status on local  storage
                             if (task.choice === "chosen") {task.status = task.status === "Completed"?"Completed":"Done";}
                             localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
-                            updateStartButton(preResponseId, userId); 
+                            localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks)); 
+                            //updateStartButton(preResponseId, userId); 
                         });
                         
                         questionDiv.appendChild(taskList);
@@ -549,9 +550,9 @@
             
             // Event listener for "good" button
             document.getElementById('good').addEventListener('click', function() {
-                updateStartButton(preResponseId, userId);
                 var condition = (score) => score >= 3;
                 renderQuestions(condition);
+                updateStartButton(preResponseId, userId);
                 var tContent = document.querySelector(".task-content");
                 if (tContent.innerHTML == '') {
                     tContent.innerHTML == '<p>None of your answers got good score</p>';
@@ -562,9 +563,9 @@
             
             // Event listener for "bad" button
             document.getElementById('notyet').addEventListener('click', function() {
-                updateStartButton(preResponseId, userId);
                 var condition = (score) => score < 3;
                 renderQuestions(condition);
+                updateStartButton(preResponseId, userId);
                 var tContent = document.querySelector(".task-content");
                 if (tContent.innerHTML == '') {
                     tContent.innerHTML == '<p>None of your answers got bad score</p>';
