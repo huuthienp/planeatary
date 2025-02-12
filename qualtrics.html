@@ -278,14 +278,6 @@
             'result_page',
             ];
 
-            restartBtn.addEventListener('click', () => {
-                localStorage.removeItem('preResult');
-                //localStorage.removeItem(`${preResponseId}:fetched_tasks`);
-                //localStorage.removeItem(`${preResponseId}:tasks`);
-                localStorage.removeItem('postResult');
-                quizFrame.style.display = 'flex';
-                var quizUrl = initiateSurvey('pre', quizFrame);
-            });
 
         </script>
         <script defer type="module">
@@ -299,6 +291,15 @@
             var postResult;
             var postResponseId;
             
+            restartBtn.addEventListener('click', () => {
+                localStorage.removeItem('preResult');
+                //localStorage.removeItem(`${preResponseId}:fetched_tasks`);
+                //localStorage.removeItem(`${preResponseId}:tasks`);
+                localStorage.removeItem('postResult');
+                quizFrame.style.display = 'flex';
+                quizSpan.innerText = '';
+                var quizUrl = initiateSurvey('pre', quizFrame);
+            });
 
             //hard-code updating responseHistory
             async function updateResponseHistory(preObject, user) {
