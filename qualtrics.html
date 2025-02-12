@@ -343,15 +343,6 @@
             
             document.addEventListener('DOMContentLoaded', async () => {
                 const quizFrame = document.querySelector('div.content > iframe.quiz');
-
-                restartBtn.addEventListener('click', () => {
-                    localStorage.removeItem('preResult');
-                    localStorage.removeItem(`${preResponseId}:fetched_tasks`);
-                    localStorage.removeItem(`${preResponseId}:tasks`);
-                    localStorage.removeItem('postResult');
-                    quizFrame.style.display = 'flex';
-                    var quizUrl = initiateSurvey('pre', quizFrame);
-                });
                 
                 updateButton(restartBtn, 'grey', 'not-allowed');
 
@@ -441,15 +432,6 @@
 
                         if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
                             updateButton(restartBtn, '#02897A', 'pointer');
-                            restartBtn.addEventListener('click', () => {
-                                localStorage.removeItem('preResult');
-                                localStorage.removeItem(`${preResponseId}:fetched_tasks`);
-                                localStorage.removeItem(`${preResponseId}:tasks`);
-                                localStorage.removeItem('postResult');
-                                quizFrame.style.display = 'flex';
-                                var quizUrl = initiateSurvey('pre', quizFrame);
-                                updateButton(nextButton, 'grey', 'not-allowed');
-                            });
                         }
                     } else {
                         quizUrl = initiateSurvey('pre', quizFrame);
@@ -463,13 +445,22 @@
                     updateAnchors(anchors);
                     updateButton(nextButton, 'grey', 'not-allowed');
                     updateButton(restartBtn, 'grey', 'not-allowed');
-                    quizUrl = initiateSurvey('pre', quizFrame);
+                    var quizUrl = initiateSurvey('pre', quizFrame);
                     
                 } finally {
                     hideSpinner();
                     await updateResponseHistory(preObject, user);
+                    restartBtn.addEventListener('click', () => {
+                        localStorage.removeItem('preResult');
+                        localStorage.removeItem(`${preResponseId}:fetched_tasks`);
+                        localStorage.removeItem(`${preResponseId}:tasks`);
+                        localStorage.removeItem('postResult');
+                        quizFrame.style.display = 'flex';
+                        var quizUrl = initiateSurvey('pre', quizFrame);
+                    });
                     
                 }
+
                 // Listen to preResult change in localStorage
                 window.addEventListener('localStorageChange', async (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
                     const netlifyIdentity = window.netlifyIdentity;
