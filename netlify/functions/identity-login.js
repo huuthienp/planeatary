@@ -1,19 +1,9 @@
+// https://docs.netlify.com/functions/functions-and-identity/#trigger-functions-on-identity-events
 export async function handler(event) {
-    const { user } = JSON.parse(event.body);
-    const { app_metadata } = user;
-    const { roles } = app_metadata;  // an array
-    const newRoles = new Set();
-    for (let r of roles) { newRoles.add(r); }
-    newRoles.add('tester');
-    return {
-        body: JSON.stringify({
-            ...user,
-            app_metadata: {
-                ...app_metadata,
-                roles: Array.from(newRoles),
-                last_login_at: (new Date()).toISOString(),
-            },
-        }),
-        statusCode: 200,
-    };
-}
+    const { user } = JSON.parse(event.body);  // can modify user data
+    user.app_metadata.last_login_at = (new Date()).toISOString();
+    user.user_metadata.responseHistory ??= [];
+    const body = JSON.stringify(user);
+    let statusCode = 200;  // can block event with non-2xx status
+    return ({ body, statusCode });
+}  // end of login-event function
