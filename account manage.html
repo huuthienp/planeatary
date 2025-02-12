@@ -199,9 +199,16 @@
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
         const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
     </script>
+
     <script>
+
         const user = netlifyIdentity.gotrue.currentUser();
         const userData = user.user_metadata;
+        
+        if (!user) {
+            console.error("No user is logged in!");
+            netlifyIdentity.logout();
+        }
         
         if (user) {
             user.jwt().then(token => {
@@ -217,11 +224,6 @@
             document.getElementById("age").value        = userData.age;
             document.getElementById("gender").value     = userData.gender;
             document.getElementById("user-type").value  = userData.user_type;
-        }
-        
-        if (!user) {
-            console.error("No user is logged in!");
-            netlifyIdentity.logout();
         }
         
         async function updatePassword(newPassword, user) {
