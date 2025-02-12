@@ -68,7 +68,7 @@
             </div>
         </nav>
     </div>
-    
+    <div class="void-space"></div>
     <div class="container-sm">
         <!-- Account Management Section -->
         <div id="account" class="account-page">
@@ -213,11 +213,15 @@
                     console.log("Token is valid.");
                 }
             });
+            document.getElementById("name").value       = userData.full_name;
+            document.getElementById("age").value        = userData.age;
+            document.getElementById("gender").value     = userData.gender;
+            document.getElementById("user-type").value  = userData.user_type;
         }
         
         if (!user) {
             console.error("No user is logged in!");
-            return;
+            netlifyIdentity.logout();
         }
         
         async function updatePassword(newPassword, user) {
