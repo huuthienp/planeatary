@@ -373,7 +373,7 @@
                             }
                             
                             // Update user metadata
-                            const updatedUser = await user.update({ user_metadata: user_datail });
+                            const updatedUser = await user.update({ data: user_datail });
                             
                             console.log("✅ Updated user:", JSON.stringify(updatedUser));
                             alert("Account information saved!");
