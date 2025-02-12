@@ -342,7 +342,6 @@
                 }
             
             document.addEventListener('DOMContentLoaded', async () => {
-                var quizUrl = initiateSurvey('pre', quizFrame);
                 const quizFrame = document.querySelector('div.content > iframe.quiz');
 
                 restartBtn.addEventListener('click', () => {
@@ -351,7 +350,7 @@
                     localStorage.removeItem(`${preResponseId}:tasks`);
                     localStorage.removeItem('postResult');
                     quizFrame.style.display = 'flex';
-                    quizUrl = initiateSurvey('pre', quizFrame); 
+                    var quizUrl = initiateSurvey('pre', quizFrame);
                 });
                 
                 updateButton(restartBtn, 'grey', 'not-allowed');
@@ -448,10 +447,9 @@
                                 localStorage.removeItem(`${preResponseId}:tasks`);
                                 localStorage.removeItem('postResult');
                                 quizFrame.style.display = 'flex';
-                                quizUrl = initiateSurvey('pre', quizFrame);
+                                var quizUrl = initiateSurvey('pre', quizFrame);
+                                updateButton(nextButton, 'grey', 'not-allowed');
                             });
-                            updateButton(nextButton, 'grey', 'not-allowed');
-                            updateButton(restartBtn, 'grey', 'not-allowed');
                         }
                     } else {
                         quizUrl = initiateSurvey('pre', quizFrame);
