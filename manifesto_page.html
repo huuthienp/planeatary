@@ -405,7 +405,7 @@
                 }
 
                 let scores = preResult?.pointArray ?? [];
-                task_counts = calculateSelectedTasks(tasks);
+                var task_counts = calculateSelectedTasks(tasks);
                 if (fetched_tasks) {
                     updateStartButton(preResponseId, userId, tasks, fetched_tasks);
                 }
@@ -670,6 +670,7 @@
                 
                 // Event listener for "good" button
                 document.getElementById('good').addEventListener('click', function() {
+                    let task_counts = 0;
                     var condition = (score) => score >= 3;
                     renderQuestions(condition, preObject, userId);
                     var tContent = document.querySelector(".task-content");
@@ -682,6 +683,7 @@
                 
                 // Event listener for "bad" button
                 document.getElementById('notyet').addEventListener('click', function() {
+                    let task_counts = 0;
                     var condition = (score) => score < 3;
                     renderQuestions(condition, preObject, userId);
                     var tContent = document.querySelector(".task-content");
