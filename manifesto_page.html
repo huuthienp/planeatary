@@ -148,9 +148,6 @@
         
         const good = document.getElementById("good");
         const bad = document.getElementById("notyet");
-        const spOver = document.getElementById("spinnerOverlay");
-        
-        
         good.style.backgroundColor = '#a9d1cd';
         bad.style.backgroundColor = '#02897A';
         
@@ -158,6 +155,7 @@
         let isLoading = false;
         const minDisplayTime = 2000; 
         let spinnerStartTime;
+        const spOver = document.getElementById("spinnerOverlay");
         
         const modal = document.querySelector(".modal");
         const overlay = document.querySelector(".overlay");
@@ -170,6 +168,8 @@
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
         const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+        const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
 
         offcanvasLinks.forEach(li => {
                 li.addEventListener('click', event => {
@@ -195,6 +195,38 @@
                     }
                 });
             });
+
+        offcanvasListItems.forEach(li => {
+            li.addEventListener('click', event => {
+                const link = li.querySelector('a.nav-link'); 
+                
+                if (link) {
+                    
+                    const targetHref = link.getAttribute('href');
+                    if (targetHref && targetHref !== '#') {
+                        window.location.href = targetHref;
+                    }
+                }
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+            });
+        });
+        
+        offcanvasDropdownItems.forEach(li => {
+            li.addEventListener('click', event => {
+                const link = li.querySelector('a.dropdown-item'); 
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+                
+                if (link) {
+                    
+                    const targetHref = link.getAttribute('href');
+                    if (targetHref && targetHref !== '#') {
+                        window.location.href = targetHref;
+                    }
+                }
+            });
+        })
 
         function showSpinner() {
             spinner.classList.remove('hidden');

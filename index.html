@@ -784,7 +784,7 @@
             let id = user.id;
             
             //handle first-time user
-            if (!metadata.responseHistory) {
+            if (metadata.responseHistory.length === 0) {
                 console.warn("No responseHistory found for this user.");
                 return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
             } else {

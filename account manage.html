@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>PlanEATary Account Management</title>
-
+    
     <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
     <link href="style_concat.css" rel="stylesheet" />
@@ -68,9 +68,9 @@
             </div>
         </nav>
     </div>
-
+    
     <div class="container-sm">
-    <!-- Account Management Section -->
+        <!-- Account Management Section -->
         <div id="account" class="account-page">
             <h1 class="display-5">Manage Your Account</h1>
             <form class="account-form needs-validation" onsubmit="return validate_form()" novalidate>
@@ -89,7 +89,7 @@
                         Please type in correct age
                     </div>
                 </div>
-
+                
                 <div class="mb-3">
                     <label for="gender" class="form-label">Gender:</label>
                     <select id="gender" class="form-select mb-3" aria-label="Select gender">
@@ -98,7 +98,7 @@
                         <option value="other">Other</option>
                     </select>
                 </div>
-
+                
                 <div class="mb-3">
                     <label for="user-type" class="form-label">User Type:</label>
                     <select id="user-type" class="form-select mb-3" aria-label="User type" required>
@@ -108,7 +108,7 @@
                         <option value="other">Other</option>
                     </select>
                 </div>
-
+                
                 <div class="mb-3">
                     <label for="password" class="form-label">Change Password:</label>
                     <input type="password" class="form-control" id="password" placeholder="Enter new password">
@@ -119,7 +119,7 @@
                         Please use stronger password.
                     </div>
                 </div>
-
+                
                 <div class="mb-3 d-none" id="password-message">
                     <ul class="list-group">
                         <li class="list-group-item list-group-item-danger" id="password-msg-lowercase">
@@ -148,24 +148,113 @@
                 <div id="form_validate_msg"></div>
                 <button type="submit" class="btn btn-primary">Save Changes</button>
             </form>
-
-
-  
+            
+            <!-- spinner overlay-->
+            <section class="overlay hidden" id="spinnerOverlay">
+                <div class="spinner hidden" id="spinner">
+                </div>
+                <div>
+                    <span>Loading</span>
+                </div>
+            </section>
+            
+            
         </div>
     </div>
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script>
-
+        //spinner variables
+        const spinner = document.getElementById('spinner');
+        let isLoading = false;
+        const minDisplayTime = 2000; 
+        let spinnerStartTime;
+        const spOver = document.getElementById("spinnerOverlay");
+        
+        //spinner functions
+        function showSpinner() {
+            spinner.classList.remove('hidden');
+            spOver.classList.remove('hidden');
+            isLoading = true;
+            spinnerStartTime = Date.now();
+        };
+        
+        function hideSpinner() {
+            const elapsedTime = Date.now() - spinnerStartTime;
+            
+            if (elapsedTime < minDisplayTime) {
+                setTimeout(() => {
+                    spinner.classList.add('hidden');
+                    spOver.classList.add('hidden');
+                    isLoading = false;
+                }, minDisplayTime - elapsedTime);
+            } else {
+                spinner.classList.add('hidden');
+                spOver.classList.add('hidden');
+                isLoading = false;
+            }
+        }
+        
         //Dismiss the offcanvas bar after click and execute
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
         const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
-
-
+    </script>
+    <script>
+        const user = netlifyIdentity.gotrue.currentUser();
+        const userData = user.user_metadata;
+        
+        if (user) {
+            user.jwt().then(token => {
+                if (isTokenExpired(token)) {
+                    console.log("Token expired. Prompting user to re-login...");
+                    netlifyIdentity.logout();
+                    window.location.href = "index.html";
+                } else {
+                    console.log("Token is valid.");
+                }
+            });
+        }
+        
+        if (!user) {
+            console.error("No user is logged in!");
+            return;
+        }
+        
+        async function updatePassword(newPassword, user) {
+            
+            if (!user) {
+                alert("You are not logged in. Please sign in");
+                return;
+            }
+            
+            try {
+                // Get JWT Token
+                const token = await user.jwt();
+                
+                const response = await fetch("/.netlify/identity/user", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`  
+                    },
+                    body: JSON.stringify({ password: newPassword }),
+                });
+                
+                if (!response.ok) {
+                    throw new Error("Failed to update password.");
+                }
+                
+                alert("Password updated successfully. Please log in again.");
+                netlifyIdentity.logout(); 
+                
+            } catch (error) {
+                console.error("Authorization failed:", error);
+                alert("You are not authorized to change the password.");
+            }
+        }
+        
         // Load userdata to input boxes
         document.addEventListener("DOMContentLoaded", async function() {
-            const user = netlifyIdentity.gotrue.currentUser();
-            const userData = user.user_metadata;
             
             window.addEventListener("load", (event) => {
                 document.getElementById("name").value       = userData.full_name;
@@ -179,145 +268,119 @@
         let uppercaseRegex = /[A-Z]/g;
         let lowercaseRegex = /[a-z]/g;
         let numbersRegex = /[0-9]/g;
-
+        
         // Password validate
         var passwordInput = document.getElementById("password");
         var passwordMessageItems = document.getElementsByClassName("password-message-item");
         var passwordMessage = document.getElementById("password-message");
         var form_check = 0;
-
+        
         passwordInput.addEventListener("focus", () => {
             passwordMessage.classList.remove("d-none");
             if (!password.classList.contains("is-valid")) {
                 password.classList.add("is-invalid");
             }
         });
-
+        
         passwordInput.addEventListener("input", () => {
             document.getElementById("password-msg-lowercase").classList.toggle("d-none", passwordInput.value.match(lowercaseRegex));
             document.getElementById("password-msg-uppercase").classList.toggle("d-none", passwordInput.value.match(uppercaseRegex));
             document.getElementById("password-msg-number").classList.toggle("d-none", passwordInput.value.match(numbersRegex));
             document.getElementById("password-msg-minchar").classList.toggle("d-none", (passwordInput.value.length >= 8));
         });
-
+        
         passwordInput.addEventListener("blur", () => {
             passwordMessage.classList.add("d-none");
             if (passwordInput.classList.contains("is-invalid") && passwordInput.value.length == 0) {
                 passwordInput.classList.remove("is-invalid");
             }
         });
-
+        
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         const forms = document.querySelectorAll('.needs-validation')
-
+        
         // Loop over them and prevent submission
         Array.from(forms).forEach(form => {
-        form.addEventListener('submit', event => {
-
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-                form_check = 0;
-            }
-            else  
-            {
-                form_check = 1;
-                console.log("validate form2");
-                const user = netlifyIdentity.gotrue.currentUser();
-
-                let user_full_name = document.getElementById("name").value;
-                let user_age       = document.getElementById("age").value;
-                let user_gender    = document.getElementById("gender").value;
-                let user_type      = document.getElementById("user-type").value;
-                let user_password  = document.getElementById("password").value;
-
-                if (user_password == "") {
-                    user.update({ data: { name: user_full_name, gender: user_gender, age: user_age, user_type: user_type} })
-                    .then((user) => {
-                        console.log('Updated user %s', user_full_name)
-                        alert('Account information saved!');
-                        window.location.href = 'https://planeatary.netlify.app/'; //redirect to homepage if form check success
-                    })
-                    .catch((error) => {
-                        console.log('Failed to update user: %o', error);
-                        alert('Failed to save account information!');
-                        throw error;
-                    });
+            form.addEventListener('submit', event => {
+                
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    form_check = 0;
                 }
-                else {
-                    user.update({ password: user_password, data: { name: user_full_name, gender: user_gender, age: user_age, user_type: user_type} })
-                    .then((user) => {
-                        console.log('Updated user %s', user_full_name)
-                        alert('Account information saved!');
-                        window.location.href = 'https://planeatary.netlify.app/'; //redirect to homepage if form check success
-                    })
-                    .catch((error) => {
-                        console.log('Failed to update user: %o', error);
-                        alert('Failed to save account information!');
-                        throw error;
-                    });
+                else  
+                {
+                    form_check = 1;
+                    console.log("validate form2");
+                    
+                    
+                    let user_full_name = document.getElementById("name").value;
+                    let user_age       = document.getElementById("age").value;
+                    let user_gender    = document.getElementById("gender").value;
+                    let user_type      = document.getElementById("user-type").value;
+                    let user_password  = document.getElementById("password").value;
+                    const user_datail = { full_name: user_full_name, gender: user_gender, age: user_age, status: user_type };
+                    
+                    if (user_password == "") {
+                        user.update({ user_metadata: user_datail })
+                        .then((user) => {
+                            console.log('Updated user %s', user)
+                            alert('Account information saved!');
+                            window.location.href = 'index.html'; //redirect to homepage if form check success
+                            // Fetch the latest user object 
+                            netlifyIdentity.gotrue.currentUser()
+                            .jwt()
+                            .then((token) => {
+                                const updatedUserDetails = netlifyIdentity.gotrue.currentUser();
+                                localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
+                                console.log("Updated user saved to localStorage:", updatedUserDetails);
+                            })
+                            .catch((error) => {
+                                console.error("Error fetching updated user details:", error);
+                            });
+                        })
+                        .catch((error) => {
+                            console.log('Failed to update user: %o', error);
+                            alert('Failed to save account information!');
+                            throw error;
+                        });
+                    }
+                    else {
+                        updatePassword(user_password, user);
+                        user.update({ user_metadata: user_datail })
+                        .then((user) => {
+                            console.log('Updated user %s', user)
+                            alert('Account information saved!');
+                            window.location.href = 'index.html'; //redirect to homepage if form check success
+                            // Fetch the latest user object 
+                            netlifyIdentity.gotrue.currentUser()
+                            .jwt()
+                            .then((token) => {
+                                const updatedUserDetails = netlifyIdentity.gotrue.currentUser();
+                                localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
+                                console.log("Updated user saved to localStorage:", updatedUserDetails);
+                            })
+                            .catch((error) => {
+                                console.error("Error fetching updated user details:", error);
+                            });
+                        })
+                        .catch((error) => {
+                            console.log('Failed to update user: %o', error);
+                            alert('Failed to save account information!');
+                            throw error;
+                        });
+                    }
+                    
                 }
                 
-            }
-
-            form.classList.add('was-validated')
-        }, false)
+                form.classList.add('was-validated')
+            }, false)
         })
 
         function validate_form()
         {
             return false;
         }
-
-        offcanvasLinks.forEach(li => {
-            li.addEventListener('click', event => {
-                const targetHref = li.getAttribute('href');
-                
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
-                
-                if (targetHref && targetHref !== '#') {
-                    window.location.href = targetHref; 
-                }
-            });
-        });
-
-        offcanvasDropdown.forEach(li => {
-            li.addEventListener('click', event => {
-                const targetHref = li.getAttribute('href');
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
-                
-                if (targetHref) {
-                    window.location.href = targetHref; 
-                }
-            });
-        });
-
-        //to log out when a user want to
-        function logOut() {
-            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-
-            if (netlifyIdentity.gotrue.currentUser() !== null) {
-                let user = netlifyIdentity.gotrue.currentUser();
-                user.logout().then(() => {
-                    offcanvas.hide();
-                    sessionStorage.removeItem('selectedCycle');
-                    console.log('User has been logged out!');
-                    window.location.href = "index.html";
-                });
-            } else {
-                window.location.href = "index.html";
-                console.log("No user is logged in!");
-            }
-        }
-
-        //logging out if click
-        document.getElementById('logOut').addEventListener('click', () => {
-            if(confirm("Do you really want to sign out?") == true) {
-                logOut();
-            }
-        });
 
     </script>
     <!-- Bootstrap Javascript -->
