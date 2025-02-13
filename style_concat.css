@@ -14,7 +14,8 @@ body {
 
 .navbar {
   position: fixed !important;
-  width: 100%;
+  width: 100% !important;
+  z-index: 3200;
 }
 
 .b-example-divider {
