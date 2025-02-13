@@ -281,13 +281,13 @@
             async function extractHistory(user, userId) {
                 
                 var allRes = await fetchResponses(userId);
-                let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
-                const mockResponse = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`)) || {};
+                let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
+                const mockResponse = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`));
                 const mockResponseHistory = mockResponse?.user_metadata?.responseHistory ?? [];
                 
                 var lastTask = "";
 
-                if ( allResponses.length > 0  && mockResponseHistory.length > 0) {
+                if ( allResponses && mockResponseHistory.length > 0) {
                     
                     allResponses = allResponses.map((cycleKey, i) => {
                         const taskCycle = mockResponseHistory[i]?.lastTask ?? null;
