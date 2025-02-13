@@ -603,7 +603,7 @@
                 cardContainer.appendChild(nextButtonContainer);
 
                 console.log("time array:", Tstatus.time);
-                if (Tstatus.time.findIndex(el => el === "") === -1) {
+                if (Tstatus.time.findIndex(el => el === "") === -1 && Tstatus.time.length == Tstatus.chosen.length) {
                     let latestTimestamp = Math.max(...Tstatus.time);
                     var separator = '@';
                     const merged = mergeTaskArrays(tasks, separator);
