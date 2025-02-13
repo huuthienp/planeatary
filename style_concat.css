@@ -1345,6 +1345,10 @@ margin-top: 20px;
   border-color: #15b383;
 }
 
+.progress .progress-bar {
+  transition: transform 1s ease;
+}
+
 .score p {
     font-size: 1.5em;
     color: rgb(238, 235, 235);
