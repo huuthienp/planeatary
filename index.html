@@ -1104,7 +1104,7 @@
         // If valid, potentially submit form or redirect
         if (validate_form()) {
             // Add logic to handle successful signup (e.g., redirect to account.html)
-            netlifyIdentity.gotrue.signup(emailInput.value, passwordInput.value, data:{full_name: nameField.value, age: ageField, gender: genderField, status: statusField})
+            netlifyIdentity.gotrue.signup(emailInput.value, passwordInput.value, {data:{full_name: nameField.value, age: ageField, gender: genderField, status: statusField}})
             .then((r) => {
                 console.log('Successful signup!', emailInput.value);
                 hideSignUpModal();
