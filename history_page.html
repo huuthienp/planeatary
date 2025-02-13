@@ -281,31 +281,34 @@
             async function extractHistory(user, userId) {
                 
                 var allRes = await fetchResponses(userId);
-                let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`) || "[]");
-                const mockResponse = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`) || "{}");
+                let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
+                const mockResponse = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`)) || {};
                 const mockResponseHistory = mockResponse?.user_metadata?.responseHistory ?? [];
+                
                 
                 var lastTask = "";
 
                 if ( allResponses.length > 0  && mockResponseHistory.length > 0) {
+                    
                     allResponses.map((cycleKey, i) => {
-                        const taskCycle = mockResponseHistory[i]?.lastTask ?? "";
+                        const taskCycle = mockResponseHistory[i]?.lastTask ?? null;
+                        const fetched_tasks = JSON.parse(localStorage.getItem(`${cycleKey.preResponse.responseId}:fetched_tasks`));
                         if (mockResponseHistory[i]?.preId == cycleKey?.preResponse?.responseId) {
                             cycleKey.preResponse.lastTask = taskCycle;
                             console.log("Here the last task you will add ", taskCycle);
-                        } else {
+                        } 
+                        else if (fetched_tasks) {
                             try {
-                                const fetched_tasks = JSON.parse(localStorage.getItem(`${cycleKey.preResponse.responseId}:fetched_tasks`)) || {};
-                                console.log("Here the fetch_tasks you will add ", fetched_tasks);
+                                console.log("Here the fetched tasks you will extract ", fetched_tasks);
                                 const task_rec = Array.isArray(fetched_tasks?.time) ? fetched_tasks.time : Object.values(fetched_tasks?.time ?? []);
                                 const taskDone =  Array.isArray(fetched_tasks?.done) ? fetched_tasks.done : Object.values(fetched_tasks?.done ?? []);
-                                if (task_rec.length > 0) {
+                                if (task_rec.length > 0 && task_rec.findIndex(el => el == "") == -1) {
                                     const lastTaskTime = Math.max(...task_rec);
-                                    const index = fetched_tasks?.time?.findIndex(el => el == lastTaskTime);
+                                    const index = task_rec.findIndex(el => el == lastTaskTime);
                                     const taskName = taskDone[index];
                                     lastTask = `${taskName}@${lastTaskTime}`;
                                     cycleKey.preResponse.lastTask = lastTask;
-                                    console.log("Here the time you will add ", lastTask);
+                                    console.log("Here the time you will add from fetched tasks ", lastTask);
                                 }
                                 
                             } catch(err) {

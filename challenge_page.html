@@ -427,6 +427,23 @@
                 }
             }
             
+            (function(history) {
+                const originalPushState = history.pushState;
+                const originalReplaceState = history.replaceState;
+                
+                history.pushState = function(state, title, url) {
+                    const result = originalPushState.apply(this, arguments);
+                    window.dispatchEvent(new Event('location-changed'));
+                    return result;
+                };
+                
+                history.replaceState = function(state, title, url) {
+                    const result = originalReplaceState.apply(this, arguments);
+                    window.dispatchEvent(new Event('location-changed'));
+                    return result;
+                };
+            })(window.history);
+
             // Function to display selected tasks and allow status update
             async function displaySelectedTasks(preResponseId, userId, tasks, Tstatus) {
                 const cardContainer = document.querySelector(".Card");
@@ -544,6 +561,7 @@
                                 if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
                                 updateNextButton(preResponseId, userId, tasks, Tstatus);
                                 console.log("time array:", Tstatus.time);
+
                                 if (Tstatus.time.findIndex(el => el === "") === -1 && Tstatus.time.length == Tstatus.chosen.length) {
                                     let latestTimestamp = Math.max(...Tstatus.time);
                                     var separator = '@';
@@ -563,9 +581,11 @@
                                     // Update response history
                                     try {
                                         await updateResponseHistory(preResponseId, lastTask);
+                                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
                                         console.log(`Response history updated with task: ${lastTask}`);
+                                        console.log("Tasks updated!");
                                     } catch (err) {
-                                        console.error("Error updating response history:", err);
+                                        console.error("Error updating: ", err);
                                     }
                                 }
                             })      
@@ -689,6 +709,8 @@
                 }
                 
             });
+
+
         </script>
         <!-- Bootstrap Javascript -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
