@@ -602,9 +602,11 @@
                     // Update response history
                     try {
                         await updateResponseHistory(preResponseId, lastTask);
+                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
                         console.log(`Response history updated with task: ${lastTask}`);
+                        console.log("Tasks updated!");
                     } catch (err) {
-                        console.error("Error updating response history:", err);
+                        console.error("Error updating: ", err);
                     }
                 }
             }

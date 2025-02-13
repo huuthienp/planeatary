@@ -33,7 +33,7 @@
                         <div class="offcanvas-body" style="background-color: #02897A;">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
+                                    <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle active" aria-current="page" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -45,7 +45,7 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" id="ch" href="#" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link" id="ch" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" id="d" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -283,6 +283,8 @@
                     const offcanvasNavbar = document.getElementById('offcanvasNavbar');
                     const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
                     const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+                    const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+                    const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
 
                     const netlifyIdentity = window.netlifyIdentity;
                     const user = netlifyIdentity.gotrue.currentUser();
@@ -328,6 +330,38 @@
                         });
                     });
 
+                    offcanvasListItems.forEach(li => {
+                        li.addEventListener('click', event => {
+                            const link = li.querySelector('a.nav-link'); 
+                            
+                            if (link) {
+                                
+                                const targetHref = link.getAttribute('href');
+                                if (targetHref && targetHref !== '#') {
+                                    window.location.href = targetHref;
+                                }
+                            }
+                            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                            offcanvas.hide();
+                        });
+                    });
+
+                    offcanvasDropdownItems.forEach(li => {
+                        li.addEventListener('click', event => {
+                            const link = li.querySelector('a.dropdown-item'); 
+                            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                            offcanvas.hide();
+                            
+                            if (link) {
+                                
+                                const targetHref = link.getAttribute('href');
+                                if (targetHref && targetHref !== '#') {
+                                    window.location.href = targetHref;
+                                }
+                            }
+                        });
+                    });
+                    
                     nextButton.addEventListener('click', () => {
                         if (nextButton.style.cursor !== "not-allowed") { window.location.href = "result_page.html"; }
                     });
@@ -414,8 +448,22 @@
                                             localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
                                             selectTasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                                             if (!selectTasks) {throw "Failed in fetching tasks!"}
+                                            else {
+                                                var firstNullIndex = selectTasks?.time?.findIndex(el => el == "");
+                                                if (firstNullIndex !== -1) {
+                                                    alert("Please finish all the chosen tasks before doing post-quiz.");
+                                                    quizFrame.style.display = 'none'; 
+                                                    document.querySelector('.btn-next').style.display = 'none';
+                                                    fallbackMessage.innerHTML = "<div class='empty-state'>Please finish all selected tasks before doing the post quiz.</div>";
+                                                    window.location.href = "manifesto_page.html";
+                                                    return;
+                                                } else {
+                                                    var quizUrl = initiateSurvey('post', quizFrame);
+                                                }
+                                            }
+                                            
                                         } else {
-                                            var firstNullIndex = selectTasks?.time?.length !== 0 ? selectTasks?.time?.findIndex(el => el == "") : 0;
+                                            var firstNullIndex = selectTasks?.time?.findIndex(el => el == "");
                                             if (firstNullIndex !== -1) {
                                                 alert("Please finish all the chosen tasks before doing post-quiz.");
                                                 quizFrame.style.display = 'none'; 
