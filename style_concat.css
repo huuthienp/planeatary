@@ -1226,19 +1226,44 @@ margin-top: 20px;
     font-weight: bold;
     justify-content: center;
     flex-direction: column;
-    gap: 2vmax;
+    gap: 1vmax;
+    align-items: center;
     color: #02897A;
 }
 
 .score .circle{
-    height: 10em;
+    height: auto;
     /* background-image: url('./images/circle.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center; */
-    display: flex;
     flex-direction: column;
 }
+
+#Score {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#Score > #curr_score {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40%;
+}
+
+#Score > #total {
+  display: flex;
+  font-size: 1em;
+  justify-content: center;
+  align-items: center;
+  height: 40%;
+  font-size: 0.7em;
+}
+
 
 .progress {
   width: 150px;
@@ -1249,6 +1274,7 @@ margin-top: 20px;
   margin: 20px;
   box-shadow: none;
   position: relative;
+  background-color: white !important;
 }
 .progress:after {
   content: "";
@@ -1304,7 +1330,7 @@ margin-top: 20px;
   width: 90%;
   height: 90%;
   border-radius: 50%;
-  background: #000;
+  background: #386783;
   font-size: 24px;
   color: #fff;
   line-height: 135px;
@@ -1341,13 +1367,9 @@ margin-top: 20px;
   }
 }
 
-.score h2 {
-    font-size: 2em;
-    margin: auto auto;
-}
 .score p {
-    font-size: 1em;
-    color: grey;
+    font-size: 1.5em;
+    color: rgb(238, 235, 235);
 }
 
 .result .next-step {
