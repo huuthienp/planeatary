@@ -840,8 +840,8 @@
             localStorage.removeItem('postResult');
             const {quizObj, historyObj, userId} = ExtractUserMetadata();
             var allRes = await fetchResponses(userId);
-            let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
-            if (quizObj.lastPost !== "" || allResponses) {
+            let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
+            if (quizObj.lastPost !== "" || allResponses.length > 0) {
                 allResponses.forEach((cycleKey) => {
                     const preQuiz = cycleKey?.preResponse ?? null;
                     const postQuiz = cycleKey?.postResponse ?? null;
@@ -855,7 +855,7 @@
                     }
                 });
 
-            } else if (quizObj.lastPre !== "" || allResponses) {
+            } else if (quizObj.lastPre !== "" || allResponses.length > 0) {
                 allResponses.forEach((cycleKey) => {
                     const preQuiz = cycleKey.preResponse;
                     if (preQuiz.responseId && preQuiz.responseId == quizObj.lastPre) {
