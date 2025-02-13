@@ -278,7 +278,6 @@
                     let latest_task = "";
 
                     const fallbackMessage = document.querySelector(".fallback");
-                    fallbackMessage.classList.add("empty-state");
 
                     const offcanvasNavbar = document.getElementById('offcanvasNavbar');
                     const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
@@ -493,7 +492,7 @@
                             console.error("Caught error: ", err);
                             quizFrame.style.display = 'none';
                             document.querySelector('.btn-next').style.display = 'none';
-                            fallbackMessage.innerHTML = "Content cannot be displayed. Please try again later.";
+                            fallbackMessage.innerHTML = "<div class='empty-state'>Content cannot be displayed. Please try again later.</div>";
                             nextButton.style.display = "none";
                     } finally {
                         if (postObject && user) {await updateResponseHistory(postObject, user)}
@@ -541,7 +540,6 @@
                             console.warn('Caught', error, '\nPost-quiz result is not found!');
                             updateButton(nextButton, 'grey', 'not-allowed');
                             var quizUrl = initiateSurvey('post', quizFrame);
-                            // quizSpan.innerText = 'An error occurred. Please try again later.';
                         }
                     }
                 });

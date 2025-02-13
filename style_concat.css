@@ -109,7 +109,7 @@ body {
   .m-content {
     display: flex;
     justify-content: space-between;
-    padding: 10vh 0 !important;
+    padding: 15vh 0 !important;
     gap: 2vmax;
     flex-direction: column;
   }
@@ -143,7 +143,7 @@ body {
     padding-top: 10vh !important;
     gap: 2vmax;
     flex-direction: column;
-    max-width: 80%;
+    max-width: 50% !important;
   }
   
   .do-you-know .video {
@@ -445,7 +445,7 @@ body {
   text-align: justify;
   background: url('./images/welcome_background.png') center/cover no-repeat;
   margin: 0 auto;
-  padding-top: 20vh;
+  padding-top: 18vh;
   padding-left: 5vw;
   padding-right: 5vw;
   padding-bottom: 10vh;

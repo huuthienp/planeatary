@@ -33,33 +33,32 @@
                         <div class="offcanvas-body" style="background-color: #02897A;">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="index.html"><i class="fa fa-home"></i> Home</a>
+                                    <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item" href="qualtrics.html">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item disabled" id="post-p" href="qualtrics_post.html">Post-quiz</a></li>
+                                        <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
+                                        <li><a class="dropdown-item disabled" id="post-p" data-bs-dismiss="offcanvas" href="qualtrics_post.html">Post-quiz</a></li>
                                     </ul>
                                 </li>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                                <a class="nav-link active" href="manifesto_page.html" aria-current="page" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
+                                <a class="nav-link" href="history_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-calendar-check-o"></i> History</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
                                 <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                    <li><a class="dropdown-item" href="account manage.html">My account</a></li>
-                                    <!--My question is, how would we have any function dealing with user signing out-->
-                                    <li><a class="dropdown-item" id="logOut">Log out</a></li>
+                                    <li><a class="dropdown-item" href="account manage.html" data-bs-dismiss="offcanvas">My account</a></li>
+                                    <li><a class="dropdown-item" data-bs-dismiss="offcanvas" id="logOut">Log out</a></li>
                                 </ul>
                             </li>
                             <!-- <li class="nav-item">
