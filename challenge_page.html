@@ -652,7 +652,7 @@
                         try {
                             Tstatus = await fetchTaskStatus(preResponseId, userId);
                             localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
-                            Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`) || "{}");
+                            Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || {};
                             if (Object.keys(Tstatus).length === 0) {
                                 Tstatus.done = [];
                                 Tstatus.chosen = [];
@@ -667,7 +667,7 @@
                         try {
                             var fetched = await fetchTaskStatus(preResponseId, userId);
                             localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched));
-                            Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`) || "{}");
+                            Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || {};
                             if (Object.keys(Tstatus).length === 0) {
                                 Tstatus.done = [];
                                 Tstatus.chosen = [];
@@ -678,7 +678,7 @@
                         }
                     }
                     displaySelectedTasks(preResponseId, userId, tasks, Tstatus);
-                    
+
                 } catch (err) {
                     console.error("Caught error: ", err);
                 } finally {

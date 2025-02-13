@@ -421,7 +421,7 @@
                                                 quizFrame.style.display = 'none'; 
                                                 document.querySelector('.btn-next').style.display = 'none';
                                                 fallbackMessage.innerHTML = "<div class='empty-state'>Please finish all selected tasks before doing the post quiz.</div>";
-                                                window.location.href = "challenge_page.html";
+                                                window.location.href = "manifesto_page.html";
                                                 return;
                                             } else {
                                                 var quizUrl = initiateSurvey('post', quizFrame);
@@ -433,7 +433,7 @@
                                         document.querySelector('.btn-next').style.display = 'none';
                                         fallbackMessage.style.color = "#ff6b6b";
                                         fallbackMessage.innerHTML = err + " Directing you to do the selected tasks";
-                                        window.location.href = "challenge_page.html";
+                                        window.location.href = "manifesto_page.html";
                                         return;
                                     }  
                                 } 
