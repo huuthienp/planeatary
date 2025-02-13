@@ -429,6 +429,7 @@
             
             // Function to display selected tasks and allow status update
             async function displaySelectedTasks(preResponseId, userId, tasks, Tstatus) {
+                const cardContainer = document.querySelector(".card");
                 cardContainer.innerHTML = '';  
 
                 //Handle no tasks information from previous page
