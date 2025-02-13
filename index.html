@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
-    <link href="style_concat.css" rel="stylesheet" />
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Icon CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>PlanEATary Home</title>
-</head>
-<body>
-    <div class="main-container">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+        <link href="style_concat.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />  <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  <!-- Icon CSS -->
+        <title>PlanEATary Home</title>
+    </head>
+    <body>
+        <div class="main-container">
         </div>
-        <div class="Header">
-            <!-- Sidebar -->
+        <div class="Header">  <!-- Sidebar -->
             <nav class="navbar navbar-dark navbar-expand-xl" style="background-color: #02897A;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
@@ -72,8 +69,7 @@
                 </div>
             </nav>
         </div>
-        <!--Hero section at the top-->
-        <div class="hero">
+        <div class="hero">  <!--Hero section at the top-->
             <div class="herocontent">
                 <div class="hero-text">
                     <h1>Welcome to the PlanEATary Quest!</h1>
@@ -151,8 +147,7 @@
         </div>
     </section>
     <div class="b-example-divider"></div>
-    <!--do you know section-->
-    <section class="do-you-know">
+    <section class="do-you-know">  <!--do you know section-->
         <div class="d-content">
             <h2>DO YOU KNOW...?</h2>
             <p>(1) Our global food system is contributing approximately one-third of greenhouse gas emissions.<br/>
@@ -178,8 +173,7 @@
         <p>(1) Intergovernmental Panel on Climate Change (IPCC), Summary for Policymakers. Climate Change and Land: an IPCC special report on climate change, desertification, land degradation, sustainable land management, food security, and greenhouse gas fluxes in terrestrial ecosystems. 2019. Accessed: https://www.ipcc.ch/srccl/ (September, 2023).</p>
         <p>(2) Willett, W., et al., Food in the Anthropocene: the EAT–Lancet Commission on healthy diets from sustainable food systems. The Lancet. 2019. 393(10170): p. 447-492.</p>
     </div>
-    <!--Feedback section-->
-    <section class="reflect-section">
+    <section class="reflect-section">  <!--Feedback section-->
         <h2><b>REFLECT: Tell us how you went!</b></h2>
         <hr>
         <h5><b>We'd love to learn about your journey on the PlanEATary Quest!</b></h4>
@@ -198,9 +192,7 @@
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSdKqX8bxsmJlcy1mKSnv9kN2JyyElmt7ZC4-PICtAcMLANwQg/viewform?usp=sf_link" target="_blank">HERE</a>.
             </p>
         </section>
-        <!--Last section - development team-->
-        <!-- <div class="background-content">
-        </div> -->
+        <div class="background-content"></div>  <!--Last section - development team-->
         <div class="b-example-divider"></div>
         <section class="container-fluid p-5">
             <h2>BACKGROUND: How was the PlanEATary Quest developed?</h2>
@@ -323,156 +315,148 @@
                 <p>We acknowledge the Traditional Owners of Country throughout Australia. We pay our respects to Elders past and present, and this respect extends to the knowledge and value systems required to maintain a truly sustainable food system here in Australia for over 60,000 years.</p>
             </footer>
         </section>
-    <!-- Sign In Modal-->
-    <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="signInModalLabel">Sign In</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Sign-In Form -->
-                    <form id="signInForm" novalidate>
-                        <div class="mb-3">
-                            <label for="emailInput2" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="emailInput2" placeholder="Enter email" required>
-                            <div class="invalid-feedback">This email is invalid.</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="passwordInput" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="passwordInput" placeholder="Enter password" required>
-                            <div class="invalid-feedback">Password must be at least 6 characters long.</div>
-                        </div>
-                        <label>
-                            <input type="checkbox" checked="checked" name="remember"> Remember me
-                        </label>
-                        <br/>
-                        <a class="psw" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot password?</a>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="signInButton">Sign In</button>
-                </div>
-        </div>
-    </div>
-</div>
-<!-- Forgot Password Modal -->
-<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="forgotPasswordModalLabel">Reset Password</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="forgotPasswordForm" novalidate>
-                    <div class="mb-3">
-                        <label for="resetEmailInput" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="resetEmailInput" placeholder="Enter your email to reset password" required>
-                        <div class="invalid-feedback">Please enter a valid email.</div>
+        <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">  <!-- Sign In Modal-->
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="signInModalLabel">Sign In</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="resetPasswordButton">Reset Password</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Sign Up Modal-->
-<div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="signUpModalLabel">Sign Up</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Sign-Up Form -->
-                <form class="account-form" id="signUpForm">  <!-- no submit -->
-                    <div class="mb-3">
-                        <label for="name">Name:</label>
-                        <input type="text" class="form-control" id="name" placeholder="Enter your name">
+                    <div class="modal-body">
+                        <form id="signInForm" novalidate>  <!-- Sign-In Form -->
+                            <div class="mb-3">
+                                <label for="emailInput2" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="emailInput2" placeholder="Enter email" required>
+                                <div class="invalid-feedback">This email is invalid.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="passwordInput" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="passwordInput" placeholder="Enter password" required>
+                                <div class="invalid-feedback">Password must be at least 6 characters long.</div>
+                            </div>
+                            <label>
+                                <input type="checkbox" checked="checked" name="remember"> Remember me
+                            </label>
+                            <br/>
+                            <a class="psw" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot password?</a>
+                        </form>
                     </div>
-                    <div class="mb-3">
-                        <label for="age">Age:</label>
-                        <input type="number" class="form-control" id="age" placeholder="Enter your age" min="0">
-                    </div>
-                    <div class="mb-3">
-                        <label for="gender">Gender:</label>
-                        <select class="form-select" id="gender">
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email">Additional Email Address:</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter your email">
-                    </div>
-                    <div class="mb-3">
-                        <label for="user-type">User Type:</label>
-                        <select class="form-select" id="user-type">
-                            <option value="student">Student</option>
-                            <option value="dietician">Dietician</option>
-                            <option value="academic">Academic Staff</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password">Password:</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter new password">
-                    </div>
-                    <div id="password-message" class="mb-3">
-                        <span>Password must contain:</span>
-                        <div class="password-message-item invalid">At least <b>one lowercase letter</b></div>
-                        <div class="password-message-item invalid">At least <b>one uppercase letter</b></div>
-                        <div class="password-message-item invalid">At least <b>one number</b></div>
-                        <div class="password-message-item invalid">Minimum <b>8 characters</b></div>
-                    </div>
-                    <div class="mb-3 text-danger" id="form_validate_msg"></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="signUpButton">Sign Up</button>  <!-- normal button -->
+                        <button type="button" class="btn btn-primary" id="signInButton">Sign In</button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-<!-- Error Warning Toast -->
-<div class="toast-container">
-    <div id="liveToast" class="toast m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-        <div class="toast-header">
-            <strong class="me-auto">PlanEatary</strong>
-            <!-- <small class="text-muted">just now</small> -->
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body" id="e-toast"></div>
-    </div>
-</div>
-<!-- Warning Toast -->
-<div class="toast-container">
-    <div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                Please finish your very first quiz before further proceeding.
+        <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">  <!-- Forgot Password Modal -->
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="forgotPasswordModalLabel">Reset Password</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="forgotPasswordForm" novalidate>
+                            <div class="mb-3">
+                                <label for="resetEmailInput" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="resetEmailInput" placeholder="Enter your email to reset password" required>
+                                <div class="invalid-feedback">Please enter a valid email.</div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="resetPasswordButton">Reset Password</button>
+                    </div>
+                </div>
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-    </div>
-</div>
-<!-- spinner overlay-->
-<section class="overlay hidden" id="spinnerOverlay">
-    <div class="spinner hidden" id="spinner">
-    </div>
-    <div>
-        <span>Loading</span>
-    </div>
-</section>
+        <div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">  <!-- Sign Up Modal-->
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="signUpModalLabel">Sign Up</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="account-form" id="signUpForm">  <!-- Sign-Up Form (no submit) -->
+                            <div class="mb-3">
+                                <label for="name">Name:</label>
+                                <input type="text" class="form-control" id="name" placeholder="Enter your name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="age">Age:</label>
+                                <input type="number" class="form-control" id="age" placeholder="Enter your age" min="0">
+                            </div>
+                            <div class="mb-3">
+                                <label for="gender">Gender:</label>
+                                <select class="form-select" id="gender">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email">Additional Email Address:</label>
+                                <input type="email" class="form-control" id="email" placeholder="Enter your email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="user-type">User Type:</label>
+                                <select class="form-select" id="user-type">
+                                    <option value="student">Student</option>
+                                    <option value="dietician">Dietician</option>
+                                    <option value="academic">Academic Staff</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password">Password:</label>
+                                <input type="password" class="form-control" id="password" placeholder="Enter new password">
+                            </div>
+                            <div id="password-message" class="mb-3">
+                                <span>Password must contain:</span>
+                                <div class="password-message-item invalid">At least <b>one lowercase letter</b></div>
+                                <div class="password-message-item invalid">At least <b>one uppercase letter</b></div>
+                                <div class="password-message-item invalid">At least <b>one number</b></div>
+                                <div class="password-message-item invalid">Minimum <b>8 characters</b></div>
+                            </div>
+                            <div class="mb-3 text-danger" id="form_validate_msg"></div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="signUpButton">Sign Up</button>  <!-- normal button -->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="toast-container">  <!-- Error Warning Toast -->
+            <div id="liveToast" class="toast m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                <div class="toast-header">
+                    <strong class="me-auto">PlanEatary</strong>
+                    <!-- <small class="text-muted">just now</small> -->
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body" id="e-toast"></div>
+            </div>
+        </div>
+        <div class="toast-container">  <!-- Warning Toast -->
+            <div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Please finish your very first quiz before further proceeding.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <section class="overlay hidden" id="spinnerOverlay">  <!-- spinner overlay-->
+            <div class="spinner hidden" id="spinner">
+            </div>
+            <div>
+                <span>Loading</span>
+            </div>
+        </section>
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script>
     document.getElementById('resetPasswordButton').addEventListener('click', function () {
@@ -910,8 +894,7 @@
         });
     })
 </script>
-<!--forget password script-->
-<script>
+<script>  /* forget password script */
     document.getElementById('resetPasswordButton').addEventListener('click', function () {
         const email = document.getElementById('resetEmailInput').value.trim();
         if (email === '') {
@@ -926,8 +909,7 @@
         modal.hide();
     });
 </script>
-<!--Sign Up -->
-<script>
+<script>  /* Sign Up */
     function showSignUpModal() {
         const signUpModal = new bootstrap.Modal(document.getElementById('signUpModal'));
         signUpModal.style.display = 'flex';
@@ -1024,8 +1006,7 @@
         }
     });
 </script>
-<!-- Bootstrap Javascript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  <!-- Bootstrap Javascript -->
         <script defer type="module">  // delay loading video frame until scroll
         const vdoFrm = document.querySelector('section.do-you-know iframe');
         const imgUrl = 'https://i.ytimg.com/vi/nYe-ibIFxW4/sddefault.jpg';
@@ -1041,5 +1022,5 @@
             }  // stop listener after video loaded
         }  // end of loadVideo v1
         </script>  <!-- end of video-loading script -->
-</body>
+    </body>
 </html>
