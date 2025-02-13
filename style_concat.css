@@ -1253,6 +1253,10 @@ margin-top: 20px;
   justify-content: center;
   align-items: center;
   height: 40%;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-color: #817b83;
+  font-size: 1.5em;
 }
 
 #Score > #total {
@@ -1262,6 +1266,7 @@ margin-top: 20px;
   align-items: center;
   height: 40%;
   font-size: 0.7em;
+  color: #d3d0d0;
 }
 
 
@@ -1286,7 +1291,7 @@ margin-top: 20px;
   top: 0;
   left: 0;
 }
-.progress>span {
+.progress > span {
   width: 50%;
   height: 100%;
   overflow: hidden;
@@ -1311,7 +1316,6 @@ margin-top: 20px;
   border-top-right-radius: 80px;
   border-bottom-right-radius: 80px;
   border-left: 0;
-  -webkit-transform-origin: center left;
   transform-origin: center left;
 }
 .progress .progress-right {
@@ -1322,9 +1326,7 @@ margin-top: 20px;
   border-top-left-radius: 80px;
   border-bottom-left-radius: 80px;
   border-right: 0;
-  -webkit-transform-origin: center right;
   transform-origin: center right;
-  animation: loading-1 1.8s linear forwards;
 }
 .progress .progress-value {
   width: 90%;
@@ -1341,30 +1343,6 @@ margin-top: 20px;
 }
 .progress.blue .progress-bar {
   border-color: #15b383;
-}
-.progress.blue .progress-left .progress-bar {
-  animation: loading-2 1.5s linear forwards 1.8s;
-}
-
-@keyframes loading-1 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(180deg);
-    transform: rotate(180deg);
-  }
-}
-@keyframes loading-2 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(144deg);
-    transform: rotate(144deg);
-  }
 }
 
 .score p {
