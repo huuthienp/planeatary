@@ -285,12 +285,11 @@
                 const mockResponse = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`)) || {};
                 const mockResponseHistory = mockResponse?.user_metadata?.responseHistory ?? [];
                 
-                
                 var lastTask = "";
 
                 if ( allResponses.length > 0  && mockResponseHistory.length > 0) {
                     
-                    allResponses.map((cycleKey, i) => {
+                    allResponses = allResponses.map((cycleKey, i) => {
                         const taskCycle = mockResponseHistory[i]?.lastTask ?? null;
                         const fetched_tasks = JSON.parse(localStorage.getItem(`${cycleKey.preResponse.responseId}:fetched_tasks`));
                         if (mockResponseHistory[i]?.preId == cycleKey?.preResponse?.responseId) {
