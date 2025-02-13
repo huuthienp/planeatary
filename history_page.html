@@ -283,7 +283,7 @@
                 var allRes = await fetchResponses(userId);
                 var allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                 const mockResponse = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`));
-                const mockResponseHistory = mockResponse?.user_metadata?.responseHistory ?? [];
+                const mockResponseHistory = mockResponse?.metadata?.responseHistory ?? [];
                 
                 var lastTask = "";
 

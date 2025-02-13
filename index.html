@@ -1077,6 +1077,7 @@
         const nameField = document.getElementById("name");
         const genderField = document.getElementById("gender");
         const ageField = document.getElementById("age");
+        const statusField = document.getElementById("user-type");
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         let isValid = true;
         
@@ -1103,7 +1104,7 @@
         // If valid, potentially submit form or redirect
         if (validate_form()) {
             // Add logic to handle successful signup (e.g., redirect to account.html)
-            netlifyIdentity.gotrue.signup(emailInput.value, passwordInput.value, {full_name: nameField.value})
+            netlifyIdentity.gotrue.signup(emailInput.value, passwordInput.value, {full_name: nameField.value, age: ageField, gender: genderField, status: statusField})
             .then((r) => {
                 console.log('Successful signup!', emailInput.value);
                 hideSignUpModal();
