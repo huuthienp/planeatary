@@ -68,8 +68,8 @@
                 <iframe class="quiz" title="Planeatary quiz"></iframe>
                 <span class="void"></span>
                 <div class="btn-next">
-                    <button class="btn btn-success" id="restartBtn" style="width: 150px;" disabled>Restart</button>
-                    <a><button id="nextButt" type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button></a>
+                    <button class="btn btn-success" id="restartBtn" style="width: 150px;" disabled>Restart the cycle</button>
+                    <a><button id="nextButt" type="button" class="btn btn-success next" style="width: 150px;">See your result  &#8594;</button></a>
                 </div>
             </div>
         </div>
@@ -89,6 +89,18 @@
                 <div class="d-flex">
                     <div class="toast-body">
                         Please finish your very first quiz before further proceeding.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Another Warning Toast -->
+        <div class="toast-container">
+            <div id="cycle-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Please finish pre-quiz, chosen tasks, and post-quiz accordingly to restart the cycle.
                     </div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
@@ -127,6 +139,25 @@
                     isLoading = false;
                 }
             }
+
+             //For a user to see a reminder to complete the current cycle
+             function showCycleToast() {
+                
+                const toasty = document.getElementById('cycle-toast');
+                const myToast = new bootstrap.Toast(toasty);
+                myToast.show();
+            }
+
+            const disabledButton = document.querySelectorAll('.btn-next > a');
+            disabledButton.forEach(button => {  
+                button.addEventListener('click', event => {
+                    const disable = button.querySelector('button');
+                    if (disable.disabled == true) {
+                        showCycleToast();
+                    }
+                });
+            })
+           
             
             async function fetchResponses(userId) {
                 try {
@@ -359,6 +390,7 @@
             
             document.addEventListener('DOMContentLoaded', async () => {
                 const quizFrame = document.querySelector('div.content > iframe.quiz');
+                const quizSpan = document.querySelector('div.content > span.void');
                 
                 updateButton(restartBtn, 'grey', 'not-allowed');
 
@@ -381,25 +413,11 @@
                 try {
                     showSpinner();
 
-                    var allRes = await fetchResponses(userId);
+                    //var allRes = await fetchResponses(userId);
                     let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                     console.log("All responses fetched! ", allResponses);
                     
-                    if (storedCycle) {
-                        try {            
-                            preObject = storedCycle?.preResponse ?? null;
-                            preResult = preObject?.result ?? null;
-                            preResponseId = preObject?.responseId ?? null;
-
-                            postObject = storedCycle?.postResponse ?? null;
-                            postResult = postObject?.result ?? null;
-                            postResponseId = postObject?.responseId ?? null;
-                            
-                        } catch(err) {
-                            console.warn("Couldn't find previous info from history:", err);
-                        }
-                        
-                    } else if (allResponses) {
+                    if (allResponses) {
                         var preQuiz;
                         var postQuiz;
                         allResponses.forEach((cycleKey) => {
@@ -428,6 +446,21 @@
                                 updateButton(restartBtn, '#02897A', 'pointer');
                                 enableRestartButton();
                             }
+                        }       
+                    } 
+                    
+                    if (storedCycle) {
+                        try {            
+                            preObject = storedCycle?.preResponse ?? null;
+                            preResult = preObject?.result ?? null;
+                            preResponseId = preObject?.responseId ?? null;
+
+                            postObject = storedCycle?.postResponse ?? null;
+                            postResult = postObject?.result ?? null;
+                            postResponseId = postObject?.responseId ?? null;
+                            
+                        } catch(err) {
+                            console.warn("Couldn't find previous info from history:", err);
                         }
                         
                     } else if (preObject && !postObject) {
@@ -499,7 +532,7 @@
                             updateAnchors(anchors, hrefs);
                             updateButton(nextButton, '#02897A', 'pointer');
                             quizFrame.style.display = 'none';
-                            quizSpan.innerText = 'Thank you for your response!';
+                            quizSpan.innerText = 'Thank you for your response! Please click see result!';
                             console.log('Found pre-quiz result in storage!\n', newValue);
                             await updateResponseHistory(preObject, user);
                         } catch(error) {

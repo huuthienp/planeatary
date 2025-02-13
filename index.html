@@ -837,7 +837,7 @@
         }
         
         async function ExtractQuizInfo() {
-
+            localStorage.removeItem('postResult');
             const {quizObj, historyObj, userId} = ExtractUserMetadata();
             var allRes = await fetchResponses(userId);
             let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));

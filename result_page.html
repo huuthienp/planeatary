@@ -356,7 +356,7 @@
                     
                     if (!questionsData.result.pointArray || !Array.isArray(questionsData.result.pointArray)) {
                         document.getElementById('curr_score').textContent = 'No score available.';
-                        cardContainer.innerHTML = '<div class="empty-state">Sorry, there is something wrong in the system. Please allow us to fix it.</div>';
+                        document.querySelector('.q').innerHTML = '<div class="empty-state">Sorry, there is something wrong in the system. Please allow us to fix it.</div>';
                         return;
                     }
                     
@@ -421,7 +421,7 @@
                     );
                     
                     if (!detailed) {
-                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
+                        document.querySelector('.q').innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
                         return;
                     }
                     
@@ -484,7 +484,7 @@
                         completion_date.innerHTML = '';
                     }
                     if (task_rec.length === 0) {
-                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
+                        document.querySelector('.q').innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
                     }
                 }
                 
