@@ -69,7 +69,7 @@
                 <span class="void"></span>
                 <div class="btn-next">
                     <a><button class="btn btn-success" id="restartBtn" style="width: 180px;" disabled>Restart the cycle</button></a>
-                    <a><button id="nextButt" type="button" class="btn btn-success next" style="width: 180px;">See your result</button></a>
+                    <a class="nextB"><button id="nextButt" type="button" class="btn btn-success next" style="width: 180px;">See your result</button></a>
                 </div>
             </div>
         </div>
@@ -301,12 +301,11 @@
             const anchors = [
             document.getElementById('navChallenge'),
             document.getElementById('navDashboard'),
-            document.querySelector('div.btn-next > a'),  // inside next button
+            document.querySelector('div.btn-next > a.nextB'),  // inside next button
             ];
             const hrefs = [
             'manifesto_page',
             'result_page',
-            '',
             'result_page'
             ];
 
