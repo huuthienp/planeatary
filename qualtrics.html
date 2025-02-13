@@ -68,8 +68,8 @@
                 <iframe class="quiz" title="Planeatary quiz"></iframe>
                 <span class="void"></span>
                 <div class="btn-next">
-                    <button class="btn btn-success" id="restartBtn" style="width: 150px;" disabled>Restart the cycle</button>
-                    <a><button id="nextButt" type="button" class="btn btn-success next" style="width: 150px;">See your result  &#8594;</button></a>
+                    <a><button class="btn btn-success" id="restartBtn" style="width: 150px;" disabled>Restart the cycle</button></a>
+                    <a><button id="nextButt" type="button" class="btn btn-success next" style="width: 150px;">See your result</button></a>
                 </div>
             </div>
         </div>
@@ -435,7 +435,7 @@
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
-                        quizSpan.innerText = 'You have already finished the pre-quiz!';
+                        quizSpan.innerHTML = 'You have already finished the pre-quiz! <img src="./images/thumbs-up.gif">';
                         console.log('Found pre-quiz result in storage!\n', preObject);
 
                         if(preObject && postObject) {
@@ -466,7 +466,7 @@
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
-                        quizSpan.innerText = 'You have already finished the pre-quiz! Let"s continue!';
+                        quizSpan.innerHTML = 'You have already finished the pre-quiz! Let"s continue! <img src="./images/thumbs-up.gif">';
                         await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                     } else if (preObject && postObject) {
@@ -474,7 +474,7 @@
                         updateButton(nextButton, '#02897A', 'pointer');
                         updateButton(restartBtn, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
-                        quizSpan.innerText = 'You have already finished the pre-quiz and the post-quiz!';
+                        quizSpan.innerHTML = 'You have already finished the pre-quiz and the post-quiz! <img src="./images/thumbs-up.gif">';
                         await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         console.log('Found post-quiz result in storage!\n', postObject);
@@ -484,7 +484,8 @@
                             enableRestartButton();
                         }
                     } else {
-                        quizUrl = initiateSurvey('pre', quizFrame);
+                        var quizUrl = initiateSurvey('pre', quizFrame);
+                        quizSpan.innerHTML = '';
                         updateAnchors(anchors);
                         updateButton(nextButton, 'grey', 'not-allowed');
                         updateButton(restartBtn, 'grey', 'not-allowed');
@@ -496,6 +497,7 @@
                     updateButton(nextButton, 'grey', 'not-allowed');
                     updateButton(restartBtn, 'grey', 'not-allowed');
                     var quizUrl = initiateSurvey('pre', quizFrame);
+                    quizSpan.innerHTML = '';
                     
                 } finally {
                     hideSpinner();
@@ -531,7 +533,7 @@
                             updateAnchors(anchors, hrefs);
                             updateButton(nextButton, '#02897A', 'pointer');
                             quizFrame.style.display = 'none';
-                            quizSpan.innerText = 'Thank you for your response! Please click see result!';
+                            quizSpan.innerHTML = 'Thank you for your response! Please click see result! <img src="./images/thumbs-up.gif">';
                             console.log('Found pre-quiz result in storage!\n', newValue);
                             await updateResponseHistory(preObject, user);
                         } catch(error) {
@@ -540,7 +542,7 @@
                             updateButton(nextButton, 'grey', 'not-allowed');
                             updateButton(restartBtn, 'grey', 'not-allowed');
                             quizUrl = initiateSurvey('pre', quizFrame);
-                            // quizSpan.innerText = 'An error occurred. Please try again later.';
+                            quizSpan.innerHTML = '';
                         }
                     }
                 });

@@ -352,7 +352,7 @@
                     comparison.innerHTML = ''; 
                     header.innerHTML='';
                     completion_date.innerHTML='';
-                    
+                    document.querySelector('.q').innerHTML = '';
                     
                     if (!questionsData.result.pointArray || !Array.isArray(questionsData.result.pointArray)) {
                         document.getElementById('curr_score').textContent = 'No score available.';
@@ -402,6 +402,7 @@
                     comparison.innerHTML = ''; 
                     header.innerHTML='';
                     completion_date.innerHTML='';
+                    document.querySelector('.q').innerHTML = '';
                     
                     // Remove next step, suggestion, and select-tasks button if display tasks
                     const tohide = [

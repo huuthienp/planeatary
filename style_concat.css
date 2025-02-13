@@ -1321,7 +1321,7 @@ margin-top: 20px;
   padding: 30vh 10vw;
   justify-content: center;
   margin: auto auto;
-  font-size: 1em;
+  font-size: 2em;
   color: #ff6b6b; 
 }
 
@@ -1333,4 +1333,10 @@ margin-top: 20px;
   font-size: 2em;
   color: #2ecc71;
   padding: 30vh 10vw;
+}
+
+.void > img {
+  display: flex;
+  width: 100px;
+  height: auto;
 }
