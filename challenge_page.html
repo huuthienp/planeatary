@@ -592,7 +592,7 @@
                     // Map to extract finish times and task numbers
                     const taskDetails = tasksWithFinishTimes.map(task => {
                         const [taskNumber, finishTime] = task.split("@");
-                        return { taskNumber, finishTime: Number(finishTime) };
+                        return { taskNumber: taskNumber, finishTime: Number(finishTime) };
                     });
                     // Sort tasks by finishTime in descending order
                     taskDetails.sort((a, b) => b.finishTime - a.finishTime);

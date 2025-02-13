@@ -509,6 +509,7 @@
                                         task_counts -= 1;
                                         if (index !== -1) {fetched_tasks.chosen.splice(index, 1)}
                                     }
+                                    task.status = "Done";
                                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
                                     localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));  
                                 }
