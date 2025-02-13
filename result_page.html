@@ -352,11 +352,10 @@
                     comparison.innerHTML = ''; 
                     header.innerHTML='';
                     completion_date.innerHTML='';
-                    document.querySelector('.q').innerHTML = '';
                     
                     if (!questionsData.result.pointArray || !Array.isArray(questionsData.result.pointArray)) {
                         document.getElementById('curr_score').textContent = 'No score available.';
-                        document.querySelector('.q').innerHTML = '<div class="empty-state">Sorry, there is something wrong in the system. Please allow us to fix it.</div>';
+                        cardContainer.innerHTML = '<div class="empty-state">Sorry, there is something wrong in the system. Please allow us to fix it.</div>';
                         return;
                     }
                     
@@ -402,7 +401,6 @@
                     comparison.innerHTML = ''; 
                     header.innerHTML='';
                     completion_date.innerHTML='';
-                    document.querySelector('.q').innerHTML = '';
                     
                     // Remove next step, suggestion, and select-tasks button if display tasks
                     const tohide = [
@@ -422,7 +420,7 @@
                     );
                     
                     if (!detailed) {
-                        document.querySelector('.q').innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
+                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
                         return;
                     }
                     
