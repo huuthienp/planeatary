@@ -1104,7 +1104,9 @@
         // If valid, potentially submit form or redirect
         if (validate_form()) {
             // Add logic to handle successful signup (e.g., redirect to account.html)
-            netlifyIdentity.gotrue.signup(emailInput.value, passwordInput.value, {data:{full_name: nameField.value, age: ageField.value, gender: genderField.value, status: statusField.value}})
+            const signupData = { email: emailInput.value, password: passwordInput.value,
+                data: { full_name: nameField.value, age: ageField.value, gender: genderField.value, status: statusField.value } };
+            fetch('/.netlify/identity/signup', { method: POST, body: JSON.stringify(signupData) })
             .then(async (r) => {
                 await new Promise(resolve => setTimeout(resolve, 1500));
                 console.log('Successful signup!', emailInput.value);
