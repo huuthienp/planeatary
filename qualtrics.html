@@ -412,7 +412,6 @@
                 
                 try {
                     showSpinner();
-
                     //var allRes = await fetchResponses(userId);
                     let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                     console.log("All responses fetched! ", allResponses);
@@ -429,9 +428,9 @@
                         });
                         
                         preObject = preQuiz;
-                        preResponseId = preQuiz.responseId;
+                        preResponseId = preQuiz?.responseId;
                         postObject = postQuiz;
-                        postResponseId = postQuiz.responseId;
+                        postResponseId = postQuiz?.responseId;
 
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
