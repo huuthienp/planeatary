@@ -501,8 +501,8 @@
                     quizSpan.innerHTML = '';
                     
                 } finally {
+                    if (preObject && user) {await updateResponseHistory(preObject, user)}
                     hideSpinner();
-                    await updateResponseHistory(preObject, user);
                 }
 
                 // Listen to preResult change in localStorage

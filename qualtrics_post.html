@@ -447,7 +447,7 @@
                             fallbackMessage.innerHTML = "Content cannot be displayed. Please try again later.";
                             nextButton.style.display = "none";
                     } finally {
-                        await updateResponseHistory(postObject, user);
+                        if (postObject && user) {await updateResponseHistory(postObject, user)}
                         hideSpinner();
                     } 
                 });
