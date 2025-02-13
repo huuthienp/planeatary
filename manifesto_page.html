@@ -33,33 +33,32 @@
                         <div class="offcanvas-body" style="background-color: #02897A;">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="index.html"><i class="fa fa-home"></i> Home</a>
+                                    <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item" href="qualtrics.html">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item disabled" id="post-p" href="qualtrics_post.html">Post-quiz</a></li>
+                                        <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
+                                        <li><a class="dropdown-item disabled" id="post-p" data-bs-dismiss="offcanvas" href="qualtrics_post.html">Post-quiz</a></li>
                                     </ul>
                                 </li>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                                <a class="nav-link active" href="manifesto_page.html" aria-current="page" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
+                                <a class="nav-link" href="history_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-calendar-check-o"></i> History</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
                                 <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                    <li><a class="dropdown-item" href="account manage.html">My account</a></li>
-                                    <!--My question is, how would we have any function dealing with user signing out-->
-                                    <li><a class="dropdown-item" id="logOut">Log out</a></li>
+                                    <li><a class="dropdown-item" href="account manage.html" data-bs-dismiss="offcanvas">My account</a></li>
+                                    <li><a class="dropdown-item" data-bs-dismiss="offcanvas" id="logOut">Log out</a></li>
                                 </ul>
                             </li>
                             <!-- <li class="nav-item">
@@ -145,12 +144,9 @@
         import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
         
         const QContainer = document.querySelector(".q-task");
-        
+        const startButton = document.querySelector(".start");
         const good = document.getElementById("good");
         const bad = document.getElementById("notyet");
-        const spOver = document.getElementById("spinnerOverlay");
-        
-        
         good.style.backgroundColor = '#a9d1cd';
         bad.style.backgroundColor = '#02897A';
         
@@ -158,6 +154,7 @@
         let isLoading = false;
         const minDisplayTime = 2000; 
         let spinnerStartTime;
+        const spOver = document.getElementById("spinnerOverlay");
         
         const modal = document.querySelector(".modal");
         const overlay = document.querySelector(".overlay");
@@ -170,6 +167,8 @@
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
         const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
         const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+        const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
 
         offcanvasLinks.forEach(li => {
                 li.addEventListener('click', event => {
@@ -195,6 +194,38 @@
                     }
                 });
             });
+
+        offcanvasListItems.forEach(li => {
+            li.addEventListener('click', event => {
+                const link = li.querySelector('a.nav-link'); 
+                
+                if (link) {
+                    
+                    const targetHref = link.getAttribute('href');
+                    if (targetHref && targetHref !== '#') {
+                        window.location.href = targetHref;
+                    }
+                }
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+            });
+        });
+        
+        offcanvasDropdownItems.forEach(li => {
+            li.addEventListener('click', event => {
+                const link = li.querySelector('a.dropdown-item'); 
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+                
+                if (link) {
+                    
+                    const targetHref = link.getAttribute('href');
+                    if (targetHref && targetHref !== '#') {
+                        window.location.href = targetHref;
+                    }
+                }
+            });
+        })
 
         function showSpinner() {
             spinner.classList.remove('hidden');
@@ -325,7 +356,8 @@
         
         function calculateSelectedTasks(tasks) {
             let count = 0;
-            Object.keys(tasks).forEach((questionKey) => {
+            if(tasks && Object.keys(tasks).length > 0) {
+                Object.keys(tasks).forEach((questionKey) => {
                 const taskGroup = tasks?.[questionKey]?.tasks ?? [];
                 taskGroup.forEach(task => {
                     if (task.choice === 'chosen') {
@@ -333,71 +365,50 @@
                     }
                 });
             });
+            }
             return count;
         }
-        
-        document.addEventListener("DOMContentLoaded", async function() {
-            
-            const startButton = document.querySelector(".start");
-            
-            let scores = [];
 
-            const user = netlifyIdentity.gotrue.currentUser();
-
-            if (user) {
-                user.jwt().then(token => {
-                    if (isTokenExpired(token)) {
-                        console.log("Token expired. Prompting user to re-login...");
-                        netlifyIdentity.logout();
-                        window.location.href = "index.html";
-                    } else {
-                        console.log("Token is valid.");
-                    }
-                });
-            }
-
-            const metadata = user.user_metadata;
-            const responseHistory = metadata.responseHistory;
-            const userId = user.id;
-            console.log("your user id is ", userId);
-            var preObject = JSON.parse(localStorage.getItem('preResult')); 
-            var preResult = preObject && preObject.result ? preObject.result : {};
-            var preResponseId = preObject && preObject.responseId ? preObject.responseId : "";
-            var preTotalScore = preResult && preResult.totalScore ? preResult.totalScore : ""; 
-            var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
-            
-            let task_counts = 0;
-            let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
-            let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
-            let task_rec = fetched_tasks?.time ?? []; 
-            
-            // Function to update the start button state based on selected tasks
-            async function updateStartButton(preResponseId, userId) {
+        // Function to update the start button state based on selected tasks
+        async function updateStartButton(preResponseId, userId, tasks, fetched_tasks) {
                 const startButton = document.querySelector(".start");
                 const persuade = document.getElementById("threetask");
-                
+                let task_counts = calculateSelectedTasks(tasks);
                 if (task_counts >= 3) {
                     persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
                     persuade.style.color = 'black';
                     startButton.style.pointerEvents = "auto";
-                    startButton.style.backgroundColor = "#02897A";
-                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                    startButton.style.backgroundColor = "#02897A";     
                 } else {
                     persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
                     persuade.style.color = 'grey';
                     startButton.style.pointerEvents = "none";
                     startButton.style.backgroundColor = "grey";
                 }
-                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));        
+                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));   
             }
             
-            async function renderQuestions(condition) {
+        async function renderQuestions(condition, preObject, userId) {
                 QContainer.innerHTML = '';
+
+                let preResult = preObject?.result;
+                let preResponseId = preObject.responseId;
+                let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
+                let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                let task_rec = fetched_tasks?.time ?? []; 
                 
-                if (!tasks || !preResult) {
+                
+                if (!tasks && !preResult) {
                     QContainer.innerHTML = "<div class='empty-state'>Error: Unable to load tasks or scores.</div>";
                     return;
                 }
+
+                let scores = preResult?.pointArray ?? [];
+                //task_counts = calculateSelectedTasks(tasks);
+                if (fetched_tasks) {
+                    updateStartButton(preResponseId, userId, tasks, fetched_tasks);
+                }
+
                 // Iterate over each question
                 Object.keys(tasks).forEach((questionKey, i) => {
                     const taskGroup = tasks?.[questionKey]?.tasks ?? [];
@@ -497,10 +508,11 @@
                                         task_counts -= 1;
                                         if (index !== -1) {fetched_tasks.chosen.splice(index, 1)}
                                     }
+                                    task.status = "Done";
                                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
-                                    localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks)); 
-                                    updateStartButton(preResponseId, userId); 
+                                    localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));  
                                 }
+                                updateStartButton(preResponseId, userId, tasks, fetched_tasks);
                             });
                             
                             label.addEventListener('click', (e) => {
@@ -523,55 +535,57 @@
                             //Check task status on local  storage
                             if (task.choice === "chosen") {task.status = task.status === "Completed"?"Completed":"Done";}
                             localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
-                            updateStartButton(preResponseId, userId); 
+                            localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
+                            updateStartButton(preResponseId, userId, tasks, fetched_tasks);
                         });
-                        
                         questionDiv.appendChild(taskList);
                         QContainer.appendChild(questionDiv);
-                        localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
+                        localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     }
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                    updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
                 });
-                
-                task_counts = calculateSelectedTasks(tasks);
-                updateStartButton(preResponseId, userId); 
+                var task_counts = calculateSelectedTasks(tasks);
+                updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
+                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)))
             }
-            
-            // update task status on `startButton` click
-            startButton.addEventListener('click', async function(event) {
-                showSpinner();
-                updateStartButton(preResponseId, userId);
-                hideSpinner();
-                if (task_counts >= 3) {
-                    window.location.href = "challenge_page.html";
-                }
-            });
-            
-            // Event listener for "good" button
-            document.getElementById('good').addEventListener('click', function() {
-                updateStartButton(preResponseId, userId);
-                var condition = (score) => score >= 3;
-                renderQuestions(condition);
-                var tContent = document.querySelector(".task-content");
-                if (tContent.innerHTML == '') {
-                    tContent.innerHTML == '<p>None of your answers got good score</p>';
-                }
-                good.style.backgroundColor = '#02897A';
-                bad.style.backgroundColor = '#a9d1cd';
-            });
-            
-            // Event listener for "bad" button
-            document.getElementById('notyet').addEventListener('click', function() {
-                updateStartButton(preResponseId, userId);
-                var condition = (score) => score < 3;
-                renderQuestions(condition);
-                var tContent = document.querySelector(".task-content");
-                if (tContent.innerHTML == '') {
-                    tContent.innerHTML == '<p>None of your answers got bad score</p>';
-                }
-                good.style.backgroundColor = '#a9d1cd';
-                bad.style.backgroundColor = '#02897A';
-            });
+        
+        // update task status on `startButton` click
+        startButton.addEventListener('click', async function(event) {
+            window.location.href = "challenge_page.html";
+        });
+
+        document.addEventListener("DOMContentLoaded", async function() {
+
+            const user = netlifyIdentity.gotrue.currentUser();
+
+            if (user) {
+                user.jwt().then(token => {
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                        window.location.href = "index.html";
+                    } else {
+                        console.log("Token is valid.");
+                    }
+                });
+            }
+
+            const metadata = user.user_metadata;
+            const responseHistory = metadata.responseHistory;
+            const userId = user.id;
+            console.log("your user id is ", userId);
+
+            var preObject = JSON.parse(localStorage.getItem('preResult')); 
+            var preResult = preObject && preObject.result ? preObject.result : {};
+            var preResponseId = preObject && preObject.responseId ? preObject.responseId : "";
+            var preTotalScore = preResult && preResult.totalScore ? preResult.totalScore : ""; 
+            var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
+    
+            let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
+            let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+            let task_rec = fetched_tasks?.time ?? []; 
+            let task_counts = 0;
             
             try {
                 
@@ -595,7 +609,7 @@
                 const userId = user.id;
 
                 //handle first-time user
-                if (!metadata.responseHistory && !preObject) {
+                if (metadata.responseHistory.length === 0 && !preObject) {
                     console.warn("No responseHistory found for this user.");
                     document.querySelector(".button2").style.display = "none";
                     document.querySelector(".improvement").style.display = "none";
@@ -612,24 +626,6 @@
                     preResult = preObject?.result;
                     preResponseId =  preObject?.responseId;
                     preTotalScore = preObject?.result?.totalScore; 
-                    scores = preObject?.result?.pointArray;
-                } 
-                
-                if (!tasks) {
-                    tasks = await fetchTasks(presReponseId);
-                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                    tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
-                }
-                
-                if (!fetched_tasks) {
-                    try {
-                        fetched_tasks = await fetchTaskStatus(preResponseId, userId); 
-                        localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
-                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
-                    } catch(err) {
-                        console.log("Found error: ", err);
-                    }
-                    
                 } 
 
                 if (storedCycle) {
@@ -639,6 +635,11 @@
                     preResponseId = preObject?.responseId ?? "";
                     
                     try {
+                        if (!tasks) {
+                            tasks = await fetchTasks(presReponseId);
+                            localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                            tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+                        }
                         var selectTasks = await fetchTaskStatus(preResponseId, userId);
                         localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
                         fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
@@ -646,6 +647,12 @@
                     } catch(err) {
                         console.log("Couldn't find previous tasks' info:", err);
                     }
+                }
+
+                if (!tasks) {
+                    tasks = await fetchTasks(presReponseId);
+                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                    tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
                 }
                 
                 if (!fetched_tasks && preResponseId) {
@@ -658,7 +665,33 @@
                         console.error("Couldn't find history tasks' info:", err);
                     }
                 }
-                renderQuestions((score) => score < 3);
+                
+                // Event listener for "good" button
+                document.getElementById('good').addEventListener('click', function() {
+                    var condition = (score) => score >= 3;
+                    renderQuestions(condition, preObject, userId);
+                    var tContent = document.querySelector(".task-content");
+                    if (tContent.innerHTML == '') {
+                        tContent.innerHTML == '<p>None of your answers got good score</p>';
+                    }
+                    good.style.backgroundColor = '#02897A';
+                    bad.style.backgroundColor = '#a9d1cd';
+                });
+                
+                // Event listener for "bad" button
+                document.getElementById('notyet').addEventListener('click', function() {
+                    var condition = (score) => score < 3;
+                    renderQuestions(condition, preObject, userId);
+                    var tContent = document.querySelector(".task-content");
+                    if (tContent.innerHTML == '') {
+                        tContent.innerHTML == '<p>None of your answers got bad score</p>';
+                    }
+                    good.style.backgroundColor = '#a9d1cd';
+                    bad.style.backgroundColor = '#02897A';
+                });
+
+                var condition = (score) => score < 3;
+                renderQuestions(condition, preObject, userId);
                 
             } catch (err) {
                 console.error("Caught error: ", err);

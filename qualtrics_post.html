@@ -33,19 +33,19 @@
                         <div class="offcanvas-body" style="background-color: #02897A;">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
+                                    <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle active" aria-current="page" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item disabled" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
+                                        <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
                                         <li><a class="dropdown-item active" aria-current="page" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" id="ch" href="#" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link" id="ch" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" id="d" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -69,7 +69,7 @@
                 <iframe class="quiz" title="PlanEATary Post-Quiz"></iframe>
                 <span class="fallback"></span>
                 <div class="btn-next">
-                    <button id="nextButt" type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button>
+                    <button id="nextButt" type="button" class="btn btn-success next" style="width: 180px;">Next  &#8594;</button>
                 </div>
             </div>
             
@@ -142,7 +142,7 @@
                         responseHistory.push({ postId: postResponseId });
                         console.log("The post-quiz updated",  responseHistory)
                         user.update({
-                            user_metadata: { responseHistory: responseHistory,},
+                            data: { responseHistory: responseHistory},
                         }).then((updatedUser) => {
                             console.log("User metadata updated:", updatedUser);
                             // Fetch the latest user object instead of using reload()
@@ -278,11 +278,12 @@
                     let latest_task = "";
 
                     const fallbackMessage = document.querySelector(".fallback");
-                    fallbackMessage.classList.add("empty-state");
 
                     const offcanvasNavbar = document.getElementById('offcanvasNavbar');
                     const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
                     const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+                    const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+                    const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
 
                     const netlifyIdentity = window.netlifyIdentity;
                     const user = netlifyIdentity.gotrue.currentUser();
@@ -328,6 +329,38 @@
                         });
                     });
 
+                    offcanvasListItems.forEach(li => {
+                        li.addEventListener('click', event => {
+                            const link = li.querySelector('a.nav-link'); 
+                            
+                            if (link) {
+                                
+                                const targetHref = link.getAttribute('href');
+                                if (targetHref && targetHref !== '#') {
+                                    window.location.href = targetHref;
+                                }
+                            }
+                            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                            offcanvas.hide();
+                        });
+                    });
+
+                    offcanvasDropdownItems.forEach(li => {
+                        li.addEventListener('click', event => {
+                            const link = li.querySelector('a.dropdown-item'); 
+                            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                            offcanvas.hide();
+                            
+                            if (link) {
+                                
+                                const targetHref = link.getAttribute('href');
+                                if (targetHref && targetHref !== '#') {
+                                    window.location.href = targetHref;
+                                }
+                            }
+                        });
+                    });
+                    
                     nextButton.addEventListener('click', () => {
                         if (nextButton.style.cursor !== "not-allowed") { window.location.href = "result_page.html"; }
                     });
@@ -406,21 +439,36 @@
                                     await updateResponseHistory(postObject, user);
                                     updateButton(nextButton, '#02897A', 'pointer');
                                     quizFrame.style.display = 'none'; 
-                                    fallbackMessage.innerHTML = "<div class='void'>Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over. Or click next to see the result!</div>";
+                                    fallbackMessage.innerHTML = "<div class='void'>Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over. <img src=''./images/in-love.gif'></div>";
                                 } else if (!postObject || Object.keys(postObject).length === 0) {
                                     try {
                                         if (!selectTasks) {
                                             selectTasks = await fetchTaskStatus(preResponseId, userId);
                                             localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
                                             selectTasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                                            if (!selectTasks) {throw "Failed in fetching tasks!"}
+                                            else {
+                                                var firstNullIndex = selectTasks?.time?.findIndex(el => el == "");
+                                                if (firstNullIndex !== -1) {
+                                                    alert("Please finish all the chosen tasks before doing post-quiz.");
+                                                    quizFrame.style.display = 'none'; 
+                                                    document.querySelector('.btn-next').style.display = 'none';
+                                                    fallbackMessage.innerHTML = "<div class='empty-state'>Please finish all selected tasks before doing the post quiz.</div>";
+                                                    window.location.href = "manifesto_page.html";
+                                                    return;
+                                                } else {
+                                                    var quizUrl = initiateSurvey('post', quizFrame);
+                                                }
+                                            }
+                                            
                                         } else {
-                                            var firstNullIndex = selectTasks?.time?.length !== 0 ? selectTasks?.time?.findIndex(el => el == "") : 0;
+                                            var firstNullIndex = selectTasks?.time?.findIndex(el => el == "");
                                             if (firstNullIndex !== -1) {
                                                 alert("Please finish all the chosen tasks before doing post-quiz.");
                                                 quizFrame.style.display = 'none'; 
                                                 document.querySelector('.btn-next').style.display = 'none';
                                                 fallbackMessage.innerHTML = "<div class='empty-state'>Please finish all selected tasks before doing the post quiz.</div>";
-                                                window.location.href = "challenge_page.html";
+                                                window.location.href = "manifesto_page.html";
                                                 return;
                                             } else {
                                                 var quizUrl = initiateSurvey('post', quizFrame);
@@ -431,8 +479,8 @@
                                         quizFrame.style.display = 'none'; 
                                         document.querySelector('.btn-next').style.display = 'none';
                                         fallbackMessage.style.color = "#ff6b6b";
-                                        fallbackMessage.innerHTML = err;
-                                        window.location.href = "challenge_page.html";
+                                        fallbackMessage.innerHTML = err + " Directing you to do the selected tasks";
+                                        window.location.href = "manifesto_page.html";
                                         return;
                                     }  
                                 } 
@@ -444,10 +492,10 @@
                             console.error("Caught error: ", err);
                             quizFrame.style.display = 'none';
                             document.querySelector('.btn-next').style.display = 'none';
-                            fallbackMessage.innerHTML = "Content cannot be displayed. Please try again later.";
+                            fallbackMessage.innerHTML = "<div class='empty-state'>Content cannot be displayed. Please try again later.</div>";
                             nextButton.style.display = "none";
                     } finally {
-                        await updateResponseHistory(postObject, user);
+                        if (postObject && user) {await updateResponseHistory(postObject, user)}
                         hideSpinner();
                     } 
                 });
@@ -484,7 +532,7 @@
                         try {
                             JSON.parse(newValue || undefined);  // force null -> undefined to throw error
                             quizFrame.style.display = 'none';
-                            fallbackMessage.innerHTML = '<div class="void">Thank you for your response!</div>';
+                            fallbackMessage.innerHTML = '<div class="void">Thank you for your response! <img src="./images/in-love.gif"></div>';
                             updateButton(nextButton, '#02897A', 'pointer');
                             console.log('Found post-quiz result in storage!\n', newValue);
                             await updateResponseHistory(postObject, user);
@@ -492,7 +540,6 @@
                             console.warn('Caught', error, '\nPost-quiz result is not found!');
                             updateButton(nextButton, 'grey', 'not-allowed');
                             var quizUrl = initiateSurvey('post', quizFrame);
-                            // quizSpan.innerText = 'An error occurred. Please try again later.';
                         }
                     }
                 });

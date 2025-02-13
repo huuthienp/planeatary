@@ -17,7 +17,7 @@
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg" style="background-color: #02897A;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -353,7 +353,6 @@
                     header.innerHTML='';
                     completion_date.innerHTML='';
                     
-                    
                     if (!questionsData.result.pointArray || !Array.isArray(questionsData.result.pointArray)) {
                         document.getElementById('curr_score').textContent = 'No score available.';
                         cardContainer.innerHTML = '<div class="empty-state">Sorry, there is something wrong in the system. Please allow us to fix it.</div>';
@@ -482,6 +481,9 @@
                         completion_date.innerHTML = `Last task was completed at ${hours}:${minutes} on ${day}/${month}/${year}`;
                     } else {
                         completion_date.innerHTML = '';
+                    }
+                    if (task_rec.length === 0) {
+                        document.querySelector('.q').innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
                     }
                 }
                 

@@ -17,7 +17,7 @@
         </div>
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-xl sticky-top" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-xl" style="background-color: #02897A;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -160,7 +160,7 @@
     
     <!--do you know section-->
     <section class="do-you-know">
-        <div class="content">
+        <div class="d-content">
             <h2>DO YOU KNOW...?</h2>
             <p>(1) Our global food system is contributing approximately one-third of greenhouse gas emissions.<br/>
                 (2) Experts have called for an urgent transformation to the way food is produced and consumed, including a population-wide shift to healthy and sustainable diets.</p>
@@ -777,19 +777,19 @@
             }
 
             const metadata = user.user_metadata;
-            const responseHistory = metadata.responseHistory;
+            const responseHistory = metadata?.responseHistory ?? [];
             let latest_pre = "";
             let latest_post = "";
             let history = [];
             let id = user.id;
             
             //handle first-time user
-            if (!metadata.responseHistory) {
+            if (responseHistory.length === 0) {
                 console.warn("No responseHistory found for this user.");
                 return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
             } else {
-                Object.keys(responseHistory).forEach((cycleKey) =>{
-                    const entry = responseHistory[cycleKey];
+                responseHistory.forEach((cycleKey) =>{
+                    const entry = cycleKey;
                     history.push(entry);
                     if (entry.preId && entry.postId) {
                         latest_pre = entry.preId;
@@ -837,7 +837,7 @@
         }
         
         async function ExtractQuizInfo() {
-
+            localStorage.removeItem('postResult');
             const {quizObj, historyObj, userId} = ExtractUserMetadata();
             var allRes = await fetchResponses(userId);
             let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
@@ -847,7 +847,6 @@
                     const postQuiz = cycleKey?.postResponse ?? null;
                     //for debugging purpose
                     console.log("Cycle Key:", cycleKey);
-                    console.log("allResponses[cycleKey]:", allResponses[cycleKey]);
                     if (preQuiz?.responseId && preQuiz?.responseId == quizObj.lastPre) {
                         localStorage.setItem("preResult", JSON.stringify(preQuiz));
                     }
@@ -1078,6 +1077,7 @@
         const nameField = document.getElementById("name");
         const genderField = document.getElementById("gender");
         const ageField = document.getElementById("age");
+        const statusField = document.getElementById("user-type");
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         let isValid = true;
         
@@ -1104,8 +1104,9 @@
         // If valid, potentially submit form or redirect
         if (validate_form()) {
             // Add logic to handle successful signup (e.g., redirect to account.html)
-            netlifyIdentity.gotrue.signup(emailInput.value, passwordInput.value, {full_name: nameField.value})
-            .then((r) => {
+            netlifyIdentity.gotrue.signup(emailInput.value, passwordInput.value, {data:{full_name: nameField.value, age: ageField.value, gender: genderField.value, status: statusField.value}})
+            .then(async (r) => {
+                await new Promise(resolve => setTimeout(resolve, 1500));
                 console.log('Successful signup!', emailInput.value);
                 hideSignUpModal();
             })

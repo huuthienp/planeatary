@@ -17,7 +17,7 @@
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg" style="background-color: #02897A;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -281,43 +281,46 @@
             async function extractHistory(user, userId) {
                 
                 var allRes = await fetchResponses(userId);
-                let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`) || "[]");
-                const mockResponse = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`) || "{}");
-                const mockResponseHistory = mockResponse?.user_metadata?.responseHistory ?? [];
+                var allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
+                const mockResponse = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`));
+                const mockResponseHistory = mockResponse?.meta_data?.responseHistory ?? [];
                 
                 var lastTask = "";
 
-                if ( allResponses.length > 0  && mockResponseHistory.length > 0) {
-                    allResponses.map((cycleKey) => {
-                        const taskCycle = mockResponseHistory?.lastTask ?? "";
-                        if (mockResponseHistory?.preId == cycleKey?.preResponse?.responseId) {
+                if ( allResponses && mockResponseHistory.length > 0) {
+                    console.log("before ", allResponses);
+                    let newAllResponses = allResponses.map((cycleKey, i) => {
+                        const taskCycle = mockResponseHistory[i]?.lastTask ?? null;
+                        const fetched_tasks = JSON.parse(localStorage.getItem(`${cycleKey.preResponse.responseId}:fetched_tasks`));
+                        if (mockResponseHistory[i]?.preId == cycleKey?.preResponse?.responseId) {
                             cycleKey.preResponse.lastTask = taskCycle;
                             console.log("Here the last task you will add ", taskCycle);
-                        } else {
-                            try {
-                                const fetched_tasks = JSON.parse(localStorage.getItem(`${cycleKey.preResponse.responseId}:fetched_tasks`)) || {};
-                                console.log("Here the fetch_tasks you will add ", fetched_tasks);
-                                const task_rec = Array.isArray(fetched_tasks?.time) ? fetched_tasks.time : Object.values(fetched_tasks?.time ?? []);
-                                const taskDone =  Array.isArray(fetched_tasks?.done) ? fetched_tasks.done : Object.values(fetched_tasks?.done ?? []);
-                                if (task_rec.length > 0) {
-                                    const lastTaskTime = Math.max(...task_rec);
-                                    const index = fetched_tasks?.time?.findIndex(el => el == lastTaskTime);
-                                    const taskName = taskDone[index];
-                                    lastTask = `${taskName}@${lastTaskTime}`;
-                                    cycleKey.preResponse.lastTask = lastTask;
-                                    console.log("Here the time you will add ", lastTask);
+                            if (fetched_tasks) {
+                                try {
+                                    console.log("Here the fetched tasks you will extract ", fetched_tasks);
+                                    const task_rec = Array.isArray(fetched_tasks?.time) ? fetched_tasks.time : Object.values(fetched_tasks?.time ?? []);
+                                    const taskDone =  Array.isArray(fetched_tasks?.done) ? fetched_tasks.done : Object.values(fetched_tasks?.done ?? []);
+                                    if (task_rec.length > 0 && task_rec.findIndex(el => el == "") == -1) {
+                                        const lastTaskTime = Math.max(...task_rec);
+                                        const index = task_rec.findIndex(el => el == lastTaskTime);
+                                        const taskName = taskDone[index];
+                                        lastTask = `${taskName}@${lastTaskTime}`;
+                                        cycleKey.preResponse.lastTask = lastTask;
+                                        console.log("Here the time you will add from fetched tasks ", lastTask);
+                                    }
+                                    
+                                } catch(err) {
+                                    console.warn("Found err: ", err);
                                 }
-                                
-                            } catch(err) {
-                                console.warn("Found err: ", err);
                             }
-                        }
+                        } 
                         return cycleKey;
                     }); 
-                    localStorage.setItem(`${userId}:allResponses`, JSON.stringify(allResponses)); 
+                    localStorage.setItem(`${userId}:allResponses`, JSON.stringify(newAllResponses)); 
                 } 
-                allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
-                return allResponses;
+                let newAllResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
+                console.log("After ", newAllResponses);
+                return newAllResponses;
             }
             
             
@@ -345,9 +348,13 @@
                     
                     // lastTask
                     if (cycle?.preResponse?.lastTask) {
-                        const [taskId, unixSec] = cycle.lastTask.split('@');
+                        const lastTask = cycle.preResponse.lastTask ?? "";
+                        const [taskId, unixSec] = lastTask.includes("@") ? lastTask.split('@') : ["N/A", "N/A"];
+                        let date;
                         if (unixSec) {
-                            const date = detectAndParseTimestamp(unixSec);
+                            const length = String(unixSec).length;
+                            if (length <= 10) { date = new Date(parseInt(unixSec, 10)*1000) }
+                            else {date = new Date(parseInt(unixSec, 10))}
                             // format as needed
                             taskcycle.textContent = date.toLocaleString();
                         } else {
@@ -357,25 +364,22 @@
                         taskcycle.textContent = 'N/A';
                     }
                     
-                    // preResponse
                     if (cycle?.preResponse) {
-                        const isoString = cycle.preResponse.recordedDate;
-                        const dateObj = new Date(isoString);
-                        prescore.textContent = cycle.preResponse.result.totalScore;
-                        predate.textContent = dateObj.toLocaleString();
-
+                        prescore.textContent = cycle.preResponse?.result?.totalScore ?? 'N/A';
+                        predate.textContent = cycle.preResponse?.recordedDate 
+                        ? new Date(cycle.preResponse.recordedDate).toLocaleString() 
+                        : 'N/A';
                     } else {
                         prescore.textContent = 'N/A';
                         predate.textContent = 'N/A';
                     }
                     
-                    // postResponse
-                    if (cycle?.postResponse) {
-                        const isoString = cycle.postResponse.recordedDate;
-                        const dateObj = new Date(isoString);
-                        postscore.textContent = cycle.postResponse.result.totalScore;
-                        postdate.textContent = dateObj.toLocaleString();
 
+                   if (cycle?.postResponse) {
+                        postscore.textContent = cycle.postResponse?.result?.totalScore ?? 'N/A';
+                        postdate.textContent = cycle.postResponse?.recordedDate 
+                        ? new Date(cycle.postResponse.recordedDate).toLocaleString() 
+                        : 'N/A';
                     } else {
                         postscore.textContent = 'N/A';
                         postdate.textContent = 'N/A';
