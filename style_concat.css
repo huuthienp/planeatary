@@ -199,6 +199,16 @@ body {
   #carouselTeam {
     display: flex !important;
   }
+
+  .content .Card {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5vmax;
+    justify-content: space-evenly;
+    flex-direction: column !important;
+    padding: 0 2vw;
+  }
 }
 
 .main-container {
@@ -370,9 +380,8 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 1.5vmax;
-  justify-content: space-between;
+  justify-content: space-evenly;
   flex-direction: row;
-  align-items: center;
 }
 
 .card_completed {
