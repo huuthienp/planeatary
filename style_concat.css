@@ -1221,23 +1221,22 @@ margin-top: 20px;
 }
 
 .result .score {
-    width: 100%;
-    display: flex;
-    font-weight: bold;
-    justify-content: center;
-    flex-direction: column;
-    gap: 2vmax;
-    color: #02897A;
+  width: 100%;
+  display: flex;
+  font-weight: bold;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vmax;
+  color: #02897A;
+  padding-bottom: 5vh;
 }
 
 .score .circle{
-    height: auto;
-    display: flex;
-    flex-direction: column;
-}
-.score h2 {
-    font-size: 2em;
-    margin: auto auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #Score {
@@ -1349,7 +1348,7 @@ margin-top: 20px;
 }
 
 .score p {
-    font-size: 1em;
+    font-size: 1.5em;
     color: grey;
 }
 
