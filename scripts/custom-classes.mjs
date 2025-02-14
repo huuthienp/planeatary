@@ -5,7 +5,7 @@ export class CustomResponse extends Response {
     try {  // v2
       JSON.parse(bodyStr);
       headers = { 'Content-Type': 'application/json' };
-    } catch { console.warn('Body is not JSON, but ok!'); }
+    } catch { ; }
     const options = ({ status, headers });
     super(bodyStr, options);
   }
