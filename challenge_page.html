@@ -368,6 +368,11 @@
                     // Update existing entry with lastTask if it's missing
                     responseHistory[index].lastTask = lastTask;
                 } 
+                
+                if (responseHistory[index].lastTask) {
+                    // Update existing entry with lastTask 
+                    responseHistory[index].lastTask = lastTask;
+                }
 
                 console.log("Updated responseHistory to save:", responseHistory);
                 //manually keep in local storage (remove after logging out)
