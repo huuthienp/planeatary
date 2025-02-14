@@ -1240,6 +1240,14 @@ margin-top: 20px;
     margin: auto auto;
 }
 
+#Score {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+
 
 #Score > #curr_score {
   display: flex;
@@ -1254,14 +1262,12 @@ margin-top: 20px;
 
 #Score > #total {
   display: flex;
-  font-size: 1em;
   justify-content: center;
   align-items: center;
   height: 40%;
   font-size: 0.7em;
   color: #d3d0d0;
 }
-
 
 .progress {
   width: 150px;
