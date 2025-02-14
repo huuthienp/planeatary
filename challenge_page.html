@@ -587,6 +587,17 @@
                                     } catch (err) {
                                         console.error("Error updating: ", err);
                                     }
+                                } else {
+                                    const lastTask = "";
+                                    // Update response history with empty last task
+                                    try {
+                                        await updateResponseHistory(preResponseId, lastTask);
+                                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                                        console.log(`Response history updated with empty task: ${lastTask}`);
+                                        console.log("Tasks updated!");
+                                    } catch (err) {
+                                        console.error("Error updating: ", err);
+                                    }
                                 }
                             })      
                         }
@@ -624,6 +635,17 @@
                         await updateResponseHistory(preResponseId, lastTask);
                         await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
                         console.log(`Response history updated with task: ${lastTask}`);
+                        console.log("Tasks updated!");
+                    } catch (err) {
+                        console.error("Error updating: ", err);
+                    }
+                } else {
+                    const lastTask = "";
+                    // Update response history with empty last task
+                    try {
+                        await updateResponseHistory(preResponseId, lastTask);
+                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                        console.log(`Response history updated with empty task: ${lastTask}`);
                         console.log("Tasks updated!");
                     } catch (err) {
                         console.error("Error updating: ", err);
