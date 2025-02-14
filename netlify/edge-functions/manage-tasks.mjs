@@ -9,7 +9,7 @@ export default async (request) => {
         const userId = reqHeaders.get('user-id');
         if (!id || !userId) {
             const message = `Bad headers: ${id?id:'empty q-response-id'}, ${userId?userId:'empty user-id'}`;
-            console.error(message);
+            console.error('[manage-tasks]', message);
             return new CustomResponse(message, 400);
         }
         const { env } = Netlify;  // follow Netlify's documentation
@@ -23,7 +23,7 @@ export default async (request) => {
         let qResponse = await fetchData(url, options);
         if (userId !== qResponse.result.userId) {
             const message = 'User ID does not match!';
-            console.warn(message);
+            console.warn('[manage-tasks]', message);
             return new CustomResponse(message, 401);
         } // end of matching user ID
         if ('PUT' === reqMethod.toUpperCase()) {
@@ -35,10 +35,10 @@ export default async (request) => {
             options.body = JSON.stringify(reqJSON);
             qResponse = await fetchData(url, options);
         }  // end of updating task data
-        console.log(reqMethod, id);
+        console.log('[manage-tasks]', reqMethod, id);
         return new CustomResponse(qResponse); // default status is 200
     } catch (manageTaskError) {  // e.g. invalid task data, response not ok
-        console.error('Caught:', manageTaskError);
+        console.error('[manage-tasks]', 'Caught:', manageTaskError);
         const { message, status } = manageTaskError;
         return new CustomResponse(message, status || 500);
     }  // end of catching error when managing task
