@@ -79,13 +79,25 @@
                     </div>
                     <div class="score">
                         <div class="circle">
-                            <h2 id="curr_score"></h2>
-                            <p id="total"></p>
+                            <div class="progress blue ">
+                                <span class="progress-left">
+                                    <span class="progress-bar"></span>
+                                </span>
+                                <span class="progress-right">
+                                    <span class="progress-bar"></span>
+                                </span>
+                                <div class="progress-value">
+                                    <div id="Score">
+                                        <div id="curr_score">0</div>
+                                        </hr style="border-width: 5px; color: white;">
+                                        <span id="total">60</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p id="improvement"></p>
+                            <p class="next-step">Next step: Select 10 Tasks To Improve Your Scores!</p>
+                            <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
                         </div>
-                        <p id="improvement"></p>
-                        <p class="next-step">Next step: Select 10 Tasks To Improve Your Scores!</p>
-                        <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
-                    </div>
                     <button class="select-tasks">
                         <a href="manifesto_page.html">Select Tasks →</a>
                     </button>
@@ -346,6 +358,34 @@
                     return JSON.parse(taskData);
                 }
                 
+                function updateProgress(score) {
+                    const total = 60;
+                    // Calculate percentage (0 to 100)
+                    let percentage = (score / total) * 100;
+                    if (percentage > 100) percentage = 100; // cap at 100%
+                    
+                    // Calculate rotation degrees
+                    const rightBar = document.querySelector('.progress .progress-right .progress-bar');
+                    const leftBar = document.querySelector('.progress .progress-left .progress-bar');
+                    const progressValue = document.querySelector('.progress .progress-value');
+                    
+                    if (percentage <= 50) {
+                        // Only the right half rotates: 0% -> 50% maps to 0deg -> 180deg
+                        const deg = (percentage / 50) * 180;
+                        rightBar.style.transform = `rotate(${deg}deg)`;
+                        leftBar.style.transform = 'rotate(0deg)';
+                    } else {
+                        // Right half is fixed at 180deg.
+                        rightBar.style.transform = 'rotate(180deg)';
+                        // The remaining percentage (percentage - 50) maps to 0deg -> 180deg
+                        const deg = ((percentage - 50) / 50) * 180;
+                        leftBar.style.transform = `rotate(${deg}deg)`;
+                    }
+                    
+                    // Update the text value (optional)
+                    console.log("calculated percentage", `${Math.round(percentage)}%`);
+                }
+                
                 function displayQuestions(questionsData, type) {
                     
                     cardContainer.innerHTML = ''; 
@@ -366,6 +406,8 @@
                     let year = date.getFullYear();
                     let month = String(date.getMonth() + 1).padStart(2, '0'); 
                     let day = String(date.getDate()).padStart(2, '0');
+                    
+                    updateProgress(questionsData.result.totalScore);
                     
                     document.getElementById('curr_score').textContent = questionsData.result.totalScore;
                     document.getElementById('total').textContent = 60;
