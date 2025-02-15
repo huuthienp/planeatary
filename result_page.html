@@ -297,10 +297,13 @@
                         
                         // Create and append question title
                         const questionTitle = document.createElement('h3');
-                        questionTitle.textContent = `Question ${index + 1} - ${score} points`;
-                        //Later we may add info of each question (question and selected choice)
+                        questionTitle.textContent = `Question ${index + 1}`;
+                        const questionPoint = document.createElement('h4');
+                        questionPoint.textContent = `${score} points`;
+                        questionPoint.style.color = "#ff6b6b";
+
                         questionDiv.appendChild(questionTitle);
-                        
+                        questionDiv.appendChild(questionPoint);
                         cardContainer.appendChild(questionDiv);
                     });
                     
@@ -335,6 +338,8 @@
                         cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
                         return;
                     }
+
+                    var task_rec =  detailed?.time ?? [];
                     
                     Object.keys(tasks).forEach(questionKey => {
                         header.innerHTML = '<img src="./images/battery.png"/>'+'All tasks you have completed';
