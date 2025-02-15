@@ -46,7 +46,7 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link" id="navChallenge" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link active" aria-current="page" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -129,13 +129,26 @@
                     <span>Loading</span>
                 </div>
             </section>
+
+            <!-- Warning disabling -->
+            <section id="alertContainer">
+                <div class="alert alert-success position-fixed top-0 end-0 p-3 alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading">Well done!</h4>
+                    <p>Aww,You are not allowed to do more tasks after doing the post-quiz.</p>
+                    <hr>
+                    <p class="mb-0">Please restart the cycle by restarting the pre-quiz.</p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                </div>
+            </section>
             
         </div>
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
         <script type="module">
             import { fetchTaskStatus, extractTaskData } from './scripts/helpers.mjs';
-            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, logOut } from './scripts/utility.js';
+            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
             
             const Qbuttoncontainer = document.querySelector(".pre-postQ");
             const Pre_Q = document.querySelector("#preQ");
@@ -217,6 +230,16 @@
                 
                 // Update the text value (optional)
                 console.log("calculated percentage", `${Math.round(percentage)}%`);
+            }
+
+            function showAlert() {
+                const alertContainer = document.getElementById('alertContainer');
+                if (!alertContainer) {
+                    console.error('No alert container found.');
+                    return;
+                }
+                const bsAlert = new bootstrap.Alert(alertContainer);
+                alertContainer.show();
             }
 
             // Retrieve tasks from localStorage or fetch if not available
@@ -390,12 +413,26 @@
                     hideSpinner(bOverlay, condition);
                 }
             });
+
+            document.addEventListener('click', function(event) {
+                
+                const anchor = document.getElementById('navChallenge');
+                if (anchor) {
+                    // Replace the condition below with your logic for blocking specific pages
+                    if (hasPostQuizResult() && anchor.href.includes('manifesto_page.html')) {
+                        event.preventDefault();
+                        showAlert();
+                    }
+                }
+            });
             
             document.addEventListener("DOMContentLoaded", async function() {
                 
                 const offcanvasNavbar = document.getElementById('offcanvasNavbar');
                 const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
                 const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+                const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+                const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
                 
                 offcanvasLinks.forEach(li => {
                     li.addEventListener('click', handleOffcanvasClick);
@@ -405,12 +442,34 @@
                     li.addEventListener('click', handleOffcanvasClick);
                 });
                 
+                // Function to handle navigation or showing toast
+                offcanvasListItems.forEach(li => {
+                    li.addEventListener('click', event => {
+                        const link = li.querySelector('a.nav-link'); 
+                        if (link) {
+                            li.addEventListener('click', handleOffcanvasClick);
+                        }
+                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
+                    });
+                });
+                
+                // Function to handle navigation or showing toast
+                offcanvasDropdownItems.forEach(li => {
+                    li.addEventListener('click', event => {
+                        const link = li.querySelector('a.dropdown-item'); 
+                        if (link) {
+                            li.addEventListener('click', handleOffcanvasClick);
+                        }
+                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
+                    });
+                })
+                
                 document.getElementById('postQ').style.color = 'white';
                 document.getElementById('preQ').style.color = 'white';
                 document.getElementById('com-tasks').style.color = 'white';
-                
-                const ch = document.getElementById('ch');
-                
+                  
                 // Show next step, suggestion, and select-tasks button as default
                 const toshow = [
                 'p.next-step',
@@ -422,8 +481,7 @@
                 
                 tagsToShow.forEach(
                 (tag) => { if(tag) {tag.classList.remove('hidden');} }
-                );
-                
+                );    
                 
                 try {
                     

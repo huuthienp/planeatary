@@ -97,6 +97,11 @@ export async function getUserData() {
     }
 }
 
+export function hasPostQuizResult() {
+    // Assuming 'postResult' is the key in localStorage that holds the result.
+    return localStorage.getItem('postResult') !== null;
+  }
+
 export async function logOut() {
     const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
     
