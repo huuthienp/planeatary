@@ -178,19 +178,9 @@
             
             const closeModal = () => hideElement(modalOverlay);
             
-            modalClose.addEventListener("click", closeModal);
-            modalOverlay.addEventListener("click", (event) => {
-                if (event.target === modalOverlay) closeModal();
-            });
-            
-            // Close modal when user clicks the close button
             document.querySelector(".close").addEventListener("click", closeModal);
-            
-            // Close modal when user clicks outside the modal
-            window.addEventListener("click", function(event) {
-                if (event.target === modalOverlay) {
-                    closeModal();
-                }
+            window.addEventListener("click", (event) => {
+                if (event.target === modalOverlay) closeModal();
             });
 
             function compareScores(preResult, postResult) {
