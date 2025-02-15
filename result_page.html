@@ -412,15 +412,12 @@
                 }
             });
 
-            document.addEventListener('click', function(event) {
-                
-                const anchor = document.getElementById('navChallenge');
-                if (anchor) {
-                    // Replace the condition below with your logic for blocking specific pages
-                    if (hasPostQuizResult() && anchor.href.includes('manifesto_page.html')) {
-                        event.preventDefault();
-                        showAlert();
-                    }
+
+            document.getElementById('navChallenge').addEventListener('click', function(event) {
+                // Replace the condition below with your logic for blocking specific pages
+                if (hasPostQuizResult() &&  document.getElementById('navChallenge').href.includes('manifesto_page.html')) {
+                    event.preventDefault();
+                    showAlert();
                 }
             });
             
@@ -624,106 +621,107 @@
                             document.querySelector("button.select-tasks > a").href = 'manifesto_page.html';
                             document.getElementById('postQ').disabled = true; 
                             
-                            document.getElementById('preQ').addEventListener('click', function() {
-                                
-                                if (preResult && !postResult) {
-                                    const toshow = [
-                                    'p.next-step',
-                                    'p.suggestion',
-                                    'button.select-tasks',
-                                    'div.circle'
-                                    ];
-                                    
-                                    const tagsToShow = toshow.map(s => document.querySelector(s));
-                                    
-                                    tagsToShow.forEach(
-                                    (tag) => { if (tag) {tag.classList.remove('hidden');} }
-                                    );
-                                    
-                                    document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';
-                                    document.querySelector("button.select-tasks > a").href = 'manifesto_page.html';
-                                    
-                                } else {
-                                    const toshow = [
-                                    'button.select-tasks',
-                                    'div.circle'
-                                    ];
-                                    
-                                    const tagsToShow = toshow.map(s => document.querySelector(s));
-                                    
-                                    tagsToShow.forEach(
-                                    (tag) => { if (tag) {tag.classList.remove('hidden');} }
-                                    );
-                                    
-                                    document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
-                                    document.querySelector("button.select-tasks > a").href = 'index.html';
-                                }
-                                
-                                displayQuestions(preObject, 'PRE');
-                                document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
-                                document.getElementById('postQ').style.transition = "all 1s";
-                                document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
-                                document.getElementById('com-tasks').style.transition = "all 1s";
-                                document.getElementById('preQ').style.backgroundColor = '#02897A';    
-                                document.getElementById('preQ').style.transition = "all 1s";
-                            });
-                            
-                            document.getElementById('postQ').addEventListener('click', function() {
-                                
-                                if (postResult) {
-                                    
-                                    // Remove next step, suggestion, and select-tasks button if post quiz is done
-                                    const toRemove = [
-                                    'p.next-step',
-                                    'p.suggestion'
-                                    ];
-                                    
-                                    const tagsToRemove = toRemove.map(s => document.querySelector(s));
-                                    
-                                    tagsToRemove.forEach(
-                                    (tag) => { if (tag) {tag.classList.add('hidden');} }
-                                    );
-                                    
-                                    const toshow = [
-                                    'button.select-tasks',
-                                    'div.circle'
-                                    ];
-                                    
-                                    const tagsToShow = toshow.map(s => document.querySelector(s));
-                                    
-                                    tagsToShow.forEach(
-                                    (tag) => { if (tag) {tag.classList.remove('hidden');} }
-                                    );
-                                    
-                                    document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
-                                    document.querySelector("button.select-tasks > a").href = 'index.html';
-                                    
-                                    
-                                    displayQuestions(postObject, 'POST');
-                                    document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
-                                    document.getElementById('preQ').style.transition = "all 1s";
-                                    document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
-                                    document.getElementById('com-tasks').style.transition = "all 1s";
-                                    document.getElementById('postQ').style.backgroundColor = '#02897A';    
-                                    document.getElementById('postQ').style.transition = "all 1s";
-                                }
-                            });
-                            
-                            document.getElementById('com-tasks').addEventListener('click', async function() {
-                                
-                                displaySelectedTasks(tasks, detailed);
-                                document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
-                                document.getElementById('preQ').style.transition = "all 1s";
-                                document.getElementById('postQ').style.backgroundColor = '#a9d1cd';    
-                                document.getElementById('postQ').style.transition = "all 1s";
-                                document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
-                                document.getElementById('com-tasks').style.transition = "all 1s";
-                            });
                         } else {
                             // Handle no user or expired token scenario
                             console.log("No valid user data available.");
                         }
-                    }  
+                    }
+                    
+                    document.getElementById('preQ').addEventListener('click', function() {
+                        
+                        if (preResult && !postResult) {
+                            const toshow = [
+                            'p.next-step',
+                            'p.suggestion',
+                            'button.select-tasks',
+                            'div.circle'
+                            ];
+                            
+                            const tagsToShow = toshow.map(s => document.querySelector(s));
+                            
+                            tagsToShow.forEach(
+                            (tag) => { if (tag) {tag.classList.remove('hidden');} }
+                            );
+                            
+                            document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';
+                            document.querySelector("button.select-tasks > a").href = 'manifesto_page.html';
+                            
+                        } else {
+                            const toshow = [
+                            'button.select-tasks',
+                            'div.circle'
+                            ];
+                            
+                            const tagsToShow = toshow.map(s => document.querySelector(s));
+                            
+                            tagsToShow.forEach(
+                            (tag) => { if (tag) {tag.classList.remove('hidden');} }
+                            );
+                            
+                            document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
+                            document.querySelector("button.select-tasks > a").href = 'index.html';
+                        }
+                        
+                        displayQuestions(preObject, 'PRE');
+                        document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
+                        document.getElementById('postQ').style.transition = "all 1s";
+                        document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
+                        document.getElementById('com-tasks').style.transition = "all 1s";
+                        document.getElementById('preQ').style.backgroundColor = '#02897A';    
+                        document.getElementById('preQ').style.transition = "all 1s";
+                    });
+                    
+                    document.getElementById('postQ').addEventListener('click', function() {
+                        
+                        if (postResult) {
+                            
+                            // Remove next step, suggestion, and select-tasks button if post quiz is done
+                            const toRemove = [
+                            'p.next-step',
+                            'p.suggestion'
+                            ];
+                            
+                            const tagsToRemove = toRemove.map(s => document.querySelector(s));
+                            
+                            tagsToRemove.forEach(
+                            (tag) => { if (tag) {tag.classList.add('hidden');} }
+                            );
+                            
+                            const toshow = [
+                            'button.select-tasks',
+                            'div.circle'
+                            ];
+                            
+                            const tagsToShow = toshow.map(s => document.querySelector(s));
+                            
+                            tagsToShow.forEach(
+                            (tag) => { if (tag) {tag.classList.remove('hidden');} }
+                            );
+                            
+                            document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
+                            document.querySelector("button.select-tasks > a").href = 'index.html';
+                            
+                            
+                            displayQuestions(postObject, 'POST');
+                            document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
+                            document.getElementById('preQ').style.transition = "all 1s";
+                            document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
+                            document.getElementById('com-tasks').style.transition = "all 1s";
+                            document.getElementById('postQ').style.backgroundColor = '#02897A';    
+                            document.getElementById('postQ').style.transition = "all 1s";
+                        }
+                    });
+                    
+                    document.getElementById('com-tasks').addEventListener('click', async function() {
+                        
+                        displaySelectedTasks(tasks, detailed);
+                        document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
+                        document.getElementById('preQ').style.transition = "all 1s";
+                        document.getElementById('postQ').style.backgroundColor = '#a9d1cd';    
+                        document.getElementById('postQ').style.transition = "all 1s";
+                        document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
+                        document.getElementById('com-tasks').style.transition = "all 1s";
+                    });
                 } catch (err) {
                     //Debugging handling errors
                     console.error("Caught error: ", err);
