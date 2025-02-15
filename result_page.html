@@ -264,7 +264,7 @@
                     
                     if (!questionsData.result.pointArray || !Array.isArray(questionsData.result.pointArray)) {
                         document.getElementById('curr_score').textContent = 'No score available.';
-                        cardContainer.innerHTML = '<div class="empty-state">Sorry, there is something wrong in the system. Please allow us to fix it.</div>';
+                        cardContainer.innerHTML = '<div class="empty-state">Opps! no results available.</div>';
                         return;
                     }
                     
@@ -519,10 +519,7 @@
                             (tag) => { if(tag) {tag.classList.add('hidden');} }
                             );
                             
-                            const fallbackMessage = document.createElement('div');
-                            fallbackMessage.innerHTML = "<div class='empty-state'>Opps! no results available</div>";
-                            fallbackMessage.style.color = "red";
-                            document.querySelector('div.m-content').parentElement.appendChild(fallbackMessage);
+                            cardContainer.innerHTML = '<div class="empty-state">Opps! no results available</div>';
                         } 
                         
                         if (storedCycle) {
@@ -738,11 +735,7 @@
                     tagsToHide.forEach(
                     (tag) => { if(tag) {tag.classList.add('hidden');} }
                     );
-                    
-                    const fallbackMessage = document.createElement('div');
-                    fallbackMessage.innerHTML = "<div class='empty-state'>Opps! no results available</div>";
-                    fallbackMessage.style.color = "red";
-                    document.querySelector('div.m-content').parentElement.appendChild(fallbackMessage);
+                    cardContainer.innerHTML = '<div class="empty-state">Opps! no results available.</div>';
                     
                 } finally {
                     hideSpinner(bOverlay, condition);
