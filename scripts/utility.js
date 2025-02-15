@@ -23,7 +23,7 @@ export function showElement(el) {
   }
 
 export function showSpinner(el, condition) {
-    //console.log("Showing spinner...");
+    console.log("Showing spinner...");
     showElement(el)
     condition[0] = true;
     condition[1] = Date.now();
@@ -34,7 +34,7 @@ export function hideSpinner(el, condition) {
     const minDisplayTime = 3000; 
     if (elapsedTime < minDisplayTime) {
         setTimeout(() => {
-            //console.log("Hiding spinner after min time...");
+            console.log("Hiding spinner after min time...");
             el.classList.add('hidden');
             condition[0] = false;
         }, minDisplayTime - elapsedTime);

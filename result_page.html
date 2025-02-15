@@ -167,7 +167,8 @@
             const modalTitle = document.getElementById("modalTitle");
             const modalDescription = document.getElementById("modalDescription");
 
-            const condition = [false, Date.now()];
+            let startTime = Date.now();
+            const condition = [false, startTime];
             const bOverlay = document.getElementById("spinnerOverlay");
 
             const comparison = document.getElementById('improvement');
