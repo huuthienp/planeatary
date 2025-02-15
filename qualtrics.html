@@ -108,8 +108,16 @@
         </div>
         
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-        <script>
+
+        <script defer type="module">
+
+            import { initiateSurvey, updateAnchors, updateButton } from './scripts/helpers.mjs';
+            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
             
+            let startTime = Date.now();
+            const condition = [false, startTime];
+            const bOverlay = document.getElementById("spinnerOverlay");
+
             //For a user to see a reminder to complete the current cycle
             function showCycleToast() {
                 
@@ -130,17 +138,6 @@
                 restartBtn.style.pointerEvents = "auto";
                 restartBtn.style.backgroundColor = "#02897A";
             }
-            
-        </script>
-
-        <script defer type="module">
-
-            import { initiateSurvey, updateAnchors, updateButton } from './scripts/helpers.mjs';
-            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
-            
-            let startTime = Date.now();
-            const condition = [false, startTime];
-            const bOverlay = document.getElementById("spinnerOverlay");
             
             //hard-code updating responseHistory
             async function updateResponseHistory(preObject, user) {
@@ -207,13 +204,19 @@
                 
                 
                 offcanvasLinks.forEach(li => {
-                    if (li !== document.getElementById('navChallenge')) {
+                    if (li !== document.getElementById('navChallenge') && li.classList.contains('Disabled') == false) {
                         li.addEventListener('click', handleOffcanvasClick);
-                    } 
+                    }  else {
+                        showToast(); 
+                    }
                 });
                 
                 offcanvasDropdown.forEach(li => {
-                    li.addEventListener('click', handleOffcanvasClick);
+                    if (li !== document.getElementById('navChallenge') && li.classList.contains('Disabled') == false) {
+                        li.addEventListener('click', handleOffcanvasClick);
+                    }  else {
+                        showToast(); 
+                    }
                 });
                 
                 // Function to handle navigation or showing toast
