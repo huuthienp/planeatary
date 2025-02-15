@@ -199,6 +199,16 @@ body {
   #carouselTeam {
     display: flex !important;
   }
+
+  .content .Card {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5vmax;
+    justify-content: space-evenly;
+    flex-direction: column !important;
+    padding: 0 2vw;
+  }
 }
 
 .main-container {
@@ -370,9 +380,8 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 1.5vmax;
-  justify-content: space-between;
+  justify-content: space-evenly;
   flex-direction: row;
-  align-items: center;
 }
 
 .card_completed {
@@ -1221,23 +1230,22 @@ margin-top: 20px;
 }
 
 .result .score {
-    width: 100%;
-    display: flex;
-    font-weight: bold;
-    justify-content: center;
-    flex-direction: column;
-    gap: 1vmax;
-    align-items: center;
-    color: #02897A;
+  width: 100%;
+  display: flex;
+  font-weight: bold;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vmax;
+  color: #02897A;
+  padding-bottom: 5vh;
 }
 
 .score .circle{
-    height: auto;
-    /* background-image: url('./images/circle.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center; */
-    flex-direction: column;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #Score {
@@ -1247,6 +1255,7 @@ margin-top: 20px;
   flex-direction: column;
   justify-content: center;
 }
+
 
 #Score > #curr_score {
   display: flex;
@@ -1261,14 +1270,12 @@ margin-top: 20px;
 
 #Score > #total {
   display: flex;
-  font-size: 1em;
   justify-content: center;
   align-items: center;
   height: 40%;
   font-size: 0.7em;
   color: #d3d0d0;
 }
-
 
 .progress {
   width: 150px;
@@ -1351,7 +1358,7 @@ margin-top: 20px;
 
 .score p {
     font-size: 1.5em;
-    color: rgb(238, 235, 235);
+    color: grey;
 }
 
 .result .next-step {
