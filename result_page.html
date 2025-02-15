@@ -458,7 +458,7 @@
                     console.log("navChallenge.href:", navChallenge.href);
                     console.log("hasPostQuizResult() returns:", hasPostQuizResult());
                     
-                    if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page.html')) {
+                    if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
                         event.preventDefault();
                         console.log("Navigation prevented. Calling showAlert().");
                         showAlert();
