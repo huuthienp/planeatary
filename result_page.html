@@ -404,22 +404,6 @@
                     }
                 }
 
-            document.getElementById('logOut').addEventListener('click', async () => {
-                if(confirm("Do you really want to sign out?") == true) {
-                    showSpinner(bOverlay, condition);
-                    await logOut();
-                    hideSpinner(bOverlay, condition);
-                }
-            });
-
-
-            document.getElementById('navChallenge').addEventListener('click', function(event) {
-                // Replace the condition below with your logic for blocking specific pages
-                if (hasPostQuizResult() &&  document.getElementById('navChallenge').href.includes('manifesto_page.html')) {
-                    event.preventDefault();
-                    showAlert();
-                }
-            });
             
             document.addEventListener("DOMContentLoaded", async function() {
                 
@@ -461,26 +445,54 @@
                     });
                 })
                 
-                document.getElementById('postQ').style.color = 'white';
-                document.getElementById('preQ').style.color = 'white';
-                document.getElementById('com-tasks').style.color = 'white';
-                  
-                // Show next step, suggestion, and select-tasks button as default
-                const toshow = [
-                'p.next-step',
-                'p.suggestion',
-                'button.select-tasks'
-                ];
+                const navChallenge = document.getElementById('navChallenge');
                 
-                const tagsToShow = toshow.map(s => document.querySelector(s));
+                if (!navChallenge) {
+                    console.error("Element with id 'navChallenge' not found.");
+                    return;
+                }
                 
-                tagsToShow.forEach(
-                (tag) => { if(tag) {tag.classList.remove('hidden');} }
-                );    
+                navChallenge.addEventListener('click', function(event) {
+                    // Debug logs to check values
+                    console.log("navChallenge clicked");
+                    console.log("navChallenge.href:", navChallenge.href);
+                    console.log("hasPostQuizResult() returns:", hasPostQuizResult());
+                    
+                    if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page.html')) {
+                        event.preventDefault();
+                        console.log("Navigation prevented. Calling showAlert().");
+                        showAlert();
+                    }
+                });
+                
+                document.getElementById('logOut').addEventListener('click', async () => {
+                    if(confirm("Do you really want to sign out?") == true) {
+                        showSpinner(bOverlay, condition);
+                        await logOut();
+                        hideSpinner(bOverlay, condition);
+                    }
+                });
                 
                 try {
                     
                     showSpinner(bOverlay, condition);
+
+                    document.getElementById('postQ').style.color = 'white';
+                    document.getElementById('preQ').style.color = 'white';
+                    document.getElementById('com-tasks').style.color = 'white';
+
+                    // Show next step, suggestion, and select-tasks button as default
+                    const toshow = [
+                    'p.next-step',
+                    'p.suggestion',
+                    'button.select-tasks'
+                    ];
+
+                    const tagsToShow = toshow.map(s => document.querySelector(s));
+
+                    tagsToShow.forEach(
+                    (tag) => { if(tag) {tag.classList.remove('hidden');} }
+                    );    
                     
                     const userData = await getUserData();
                     if (userData) {

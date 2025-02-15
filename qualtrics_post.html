@@ -126,7 +126,7 @@
                     }
                     
                     const userId = user.id;
-                    
+
                     const postResponseId = postObject?.responseId;
                     if (!postResponseId) {
                         console.error("No postResponseId provided!");
@@ -135,7 +135,7 @@
                     
                     let responseHistory = user?.user_metadata?.responseHistory ?? [];
                     const index = responseHistory.findIndex(cycle => cycle.postId === postResponseId);
-                    const mockResponseHistory = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`) || "{}");
+                    const mockResponseHistory = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`)) || {};
 
                     // If the postResponseId is not already in the history, add it
                     if (index === -1) {
@@ -535,7 +535,7 @@
                             fallbackMessage.innerHTML = '<div class="void">Thank you for your response! <img src="./images/in-love.gif"></div>';
                             updateButton(nextButton, '#02897A', 'pointer');
                             console.log('Found post-quiz result in storage!\n', newValue);
-                            await updateResponseHistory(postObject, user);
+                            if (postObject && user) {await updateResponseHistory(postObject, user)}
                         } catch(error) {
                             console.warn('Caught', error, '\nPost-quiz result is not found!');
                             updateButton(nextButton, 'grey', 'not-allowed');
