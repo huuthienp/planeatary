@@ -321,7 +321,6 @@
                         
                         //handle a user directly from the history page
                         var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
-                        var allRes = await fetchResponses(userId);
                         let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                         console.log("All responses fetched! ", allResponses);
                         let postQuiz = null;

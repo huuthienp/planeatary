@@ -1193,7 +1193,6 @@ margin-top: 20px;
   display: flex;
   justify-content: flex-end;
   margin: 2vh 0;
-  z-index: 2900 !important;
 }
 #preQ {
   font-family: 'Poppins', sans-serif;
