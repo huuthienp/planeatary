@@ -121,7 +121,8 @@
                     
                     // If the postResponseId is not already in the history, add it
                     if (index === -1) {
-                        responseHistory.push({ postId: postResponseId });
+                        responseHistory[responseHistory.length - 1].postId = postResponseId;
+                        //responseHistory.push({ postId: postResponseId });
                         console.log("The post-quiz updated",  responseHistory)
                         user.update({
                             data: { responseHistory: responseHistory},
