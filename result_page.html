@@ -307,7 +307,7 @@
                 }
 
                 // Function to display completed tasks 
-                async function displaySelectedTasks(tasks) {
+                async function displaySelectedTasks(tasks, detailed) {
                     
                     cardContainer.innerHTML = ''; 
                     comparison.innerHTML = ''; 
@@ -706,7 +706,7 @@
                             
                             document.getElementById('com-tasks').addEventListener('click', async function() {
                                 
-                                displaySelectedTasks(tasks);
+                                displaySelectedTasks(tasks, detailed);
                                 document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                                 document.getElementById('preQ').style.transition = "all 1s";
                                 document.getElementById('postQ').style.backgroundColor = '#a9d1cd';    
