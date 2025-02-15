@@ -132,14 +132,16 @@
 
             <!-- Warning disabling -->
             <div class="warning-container">
-                <div id="alertContainer" class="alert alert-success alert-dismissible fade show" role="alert">
-                    <h4 class="alert-heading">Well done!</h4>
-                    <p>Aww,You are not allowed to do more tasks after doing the post-quiz.</p>
-                    <hr>
-                    <p class="mb-0">Please restart the cycle by restarting the pre-quiz.</p>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
+                <div id="alertContainer" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <h4 class="alert-heading">Well done!</h4>
+                            <p>Aww,You are not allowed to do more tasks after doing the post-quiz.</p>
+                            <hr>
+                            <p class="mb-0">Please restart the cycle by restarting the pre-quiz.</p>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
                 </div>
             </div>
             
@@ -475,7 +477,7 @@
                 
                 try {
                     
-                    showSpinner();
+                    showSpinner(bOverlay, condition);
                     
                     const userData = await getUserData();
                     if (userData) {
@@ -743,7 +745,7 @@
                     document.querySelector('div.m-content').parentElement.appendChild(fallbackMessage);
                     
                 } finally {
-                    hideSpinner();
+                    hideSpinner(bOverlay, condition);
                 }          
             });
 
