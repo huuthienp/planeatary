@@ -327,9 +327,9 @@
                 try {
                     showSpinner(bOverlay, condition);
                     updateButton(restartBtn, 'grey', 'not-allowed');
-                    
-                    const user = await getUserData();
-                    const { metadata, responseHistory, userId } = user;
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    const userData = await getUserData();
+                    const { metadata, responseHistory, userId } = userData;
                     // Use user data as needed
                     console.log("User ID:", userId);
                     console.log("Response History:", responseHistory);
