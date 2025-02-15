@@ -195,10 +195,12 @@
                 var postResponseId = postObject?.responseId;
                 var postResult = postObject?.result;
                 var post_rec = postObject?.recordedDate;
+
+                const nextButton = document.getElementById('nextButt');
                 
                 document.addEventListener("DOMContentLoaded", async () => {
                     
-                    const nextButton = document.getElementById('nextButt');
+                    
                     let startTime = Date.now();
                     const condition = [false, startTime];
                     const bOverlay = document.getElementById("spinnerOverlay");
@@ -442,7 +444,7 @@
                         fallbackMessage.innerHTML = "<div class='empty-state'>Content cannot be displayed. Please try again later.</div>";
                         nextButton.style.display = "none";
                     } finally {
-                        if (postObject && user) {await updateResponseHistory(postObject, user)}
+                        // if (postObject && user) {await updateResponseHistory(postObject, user)}
                         hideSpinner(bOverlay, condition);
                     } 
                 });

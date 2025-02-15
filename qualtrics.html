@@ -303,8 +303,8 @@
                     showSpinner(bOverlay, condition);
                     updateButton(restartBtn, 'grey', 'not-allowed');
                     
-                    const userData = await getUserData();
-                    const { metadata, responseHistory, userId } = userData;
+                    const user = await getUserData();
+                    const { metadata, responseHistory, userId } = user;
                     // Use user data as needed
                     console.log("User ID:", userId);
                     console.log("Response History:", responseHistory);
@@ -413,7 +413,7 @@
                     quizSpan.innerHTML = '';
                     
                 } finally {
-                    if (preObject && user) {await updateResponseHistory(preObject, user)}
+                    //if (preObject && user) {await updateResponseHistory(preObject, user)}
                     hideSpinner(bOverlay, condition);
                 }
                 
