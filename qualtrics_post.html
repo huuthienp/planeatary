@@ -280,12 +280,11 @@
                             event.preventDefault();
                             event.stopPropagation();
                             navChallenge.removeAttribute('href');
-                            
                             console.log("Navigation prevented. Calling showAlert().");
+                            showAlert();
+                        } else {
+                            handleOffcanvasClick();
                         }
-                        showAlert();
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
                     });
                     
                     nextButton.addEventListener('click', () => {
