@@ -357,16 +357,7 @@
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
                         quizSpan.innerHTML = 'You have already finished the pre-quiz! <img src="./images/thumbs-up.gif">';
-                        console.log('Found pre-quiz result in storage!\n', preObject);
-                        
-                        if(preObject && postObject) {
-                            console.log('Found post-quiz result in storage!\n', postObject);
-                            await updateResponseHistory(preObject, user);
-                            if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
-                                updateButton(restartBtn, '#02897A', 'pointer');
-                                enableRestartButton();
-                            }
-                        }       
+                        console.log('Found pre-quiz result in storage!\n',   
                     } else {
                         var allRes = await fetchResponses(userId);
                         allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
@@ -382,7 +373,7 @@
                             preObject = preQuiz;
                             preResponseId = preQuiz?.responseId ?? null;
                             
-                            console.log('Last entry:', entry);
+                            console.log('Last fetched entry:', entry);
                         }
                     }
                     
@@ -410,17 +401,14 @@
                     } else if (preObject && postObject) {
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
-                        updateButton(restartBtn, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
                         quizSpan.innerHTML = 'You have already finished the pre-quiz and the post-quiz! <img src="./images/thumbs-up.gif">';
                         await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         console.log('Found post-quiz result in storage!\n', postObject);
-                        
-                        if(confirm("Seems like you've already finish the pre-quiz and the post quiz. Would you like to start over?") == true) {
-                            updateButton(restartBtn, '#02897A', 'pointer');
-                            enableRestartButton();
-                        }
+                        updateButton(restartBtn, '#02897A', 'pointer');
+                        enableRestartButton();
+        
                     } else {
                         var quizUrl = initiateSurvey('pre', quizFrame);
                         quizSpan.innerHTML = '';
