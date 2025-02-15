@@ -290,8 +290,6 @@
                         if (nextButton.style.cursor !== "not-allowed") { window.location.href = "result_page.html"; }
                     });
                     
-                    // Set up an interval to check for changes in localStorage
-                    setInterval(updateButton, 1000);
                     
                     //clear any existing message
                     fallbackMessage.innerHTML = "";
@@ -453,6 +451,7 @@
                 const netlifyIdentity = window.netlifyIdentity;
                 const user = netlifyIdentity.gotrue.currentUser();
                 
+                
                 if (user) {
                     user.jwt().then(token => {
                         if (isTokenExpired(token)) {
@@ -480,7 +479,9 @@
                         JSON.parse(newValue || undefined);  // force null -> undefined to throw error
                         quizFrame.style.display = 'none';
                         fallbackMessage.innerHTML = '<div class="void">Thank you for your response! <img src="./images/in-love.gif"></div>';
-                        updateButton(nextButton, '#02897A', 'pointer');
+                        setInterval(() => {
+                            updateButton(nextButton, '#02897A', 'pointer');
+                        }, 1000);
                         console.log('Found post-quiz result in storage!\n', newValue);
                         if (postObject && user) {await updateResponseHistory(postObject, user)}
                     } catch(error) {
