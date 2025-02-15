@@ -288,3 +288,30 @@ export function extractTaskData(responseBody, separator='@') {
         time: time,
     }
 }
+
+export async function fetchResponses(userId) {
+    try {
+        const response = await fetch('/api/fetch-responses', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Q-RESPONSE-ID': userId,
+            }
+        });
+        const { ok, status } = response;
+        if (!ok) {
+            throw new Error(JSON.stringify({
+                status: status,  
+                response: await response.text(),
+            }));
+        }
+        const data = await response.json();
+        console.log('Responses fetched!\n', data);
+        localStorage.setItem(`${userId}:allResponses`, JSON.stringify(data));
+        return data;
+        
+    } catch (error) {
+        console.warn('Caught', error, '\nin fetchResponse');
+        return null;
+    }
+}

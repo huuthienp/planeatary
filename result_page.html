@@ -132,7 +132,7 @@
 
             <!-- Warning disabling -->
             <div class="warning-container">
-                <div id="alertContainer" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+                <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                     <div class="d-flex">
                         <div class="toast-body">
                             <h4 class="alert-heading">Well done!</h4>
@@ -423,7 +423,7 @@
                     li.addEventListener('click', handleOffcanvasClick);
                 });
                 
-                // Function to handle navigation or showing toast
+
                 offcanvasListItems.forEach(li => {
                     li.addEventListener('click', event => {
                         const link = li.querySelector('a.nav-link'); 
@@ -435,7 +435,6 @@
                     });
                 });
                 
-                // Function to handle navigation or showing toast
                 offcanvasDropdownItems.forEach(li => {
                     li.addEventListener('click', event => {
                         const link = li.querySelector('a.dropdown-item'); 
@@ -466,10 +465,10 @@
                         navChallenge.removeAttribute('href');
 
                         console.log("Navigation prevented. Calling showAlert().");
-                        showAlert();
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
                     }
+                    showAlert();
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
                 });
                 
                 document.getElementById('logOut').addEventListener('click', async () => {
