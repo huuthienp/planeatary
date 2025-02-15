@@ -955,6 +955,18 @@ margin-top: 20px;
   z-index: 3000 !important;
 }
 
+.warning-container {
+  display: flex;
+  position: fixed !important;
+  justify-content: flex-end;
+  align-items: flex-start;
+  top: 5%;
+  margin: 0 auto;
+  width: 100% !important;
+  height: 100%;
+  z-index: -1;
+}
+
 .overlay {
   display: flex;
   justify-content: center;
