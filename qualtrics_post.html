@@ -69,7 +69,7 @@
                 <iframe class="quiz" title="PlanEATary Post-Quiz"></iframe>
                 <span class="fallback"></span>
                 <div class="btn-next">
-                    <button id="nextButt" type="button" class="btn btn-success next" style="width: 180px;">Next  &#8594;</button>
+                    <a class="nextB"><button id="nextButt" type="button" class="btn btn-success next" style="width: 180px;">Next  &#8594;</button></a>
                 </div>
             </div>
             
@@ -196,11 +196,10 @@
                 var postResponseId = postObject?.responseId;
                 var postResult = postObject?.result;
                 var post_rec = postObject?.recordedDate;
-
-                const nextButton = document.getElementById('nextButt');
                 
                 document.addEventListener("DOMContentLoaded", async () => {
                     
+                    const nextButton = document.getElementById('nextButt');
                     
                     let startTime = Date.now();
                     const condition = [false, startTime];
@@ -454,6 +453,7 @@
                     
                     const netlifyIdentity = window.netlifyIdentity;
                     const user = netlifyIdentity.gotrue.currentUser();
+                    const nextButton = document.getElementById('nextButt');
                     
                     if (user) {
                         user.jwt().then(token => {
