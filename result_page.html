@@ -460,8 +460,12 @@
                     
                     if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
                         event.preventDefault();
+                        event.stopPropagation();
+
                         console.log("Navigation prevented. Calling showAlert().");
                         showAlert();
+                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
                     }
                 });
                 
