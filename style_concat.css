@@ -1054,6 +1054,7 @@ margin-top: 20px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background-color: white;
 }
 
 .modal2 > .btn {

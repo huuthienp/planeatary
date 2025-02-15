@@ -80,9 +80,9 @@
             <!-- <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating... -->
         </div>
         
-        <section class="overlay2 hidden2" id="modalOverlay">
+        <section class="overlay2 hidden" id="modalOverlay">
             <div class="align2">
-                <div class="modal2 hidden2" id="taskModal"> 
+                <div class="modal2" id="taskModal"> 
                     <div class="btn">
                         <button class="close">x</button>
                     </div>
@@ -95,7 +95,7 @@
         </section>
          <!-- spinner overlay-->
          <section class="overlay hidden" id="spinnerOverlay">
-            <div class="spinner hidden" id="spinner">
+            <div class="spinner" id="spinner">
             </div>
             <div>
                 <span>Loading</span>
@@ -118,14 +118,10 @@
         <script>
             let time =  [];
             let scores = [];
-            let spinnerStartTime;
-            let isLoading;
-            const minDisplayTime = 1000;
+
             const modal = document.querySelector(".modal2");
             const overlay = document.querySelector(".overlay2");
             const closeButt = document.querySelector('.close');
-            const spinner = document.querySelector('.spinner');
-            const spOver = document.getElementById("spinnerOverlay");
             
             const cardContainer = document.querySelector(".Card");
             
@@ -133,92 +129,25 @@
             const modalTitle = document.getElementById("modalTitle");
             const modalDescription = document.getElementById("modalDescription");
             
-            let preObject = JSON.parse(localStorage.getItem('preResult'));
-            let preResponseId = preObject?.responseId ?? ""; 
-            let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
-            let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
-            let storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
-            
             const nextButtonContainer = document.querySelector(".btn-next");
             const btn_next = document.querySelector(".next")
             
-            // Function to show the modal
-            function showModal(title, description) {
-                closeButt.classList.remove('hidden2');
+            const showModal = (title, description) => {
                 modalTitle.textContent = title;
                 modalDescription.innerHTML = description;
-                modal.classList.remove("hidden2");
-                modal.style.backgroundColor = 'white';
-                modalOverlay.classList.remove("hidden2");
-            }
+                showElement(modalOverlay);
+            };
             
-            // Function to close the modal
-            function closeModal() {
-                closeButt.classList.add('hidden2');
-                modal.classList.add("hidden2");
-                modalOverlay.classList.add("hidden2");
-            }
+            const closeModal = () => hideElement(modalOverlay);
             
-            
-            // Close modal when user clicks the close button
             document.querySelector(".close").addEventListener("click", closeModal);
-            
-            // Close modal when user clicks outside the modal
-            window.addEventListener("click", function(event) {
-                if (event.target === modalOverlay) {
-                    closeModal();
-                }
+            window.addEventListener("click", (event) => {
+                if (event.target === modalOverlay) closeModal();
             });
-            
-            function showSpinner() {
-                //console.log("Showing spinner...");
-                spinner.classList.remove('hidden');
-                spOver.classList.remove('hidden');
-                isLoading = true;
-                spinnerStartTime = Date.now();
-            }
-            
-            // Function to hide the spinner
-            function hideSpinner() {
-                const elapsedTime = Date.now() - spinnerStartTime;
-                
-                if (elapsedTime < minDisplayTime) {
-                    // Delay hiding spinner until the minimum display time
-                    setTimeout(() => {
-                        spinner.classList.add('hidden');
-                        spOver.classList.add('hidden');
-                        isLoading = false;
-                    }, minDisplayTime - elapsedTime);
-                } else {
-                    spinner.classList.add('hidden');
-                    spOver.classList.add('hidden');
-                    isLoading = false;
-                }
-            }
-            
-            function isTokenExpired(token) {
-                if (!token) return true;
-                
-                const base64Payload = token.split('.')[1]; 
-                const decodedPayload = JSON.parse(atob(base64Payload));
-                const exp = decodedPayload.exp; 
-                
-                // Compare current time with expiration time
-                const now = Math.floor(Date.now()/1000); 
-                return exp < now; // Returns true if token is expired
-            }
             
             function delay(ms) {
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
-            
-            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-            const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-            
-            const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
-            const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
-            const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
-            
             
             //For first-timer to see a reminder to do a very first quiz
             function showToast() {
@@ -227,116 +156,18 @@
                 myToast.show();
             }
             
-            offcanvasLinks.forEach(li => {
-                li.addEventListener('click', event => {
-                    const targetHref = li.getAttribute('href');
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                    
-                    if (targetHref && targetHref !== "#") {
-                        window.location.href = targetHref; 
-                    } 
-                });
-            });
-            
-            offcanvasDropdown.forEach(li => {
-                li.addEventListener('click', event => {
-                    const targetHref = li.getAttribute('href');
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                    
-                    if (targetHref && targetHref !== "#") {
-                        window.location.href = targetHref; 
-                    } 
-                });
-            });
-            
-            // Function to handle navigation or showing toast
-            offcanvasListItems.forEach(li => {
-                li.addEventListener('click', event => {
-                    const link = li.querySelector('a.nav-link'); 
-                    
-                    if (link) {
-                        if (link.classList.contains('Disabled')) {
-                            showToast(); 
-                        } else {
-                            const targetHref = link.getAttribute('href');
-                            if (targetHref && targetHref !== '#') {
-                                window.location.href = targetHref;
-                            }
-                        }
-                    }
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                });
-            });
-            
-            // Function to handle navigation or showing toast
-            offcanvasDropdownItems.forEach(li => {
-                li.addEventListener('click', event => {
-                    const link = li.querySelector('a.dropdown-item'); 
-                    
-                    if (link) {
-                        if (link.classList.contains('Disabled')) {
-                            showToast(); 
-                        } else {
-                            const targetHref = link.getAttribute('href');
-                            if (targetHref && targetHref !== '#') {
-                                window.location.href = targetHref;
-                            }
-                        }
-                    }
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                });
-            })
-            
-            function logOut() {
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                
-                if (netlifyIdentity.gotrue.currentUser() !== null) {
-                    let user = netlifyIdentity.gotrue.currentUser();
-                    user.logout().then(() => {
-                        offcanvas.hide();
-                        sessionStorage.removeItem('selectedCycle');
-                        console.log('User has been logged out!');
-                        window.location.href = "index.html";
-                    });
-                } else {
-                    window.location.href = "index.html";
-                    console.log("No user is logged in!");
-                }
-            }
-            
-            document.getElementById('logOut').addEventListener('click', () => {
-                if (confirm("Do you really want to sign out?") == true) {
-                    showSpinner();
-                    logOut();
-                    hideSpinner();
-                }
-            });
-            
-            btn_next.addEventListener("click", function () {
-                if (btn_next.style.pointerEvents === "auto") {
-                    window.location.href = "congrat_page.html";
-                }
-            });
-            
-            offcanvasLinks.forEach(li => {
-                li.addEventListener('click', event => {
-                    const targetHref = li.getAttribute('href');
-                    
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                    
-                    if (targetHref && targetHref !== '#') {
-                        window.location.href = targetHref; 
-                    }
-                });
-            });
         </script>
+        
         <script type="module">
+
             import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
+            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+
+            let preObject = JSON.parse(localStorage.getItem('preResult'));
+            let preResponseId = preObject?.responseId ?? ""; 
+            let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+            let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+            let storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
 
             //hard-code updating responseHistory (incompleted)
             async function updateResponseHistory(preResponseId, lastTask) {
@@ -405,339 +236,390 @@
                 }
             }
                 
-            //Function to update the Next button's state
-            async function updateNextButton(preResponseId, userId, tasks, Tstatus) {
-                let allCompleted = true;
-                
-                Object.keys(tasks).forEach(questionKey => {
-                    const taskGroup = tasks?.[questionKey]?.tasks ?? [];
-                    taskGroup.forEach(task => {
-                        if (task.choice === "chosen" && task.status !== "Completed") {
-                            allCompleted = false; // If any selected task is not "Completed", set false
-                        } 
+                //Function to update the Next button's state
+                async function updateNextButton(preResponseId, userId, tasks, Tstatus) {
+                    let allCompleted = true;
+                    
+                    Object.keys(tasks).forEach(questionKey => {
+                        const taskGroup = tasks?.[questionKey]?.tasks ?? [];
+                        taskGroup.forEach(task => {
+                            if (task.choice === "chosen" && task.status !== "Completed") {
+                                allCompleted = false; // If any selected task is not "Completed", set false
+                            } 
+                        });
                     });
-                });
-                
-                // Enable or disable the next button based on task completion status
-                if (allCompleted) {
-                    btn_next.style.pointerEvents = "auto"; // Enable the next button
-                    btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
-                    btn_next.style.cursor = "pointer";
-                    btn_next.disabled = false;
-                } else {
-                    btn_next.style.pointerEvents = "none"; // Disable the next button
-                    btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
-                    btn_next.style.cursor = "not-allowed";
-                    btn_next.disabled = true;
+                    
+                    // Enable or disable the next button based on task completion status
+                    if (allCompleted) {
+                        btn_next.style.pointerEvents = "auto"; // Enable the next button
+                        btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
+                        btn_next.style.cursor = "pointer";
+                        btn_next.disabled = false;
+                    } else {
+                        btn_next.style.pointerEvents = "none"; // Disable the next button
+                        btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
+                        btn_next.style.cursor = "not-allowed";
+                        btn_next.disabled = true;
+                    }
                 }
-            }
-            
-            (function(history) {
-                const originalPushState = history.pushState;
-                const originalReplaceState = history.replaceState;
                 
-                history.pushState = function(state, title, url) {
-                    const result = originalPushState.apply(this, arguments);
-                    window.dispatchEvent(new Event('location-changed'));
-                    return result;
-                };
-                
-                history.replaceState = function(state, title, url) {
-                    const result = originalReplaceState.apply(this, arguments);
-                    window.dispatchEvent(new Event('location-changed'));
-                    return result;
-                };
-            })(window.history);
-
-            // Function to display selected tasks and allow status update
-            async function displaySelectedTasks(preResponseId, userId, tasks, Tstatus) {
-                const cardContainer = document.querySelector(".Card");
-                cardContainer.innerHTML = '';  
-
-                //Handle no tasks information from previous page
-                if(!tasks) {
-                    cardContainer.innerHTML = "<div class='empty-state'>The system is down. Please try again later</div>";
-                    return;
-                }
- 
-                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                
-                Object.keys(tasks).forEach(async (questionKey) => {
-                    const taskGroup = tasks?.[questionKey]?.tasks ?? [];
-                    // Filter tasks that are selected
-                    taskGroup.forEach(task => 
-                    {
-                        if (task.choice === 'chosen') {
-                            // Create and append a card for each selected task
-                            const taskCard = document.createElement("div");
-                            taskCard.classList.add("task-card", "card_completion");
-                            
-                            const taskName = document.createElement("span");
-                            taskName.textContent = task.taskName + " ";
-                            
-                            // Add an info icon for task description
-                            const infoIcon = document.createElement("span");
-                            infoIcon.classList.add("info-icon");
-                            infoIcon.innerHTML = "&#9432;"; 
-                            
-                            // Set the click event for the info icon to show the modal
-                            infoIcon.addEventListener('click', function(event) {
-                                event.preventDefault();
-                                event.stopPropagation(); 
-                                showModal(task.taskName, task.taskDescription);
-                            });
-                            
-                            const completion = document.createElement("span");
-                            completion.classList.add("completion");
-                            completion.textContent = task.status === "Completed" ? "Completed" : "Done";
-                            
-                            // Set card styles based on status
-                            if (task.status === "Completed") {
-                                taskCard.style.color = 'black';
-                                taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
-                                taskName.style.textDecoration = "line-through";
-                            } else {
-                                taskCard.style.color = 'rgb(71, 71, 71)';
-                                taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
-                                taskName.style.textDecoration = "none";
-                            }
-                            
-                            // Set task choice and status based on local storage
-                            if (Tstatus) {
-                                if (Tstatus.chosen.length !== 0) {
-                                    if (Tstatus.chosen.includes(String(task.taskNumber))) {
-                                        if (Tstatus.done.length !== 0 && Tstatus.done.includes(String(task.taskNumber))) {
-                                            taskCard.style.color = 'black';
-                                            taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
-                                            taskName.style.textDecoration = "line-through";
-                                        }
-                                    } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) !== -1) {
-                                        let index = Tstatus.chosen.indexOf(String(task.taskNumber));
-                                        Tstatus.done[index] = String(task.taskNumber);
-                                        Tstatus.time[index] = task.finishTime;
-                                        taskCard.style.color = 'black';
-                                        taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
-                                        taskName.style.textDecoration = "line-through";
-                                    }
-                                }
-                                updateNextButton(preResponseId, userId, tasks, Tstatus);
-                            }
-                            localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
-                            taskCard.appendChild(taskName);
-                            taskCard.appendChild(infoIcon); 
-                            taskCard.appendChild(completion);
-                            cardContainer.appendChild(taskCard);
-                            updateNextButton(preResponseId, userId, tasks, Tstatus); 
-                            
-                            taskCard.addEventListener('click', async (event) => {
-                                // Toggle task status between "Done" and "Completed"
+                // Function to display selected tasks and allow status update
+                async function displaySelectedTasks(preResponseId, userId, tasks, Tstatus) {
+                    const cardContainer = document.querySelector(".Card");
+                    cardContainer.innerHTML = '';  
+                    
+                    //Handle no tasks information from previous page
+                    if(!tasks) {
+                        cardContainer.innerHTML = "<div class='empty-state'>The system is down. Please try again later</div>";
+                        return;
+                    }
+                    
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                    
+                    Object.keys(tasks).forEach(async (questionKey) => {
+                        const taskGroup = tasks?.[questionKey]?.tasks ?? [];
+                        // Filter tasks that are selected
+                        taskGroup.forEach(task => 
+                        {
+                            if (task.choice === 'chosen') {
+                                // Create and append a card for each selected task
+                                const taskCard = document.createElement("div");
+                                taskCard.classList.add("task-card", "card_completion");
                                 
-                                completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
-                                await delay(500); 
-
-                                task.status = task.status === "Done" ? "Completed" : "Done";
+                                const taskName = document.createElement("span");
+                                taskName.textContent = task.taskName + " ";
                                 
+                                // Add an info icon for task description
+                                const infoIcon = document.createElement("span");
+                                infoIcon.classList.add("info-icon");
+                                infoIcon.innerHTML = "&#9432;"; 
+                                
+                                // Set the click event for the info icon to show the modal
+                                infoIcon.addEventListener('click', function(event) {
+                                    event.preventDefault();
+                                    event.stopPropagation(); 
+                                    showModal(task.taskName, task.taskDescription);
+                                });
+                                
+                                const completion = document.createElement("span");
+                                completion.classList.add("completion");
+                                completion.textContent = task.status === "Completed" ? "Completed" : "Done";
+                                
+                                // Set card styles based on status
                                 if (task.status === "Completed") {
                                     taskCard.style.color = 'black';
                                     taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
                                     taskName.style.textDecoration = "line-through";
-                                    completion.innerHTML = task.status;
-                                    let timestamp = Date.now();
-                                    task.finishTime = timestamp;
-                                    if (Tstatus && Object.keys(Tstatus).length !== 0) {
-                                        let index = Tstatus.chosen.indexOf(String(task.taskNumber));
-                                        Tstatus.done[index] = String(task.taskNumber);
-                                        Tstatus.time[index] = task.finishTime;
-                                    }
                                 } else {
                                     taskCard.style.color = 'rgb(71, 71, 71)';
                                     taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
                                     taskName.style.textDecoration = "none";
-                                    completion.innerHTML = task.status;
-                                    task.finishTime = "";
-                                    if (Tstatus && Object.keys(Tstatus).length !== 0) {
-                                        let index = Tstatus.done.indexOf(String(task.taskNumber));
-                                        Tstatus.done[index] = "";
-                                        Tstatus.time[index] = task.finishTime;
-                                    }
                                 }
-                                // Update task in localStorage
-                                localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                                if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
-                                updateNextButton(preResponseId, userId, tasks, Tstatus);
-                                console.log("time array:", Tstatus.time);
-
-                                if (Tstatus.time.findIndex(el => el === "") === -1 && Tstatus.time.length == Tstatus.chosen.length) {
-                                    let latestTimestamp = Math.max(...Tstatus.time);
-                                    var separator = '@';
-                                    const merged = mergeTaskArrays(tasks, separator);
-                                    // Filter out tasks with finish times (those containing "@")
-                                    const tasksWithFinishTimes = merged.chosen.filter(task => task.includes("@"));
-                                    // Map to extract finish times and task numbers
-                                    const taskDetails = tasksWithFinishTimes.map(task => {
-                                        const [taskNumber, finishTime] = task.split("@");
-                                        return { taskNumber: taskNumber, finishTime: Number(finishTime) };
-                                    });
-                                    // Sort tasks by finishTime in descending order
-                                    taskDetails.sort((a, b) => b.finishTime - a.finishTime);
-                                    // Get the task with the latest finish time
-                                    const latestTask = taskDetails[0];
-                                    const lastTask = `${latestTask.taskNumber}@${latestTask.finishTime}`;
-                                    // Update response history
-                                    try {
-                                        await updateResponseHistory(preResponseId, lastTask);
-                                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                                        console.log(`Response history updated with task: ${lastTask}`);
-                                        console.log("Tasks updated!");
-                                    } catch (err) {
-                                        console.error("Error updating: ", err);
+                                
+                                // Set task choice and status based on local storage
+                                if (Tstatus) {
+                                    if (Tstatus.chosen.length !== 0) {
+                                        if (Tstatus.chosen.includes(String(task.taskNumber))) {
+                                            if (Tstatus.done.length !== 0 && Tstatus.done.includes(String(task.taskNumber))) {
+                                                taskCard.style.color = 'black';
+                                                taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
+                                                taskName.style.textDecoration = "line-through";
+                                            }
+                                        } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) !== -1) {
+                                            let index = Tstatus.chosen.indexOf(String(task.taskNumber));
+                                            Tstatus.done[index] = String(task.taskNumber);
+                                            Tstatus.time[index] = task.finishTime;
+                                            taskCard.style.color = 'black';
+                                            taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
+                                            taskName.style.textDecoration = "line-through";
+                                        }
                                     }
-                                } else {
-                                    const lastTask = "";
-                                    // Update response history with empty last task
-                                    try {
-                                        await updateResponseHistory(preResponseId, lastTask);
-                                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                                        console.log(`Response history updated with empty task: ${lastTask}`);
-                                        console.log("Tasks updated!");
-                                    } catch (err) {
-                                        console.error("Error updating: ", err);
-                                    }
+                                    updateNextButton(preResponseId, userId, tasks, Tstatus);
                                 }
-                            })      
-                        }
-                        localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                        if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
-                        updateNextButton(preResponseId, userId, tasks, Tstatus); 
-                    });   
-                });
-                
-                localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))} 
-                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                updateNextButton(preResponseId, userId, tasks, Tstatus);
-                cardContainer.appendChild(nextButtonContainer);
-
-                console.log("time array:", Tstatus.time);
-                if (Tstatus.time.findIndex(el => el === "") === -1 && Tstatus.time.length == Tstatus.chosen.length) {
-                    let latestTimestamp = Math.max(...Tstatus.time);
-                    var separator = '@';
-                    const merged = mergeTaskArrays(tasks, separator);
-                    // Filter out tasks with finish times (those containing "@")
-                    const tasksWithFinishTimes = merged.chosen.filter(task => task.includes("@"));
-                    // Map to extract finish times and task numbers
-                    const taskDetails = tasksWithFinishTimes.map(task => {
-                        const [taskNumber, finishTime] = task.split("@");
-                        return { taskNumber: taskNumber, finishTime: Number(finishTime) };
+                                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
+                                taskCard.appendChild(taskName);
+                                taskCard.appendChild(infoIcon); 
+                                taskCard.appendChild(completion);
+                                cardContainer.appendChild(taskCard);
+                                updateNextButton(preResponseId, userId, tasks, Tstatus); 
+                                
+                                taskCard.addEventListener('click', async (event) => {
+                                    // Toggle task status between "Done" and "Completed"
+                                    
+                                    completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
+                                    await delay(500); 
+                                    
+                                    task.status = task.status === "Done" ? "Completed" : "Done";
+                                    
+                                    if (task.status === "Completed") {
+                                        taskCard.style.color = 'black';
+                                        taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
+                                        taskName.style.textDecoration = "line-through";
+                                        completion.innerHTML = task.status;
+                                        let timestamp = Date.now();
+                                        task.finishTime = timestamp;
+                                        if (Tstatus && Object.keys(Tstatus).length !== 0) {
+                                            let index = Tstatus.chosen.indexOf(String(task.taskNumber));
+                                            Tstatus.done[index] = String(task.taskNumber);
+                                            Tstatus.time[index] = task.finishTime;
+                                        }
+                                    } else {
+                                        taskCard.style.color = 'rgb(71, 71, 71)';
+                                        taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
+                                        taskName.style.textDecoration = "none";
+                                        completion.innerHTML = task.status;
+                                        task.finishTime = "";
+                                        if (Tstatus && Object.keys(Tstatus).length !== 0) {
+                                            let index = Tstatus.done.indexOf(String(task.taskNumber));
+                                            Tstatus.done[index] = "";
+                                            Tstatus.time[index] = task.finishTime;
+                                        }
+                                    }
+                                    // Update task in localStorage
+                                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                                    if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
+                                    updateNextButton(preResponseId, userId, tasks, Tstatus);
+                                    console.log("time array:", Tstatus.time);
+                                    
+                                    if (Tstatus.time.findIndex(el => el === "") === -1 && Tstatus.time.length == Tstatus.chosen.length) {
+                                        let latestTimestamp = Math.max(...Tstatus.time);
+                                        var separator = '@';
+                                        const merged = mergeTaskArrays(tasks, separator);
+                                        // Filter out tasks with finish times (those containing "@")
+                                        const tasksWithFinishTimes = merged.chosen.filter(task => task.includes("@"));
+                                        // Map to extract finish times and task numbers
+                                        const taskDetails = tasksWithFinishTimes.map(task => {
+                                            const [taskNumber, finishTime] = task.split("@");
+                                            return { taskNumber: taskNumber, finishTime: Number(finishTime) };
+                                        });
+                                        // Sort tasks by finishTime in descending order
+                                        taskDetails.sort((a, b) => b.finishTime - a.finishTime);
+                                        // Get the task with the latest finish time
+                                        const latestTask = taskDetails[0];
+                                        const lastTask = `${latestTask.taskNumber}@${latestTask.finishTime}`;
+                                        // Update response history
+                                        try {
+                                            await updateResponseHistory(preResponseId, lastTask);
+                                            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                                            console.log(`Response history updated with task: ${lastTask}`);
+                                            console.log("Tasks updated!");
+                                        } catch (err) {
+                                            console.error("Error updating: ", err);
+                                        }
+                                    } else {
+                                        const lastTask = "";
+                                        // Update response history with empty last task
+                                        try {
+                                            await updateResponseHistory(preResponseId, lastTask);
+                                            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                                            console.log(`Response history updated with empty task: ${lastTask}`);
+                                            console.log("Tasks updated!");
+                                        } catch (err) {
+                                            console.error("Error updating: ", err);
+                                        }
+                                    }
+                                })      
+                            }
+                            localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                            if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
+                            updateNextButton(preResponseId, userId, tasks, Tstatus); 
+                        });   
                     });
-                    // Sort tasks by finishTime in descending order
-                    taskDetails.sort((a, b) => b.finishTime - a.finishTime);
-                    // Get the task with the latest finish time
-                    const latestTask = taskDetails[0];
-                    const lastTask = `${latestTask.taskNumber}@${latestTask.finishTime}`;
-                    // Update response history
-                    try {
-                        await updateResponseHistory(preResponseId, lastTask);
-                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                        console.log(`Response history updated with task: ${lastTask}`);
-                        console.log("Tasks updated!");
-                    } catch (err) {
-                        console.error("Error updating: ", err);
-                    }
-                } else {
-                    const lastTask = "";
-                    // Update response history with empty last task
-                    try {
-                        await updateResponseHistory(preResponseId, lastTask);
-                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                        console.log(`Response history updated with empty task: ${lastTask}`);
-                        console.log("Tasks updated!");
-                    } catch (err) {
-                        console.error("Error updating: ", err);
+                    
+                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                    if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))} 
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                    updateNextButton(preResponseId, userId, tasks, Tstatus);
+                    cardContainer.appendChild(nextButtonContainer);
+                    
+                    console.log("time array:", Tstatus.time);
+                    if (Tstatus.time.findIndex(el => el === "") === -1 && Tstatus.time.length == Tstatus.chosen.length) {
+                        let latestTimestamp = Math.max(...Tstatus.time);
+                        var separator = '@';
+                        const merged = mergeTaskArrays(tasks, separator);
+                        // Filter out tasks with finish times (those containing "@")
+                        const tasksWithFinishTimes = merged.chosen.filter(task => task.includes("@"));
+                        // Map to extract finish times and task numbers
+                        const taskDetails = tasksWithFinishTimes.map(task => {
+                            const [taskNumber, finishTime] = task.split("@");
+                            return { taskNumber: taskNumber, finishTime: Number(finishTime) };
+                        });
+                        // Sort tasks by finishTime in descending order
+                        taskDetails.sort((a, b) => b.finishTime - a.finishTime);
+                        // Get the task with the latest finish time
+                        const latestTask = taskDetails[0];
+                        const lastTask = `${latestTask.taskNumber}@${latestTask.finishTime}`;
+                        // Update response history
+                        try {
+                            await updateResponseHistory(preResponseId, lastTask);
+                            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                            console.log(`Response history updated with task: ${lastTask}`);
+                            console.log("Tasks updated!");
+                        } catch (err) {
+                            console.error("Error updating: ", err);
+                        }
+                    } else {
+                        const lastTask = "";
+                        // Update response history with empty last task
+                        try {
+                            await updateResponseHistory(preResponseId, lastTask);
+                            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                            console.log(`Response history updated with empty task: ${lastTask}`);
+                            console.log("Tasks updated!");
+                        } catch (err) {
+                            console.error("Error updating: ", err);
+                        }
                     }
                 }
-            }
             
             document.addEventListener("DOMContentLoaded", async function() {
                 
-                btn_next.id = "btn_next";
-                btn_next.style.pointerEvents = "none"; 
-                btn_next.style.backgroundColor = "grey"; 
-                btn_next.style.cursor = "not-allowed"; 
+                let startTime = Date.now();
+                const condition = [false, startTime];
+                const bOverlay = document.getElementById("spinnerOverlay");
                 
-                nextButtonContainer.appendChild(btn_next);
+                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+                const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+                
+                const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+                const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+                const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
+                
+                offcanvasLinks.forEach(li => {
+                    if (li !== document.getElementById('navChallenge')) {
+                        li.addEventListener('click', handleOffcanvasClick);
+                    } 
+                });
+                
+                offcanvasDropdown.forEach(li => {
+                    li.addEventListener('click', handleOffcanvasClick)
+                });
+                
+                // Function to handle navigation or showing toast
+                offcanvasListItems.forEach(li => {
+                    li.addEventListener('click', event => {
+                        const link = li.querySelector('a.nav-link'); 
+                        
+                        if (link) {
+                            if (link.classList.contains('Disabled')) {
+                                showToast(); 
+                            } else {
+                                const targetHref = link.getAttribute('href');
+                                if (targetHref && targetHref !== '#') {
+                                    window.location.href = targetHref;
+                                }
+                            }
+                        }
+                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
+                    });
+                });
+                
+                // Function to handle navigation or showing toast
+                offcanvasDropdownItems.forEach(li => {
+                    li.addEventListener('click', event => {
+                        const link = li.querySelector('a.dropdown-item'); 
+                        
+                        if (link) {
+                            if (link.classList.contains('Disabled')) {
+                                showToast(); 
+                            } else {
+                                const targetHref = link.getAttribute('href');
+                                if (targetHref && targetHref !== '#') {
+                                    window.location.href = targetHref;
+                                }
+                            }
+                        }
+                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
+                    });
+                })
+                
+
+                document.getElementById('logOut').addEventListener('click', async () => {
+                    if (confirm("Do you really want to sign out?") == true) {
+                        showSpinner(bOverlay, condition);
+                        await logOut();
+                        hideSpinner(bOverlay, condition);
+                    }
+                });
+                
+                btn_next.addEventListener("click", function () {
+                    if (btn_next.style.pointerEvents === "auto") {
+                        window.location.href = "congrat_page.html";
+                    }
+                });
                 
                 try {
-                    showSpinner();
-
-                    const user = netlifyIdentity.gotrue.currentUser();
-                    if (user) {
-                        user.jwt().then(token => {
-                            if (isTokenExpired(token)) {
-                                console.log("Token expired. Prompting user to re-login...");
-                                netlifyIdentity.logout();
-                            } else {
-                                console.log("Token is valid.");
+                    showSpinner(bOverlay, condition);
+                    
+                    btn_next.id = "btn_next";
+                    btn_next.style.pointerEvents = "none"; 
+                    btn_next.style.backgroundColor = "grey"; 
+                    btn_next.style.cursor = "not-allowed"; 
+                    
+                    nextButtonContainer.appendChild(btn_next);
+                    
+                    const userData = await getUserData();
+                    if (userData) {
+                        const { metadata, responseHistory, userId } = userData;
+                        // Use user data as needed
+                        console.log("User ID:", userId);
+                        console.log("Response History:", responseHistory);
+                        
+                        var preResponseId =  preObject?.responseId;
+                        
+                        if (storedCycle) {
+                            
+                            preObject = storedCycle?.preResponse;
+                            preResult = preObject?.result;
+                            pre_rec = preObject?.recordedDate;
+                            preResponseId = preObject?.responseId ?? "";
+                            
+                            postObject = storedCycle?.postResponse;
+                            postResult = postObject?.result;
+                            post_rec = postObject?.recordedDate;
+                            
+                            try {
+                                Tstatus = await fetchTaskStatus(preResponseId, userId);
+                                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
+                                Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || {};
+                                if (Object.keys(Tstatus).length === 0) {
+                                    Tstatus.done = [];
+                                    Tstatus.chosen = [];
+                                    Tstatus.time = [];
+                                }
+                            } catch(err) {
+                                console.log("Couldn't find history tasks' info:", err);
                             }
-                        });
+                        }
+                        
+                        if(!Tstatus) {
+                            try {
+                                var fetched = await fetchTaskStatus(preResponseId, userId);
+                                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched));
+                                Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || {};
+                                if (Object.keys(Tstatus).length === 0) {
+                                    Tstatus.done = [];
+                                    Tstatus.chosen = [];
+                                    Tstatus.time = [];
+                                }
+                            } catch(err) {
+                                console.log(err);
+                            }
+                        }
+                        displaySelectedTasks(preResponseId, userId, tasks, Tstatus);
                     }
                     
-                    const metadata = user.user_metadata;
-                    const responseHistory = metadata.responseHistory;
-                    const userId = user.id;
-
-                    var preResponseId =  preObject?.responseId;
-
-                    if (storedCycle) {
-                        
-                        preObject = storedCycle?.preResponse;
-                        preResult = preObject?.result;
-                        pre_rec = preObject?.recordedDate;
-                        preResponseId = preObject?.responseId ?? "";
-                        
-                        postObject = storedCycle?.postResponse;
-                        postResult = postObject?.result;
-                        post_rec = postObject?.recordedDate;
-                        
-                        try {
-                            Tstatus = await fetchTaskStatus(preResponseId, userId);
-                            localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
-                            Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || {};
-                            if (Object.keys(Tstatus).length === 0) {
-                                Tstatus.done = [];
-                                Tstatus.chosen = [];
-                                Tstatus.time = [];
-                            }
-                        } catch(err) {
-                            console.log("Couldn't find history tasks' info:", err);
-                        }
-                    }
-                    
-                    if(!Tstatus) {
-                        try {
-                            var fetched = await fetchTaskStatus(preResponseId, userId);
-                            localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched));
-                            Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || {};
-                            if (Object.keys(Tstatus).length === 0) {
-                                Tstatus.done = [];
-                                Tstatus.chosen = [];
-                                Tstatus.time = [];
-                            }
-                        } catch(err) {
-                            console.log(err);
-                        }
-                    }
-                    displaySelectedTasks(preResponseId, userId, tasks, Tstatus);
-
                 } catch (err) {
                     console.error("Caught error: ", err);
                 } finally {
-                    hideSpinner();
+                    hideSpinner(bOverlay, condition);
                 }
                 
             });
-
-
+            
+            
         </script>
         <!-- Bootstrap Javascript -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
