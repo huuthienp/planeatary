@@ -267,8 +267,10 @@
                         navChallenge.removeAttribute('href');
                         console.log("Navigation prevented. Calling showAlert().");
                         showAlert();
+                    } else if (hasPostQuizResult()) {
+                        showAlert();
                     } else {
-                        handleOffcanvasClick();
+                        handleOffcanvasClick(event);
                     }
                     
                     const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
