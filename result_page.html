@@ -505,6 +505,15 @@
                     tagsToShow.forEach(
                     (tag) => { if(tag) {tag.classList.remove('hidden');} }
                     );    
+
+                    document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';
+                    document.querySelector("button.select-tasks > a").href = 'manifesto_page.html';
+
+                    document.querySelector("button.select-tasks > a").addEventListener('click', function(event) {
+                        if (document.querySelector("button.select-tasks > a").href) {
+                            window.location.href = 'manifesto_page.html';
+                        }
+                    })
                     
                     const userData = await getUserData();
                     if (userData) {
