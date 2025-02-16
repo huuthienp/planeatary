@@ -295,7 +295,7 @@
                         const taskRes = ResponseHistory[i]?.lastTask ?? null;
                         const fetched_tasks = JSON.parse(localStorage.getItem(`${cycleKey?.preResponse?.responseId}:fetched_tasks`));
                         if (mockResponseHistory[i]?.preId == cycleKey?.preResponse?.responseId) {
-                            cycleKey?.preResponse?.lastTask = taskCycle;
+                            cycleKey?.preResponse.lastTask = taskCycle;
                             console.log("Here the last task you will add ", taskCycle);
                             if (fetched_tasks) {
                                 try {
@@ -316,7 +316,7 @@
                                 }
                             }
                         } else if (ResponseHistory[i]?.preId == cycleKey?.preResponse?.responseId) {
-                            cycleKey?.preResponse?.lastTask = taskRes;
+                            cycleKey?.preResponse.lastTask = taskRes;
                             console.log("Here the last task you will add from metadata", taskRes);
                             if (fetched_tasks) {
                                 try {

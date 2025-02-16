@@ -133,12 +133,6 @@
                 myToast.show();
             }
             
-            function enableRestartButton() {
-                restartBtn.removeAttribute("disabled");
-                restartBtn.style.pointerEvents = "auto";
-                restartBtn.style.backgroundColor = "#02897A";
-            }
-            
             //hard-code updating responseHistory
             async function updateResponseHistory(preObject, user) {
                 if (!user) {
@@ -283,6 +277,12 @@
                 
                 const nextButton = document.getElementById('nextButt');
                 const restartBtn = document.getElementById('restartBtn');
+
+                function enableRestartButton() {
+                    restartBtn.removeAttribute("disabled");
+                    restartBtn.style.pointerEvents = "auto";
+                    restartBtn.style.backgroundColor = "#02897A";
+                }
                 
                 const anchors = [
                 document.getElementById('navChallenge'),
@@ -325,7 +325,10 @@
                 })
                 
                 try {
+                    var preQuiz;
+                    var postQuiz;
                     showSpinner(bOverlay, condition);
+                    
                     updateButton(restartBtn, 'grey', 'not-allowed');
                     const user = netlifyIdentity.gotrue.currentUser();
                     const userData = await getUserData();
@@ -338,8 +341,6 @@
                     console.log("All responses fetched! ", allResponses);
                     
                     if (allResponses) {
-                        var preQuiz;
-                        var postQuiz;
                         allResponses.forEach((cycleKey) => {
                             if (cycleKey?.preResponse) {
                                 //get the latest preResponse and postResponse if any
@@ -357,7 +358,7 @@
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
                         quizSpan.innerHTML = 'You have already finished the pre-quiz! <img src="./images/thumbs-up.gif">';
-                        console.log('Found pre-quiz result in storage!\n',   
+                        console.log('Found pre-quiz result in storage!\n', preObject);  
                     } else {
                         var allRes = await fetchResponses(userId);
                         allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
@@ -406,8 +407,9 @@
                         await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         console.log('Found post-quiz result in storage!\n', postObject);
-                        updateButton(restartBtn, '#02897A', 'pointer');
                         enableRestartButton();
+                        updateButton(restartBtn, '#02897A', 'pointer');
+                        
         
                     } else {
                         var quizUrl = initiateSurvey('pre', quizFrame);
