@@ -106,6 +106,21 @@
                 </div>
             </div>
         </div>
+
+         <!-- Warning disabling -->
+         <div class="toast-container">
+            <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <h4>Well done!</h4>
+                        <p>Aww,You are not allowed to do more tasks after doing the post-quiz.</p>
+                        <hr>
+                        <p class="mb-0">Please restart the cycle by restarting the pre-quiz.</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
         
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
@@ -132,6 +147,16 @@
                 const toasty = document.getElementById('first-timer-toast');
                 const myToast = new bootstrap.Toast(toasty);
                 myToast.show();
+            }
+
+            function showAlert() {
+                const alertContainer = document.getElementById('alertContainer');
+                if (!alertContainer) {
+                    console.error('No alert container found.');
+                    return;
+                }
+                const bsAlert = new bootstrap.Toast(alertContainer);
+                bsAlert.show();
             }
             
             //hard-code updating responseHistory
@@ -355,11 +380,11 @@
                         postObject = postQuiz;
                         postResponseId = postQuiz?.responseId;
                         
-                        updateAnchors(anchors, hrefs);
-                        updateButton(nextButton, '#02897A', 'pointer');
-                        quizFrame.style.display = 'none';
-                        quizSpan.innerHTML = 'You have already finished the pre-quiz! <img src="./images/thumbs-up.gif">';
-                        console.log('Found pre-quiz result in storage!\n', preObject);  
+                        // updateAnchors(anchors, hrefs);
+                        // updateButton(nextButton, '#02897A', 'pointer');
+                        // quizFrame.style.display = 'none';
+                        // quizSpan.innerHTML = 'You have already finished the pre-quiz! <img src="./images/thumbs-up.gif">';
+                        // console.log('Found pre-quiz result in storage!\n', preObject);  
                     } else {
                         var allRes = await fetchResponses(userId);
                         allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
@@ -393,13 +418,16 @@
                             console.warn("Couldn't find previous info from history:", err);
                         }
                         
-                    } else if (preObject && !postObject) {
+                    } 
+                    
+                    if (preObject && !postObject) {
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
                         quizSpan.innerHTML = 'You have already finished the pre-quiz! Let"s continue! <img src="./images/thumbs-up.gif">';
                         await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
+
                     } else if (preObject && postObject) {
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
@@ -410,7 +438,6 @@
                         console.log('Found post-quiz result in storage!\n', postObject);
                         enableRestartButton();
                         updateButton(restartBtn, '#02897A', 'pointer');
-                        
         
                     } else {
                         var quizUrl = initiateSurvey('pre', quizFrame);

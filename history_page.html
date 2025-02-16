@@ -73,7 +73,7 @@
                 </nav>
             </div>
             <div class="void-space"></div>
-            <div class="table-responsive-sm history-table">
+            <div class="table-responsive-sm history-table hidden">
                 <p class="404 empty-state hidden">There is no information available</p>
                 <!--Table structure-->
                 <table class="table table-striped table-hover">
@@ -115,7 +115,7 @@
         </section>
 
         <!-- Warning disabling -->
-        <div class="warning-container">
+        <div class="toast-container">
             <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                 <div class="d-flex">
                     <div class="toast-body">
@@ -135,6 +135,7 @@
             import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
             
             let scores = [];
+            const hTable = document.querySelector('history-table');
             
             let startTime = Date.now();
             const condition = [false, startTime];
@@ -344,6 +345,8 @@
                 const userId = user.id;
                 const metadata = user.user_metadata;
                 const responseHistory = metadata.responseHistory;
+
+                hTable.classList.remove('hidden');
                 
                 const offcanvasNavbar = document.getElementById('offcanvasNavbar');
                 const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');

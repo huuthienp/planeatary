@@ -66,7 +66,7 @@
                     </div>
                 </nav>
             </div>
-            <div class="m-content">
+            <div class="m-content hidden">
                 <div class="pre-postQ">
                     <button id="preQ">PreQuiz</button>
                     <button id="postQ">PostQuiz</button>
@@ -132,7 +132,7 @@
             </section>
 
             <!-- Warning disabling -->
-            <div class="warning-container">
+            <div class="toast-container">
                 <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                     <div class="d-flex">
                         <div class="toast-body">
@@ -153,6 +153,7 @@
             import { fetchTaskStatus, extractTaskData, updateAnchors } from './scripts/helpers.mjs';
             import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, hasPostQuizCycle, logOut } from './scripts/utility.js';
             
+            const mainContainer = document.querySelector(".m-content");
             const Qbuttoncontainer = document.querySelector(".pre-postQ");
             const Pre_Q = document.querySelector("#preQ");
             const Post_Q = document.querySelector("#postQ");
@@ -492,6 +493,8 @@
                 try {
                     
                     showSpinner([bOverlay, spinner], condition);
+
+                    mainContainer.classList.remove('hidden');
 
                     document.getElementById('postQ').style.color = 'white';
                     document.getElementById('preQ').style.color = 'white';
