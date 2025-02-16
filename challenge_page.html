@@ -477,6 +477,7 @@
                 let startTime = Date.now();
                 const condition = [false, startTime];
                 const bOverlay = document.getElementById("spinnerOverlay");
+                const spinner = document.getElementById("spinner");
                 
                 const offcanvasNavbar = document.getElementById('offcanvasNavbar');
                 const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
@@ -538,9 +539,9 @@
 
                 document.getElementById('logOut').addEventListener('click', async () => {
                     if (confirm("Do you really want to sign out?") == true) {
-                        showSpinner(bOverlay, condition);
+                        showSpinner([bOverlay, spinner], condition);
                         await logOut();
-                        hideSpinner(bOverlay, condition);
+                        hideSpinner([bOverlay, spinner], condition);
                     }
                 });
                 
@@ -551,7 +552,7 @@
                 });
                 
                 try {
-                    showSpinner(bOverlay, condition);
+                    showSpinner([bOverlay, spinner], condition);
                     
                     btn_next.id = "btn_next";
                     btn_next.style.pointerEvents = "none"; 
@@ -614,7 +615,7 @@
                 } catch (err) {
                     console.error("Caught error: ", err);
                 } finally {
-                    hideSpinner(bOverlay, condition);
+                    hideSpinner([bOverlay, spinner], condition);
                 }
                 
             });
