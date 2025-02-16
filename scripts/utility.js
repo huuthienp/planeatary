@@ -20,28 +20,26 @@ export function showElement(el) {
   }
   
   export function hideElement(el) {
-    el.forEach(element => {element.classList.remove("hidden")})
+    el.forEach(element => {element.classList.add("hidden")})
   }
 
-export function showSpinner(el, condition) {
+export function showSpinner(elements, condition) {
     console.log("Showing spinner...");
-    showElement(el)
+    showElement(elements)
     condition[0] = true;
 };
 
-export function hideSpinner(el, condition) {
+export function hideSpinner(elements, condition) {
     const elapsedTime = Date.now() - condition[1];
     const minDisplayTime = 3000; 
     if (elapsedTime < minDisplayTime) {
         setTimeout(() => {
             console.log("Hiding spinner after min time...");
-            el.classList.add('hidden');
+            hideElement(elements);
             condition[0] = false;
         }, minDisplayTime - elapsedTime);
-        el.classList.add('hidden');
-        condition[0] = false;
     } else {
-        el.classList.add('hidden');
+        hideElement(elements);
         condition[0] = false;
     }
 }
