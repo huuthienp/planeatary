@@ -27,7 +27,6 @@ export function showSpinner(el, condition) {
     console.log("Showing spinner...");
     showElement(el)
     condition[0] = true;
-    condition[1] = Date.now();
 };
 
 export function hideSpinner(el, condition) {
