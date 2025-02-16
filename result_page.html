@@ -288,19 +288,21 @@
                         const questionDiv = document.createElement('div');
                         questionDiv.classList.add('question');
                         
-                        // Apply styling based on score
-                        if (score <= 2) {
-                            questionDiv.classList.add('red');
-                        } else if (score >= 3) {
-                            questionDiv.classList.add('green');
-                        }
-                        
                         // Create and append question title
                         const questionTitle = document.createElement('h3');
                         questionTitle.textContent = `Question ${index + 1}`;
                         const questionPoint = document.createElement('h4');
                         questionPoint.textContent = `${score} points`;
-                        questionPoint.style.color = "#ff6b6b";
+                        
+
+                        // Apply styling based on score
+                        if (score <= 2) {
+                            questionDiv.classList.add('red');
+                            questionPoint.style.color = "#ff6b6b";
+                        } else if (score >= 3) {
+                            questionDiv.classList.add('green');
+                            questionPoint.style.color = "#2ecc71";
+                        }
 
                         questionDiv.appendChild(questionTitle);
                         questionDiv.appendChild(questionPoint);

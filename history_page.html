@@ -287,11 +287,11 @@
                 
                 var lastTask = "";
 
-                if ( allResponses && mockResponseHistory.length > 0) {
+                if ( allResponses || mockResponseHistory.length > 0) {
                     console.log("before ", allResponses);
                     let newAllResponses = allResponses.map((cycleKey, i) => {
                         const taskCycle = mockResponseHistory[i]?.lastTask ?? null;
-                        const fetched_tasks = JSON.parse(localStorage.getItem(`${cycleKey.preResponse.responseId}:fetched_tasks`));
+                        const fetched_tasks = JSON.parse(localStorage.getItem(`${cycleKey?.preResponse?.responseId}:fetched_tasks`));
                         if (mockResponseHistory[i]?.preId == cycleKey?.preResponse?.responseId) {
                             cycleKey.preResponse.lastTask = taskCycle;
                             console.log("Here the last task you will add ", taskCycle);
