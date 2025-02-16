@@ -207,7 +207,7 @@
                                             const lastTaskTime = Math.max(...task_rec);
                                             const index = task_rec.findIndex(el => el == lastTaskTime);
                                             const taskName = taskDone[index];
-                                            lastTask = `${taskName}@${lastTaskTime}`;
+                                            const lastTask = `${taskName}@${lastTaskTime}`;
                                             cycleKey.preResponse.lastTask = lastTask;
                                             console.log("Here the time you will add from fetched tasks ", lastTask);
                                         }
