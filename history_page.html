@@ -130,11 +130,9 @@
         </div>
         
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-        <script type="module">
+        <script defer type="module">
             import { fetchTaskStatus, fetchResponses } from './scripts/helpers.mjs';
             import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
-            
-            const ch = document.getElementById('ch');
             
             let scores = [];
             
@@ -233,9 +231,17 @@
                 button.classList.add('btn', 'btn-success', 'track-back');
                 button.textContent = 'View';
                 button.addEventListener('click', () => {
-                    sessionStorage.setItem('selectedCycle', JSON.stringify(cycle));
+                    event.stopPropagation();
+                    console.log("View button clicked for cycle:", cycle);
+                    try {
+                        sessionStorage.setItem('selectedCycle', JSON.stringify(cycle));
+                        console.log("Cycle saved in sessionStorage.");
+                    } catch (error) {
+                        console.error("Error saving cycle to sessionStorage:", error);
+                    }
                     window.location.href = "result_page.html";
                 });
+                
                 return button;
             }
             
