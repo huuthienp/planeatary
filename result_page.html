@@ -151,7 +151,7 @@
 
         <script type="module">
             import { fetchTaskStatus, extractTaskData, updateAnchors } from './scripts/helpers.mjs';
-            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, hasPostQuizCycle, logOut } from './scripts/utility.js';
             
             const Qbuttoncontainer = document.querySelector(".pre-postQ");
             const Pre_Q = document.querySelector("#preQ");
@@ -463,6 +463,7 @@
                     console.log("navChallenge clicked");
                     console.log("navChallenge.href:", navChallenge.href);
                     console.log("hasPostQuizResult() returns:", hasPostQuizResult());
+                    console.log("hasPostQuizCycle() returns:", hasPostQuizCycle());
                     
                     if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
                         event.preventDefault();
@@ -470,7 +471,7 @@
                         navChallenge.removeAttribute('href');
                         console.log("Navigation prevented. Calling showAlert().");
                         showAlert();
-                    } else if (hasPostQuizResult()) {
+                    } else if (hasPostQuizResult() || hasPostQuizCycle()) {
                         showAlert();
                     } else {
                         handleOffcanvasClick(event);
@@ -537,25 +538,6 @@
                         var detailed = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                         var task_rec =  detailed?.time ?? [];
                         
-                        if (!preObject) {
-                            // hide next step, suggestion, and select-tasks button as an empty state
-                            const tohide = [
-                            'p.next-step',
-                            'p.suggestion',
-                            'button.select-tasks',
-                            'div.circle',
-                            'div.pre-postQ'
-                            ];
-                            
-                            const tagsToHide = tohide.map(s => document.querySelector(s));
-                            
-                            tagsToHide.forEach(
-                            (tag) => { if(tag) {tag.classList.add('hidden');} }
-                            );
-                            
-                            cardContainer.innerHTML = '<div class="empty-state">Opps! no results available</div>';
-                        } 
-                        
                         if (storedCycle) {
                             
                             preObject = storedCycle?.preResponse ?? null;
@@ -574,6 +556,10 @@
                                 task_rec = detailed?.time ?? []; 
                             } catch(err) {
                                 console.warn("Couldn't find history tasks' info:", err);
+                            }
+
+                            if(postObject) {
+                                sessionStorage.setItem('selectedCycle_post', JSON.stringify(postObject));
                             }
                         }
                         
@@ -594,6 +580,25 @@
                                 detailed = {};
                             }
                         }
+
+                        if (!preObject) {
+                            // hide next step, suggestion, and select-tasks button as an empty state
+                            const tohide = [
+                            'p.next-step',
+                            'p.suggestion',
+                            'button.select-tasks',
+                            'div.circle',
+                            'div.pre-postQ'
+                            ];
+                            
+                            const tagsToHide = tohide.map(s => document.querySelector(s));
+                            
+                            tagsToHide.forEach(
+                            (tag) => { if(tag) {tag.classList.add('hidden');} }
+                            );
+                            
+                            cardContainer.innerHTML = '<div class="empty-state">Opps! no results available</div>';
+                        } 
                         
                         if (postObject) {
                             
