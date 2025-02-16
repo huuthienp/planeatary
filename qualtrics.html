@@ -200,17 +200,13 @@
                 offcanvasLinks.forEach(li => {
                     if (li !== document.getElementById('navChallenge') && li.classList.contains('Disabled') == false) {
                         li.addEventListener('click', handleOffcanvasClick);
-                    }  else {
-                        showToast(); 
-                    }
+                    } 
                 });
                 
                 offcanvasDropdown.forEach(li => {
                     if (li !== document.getElementById('navChallenge') && li.classList.contains('Disabled') == false) {
                         li.addEventListener('click', handleOffcanvasClick);
-                    }  else {
-                        showToast(); 
-                    }
+                    } 
                 });
                 
                 // Function to handle navigation or showing toast
