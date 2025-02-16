@@ -99,7 +99,7 @@
                             <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
                         </div>
                         <div class="btn-next">
-                        <a class="nextB" ><button type="button" class="btn btn-success next select-tasks" style="width: 180px;">Select Tasks →</button></a>
+                        <a class="nextB" href="manifesto_page.html"><button type="button" class="btn btn-success next select-tasks" style="width: 180px;">Select Tasks →</button></a>
                         </div>
                     
                 </div>
@@ -150,7 +150,7 @@
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
         <script type="module">
-            import { fetchTaskStatus, extractTaskData } from './scripts/helpers.mjs';
+            import { fetchTaskStatus, extractTaskData, updateAnchors } from './scripts/helpers.mjs';
             import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
             
             const Qbuttoncontainer = document.querySelector(".pre-postQ");
@@ -647,7 +647,7 @@
                             document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
                             document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
-                            document.querySelector("button.select-tasks").href = 'manifesto_page';
+                            document.querySelector("button.select-tasks").href = 'manifesto_page.html';
                             document.getElementById('postQ').disabled = true; 
                             
                         } else {
@@ -673,7 +673,7 @@
                             );
                             
                             document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
-                            document.querySelector("button.select-tasks").href = 'manifesto_page';
+                            document.querySelector("button.select-tasks").href = 'manifesto_page.html';
                             
                         } else {
                             const toshow = [

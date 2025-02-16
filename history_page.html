@@ -101,7 +101,7 @@
                 
             </div>
             <div class="button_next">
-                <button type="button" class="btn btn-success next" style="width: 150px;"><a href="index.html">Back to <i class="fa fa-home"></i></a></button>
+                <a href="index.html"><button type="button" class="btn btn-success next" style="width: 150px;">Back to <i class="fa fa-home"></i></button></a>
             </div>
         </div>
         
@@ -228,20 +228,9 @@
             function createViewButton(cycle) {
                 const button = document.createElement('button');
                 button.type = 'button';
-                button.classList.add('btn', 'btn-success', 'track-back');
+                button.classList.add('btn', 'btn-success');
+                button.style.cursor = 'auto';
                 button.textContent = 'View';
-                button.addEventListener('click', () => {
-                    event.stopPropagation();
-                    console.log("View button clicked for cycle:", cycle);
-                    try {
-                        sessionStorage.setItem('selectedCycle', JSON.stringify(cycle));
-                        console.log("Cycle saved in sessionStorage.");
-                    } catch (error) {
-                        console.error("Error saving cycle to sessionStorage:", error);
-                    }
-                    window.location.href = "result_page.html";
-                });
-                
                 return button;
             }
             
@@ -307,7 +296,19 @@
                     }
                     
                     const viewCell = document.createElement('td');
-                    viewCell.appendChild(createViewButton(cycle));
+                    const viewButton = createViewButton(cycle);
+                    viewCell.appendChild(viewButton);
+
+                    viewButton.addEventListener('click', () => {
+                    console.log("View button clicked for cycle:", cycle);
+                    try {
+                        sessionStorage.setItem('selectedCycle', JSON.stringify(cycle));
+                        console.log("Cycle saved in sessionStorage.");
+                    } catch (error) {
+                        console.error("Error saving cycle to sessionStorage:", error);
+                    }
+                    window.location.href = "result_page.html";
+                });
                     
                     cycleRow.append(prescore, predate, postscore, postdate, taskcycle, viewCell);
                     table.appendChild(cycleRow);
