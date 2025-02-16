@@ -99,7 +99,7 @@
                             <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
                         </div>
                         <div class="btn-next">
-                        <a class="nextB" href="manifesto_page.html"><button type="button" class="btn btn-success next select-tasks" style="width: 180px;">Select Tasks →</button></a>
+                        <a class="nextB" href="manifesto_page.html"><button type="button" class="btn btn-success select-tasks" style="width: 180px;">Select Tasks →</button></a>
                         </div>
                     
                 </div>
@@ -510,6 +510,8 @@
                     );    
 
                     document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
+                    document.querySelector("button.select-tasks").href = 'manifesto_page.html';
+
                     
                     const userData = await getUserData();
                     if (userData) {

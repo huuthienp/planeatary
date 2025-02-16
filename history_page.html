@@ -100,8 +100,8 @@
                 </table>
                 
             </div>
-            <div class="button_next">
-                <a href="index.html"><button type="button" class="btn btn-success next" style="width: 150px;">Back to <i class="fa fa-home"></i></button></a>
+            <div class="btn-next">
+                <a href="index.html"><button type="button" class="btn btn-success" style="width: 150px;">Back to <i class="fa fa-home"></i></button></a>
             </div>
         </div>
         
@@ -229,7 +229,8 @@
                 const button = document.createElement('button');
                 button.type = 'button';
                 button.classList.add('btn', 'btn-success');
-                button.style.cursor = 'auto';
+                button.style.cursor = 'pointer';
+                button.style.pointerEvents = "auto";
                 button.textContent = 'View';
                 return button;
             }
