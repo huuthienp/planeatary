@@ -47,7 +47,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                <a class="nav-link" id="navChallenge" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -157,54 +157,31 @@
                     <span>Loading</span>
                 </div>
             </section>
-            
+
+            <!-- Warning disabling -->
+            <div class="warning-container">
+                <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <h4>Well done!</h4>
+                            <p>Aww,You are not allowed to do more tasks after doing the post-quiz.</p>
+                            <hr>
+                            <p class="mb-0">Please restart the cycle by restarting the pre-quiz.</p>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
             
         </div>
     </div>
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script>
+        import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
         //spinner variables
-        const spinner = document.getElementById('spinner');
-        let isLoading = false;
-        const minDisplayTime = 2000; 
-        let spinnerStartTime;
-        const spOver = document.getElementById("spinnerOverlay");
-        
-        //spinner functions
-        function showSpinner() {
-            spinner.classList.remove('hidden');
-            spOver.classList.remove('hidden');
-            isLoading = true;
-            spinnerStartTime = Date.now();
-        };
-        
-        function hideSpinner() {
-            const elapsedTime = Date.now() - spinnerStartTime;
-            
-            if (elapsedTime < minDisplayTime) {
-                setTimeout(() => {
-                    spinner.classList.add('hidden');
-                    spOver.classList.add('hidden');
-                    isLoading = false;
-                }, minDisplayTime - elapsedTime);
-            } else {
-                spinner.classList.add('hidden');
-                spOver.classList.add('hidden');
-                isLoading = false;
-            }
-        }
-
-        function isTokenExpired(token) {
-            if (!token) return true;
-            
-            const base64Payload = token.split('.')[1]; 
-            const decodedPayload = JSON.parse(atob(base64Payload));
-            const exp = decodedPayload.exp; 
-            
-            // Compare current time with expiration time
-            const now = Math.floor(Date.now()/1000); 
-            return exp < now; // Returns true if token is expired
-        }
+        let startTime = Date.now();
+        const condition = [false, startTime];
+        const bOverlay = document.getElementById("spinnerOverlay");
         
         //Dismiss the offcanvas bar after click and execute
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
@@ -221,29 +198,25 @@
             const myToast = new bootstrap.Toast(toasty);
             myToast.show();
         }
+
+        function showAlert() {
+            const alertContainer = document.getElementById('alertContainer');
+            if (!alertContainer) {
+                console.error('No alert container found.');
+                return;
+            }
+            const bsAlert = new bootstrap.Toast(alertContainer);
+            bsAlert.show();
+        }
         
         offcanvasLinks.forEach(li => {
-            li.addEventListener('click', event => {
-                const targetHref = li.getAttribute('href');
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
-                
-                if (targetHref && targetHref !== "#") {
-                    window.location.href = targetHref; 
-                } 
-            });
+            if (li !== document.getElementById('navChallenge')) {
+                li.addEventListener('click', handleOffcanvasClick);
+            } 
         });
         
         offcanvasDropdown.forEach(li => {
-            li.addEventListener('click', event => {
-                const targetHref = li.getAttribute('href');
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
-                
-                if (targetHref && targetHref !== "#") {
-                    window.location.href = targetHref; 
-                } 
-            });
+            li.addEventListener('click', handleOffcanvasClick);
         });
         
         // Function to handle navigation or showing toast
@@ -285,6 +258,7 @@
                 offcanvas.hide();
             });
         })
+
 
     </script>
 
@@ -392,6 +366,7 @@
         // Load userdata to input boxes
         document.addEventListener("DOMContentLoaded", async function() {
             
+            
             const user = netlifyIdentity.gotrue.currentUser();
             const userData = user.user_metadata;
             
@@ -415,6 +390,43 @@
                 document.getElementById("gender").value     = userData.gender;
                 document.getElementById("user-type").value  = userData.status;
             }
+
+            const navChallenge = document.getElementById('navChallenge');
+
+            if (!navChallenge) {
+                console.error("Element with id 'navChallenge' not found.");
+                return;
+            }
+
+            navChallenge.addEventListener('click', function(event) {
+                // Debug logs to check values
+                console.log("navChallenge clicked");
+                console.log("navChallenge.href:", navChallenge.href);
+                console.log("hasPostQuizResult() returns:", hasPostQuizResult());
+                
+                if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    navChallenge.removeAttribute('href');
+                    console.log("Navigation prevented. Calling showAlert().");
+                    showAlert();
+                } else if (hasPostQuizResult()) {
+                    showAlert();
+                } else {
+                    handleOffcanvasClick(event);
+                }
+                
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+            });
+
+            document.getElementById('logOut').addEventListener('click', async () => {
+                if (confirm("Do you really want to sign out?") == true) {
+                    showSpinner(bOverlay, condition);
+                    await logOut();
+                    hideSpinner(bOverlay, condition);
+                }
+            });
             
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
             const forms = document.querySelectorAll('.needs-validation')
@@ -471,36 +483,6 @@
             })
             
         });
-
-
-        // window.addEventListener("load", (event) => {
-            
-        //     const user = netlifyIdentity.gotrue.currentUser();
-        //     const userData = user.user_metadata;
-            
-        //     if (!user) {
-        //         console.error("No user is logged in!");
-        //         netlifyIdentity.logout();
-        //     }
-            
-        //     if (user) {
-        //         user.jwt().then(token => {
-        //             if (isTokenExpired(token)) {
-        //                 console.log("Token expired. Prompting user to re-login...");
-        //                 netlifyIdentity.logout();
-        //                 window.location.href = "index.html";
-        //             } else {
-        //                 console.log("Token is valid.");
-        //             }
-        //         });
-        //         document.getElementById("name").value       = userData.full_name;
-        //         document.getElementById("age").value        = userData.age;
-        //         document.getElementById("gender").value     = userData.gender;
-        //         document.getElementById("user-type").value  = userData.user_type;
-        //     }
-            
-        // });
-
     </script>
     <!-- Bootstrap Javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

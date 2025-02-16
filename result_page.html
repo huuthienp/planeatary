@@ -484,6 +484,12 @@
                         hideSpinner(bOverlay, condition);
                     }
                 });
+
+                document.querySelector("button.select-tasks").addEventListener('click', function(event) {
+                    if (document.querySelector("button.select-tasks > a").href !== null) {
+                        window.location.href = document.querySelector("button.select-tasks > a").href;
+                    }
+                })
                 
                 try {
                     
@@ -507,13 +513,6 @@
                     );    
 
                     document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';
-                    document.querySelector("button.select-tasks > a").href = 'manifesto_page.html';
-
-                    document.querySelector("button.select-tasks > a").addEventListener('click', function(event) {
-                        if (document.querySelector("button.select-tasks > a").href) {
-                            window.location.href = 'manifesto_page.html';
-                        }
-                    })
                     
                     const userData = await getUserData();
                     if (userData) {
