@@ -326,7 +326,7 @@
                         
                         
                         var allRes = await fetchResponses(userId);
-                        allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
+                        let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
                         const cycleKeys = allResponses; 
                         if (cycleKeys.length > 0) {
                             const lastKey = cycleKeys.length - 1; 

@@ -357,13 +357,13 @@
                 const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
                 
                 offcanvasLinks.forEach(li => {
-                    if (li !== document.getElementById('navChallenge') && li.classList.contains('Disabled') == false) {
+                    if (li !== document.getElementById('navChallenge')) {
                         li.addEventListener('click', handleOffcanvasClick);
                     } 
                 });
                 
                 offcanvasDropdown.forEach(li => {
-                    if (li !== document.getElementById('navChallenge') && li.classList.contains('Disabled') == false) {
+                    if (li !== document.getElementById('navChallenge')) {
                         li.addEventListener('click', handleOffcanvasClick);
                     } 
                 });

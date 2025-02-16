@@ -40,7 +40,7 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
                                         <li><a class="dropdown-item active" aria-current="page" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item Disabled" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
+                                        <li><a class="dropdown-item Disabled" href="qualtrics_post.html" id="navPost-quiz" data-bs-dismiss="offcanvas">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item">
@@ -113,7 +113,7 @@
                 <div class="d-flex">
                     <div class="toast-body">
                         <h4>Well done!</h4>
-                        <p>Aww,You are not allowed to do more tasks after doing the post-quiz.</p>
+                        <p>Sadly,you are not allowed to do more tasks after doing the post-quiz.</p>
                         <hr>
                         <p class="mb-0">Please restart the cycle by restarting the pre-quiz.</p>
                     </div>
@@ -226,13 +226,13 @@
                 offcanvasLinks.forEach(li => {
                     if (li !== document.getElementById('navChallenge') && li.classList.contains('Disabled') == false) {
                         li.addEventListener('click', handleOffcanvasClick);
-                    } 
+                    }
                 });
                 
                 offcanvasDropdown.forEach(li => {
                     if (li !== document.getElementById('navChallenge') && li.classList.contains('Disabled') == false) {
                         li.addEventListener('click', handleOffcanvasClick);
-                    } 
+                    }
                 });
                 
                 // Function to handle navigation or showing toast
@@ -244,14 +244,9 @@
                             if (link.classList.contains('Disabled')) {
                                 showToast(); 
                             } else {
-                                const targetHref = link.getAttribute('href');
-                                if (targetHref && targetHref !== '#') {
-                                    window.location.href = targetHref;
-                                }
+                                handleOffcanvasClick(event);
                             }
                         }
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
                     });
                 });
                 
@@ -264,14 +259,9 @@
                             if (link.classList.contains('Disabled')) {
                                 showToast(); 
                             } else {
-                                const targetHref = link.getAttribute('href');
-                                if (targetHref && targetHref !== '#') {
-                                    window.location.href = targetHref;
-                                }
+                                handleOffcanvasClick(event);
                             }
                         }
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
                     });
                 })
 
@@ -337,6 +327,7 @@
                     //localStorage.removeItem(`${preResponseId}:fetched_tasks`);
                     //localStorage.removeItem(`${preResponseId}:tasks`);
                     localStorage.removeItem('postResult');
+                    document.getElementById("navPost-quiz").classList.add('Disabled');
                     quizFrame.style.display = 'flex';
                     quizSpan.innerText = '';
                     var quizUrl = initiateSurvey('pre', quizFrame);
@@ -354,7 +345,6 @@
                     var preQuiz;
                     var postQuiz;
                     showSpinner([bOverlay, spinner], condition);
-                    
                     updateButton(restartBtn, 'grey', 'not-allowed');
                     const user = netlifyIdentity.gotrue.currentUser();
                     const userData = await getUserData();
@@ -424,11 +414,12 @@
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
-                        quizSpan.innerHTML = 'You have already finished the pre-quiz! Let"s continue! <img src="./images/thumbs-up.gif">';
+                        quizSpan.innerHTML = "You have already finished the pre-quiz! Let's continue! <img src=''./images/thumbs-up.gif'>";
                         await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
 
                     } else if (preObject && postObject) {
+                        document.getElementById("navPost-quiz").classList.remove('Disabled');
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';

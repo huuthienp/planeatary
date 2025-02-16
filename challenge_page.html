@@ -42,11 +42,11 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
                                         <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item Disabled" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
+                                        <li><a class="dropdown-item Disabled" id="navPost-quiz" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="ch" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link active" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -115,9 +115,17 @@
         </div>
         
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-        <script>
-            let time =  [];
-            let scores = [];
+        
+        <script type="module">
+
+            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
+            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+
+            let preObject = JSON.parse(localStorage.getItem('preResult'));
+            let preResponseId = preObject?.responseId ?? ""; 
+            let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+            let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+            let storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
 
             const modal = document.querySelector(".modal2");
             const overlay = document.querySelector(".overlay2");
@@ -131,6 +139,8 @@
             
             const nextButtonContainer = document.querySelector(".btn-next");
             const btn_next = document.querySelector(".next")
+
+            const navPostQuiz = document.getElementById("navPost-quiz");
             
             const showModal = (title, description) => {
                 modalTitle.textContent = title;
@@ -155,19 +165,6 @@
                 const myToast = new bootstrap.Toast(toasty);
                 myToast.show();
             }
-            
-        </script>
-        
-        <script type="module">
-
-            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
-            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
-
-            let preObject = JSON.parse(localStorage.getItem('preResult'));
-            let preResponseId = preObject?.responseId ?? ""; 
-            let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
-            let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
-            let storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
 
             //hard-code updating responseHistory (incompleted)
             async function updateResponseHistory(preResponseId, lastTask) {
@@ -251,6 +248,7 @@
                     
                     // Enable or disable the next button based on task completion status
                     if (allCompleted) {
+                        navPostQuiz.classList.remove('Disabled');
                         btn_next.style.pointerEvents = "auto"; // Enable the next button
                         btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
                         btn_next.style.cursor = "pointer";
