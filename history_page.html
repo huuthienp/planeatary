@@ -141,6 +141,7 @@
             let startTime = Date.now();
             const condition = [false, startTime];
             const bOverlay = document.getElementById("spinnerOverlay");
+            const spinner = document.getElementById("spinner");
 
             function showAlert() {
                 const alertContainer = document.getElementById('alertContainer');
@@ -306,13 +307,13 @@
 
                 document.getElementById('logOut').addEventListener('click', async () => {
                     if(confirm("Do you really want to sign out?") == true) {
-                        showSpinner(bOverlay, condition);
+                        showSpinner([bOverlay, spinner], condition);
                         await logOut();
-                        hideSpinner(bOverlay, condition);
+                        hideSpinner([bOverlay, spinner], condition);
                     }
                 })
 
-                showSpinner(bOverlay, condition);
+                showSpinner([bOverlay, spinner], condition);
                 const user = netlifyIdentity.gotrue.currentUser();
                 
                 if (user) {
@@ -413,7 +414,7 @@
                 });
 
                 await displayTable(user, userId);
-                hideSpinner(bOverlay, condition);     
+                hideSpinner([bOverlay, spinner], condition);     
             });
             
         </script>

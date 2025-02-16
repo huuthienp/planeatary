@@ -15,11 +15,12 @@ export function handleOffcanvasClick(event) {
   }
 
 export function showElement(el) {
-    el.classList.remove("hidden");
+    el.forEach(element => {element.classList.remove("hidden")})
+    
   }
   
   export function hideElement(el) {
-    el.classList.add("hidden");
+    el.forEach(element => {element.classList.remove("hidden")})
   }
 
 export function showSpinner(el, condition) {

@@ -109,7 +109,7 @@
             
             <section class="overlay2 hidden" id="modalOverlay">
                 <div class="align2">
-                    <div class="modal2" id="taskModal"> 
+                    <div class="modal2 hidden" id="taskModal"> 
                         <div class="btn">
                             <button class="close">x</button>
                         </div>
@@ -123,7 +123,7 @@
             
             <!-- spinner overlay-->
             <section class="overlay hidden" id="spinnerOverlay">
-                <div class="spinner" id="spinner">
+                <div class="spinner hidden" id="spinner">
                 </div>
                 <div>
                     <span>Loading</span>
@@ -170,16 +170,17 @@
             let startTime = Date.now();
             const condition = [false, startTime];
             const bOverlay = document.getElementById("spinnerOverlay");
-
+            const spinner = document.getElementById("spinner");
+            
             const comparison = document.getElementById('improvement');
             
             const showModal = (title, description) => {
                 modalTitle.textContent = title;
                 modalDescription.innerHTML = description;
-                showElement(modalOverlay);
+                showElement([modalOverlay, tmodal]);
             };
             
-            const closeModal = () => hideElement(modalOverlay);
+            const closeModal = () => hideElement([modalOverlay, tmodal]);
             
             document.querySelector(".close").addEventListener("click", closeModal);
             window.addEventListener("click", (event) => {
@@ -479,9 +480,9 @@
                 
                 document.getElementById('logOut').addEventListener('click', async () => {
                     if(confirm("Do you really want to sign out?") == true) {
-                        showSpinner(bOverlay, condition);
+                        showSpinner([bOverlay, spinner], condition);
                         await logOut();
-                        hideSpinner(bOverlay, condition);
+                        hideSpinner([bOverlay, spinner], condition);
                     }
                 });
 
@@ -493,7 +494,7 @@
                 
                 try {
                     
-                    showSpinner(bOverlay, condition);
+                    showSpinner([bOverlay, spinner], condition);
 
                     document.getElementById('postQ').style.color = 'white';
                     document.getElementById('preQ').style.color = 'white';
@@ -774,7 +775,7 @@
                     cardContainer.innerHTML = '<div class="empty-state">Opps! no results available.</div>';
                     
                 } finally {
-                    hideSpinner(bOverlay, condition);
+                    hideSpinner([bOverlay, spinner], condition);
                 }          
             });
 

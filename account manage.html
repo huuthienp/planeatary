@@ -182,6 +182,7 @@
         let startTime = Date.now();
         const condition = [false, startTime];
         const bOverlay = document.getElementById("spinnerOverlay");
+        const spinner = document.getElementById("spinner");
         
         //Dismiss the offcanvas bar after click and execute
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
@@ -422,9 +423,9 @@
 
             document.getElementById('logOut').addEventListener('click', async () => {
                 if (confirm("Do you really want to sign out?") == true) {
-                    showSpinner(bOverlay, condition);
+                    showSpinner([bOverlay, spinner], condition);
                     await logOut();
-                    hideSpinner(bOverlay, condition);
+                    hideSpinner([bOverlay, spinner], condition);
                 }
             });
             
