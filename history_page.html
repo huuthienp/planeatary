@@ -46,7 +46,7 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="ch" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link" id="navChallenge" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -131,103 +131,26 @@
         
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script type="module">
-            import { fetchTaskStatus } from './scripts/helpers.mjs';
+            import { fetchTaskStatus, fetchResponses } from './scripts/helpers.mjs';
+            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
             
             const ch = document.getElementById('ch');
             
             let scores = [];
             
-            const spinner = document.getElementById('spinner');
-            let spinnerStartTime;
-            let isLoading;
-            const minDisplayTime = 2000; 
+            let startTime = Date.now();
+            const condition = [false, startTime];
             const bOverlay = document.getElementById("spinnerOverlay");
-            
-            async function fetchResponses(userId) {
-                try {
-                    const response = await fetch('/api/fetch-responses', {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Q-RESPONSE-ID': userId,
-                        }
-                    });
-                    const { ok, status } = response;
-                    if (!ok) {
-                        throw new Error(JSON.stringify({
-                            status: status,  
-                            response: await response.text(),
-                        }));
-                    }
-                    const data = await response.json();
-                    console.log('Responses fetched!\n', data);
-                    localStorage.setItem(`${userId}:allResponses`, JSON.stringify(data));
-                    return data;
-                    
-                } catch (error) {
-                    console.warn('Caught', error, '\nin fetchResponse');
-                    return null;
-                }
-            }
-            
-            
-            function showSpinner() {
-                spinner.classList.remove('hidden');
-                bOverlay.classList.remove('hidden');
-                isLoading = true;
-                spinnerStartTime = Date.now();
-            };
-            
-            function hideSpinner() {
-                const elapsedTime = Date.now() - spinnerStartTime;
-                if (elapsedTime < minDisplayTime) {
-                    setTimeout(() => {
-                        spinner.classList.add('hidden');
-                        bOverlay.classList.add('hidden');
-                        isLoading = false;
-                    }, minDisplayTime - elapsedTime);
-                } else {
-                    spinner.classList.add('hidden');
-                    bOverlay.classList.add('hidden');
-                    isLoading = false;
-                }
-            }
 
-            function isTokenExpired(token) {
-                if (!token) return true;
-                
-                const base64Payload = token.split('.')[1]; 
-                const decodedPayload = JSON.parse(atob(base64Payload));
-                const exp = decodedPayload.exp; 
-                
-                // Compare current time with expiration time
-                const now = Math.floor(Date.now()/1000); 
-                return exp < now; // Returns true if token is expired
-            }
-
-
-            function detectAndParseTimestamp(ts) {
-                const length = String(ts).length;
-                
-                if (length <= 10) {
-                    // 10 digits => seconds
-                    return new Date(ts * 1000);
-                } else if (length === 13) {
-                    // 13 digits => milliseconds
-                    return new Date(ts);
-                } else {
-                    const asMillis = new Date(ts);
-                    return asMillis; 
+            function showAlert() {
+                const alertContainer = document.getElementById('alertContainer');
+                if (!alertContainer) {
+                    console.error('No alert container found.');
+                    return;
                 }
+                const bsAlert = new bootstrap.Toast(alertContainer);
+                bsAlert.show();
             }
-          
-            document.getElementById('logOut').addEventListener('click', () => {
-                    if(confirm("Do you really want to sign out?") == true) {
-                        showSpinner();
-                        logOut();
-                        hideSpinner();
-                    }
-                });
 
             async function extractHistory(user, userId) {
                 
@@ -378,27 +301,18 @@
                     table.appendChild(cycleRow);
                 });
             }
-
-            function logOut() {
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                
-                if (netlifyIdentity.gotrue.currentUser() !== null) {
-                    let user = netlifyIdentity.gotrue.currentUser();
-                    user.logout().then(() => {
-                        offcanvas.hide();
-                        sessionStorage.removeItem('selectedCycle');
-                        console.log('User has been logged out!');
-                        window.location.href = "index.html";
-                    });
-                } else {
-                    window.location.href = "index.html";
-                    console.log("No user is logged in!");
-                }
-            }
-
             
             document.addEventListener("DOMContentLoaded", async () => {
-                showSpinner();
+
+                document.getElementById('logOut').addEventListener('click', async () => {
+                    if(confirm("Do you really want to sign out?") == true) {
+                        showSpinner(bOverlay, condition);
+                        await logOut();
+                        hideSpinner(bOverlay, condition);
+                    }
+                })
+
+                showSpinner(bOverlay, condition);
                 const user = netlifyIdentity.gotrue.currentUser();
                 
                 if (user) {
@@ -416,72 +330,58 @@
                 const userId = user.id;
                 const metadata = user.user_metadata;
                 const responseHistory = metadata.responseHistory;
-
-                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-            const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-            const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item > li');
-            
-            
-            const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
-            const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
-
-            offcanvasLinks.forEach(li => {
-                li.addEventListener('click', event => {
-                    if (li !== document.getElementById('navChallenge')) {
-                        const targetHref = li.getAttribute('href');
-                        
-                        if (targetHref && targetHref !== "#") {
-                            window.location.href = targetHref; 
-                        } 
-                    } 
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                });
-            });
-
-            offcanvasDropdown.forEach(li => {
-                li.addEventListener('click', event => {
-                    const targetHref = li.getAttribute('href');
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                    
-                    if (targetHref && targetHref !== "#") {
-                        window.location.href = targetHref; 
-                    } 
-                });
-            });
-            
-            // Function to handle navigation or showing toast
-            offcanvasListItems.forEach(li => {
-                li.addEventListener('click', event => {
-                    const link = li.querySelector('a.nav-link'); 
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                    if (link) {
-                        const targetHref = link.getAttribute('href');
-                        if (targetHref && targetHref !== '#') {
-                            window.location.href = targetHref;
-                        }
-                    }
-                })
                 
-            });
-            
-            // Function to handle navigation or showing toast
-            offcanvasDropdownItems.forEach(li => {
-                li.addEventListener('click', event => {
-                    const link = li.querySelector('a.dropdown-item'); 
-                    
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                    if (link) {
-                        const targetHref = link.getAttribute('href');
-                        if (targetHref && targetHref !== '#') {
-                            window.location.href = targetHref;
-                        }
-                    }
+                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+                const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+                const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item > li');
+                
+                
+                const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+                const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
+                
+                offcanvasLinks.forEach(li => {
+                    if (li !== document.getElementById('navChallenge') && li.classList.contains('Disabled') == false) {
+                        li.addEventListener('click', handleOffcanvasClick);
+                    } 
                 });
-            })
+                
+                offcanvasDropdown.forEach(li => {
+                    if (li !== document.getElementById('navChallenge') && li.classList.contains('Disabled') == false) {
+                        li.addEventListener('click', handleOffcanvasClick);
+                    } 
+                });
+            
+                // Function to handle navigation or showing toast
+                offcanvasListItems.forEach(li => {
+                    li.addEventListener('click', event => {
+                        const link = li.querySelector('a.nav-link'); 
+                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
+                        if (link) {
+                            const targetHref = link.getAttribute('href');
+                            if (targetHref && targetHref !== '#') {
+                                window.location.href = targetHref;
+                            }
+                        }
+                    })
+                    
+                });
+                
+                // Function to handle navigation or showing toast
+                offcanvasDropdownItems.forEach(li => {
+                    li.addEventListener('click', event => {
+                        const link = li.querySelector('a.dropdown-item'); 
+                        
+                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
+                        if (link) {
+                            const targetHref = link.getAttribute('href');
+                            if (targetHref && targetHref !== '#') {
+                                window.location.href = targetHref;
+                            }
+                        }
+                    });
+                })
 
                 const navChallenge = document.getElementById('navChallenge');
                 
@@ -513,8 +413,7 @@
                 });
 
                 await displayTable(user, userId);
-                hideSpinner();
-                
+                hideSpinner(bOverlay, condition);     
             });
             
         </script>
