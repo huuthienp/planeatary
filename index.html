@@ -642,6 +642,35 @@
                 offcanvas.hide();
             });
         })
+
+        const navChallenge = document.getElementById('navChallenge');
+
+        if (!navChallenge) {
+            console.error("Element with id 'navChallenge' not found.");
+            return;
+        }
+
+        navChallenge.addEventListener('click', function(event) {
+            // Debug logs to check values
+            console.log("navChallenge clicked");
+            console.log("navChallenge.href:", navChallenge.href);
+            console.log("hasPostQuizResult() returns:", hasPostQuizResult());
+            
+            if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
+                event.preventDefault();
+                event.stopPropagation();
+                navChallenge.removeAttribute('href');
+                console.log("Navigation prevented. Calling showAlert().");
+                showAlert();
+            } else if (hasPostQuizResult()) {
+                showAlert();
+            } else {
+                handleOffcanvasClick(event);
+            }
+            
+            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvas.hide();
+        })
         
         const disableFirstTimers = () => {
             document.querySelectorAll("a.first-timer").forEach(a => {

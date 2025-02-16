@@ -83,7 +83,7 @@
             </section>
             
             <!-- Warning disabling -->
-            <div class="toast-container">
+            <div class="toast-container hidden">
                 <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                     <div class="d-flex">
                         <div class="toast-body">
@@ -178,6 +178,7 @@
                         console.error('No alert container found.');
                         return;
                     }
+                    document.querySelector('.toast-container').classList.remove('hidden');
                     const bsAlert = new bootstrap.Toast(alertContainer);
                     bsAlert.show();
                 }

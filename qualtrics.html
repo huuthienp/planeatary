@@ -84,7 +84,7 @@
         </section>
         
         <!-- Warning Toast -->
-        <div class="toast-container">
+        <div class="toast-container hidden" id="firstToast">
             <div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body">
@@ -96,7 +96,7 @@
         </div>
         
         <!-- Another Warning Toast -->
-        <div class="toast-container">
+        <div class="toast-container hidden" id="secondToast">
             <div id="cycle-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                 <div class="d-flex">
                     <div class="toast-body">
@@ -108,7 +108,7 @@
         </div>
 
          <!-- Warning disabling -->
-         <div class="toast-container">
+         <div class="toast-container hidden" id="finalToast">
             <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                 <div class="d-flex">
                     <div class="toast-body">
@@ -136,7 +136,7 @@
 
             //For a user to see a reminder to complete the current cycle
             function showCycleToast() {
-                
+                document.getElementById("secondToast").classList.remove('hidden');
                 const toasty = document.getElementById('cycle-toast');
                 const myToast = new bootstrap.Toast(toasty);
                 myToast.show();
@@ -144,12 +144,14 @@
             
             //For first-timer to see a reminder to do a very first quiz
             function showToast() {
+                document.getElementById("firstToast").classList.remove('hidden');
                 const toasty = document.getElementById('first-timer-toast');
                 const myToast = new bootstrap.Toast(toasty);
                 myToast.show();
             }
 
             function showAlert() {
+                document.getElementById("finalToast").classList.remove('hidden');
                 const alertContainer = document.getElementById('alertContainer');
                 if (!alertContainer) {
                     console.error('No alert container found.');

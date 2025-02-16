@@ -100,7 +100,7 @@
                 </table>
                 
             </div>
-            <div class="btn-next">
+            <div class="btn-next hidden">
                 <a href="index.html"><button type="button" class="btn btn-success" style="width: 150px;">Back to <i class="fa fa-home"></i></button></a>
             </div>
         </div>
@@ -135,7 +135,6 @@
             import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
             
             let scores = [];
-            const hTable = document.querySelector('history-table');
             
             let startTime = Date.now();
             const condition = [false, startTime];
@@ -346,7 +345,9 @@
                 const metadata = user.user_metadata;
                 const responseHistory = metadata.responseHistory;
 
-                hTable.classList.remove('hidden');
+                document.querySelector('.history-table').classList.remove('hidden');
+                document.querySelector('btn-next').classList.remove('hidden');
+                
                 
                 const offcanvasNavbar = document.getElementById('offcanvasNavbar');
                 const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
