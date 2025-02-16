@@ -166,11 +166,6 @@
             const modalOverlay = document.getElementById("modalOverlay");
             const modalTitle = document.getElementById("modalTitle");
             const modalDescription = document.getElementById("modalDescription");
-
-            let startTime = Date.now();
-            const condition = [false, startTime];
-            const bOverlay = document.getElementById("spinnerOverlay");
-            const spinner = document.getElementById("spinner");
             
             const comparison = document.getElementById('improvement');
             
@@ -409,7 +404,12 @@
 
             
             document.addEventListener("DOMContentLoaded", async function() {
-                
+
+                let startTime = Date.now();
+                const condition = [false, startTime];
+                const bOverlay = document.getElementById("spinnerOverlay");
+                const spinner = document.getElementById("spinner");
+
                 const offcanvasNavbar = document.getElementById('offcanvasNavbar');
                 const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
                 const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
