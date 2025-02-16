@@ -45,10 +45,10 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="ch" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link" id="navChallenge" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="d" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                    <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="history_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-calendar-check-o"></i> History</a>
@@ -69,54 +69,36 @@
                 <iframe class="quiz" title="PlanEATary Post-Quiz"></iframe>
                 <span class="fallback"></span>
                 <div class="btn-next">
-                    <button id="nextButt" type="button" class="btn btn-success next" style="width: 180px;">Next  &#8594;</button>
+                    <a class="nextB"><button id="nextButt" type="button" class="btn btn-success next" style="width: 180px;">Next  &#8594;</button></a>
                 </div>
             </div>
             
-              <!-- spinner overlay-->
-              <section class="overlay hidden" id="spinnerOverlay">
-                <div class="spinner hidden" id="spinner">
+            <!-- spinner overlay-->
+            <section class="overlay hidden" id="spinnerOverlay">
+                <div class="spinner" id="spinner">
                 </div>
                 <div>
                     <span>Loading</span>
                 </div>
             </section>
-
+            
+            <!-- Warning disabling -->
+            <div class="toast-container">
+                <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <h4>Well done!</h4>
+                            <p>Unfortunately,you are not allowed to do more tasks after doing the post-quiz.</p>
+                            <hr>
+                            <p class="mb-0">Please restart the cycle by restarting the pre-quiz.</p>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+            
             <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
             <script>
-                
-                const ch = document.getElementById("ch");
-                const nextButton = document.getElementById('nextButt');
-                
-                const spinner = document.getElementById('spinner');
-                const bOverlay = document.getElementById("spinnerOverlay");
-                let isLoading = false;
-                const minDisplayTime = 1000;
-                let spinnerStartTime;
-                
-                function showSpinner() {
-                    console.log("Showing spinner...");
-                    spinner.classList.remove('hidden');
-                    bOverlay.classList.remove('hidden');
-                    isLoading = true;
-                    spinnerStartTime = Date.now();
-                };
-                
-                function hideSpinner() {
-                    const elapsedTime = Date.now() - spinnerStartTime;
-                    if (elapsedTime < minDisplayTime) {
-                        setTimeout(() => {
-                            console.log("Hiding spinner after min time...");
-                            spinner.classList.add('hidden');
-                            bOverlay.classList.add('hidden');
-                            isLoading = false;
-                        }, minDisplayTime - elapsedTime);
-                    } else {
-                        spinner.classList.add('hidden');
-                        bOverlay.classList.add('hidden');
-                        isLoading = false;
-                    }
-                }
                 
                 //hard-code updating responseHistory
                 async function updateResponseHistory(postObject, user) {
@@ -135,11 +117,12 @@
                     
                     let responseHistory = user?.user_metadata?.responseHistory ?? [];
                     const index = responseHistory.findIndex(cycle => cycle.postId === postResponseId);
-                    const mockResponseHistory = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`) || "{}");
-
+                    const mockResponseHistory = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`)) || {};
+                    
                     // If the postResponseId is not already in the history, add it
                     if (index === -1) {
-                        responseHistory.push({ postId: postResponseId });
+                        responseHistory[responseHistory.length - 1].postId = postResponseId;
+                        //responseHistory.push({ postId: postResponseId });
                         console.log("The post-quiz updated",  responseHistory)
                         user.update({
                             data: { responseHistory: responseHistory},
@@ -166,96 +149,46 @@
                     }
                     localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
                 }
-
-                async function fetchResponses(userId) {
-                    try {
-                        const response = await fetch('/api/fetch-responses', {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Q-RESPONSE-ID': userId,
-                            }
-                        });
-                        const { ok, status } = response;
-                        if (!ok) {
-                            throw new Error(JSON.stringify({
-                                status: status,  
-                                response: await response.text(),
-                            }));
-                        }
-                        const data = await response.json();
-                        console.log('Responses fetched!\n', data);
-                        localStorage.setItem(`${userId}:allResponses`, JSON.stringify(data));
-                        return data;
-                        
-                    } catch (error) {
-                        console.warn('Caught', error, '\nin fetchResponse');
-                        return null;
-                    }
-                }
-
-                function isTokenExpired(token) {
-                    if (!token) return true;
-                    
-                    const base64Payload = token.split('.')[1]; 
-                    const decodedPayload = JSON.parse(atob(base64Payload));
-                    const exp = decodedPayload.exp; 
-                    
-                    // Compare current time with expiration time
-                    const now = Math.floor(Date.now()/1000); 
-                    return exp < now; // Returns true if token is expired
-                }
-
+                
+                
                 function checkLastTaskStatus(metadata) {
-                        var responseHistory = metadata?.responseHistory ?? null;
-                        //handle first-time user
-                        if (!metadata || !responseHistory) {
-                            console.warn("No responseHistory found for this user.");
-                            return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
-                        } else {
-                            const cycleKeys = Object.keys(responseHistory || {});
-                            if (cycleKeys.length > 0) {
-                                const latestCycleKey = cycleKeys[cycleKeys.length - 1];  // Get the last cycle
-                                const entry = responseHistory[latestCycleKey];
-                                latest_pre = entry.preId || "";
-                                latest_post = entry.postId || "";
-                                latest_task = entry.lastTask || "";
-                            }
-                        }
-
-                        const cycle = {lastPre: latest_pre, lastPost: latest_post, lastTask: latest_task};
-                        return cycle
-                    }
-
-
-                function logOut() {
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    
-                    if (netlifyIdentity.gotrue.currentUser() !== null) {
-                        let user = netlifyIdentity.gotrue.currentUser();
-                        user.logout().then(() => {
-                            offcanvas.hide();
-                            console.log('User has been logged out!');
-                            window.location.href = "index.html";
-                        });
+                    var responseHistory = metadata?.responseHistory ?? null;
+                    //handle first-time user
+                    if (!metadata || !responseHistory) {
+                        console.warn("No responseHistory found for this user.");
+                        return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
                     } else {
-                        window.location.href = "index.html";
-                        console.log("No user is logged in!");
+                        const cycleKeys = Object.keys(responseHistory || {});
+                        if (cycleKeys.length > 0) {
+                            const latestCycleKey = cycleKeys[cycleKeys.length - 1];  // Get the last cycle
+                            const entry = responseHistory[latestCycleKey];
+                            latest_pre = entry.preId || "";
+                            latest_post = entry.postId || "";
+                            latest_task = entry.lastTask || "";
+                        }
                     }
+                    
+                    const cycle = {lastPre: latest_pre, lastPost: latest_post, lastTask: latest_task};
+                    return cycle
                 }
                 
-                document.getElementById('logOut').addEventListener('click', () => {
-                    if(confirm("Do you really want to sign out?") == true) {
-                        showSpinner();
-                        logOut();
-                        hideSpinner();
+                function showAlert() {
+                    const alertContainer = document.getElementById('alertContainer');
+                    if (!alertContainer) {
+                        console.error('No alert container found.');
+                        return;
                     }
-                });
+                    const bsAlert = new bootstrap.Toast(alertContainer);
+                    bsAlert.show();
+                }
                 
-            </script>      
+            </script>     
+            
             <script defer type="module">
-                import { initiateSurvey, fetchTaskStatus, extractTaskData, updateButton } from './scripts/helpers.mjs';
-
+                
+                import { initiateSurvey, fetchTaskStatus, extractTaskData, fetchResponses, updateButton } from './scripts/helpers.mjs';
+                import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+                
                 var preObject = JSON.parse(localStorage.getItem('preResult'));
                 var preResult = preObject?.result;
                 var preResponseId = preObject?.responseId;
@@ -265,122 +198,151 @@
                 var post_rec = postObject?.recordedDate;
                 
                 document.addEventListener("DOMContentLoaded", async () => {
-
-                    updateButton(nextButton, 'grey', 'not-allowed');
-
+                    
+                    const nextButton = document.getElementById('nextButt');
+                    
+                    let startTime = Date.now();
+                    const condition = [false, startTime];
+                    const bOverlay = document.getElementById("spinnerOverlay");
+                    const spinner = document.getElementById("spinner");
+                    
+                    document.getElementById('logOut').addEventListener('click', () => {
+                        if(confirm("Do you really want to sign out?") == true) {
+                            showSpinner([bOverlay, spinner], condition);
+                            logOut();
+                            hideSpinner([bOverlay, spinner], condition);
+                        }
+                    });
+                    
                     var tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
                     var selectTasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
-
+                    
                     const quizFrame = document.querySelector('div.content > iframe.quiz');
-
+                    
                     let latest_pre = "";
                     let latest_post = "";
                     let latest_task = "";
-
+                    
                     const fallbackMessage = document.querySelector(".fallback");
-
+                    
                     const offcanvasNavbar = document.getElementById('offcanvasNavbar');
                     const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
                     const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
                     const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
                     const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
-
-                    const netlifyIdentity = window.netlifyIdentity;
-                    const user = netlifyIdentity.gotrue.currentUser();
-
-                    if (user) {
-                        user.jwt().then(token => {
-                            if (isTokenExpired(token)) {
-                                console.log("Token expired. Prompting user to re-login...");
-                                netlifyIdentity.logout();
-                                window.location.href = "index.html";
-                            } else {
-                                console.log("Token is valid.");
-                            }
-                        });
-                    }
-
-                    const metadata = user.user_metadata;
-                    const responseHistory = metadata.responseHistory;
-                    const userId = user.id;
-
+                    
                     offcanvasLinks.forEach(li => {
-                        li.addEventListener('click', event => {
-                            const targetHref = li.getAttribute('href');
-                            
-                            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                            offcanvas.hide();
-                            
-                            if (targetHref && targetHref !== '#') {
-                                window.location.href = targetHref; 
-                            }
-                        });
+                        if (li !== document.getElementById('navChallenge')) {
+                            li.addEventListener('click', handleOffcanvasClick);
+                        } 
                     });
                     
                     offcanvasDropdown.forEach(li => {
-                        li.addEventListener('click', event => {
-                            const targetHref = li.getAttribute('href');
-                            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                            offcanvas.hide();
-                            
-                            if (targetHref) {
-                                window.location.href = targetHref; 
-                            }
-                        });
+                        li.addEventListener('click', handleOffcanvasClick);
                     });
-
+                    
                     offcanvasListItems.forEach(li => {
                         li.addEventListener('click', event => {
                             const link = li.querySelector('a.nav-link'); 
-                            
                             if (link) {
-                                
-                                const targetHref = link.getAttribute('href');
-                                if (targetHref && targetHref !== '#') {
-                                    window.location.href = targetHref;
-                                }
+                                li.addEventListener('click', handleOffcanvasClick);
                             }
                             const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                             offcanvas.hide();
                         });
                     });
-
+                    
                     offcanvasDropdownItems.forEach(li => {
                         li.addEventListener('click', event => {
                             const link = li.querySelector('a.dropdown-item'); 
+                            if (link) {
+                                li.addEventListener('click', handleOffcanvasClick);
+                            }
                             const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                             offcanvas.hide();
-                            
-                            if (link) {
-                                
-                                const targetHref = link.getAttribute('href');
-                                if (targetHref && targetHref !== '#') {
-                                    window.location.href = targetHref;
-                                }
-                            }
                         });
+                    })
+                    
+                    const navChallenge = document.getElementById('navChallenge');
+                    
+                    if (!navChallenge) {
+                        console.error("Element with id 'navChallenge' not found.");
+                        return;
+                    }
+                    
+                    navChallenge.addEventListener('click', function(event) {
+                        // Debug logs to check values
+                        console.log("navChallenge clicked");
+                        console.log("navChallenge.href:", navChallenge.href);
+                        console.log("hasPostQuizResult() returns:", hasPostQuizResult());
+                        
+                        if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            navChallenge.removeAttribute('href');
+                            console.log("Navigation prevented. Calling showAlert().");
+                            showAlert();
+                        } else {
+                            handleOffcanvasClick(event);
+                        }
                     });
                     
                     nextButton.addEventListener('click', () => {
                         if (nextButton.style.cursor !== "not-allowed") { window.location.href = "result_page.html"; }
                     });
-
-                    // Set up an interval to check for changes in localStorage
-                    //setInterval(updateButton, 1000);
+                    
                     
                     //clear any existing message
                     fallbackMessage.innerHTML = "";
-
+                    
                     try { 
-                        showSpinner();
+                        showSpinner([bOverlay, spinner], condition);
+                        
+                        const netlifyIdentity = window.netlifyIdentity;
+                        const user = netlifyIdentity.gotrue.currentUser();
+                        
+                        if (user) {
+                            user.jwt().then(token => {
+                                if (isTokenExpired(token)) {
+                                    console.log("Token expired. Prompting user to re-login...");
+                                    netlifyIdentity.logout();
+                                    window.location.href = "index.html";
+                                } else {
+                                    console.log("Token is valid.");
+                                }
+                            });
+                        }
+
+                        const metadata = user.user_metadata;
+                        const responseHistory = metadata.responseHistory;
+                        const userId = user.id;
+
+                        updateButton(nextButton, 'grey', 'not-allowed');
+                        
                         //handle a user directly from the history page
                         var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
-                        var allRes = await fetchResponses(userId);
-                        let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
-                        console.log("All responses fetched! ", allResponses);
                         let postQuiz = null;
                         let preQuiz = null;
-
+                        
+                        
+                        var allRes = await fetchResponses(userId);
+                        allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
+                        const cycleKeys = allResponses; 
+                        if (cycleKeys.length > 0) {
+                            const lastKey = cycleKeys.length - 1; 
+                            const entry = cycleKeys[lastKey]; 
+                            
+                            // Access preQuiz and postQuiz safely
+                            preQuiz = entry?.preResponse ?? null;
+                            postQuiz = entry?.postResponse ?? null;
+                            postObject = postQuiz;
+                            preObject = preQuiz;
+                            preResponseId = preQuiz?.responseId ?? null;
+                            
+                            console.log('Last entry:', entry);
+                        }
+                        
+                        
                         if (storedCycle) {
                             try {
                                 
@@ -395,73 +357,27 @@
                             } catch(err) {
                                 console.log("Couldn't find previous info from history:", err);
                             }
-                        } else if (allResponses) {
-                                if (allResponses.length > 0) {
-                                    const lastKey = allResponses.length - 1; 
-                                    const entry =  allResponses[lastKey]; 
-                                    
-                                    // Access preQuiz and postQuiz safely
-                                    preQuiz = entry?.preResponse ?? null;
-                                    postQuiz = entry?.postResponse ?? null;
-                                    postObject = postQuiz;
-                                    preObject = preQuiz;
-                                    preResponseId = preObject?.responseId ?? null;
-                                    postResponseId = postObject?.responseId ?? null;
-                                    
-                                    console.log('Last entry:', entry);
-                                }
-                            } else {
-                                var allRes = await fetchResponses(userId);
-                                allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
-                                const cycleKeys = allResponses; 
-                                if (cycleKeys.length > 0) {
-                                    const lastKey = cycleKeys.length - 1; 
-                                    const entry = cycleKeys[lastKey]; 
-                                    
-                                    // Access preQuiz and postQuiz safely
-                                    preQuiz = entry?.preResponse ?? null;
-                                    postQuiz = entry?.postResponse ?? null;
-                                    postObject = postQuiz;
-                                    preObject = preQuiz;
-                                    preResponseId = preQuiz?.responseId ?? null;
-                                    
-                                    console.log('Last entry:', entry);
-                                }
-                            }
-                            
-                            if(preObject) {
-                                var preResult = preObject?.result ?? null;
-                                var pre_rec = preObject?.recordedDate ?? null;
-                                var preResponseId = preObject?.responseId ?? null;
-                                if (postObject) {
-                                    postResult = postObject?.result ?? null;
-                                    post_rec = postObject?.recordedDate ?? null;
-                                    await updateResponseHistory(postObject, user);
-                                    updateButton(nextButton, '#02897A', 'pointer');
-                                    quizFrame.style.display = 'none'; 
-                                    fallbackMessage.innerHTML = "<div class='void'>Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over. <img src=''./images/in-love.gif'></div>";
-                                } else if (!postObject || Object.keys(postObject).length === 0) {
-                                    try {
-                                        if (!selectTasks) {
-                                            selectTasks = await fetchTaskStatus(preResponseId, userId);
-                                            localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
-                                            selectTasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
-                                            if (!selectTasks) {throw "Failed in fetching tasks!"}
-                                            else {
-                                                var firstNullIndex = selectTasks?.time?.findIndex(el => el == "");
-                                                if (firstNullIndex !== -1) {
-                                                    alert("Please finish all the chosen tasks before doing post-quiz.");
-                                                    quizFrame.style.display = 'none'; 
-                                                    document.querySelector('.btn-next').style.display = 'none';
-                                                    fallbackMessage.innerHTML = "<div class='empty-state'>Please finish all selected tasks before doing the post quiz.</div>";
-                                                    window.location.href = "manifesto_page.html";
-                                                    return;
-                                                } else {
-                                                    var quizUrl = initiateSurvey('post', quizFrame);
-                                                }
-                                            }
-                                            
-                                        } else {
+                        } 
+                        
+                        if(preObject) {
+                            var preResult = preObject?.result ?? null;
+                            var pre_rec = preObject?.recordedDate ?? null;
+                            var preResponseId = preObject?.responseId ?? null;
+                            if (postObject) {
+                                postResult = postObject?.result ?? null;
+                                post_rec = postObject?.recordedDate ?? null;
+                                await updateResponseHistory(postObject, user);
+                                updateButton(nextButton, '#02897A', 'pointer');
+                                quizFrame.style.display = 'none'; 
+                                fallbackMessage.innerHTML = "<div class='void'>Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over. <img src=''./images/in-love.gif'></div>";
+                            } else if (!postObject || Object.keys(postObject).length === 0) {
+                                try {
+                                    if (!selectTasks) {
+                                        selectTasks = await fetchTaskStatus(preResponseId, userId);
+                                        localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
+                                        selectTasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                                        if (!selectTasks) {throw "Failed in fetching tasks!"}
+                                        else {
                                             var firstNullIndex = selectTasks?.time?.findIndex(el => el == "");
                                             if (firstNullIndex !== -1) {
                                                 alert("Please finish all the chosen tasks before doing post-quiz.");
@@ -474,76 +390,94 @@
                                                 var quizUrl = initiateSurvey('post', quizFrame);
                                             }
                                         }
-                                    } catch(err) {
-                                        console.log("Caugt error: ", err)
-                                        quizFrame.style.display = 'none'; 
-                                        document.querySelector('.btn-next').style.display = 'none';
-                                        fallbackMessage.style.color = "#ff6b6b";
-                                        fallbackMessage.innerHTML = err + " Directing you to do the selected tasks";
-                                        window.location.href = "manifesto_page.html";
-                                        return;
-                                    }  
-                                } 
-                            } else {
-                                //unsure about this logic
-                                var quizUrl = initiateSurvey('post', quizFrame);
+                                        
+                                    } else {
+                                        var firstNullIndex = selectTasks?.time?.findIndex(el => el == "");
+                                        if (firstNullIndex !== -1) {
+                                            alert("Please finish all the chosen tasks before doing post-quiz.");
+                                            quizFrame.style.display = 'none'; 
+                                            document.querySelector('.btn-next').style.display = 'none';
+                                            fallbackMessage.innerHTML = "<div class='empty-state'>Please finish all selected tasks before doing the post quiz.</div>";
+                                            window.location.href = "manifesto_page.html";
+                                            return;
+                                        } else {
+                                            var quizUrl = initiateSurvey('post', quizFrame);
+                                        }
+                                    }
+                                } catch(err) {
+                                    console.log("Caugt error: ", err)
+                                    quizFrame.style.display = 'none'; 
+                                    document.querySelector('.btn-next').style.display = 'none';
+                                    fallbackMessage.style.color = "#ff6b6b";
+                                    fallbackMessage.innerHTML = err + " Directing you to do the selected tasks";
+                                    window.location.href = "manifesto_page.html";
+                                    return;
+                                }  
                             } 
-                        } catch (err) {
-                            console.error("Caught error: ", err);
-                            quizFrame.style.display = 'none';
-                            document.querySelector('.btn-next').style.display = 'none';
-                            fallbackMessage.innerHTML = "<div class='empty-state'>Content cannot be displayed. Please try again later.</div>";
-                            nextButton.style.display = "none";
-                    } finally {
-                        if (postObject && user) {await updateResponseHistory(postObject, user)}
-                        hideSpinner();
-                    } 
-                });
-
-                // Listen to postResult change in localStorage
-                window.addEventListener('localStorageChange', async (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
-
-                    const netlifyIdentity = window.netlifyIdentity;
-                    const user = netlifyIdentity.gotrue.currentUser();
-
-                    if (user) {
-                        user.jwt().then(token => {
-                            if (isTokenExpired(token)) {
-                                console.log("Token expired. Prompting user to re-login...");
-                                netlifyIdentity.logout();
-                                window.location.href = "index.html";
-                            } else {
-                                console.log("Token is valid.");
-                            }
-                        });
-                    }
-
-                    const metadata = user.user_metadata;
-                    const responseHistory = metadata.responseHistory;
-                    const userId = user.id;
-                    
-                    const quizFrame = document.querySelector('div.content > iframe.quiz');
-                    const fallbackMessage = document.querySelector(".fallback");
-                    fallbackMessage.classList.add("empty-state");
-                    
-                    const { type, detail: { key, oldValue, newValue } } = event;
-                    console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
-                    if (key === 'postResult' && oldValue !== newValue) {
-                        try {
-                            JSON.parse(newValue || undefined);  // force null -> undefined to throw error
-                            quizFrame.style.display = 'none';
-                            fallbackMessage.innerHTML = '<div class="void">Thank you for your response! <img src="./images/in-love.gif"></div>';
-                            updateButton(nextButton, '#02897A', 'pointer');
-                            console.log('Found post-quiz result in storage!\n', newValue);
-                            await updateResponseHistory(postObject, user);
-                        } catch(error) {
-                            console.warn('Caught', error, '\nPost-quiz result is not found!');
-                            updateButton(nextButton, 'grey', 'not-allowed');
+                        } else {
+                            //unsure about this logic
                             var quizUrl = initiateSurvey('post', quizFrame);
-                        }
-                    }
-                });
+                        } 
+                    } catch (err) {
+                        console.error("Caught error: ", err);
+                        quizFrame.style.display = 'none';
+                        document.querySelector('.btn-next').style.display = 'none';
+                        fallbackMessage.innerHTML = "<div class='empty-state'>Content cannot be displayed. Please try again later.</div>";
+                        nextButton.style.display = "none";
+                    } finally {
+                        // if (postObject && user) {await updateResponseHistory(postObject, user)}
+                        hideSpinner([bOverlay, spinner], condition);
+                    } 
 
+            // Listen to postResult change in localStorage
+            window.addEventListener('localStorageChange', async (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
+                
+                const netlifyIdentity = window.netlifyIdentity;
+                const user = netlifyIdentity.gotrue.currentUser();
+                
+                
+                if (user) {
+                    user.jwt().then(token => {
+                        if (isTokenExpired(token)) {
+                            console.log("Token expired. Prompting user to re-login...");
+                            netlifyIdentity.logout();
+                            window.location.href = "index.html";
+                        } else {
+                            console.log("Token is valid.");
+                        }
+                    });
+                }
+                
+                const metadata = user.user_metadata;
+                const responseHistory = metadata.responseHistory;
+                const userId = user.id;
+                
+                const quizFrame = document.querySelector('div.content > iframe.quiz');
+                const fallbackMessage = document.querySelector(".fallback");
+                fallbackMessage.classList.add("empty-state");
+                
+                const { type, detail: { key, oldValue, newValue } } = event;
+                console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
+                if (key === 'postResult' && oldValue !== newValue) {
+                    try {
+                        JSON.parse(newValue || undefined);  // force null -> undefined to throw error
+                        quizFrame.style.display = 'none';
+                        fallbackMessage.innerHTML = '<div class="void">Thank you for your response! <img src="./images/in-love.gif"></div>';
+                        setInterval(() => {
+                            updateButton(nextButton, '#02897A', 'pointer');
+                        }, 1000);
+                        console.log('Found post-quiz result in storage!\n', newValue);
+                        if (postObject && user) {await updateResponseHistory(postObject, user)}
+                    } catch(error) {
+                        console.warn('Caught', error, '\nPost-quiz result is not found!');
+                        updateButton(nextButton, 'grey', 'not-allowed');
+                        var quizUrl = initiateSurvey('post', quizFrame);
+                    }
+                }
+            });
+            });
+                
+                
             </script>
             <!-- Bootstrap Javascript -->
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

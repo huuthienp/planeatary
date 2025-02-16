@@ -66,7 +66,7 @@
                     </div>
                 </nav>
             </div>
-            <div class="m-content">
+            <div class="m-content hidden">
                 <div class="pre-postQ">
                     <button id="preQ">PreQuiz</button>
                     <button id="postQ">PostQuiz</button>
@@ -98,9 +98,10 @@
                             <p class="next-step">Next step: Select 10 Tasks To Improve Your Scores!</p>
                             <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
                         </div>
-                    <button class="select-tasks">
-                        <a href="manifesto_page.html">Select Tasks →</a>
-                    </button>
+                        <div class="btn-next">
+                        <a class="nextB" href="manifesto_page.html"><button type="button" class="btn btn-success select-tasks" style="width: 180px;">Select Tasks →</button></a>
+                        </div>
+                    
                 </div>
                 <div class="q">
                     <div class="questions"></div>
@@ -109,7 +110,7 @@
             
             <section class="overlay2 hidden" id="modalOverlay">
                 <div class="align2">
-                    <div class="modal2" id="taskModal"> 
+                    <div class="modal2 hidden" id="taskModal"> 
                         <div class="btn">
                             <button class="close">x</button>
                         </div>
@@ -123,7 +124,7 @@
             
             <!-- spinner overlay-->
             <section class="overlay hidden" id="spinnerOverlay">
-                <div class="spinner" id="spinner">
+                <div class="spinner hidden" id="spinner">
                 </div>
                 <div>
                     <span>Loading</span>
@@ -131,11 +132,11 @@
             </section>
 
             <!-- Warning disabling -->
-            <div class="warning-container">
-                <div id="alertContainer" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-container">
+                <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                     <div class="d-flex">
                         <div class="toast-body">
-                            <h4 class="alert-heading">Well done!</h4>
+                            <h4>Well done!</h4>
                             <p>Aww,You are not allowed to do more tasks after doing the post-quiz.</p>
                             <hr>
                             <p class="mb-0">Please restart the cycle by restarting the pre-quiz.</p>
@@ -149,9 +150,10 @@
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
         <script type="module">
-            import { fetchTaskStatus, extractTaskData } from './scripts/helpers.mjs';
-            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+            import { fetchTaskStatus, extractTaskData, updateAnchors } from './scripts/helpers.mjs';
+            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, hasPostQuizCycle, logOut } from './scripts/utility.js';
             
+            const mainContainer = document.querySelector(".m-content");
             const Qbuttoncontainer = document.querySelector(".pre-postQ");
             const Pre_Q = document.querySelector("#preQ");
             const Post_Q = document.querySelector("#postQ");
@@ -166,20 +168,16 @@
             const modalOverlay = document.getElementById("modalOverlay");
             const modalTitle = document.getElementById("modalTitle");
             const modalDescription = document.getElementById("modalDescription");
-
-            let startTime = Date.now();
-            const condition = [false, startTime];
-            const bOverlay = document.getElementById("spinnerOverlay");
-
+            
             const comparison = document.getElementById('improvement');
             
             const showModal = (title, description) => {
                 modalTitle.textContent = title;
                 modalDescription.innerHTML = description;
-                showElement(modalOverlay);
+                showElement([modalOverlay, tmodal]);
             };
             
-            const closeModal = () => hideElement(modalOverlay);
+            const closeModal = () => hideElement([modalOverlay, tmodal]);
             
             document.querySelector(".close").addEventListener("click", closeModal);
             window.addEventListener("click", (event) => {
@@ -231,8 +229,8 @@
                     console.error('No alert container found.');
                     return;
                 }
-                const bsAlert = new bootstrap.Alert(alertContainer);
-                alertContainer.show();
+                const bsAlert = new bootstrap.Toast(alertContainer);
+                bsAlert.show();
             }
 
             // Retrieve tasks from localStorage or fetch if not available
@@ -288,26 +286,31 @@
                         const questionDiv = document.createElement('div');
                         questionDiv.classList.add('question');
                         
+                        // Create and append question title
+                        const questionTitle = document.createElement('h3');
+                        questionTitle.textContent = `Question ${index + 1}`;
+                        const questionPoint = document.createElement('h4');
+                        questionPoint.textContent = `${score} points`;
+                        
+
                         // Apply styling based on score
                         if (score <= 2) {
                             questionDiv.classList.add('red');
+                            questionPoint.style.color = "#ff6b6b";
                         } else if (score >= 3) {
                             questionDiv.classList.add('green');
+                            questionPoint.style.color = "#2ecc71";
                         }
-                        
-                        // Create and append question title
-                        const questionTitle = document.createElement('h3');
-                        questionTitle.textContent = `Question ${index + 1} - ${score} points`;
-                        //Later we may add info of each question (question and selected choice)
+
                         questionDiv.appendChild(questionTitle);
-                        
+                        questionDiv.appendChild(questionPoint);
                         cardContainer.appendChild(questionDiv);
                     });
                     
                 }
 
                 // Function to display completed tasks 
-                async function displaySelectedTasks(tasks) {
+                async function displaySelectedTasks(tasks, detailed) {
                     
                     cardContainer.innerHTML = ''; 
                     comparison.innerHTML = ''; 
@@ -335,6 +338,8 @@
                         cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
                         return;
                     }
+
+                    var task_rec =  detailed?.time ?? [];
                     
                     Object.keys(tasks).forEach(questionKey => {
                         header.innerHTML = '<img src="./images/battery.png"/>'+'All tasks you have completed';
@@ -398,29 +403,16 @@
                         document.querySelector('.q').innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
                     }
                 }
-
-            document.getElementById('logOut').addEventListener('click', async () => {
-                if(confirm("Do you really want to sign out?") == true) {
-                    showSpinner(bOverlay, condition);
-                    await logOut();
-                    hideSpinner(bOverlay, condition);
-                }
-            });
-
-            document.addEventListener('click', function(event) {
+            
                 
-                const anchor = document.getElementById('navChallenge');
-                if (anchor) {
-                    // Replace the condition below with your logic for blocking specific pages
-                    if (hasPostQuizResult() && anchor.href.includes('manifesto_page.html')) {
-                        event.preventDefault();
-                        showAlert();
-                    }
-                }
-            });
             
             document.addEventListener("DOMContentLoaded", async function() {
-                
+
+                let startTime = Date.now();
+                const condition = [false, startTime];
+                const bOverlay = document.getElementById("spinnerOverlay");
+                const spinner = document.getElementById("spinner");
+
                 const offcanvasNavbar = document.getElementById('offcanvasNavbar');
                 const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
                 const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
@@ -428,14 +420,16 @@
                 const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
                 
                 offcanvasLinks.forEach(li => {
-                    li.addEventListener('click', handleOffcanvasClick);
+                    if (li !== document.getElementById('navChallenge')) {
+                        li.addEventListener('click', handleOffcanvasClick);
+                    } 
                 });
                 
                 offcanvasDropdown.forEach(li => {
                     li.addEventListener('click', handleOffcanvasClick);
                 });
                 
-                // Function to handle navigation or showing toast
+
                 offcanvasListItems.forEach(li => {
                     li.addEventListener('click', event => {
                         const link = li.querySelector('a.nav-link'); 
@@ -447,7 +441,6 @@
                     });
                 });
                 
-                // Function to handle navigation or showing toast
                 offcanvasDropdownItems.forEach(li => {
                     li.addEventListener('click', event => {
                         const link = li.querySelector('a.dropdown-item'); 
@@ -459,26 +452,70 @@
                     });
                 })
                 
-                document.getElementById('postQ').style.color = 'white';
-                document.getElementById('preQ').style.color = 'white';
-                document.getElementById('com-tasks').style.color = 'white';
-                  
-                // Show next step, suggestion, and select-tasks button as default
-                const toshow = [
-                'p.next-step',
-                'p.suggestion',
-                'button.select-tasks'
-                ];
+                const navChallenge = document.getElementById('navChallenge');
                 
-                const tagsToShow = toshow.map(s => document.querySelector(s));
+                if (!navChallenge) {
+                    console.error("Element with id 'navChallenge' not found.");
+                    return;
+                }
                 
-                tagsToShow.forEach(
-                (tag) => { if(tag) {tag.classList.remove('hidden');} }
-                );    
+                navChallenge.addEventListener('click', function(event) {
+                    // Debug logs to check values
+                    console.log("navChallenge clicked");
+                    console.log("navChallenge.href:", navChallenge.href);
+                    console.log("hasPostQuizResult() returns:", hasPostQuizResult());
+                    console.log("hasPostQuizCycle() returns:", hasPostQuizCycle());
+                    
+                    if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        navChallenge.removeAttribute('href');
+                        console.log("Navigation prevented. Calling showAlert().");
+                        showAlert();
+                    } else if (hasPostQuizResult() || hasPostQuizCycle()) {
+                        showAlert();
+                    } else {
+                        handleOffcanvasClick(event);
+                    }
+                    
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                });
+                
+                document.getElementById('logOut').addEventListener('click', async () => {
+                    if(confirm("Do you really want to sign out?") == true) {
+                        showSpinner([bOverlay, spinner], condition);
+                        await logOut();
+                        hideSpinner([bOverlay, spinner], condition);
+                    }
+                });
                 
                 try {
                     
-                    showSpinner(bOverlay, condition);
+                    showSpinner([bOverlay, spinner], condition);
+
+                    mainContainer.classList.remove('hidden');
+
+                    document.getElementById('postQ').style.color = 'white';
+                    document.getElementById('preQ').style.color = 'white';
+                    document.getElementById('com-tasks').style.color = 'white';
+
+                    // Show next step, suggestion, and select-tasks button as default
+                    const toshow = [
+                    'p.next-step',
+                    'p.suggestion',
+                    'button.select-tasks'
+                    ];
+
+                    const tagsToShow = toshow.map(s => document.querySelector(s));
+
+                    tagsToShow.forEach(
+                    (tag) => { if(tag) {tag.classList.remove('hidden');} }
+                    );    
+
+                    document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
+                    document.querySelector("button.select-tasks").href = 'manifesto_page.html';
+
                     
                     const userData = await getUserData();
                     if (userData) {
@@ -504,25 +541,6 @@
                         var detailed = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                         var task_rec =  detailed?.time ?? [];
                         
-                        if (!preObject) {
-                            // hide next step, suggestion, and select-tasks button as an empty state
-                            const tohide = [
-                            'p.next-step',
-                            'p.suggestion',
-                            'button.select-tasks',
-                            'div.circle',
-                            'div.pre-postQ'
-                            ];
-                            
-                            const tagsToHide = tohide.map(s => document.querySelector(s));
-                            
-                            tagsToHide.forEach(
-                            (tag) => { if(tag) {tag.classList.add('hidden');} }
-                            );
-                            
-                            cardContainer.innerHTML = '<div class="empty-state">Opps! no results available</div>';
-                        } 
-                        
                         if (storedCycle) {
                             
                             preObject = storedCycle?.preResponse ?? null;
@@ -541,6 +559,10 @@
                                 task_rec = detailed?.time ?? []; 
                             } catch(err) {
                                 console.warn("Couldn't find history tasks' info:", err);
+                            }
+
+                            if(postObject) {
+                                sessionStorage.setItem('selectedCycle_post', JSON.stringify(postObject));
                             }
                         }
                         
@@ -561,6 +583,25 @@
                                 detailed = {};
                             }
                         }
+
+                        if (!preObject) {
+                            // hide next step, suggestion, and select-tasks button as an empty state
+                            const tohide = [
+                            'p.next-step',
+                            'p.suggestion',
+                            'button.select-tasks',
+                            'div.circle',
+                            'div.pre-postQ'
+                            ];
+                            
+                            const tagsToHide = tohide.map(s => document.querySelector(s));
+                            
+                            tagsToHide.forEach(
+                            (tag) => { if(tag) {tag.classList.add('hidden');} }
+                            );
+                            
+                            cardContainer.innerHTML = '<div class="empty-state">Opps! no results available</div>';
+                        } 
                         
                         if (postObject) {
                             
@@ -587,8 +628,8 @@
                             document.getElementById('postQ').style.backgroundColor = '#02897A';
                             document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
-                            document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
-                            document.querySelector("button.select-tasks > a").href = 'index.html';
+                            document.querySelector("button.select-tasks").innerHTML = 'Back to <i class="fa fa-home"></i>';
+                            document.querySelector("button.select-tasks").href = 'index.html';
                             
                         } else if (preObject && !postObject) {
                             
@@ -615,110 +656,111 @@
                             document.getElementById('preQ').style.backgroundColor = '#02897A';   
                             document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
-                            document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';
-                            document.querySelector("button.select-tasks > a").href = 'manifesto_page.html';
+                            document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
+                            document.querySelector("button.select-tasks").href = 'manifesto_page.html';
                             document.getElementById('postQ').disabled = true; 
                             
-                            document.getElementById('preQ').addEventListener('click', function() {
-                                
-                                if (preResult && !postResult) {
-                                    const toshow = [
-                                    'p.next-step',
-                                    'p.suggestion',
-                                    'button.select-tasks',
-                                    'div.circle'
-                                    ];
-                                    
-                                    const tagsToShow = toshow.map(s => document.querySelector(s));
-                                    
-                                    tagsToShow.forEach(
-                                    (tag) => { if (tag) {tag.classList.remove('hidden');} }
-                                    );
-                                    
-                                    document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';
-                                    document.querySelector("button.select-tasks > a").href = 'manifesto_page.html';
-                                    
-                                } else {
-                                    const toshow = [
-                                    'button.select-tasks',
-                                    'div.circle'
-                                    ];
-                                    
-                                    const tagsToShow = toshow.map(s => document.querySelector(s));
-                                    
-                                    tagsToShow.forEach(
-                                    (tag) => { if (tag) {tag.classList.remove('hidden');} }
-                                    );
-                                    
-                                    document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
-                                    document.querySelector("button.select-tasks > a").href = 'index.html';
-                                }
-                                
-                                displayQuestions(preObject, 'PRE');
-                                document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
-                                document.getElementById('postQ').style.transition = "all 1s";
-                                document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
-                                document.getElementById('com-tasks').style.transition = "all 1s";
-                                document.getElementById('preQ').style.backgroundColor = '#02897A';    
-                                document.getElementById('preQ').style.transition = "all 1s";
-                            });
-                            
-                            document.getElementById('postQ').addEventListener('click', function() {
-                                
-                                if (postResult) {
-                                    
-                                    // Remove next step, suggestion, and select-tasks button if post quiz is done
-                                    const toRemove = [
-                                    'p.next-step',
-                                    'p.suggestion'
-                                    ];
-                                    
-                                    const tagsToRemove = toRemove.map(s => document.querySelector(s));
-                                    
-                                    tagsToRemove.forEach(
-                                    (tag) => { if (tag) {tag.classList.add('hidden');} }
-                                    );
-                                    
-                                    const toshow = [
-                                    'button.select-tasks',
-                                    'div.circle'
-                                    ];
-                                    
-                                    const tagsToShow = toshow.map(s => document.querySelector(s));
-                                    
-                                    tagsToShow.forEach(
-                                    (tag) => { if (tag) {tag.classList.remove('hidden');} }
-                                    );
-                                    
-                                    document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
-                                    document.querySelector("button.select-tasks > a").href = 'index.html';
-                                    
-                                    
-                                    displayQuestions(postObject, 'POST');
-                                    document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
-                                    document.getElementById('preQ').style.transition = "all 1s";
-                                    document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
-                                    document.getElementById('com-tasks').style.transition = "all 1s";
-                                    document.getElementById('postQ').style.backgroundColor = '#02897A';    
-                                    document.getElementById('postQ').style.transition = "all 1s";
-                                }
-                            });
-                            
-                            document.getElementById('com-tasks').addEventListener('click', async function() {
-                                
-                                displaySelectedTasks(tasks);
-                                document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
-                                document.getElementById('preQ').style.transition = "all 1s";
-                                document.getElementById('postQ').style.backgroundColor = '#a9d1cd';    
-                                document.getElementById('postQ').style.transition = "all 1s";
-                                document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
-                                document.getElementById('com-tasks').style.transition = "all 1s";
-                            });
                         } else {
                             // Handle no user or expired token scenario
                             console.log("No valid user data available.");
                         }
-                    }  
+                    }
+                    
+                    document.getElementById('preQ').addEventListener('click', function() {
+                        
+                        if (preResult && !postResult) {
+                            const toshow = [
+                            'p.next-step',
+                            'p.suggestion',
+                            'button.select-tasks',
+                            'div.circle'
+                            ];
+                            
+                            const tagsToShow = toshow.map(s => document.querySelector(s));
+                            
+                            tagsToShow.forEach(
+                            (tag) => { if (tag) {tag.classList.remove('hidden');} }
+                            );
+                            
+                            document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
+                            document.querySelector("button.select-tasks").href = 'manifesto_page.html';
+                            
+                        } else {
+                            const toshow = [
+                            'button.select-tasks',
+                            'div.circle'
+                            ];
+                            
+                            const tagsToShow = toshow.map(s => document.querySelector(s));
+                            
+                            tagsToShow.forEach(
+                            (tag) => { if (tag) {tag.classList.remove('hidden');} }
+                            );
+                            
+                            document.querySelector("button.select-tasks").innerHTML = 'Back to <i class="fa fa-home"></i>';
+                            document.querySelector("button.select-tasks").href = 'index.html';
+                        }
+                        
+                        displayQuestions(preObject, 'PRE');
+                        document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
+                        document.getElementById('postQ').style.transition = "all 1s";
+                        document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
+                        document.getElementById('com-tasks').style.transition = "all 1s";
+                        document.getElementById('preQ').style.backgroundColor = '#02897A';    
+                        document.getElementById('preQ').style.transition = "all 1s";
+                    });
+                    
+                    document.getElementById('postQ').addEventListener('click', function() {
+                        
+                        if (postResult) {
+                            
+                            // Remove next step, suggestion, and select-tasks button if post quiz is done
+                            const toRemove = [
+                            'p.next-step',
+                            'p.suggestion'
+                            ];
+                            
+                            const tagsToRemove = toRemove.map(s => document.querySelector(s));
+                            
+                            tagsToRemove.forEach(
+                            (tag) => { if (tag) {tag.classList.add('hidden');} }
+                            );
+                            
+                            const toshow = [
+                            'button.select-tasks',
+                            'div.circle'
+                            ];
+                            
+                            const tagsToShow = toshow.map(s => document.querySelector(s));
+                            
+                            tagsToShow.forEach(
+                            (tag) => { if (tag) {tag.classList.remove('hidden');} }
+                            );
+                            
+                            document.querySelector("button.select-tasks").innerHTML = 'Back to <i class="fa fa-home"></i>';
+                            document.querySelector("button.select-tasks").href = 'index.html';
+                            
+                            
+                            displayQuestions(postObject, 'POST');
+                            document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
+                            document.getElementById('preQ').style.transition = "all 1s";
+                            document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
+                            document.getElementById('com-tasks').style.transition = "all 1s";
+                            document.getElementById('postQ').style.backgroundColor = '#02897A';    
+                            document.getElementById('postQ').style.transition = "all 1s";
+                        }
+                    });
+                    
+                    document.getElementById('com-tasks').addEventListener('click', async function() {
+                        
+                        displaySelectedTasks(tasks, detailed);
+                        document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
+                        document.getElementById('preQ').style.transition = "all 1s";
+                        document.getElementById('postQ').style.backgroundColor = '#a9d1cd';    
+                        document.getElementById('postQ').style.transition = "all 1s";
+                        document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
+                        document.getElementById('com-tasks').style.transition = "all 1s";
+                    });
                 } catch (err) {
                     //Debugging handling errors
                     console.error("Caught error: ", err);
@@ -739,7 +781,9 @@
                     cardContainer.innerHTML = '<div class="empty-state">Opps! no results available.</div>';
                     
                 } finally {
-                    hideSpinner(bOverlay, condition);
+                    console.log("bOverlay is:", bOverlay);
+                    console.log("spinner is:", spinner);
+                    hideSpinner([bOverlay, spinner], condition);
                 }          
             });
 

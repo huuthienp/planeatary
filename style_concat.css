@@ -955,18 +955,6 @@ margin-top: 20px;
   z-index: 3000 !important;
 }
 
-.warning-container {
-  display: flex;
-  position: fixed !important;
-  justify-content: flex-end;
-  align-items: flex-start;
-  top: 5%;
-  margin: 0 auto;
-  width: 100% !important;
-  height: 100%;
-  z-index: -1;
-}
-
 .overlay {
   display: flex;
   justify-content: center;
@@ -1054,6 +1042,7 @@ margin-top: 20px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background-color: white;
 }
 
 .modal2 > .btn {
@@ -1410,7 +1399,7 @@ margin-top: 20px;
 }
 .question {
     background-color: #fff;
-    padding: 2em;
+    padding: 1em;
     border-radius: 1em;
     box-shadow: 0 0.4em 0.6em rgba(0, 0, 0, 0.1);
     width: 30%;

@@ -72,7 +72,7 @@
                 </div>
             </nav>
         </div>
-        <div class="m-content">
+        <div class="m-content hidden">
             <div class="subheader">
                 <p id="threetask"></p>
             </div>
@@ -104,9 +104,9 @@
     </section>
     
     <!-- The Modal 2-->
-    <section class="overlay2 hidden2">
+    <section class="overlay2 hidden">
         <div class="align2">
-            <div class="modal2 hidden2" style="background-color: white;"> 
+            <div class="modal2 hidden" style="background-color: white;"> 
                 <div class="btn">
                     <button class="close" id = "closeDes">x</button>
                 </div>
@@ -142,19 +142,15 @@
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script type="module">
         import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
+        import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
         
+        const mainContainer = document.querySelector(".m-content");
         const QContainer = document.querySelector(".q-task");
         const startButton = document.querySelector(".start");
         const good = document.getElementById("good");
         const bad = document.getElementById("notyet");
         good.style.backgroundColor = '#a9d1cd';
         bad.style.backgroundColor = '#02897A';
-        
-        const spinner = document.getElementById('spinner');
-        let isLoading = false;
-        const minDisplayTime = 2000; 
-        let spinnerStartTime;
-        const spOver = document.getElementById("spinnerOverlay");
         
         const modal = document.querySelector(".modal");
         const overlay = document.querySelector(".overlay");
@@ -171,29 +167,14 @@
         const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
 
         offcanvasLinks.forEach(li => {
-                li.addEventListener('click', event => {
-                    const targetHref = li.getAttribute('href');
-                    
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                    
-                    if (targetHref) {
-                        window.location.href = targetHref; 
-                    }
-                });
-            });
-            
-            offcanvasDropdown.forEach(li => {
-                li.addEventListener('click', event => {
-                    const targetHref = li.getAttribute('href');
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                    
-                    if (targetHref) {
-                        window.location.href = targetHref; 
-                    }
-                });
-            });
+            if (li !== document.getElementById('navChallenge')) {
+                li.addEventListener('click', handleOffcanvasClick);
+            } 
+        });
+
+        offcanvasDropdown.forEach(li => {
+            li.addEventListener('click', handleOffcanvasClick);
+        });
 
         offcanvasListItems.forEach(li => {
             li.addEventListener('click', event => {
@@ -227,74 +208,27 @@
             });
         })
 
-        function showSpinner() {
-            spinner.classList.remove('hidden');
-            spOver.classList.remove('hidden');
-            isLoading = true;
-            spinnerStartTime = Date.now();
-        };
-        
-        function hideSpinner() {
-            const elapsedTime = Date.now() - spinnerStartTime;
-            
-            if (elapsedTime < minDisplayTime) {
-                setTimeout(() => {
-                    spinner.classList.add('hidden');
-                    spOver.classList.add('hidden');
-                    isLoading = false;
-                }, minDisplayTime - elapsedTime);
-            } else {
-                spinner.classList.add('hidden');
-                spOver.classList.add('hidden');
-                isLoading = false;
-            }
-        }
-        
-        function isTokenExpired(token) {
-            if (!token) return true;
-            
-            const base64Payload = token.split('.')[1]; 
-            const decodedPayload = JSON.parse(atob(base64Payload));
-            const exp = decodedPayload.exp; 
-            
-            // Compare current time with expiration time
-            const now = Math.floor(Date.now()/1000); 
-            return exp < now; // Returns true if token is expired
-        }
-
         function Modal(source) {
-            close.classList.remove('hidden');
+            const elements = [close, modal, overlay];
             const modalContent = document.querySelector(".modal_content");
             const image = document.getElementById("visual_info");
             image.src = source;
-            modal.classList.remove('hidden');
-            overlay.classList.remove('hidden');
-        };
+            showElement(elements);
+        }
         
         function ModalDes(title, des) {
-            closeDes.classList.remove('hidden2');
+            const elements = [closeDes, modal2, overlay2];
             const modalContent = document.querySelector(".modal-content");
             const text = document.getElementById("inform");
             modalTitle.textContent = title;
             const taskDescription = des.replace('target="_blank"', 'rel="noopener noreferrer"');
             text.innerHTML = taskDescription;
-            modal2.classList.remove('hidden2');
-            overlay2.classList.remove('hidden2');
+            showElement(elements);
             
-        };
-        
-        function Close() {
-            close.classList.add('hidden');
-            modal.classList.add("hidden");
-            overlay.classList.add('hidden');
-            
-        };
-        
-        function CloseDes() {
-            closeDes.classList.add('hidden2');
-            modal2.classList.add("hidden2");
-            overlay2.classList.add('hidden2');
-        };
+        }
+
+        const Close = () => hideElement([close, modal, overlay]);    
+        const CloseDes = () => hideElement([closeDes, modal2, overlay2]);
         
         
         document.getElementById("close").addEventListener("click", Close);
@@ -305,31 +239,6 @@
             if (event.target === modalOverlay) {
                 close();
                 CloseDes();
-            }
-        });
-        
-        function logOut() {
-            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-            
-            if (netlifyIdentity.gotrue.currentUser() !== null) {
-                let user = netlifyIdentity.gotrue.currentUser();
-                user.logout().then(() => {
-                    offcanvas.hide();
-                    sessionStorage.removeItem('selectedCycle');
-                    console.log('User has been logged out!');
-                    window.location.href = "index.html";
-                });
-            } else {
-                window.location.href = "index.html";
-                console.log("No user is logged in!");
-            }
-        }
-        
-        document.getElementById('logOut').addEventListener('click', () => {
-            if(confirm("Do you really want to sign out?") == true) {
-                showSpinner();
-                logOut();
-                hideSpinner();
             }
         });
         
@@ -576,6 +485,19 @@
             const userId = user.id;
             console.log("your user id is ", userId);
 
+            let startTime = Date.now();
+            const Condition = [false, startTime];
+            const bOverlay = document.getElementById("spinnerOverlay");
+            const spinner = document.getElementById("spinner");
+
+            document.getElementById('logOut').addEventListener('click', async () => {
+                if(confirm("Do you really want to sign out?") == true) {
+                    showSpinner([bOverlay, spinner], Condition);
+                    await logOut();
+                    hideSpinner([bOverlay, spinner], Condition);
+                }
+            })
+
             var preObject = JSON.parse(localStorage.getItem('preResult')); 
             var preResult = preObject && preObject.result ? preObject.result : {};
             var preResponseId = preObject && preObject.responseId ? preObject.responseId : "";
@@ -589,7 +511,7 @@
             
             try {
                 
-                showSpinner();
+                showSpinner([bOverlay, spinner], Condition);
                 const user = netlifyIdentity.gotrue.currentUser();
                 
                 if (user) {
@@ -607,6 +529,8 @@
                 const metadata = user.user_metadata;
                 const responseHistory = metadata.responseHistory;
                 const userId = user.id;
+
+                mainContainer.classList.remove('hidden');
 
                 //handle first-time user
                 if (metadata.responseHistory.length === 0 && !preObject) {
@@ -696,7 +620,7 @@
             } catch (err) {
                 console.error("Caught error: ", err);
             } finally {
-                hideSpinner();
+                hideSpinner([bOverlay, spinner], Condition);
             }      
         });
     </script>
