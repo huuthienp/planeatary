@@ -98,9 +98,9 @@
                             <p class="next-step">Next step: Select 10 Tasks To Improve Your Scores!</p>
                             <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
                         </div>
-                    <button class="select-tasks">
-                        <a href="manifesto_page.html">Select Tasks →</a>
-                    </button>
+                    
+                        <a class="btn select-tasks" href="manifesto_page.html">Select Tasks →</a>
+                    
                 </div>
                 <div class="q">
                     <div class="questions"></div>
@@ -321,7 +321,7 @@
                     'p.next-step',
                     'p.improvement',
                     'p.suggestion',
-                    'button.select-tasks'
+                    'a.select-tasks'
                     ];
                     
                     header.innerHTML = 'Completed tasks';
@@ -487,9 +487,9 @@
                     }
                 });
 
-                document.querySelector("button.select-tasks").addEventListener('click', function(event) {
-                    if (document.querySelector("button.select-tasks > a").href !== null) {
-                        window.location.href = document.querySelector("button.select-tasks > a").href;
+                document.querySelector("a.select-tasks").addEventListener('click', function(event) {
+                    if (document.querySelector("a.select-tasks").href !== null) {
+                        window.location.href = document.querySelector("a.select-tasks").href;
                     }
                 })
                 
@@ -505,7 +505,7 @@
                     const toshow = [
                     'p.next-step',
                     'p.suggestion',
-                    'button.select-tasks'
+                    'a.select-tasks'
                     ];
 
                     const tagsToShow = toshow.map(s => document.querySelector(s));
@@ -514,7 +514,7 @@
                     (tag) => { if(tag) {tag.classList.remove('hidden');} }
                     );    
 
-                    document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';
+                    document.querySelector("a.select-tasks").innerHTML = 'Select Tasks →';
                     
                     const userData = await getUserData();
                     if (userData) {
@@ -545,7 +545,7 @@
                             const tohide = [
                             'p.next-step',
                             'p.suggestion',
-                            'button.select-tasks',
+                            'a.select-tasks',
                             'div.circle',
                             'div.pre-postQ'
                             ];
@@ -623,8 +623,8 @@
                             document.getElementById('postQ').style.backgroundColor = '#02897A';
                             document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
-                            document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
-                            document.querySelector("button.select-tasks > a").href = 'index.html';
+                            document.querySelector("a.select-tasks").innerHTML = 'Back to <i class="fa fa-home"></i>';
+                            document.querySelector("a.select-tasks").href = 'index.html';
                             
                         } else if (preObject && !postObject) {
                             
@@ -632,7 +632,7 @@
                             const toshow = [
                             'p.next-step',
                             'p.suggestion',
-                            'button.select-tasks',
+                            'a.select-tasks',
                             'div.circle'
                             ];
                             
@@ -651,8 +651,8 @@
                             document.getElementById('preQ').style.backgroundColor = '#02897A';   
                             document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
-                            document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';
-                            document.querySelector("button.select-tasks > a").href = 'manifesto_page.html';
+                            document.querySelector("a.select-tasks").innerHTML = 'Select Tasks →';
+                            document.querySelector("a.select-tasks").href = 'manifesto_page.html';
                             document.getElementById('postQ').disabled = true; 
                             
                         } else {
@@ -667,7 +667,7 @@
                             const toshow = [
                             'p.next-step',
                             'p.suggestion',
-                            'button.select-tasks',
+                            'a.select-tasks',
                             'div.circle'
                             ];
                             
@@ -677,12 +677,12 @@
                             (tag) => { if (tag) {tag.classList.remove('hidden');} }
                             );
                             
-                            document.querySelector("button.select-tasks > a").innerHTML = 'Select Tasks →';
-                            document.querySelector("button.select-tasks > a").href = 'manifesto_page.html';
+                            document.querySelector("a.select-tasks").innerHTML = 'Select Tasks →';
+                            document.querySelector("a.select-tasks").href = 'manifesto_page.html';
                             
                         } else {
                             const toshow = [
-                            'button.select-tasks',
+                            'a.select-tasks',
                             'div.circle'
                             ];
                             
@@ -692,8 +692,8 @@
                             (tag) => { if (tag) {tag.classList.remove('hidden');} }
                             );
                             
-                            document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
-                            document.querySelector("button.select-tasks > a").href = 'index.html';
+                            document.querySelector("a.select-tasks").innerHTML = 'Back to <i class="fa fa-home"></i>';
+                            document.querySelector("a.select-tasks").href = 'index.html';
                         }
                         
                         displayQuestions(preObject, 'PRE');
@@ -722,7 +722,7 @@
                             );
                             
                             const toshow = [
-                            'button.select-tasks',
+                            'a.select-tasks',
                             'div.circle'
                             ];
                             
@@ -732,8 +732,8 @@
                             (tag) => { if (tag) {tag.classList.remove('hidden');} }
                             );
                             
-                            document.querySelector("button.select-tasks > a").innerHTML = 'Back to <i class="fa fa-home"></i>';
-                            document.querySelector("button.select-tasks > a").href = 'index.html';
+                            document.querySelector("a.select-tasks").innerHTML = 'Back to <i class="fa fa-home"></i>';
+                            document.querySelector("a.select-tasks").href = 'index.html';
                             
                             
                             displayQuestions(postObject, 'POST');
@@ -763,7 +763,7 @@
                     const tohide = [
                     'p.next-step',
                     'p.suggestion',
-                    'button.select-tasks',
+                    'a.select-tasks',
                     'div.circle',
                     'div.pre-postQ'
                     ];
