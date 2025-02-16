@@ -292,6 +292,7 @@
                     // view button
                     view.innerHTML = '<button type="button" class="btn btn-success track-back">View</button>';
                     view.addEventListener('click', () => {
+                        event.stopPropagation();
                         // store cycle in session storage
                         console.log("Cycle stored:", cycle);
                         sessionStorage.setItem('selectedCycle', JSON.stringify(cycle));
