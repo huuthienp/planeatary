@@ -317,16 +317,16 @@
                 
                 document.getElementById('logOut').addEventListener('click', async () => {
                     if(confirm("Do you really want to sign out?") == true) {
-                        showSpinner(bOverlay, condition);
+                        showSpinner([bOverlay, spinner], condition);
                         await logOut();
-                        hideSpinner(bOverlay, condition);
+                        hideSpinner([bOverlay, spinner], condition);
                     }
                 })
                 
                 try {
                     var preQuiz;
                     var postQuiz;
-                    showSpinner(bOverlay, condition);
+                    showSpinner([bOverlay, spinner], condition);
                     
                     updateButton(restartBtn, 'grey', 'not-allowed');
                     const user = netlifyIdentity.gotrue.currentUser();
@@ -428,7 +428,7 @@
                     
                 } finally {
                     //if (preObject && user) {await updateResponseHistory(preObject, user)}
-                    hideSpinner(bOverlay, condition);
+                    hideSpinner([bOverlay, spinner], condition);
                 }
                 
                 // Listen to preResult change in localStorage
