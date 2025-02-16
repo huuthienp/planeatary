@@ -227,6 +227,17 @@
                 return newAllResponses;
             }
             
+            function createViewButton(cycle) {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.classList.add('btn', 'btn-success', 'track-back');
+                button.textContent = 'View';
+                button.addEventListener('click', () => {
+                    sessionStorage.setItem('selectedCycle', JSON.stringify(cycle));
+                    window.location.href = "result_page.html";
+                });
+                return button;
+            }
             
             async function displayTable(user, userId) {
 
@@ -289,17 +300,10 @@
                         postdate.textContent = 'N/A';
                     }
                     
-                    // view button
-                    view.innerHTML = '<button type="button" class="btn btn-success track-back">View</button>';
-                    view.addEventListener('click', () => {
-                        event.stopPropagation();
-                        // store cycle in session storage
-                        console.log("Cycle stored:", cycle);
-                        sessionStorage.setItem('selectedCycle', JSON.stringify(cycle));
-                        window.location.href = "result_page.html";
-                    });
+                    const viewCell = document.createElement('td');
+                    viewCell.appendChild(createViewButton(cycle));
                     
-                    cycleRow.append(prescore, predate, postscore, postdate, taskcycle, view);
+                    cycleRow.append(prescore, predate, postscore, postdate, taskcycle, viewCell);
                     table.appendChild(cycleRow);
                 });
             }
