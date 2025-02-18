@@ -549,23 +549,20 @@
                             postObject = storedCycle?.postResponse ?? null;
                             postResult = postObject?.result ?? null;
                             post_rec = postObject?.recordedDate ?? null;
-                            
+
                             try {
                                 tasks = await fetchTasks(preResponseId);  
-                                sessionStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                                tasks = JSON.parse(sessionStorage.getItem(`${preResponseId}:tasks`));
+                                localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                                tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
                                 var selectTasks = await fetchTaskStatus(preResponseId, userId);
-                                sessionStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
-                                detailed = JSON.parse(sessionStorage.getItem(`${preResponseId}:fetched_tasks`));
+                                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
+                                detailed = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                                 task_rec = detailed?.time ?? []; 
-                                
+
                             } catch(err) {
                                 console.warn("Couldn't find history tasks' info:", err);
                             }
-
-                            if(postObject) {
-                                sessionStorage.setItem('selectedCycle_post', JSON.stringify(postObject));
-                            }
+                            
                         }
                         
                         if (!tasks) {
