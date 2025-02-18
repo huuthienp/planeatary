@@ -207,8 +207,7 @@ body {
     flex-wrap: wrap;
     gap: 1.5vmax;
     justify-content: space-evenly;
-    flex-direction: column !important;
-    padding: 0 2vw;
+    flex-direction: row !important;
   }
 }
 
@@ -376,14 +375,7 @@ body {
   color: rgba(0,0,0,1);
   font-size: 1em;
 }
-.content .Card {
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5vmax;
-  justify-content: space-evenly;
-  flex-direction: row;
-}
+
 
 .card_completed {
   padding: 3vh 3vw;
@@ -662,33 +654,6 @@ body {
 .reflect-section a:hover {
   text-decoration: none; /* Remove underline on hover */
 }
-/* .background-section {
-display: flex;
-text-align: center;
-margin: 0 auto;
-justify-content: space-evenly;
-flex-direction: column;
-}
-
-.background-section h2 {
-font-size: 24px;
-color: #333;
-}
-
-.background-section hr {
-border: none;
-border-top: 1px solid #ccc;
-margin: 20px auto;
-}
-
-.background-content {
-display: flex;
-justify-content: space-between;
-align-items: flex-start;
-margin-top: 20px;
-}
-
-*/
 
 .people {
   display: none;
@@ -870,6 +835,16 @@ margin-top: 20px;
   color: white;
   border-top-right-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
+}
+
+.content .Card {
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5vmax;
+  justify-content: space-evenly;
+  flex-direction: column;
+  padding: 0 2vw;
 }
 
 .task-content {
@@ -1341,7 +1316,7 @@ margin-top: 20px;
   width: 90%;
   height: 90%;
   border-radius: 50%;
-  background: #386783;
+  background: #27475b;
   font-size: 24px;
   color: #fff;
   line-height: 135px;
@@ -1409,6 +1384,11 @@ margin-top: 20px;
 .question h3 {
     margin-top: 0;
     font-size: 1em;
+}
+
+.question h4 {
+  margin-top: 0;
+  font-size: 1em;
 }
 
 .question.red {

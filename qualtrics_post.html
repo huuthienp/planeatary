@@ -455,7 +455,7 @@
                 
                 const quizFrame = document.querySelector('div.content > iframe.quiz');
                 const fallbackMessage = document.querySelector(".fallback");
-                fallbackMessage.classList.add("empty-state");
+                //fallbackMessage.classList.add("empty-state");
                 
                 const { type, detail: { key, oldValue, newValue } } = event;
                 console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
