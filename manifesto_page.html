@@ -450,6 +450,8 @@
                         questionDiv.appendChild(taskList);
                         QContainer.appendChild(questionDiv);
                         localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                    } else {
+                        QContainer.innerHTML = "<div class='void'>None of your answers score in this section</div>";
                     }
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     updateStartButton(preResponseId, userId, tasks, fetched_tasks); 

@@ -1,5 +1,5 @@
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins';
   margin: 0;
   padding: 0;
   background-color: white;
@@ -142,10 +142,10 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding-top: 10vh !important;
     gap: 2vmax;
     flex-direction: column;
     max-width: 50% !important;
+    padding-right: 2vw;
   }
   
   .do-you-know .video {
@@ -217,7 +217,7 @@ body {
   height: 100%;
   margin: 0 auto;
   flex-direction: column;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins';
 }
 
 .welcome {
@@ -236,6 +236,9 @@ body {
   gap: 5vh;
 }
 
+.carousel-item {
+  height: 400px;
+}
 
 .greeting {
   width: 80%;
@@ -804,7 +807,7 @@ body {
 .button2 > .start {
   border: none;
   font-size: 1em;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins';
   padding: 1vh 2vw;
   background-color: grey;
   color: white;
@@ -819,7 +822,7 @@ body {
 #good {
   border: none;
   font-size: 1em;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins';
   padding: 1vh 3.5vw;
   background-color: #559e4f;
   color: rgb(255, 255, 255);
@@ -829,7 +832,7 @@ body {
 #notyet {
   border: none;
   font-size: 1em;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins';
   padding: 1vh 2vw;
   background-color: #891202;
   color: white;
@@ -911,7 +914,7 @@ body {
   z-index: 3001;
   top: 70px;
   left: auto;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins';
   color: #02897A; 
 }
 
@@ -1085,7 +1088,7 @@ body {
 }
 .next {
   font-size: 1em;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins';
   padding: 1vh 2vw;
   border-radius: 0.5em;
   border: none;
@@ -1119,7 +1122,7 @@ body {
 }
 .q-num {
   font-size: 16px;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins';
   padding: 8px 16px;
   border-radius: 4px;
   border: none;
@@ -1159,7 +1162,7 @@ body {
   margin: 2vh 0;
 }
 #preQ {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins';
   background-color: #b1d8d3;
   color: rgb(109, 102, 102);
   border: none;
@@ -1169,7 +1172,7 @@ body {
   font-size: 1em;
 }
 #postQ {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins';
   background-color: #02897A;
   color: white;
   border: none;
@@ -1178,7 +1181,7 @@ body {
 }
 
 #com-tasks {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins';
   background-color: #02897A;
   color: white;
   border: none;
@@ -1357,7 +1360,7 @@ body {
     border: none;
     border-radius: 0.5em;
     font-size: 1em;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins';
     cursor: pointer;
 }
 

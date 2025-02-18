@@ -335,7 +335,7 @@
                     );
                     
                     if (!detailed) {
-                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
+                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is no information available here.</div>";
                         return;
                     }
 
@@ -778,7 +778,7 @@
                     tagsToHide.forEach(
                     (tag) => { if(tag) {tag.classList.add('hidden');} }
                     );
-                    cardContainer.innerHTML = '<div class="empty-state">Opps! no results available.</div>';
+                    cardContainer.innerHTML = `<div class="empty-state">Opps! no results available.\nThe error: ${err} is spotted!\nPlease allow us sometime to fix it.</div>`;
                     
                 } finally {
                     console.log("bOverlay is:", bOverlay);
