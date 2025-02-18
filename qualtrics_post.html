@@ -189,7 +189,7 @@
                 
                 import { initiateSurvey, fetchTaskStatus, extractTaskData, fetchResponses, updateButton } from './scripts/helpers.mjs';
                 import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick,
-                    handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+                    handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, hasPostQuizCycle, logOut } from './scripts/utility.js';
                 
                 var preObject = JSON.parse(localStorage.getItem('preResult'));
                 var preResult = preObject?.result;
@@ -247,7 +247,7 @@
                         li.addEventListener('click', event => {
                             event.preventDefault();
                             const link = li.querySelector('a.nav-link'); 
-                            if (link) {
+                            if (link && link !== document.getElementById('navChallenge')) {
                                 handleOffcanvasClickFromElement(link);
                             }
                         });
@@ -281,6 +281,8 @@
                             event.stopPropagation();
                             navChallenge.removeAttribute('href');
                             console.log("Navigation prevented. Calling showAlert().");
+                            showAlert();
+                        } else if (hasPostQuizResult()) {
                             showAlert();
                         } else {
                             handleOffcanvasClick(event);
@@ -342,22 +344,21 @@
                             console.log('Last entry:', entry);
                         }
                         
-                        
-                        if (storedCycle) {
-                            try {
+                        // if (storedCycle) {
+                        //     try {
                                 
-                                preObject = storedCycle?.preResponse ?? null;
-                                preResult = preObject?.result ?? null;
-                                preResponseId =preObject?.responseId ?? null;
+                        //         preObject = storedCycle?.preResponse ?? null;
+                        //         preResult = preObject?.result ?? null;
+                        //         preResponseId =preObject?.responseId ?? null;
                                 
-                                postObject = storedCycle?.postResponse ?? null;
-                                postResult = postObject?.result ?? null;
-                                postResponseId = postObject?.responseId ?? null;
+                        //         postObject = storedCycle?.postResponse ?? null;
+                        //         postResult = postObject?.result ?? null;
+                        //         postResponseId = postObject?.responseId ?? null;
                                 
-                            } catch(err) {
-                                console.log("Couldn't find previous info from history:", err);
-                            }
-                        } 
+                        //     } catch(err) {
+                        //         console.log("Couldn't find previous info from history:", err);
+                        //     }
+                        // } 
                         
                         if(preObject) {
                             var preResult = preObject?.result ?? null;

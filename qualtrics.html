@@ -288,6 +288,7 @@
                         console.log("Navigation prevented. Calling showAlert().");
                         showAlert();
                     } else if (hasPostQuizResult()) {
+                        console.log("Navigation prevented. Calling showAlert().");
                         showAlert();
                     } else {
                         handleOffcanvasClick(event);
@@ -378,11 +379,6 @@
                         postObject = postQuiz;
                         postResponseId = postQuiz?.responseId;
                         
-                        // updateAnchors(anchors, hrefs);
-                        // updateButton(nextButton, '#02897A', 'pointer');
-                        // quizFrame.style.display = 'none';
-                        // quizSpan.innerHTML = 'You have already finished the pre-quiz! <img src="./images/thumbs-up.gif">';
-                        // console.log('Found pre-quiz result in storage!\n', preObject);  
                     } else {
                         var allRes = await fetchResponses(userId);
                         allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
@@ -402,21 +398,19 @@
                         }
                     }
                     
-                    if (storedCycle) {
-                        try {            
-                            preObject = storedCycle?.preResponse ?? null;
-                            preResult = preObject?.result ?? null;
-                            preResponseId = preObject?.responseId ?? null;
+                    // if (storedCycle) {
+                    //     try {  
+                    //         if (storedCycle.preResponse && !storedCycle.postResponse) {
+                    //             preObject = storedCycle?.preResponse ?? null;
+                    //             preResult = preObject?.result ?? null;
+                    //             preResponseId = preObject?.responseId ?? null;
+                    //         }          
                             
-                            postObject = storedCycle?.postResponse ?? null;
-                            postResult = postObject?.result ?? null;
-                            postResponseId = postObject?.responseId ?? null;
-                            
-                        } catch(err) {
-                            console.warn("Couldn't find previous info from history:", err);
-                        }
+                    //     } catch(err) {
+                    //         console.warn("Couldn't find previous info from history:", err);
+                    //     }
                         
-                    } 
+                    // } 
                     
                     if (preObject && !postObject) {
                         updateAnchors(anchors, hrefs);

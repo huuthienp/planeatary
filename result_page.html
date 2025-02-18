@@ -152,7 +152,7 @@
         <script type="module">
             import { fetchTaskStatus, extractTaskData, updateAnchors } from './scripts/helpers.mjs';
             import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick
-                , handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, hasPostQuizCycle, logOut } from './scripts/utility.js';
+                , handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
             
             const mainContainer = document.querySelector(".m-content");
             const Qbuttoncontainer = document.querySelector(".pre-postQ");
@@ -435,7 +435,7 @@
                     li.addEventListener('click', event => {
                         event.preventDefault();
                         const link = li.querySelector('a.nav-link'); 
-                        if (link) {
+                        if (link && link !== document.getElementById('navChallenge')) {
                             handleOffcanvasClickFromElement(link);
                         }
                     })
@@ -463,7 +463,6 @@
                     console.log("navChallenge clicked");
                     console.log("navChallenge.href:", navChallenge.href);
                     console.log("hasPostQuizResult() returns:", hasPostQuizResult());
-                    console.log("hasPostQuizCycle() returns:", hasPostQuizCycle());
                     
                     if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
                         event.preventDefault();
@@ -471,7 +470,8 @@
                         navChallenge.removeAttribute('href');
                         console.log("Navigation prevented. Calling showAlert().");
                         showAlert();
-                    } else if (hasPostQuizResult() || hasPostQuizCycle()) {
+                    } else if (hasPostQuizResult()) {
+                        console.log("Navigation prevented. Calling showAlert().");
                         showAlert();
                     } else {
                         handleOffcanvasClick(event);
@@ -523,7 +523,6 @@
                         console.log("User ID:", userId);
                         console.log("Response History:", responseHistory);
                         
-                        //behave accordingly
                         //from history page
                         var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
                         
@@ -552,10 +551,14 @@
                             post_rec = postObject?.recordedDate ?? null;
                             
                             try {
+                                tasks = await fetchTasks(preResponseId);  
+                                sessionStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                                tasks = JSON.parse(sessionStorage.getItem(`${preResponseId}:tasks`));
                                 var selectTasks = await fetchTaskStatus(preResponseId, userId);
-                                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
-                                detailed = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                                sessionStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
+                                detailed = JSON.parse(sessionStorage.getItem(`${preResponseId}:fetched_tasks`));
                                 task_rec = detailed?.time ?? []; 
+                                
                             } catch(err) {
                                 console.warn("Couldn't find history tasks' info:", err);
                             }

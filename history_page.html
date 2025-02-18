@@ -319,6 +319,9 @@
             
             document.addEventListener("DOMContentLoaded", async () => {
 
+                //ensure the data's cycle selected from history page previously is always removed
+                sessionStorage.removeItem('selectedCycle');
+
                 document.getElementById('logOut').addEventListener('click', async () => {
                     if(confirm("Do you really want to sign out?") == true) {
                         showSpinner([bOverlay, spinner], condition);
@@ -375,7 +378,7 @@
                     li.addEventListener('click', event => {
                         event.preventDefault();
                         const link = li.querySelector('a.nav-link'); 
-                        if (link) {
+                        if (link && link !== document.getElementById('navChallenge')) {
                             handleOffcanvasClickFromElement(link);
                         }
                     })
