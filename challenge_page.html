@@ -234,7 +234,7 @@
             }
                 
                 //Function to update the Next button's state
-                async function updateNextButton(preResponseId, userId, tasks, Tstatus) {
+                function updateNextButton(preResponseId, userId, tasks, Tstatus) {
                     let allCompleted = true;
                     
                     Object.keys(tasks).forEach(questionKey => {
@@ -345,7 +345,7 @@
                                     // Toggle task status between "Done" and "Completed"
                                     
                                     completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
-                                    await delay(500); 
+                                    await delay(1000); 
                                     
                                     task.status = task.status === "Done" ? "Completed" : "Done";
                                     
@@ -377,45 +377,8 @@
                                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                                     if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
                                     updateNextButton(preResponseId, userId, tasks, Tstatus);
-                                    console.log("time array:", Tstatus.time);
                                     
-                                    if (Tstatus.time.findIndex(el => el === "") === -1 && Tstatus.time.length == Tstatus.chosen.length) {
-                                        let latestTimestamp = Math.max(...Tstatus.time);
-                                        var separator = '@';
-                                        const merged = mergeTaskArrays(tasks, separator);
-                                        // Filter out tasks with finish times (those containing "@")
-                                        const tasksWithFinishTimes = merged.chosen.filter(task => task.includes("@"));
-                                        // Map to extract finish times and task numbers
-                                        const taskDetails = tasksWithFinishTimes.map(task => {
-                                            const [taskNumber, finishTime] = task.split("@");
-                                            return { taskNumber: taskNumber, finishTime: Number(finishTime) };
-                                        });
-                                        // Sort tasks by finishTime in descending order
-                                        taskDetails.sort((a, b) => b.finishTime - a.finishTime);
-                                        // Get the task with the latest finish time
-                                        const latestTask = taskDetails[0];
-                                        const lastTask = `${latestTask.taskNumber}@${latestTask.finishTime}`;
-                                        // Update response history
-                                        try {
-                                            await updateResponseHistory(preResponseId, lastTask);
-                                            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                                            console.log(`Response history updated with task: ${lastTask}`);
-                                            console.log("Tasks updated!");
-                                        } catch (err) {
-                                            console.error("Error updating: ", err);
-                                        }
-                                    } else {
-                                        const lastTask = "";
-                                        // Update response history with empty last task
-                                        try {
-                                            await updateResponseHistory(preResponseId, lastTask);
-                                            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                                            console.log(`Response history updated with empty task: ${lastTask}`);
-                                            console.log("Tasks updated!");
-                                        } catch (err) {
-                                            console.error("Error updating: ", err);
-                                        }
-                                    }
+                                    await updateTaskAndResponseHistory(Tstatus, tasks, preResponseId, userId);
                                 })      
                             }
                             localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
@@ -430,45 +393,53 @@
                     updateNextButton(preResponseId, userId, tasks, Tstatus);
                     cardContainer.appendChild(nextButtonContainer);
                     
-                    console.log("time array:", Tstatus.time);
-                    if (Tstatus.time.findIndex(el => el === "") === -1 && Tstatus.time.length == Tstatus.chosen.length) {
-                        let latestTimestamp = Math.max(...Tstatus.time);
-                        var separator = '@';
-                        const merged = mergeTaskArrays(tasks, separator);
-                        // Filter out tasks with finish times (those containing "@")
-                        const tasksWithFinishTimes = merged.chosen.filter(task => task.includes("@"));
-                        // Map to extract finish times and task numbers
-                        const taskDetails = tasksWithFinishTimes.map(task => {
-                            const [taskNumber, finishTime] = task.split("@");
-                            return { taskNumber: taskNumber, finishTime: Number(finishTime) };
-                        });
-                        // Sort tasks by finishTime in descending order
-                        taskDetails.sort((a, b) => b.finishTime - a.finishTime);
-                        // Get the task with the latest finish time
-                        const latestTask = taskDetails[0];
-                        const lastTask = `${latestTask.taskNumber}@${latestTask.finishTime}`;
-                        // Update response history
-                        try {
-                            await updateResponseHistory(preResponseId, lastTask);
-                            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                            console.log(`Response history updated with task: ${lastTask}`);
-                            console.log("Tasks updated!");
-                        } catch (err) {
-                            console.error("Error updating: ", err);
-                        }
-                    } else {
-                        const lastTask = "";
-                        // Update response history with empty last task
-                        try {
-                            await updateResponseHistory(preResponseId, lastTask);
-                            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                            console.log(`Response history updated with empty task: ${lastTask}`);
-                            console.log("Tasks updated!");
-                        } catch (err) {
-                            console.error("Error updating: ", err);
-                        }
+                    await updateTaskAndResponseHistory(Tstatus, tasks, preResponseId, userId);
+                }
+
+            async function updateTaskAndResponseHistory(Tstatus, tasks, preResponseId, userId) {
+                console.log("time array:", Tstatus.time);
+                // Check if all tasks have finish times and the time array length equals chosen tasks length
+                if (Tstatus.time.findIndex(el => el === "") === -1 && Tstatus.time.length === Tstatus.chosen.length) {
+                    let latestTimestamp = Math.max(...Tstatus.time);
+                    const separator = '@';
+                    
+                    // Merge tasks using your mergeTaskArrays function 
+                    const merged = mergeTaskArrays(tasks, separator);
+                    const tasksWithFinishTimes = merged.chosen.filter(task => task.includes(separator));
+                    const taskDetails = tasksWithFinishTimes.map(task => {
+                        const [taskNumber, finishTime] = task.split(separator);
+                        return { taskNumber, finishTime: Number(finishTime) };
+                    });
+                    
+                    taskDetails.sort((a, b) => b.finishTime - a.finishTime);
+                    
+                    // Get the task with the latest finish time
+                    const latestTask = taskDetails[0];
+                    const lastTask = `${latestTask.taskNumber}${separator}${latestTask.finishTime}`;
+                    
+                    try {
+                        // Update the response history with the latest finished task
+                        await updateResponseHistory(preResponseId, lastTask);
+                        // Update task status from localStorage 
+                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                        console.log(`Response history updated with task: ${lastTask}`);
+                        console.log("Tasks updated!");
+                    } catch (err) {
+                        console.error("Error updating:", err);
+                    }
+                } else {
+                    const lastTask = "";
+                    // If not all tasks are completed, update the response history with an empty lastTask
+                    try {
+                        await updateResponseHistory(preResponseId, lastTask);
+                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                        console.log(`Response history updated with empty task: ${lastTask}`);
+                        console.log("Tasks updated!");
+                    } catch (err) {
+                        console.error("Error updating:", err);
                     }
                 }
+            }
             
             document.addEventListener("DOMContentLoaded", async function() {
                 
@@ -503,10 +474,7 @@
                             if (link.classList.contains('Disabled')) {
                                 showToast(); 
                             } else {
-                                const targetHref = link.getAttribute('href');
-                                if (targetHref && targetHref !== '#') {
-                                    window.location.href = targetHref;
-                                }
+                                handleOffcanvasClickFromElement(link);
                             }
                         }
                         const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -523,10 +491,7 @@
                             if (link.classList.contains('Disabled')) {
                                 showToast(); 
                             } else {
-                                const targetHref = link.getAttribute('href');
-                                if (targetHref && targetHref !== '#') {
-                                    window.location.href = targetHref;
-                                }
+                                handleOffcanvasClickFromElement(link);
                             }
                         }
                         const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -616,8 +581,36 @@
                     hideSpinner([bOverlay, spinner], condition);
                 }
                 
-            });
-            
+                window.addEventListener('unload', async () => {
+                    let preObject = JSON.parse(localStorage.getItem('preResult'));
+                    let preResponseId = preObject?.responseId ?? ""; 
+                    let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+                    let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    if (!user) {
+                        console.error("No user is logged in!");
+                        return;
+                    }
+                    
+                    const token = await user.jwt();
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                        return;
+                    }
+                    
+                    const userId = user.id;
+                    const mergedData = mergeTaskArrays(tasks);
+                    const payload = JSON.stringify({
+                        id: preResponseId,
+                        userId: userId,
+                        chosen: mergedData.chosen,
+                    });
+                    
+                    const beaconSent = navigator.sendBeacon('/api/manage-tasks', payload);
+                    console.log("Beacon sent:", beaconSent);
+                });
+            });  
             
         </script>
         <!-- Bootstrap Javascript -->

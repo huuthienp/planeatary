@@ -214,7 +214,7 @@
         <div class="b-example-divider"></div>
         
         <section class="container-fluid p-5">
-            <h2>BACKGROUND: How was the PlanEATary Quest developed?</h2>
+            <h2><b>BACKGROUND: How was the PlanEATary Quest developed?</b></h2>
             <hr>
             <div class="row d-flex">
                 <div class="people">
@@ -606,16 +606,14 @@
         // Function to handle navigation or showing toast
         offcanvasListItems.forEach(li => {
             li.addEventListener('click', event => {
+                event.preventDefault();
                 const link = li.querySelector('a.nav-link'); 
                 
                 if (link) {
                     if (link.classList.contains('Disabled')) {
                         showToast(); 
                     } else {
-                        const targetHref = link.getAttribute('href');
-                        if (targetHref && targetHref !== '#') {
-                            window.location.href = targetHref;
-                        }
+                        handleOffcanvasClickFromElement(link);
                     }
                 }
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -626,16 +624,13 @@
         // Function to handle navigation or showing toast
         offcanvasDropdownItems.forEach(li => {
             li.addEventListener('click', event => {
+                event.preventDefault();
                 const link = li.querySelector('a.dropdown-item'); 
-                
                 if (link) {
                     if (link.classList.contains('Disabled')) {
                         showToast(); 
                     } else {
-                        const targetHref = link.getAttribute('href');
-                        if (targetHref && targetHref !== '#') {
-                            window.location.href = targetHref;
-                        }
+                        handleOffcanvasClickFromElement(link);
                     }
                 }
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);

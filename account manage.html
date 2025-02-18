@@ -235,16 +235,14 @@
         // Function to handle navigation or showing toast
         offcanvasListItems.forEach(li => {
             li.addEventListener('click', event => {
+                event.preventDefault();
                 const link = li.querySelector('a.nav-link'); 
                 
                 if (link) {
                     if (link.classList.contains('Disabled')) {
                         showToast(); 
                     } else {
-                        const targetHref = link.getAttribute('href');
-                        if (targetHref && targetHref !== '#') {
-                            window.location.href = targetHref;
-                        }
+                        handleOffcanvasClickFromElement(link);
                     }
                 }
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -255,16 +253,14 @@
         // Function to handle navigation or showing toast
         offcanvasDropdownItems.forEach(li => {
             li.addEventListener('click', event => {
+                event.preventDefault();
                 const link = li.querySelector('a.dropdown-item'); 
                 
                 if (link) {
                     if (link.classList.contains('Disabled')) {
                         showToast(); 
                     } else {
-                        const targetHref = link.getAttribute('href');
-                        if (targetHref && targetHref !== '#') {
-                            window.location.href = targetHref;
-                        }
+                        handleOffcanvasClickFromElement(link);
                     }
                 }
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);

@@ -372,14 +372,10 @@
                 // Function to handle navigation or showing toast
                 offcanvasListItems.forEach(li => {
                     li.addEventListener('click', event => {
+                        event.preventDefault();
                         const link = li.querySelector('a.nav-link'); 
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
                         if (link) {
-                            const targetHref = link.getAttribute('href');
-                            if (targetHref && targetHref !== '#') {
-                                window.location.href = targetHref;
-                            }
+                            handleOffcanvasClickFromElement(link);
                         }
                     })
                     
@@ -388,15 +384,10 @@
                 // Function to handle navigation or showing toast
                 offcanvasDropdownItems.forEach(li => {
                     li.addEventListener('click', event => {
+                        event.preventDefault();
                         const link = li.querySelector('a.dropdown-item'); 
-                        
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
                         if (link) {
-                            const targetHref = link.getAttribute('href');
-                            if (targetHref && targetHref !== '#') {
-                                window.location.href = targetHref;
-                            }
+                            handleOffcanvasClickFromElement(link);
                         }
                     });
                 })

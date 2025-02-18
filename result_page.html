@@ -432,25 +432,23 @@
 
                 offcanvasListItems.forEach(li => {
                     li.addEventListener('click', event => {
+                        event.preventDefault();
                         const link = li.querySelector('a.nav-link'); 
                         if (link) {
-                            li.addEventListener('click', handleOffcanvasClick);
+                            handleOffcanvasClickFromElement(link);
                         }
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
-                    });
+                    })
                 });
                 
                 offcanvasDropdownItems.forEach(li => {
                     li.addEventListener('click', event => {
+                        event.preventDefault();
                         const link = li.querySelector('a.dropdown-item'); 
                         if (link) {
-                            li.addEventListener('click', handleOffcanvasClick);
+                            handleOffcanvasClickFromElement(link);
                         }
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
-                    });
-                })
+                    })
+                });
                 
                 const navChallenge = document.getElementById('navChallenge');
                 

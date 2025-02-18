@@ -1,5 +1,5 @@
 body {
-  font-family: 'Poppins';
+  font-family: 'Poppins' !important;
   margin: 0;
   padding: 0;
   background-color: white;
@@ -8,7 +8,7 @@ body {
 
 .Header {
   width: 100%;
-  font-family: Poppins;
+  font-family: 'Poppins';
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
@@ -238,6 +238,7 @@ body {
 
 .carousel-item {
   height: 400px;
+  justify-items: center;
 }
 
 .greeting {
@@ -397,21 +398,13 @@ body {
   text-align: center;
 }
 
-.card_completed:hover,
+/* .card_completed:hover,
 .card_completed:focus {
   cursor: pointer;
-}
+} */
 
-.card_incompleted {
-  padding: 3vh 0.5vw;
-  color: rgb(71, 71, 71);
-  background: rgb(95, 201, 109);
-  border: none;
-  border-radius: 1em;
-  text-align: center;
-}
-.card_incompleted:hover,
-.card_incompleted:focus {
+.card_completion:hover,
+.card_completion:focus {
   cursor: pointer;
 }
 
