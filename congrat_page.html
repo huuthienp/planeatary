@@ -89,76 +89,55 @@
 
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script>
+    import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick,
+        handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+        //spinner variables
+        let startTime = Date.now();
+        const condition = [false, startTime];
+        const bOverlay = document.getElementById("spinnerOverlay");
+        const spinner = document.getElementById("spinner");
+        
+        //Dismiss the offcanvas bar after click and execute
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+        
+        const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+        const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
     
-    const spinner = document.getElementById('spinner');
-    const minDisplayTime = 2000; 
-    const bOverlay = document.getElementById("spinnerOverlay");
-    let spinnerStartTime;
-    let isLoading;
-    
-    const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-    const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-    const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item > li');
-    
-    
-    const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
-    const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
-    
-    offcanvasLinks.forEach(li => {
-        li.addEventListener('click', event => {
-            const targetHref = li.getAttribute('href');
-            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-            offcanvas.hide();
-            
-            if (targetHref && targetHref !== "#") {
-                window.location.href = targetHref; 
+        offcanvasLinks.forEach(li => {
+            if (li !== document.getElementById('navChallenge')) {
+                li.addEventListener('click', handleOffcanvasClick);
             } 
         });
-    });
-    
-    offcanvasDropdown.forEach(li => {
-        li.addEventListener('click', event => {
-            const targetHref = li.getAttribute('href');
-            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-            offcanvas.hide();
-            
-            if (targetHref && targetHref !== "#") {
-                window.location.href = targetHref; 
-            } 
+        
+        offcanvasDropdown.forEach(li => {
+            li.addEventListener('click', handleOffcanvasClick);
         });
-    });
     
     // Function to handle navigation or showing toast
     offcanvasListItems.forEach(li => {
-        li.addEventListener('click', event => {
-            const link = li.querySelector('a.nav-link'); 
-            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-            offcanvas.hide();
-            if (link) {
-                const targetHref = link.getAttribute('href');
-                if (targetHref && targetHref !== '#') {
-                    window.location.href = targetHref;
+            li.addEventListener('click', event => {
+                event.preventDefault();
+                const link = li.querySelector('a.nav-link'); 
+                
+                if (link) {
+                    handleOffcanvasClickFromElement(link);
                 }
-            }
-        })
-        
-    });
-    
-    // Function to handle navigation or showing toast
-    offcanvasDropdownItems.forEach(li => {
-        li.addEventListener('click', event => {
-            const link = li.querySelector('a.dropdown-item'); 
-            
-            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-            offcanvas.hide();
-            if (link) {
-                const targetHref = link.getAttribute('href');
-                if (targetHref && targetHref !== '#') {
-                    window.location.href = targetHref;
-                }
-            }
+            });
         });
-    })
+        
+        // Function to handle navigation or showing toast
+        offcanvasDropdownItems.forEach(li => {
+            li.addEventListener('click', event => {
+                event.preventDefault();
+                const link = li.querySelector('a.dropdown-item'); 
+                
+                if (link) {
+                    handleOffcanvasClickFromElement(link);
+                }
+            });
+        })
     
     function showSpinner() {
         spinner.classList.remove('hidden');

@@ -189,7 +189,8 @@
     </div>
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script>
-        import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+        import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick,
+            handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
         //spinner variables
         let startTime = Date.now();
         const condition = [false, startTime];

@@ -555,7 +555,8 @@
 <script type="module">
     
     import { fetchResponses, fetchData, reformatResponseData, mergeTaskArrays, fetchTaskStatus } from './scripts/helpers.mjs';
-    import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+    import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick,
+        handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
     
     let startTime = Date.now();
     const condition = [false, startTime];
