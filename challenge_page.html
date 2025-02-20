@@ -377,9 +377,10 @@
                                     // Update task in localStorage
                                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                                     if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
-                                    updateNextButton(preResponseId, userId, tasks, Tstatus);
-                                    
                                     await updateTaskAndResponseHistory(Tstatus, tasks, preResponseId, userId);
+                                    setInterval(() => {
+                                        updateNextButton(preResponseId, userId, tasks, Tstatus);
+                                    }, 1000);
                                 })      
                             }
                             localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
@@ -391,10 +392,11 @@
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))} 
                     await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                    updateNextButton(preResponseId, userId, tasks, Tstatus);
+                    setInterval(() => {
+                        updateNextButton(preResponseId, userId, tasks, Tstatus);
+                    }, 1000);
                     cardContainer.appendChild(nextButtonContainer);
-                    
-                    await updateTaskAndResponseHistory(Tstatus, tasks, preResponseId, userId);
+                    //await updateTaskAndResponseHistory(Tstatus, tasks, preResponseId, userId);
                 }
 
             async function updateTaskAndResponseHistory(Tstatus, tasks, preResponseId, userId) {
@@ -597,6 +599,7 @@
                     if (isTokenExpired(token)) {
                         console.log("Token expired. Prompting user to re-login...");
                         netlifyIdentity.logout();
+                        window.location.href = 'index.html';
                         return;
                     }
                     

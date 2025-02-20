@@ -406,7 +406,9 @@
                     } 
 
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                    updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
+                    setInterval(() => {
+                        updateStartButton(preResponseId, userId, tasks, fetched_tasks);
+                    }, 1000);
                 })
 
                 if (QContainer.innerHTML == "") {
@@ -414,8 +416,10 @@
                 }
 
                 var task_counts = calculateSelectedTasks(tasks);
-                updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
-                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)))
+                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                setInterval(() => {
+                    updateStartButton(preResponseId, userId, tasks, fetched_tasks);
+                }, 1000); 
             }
         
         // update task status on `startButton` click

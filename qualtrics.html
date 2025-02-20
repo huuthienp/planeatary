@@ -494,13 +494,15 @@
                     if (key === 'preResult' && oldValue !== newValue) {
                         try {
                             JSON.parse(newValue || undefined);  // force null -> undefined to throw error
-                            updateAnchors(anchors, hrefs);
-                            updateButton(nextButton, '#02897A', 'pointer');
+                            console.log('Found newest pre-quiz result in storage!\n', newValue);
+                            await updateResponseHistory(preObject, user);
+                            setInterval(() => {
+                                updateAnchors(anchors, hrefs);
+                                updateButton(nextButton, '#02897A', 'pointer');
+                            }, 2000);
                             quizFrame.style.display = 'none';
                             quizSpan.innerHTML = '<div class="void">Thank you for your response! Please click see result! <img src="./images/thumbs-up.gif"></div>';
                             localStorage.setItem("restartFlag", "false"); //set back to false if a latest pre-quiz is done after restarting
-                            console.log('Found newest pre-quiz result in storage!\n', newValue);
-                            await updateResponseHistory(preObject, user);
                         } catch(error) {
                             console.warn('Caught', error, '\nPre-quiz result is not found!');
                             updateAnchors(anchors);
@@ -529,7 +531,7 @@
                     
                     const userId = user.id;
                     if (document.visibilityState === "hidden") {
-                        console.log('Leaving page, updating history');
+                        console.log('Leaving pre-quiz page, updating history');
                         await updateResponseHistory(preObject, user);
                     }
                 })

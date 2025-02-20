@@ -462,13 +462,13 @@
                     if (key === 'postResult' && oldValue !== newValue) {
                         try {
                             JSON.parse(newValue || undefined);  // force null -> undefined to throw error
+                            console.log('Found newest post-quiz result in storage!\n', newValue);
+                            if (postObject && user) {await updateResponseHistory(postObject, user)}
                             quizFrame.style.display = 'none';
                             fallbackMessage.innerHTML = '<div class="void">Thank you for your response! <img src="./images/in-love.gif"></div>';
                             setInterval(() => {
                                 updateButton(nextButton, '#02897A', 'pointer');
-                            }, 1000);
-                            console.log('Found newest post-quiz result in storage!\n', newValue);
-                            if (postObject && user) {await updateResponseHistory(postObject, user)}
+                            }, 2000);
                         } catch(error) {
                             console.warn('Caught', error, '\nPost-quiz result is not found!');
                             updateButton(nextButton, 'grey', 'not-allowed');
@@ -498,7 +498,7 @@
                     const responseHistory = metadata.responseHistory;
                     const userId = user.id;
                     if (document.visibilityState === "hidden") {
-                        console.log('Leaving page, updating history');
+                        console.log('Leaving post-quiz page, updating history');
                         await updateResponseHistory(postObject, user);
                     }
                 })
