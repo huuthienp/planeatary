@@ -353,18 +353,6 @@
                 })
                 
                 try {
-                    const restartFlag = localStorage.getItem("restartFlag");
-                    const iframe = document.getElementById("myIframe");
-                    
-                    if (restartFlag === "true") {
-                        restartBtn.setAttribute("disabled", "");
-                        updateButton(restartBtn, 'grey', 'not-allowed');
-                        updateButton(nextButton, 'grey', 'not-allowed');
-                        // The user has restarted, so keep the iframe visible.
-                        quizFrame.style.display = 'flex';
-                        var quizUrl = initiateSurvey('pre', quizFrame);
-                        quizSpan.innerHTML = '';
-                    } 
 
                     var preQuiz;
                     var postQuiz;
@@ -454,6 +442,18 @@
                         updateButton(nextButton, 'grey', 'not-allowed');
                         updateButton(restartBtn, 'grey', 'not-allowed');
                     }
+
+                    const restartFlag = localStorage.getItem("restartFlag");
+                    
+                    if (restartFlag === "true") {
+                        restartBtn.setAttribute("disabled", "");
+                        updateButton(restartBtn, 'grey', 'not-allowed');
+                        updateButton(nextButton, 'grey', 'not-allowed');
+                        // The user has restarted, so keep the iframe visible.
+                        quizFrame.style.display = 'flex';
+                        var quizUrl = initiateSurvey('pre', quizFrame);
+                        quizSpan.innerHTML = '';
+                    } 
                     
                 } catch(error) {
                     console.warn('Caught', error, '\nPre-quiz result is not found!');
