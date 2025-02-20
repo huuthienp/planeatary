@@ -465,7 +465,7 @@
                         try {
                             JSON.parse(newValue || undefined);  // force null -> undefined to throw error
                             console.log('Found newest post-quiz result in storage!\n', newValue);
-                            if (postObject && user) {await updateResponseHistory(postObject, user)}
+                            if (newValue && user) {await updateResponseHistory(JSON.parse(newValue), user)}
                             quizFrame.style.display = 'none';
                             fallbackMessage.innerHTML = '<div class="void">Thank you for your response! Click  see your result below <img src="./images/in-love.gif"></div>';
                             setTimeout(() => {

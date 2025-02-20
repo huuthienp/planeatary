@@ -126,7 +126,7 @@
 
         <script defer type="module">
 
-            import { initiateSurvey, updateAnchors, updateButton } from './scripts/helpers.mjs';
+            import { initiateSurvey, updateAnchors, updateButton, fetchResponses } from './scripts/helpers.mjs';
             import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick,
                 handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
             
@@ -504,7 +504,7 @@
                         try {
                             JSON.parse(newValue || undefined);  // force null -> undefined to throw error
                             console.log('Found newest pre-quiz result in storage!\n', newValue);
-                            await updateResponseHistory(preObject, user);
+                            await updateResponseHistory(JSON.parse(newValue), user);
                             setTimeout(() => {
                                 updateAnchors(anchors, hrefs);
                                 updateButton(nextButton, '#02897A', 'pointer');
