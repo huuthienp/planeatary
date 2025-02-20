@@ -260,7 +260,7 @@
                 let task_rec = fetched_tasks?.time ?? []; 
                 
                 
-                if (!tasks && !preResult) {
+                if (!tasks || !preResult) {
                     QContainer.innerHTML = "<div class='empty-state'>Error: Unable to load tasks or scores.</div>";
                     return;
                 }
@@ -405,13 +405,14 @@
                         localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     } 
 
-                    if (QContainer.innerHTML == "") {
-                        QContainer.innerHTML = "<div class='void'>None of your answers score in this section</div>";
-                    }
-                    
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
-                });
+                })
+
+                if (QContainer.innerHTML == "") {
+                    QContainer.innerHTML = "<div class='void'>None of your answers score in this section</div>";
+                }
+
                 var task_counts = calculateSelectedTasks(tasks);
                 updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
                 await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)))
