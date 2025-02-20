@@ -188,17 +188,7 @@
         </div>
     </div>
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script type="module">
-        import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
-        
-        //Dismiss the offcanvas bar after click and execute
-        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-        
-        const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
-        const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
-        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
-        
+    <script>
         
         //For first-timer to see a reminder to do a very first quiz
         function showToast() {
@@ -217,9 +207,7 @@
             bsAlert.show();
         }
 
-    </script>
-
-    <script>
+        function validate_form() { return false; }
 
         async function updatePassword(newPassword, user) {
             
@@ -254,6 +242,19 @@
             }
         }
 
+    </script>
+
+    <script type="module">
+        import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+        
+        //Dismiss the offcanvas bar after click and execute
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+        
+        const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+        const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
+
         // RegEx for checking password
         let uppercaseRegex = /[A-Z]/g;
         let lowercaseRegex = /[a-z]/g;
@@ -285,8 +286,6 @@
                 passwordInput.classList.remove("is-invalid");
             }
         });
-        
-        function validate_form() { return false; }
 
         document.querySelector(".account-form").addEventListener("input", async function(event) {
             const user = netlifyIdentity.gotrue.currentUser();
