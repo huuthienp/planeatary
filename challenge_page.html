@@ -582,7 +582,7 @@
                     hideSpinner([bOverlay, spinner], condition);
                 }
                 
-                window.addEventListener('unload', async () => {
+                document.addEventListener('visibilitychange', async () => {
                     let preObject = JSON.parse(localStorage.getItem('preResult'));
                     let preResponseId = preObject?.responseId ?? ""; 
                     let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
@@ -607,9 +607,10 @@
                         userId: userId,
                         chosen: mergedData.chosen,
                     });
-                    
-                    const beaconSent = navigator.sendBeacon('/api/manage-tasks', payload);
-                    console.log("Beacon sent:", beaconSent);
+                    if (document.visibilityState === "hidden") {
+                        const beaconSent = navigator.sendBeacon('/api/manage-tasks', payload);
+                        console.log("Beacon sent:", beaconSent);
+                    }
                 });
             });  
             
