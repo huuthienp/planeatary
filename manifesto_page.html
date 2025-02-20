@@ -160,40 +160,6 @@
         const modalTitle = document.getElementById("modalTitle");
         const close = document.getElementById('close');
         const closeDes = document.getElementById('closeDes');
-        
-        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-        const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
-        const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
-        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
-
-        offcanvasLinks.forEach(li => {
-            li.addEventListener('click', handleOffcanvasClick);
-        });
-
-        offcanvasDropdown.forEach(li => {
-            li.addEventListener('click', handleOffcanvasClick);
-        });
-
-        offcanvasListItems.forEach(li => {
-            li.addEventListener('click', event => {
-                event.preventDefault();
-                const link = li.querySelector('a.nav-link'); 
-                if (link) {
-                    handleOffcanvasClickFromElement(link);
-                }
-            });
-        });
-        
-        offcanvasDropdownItems.forEach(li => {
-            li.addEventListener('click', event => {
-                event.preventDefault();
-                const link = li.querySelector('a.dropdown-item'); 
-                if (link) {
-                    handleOffcanvasClickFromElement(link);
-                }
-            });
-        })
 
         function Modal(source) {
             const elements = [close, modal, overlay];
@@ -437,9 +403,12 @@
                         questionDiv.appendChild(taskList);
                         QContainer.appendChild(questionDiv);
                         localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                    } else {
+                    } 
+
+                    if (QContainer.innerHTML == "") {
                         QContainer.innerHTML = "<div class='void'>None of your answers score in this section</div>";
                     }
+                    
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
                 });
@@ -473,6 +442,40 @@
             const responseHistory = metadata.responseHistory;
             const userId = user.id;
             console.log("your user id is ", userId);
+
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+            const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+            const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+            const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
+
+            offcanvasLinks.forEach(li => {
+                li.addEventListener('click', handleOffcanvasClick);
+            });
+
+            offcanvasDropdown.forEach(li => {
+                li.addEventListener('click', handleOffcanvasClick);
+            });
+
+            offcanvasListItems.forEach(li => {
+                li.addEventListener('click', event => {
+                    event.preventDefault();
+                    const link = li.querySelector('a.nav-link'); 
+                    if (link) {
+                        handleOffcanvasClickFromElement(link);
+                    }
+                });
+            });
+
+            offcanvasDropdownItems.forEach(li => {
+                li.addEventListener('click', event => {
+                    event.preventDefault();
+                    const link = li.querySelector('a.dropdown-item'); 
+                    if (link) {
+                        handleOffcanvasClickFromElement(link);
+                    }
+                });
+            })
 
             let startTime = Date.now();
             const Condition = [false, startTime];
