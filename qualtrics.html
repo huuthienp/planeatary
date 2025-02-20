@@ -510,7 +510,29 @@
                             quizSpan.innerHTML = '';
                         }
                     }
-                });
+                })
+
+                document.addEventListener('visibilitychange', async () => {
+                    let preObject = JSON.parse(localStorage.getItem('preResult')); 
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    if (!user) {
+                        console.error("No user is logged in!");
+                        return;
+                    }
+                    const token = await user.jwt();
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                        window.location.href = "index.html";
+                        return;
+                    }
+                    
+                    const userId = user.id;
+                    if (document.visibilityState === "hidden") {
+                        console.log('Leaving page, updating history');
+                        await updateResponseHistory(preObject, user);
+                    }
+                })
             });
         </script>
         <script defer type="module" src="./scripts/listen-to-qualtrics.mjs"></script>
