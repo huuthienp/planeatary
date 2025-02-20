@@ -135,6 +135,10 @@
             const bOverlay = document.getElementById("spinnerOverlay");
             const spinner = document.getElementById("spinner");
 
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
             //For a user to see a reminder to complete the current cycle
             function showCycleToast() {
                 document.getElementById("secondToast").classList.remove('hidden');
@@ -178,6 +182,7 @@
                 let responseHistory = user.user_metadata.responseHistory || [];
                 const index = responseHistory.findIndex(cycle => cycle.preId === preResponseId);
                 const mockResponseHistory = {id: userId};
+                document.getElementById('nextButt').innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Updating...';
                 // If the preResponseId is not already in the history, add it
                 if (index === -1) {
                     responseHistory.push({ preId: preResponseId });
@@ -204,6 +209,7 @@
                 }
                 Object.assign(mockResponseHistory, { user_metadata: { responseHistory: responseHistory } });
                 localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
+                document.getElementById('nextButt').innerHTML = 'See your result';
             }
             
             document.addEventListener('DOMContentLoaded', async () => {
@@ -301,10 +307,13 @@
                 const nextButton = document.getElementById('nextButt');
                 const restartBtn = document.getElementById('restartBtn');
 
-                function enableRestartButton() {
+                async function enableRestartButton() {
+                    restartBtn.innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Updating...'; 
                     restartBtn.removeAttribute("disabled");
                     restartBtn.style.pointerEvents = "auto";
                     restartBtn.style.backgroundColor = "#02897A";
+                    await delay(1000);
+                    restartBtn.innerHTML = 'Restart the cycle';
                 }
                 
                 const anchors = [
@@ -496,7 +505,7 @@
                             JSON.parse(newValue || undefined);  // force null -> undefined to throw error
                             console.log('Found newest pre-quiz result in storage!\n', newValue);
                             await updateResponseHistory(preObject, user);
-                            setInterval(() => {
+                            setTimeout(() => {
                                 updateAnchors(anchors, hrefs);
                                 updateButton(nextButton, '#02897A', 'pointer');
                             }, 2000);

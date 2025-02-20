@@ -69,7 +69,7 @@
                 <iframe class="quiz" title="PlanEATary Post-Quiz"></iframe>
                 <span class="fallback"></span>
                 <div class="btn-next">
-                    <a class="nextB"><button id="nextButt" type="button" class="btn btn-success next" style="width: 180px;">Next  &#8594;</button></a>
+                    <a class="nextB"><button id="nextButt" type="button" class="btn btn-success next" style="width: 180px;">See your result</button></a>
                 </div>
             </div>
             
@@ -118,6 +118,7 @@
                     let responseHistory = user?.user_metadata?.responseHistory ?? [];
                     const index = responseHistory.findIndex(cycle => cycle.postId === postResponseId);
                     const mockResponseHistory = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`)) || {};
+                    document.getElementById('nextButt').innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Loading...';
                     
                     // If the postResponseId is not already in the history, add it
                     if (index === -1) {
@@ -148,6 +149,7 @@
                         Object.assign(mockResponseHistory, { user_metadata: { responseHistory: responseHistory } });
                     }
                     localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
+                    document.getElementById('nextButt').innerHTML = 'See your result';
                 }
                 
                 
@@ -465,8 +467,8 @@
                             console.log('Found newest post-quiz result in storage!\n', newValue);
                             if (postObject && user) {await updateResponseHistory(postObject, user)}
                             quizFrame.style.display = 'none';
-                            fallbackMessage.innerHTML = '<div class="void">Thank you for your response! <img src="./images/in-love.gif"></div>';
-                            setInterval(() => {
+                            fallbackMessage.innerHTML = '<div class="void">Thank you for your response! Click  see your result below <img src="./images/in-love.gif"></div>';
+                            setTimeout(() => {
                                 updateButton(nextButton, '#02897A', 'pointer');
                             }, 2000);
                         } catch(error) {

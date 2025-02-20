@@ -139,7 +139,7 @@
             const modalDescription = document.getElementById("modalDescription");
             
             const nextButtonContainer = document.querySelector(".btn-next");
-            const btn_next = document.querySelector(".next")
+            const btn_next = document.querySelector(".next");
 
             const navPostQuiz = document.getElementById("navPost-quiz");
             
@@ -189,6 +189,7 @@
                 console.log("Current responseHistory:", responseHistory);
                 console.log("lastTask:", lastTask, "preResponseId:", preResponseId);
                 let index = responseHistory.findIndex(cycle => cycle.preId === preResponseId);
+                document.querySelector(".next").innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Loading...';
                 
                 if (index === -1) {
                     // New preResponseId, add it
@@ -231,6 +232,7 @@
                     console.error("Error updating user metadata:", error);
                 } finally {
                     localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
+                    document.querySelector(".next").innerHTML = 'Next  &#8594;';
                 }
             }
                 
@@ -378,7 +380,7 @@
                                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                                     if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
                                     await updateTaskAndResponseHistory(Tstatus, tasks, preResponseId, userId);
-                                    setInterval(() => {
+                                    setTimeout(() => {
                                         updateNextButton(preResponseId, userId, tasks, Tstatus);
                                     }, 1000);
                                 })      
@@ -392,7 +394,7 @@
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))} 
                     await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                    setInterval(() => {
+                    setTimeout(() => {
                         updateNextButton(preResponseId, userId, tasks, Tstatus);
                     }, 1000);
                     cardContainer.appendChild(nextButtonContainer);

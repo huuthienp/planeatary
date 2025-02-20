@@ -406,7 +406,7 @@
                     } 
 
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                    setInterval(() => {
+                    setTimeout(() => {
                         updateStartButton(preResponseId, userId, tasks, fetched_tasks);
                     }, 1000);
                 })
@@ -417,7 +417,7 @@
 
                 var task_counts = calculateSelectedTasks(tasks);
                 await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                setInterval(() => {
+                setTimeout(() => {
                     updateStartButton(preResponseId, userId, tasks, fetched_tasks);
                 }, 1000); 
             }
