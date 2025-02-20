@@ -588,9 +588,9 @@
                 }
                 
                 // Event listener for "good" button
-                document.getElementById('good').addEventListener('click', function() {
+                document.getElementById('good').addEventListener('click', async () => {
                     var condition = (score) => score >= 3;
-                    renderQuestions(condition, preObject, userId);
+                    await renderQuestions(condition, preObject, userId);
                     var tContent = document.querySelector(".task-content");
                     if (tContent.innerHTML == '') {
                         tContent.innerHTML == '<p>None of your answers got good score</p>';
@@ -600,9 +600,9 @@
                 });
                 
                 // Event listener for "bad" button
-                document.getElementById('notyet').addEventListener('click', function() {
+                document.getElementById('notyet').addEventListener('click', async () => {
                     var condition = (score) => score < 3;
-                    renderQuestions(condition, preObject, userId);
+                    await renderQuestions(condition, preObject, userId);
                     var tContent = document.querySelector(".task-content");
                     if (tContent.innerHTML == '') {
                         tContent.innerHTML == '<p>None of your answers got bad score</p>';
@@ -612,7 +612,7 @@
                 });
 
                 var condition = (score) => score < 3;
-                renderQuestions(condition, preObject, userId);
+                await renderQuestions(condition, preObject, userId);
                 
             } catch (err) {
                 console.error("Caught error: ", err);

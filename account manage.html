@@ -73,7 +73,7 @@
         <!-- Account Management Section -->
         <div id="account" class="account-page">
             <h1 class="display-5">Manage Your Account</h1>
-            <form class="account-form needs-validation" onsubmit="return validate_form()" novalidate>
+            <form class="account-form needs-validation" novalidate>
                 <div class="mb-3">
                     <label for="name" class="form-label">Name:</label>
                     <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
@@ -190,7 +190,7 @@
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script type="module">
         import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick,
-            handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+            handleOffcanvasClickFromElement, hasPostQuizResult, logOut } from './scripts/utility.js';
         //spinner variables
         let startTime = Date.now();
         const condition = [false, startTime];
@@ -256,6 +256,92 @@
             }
         }
 
+        // Load userdata to input boxes
+        document.addEventListener("DOMContentLoaded", async function() {
+
+        offcanvasLinks.forEach(li => {
+            if (li !== document.getElementById('navChallenge')) {
+                li.addEventListener('click', handleOffcanvasClick);
+            } 
+        });
+
+        offcanvasDropdown.forEach(li => {
+            li.addEventListener('click', handleOffcanvasClick);
+        });
+
+        // Function to handle navigation or showing toast
+        offcanvasListItems.forEach(li => {
+            li.addEventListener('click', event => {
+                event.preventDefault();
+                const link = li.querySelector('a.nav-link'); 
+                
+                if (link) {
+                    if (link.classList.contains('Disabled')) {
+                        showToast(); 
+                    } else {
+                        handleOffcanvasClickFromElement(link);
+                    }
+                }
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+            });
+        });
+
+        // Function to handle navigation or showing toast
+        offcanvasDropdownItems.forEach(li => {
+            li.addEventListener('click', event => {
+                event.preventDefault();
+                const link = li.querySelector('a.dropdown-item'); 
+                
+                if (link) {
+                    if (link.classList.contains('Disabled')) {
+                        showToast(); 
+                    } else {
+                        handleOffcanvasClickFromElement(link);
+                    }
+                }
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+            });
+        })
+
+        const navChallenge = document.getElementById('navChallenge');
+
+        if (!navChallenge) {
+            console.error("Element with id 'navChallenge' not found.");
+            return;
+        }
+
+        navChallenge.addEventListener('click', function(event) {
+            // Debug logs to check values
+            console.log("navChallenge clicked");
+            console.log("navChallenge.href:", navChallenge.href);
+            console.log("hasPostQuizResult() returns:", hasPostQuizResult());
+            
+            if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
+                event.preventDefault();
+                event.stopPropagation();
+                navChallenge.removeAttribute('href');
+                console.log("Navigation prevented. Calling showAlert().");
+                showAlert();
+            } else if (hasPostQuizResult()) {
+                showAlert();
+            } else {
+                handleOffcanvasClick(event);
+            }
+            
+            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvas.hide();
+        });
+
+        document.getElementById('logOut').addEventListener('click', async () => {
+            if (confirm("Do you really want to sign out?") == true) {
+                showSpinner([bOverlay, spinner], condition);
+                await logOut();
+                hideSpinner([bOverlay, spinner], condition);
+            }
+        })
+
         // RegEx for checking password
         let uppercaseRegex = /[A-Z]/g;
         let lowercaseRegex = /[a-z]/g;
@@ -287,10 +373,9 @@
                 passwordInput.classList.remove("is-invalid");
             }
         });
-        
-        function validate_form() { return false; }
 
         document.querySelector(".account-form").addEventListener("input", async function(event) {
+            
             const user = netlifyIdentity.gotrue.currentUser();
 
             if (!user) {
@@ -311,128 +396,17 @@
                         console.log("Token is valid.");
                     }
                 });
-                if (validate_form()) {
-                    event.currentTarget.dataset.modified = "true";
-                    console.log("Form has been modified.");
-                    document.getElementById("name").value       = userData.full_name;
-                    document.getElementById("age").value        = userData.age;
-                    document.getElementById("gender").value     = userData.gender;
-                    document.getElementById("user-type").value  = userData.status;
-                }
-            }
-        });
-        
-        // Load userdata to input boxes
-        document.addEventListener("DOMContentLoaded", async function() {
-            
-            
-            const user = netlifyIdentity.gotrue.currentUser();
-            const userData = user.user_metadata;
-            
-            if (!user) {
-                console.error("No user is logged in!");
-                netlifyIdentity.logout();
-            }
-            
-            if (user) {
-                user.jwt().then(token => {
-                    if (isTokenExpired(token)) {
-                        console.log("Token expired. Prompting user to re-login...");
-                        netlifyIdentity.logout();
-                        window.location.href = "index.html";
-                    } else {
-                        console.log("Token is valid.");
-                    }
-                });
+                event.currentTarget.dataset.modified = "true";
+                console.log("Form has been modified.");
                 document.getElementById("name").value       = userData.full_name;
                 document.getElementById("age").value        = userData.age;
                 document.getElementById("gender").value     = userData.gender;
                 document.getElementById("user-type").value  = userData.status;
+
             }
 
-            offcanvasLinks.forEach(li => {
-            if (li !== document.getElementById('navChallenge')) {
-                li.addEventListener('click', handleOffcanvasClick);
-            } 
-        });
-        
-        offcanvasDropdown.forEach(li => {
-            li.addEventListener('click', handleOffcanvasClick);
-        });
-        
-        // Function to handle navigation or showing toast
-        offcanvasListItems.forEach(li => {
-            li.addEventListener('click', event => {
-                event.preventDefault();
-                const link = li.querySelector('a.nav-link'); 
-                
-                if (link) {
-                    if (link.classList.contains('Disabled')) {
-                        showToast(); 
-                    } else {
-                        handleOffcanvasClickFromElement(link);
-                    }
-                }
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
-            });
-        });
-        
-        // Function to handle navigation or showing toast
-        offcanvasDropdownItems.forEach(li => {
-            li.addEventListener('click', event => {
-                event.preventDefault();
-                const link = li.querySelector('a.dropdown-item'); 
-                
-                if (link) {
-                    if (link.classList.contains('Disabled')) {
-                        showToast(); 
-                    } else {
-                        handleOffcanvasClickFromElement(link);
-                    }
-                }
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
-            });
         })
-        
-        const navChallenge = document.getElementById('navChallenge');
-        
-        if (!navChallenge) {
-            console.error("Element with id 'navChallenge' not found.");
-            return;
-        }
-        
-        navChallenge.addEventListener('click', function(event) {
-            // Debug logs to check values
-            console.log("navChallenge clicked");
-            console.log("navChallenge.href:", navChallenge.href);
-            console.log("hasPostQuizResult() returns:", hasPostQuizResult());
-            
-            if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
-                event.preventDefault();
-                event.stopPropagation();
-                navChallenge.removeAttribute('href');
-                console.log("Navigation prevented. Calling showAlert().");
-                showAlert();
-            } else if (hasPostQuizResult()) {
-                showAlert();
-            } else {
-                handleOffcanvasClick(event);
-            }
-            
-            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-            offcanvas.hide();
-        });
-        
-        document.getElementById('logOut').addEventListener('click', async () => {
-            if (confirm("Do you really want to sign out?") == true) {
-                showSpinner([bOverlay, spinner], condition);
-                await logOut();
-                hideSpinner([bOverlay, spinner], condition);
-            }
-        });
-        
+
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         const forms = document.querySelectorAll('.needs-validation')
         
@@ -450,42 +424,40 @@
                 {
                     form_check = 1;
                     console.log("validate form2");
-                    
-                    
-                    let user_full_name = document.getElementById("name").value;
-                    let user_age       = document.getElementById("age").value;
-                    let user_gender    = document.getElementById("gender").value;
-                    let user_type      = document.getElementById("user-type").value;
-                    let user_password  = document.getElementById("password").value;
-                    const user_datail = { full_name: user_full_name, gender: user_gender, age: user_age, status: user_type };
-                    
-                    try {
-                        // If password is provided, update it first
-                        if (user_password !== "") {
-                            await updatePassword(user_password, user);
-                        }
-                        
-                        // Update user metadata
-                        const updatedUser = await user.update({ data: user_datail });
-                        
-                        console.log("✅ Updated user:", JSON.stringify(updatedUser));
-                        alert("Account information saved!");
-                        
-                        // Fetch and store updated user details
-                        const updatedUserDetails = await netlifyIdentity.gotrue.currentUser();
-                        localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
-                        
-                        console.log("🔄 Updated user saved to localStorage:", updatedUserDetails);
-                    } catch (error) {
-                        console.error("❌ Failed to update user:", error);
-                        alert("Failed to save account information!");
-                    }
-                    
                 }
                 
                 form.classList.add('was-validated')
             }, false)
         })
+
+        let user_full_name = document.getElementById("name").value;
+        let user_age       = document.getElementById("age").value;
+        let user_gender    = document.getElementById("gender").value;
+        let user_type      = document.getElementById("user-type").value;
+        let user_password  = document.getElementById("password").value;
+        const user_datail = { full_name: user_full_name, gender: user_gender, age: user_age, status: user_type };
+
+        try {
+            // If password is provided, update it first
+            if (user_password !== "") {
+                await updatePassword(user_password, user);
+            }
+            
+            // Update user metadata
+            const updatedUser = await user.update({ data: user_datail });
+            
+            console.log("✅ Updated user:", JSON.stringify(updatedUser));
+            alert("Account information saved!");
+            
+            // Fetch and store updated user details
+            const updatedUserDetails = await netlifyIdentity.gotrue.currentUser();
+            localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
+            
+            console.log("🔄 Updated user saved to localStorage:", updatedUserDetails);
+        } catch (error) {
+            console.error("❌ Failed to update user:", error);
+            alert("Failed to save account information!");
+        } 
         
     });
     
