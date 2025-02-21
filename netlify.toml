@@ -2,6 +2,11 @@
 node_bundler = "esbuild"
 
 [[redirects]]
+  from = '/api/recovery'
+  to = '/.netlify/functions/recovery'
+  status = 200
+
+[[redirects]]
   from = '/archive/*'
   to = '404.html'
   status = 404
