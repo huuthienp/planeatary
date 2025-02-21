@@ -1,5 +1,5 @@
 [functions]
-node_bundler = "esbuild"
+  node_bundler = 'esbuild'
 
 [[redirects]]
   from = '/api/recovery'
@@ -8,6 +8,6 @@ node_bundler = "esbuild"
 
 [[redirects]]
   from = '/archive/*'
-  to = '404.html'
+  to = '/404.html'
   status = 404
   force = true
