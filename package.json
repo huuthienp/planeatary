@@ -2,6 +2,7 @@
   "type": "module",
   "dependencies": {
     "@netlify/blobs": "^8.1.0",
+    "bcryptjs": "^3.0.2",
     "disposable-email-domains-js": "^1.9.0"
   }
 }
