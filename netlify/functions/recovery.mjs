@@ -8,7 +8,7 @@ const isBadString = x => 'string' !== typeof x || '' === x.trim();
 const isBadObject = x => 'object' !== typeof x || null === x;
 
 var strongBlobUrl = 'https://test-backend--planeatary.netlify.app/api/get-strong-blob';
-const passwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+const passwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
 
 export async function handler(event, context) {
