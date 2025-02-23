@@ -172,13 +172,11 @@
             </div>
             <div class="video">
                 <div class="ratio ratio-16x9">
-                    <iframe 
+                    <!-- delay loading until scroll
                     src="https://www.youtube.com/embed/nYe-ibIFxW4" 
-                    title="YouTube video player" 
-                    frameborder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
+                    -->
+                <iframe allow="clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" title="YouTube Video Player"></iframe>
             </div>
         </div>
     </section>
@@ -517,9 +515,9 @@
         <span>Loading</span>
     </div>
 </section>
-
+<!-- already in head
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
+-->
 <script>
     document.getElementById('resetPasswordButton').addEventListener('click', function () {
         const resetEmailInput = document.getElementById('resetEmailInput');
