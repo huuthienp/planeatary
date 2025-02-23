@@ -172,12 +172,11 @@
             </div>
             <div class="video">
                 <div class="ratio ratio-16x9">
-                    <iframe 
-                    title="YouTube video player" 
-                    frameborder="0" 
+                    <!-- delay loading until scroll
+                    src="https://www.youtube.com/embed/nYe-ibIFxW4" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
+                    -->
+                <iframe allow="clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" title="YouTube Video Player"></iframe>
             </div>
         </div>
     </section>
@@ -516,16 +515,16 @@
         <span>Loading</span>
     </div>
 </section>
-
+<!-- already in head
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
+-->
 <script>
     document.getElementById('resetPasswordButton').addEventListener('click', function () {
         const resetEmailInput = document.getElementById('resetEmailInput');
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         
         // Validate email
-        if (!emailRegex.test(resetEmailInput.value)) {
+        if (!emailRegex.test(resetEmailInput.value.trim())) {
             resetEmailInput.classList.add('is-invalid');
             return;
         } else {
@@ -533,17 +532,19 @@
         }
         
         // Call Netlify Identity's password recovery API
-        const email = resetEmailInput.value;
+        const email = resetEmailInput.value.trim();
         const opt = {};
         opt.method = 'POST';
         opt.body = JSON.stringify(({ email }));
+        /*
+        netlifyIdentity.gotrue
+        .requestPasswordRecovery(email)
+        */
         fetch('/api/recovery', opt)
-        // netlifyIdentity.gotrue
-        // .requestPasswordRecovery(email)
         .then(async response => {
             const msg = await response.text();
             if (response.ok) {
-            console.log(msg);
+            console.log(response.status, msg);
             console.log('Recovery email sent', { response });
             alert('Recovery email sent successfully. Please check your inbox.');
             // Close the modal after success
@@ -560,6 +561,10 @@
             alert('There was an error sending the recovery email. Please try again later.');
         });
     });
+    document.querySelector("#forgotPasswordForm").addEventListener('submit', () => {
+        event.preventDefault();  // default: navigation or reload
+        document.querySelector("#resetPasswordButton").click();
+    });  // replace form submit (pressing enter) default behaviour with button click
 </script>
 
 <script type="module">
@@ -953,6 +958,25 @@
         });
         
     })
+</script>
+
+<!--forget password script-->
+<script>
+    // document.getElementById('resetPasswordButton').addEventListener('click', function () {
+    //     const email = document.getElementById('resetEmailInput').value.trim();
+    //
+    //     if (email === '') {
+    //         alert('Please enter your email.');
+    //         return;
+    //     }
+    //     // Simulate server request to send a reset link
+    //     alert('A password reset link has been sent to: ' + emailInput);
+    //
+    //     // Close the modal after sending the reset email
+    //     const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+    //     const modal = bootstrap.Modal.getInstance(forgotPasswordModal);
+    //     modal.hide();
+    // });
 </script>
 
 <!--Sign Up -->
