@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page not found</title>
     <style>
@@ -20,87 +22,115 @@
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
             Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
             "Segoe UI Emoji", "Segoe UI Symbol";
-        background: white;
         overflow: hidden;
         margin: 0;
         padding: 0;
         line-height: 1.5;
         color: rgb(var(--colorText));
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: fixed;
     }
     @media (prefers-color-scheme: dark) {
         body {
             background: rgb(var(--colorRgbFacetsNeutralDark900));
         }
     }
-    h1 {
-        margin: 0;
-        font-size: 1.375rem;
-        line-height: 1;
-    }
-    h1 + p {
-        margin-top: 8px;
-    }
-    .main {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        width: 100vw;
-    }
-    .card {
-        position: relative;
-        width: 75%;
-        max-width: 364px;
-        padding: 24px;
-        background: white;
-        border-radius: 8px;
-        box-shadow: var(--effectShadowLightShallow);
-        border: 1px solid rgb(var(--colorGrayLighter));
-    }
-    a {
-        margin: 0;
-        font-weight: 600;
-        color: rgb(var(--colorTealAction));
-        text-decoration-skip-ink: all;
-        text-decoration-thickness: 1px;
-        text-underline-offset: 2px;
-        text-decoration-color: rgb(var(--colorTealAction) / 0.5);
-        transition: text-decoration-color 0.15s ease-in-out;
-    }
-    a:hover,
-    a:focus-visible {
-        text-decoration-color: rgb(var(--colorTealAction));
-    }
-    p:last-of-type {
-        margin-bottom: 0;
-    }
-    hr {
-        border: 0;
-        height: 1px;
-        background: rgb(var(--colorHr));
-        margin-top: 16px;
-        margin-bottom: 16px;
-    }
-    .your-site {
-        font-size: 0.875rem;
-    }
     </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
+    <link href="style_concat.css" rel="stylesheet" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Icon CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>PlanEATary Challenges</title>
 </head>
     <body>
-        <div class="main">
-            <div class="card">
+        <div class="Header">
+            <!-- Sidebar -->
+            <nav class="navbar navbar-dark navbar-expand-lg" style="background-color: #02897A;">
+                <div class="container-fluid">
+                    <a class="navbar-brand d-flex align-items-center" href="index.html">
+                        <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
+                        <strong>PlanEATary</strong>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                        <div class="offcanvas-header" style="background-color: #096358;">
+                            <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>planeatary</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body" style="background-color: #02897A;">
+                            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-edit"></i>  <strong>Quiz</strong>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                        <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
+                                        <li><a class="dropdown-item Disabled" id="navPost-quiz" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="history_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-calendar-check-o"></i> History</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                        <li><a class="dropdown-item" href="account manage.html" data-bs-dismiss="offcanvas">My account</a></li>
+                                        <li><a class="dropdown-item" id="logOut">Log out</a></li>
+                                    </ul>
+                                </li>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        <div class="background1"></div>
+        <div class="main-404">
+            <div class="card-two">
                 <h1>Page not found</h1>
                 <p>Looks like you’ve followed a broken link or entered a URL that does not exist on this site.</p>
-                <hr>
                 <p class="your-site">
-                    If you were not expecting a 404 for this path,
                     please visit Netlify’s
                     <a href="https://answers.netlify.com/t/support-guide-i-ve-deployed-my-site-but-i-still-see-page-not-found/125">“page not found” support guide</a>
                     for troubleshooting tips.
                 </p>
             </div>
         </div>
+        <img class="not-found" src="./images/cart.png" />
+        <img class="empty-basket" src="./images/shopping.png" />
+        <div class="background2">
+        </div>
+        <!-- Bootstrap Javascript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        
+        <script type="module">
+            import {  isTokenExpired,
+                handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+                document.getElementById('logOut').addEventListener('click', async () => {
+                    if (confirm("Do you really want to sign out?") == true) {
+                        await logOut();
+                    }
+                });
+        </script>
     </body>
 </html>

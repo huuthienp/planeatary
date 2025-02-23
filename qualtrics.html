@@ -437,7 +437,7 @@
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
-                        quizSpan.innerHTML = '<div class="void">You have already finished the pre-quiz and the post-quiz! <img src="./images/thumbs-up.gif">\n' + '<img src="./images/finger.gif"> Now, it is time you can start over this amazing journey!</div>';
+                        quizSpan.innerHTML = '<div class="void">' + '<p>You have already finished the pre-quiz and the post-quiz! <img src="./images/thumbs-up.gif"></p>' + '<p><img src="./images/finger.gif"> Now, it is time you can start over this amazing journey!</p>' + '</div>';
                         await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         console.log('Found post-quiz result in storage!\n', postObject);

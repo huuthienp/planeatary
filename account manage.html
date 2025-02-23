@@ -234,7 +234,8 @@
                 }
                 
                 alert("Password updated successfully. Please log in again.");
-                netlifyIdentity.logout(); 
+                await netlifyIdentity.gotrue.currentUser().logout(); 
+                window.location.href = "index.html";
                 
             } catch (error) {
                 console.error("Authorization failed:", error);

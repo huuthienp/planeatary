@@ -372,7 +372,7 @@
                                 await updateResponseHistory(postObject, user);
                                 updateButton(nextButton, '#02897A', 'pointer');
                                 quizFrame.style.display = 'none'; 
-                                fallbackMessage.innerHTML = "<div class='void'>Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over. <img src=''./images/in-love.gif'></div>";
+                                fallbackMessage.innerHTML = "<div class='void'>Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over. <img src='./images/in-love.gif'></div>";
                             } else if (!postObject || Object.keys(postObject).length === 0) {
                                 try {
                                     if (!selectTasks) {

@@ -16,6 +16,7 @@ body {
   position: fixed !important;
   width: 100% !important;
   z-index: 1000;
+  top: 0;
 }
 
 .b-example-divider {
@@ -1431,4 +1432,96 @@ body {
   display: flex;
   width: 80px;
   height: auto;
+}
+
+.main-404 {
+  display: flex;
+  position: fixed;
+  left: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60%;
+  width: 100%;
+  border-radius: 50% 50% 0 0;
+  background-color: whitesmoke;
+  z-index: 1;
+  font-size: 2rem;
+  box-shadow: 10px 10px 20px rgb(37, 83, 69) inset;
+}
+
+.card-two {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  width: 80%;
+  padding: 2vh 2vw;
+  text-align: center;
+  font-size: 1rem;
+  color: #2b0505;
+  z-index: 2;
+  gap: 2vh;
+  font-weight: 600;
+}
+
+a {
+  margin: 0;
+  font-weight: 600;
+  color: rgb(var(--colorTealAction));
+  text-decoration-skip-ink: all;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  text-decoration-color: rgb(var(--colorTealAction) / 0.5);
+  transition: text-decoration-color 0.15s ease-in-out;
+}
+a:hover,
+a:focus-visible {
+  text-decoration-color: rgb(var(--colorTealAction));
+}
+
+.background1 {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 50%;
+  background: rgba(112, 160, 150, 0.856);
+  z-index: -1;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: rgb(var(--colorHr));
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+.your-site {
+  font-size: 1rem;
+}
+
+.background2 {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 50%;
+  background-color: rgba(99, 93, 76, 0.753);
+  z-index: -1;
+}
+
+.not-found {
+  display: flex;
+  position: fixed;
+  bottom: 10%;
+  margin: 0 auto;
+  z-index: 3;
+  height: 22%;
+}
+
+.empty-basket {
+  display: flex;
+  position: fixed;
+  bottom: 0%;
+  margin: 0 auto;
+  z-index: 3;
+  height: 18%;
 }
