@@ -15,7 +15,7 @@
         </div>
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-xl" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-xl shadow" style="background-color: #02897A;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -74,14 +74,14 @@
         
         <!--Hero section at the top-->
         <div class="hero">
-            <div class="herocontent">
+            <div class="herocontent shadow">
                 <div class="hero-text">
                     <h1>Welcome to the PlanEATary Quest!</h1>
                     <p>
                         Embark on a delicious adventure to learn how we can create a more sustainable food system
                         and improve our planet's health for current and future generations.
                     </p>
-                    <button type="button" class="btn btn-success"><a class="herobtn">Get started</a></button>
+                    <button type="button" class="btn btn-success shadow-sm"><a class="herobtn">Get started</a></button>
                 </div>
                 <div class="hero-image">
                     <img src="./images/welcome-removebg.png"/>  
@@ -366,7 +366,7 @@
                             <input type="checkbox" checked="checked" name="remember"> Remember me
                         </label>
                         <br/>
-                        <a class="psw" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot password?</a>
+                        <a class="psw" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal" style="cursor: pointer;">Forgot password?</a>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -420,15 +420,18 @@
                                 <label for="newPasswordInput" class="form-label">New Password</label>
                                 <input type="password" class="form-control" id="newPasswordInput" placeholder="Enter your new password" required>
                                 <div class="invalid-feedback">Password must contain at least:
-                                    <ul><li>8 characters</li><li>1 lowercase letter</li><li>1 uppercase letter</li><li>1 number</li></ul>
+                                    <ul><li>8 <a href="https://en.wikipedia.org/wiki/ASCII" target="_blank">ASCII</a> printable characters</li><li>1 lowercase letter</li><li>1 uppercase letter</li><li>1 number</li></ul>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label for="confirmPasswordInput" class="form-label">Confirm Password</label>
                                 <input type="password" class="form-control" id="confirmPasswordInput" placeholder="Confirm your new password" required>
-                                <div class="invalid-feedback">Passwords do not match.</div>
+                                <div class="invalid-feedback">Passwords do not match or are empty.</div>
                             </div>
                         </form>
+                        <div class="form-control" id="apiFeedback" style="display: none;"></div>
+                        <div class="valid-feedback">Password updated.</div>
+                        <div class="invalid-feedback">Please verify your recovery link<br>or <a class="psw" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal" style="cursor: pointer;">request another one</a>.</div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -786,14 +789,20 @@
             }
         }
 
-        heroButton.addEventListener('click', function () {
+        heroButton.addEventListener('click', async () => {
             if (netlifyIdentity.gotrue.currentUser()) {
-                let preObject = localStorage.getItem('preResult')
-                if(preObject) {
+                let preObject = localStorage.getItem('preResult');
+                const userData = await getUserData();
+                const { metadata, responseHistory, userId } = userData;
+
+                if (metadata.restarting == 'yes') {
+                    alert("Let's do your restarting pre-quiz!");
+                    window.location.href = "qualtrics.html";
+                } else if (preObject) {
                     alert("Let's see your latest result");
                     window.location.href = "result_page.html";
                 } else {
-                    alert("Let's do your very first pre-quiz!");
+                    alert("Let's do your pre-quiz!");
                     window.location.href = "qualtrics.html";
                 }
                 
@@ -938,14 +947,24 @@
                 if (r === true) {
                     enableFirstTimers();
                     //Need lana to test and edit the flow here if neccessary
-                    alert("Form is valid, proceeding");
-                    window.location.href = "result_page.html";
+                    alert("Successful login!, proceeding");
+                    const userData = await getUserData();
+                    const { metadata, responseHistory, userId } = userData;
+                    //Once a user chose to restart the cycle and does not finish it, redirect the user to pre-quiz page
+                    if (metadata.restarting == 'yes') {
+                        alert("Let's do your restarting pre-quiz!");
+                        window.location.href = "qualtrics.html";
+                    } else {
+                        alert("Let's see your latest result!");
+                        window.location.href = "result_page.html";
+                    }
                 } else {
                     disableFirstTimers();
-                    alert("Form is valid, proceeding");
+                    alert("Successful login!, proceeding");
                     // Delay navigation slightly
                     setTimeout(() => {
                         //Needs confirmation from Linh about the flow here
+                        alert("Welcome to our website!");
                         window.location.href = "index.html";
                     }, 500);
                 }
@@ -1137,6 +1156,7 @@
             }  // stop listener after video loaded
         }  // end of loadVideo v1
         </script>  <!-- end of video-loading script -->
+        <script defer type="module" src="./scripts/process-recovery.mjs"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  <!-- Bootstrap Javascript -->
     </body>
 </html>
