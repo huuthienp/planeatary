@@ -366,7 +366,7 @@
                             <input type="checkbox" checked="checked" name="remember"> Remember me
                         </label>
                         <br/>
-                        <a class="psw" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot password?</a>
+                        <a class="psw" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal" style="cursor: pointer;">Forgot password?</a>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -420,15 +420,18 @@
                                 <label for="newPasswordInput" class="form-label">New Password</label>
                                 <input type="password" class="form-control" id="newPasswordInput" placeholder="Enter your new password" required>
                                 <div class="invalid-feedback">Password must contain at least:
-                                    <ul><li>8 characters</li><li>1 lowercase letter</li><li>1 uppercase letter</li><li>1 number</li></ul>
+                                    <ul><li>8 <a href="https://en.wikipedia.org/wiki/ASCII">ASCII</a> printable characters</li><li>1 lowercase letter</li><li>1 uppercase letter</li><li>1 number</li></ul>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label for="confirmPasswordInput" class="form-label">Confirm Password</label>
                                 <input type="password" class="form-control" id="confirmPasswordInput" placeholder="Confirm your new password" required>
-                                <div class="invalid-feedback">Passwords do not match.</div>
+                                <div class="invalid-feedback">Passwords do not match or are empty.</div>
                             </div>
                         </form>
+                        <div class="form-control" id="apiFeedback" style="display: none;"></div>
+                        <div class="valid-feedback">Password updated.</div>
+                        <div class="invalid-feedback">Please verify your recovery link<br>or <a class="psw" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal" style="cursor: pointer;">request another one</a>.</div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
