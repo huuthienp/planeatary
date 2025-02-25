@@ -40,7 +40,7 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
                                         <li><a class="dropdown-item active" aria-current="page" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item Disabled" href="qualtrics_post.html" id="navPost-quiz" data-bs-dismiss="offcanvas">Post-quiz</a></li>
+                                        <li><a class="dropdown-item" href="qualtrics_post.html" id="navPost-quiz" data-bs-dismiss="offcanvas">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item">
@@ -308,11 +308,11 @@
                 const restartBtn = document.getElementById('restartBtn');
 
                 async function enableRestartButton() {
-                    restartBtn.innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Updating...'; 
+                    restartBtn.innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Restarting...'; 
                     restartBtn.removeAttribute("disabled");
                     restartBtn.style.pointerEvents = "auto";
                     restartBtn.style.backgroundColor = "#02897A";
-                    await delay(1000);
+                    await delay(2000);
                     restartBtn.innerHTML = 'Restart the cycle';
                 }
                 
@@ -437,14 +437,14 @@
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
-                        quizSpan.innerHTML = '<div class="void">' + '<p>You have already finished the pre-quiz and the post-quiz! <img src="./images/thumbs-up.gif"></p>' + '<p><img src="./images/finger.gif"> Now, it is time you can start over this amazing journey!</p>' + '</div>';
+                        quizSpan.innerHTML = '<div class="void">' + 'You have already finished the pre-quiz and the post-quiz! <img src="./images/thumbs-up.gif">\n' + '<img src="./images/finger.gif"> Now, it is time you can start over this amazing journey!' + '</div>';
                         await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         console.log('Found post-quiz result in storage!\n', postObject);
                         enableRestartButton();
-                        updateButton(restartBtn, '#02897A', 'pointer');
         
                     } else {
+                        document.getElementById("navPost-quiz").classList.add('Disabled');
                         var quizUrl = initiateSurvey('pre', quizFrame);
                         quizSpan.innerHTML = '';
                         updateAnchors(anchors);
@@ -456,6 +456,7 @@
                     
                     if (restartFlag === "true") {
                         restartBtn.setAttribute("disabled", "");
+                        updateAnchors(anchors);
                         updateButton(restartBtn, 'grey', 'not-allowed');
                         updateButton(nextButton, 'grey', 'not-allowed');
                         // The user has restarted, so keep the iframe visible.

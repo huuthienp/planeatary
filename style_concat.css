@@ -286,14 +286,17 @@ body {
 }
 
 .content .wrap-up {
+  display: flex;
   width: 100%;
   padding: 5vh 0;
-  text-align: justify;
   align-items: center;
-  color: rgba(33,52,60,1);
-  font-family: Poppins;
-  font-size: 1em;
+  justify-content: center;
+  gap: 3vh;
+  font-family: 'Poppins';
+  font-size: 1rem;
   flex-direction: column;
+  font-weight: 600;
+  color: #02897A;
 }
 
 .button_next a:link {
@@ -710,18 +713,9 @@ body {
 
 .welcome {
   color: rgba(33,52,60,1);
-  font-family: Poppins;
+  font-family: 'Poppins';
   font-weight: Bold;
-  font-size: 1.5em;
-}
-.content .wrap-up {
-  display: flex;
-  padding: 5vh 0;
-  text-align: center;
-  align-items: center;
-  font-family: Poppins;
-  font-size: 1em;
-  flex-direction: column;
+  font-size: 1.5rem;
 }
 
 .warp-up  img {
@@ -729,18 +723,19 @@ body {
 }
 
 .button_take_quiz {
+  display: flex;
   width: 100%;
   text-align: center;
+  gap: 3vh;
+  flex-direction: column;
+  justify-content: center;
+  color: rgba(33,52,60,1);
 }
-.take{
-  background-color: #02897A;
-  font-family: Poppins;
-  color: white;
-  border: none;
-  padding: 1vh 1vw;
-  border-radius: 0.5em;
-  cursor: pointer;
-  font-size: 1em;
+
+.button_take_quiz .take {
+  font-family: 'Poppins';
+  padding: 1vh 2vw;
+  font-size: 1rem;
 }
 
 .content .arrow_space {
