@@ -293,7 +293,7 @@ body {
   justify-content: center;
   gap: 3vh;
   font-family: 'Poppins';
-  font-size: 1rem;
+  font-size: 1rem !important;
   flex-direction: column;
   font-weight: 600;
   color: #02897A;
@@ -716,10 +716,6 @@ body {
   font-family: 'Poppins';
   font-weight: Bold;
   font-size: 1.5rem;
-}
-
-.warp-up  img {
-  width: 16px;
 }
 
 .button_take_quiz {

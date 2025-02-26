@@ -74,7 +74,7 @@
             </div>
             <div class="void-space"></div>
             <div class="table-responsive-sm history-table hidden">
-                <p class="404 empty-state hidden">There is no information available</p>
+                <div class="404 empty-state hidden">There is no information available</div>
                 <!--Table structure-->
                 <table class="table table-striped table-hover">
                     <thead>
@@ -243,7 +243,7 @@
                 
                 if (!history || history.length === 0) {
                     document.querySelector('div.history-table > table').style.display = 'none';
-                    document.querySelector('div.history-table > p').classList.remove('hidden');
+                    document.querySelector('div.history-table > div.404').classList.remove('hidden');
                     return;
                 }
                 console.log("info to be displayed", history);

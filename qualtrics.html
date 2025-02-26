@@ -308,25 +308,24 @@
                 const restartBtn = document.getElementById('restartBtn');
 
                 async function enableRestartButton() {
-                    restartBtn.innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Restarting...'; 
+                    restartBtn.innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Loading...'; 
+                    await delay(2000);
                     restartBtn.removeAttribute("disabled");
+                    restartBtn.innerHTML = 'Restart the cycle';
                     restartBtn.style.pointerEvents = "auto";
                     restartBtn.style.backgroundColor = "#02897A";
-                    await delay(2000);
-                    restartBtn.innerHTML = 'Restart the cycle';
                 }
                 
                 const anchors = [
                 document.getElementById('navChallenge'),
                 document.getElementById('navDashboard'),
-                document.getElementById('navHistory'),
+                // document.getElementById('navHistory'),
                 document.querySelector('div.btn-next > a.nextB'),  // inside next button
                 ];
                 
                 const hrefs = [
                 'manifesto_page',
                 'result_page',
-                'history_page',
                 'result_page'
                 ];
                 
@@ -348,6 +347,10 @@
                     document.getElementById("navPost-quiz").classList.add('Disabled');
                     // Set a flag to indicate that restart has been clicked
                     localStorage.setItem("restartFlag", "true");
+                    restartBtn.setAttribute("disabled", "");
+                    updateAnchors(anchors);
+                    updateButton(restartBtn, 'grey', 'not-allowed');
+                    updateButton(nextButton, 'grey', 'not-allowed');
                     quizFrame.style.display = 'flex';
                     quizSpan.innerHTML = '';
                     var quizUrl = initiateSurvey('pre', quizFrame);
@@ -374,26 +377,25 @@
                     console.log("User ID:", userId);
                     console.log("Response History:", responseHistory);
                     
-                    let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
-                    console.log("All responses fetched! ", allResponses);
-                    
-                    if (allResponses) {
-                        allResponses.forEach((cycleKey) => {
-                            if (cycleKey?.preResponse) {
-                                //get the latest preResponse and postResponse if any
-                                preQuiz = cycleKey?.preResponse ?? null;
-                                postQuiz = cycleKey?.postResponse ?? null;
-                            } 
-                        });
+                    //let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
+                    // if (allResponses) {
+                    //     allResponses.forEach((cycleKey) => {
+                    //         if (cycleKey?.preResponse) {
+                    //             //get the latest preResponse and postResponse if any
+                    //             preQuiz = cycleKey?.preResponse ?? null;
+                    //             postQuiz = cycleKey?.postResponse ?? null;
+                    //         } 
+                    //     });
                         
-                        preObject = preQuiz;
-                        preResponseId = preQuiz?.responseId;
-                        postObject = postQuiz;
-                        postResponseId = postQuiz?.responseId;
+                    //     preObject = preQuiz;
+                    //     preResponseId = preQuiz?.responseId;
+                    //     postObject = postQuiz;
+                    //     postResponseId = postQuiz?.responseId;
                         
-                    } else {
+                    // } else {
                         var allRes = await fetchResponses(userId);
-                        allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
+                        let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
+                        console.log("All responses fetched! ", allResponses);
                         const cycleKeys = allResponses; 
                         if (cycleKeys.length > 0) {
                             const lastKey = cycleKeys.length - 1; 
@@ -401,14 +403,15 @@
                             
                             // Access preQuiz and postQuiz safely
                             preQuiz = entry?.preResponse ?? null;
-                            postQuiz = entry?.postResponse ?? null;
-                            postObject = postQuiz;
                             preObject = preQuiz;
                             preResponseId = preQuiz?.responseId ?? null;
+                            postQuiz = entry?.postResponse ?? null;
+                            postObject = postQuiz;
+                            postResponseId = postQuiz?.responseId ?? null;
                             
                             console.log('Last fetched entry:', entry);
                         }
-                    }
+                    //}
                     
                     // if (storedCycle) {
                     //     try {  
@@ -437,7 +440,7 @@
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
-                        quizSpan.innerHTML = '<div class="void">' + 'You have already finished the pre-quiz and the post-quiz! <img src="./images/thumbs-up.gif">\n' + '<img src="./images/finger.gif"> Now, it is time you can start over this amazing journey!' + '</div>';
+                        quizSpan.innerHTML = '<div class="void">' + 'You have already finished the pre-quiz and the post-quiz! <img src="./images/thumbs-up.gif">\n Now, it is time you can start over this amazing journey!' + '</div>';
                         await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         console.log('Found post-quiz result in storage!\n', postObject);

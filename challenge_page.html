@@ -215,8 +215,8 @@
                     });
                     
                     console.log("User metadata successfully updated:", updatedUser.user_metadata);
-                    // Wait for 3 seconds
-                    await new Promise(resolve => setTimeout(resolve, 3000)); 
+                    // Wait for 2 seconds and a half
+                    await new Promise(resolve => setTimeout(resolve, 2500)); 
                     // Fetch and save the latest user object to localStorage
                     const updatedUserDetails = await netlifyIdentity.gotrue.currentUser();
                     console.log("Fetched updated user:", updatedUserDetails.user_metadata);
@@ -252,15 +252,15 @@
                     // Enable or disable the next button based on task completion status
                     if (allCompleted) {
                         navPostQuiz.classList.remove('Disabled');
+                        btn_next.disabled = false;
                         btn_next.style.pointerEvents = "auto"; // Enable the next button
                         btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
                         btn_next.style.cursor = "pointer";
-                        btn_next.disabled = false;
                     } else {
+                        btn_next.disabled = true;
                         btn_next.style.pointerEvents = "none"; // Disable the next button
                         btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
                         btn_next.style.cursor = "not-allowed";
-                        btn_next.disabled = true;
                     }
                 }
                 
