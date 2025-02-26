@@ -16,7 +16,7 @@
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #02897A;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -77,9 +77,9 @@
                 <p id="threetask"></p>
             </div>
             <div class="button2">
-                <button class="start">Start</button>
+                <button class="start shadow" style="width: 180px;">Start</button>
             </div>
-            <div class="improvement">
+            <div class="improvement shadow">
                 <button id="good">Good scores</button>
                 <button id="notyet">Need improvement</button>
             </div>
@@ -589,26 +589,26 @@
                 
                 // Event listener for "good" button
                 document.getElementById('good').addEventListener('click', async () => {
+                    good.style.backgroundColor = '#02897A';
+                    bad.style.backgroundColor = '#a9d1cd';
                     var condition = (score) => score >= 3;
                     await renderQuestions(condition, preObject, userId);
                     var tContent = document.querySelector(".task-content");
                     if (tContent.innerHTML == '') {
                         tContent.innerHTML == '<p>None of your answers got good score</p>';
                     }
-                    good.style.backgroundColor = '#02897A';
-                    bad.style.backgroundColor = '#a9d1cd';
                 });
                 
                 // Event listener for "bad" button
                 document.getElementById('notyet').addEventListener('click', async () => {
+                    good.style.backgroundColor = '#a9d1cd';
+                    bad.style.backgroundColor = '#02897A';
                     var condition = (score) => score < 3;
                     await renderQuestions(condition, preObject, userId);
                     var tContent = document.querySelector(".task-content");
                     if (tContent.innerHTML == '') {
                         tContent.innerHTML == '<p>None of your answers got bad score</p>';
                     }
-                    good.style.backgroundColor = '#a9d1cd';
-                    bad.style.backgroundColor = '#02897A';
                 });
 
                 var condition = (score) => score < 3;
