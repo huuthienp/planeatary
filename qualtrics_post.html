@@ -369,7 +369,7 @@
                             if (postObject) {
                                 postResult = postObject?.result ?? null;
                                 post_rec = postObject?.recordedDate ?? null;
-                                await updateResponseHistory(postObject, user);
+                                //await updateResponseHistory(postObject, user);
                                 updateButton(nextButton, '#02897A', 'pointer');
                                 quizFrame.style.display = 'none'; 
                                 fallbackMessage.innerHTML = "<div class='void'>Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over. <img src='./images/in-love.gif'></div>";

@@ -167,7 +167,7 @@
             }
             
             //hard-code updating responseHistory
-            async function updateResponseHistory(preObject, user) {
+            async function updateResponseHistory(preObject, user, restart) {
                 if (!user) {
                     console.error("No user is logged in!");
                     return;
@@ -187,7 +187,7 @@
                 if (index === -1) {
                     responseHistory.push({ preId: preResponseId });
                     user.update({
-                        data: { responseHistory: responseHistory,},
+                        data: { responseHistory: responseHistory, restarting: restart}
                     }).then((updatedUser) => {
                         console.log("User metadata updated:", updatedUser);
                         // Fetch the latest user object instead of using reload()
@@ -339,16 +339,17 @@
                     });
                 })
                 
-                restartBtn.addEventListener('click', () => {
-                    localStorage.removeItem('preResult');
+                restartBtn.addEventListener('click', async () => {
                     //localStorage.removeItem(`${preResponseId}:fetched_tasks`);
                     //localStorage.removeItem(`${preResponseId}:tasks`);
-                    localStorage.removeItem('postResult');
                     document.getElementById("navPost-quiz").classList.add('Disabled');
                     document.getElementById('navChallenge').classList.add('Disabled');
                     document.getElementById('navDashboard').classList.add('Disabled');
                     // Set a flag to indicate that restart has been clicked
-                    localStorage.setItem("restartFlag", "true");
+                    //localStorage.setItem("restartFlag", "true");
+                    await updateResponseHistory(preObject, user, 'yes');
+                    localStorage.removeItem('preResult');
+                    localStorage.removeItem('postResult');
                     updateAnchors(anchors);
                     updateButton(restartBtn, 'grey', 'not-allowed');
                     updateButton(nextButton, 'grey', 'not-allowed');
@@ -377,6 +378,7 @@
                     // Use user data as needed
                     console.log("User ID:", userId);
                     console.log("Response History:", responseHistory);
+                    console.log("User metadata:", metadata);
                     
                     //let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                     // if (allResponses) {
@@ -433,7 +435,7 @@
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
                         quizSpan.innerHTML = "<div class='void'>You have already finished the pre-quiz! Let's continue! <img src=''./images/thumbs-up.gif'></div>";
-                        await updateResponseHistory(preObject, user)
+                        //await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
 
                     } else if (preObject && postObject) {
@@ -442,7 +444,7 @@
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
                         quizSpan.innerHTML = '<div class="void">' + 'You have already finished the pre-quiz and the post-quiz! <img src="./images/thumbs-up.gif">\n Now, it is time you can start over this amazing journey!' + '</div>';
-                        await updateResponseHistory(preObject, user)
+                        //await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         console.log('Found post-quiz result in storage!\n', postObject);
                         enableRestartButton();
@@ -456,10 +458,10 @@
                         updateButton(restartBtn, 'grey', 'not-allowed');
                     }
 
-                    const restartFlag = localStorage.getItem("restartFlag");
+                    const restartFlag = metadata?.restarting ?? 'no';
                     
-                    if (restartFlag === "true") {
-                        restartBtn.setAttribute("disabled", "");
+                    if (restartFlag === "yes") {
+                        //restartBtn.setAttribute("disabled", "");
                         updateAnchors(anchors);
                         document.getElementById("navPost-quiz").classList.add('Disabled');
                         document.getElementById('navChallenge').classList.add('Disabled');
@@ -512,7 +514,7 @@
                         try {
                             JSON.parse(newValue || undefined);  // force null -> undefined to throw error
                             console.log('Found newest pre-quiz result in storage!\n', newValue);
-                            await updateResponseHistory(JSON.parse(newValue), user);
+                            await updateResponseHistory(JSON.parse(newValue), user, 'no');
                             setTimeout(() => {
                                 updateAnchors(anchors, hrefs);
                                 updateButton(nextButton, '#02897A', 'pointer');
@@ -549,7 +551,11 @@
                     const userId = user.id;
                     if (document.visibilityState === "hidden") {
                         console.log('Leaving pre-quiz page, updating history');
-                        await updateResponseHistory(preObject, user);
+                        if (preObject) {
+                            await updateResponseHistory(preObject, user, 'no');
+                        } else {
+                            await updateResponseHistory(preObject, user, 'yes');
+                        }
                     }
                 })
             });
