@@ -82,7 +82,7 @@
         
         <section class="overlay2 hidden" id="modalOverlay">
             <div class="align2">
-                <div class="modal2" id="taskModal"> 
+                <div class="modal2 hidden" id="taskModal"> 
                     <div class="btn">
                         <button class="close">x</button>
                     </div>
@@ -146,10 +146,10 @@
             const showModal = (title, description) => {
                 modalTitle.textContent = title;
                 modalDescription.innerHTML = description;
-                showElement(modalOverlay);
+                showElement([modalOverlay, modal]);
             };
             
-            const closeModal = () => hideElement(modalOverlay);
+            const closeModal = () => hideElement([modalOverlay, modal]);
             
             document.querySelector(".close").addEventListener("click", closeModal);
             window.addEventListener("click", (event) => {
