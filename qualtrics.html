@@ -347,6 +347,7 @@
                     document.getElementById('navDashboard').classList.add('Disabled');
                     // Set a flag to indicate that restart has been clicked
                     //localStorage.setItem("restartFlag", "true");
+                    const user = netlifyIdentity.gotrue.currentUser();
                     await updateResponseHistory(preObject, user, 'yes');
                     localStorage.removeItem('preResult');
                     localStorage.removeItem('postResult');

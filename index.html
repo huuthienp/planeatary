@@ -789,10 +789,17 @@
             }
         }
 
-        heroButton.addEventListener('click', function () {
+        heroButton.addEventListener('click', async () => {
             if (netlifyIdentity.gotrue.currentUser()) {
-                let preObject = localStorage.getItem('preResult')
-                if(preObject) {
+                let preObject = localStorage.getItem('preResult');
+                const user = netlifyIdentity.gotrue.currentUser();
+                const userData = await getUserData();
+                const { metadata, responseHistory, userId } = userData;
+
+                if (metadata.restarting == 'yes') {
+                    alert("Let's do your restarting pre-quiz!");
+                    window.location.href = "qualtrics.html";
+                }else if(preObject) {
                     alert("Let's see your latest result");
                     window.location.href = "result_page.html";
                 } else {
