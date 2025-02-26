@@ -617,6 +617,8 @@
             } catch (err) {
                 console.error("Caught error: ", err);
             } finally {
+                var condition = (score) => score < 3;
+                await renderQuestions(condition, preObject, userId);
                 hideSpinner([bOverlay, spinner], Condition);
             }      
         });

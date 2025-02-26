@@ -50,7 +50,7 @@
                                     <a class="nav-link" id="navDashboard" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i>Dashboard</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="navHistory" data-bs-dismiss="offcanvas"><i class="fa fa-calendar-check-o"></i>History</a>
+                                    <a class="nav-link" id="navHistory" data-bs-dismiss="offcanvas" href="history_page.html"><i class="fa fa-calendar-check-o"></i>History</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
@@ -345,9 +345,10 @@
                     //localStorage.removeItem(`${preResponseId}:tasks`);
                     localStorage.removeItem('postResult');
                     document.getElementById("navPost-quiz").classList.add('Disabled');
+                    document.getElementById('navChallenge').classList.add('Disabled');
+                    document.getElementById('navDashboard').classList.add('Disabled');
                     // Set a flag to indicate that restart has been clicked
                     localStorage.setItem("restartFlag", "true");
-                    restartBtn.setAttribute("disabled", "");
                     updateAnchors(anchors);
                     updateButton(restartBtn, 'grey', 'not-allowed');
                     updateButton(nextButton, 'grey', 'not-allowed');
@@ -460,6 +461,9 @@
                     if (restartFlag === "true") {
                         restartBtn.setAttribute("disabled", "");
                         updateAnchors(anchors);
+                        document.getElementById("navPost-quiz").classList.add('Disabled');
+                        document.getElementById('navChallenge').classList.add('Disabled');
+                        document.getElementById('navDashboard').classList.add('Disabled');
                         updateButton(restartBtn, 'grey', 'not-allowed');
                         updateButton(nextButton, 'grey', 'not-allowed');
                         // The user has restarted, so keep the iframe visible.
