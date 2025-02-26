@@ -269,7 +269,7 @@ body {
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  font-family: Poppins;
+  font-family: 'Poppins';
 }
 
 .button_next a:link {
@@ -397,6 +397,7 @@ body {
   background: rgb(133, 132, 132);
   border-radius: 1em;
   text-align: center;
+  box-shadow: 0 .125rem .25rem rgba(black, .075);
 }
 
 .card_completion {
@@ -405,6 +406,7 @@ body {
   border: none;
   border-radius: 1em;
   text-align: center;
+  box-shadow: 0 .125rem .25rem rgba(black, .075);
 }
 
 /* .card_completed:hover,
@@ -1181,6 +1183,21 @@ body {
   font-size: 1em;
 }
 
+#preQ:hover,
+#preQ:focus {
+  cursor: pointer;
+}
+
+#postQ:hover,
+#postQ:focus {
+  cursor: pointer;
+}
+
+#com-tasks:hover,
+#com-tasks:focus {
+  cursor: pointer;
+}
+
 .result {
     text-align: center;
     margin: 5vh 0;
@@ -1370,7 +1387,7 @@ body {
     background-color: #fff;
     padding: 1em;
     border-radius: 1em;
-    box-shadow: 0 0.4em 0.6em rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
     width: 30%;
 }
 
