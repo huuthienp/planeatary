@@ -206,6 +206,24 @@
                     });
                 } else {
                     console.log("Pre response ID already exists in response history.");
+                    user.update({
+                        data: { restarting: restart }
+                    }).then((updatedUser) => {
+                        console.log("User metadata updated:", updatedUser);
+                        // Fetch the latest user object instead of using reload()
+                        netlifyIdentity.gotrue.currentUser()
+                        .jwt()
+                        .then((token) => {
+                            const updatedUserDetails = netlifyIdentity.gotrue.currentUser();
+                            localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
+                            console.log("Updated user saved to localStorage:", updatedUserDetails);
+                        })
+                        .catch((error) => {
+                            console.error("Error fetching updated user details:", error);
+                        });
+                    }).catch((error) => {
+                        console.error("Error updating user metadata:", error);
+                    });
                 }
                 Object.assign(mockResponseHistory, { user_metadata: { responseHistory: responseHistory } });
                 localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
