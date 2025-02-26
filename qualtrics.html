@@ -182,7 +182,8 @@
                 let responseHistory = user.user_metadata.responseHistory || [];
                 const index = responseHistory.findIndex(cycle => cycle.preId === preResponseId);
                 const mockResponseHistory = {id: userId};
-                document.getElementById('nextButt').innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Updating...';
+                document.getElementById('nextButt').innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Processing...';
+
                 // If the preResponseId is not already in the history, add it
                 if (index === -1) {
                     responseHistory.push({ preId: preResponseId });
@@ -326,7 +327,7 @@
                 const restartBtn = document.getElementById('restartBtn');
 
                 async function enableRestartButton() {
-                    restartBtn.innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Loading...'; 
+                    restartBtn.innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Enabling restart...'; 
                     await delay(2000);
                     restartBtn.removeAttribute("disabled");
                     restartBtn.innerHTML = 'Restart the cycle';

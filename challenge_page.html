@@ -232,7 +232,6 @@
                     console.error("Error updating user metadata:", error);
                 } finally {
                     localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
-                    document.querySelector(".next").innerHTML = 'Next  &#8594;';
                 }
             }
                 
@@ -262,6 +261,7 @@
                         btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
                         btn_next.style.cursor = "not-allowed";
                     }
+                    document.querySelector(".next").innerHTML = 'Next  &#8594;';
                 }
                 
                 // Function to display selected tasks and allow status update
@@ -613,8 +613,14 @@
                         chosen: mergedData.chosen,
                     });
                     if (document.visibilityState === "hidden") {
+                        if (!preResponseId) {
+                            console.warn("No preResponseId found; skipping beacon update.");
+                            return;
+                        }
+                        //This Beacon api is not working at the moment (404 error). May need adjustments from the backend
                         const beaconSent = navigator.sendBeacon('/api/manage-tasks', payload);
                         console.log("Beacon sent:", beaconSent);
+                        //await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
                     }
                 });
             });  

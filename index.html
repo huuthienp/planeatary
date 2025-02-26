@@ -792,14 +792,13 @@
         heroButton.addEventListener('click', async () => {
             if (netlifyIdentity.gotrue.currentUser()) {
                 let preObject = localStorage.getItem('preResult');
-                const user = netlifyIdentity.gotrue.currentUser();
                 const userData = await getUserData();
                 const { metadata, responseHistory, userId } = userData;
 
                 if (metadata.restarting == 'yes') {
                     alert("Let's do your restarting pre-quiz!");
                     window.location.href = "qualtrics.html";
-                }else if(preObject) {
+                } else if (preObject) {
                     alert("Let's see your latest result");
                     window.location.href = "result_page.html";
                 } else {
@@ -948,14 +947,24 @@
                 if (r === true) {
                     enableFirstTimers();
                     //Need lana to test and edit the flow here if neccessary
-                    alert("Form is valid, proceeding");
-                    window.location.href = "result_page.html";
+                    alert("Successful login!, proceeding");
+                    const userData = await getUserData();
+                    const { metadata, responseHistory, userId } = userData;
+                    //Once a user chose to restart the cycle and does not finish it, redirect the user to pre-quiz page
+                    if (metadata.restarting == 'yes') {
+                        alert("Let's do your restarting pre-quiz!");
+                        window.location.href = "qualtrics.html";
+                    } else {
+                        alert("Let's see your latest result!");
+                        window.location.href = "result_page.html";
+                    }
                 } else {
                     disableFirstTimers();
-                    alert("Form is valid, proceeding");
+                    alert("Successful login!, proceeding");
                     // Delay navigation slightly
                     setTimeout(() => {
                         //Needs confirmation from Linh about the flow here
+                        alert("Welcome to our website!");
                         window.location.href = "index.html";
                     }, 500);
                 }
