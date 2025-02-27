@@ -17,7 +17,7 @@
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #02897A;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -68,9 +68,9 @@
             </div>
             <div class="m-content hidden">
                 <div class="pre-postQ">
-                    <button id="preQ">PreQuiz</button>
-                    <button id="postQ">PostQuiz</button>
-                    <button id="com-tasks">Task</button>
+                    <button id="preQ" class="shadow-sm" style="width: 150px;">PreQuiz</button>
+                    <button id="postQ" class="shadow-sm" style="width: 150px;">PostQuiz</button>
+                    <button id="com-tasks" class="shadow-sm" style="width: 150px;">Task</button>
                 </div>
                 <div class="result">
                     <div class="congrats">
@@ -99,7 +99,7 @@
                             <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
                         </div>
                         <div class="btn-next">
-                        <a class="nextB" href="manifesto_page.html"><button type="button" class="btn btn-success select-tasks" style="width: 180px;">Select Tasks →</button></a>
+                        <a class="nextB" href="manifesto_page.html"><button type="button" class="btn btn-success select-tasks shadow-sm" style="width: 180px;">Select Tasks →</button></a>
                         </div>
                     
                 </div>
@@ -137,9 +137,9 @@
                     <div class="d-flex">
                         <div class="toast-body">
                             <h4>Well done!</h4>
-                            <p>Aww,You are not allowed to do more tasks after doing the post-quiz.</p>
+                            <p>It is quite a shame that you are not allowed to do more tasks after doing the post-quiz.</p>
                             <hr>
-                            <p class="mb-0">Please restart the cycle by restarting the pre-quiz.</p>
+                            <p class="mb-0">Please start over this beautiful journey at pre-quiz page!</p>
                         </div>
                         <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
@@ -151,7 +151,8 @@
 
         <script type="module">
             import { fetchTaskStatus, extractTaskData, updateAnchors } from './scripts/helpers.mjs';
-            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, hasPostQuizCycle, logOut } from './scripts/utility.js';
+            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick
+                , handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
             
             const mainContainer = document.querySelector(".m-content");
             const Qbuttoncontainer = document.querySelector(".pre-postQ");
@@ -268,7 +269,7 @@
                     }
                     
                     let date = new Date(questionsData.recordedDate);
-                    header.innerHTML = `${type}-QUIZ RESULT`;
+                    header.innerHTML = `<b>${type}-QUIZ RESULT</b>`;
                     let localHours = String(date.getHours()).padStart(2, "0");
                     let localMinutes = String(date.getMinutes()).padStart(2, "0");
                     let year = date.getFullYear();
@@ -310,7 +311,7 @@
                 }
 
                 // Function to display completed tasks 
-                async function displaySelectedTasks(tasks, detailed) {
+                function displaySelectedTasks(tasks, detailed) {
                     
                     cardContainer.innerHTML = ''; 
                     comparison.innerHTML = ''; 
@@ -323,10 +324,10 @@
                     'p.next-step',
                     'p.improvement',
                     'p.suggestion',
-                    'button.select-tasks'
+                    'div.btn-next'
                     ];
                     
-                    header.innerHTML = 'Completed tasks';
+                    header.innerHTML = '<b>Completed tasks</b>';
                     
                     const tagsToHide = tohide.map(s => document.querySelector(s));
                     
@@ -335,7 +336,7 @@
                     );
                     
                     if (!detailed) {
-                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
+                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is no information available to display.</div>";
                         return;
                     }
 
@@ -400,7 +401,7 @@
                         completion_date.innerHTML = '';
                     }
                     if (task_rec.length === 0) {
-                        document.querySelector('.q').innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
+                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
                     }
                 }
             
@@ -432,25 +433,23 @@
 
                 offcanvasListItems.forEach(li => {
                     li.addEventListener('click', event => {
+                        event.preventDefault();
                         const link = li.querySelector('a.nav-link'); 
-                        if (link) {
-                            li.addEventListener('click', handleOffcanvasClick);
+                        if (link && link !== document.getElementById('navChallenge')) {
+                            handleOffcanvasClickFromElement(link);
                         }
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
-                    });
+                    })
                 });
                 
                 offcanvasDropdownItems.forEach(li => {
                     li.addEventListener('click', event => {
+                        event.preventDefault();
                         const link = li.querySelector('a.dropdown-item'); 
                         if (link) {
-                            li.addEventListener('click', handleOffcanvasClick);
+                            handleOffcanvasClickFromElement(link);
                         }
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
-                    });
-                })
+                    })
+                });
                 
                 const navChallenge = document.getElementById('navChallenge');
                 
@@ -464,7 +463,6 @@
                     console.log("navChallenge clicked");
                     console.log("navChallenge.href:", navChallenge.href);
                     console.log("hasPostQuizResult() returns:", hasPostQuizResult());
-                    console.log("hasPostQuizCycle() returns:", hasPostQuizCycle());
                     
                     if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
                         event.preventDefault();
@@ -472,7 +470,8 @@
                         navChallenge.removeAttribute('href');
                         console.log("Navigation prevented. Calling showAlert().");
                         showAlert();
-                    } else if (hasPostQuizResult() || hasPostQuizCycle()) {
+                    } else if (hasPostQuizResult()) {
+                        console.log("Navigation prevented. Calling showAlert().");
                         showAlert();
                     } else {
                         handleOffcanvasClick(event);
@@ -504,7 +503,7 @@
                     const toshow = [
                     'p.next-step',
                     'p.suggestion',
-                    'button.select-tasks'
+                    'div.btn-next'
                     ];
 
                     const tagsToShow = toshow.map(s => document.querySelector(s));
@@ -514,7 +513,7 @@
                     );    
 
                     document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
-                    document.querySelector("button.select-tasks").href = 'manifesto_page.html';
+                    document.querySelector("a.nextB").href = 'manifesto_page.html';
 
                     
                     const userData = await getUserData();
@@ -524,7 +523,6 @@
                         console.log("User ID:", userId);
                         console.log("Response History:", responseHistory);
                         
-                        //behave accordingly
                         //from history page
                         var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
                         
@@ -551,19 +549,20 @@
                             postObject = storedCycle?.postResponse ?? null;
                             postResult = postObject?.result ?? null;
                             post_rec = postObject?.recordedDate ?? null;
-                            
+
                             try {
+                                tasks = await fetchTasks(preResponseId);  
+                                localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                                tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
                                 var selectTasks = await fetchTaskStatus(preResponseId, userId);
                                 localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
                                 detailed = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                                 task_rec = detailed?.time ?? []; 
+
                             } catch(err) {
                                 console.warn("Couldn't find history tasks' info:", err);
                             }
-
-                            if(postObject) {
-                                sessionStorage.setItem('selectedCycle_post', JSON.stringify(postObject));
-                            }
+                            
                         }
                         
                         if (!tasks) {
@@ -589,7 +588,7 @@
                             const tohide = [
                             'p.next-step',
                             'p.suggestion',
-                            'button.select-tasks',
+                            'div.btn-next',
                             'div.circle',
                             'div.pre-postQ'
                             ];
@@ -629,7 +628,7 @@
                             document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
                             document.querySelector("button.select-tasks").innerHTML = 'Back to <i class="fa fa-home"></i>';
-                            document.querySelector("button.select-tasks").href = 'index.html';
+                            document.querySelector("a.nextB").href = 'index.html';
                             
                         } else if (preObject && !postObject) {
                             
@@ -637,7 +636,7 @@
                             const toshow = [
                             'p.next-step',
                             'p.suggestion',
-                            'button.select-tasks',
+                            'div.btn-next',
                             'div.circle'
                             ];
                             
@@ -647,9 +646,6 @@
                             (tag) => { if(tag) {tag.classList.remove('hidden');} }
                             );
                             
-                            //ch.classList.remove('disabled');
-                            //ch.style.cursor = "pointer"; 
-                            
                             //display preresult by default
                             displayQuestions(preObject, 'PRE');
                             
@@ -657,8 +653,9 @@
                             document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
                             document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
-                            document.querySelector("button.select-tasks").href = 'manifesto_page.html';
-                            document.getElementById('postQ').disabled = true; 
+                            document.querySelector("a.nextB").href = 'manifesto_page.html';
+                            document.getElementById('postQ').disabled = true;
+                            document.getElementById('postQ').style.cursor = 'not-allowed';  
                             
                         } else {
                             // Handle no user or expired token scenario
@@ -672,7 +669,7 @@
                             const toshow = [
                             'p.next-step',
                             'p.suggestion',
-                            'button.select-tasks',
+                            'div.btn-next',
                             'div.circle'
                             ];
                             
@@ -683,11 +680,11 @@
                             );
                             
                             document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
-                            document.querySelector("button.select-tasks").href = 'manifesto_page.html';
+                            document.querySelector("a.nextB").href = 'manifesto_page.html';
                             
                         } else {
                             const toshow = [
-                            'button.select-tasks',
+                            'div.btn-next',
                             'div.circle'
                             ];
                             
@@ -698,16 +695,13 @@
                             );
                             
                             document.querySelector("button.select-tasks").innerHTML = 'Back to <i class="fa fa-home"></i>';
-                            document.querySelector("button.select-tasks").href = 'index.html';
+                            document.querySelector("a.nextB").href = 'index.html';
                         }
                         
                         displayQuestions(preObject, 'PRE');
                         document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
-                        document.getElementById('postQ').style.transition = "all 1s";
                         document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
-                        document.getElementById('com-tasks').style.transition = "all 1s";
                         document.getElementById('preQ').style.backgroundColor = '#02897A';    
-                        document.getElementById('preQ').style.transition = "all 1s";
                     });
                     
                     document.getElementById('postQ').addEventListener('click', function() {
@@ -727,7 +721,7 @@
                             );
                             
                             const toshow = [
-                            'button.select-tasks',
+                            'div.btn-next',
                             'div.circle'
                             ];
                             
@@ -738,16 +732,13 @@
                             );
                             
                             document.querySelector("button.select-tasks").innerHTML = 'Back to <i class="fa fa-home"></i>';
-                            document.querySelector("button.select-tasks").href = 'index.html';
+                            document.querySelector("a.nextB").href = 'index.html';
                             
                             
                             displayQuestions(postObject, 'POST');
                             document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
-                            document.getElementById('preQ').style.transition = "all 1s";
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
-                            document.getElementById('com-tasks').style.transition = "all 1s";
                             document.getElementById('postQ').style.backgroundColor = '#02897A';    
-                            document.getElementById('postQ').style.transition = "all 1s";
                         }
                     });
                     
@@ -755,11 +746,8 @@
                         
                         displaySelectedTasks(tasks, detailed);
                         document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
-                        document.getElementById('preQ').style.transition = "all 1s";
                         document.getElementById('postQ').style.backgroundColor = '#a9d1cd';    
-                        document.getElementById('postQ').style.transition = "all 1s";
                         document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
-                        document.getElementById('com-tasks').style.transition = "all 1s";
                     });
                 } catch (err) {
                     //Debugging handling errors
@@ -768,7 +756,7 @@
                     const tohide = [
                     'p.next-step',
                     'p.suggestion',
-                    'button.select-tasks',
+                    'div.btn-next',
                     'div.circle',
                     'div.pre-postQ'
                     ];
@@ -778,7 +766,7 @@
                     tagsToHide.forEach(
                     (tag) => { if(tag) {tag.classList.add('hidden');} }
                     );
-                    cardContainer.innerHTML = '<div class="empty-state">Opps! no results available.</div>';
+                    cardContainer.innerHTML = `<div class="empty-state">Opps! no results available.\nThe error: ${err} is spotted!\nPlease allow us sometime to fix it.</div>`;
                     
                 } finally {
                     console.log("bOverlay is:", bOverlay);

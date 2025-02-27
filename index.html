@@ -15,7 +15,7 @@
         </div>
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-xl" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-xl shadow" style="background-color: #02897A;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -74,14 +74,14 @@
         
         <!--Hero section at the top-->
         <div class="hero">
-            <div class="herocontent">
+            <div class="herocontent shadow">
                 <div class="hero-text">
                     <h1>Welcome to the PlanEATary Quest!</h1>
                     <p>
                         Embark on a delicious adventure to learn how we can create a more sustainable food system
                         and improve our planet's health for current and future generations.
                     </p>
-                    <button type="button" class="btn btn-success"><a class="herobtn">Get started</a></button>
+                    <button type="button" class="btn btn-success shadow-sm"><a class="herobtn">Get started</a></button>
                 </div>
                 <div class="hero-image">
                     <img src="./images/welcome-removebg.png"/>  
@@ -105,7 +105,7 @@
                     </div>
                     <div class="carousel-inner" id="c-steps">
                         <div class="carousel-item active c-items">
-                            <div class="card atep" style="background-color: #D0F0C0;">
+                            <div class="card" style="background-color: #D0F0C0;">
                                 <img src="./images/plug.png" class="card-img-top">
                                 <div class="card-body">
                                     <h5 class="card-title">Complete the Quiz</h5>
@@ -172,13 +172,11 @@
             </div>
             <div class="video">
                 <div class="ratio ratio-16x9">
-                    <iframe 
+                    <!-- delay loading until scroll
                     src="https://www.youtube.com/embed/nYe-ibIFxW4" 
-                    title="YouTube video player" 
-                    frameborder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
+                    -->
+                <iframe allow="clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" title="YouTube Video Player"></iframe>
             </div>
         </div>
     </section>
@@ -214,7 +212,7 @@
         <div class="b-example-divider"></div>
         
         <section class="container-fluid p-5">
-            <h2>BACKGROUND: How was the PlanEATary Quest developed?</h2>
+            <h2><b>BACKGROUND: How was the PlanEATary Quest developed?</b></h2>
             <hr>
             <div class="row d-flex">
                 <div class="people">
@@ -368,7 +366,7 @@
                             <input type="checkbox" checked="checked" name="remember"> Remember me
                         </label>
                         <br/>
-                        <a class="psw" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot password?</a>
+                        <a class="psw" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal" style="cursor: pointer;">Forgot password?</a>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -408,6 +406,41 @@
     </div>
 </div>
 
+        <!-- Reset Password Modal -->
+        <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="resetPasswordModalLabel">Set New Password</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="resetPasswordForm" novalidate>
+                            <div class="mb-3">
+                                <label for="newPasswordInput" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="newPasswordInput" placeholder="Enter your new password" required>
+                                <div class="invalid-feedback">Password must contain at least:
+                                    <ul><li>8 <a href="https://en.wikipedia.org/wiki/ASCII">ASCII</a> printable characters</li><li>1 lowercase letter</li><li>1 uppercase letter</li><li>1 number</li></ul>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmPasswordInput" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPasswordInput" placeholder="Confirm your new password" required>
+                                <div class="invalid-feedback">Passwords do not match or are empty.</div>
+                            </div>
+                        </form>
+                        <div class="form-control" id="apiFeedback" style="display: none;"></div>
+                        <div class="valid-feedback">Password updated.</div>
+                        <div class="invalid-feedback">Please verify your recovery link<br>or <a class="psw" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal" style="cursor: pointer;">request another one</a>.</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="setNewPasswordButton">Set New Password</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 <!-- Sign Up Modal-->
 <div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -418,7 +451,7 @@
             </div>
             <div class="modal-body">
                 <!-- Sign-Up Form -->
-                <form class="account-form" id="signUpForm" onsubmit="return validate_form()">
+                <form class="account-form" id="signUpForm" novalidate>
                     <div class="mb-3">
                         <label for="name">Name:</label>
                         <input type="text" class="form-control" id="name" placeholder="Enter your name">
@@ -462,7 +495,7 @@
                     <div class="mb-3 text-danger" id="form_validate_msg"></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="signUpButton">Sign Up</button>
+                        <button type="button" class="btn btn-primary" id="signUpButton">Sign Up</button>
                     </div>
                 </form>
             </div>
@@ -487,7 +520,7 @@
     <div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
-                Please finish your very first quiz before further proceeding.
+                Please finish your pre-quiz before further proceeding.
             </div>
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
@@ -499,10 +532,10 @@
     <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
         <div class="d-flex">
             <div class="toast-body">
-                <h4>Well done!</h4>
-                <p>Aww,You are not allowed to do more tasks after doing the post-quiz.</p>
+                <h4>How Wonderful!</h4>
+                <p>It is sad that you are not allowed to do more tasks after doing the post-quiz.</p>
                 <hr>
-                <p class="mb-0">Please restart the cycle by restarting the pre-quiz.</p>
+                <p class="mb-0">Please restart the journey in pre-quiz page. Looking forward to always having you here with us!</p>
             </div>
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
@@ -517,16 +550,16 @@
         <span>Loading</span>
     </div>
 </section>
-
+<!-- already in head
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
+-->
 <script>
     document.getElementById('resetPasswordButton').addEventListener('click', function () {
         const resetEmailInput = document.getElementById('resetEmailInput');
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         
         // Validate email
-        if (!emailRegex.test(resetEmailInput.value)) {
+        if (!emailRegex.test(resetEmailInput.value.trim())) {
             resetEmailInput.classList.add('is-invalid');
             return;
         } else {
@@ -534,28 +567,46 @@
         }
         
         // Call Netlify Identity's password recovery API
-        const email = resetEmailInput.value;
+        const email = resetEmailInput.value.trim();
+        const opt = {};
+        opt.method = 'POST';
+        opt.body = JSON.stringify(({ email }));
+        /*
         netlifyIdentity.gotrue
         .requestPasswordRecovery(email)
-        .then((response) => {
+        */
+        fetch('/api/recovery', opt)
+        .then(async response => {
+            const msg = await response.text();
+            if (response.ok) {
+            console.log(response.status, msg);
             console.log('Recovery email sent', { response });
             alert('Recovery email sent successfully. Please check your inbox.');
             // Close the modal after success
             const modalElement = document.getElementById('forgotPasswordModal');
             const modalInstance = bootstrap.Modal.getInstance(modalElement);
             modalInstance.hide();
+            } else {
+            console.error(response.status, msg);
+            alert('There was an error sending the recovery email. Please try again later.');
+            }
         })
         .catch((error) => {
             console.error('Error sending recovery email:', error);
             alert('There was an error sending the recovery email. Please try again later.');
         });
     });
+    document.querySelector("#forgotPasswordForm").addEventListener('submit', () => {
+        event.preventDefault();  // default: navigation or reload
+        document.querySelector("#resetPasswordButton").click();
+    });  // replace form submit (pressing enter) default behaviour with button click
 </script>
 
 <script type="module">
     
     import { fetchResponses, fetchData, reformatResponseData, mergeTaskArrays, fetchTaskStatus } from './scripts/helpers.mjs';
-    import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+    import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick,
+        handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
     
     let startTime = Date.now();
     const condition = [false, startTime];
@@ -606,16 +657,14 @@
         // Function to handle navigation or showing toast
         offcanvasListItems.forEach(li => {
             li.addEventListener('click', event => {
+                event.preventDefault();
                 const link = li.querySelector('a.nav-link'); 
                 
                 if (link) {
                     if (link.classList.contains('Disabled')) {
                         showToast(); 
                     } else {
-                        const targetHref = link.getAttribute('href');
-                        if (targetHref && targetHref !== '#') {
-                            window.location.href = targetHref;
-                        }
+                        handleOffcanvasClickFromElement(link);
                     }
                 }
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -626,21 +675,47 @@
         // Function to handle navigation or showing toast
         offcanvasDropdownItems.forEach(li => {
             li.addEventListener('click', event => {
+                event.preventDefault();
                 const link = li.querySelector('a.dropdown-item'); 
-                
                 if (link) {
                     if (link.classList.contains('Disabled')) {
                         showToast(); 
                     } else {
-                        const targetHref = link.getAttribute('href');
-                        if (targetHref && targetHref !== '#') {
-                            window.location.href = targetHref;
-                        }
+                        handleOffcanvasClickFromElement(link);
                     }
                 }
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                 offcanvas.hide();
             });
+        })
+
+        const navChallenge = document.getElementById('navChallenge');
+
+        if (!navChallenge) {
+            console.error("Element with id 'navChallenge' not found.");
+            return;
+        }
+
+        navChallenge.addEventListener('click', function(event) {
+            // Debug logs to check values
+            console.log("navChallenge clicked");
+            console.log("navChallenge.href:", navChallenge.href);
+            console.log("hasPostQuizResult() returns:", hasPostQuizResult());
+            
+            if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
+                event.preventDefault();
+                event.stopPropagation();
+                navChallenge.removeAttribute('href');
+                console.log("Navigation prevented. Calling showAlert().");
+                showAlert();
+            } else if (hasPostQuizResult()) {
+                showAlert();
+            } else {
+                handleOffcanvasClick(event);
+            }
+            
+            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvas.hide();
         })
         
         const disableFirstTimers = () => {
@@ -714,14 +789,20 @@
             }
         }
 
-        heroButton.addEventListener('click', function () {
+        heroButton.addEventListener('click', async () => {
             if (netlifyIdentity.gotrue.currentUser()) {
-                let preObject = localStorage.getItem('preResult')
-                if(preObject) {
+                let preObject = localStorage.getItem('preResult');
+                const userData = await getUserData();
+                const { metadata, responseHistory, userId } = userData;
+
+                if (metadata.restarting == 'yes') {
+                    alert("Let's do your restarting pre-quiz!");
+                    window.location.href = "qualtrics.html";
+                } else if (preObject) {
                     alert("Let's see your latest result");
                     window.location.href = "result_page.html";
                 } else {
-                    alert("Let's do your very first pre-quiz!");
+                    alert("Let's do your pre-quiz!");
                     window.location.href = "qualtrics.html";
                 }
                 
@@ -866,14 +947,24 @@
                 if (r === true) {
                     enableFirstTimers();
                     //Need lana to test and edit the flow here if neccessary
-                    alert("Form is valid, proceeding");
-                    window.location.href = "result_page.html";
+                    alert("Successful login!, proceeding");
+                    const userData = await getUserData();
+                    const { metadata, responseHistory, userId } = userData;
+                    //Once a user chose to restart the cycle and does not finish it, redirect the user to pre-quiz page
+                    if (metadata.restarting == 'yes') {
+                        alert("Let's do your restarting pre-quiz!");
+                        window.location.href = "qualtrics.html";
+                    } else {
+                        alert("Let's see your latest result!");
+                        window.location.href = "result_page.html";
+                    }
                 } else {
                     disableFirstTimers();
-                    alert("Form is valid, proceeding");
+                    alert("Successful login!, proceeding");
                     // Delay navigation slightly
                     setTimeout(() => {
                         //Needs confirmation from Linh about the flow here
+                        alert("Welcome to our website!");
                         window.location.href = "index.html";
                     }, 500);
                 }
@@ -922,21 +1013,21 @@
 
 <!--forget password script-->
 <script>
-    document.getElementById('resetPasswordButton').addEventListener('click', function () {
-        const email = document.getElementById('resetEmailInput').value.trim();
-        
-        if (email === '') {
-            alert('Please enter your email.');
-            return;
-        }
-        // Simulate server request to send a reset link
-        alert('A password reset link has been sent to: ' + emailInput);
-        
-        // Close the modal after sending the reset email
-        const forgotPasswordModal = document.getElementById('forgotPasswordModal');
-        const modal = bootstrap.Modal.getInstance(forgotPasswordModal);
-        modal.hide();
-    });
+    // document.getElementById('resetPasswordButton').addEventListener('click', function () {
+    //     const email = document.getElementById('resetEmailInput').value.trim();
+    //
+    //     if (email === '') {
+    //         alert('Please enter your email.');
+    //         return;
+    //     }
+    //     // Simulate server request to send a reset link
+    //     alert('A password reset link has been sent to: ' + emailInput);
+    //
+    //     // Close the modal after sending the reset email
+    //     const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+    //     const modal = bootstrap.Modal.getInstance(forgotPasswordModal);
+    //     modal.hide();
+    // });
 </script>
 
 <!--Sign Up -->
@@ -1031,9 +1122,8 @@
         // If valid, potentially submit form or redirect
         if (validate_form()) {
             // Add logic to handle successful signup (e.g., redirect to account.html)
-            const signupData = { email: emailInput.value, password: passwordInput.value,
-                data: { full_name: nameField.value, age: ageField.value, gender: genderField.value, status: statusField.value } };
-            fetch('/.netlify/identity/signup', { method: POST, body: JSON.stringify(signupData) })
+            netlifyIdentity.gotrue.signup(emailInput.value, passwordInput.value,
+            { full_name: nameField.value, age: ageField.value, gender: genderField.value, status: statusField.value })
             .then(async (r) => {
                 await new Promise(resolve => setTimeout(resolve, 1500));
                 console.log('Successful signup!', emailInput.value);
@@ -1066,6 +1156,7 @@
             }  // stop listener after video loaded
         }  // end of loadVideo v1
         </script>  <!-- end of video-loading script -->
+        <script defer type="module" src="./scripts/process-recovery.mjs"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  <!-- Bootstrap Javascript -->
     </body>
 </html>

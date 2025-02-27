@@ -17,7 +17,7 @@
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #02897A;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -74,7 +74,7 @@
             </div>
             <div class="void-space"></div>
             <div class="table-responsive-sm history-table hidden">
-                <p class="404 empty-state hidden">There is no information available</p>
+                <div class="404 empty-state hidden">There is no information available</div>
                 <!--Table structure-->
                 <table class="table table-striped table-hover">
                     <thead>
@@ -100,7 +100,7 @@
                 </table>
                 
             </div>
-            <div class="btn-next">
+            <div class="btn-next hidden" style="display: flex; justify-content: center; padding-top: 5vh;">
                 <a href="index.html"><button type="button" class="btn btn-success" style="width: 150px;">Back to <i class="fa fa-home"></i></button></a>
             </div>
         </div>
@@ -120,7 +120,7 @@
                 <div class="d-flex">
                     <div class="toast-body">
                         <h4>Well done!</h4>
-                        <p>Aww,You are not allowed to do more tasks after doing the post-quiz.</p>
+                        <p>It's so sad that you are not allowed to do more tasks after doing the post-quiz.</p>
                         <hr>
                         <p class="mb-0">Please restart the cycle by restarting the pre-quiz.</p>
                     </div>
@@ -132,10 +132,10 @@
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         <script defer type="module">
             import { fetchTaskStatus, fetchResponses } from './scripts/helpers.mjs';
-            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick,
+                handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
             
             let scores = [];
-            const hTable = document.querySelector('history-table');
             
             let startTime = Date.now();
             const condition = [false, startTime];
@@ -243,7 +243,7 @@
                 
                 if (!history || history.length === 0) {
                     document.querySelector('div.history-table > table').style.display = 'none';
-                    document.querySelector('div.history-table > p').classList.remove('hidden');
+                    document.querySelector('div.history-table > div.404').classList.remove('hidden');
                     return;
                 }
                 console.log("info to be displayed", history);
@@ -319,6 +319,9 @@
             
             document.addEventListener("DOMContentLoaded", async () => {
 
+                //ensure the data's cycle selected from history page previously is always removed
+                sessionStorage.removeItem('selectedCycle');
+
                 document.getElementById('logOut').addEventListener('click', async () => {
                     if(confirm("Do you really want to sign out?") == true) {
                         showSpinner([bOverlay, spinner], condition);
@@ -346,7 +349,9 @@
                 const metadata = user.user_metadata;
                 const responseHistory = metadata.responseHistory;
 
-                hTable.classList.remove('hidden');
+                document.querySelector('.history-table').classList.remove('hidden');
+                document.querySelector('.btn-next').classList.remove('hidden');
+                
                 
                 const offcanvasNavbar = document.getElementById('offcanvasNavbar');
                 const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
@@ -357,13 +362,13 @@
                 const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
                 
                 offcanvasLinks.forEach(li => {
-                    if (li !== document.getElementById('navChallenge') && li.classList.contains('Disabled') == false) {
+                    if (li !== document.getElementById('navChallenge')) {
                         li.addEventListener('click', handleOffcanvasClick);
                     } 
                 });
                 
                 offcanvasDropdown.forEach(li => {
-                    if (li !== document.getElementById('navChallenge') && li.classList.contains('Disabled') == false) {
+                    if (li !== document.getElementById('navChallenge')) {
                         li.addEventListener('click', handleOffcanvasClick);
                     } 
                 });
@@ -371,14 +376,10 @@
                 // Function to handle navigation or showing toast
                 offcanvasListItems.forEach(li => {
                     li.addEventListener('click', event => {
+                        event.preventDefault();
                         const link = li.querySelector('a.nav-link'); 
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
-                        if (link) {
-                            const targetHref = link.getAttribute('href');
-                            if (targetHref && targetHref !== '#') {
-                                window.location.href = targetHref;
-                            }
+                        if (link && link !== document.getElementById('navChallenge')) {
+                            handleOffcanvasClickFromElement(link);
                         }
                     })
                     
@@ -387,15 +388,10 @@
                 // Function to handle navigation or showing toast
                 offcanvasDropdownItems.forEach(li => {
                     li.addEventListener('click', event => {
+                        event.preventDefault();
                         const link = li.querySelector('a.dropdown-item'); 
-                        
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
                         if (link) {
-                            const targetHref = link.getAttribute('href');
-                            if (targetHref && targetHref !== '#') {
-                                window.location.href = targetHref;
-                            }
+                            handleOffcanvasClickFromElement(link);
                         }
                     });
                 })

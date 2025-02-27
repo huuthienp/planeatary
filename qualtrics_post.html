@@ -16,7 +16,7 @@
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #02897A;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -69,7 +69,7 @@
                 <iframe class="quiz" title="PlanEATary Post-Quiz"></iframe>
                 <span class="fallback"></span>
                 <div class="btn-next">
-                    <a class="nextB"><button id="nextButt" type="button" class="btn btn-success next" style="width: 180px;">Next  &#8594;</button></a>
+                    <a class="nextB"><button id="nextButt" type="button" class="btn btn-success next shadow-sm" style="width: 180px;">See your result</button></a>
                 </div>
             </div>
             
@@ -83,14 +83,14 @@
             </section>
             
             <!-- Warning disabling -->
-            <div class="toast-container">
+            <div class="toast-container hidden">
                 <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                     <div class="d-flex">
                         <div class="toast-body">
-                            <h4>Well done!</h4>
-                            <p>Unfortunately,you are not allowed to do more tasks after doing the post-quiz.</p>
+                            <h4>You made it!</h4>
+                            <p>Unfortunately, you are not allowed to do more tasks after taking the post-quiz.</p>
                             <hr>
-                            <p class="mb-0">Please restart the cycle by restarting the pre-quiz.</p>
+                            <p class="mb-0">Alternatively, restart this wonderful journey by restarting pre-quiz.</p>
                         </div>
                         <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
@@ -118,6 +118,7 @@
                     let responseHistory = user?.user_metadata?.responseHistory ?? [];
                     const index = responseHistory.findIndex(cycle => cycle.postId === postResponseId);
                     const mockResponseHistory = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`)) || {};
+                    document.getElementById('nextButt').innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Loading...';
                     
                     // If the postResponseId is not already in the history, add it
                     if (index === -1) {
@@ -148,6 +149,7 @@
                         Object.assign(mockResponseHistory, { user_metadata: { responseHistory: responseHistory } });
                     }
                     localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
+                    document.getElementById('nextButt').innerHTML = 'See your result';
                 }
                 
                 
@@ -178,6 +180,7 @@
                         console.error('No alert container found.');
                         return;
                     }
+                    document.querySelector('.toast-container').classList.remove('hidden');
                     const bsAlert = new bootstrap.Toast(alertContainer);
                     bsAlert.show();
                 }
@@ -187,7 +190,8 @@
             <script defer type="module">
                 
                 import { initiateSurvey, fetchTaskStatus, extractTaskData, fetchResponses, updateButton } from './scripts/helpers.mjs';
-                import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+                import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick,
+                    handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, hasPostQuizCycle, logOut } from './scripts/utility.js';
                 
                 var preObject = JSON.parse(localStorage.getItem('preResult'));
                 var preResult = preObject?.result;
@@ -243,23 +247,21 @@
                     
                     offcanvasListItems.forEach(li => {
                         li.addEventListener('click', event => {
+                            event.preventDefault();
                             const link = li.querySelector('a.nav-link'); 
-                            if (link) {
-                                li.addEventListener('click', handleOffcanvasClick);
+                            if (link && link !== document.getElementById('navChallenge')) {
+                                handleOffcanvasClickFromElement(link);
                             }
-                            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                            offcanvas.hide();
                         });
                     });
                     
                     offcanvasDropdownItems.forEach(li => {
                         li.addEventListener('click', event => {
+                            event.preventDefault();
                             const link = li.querySelector('a.dropdown-item'); 
                             if (link) {
-                                li.addEventListener('click', handleOffcanvasClick);
+                                handleOffcanvasClickFromElement(link);
                             }
-                            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                            offcanvas.hide();
                         });
                     })
                     
@@ -281,6 +283,8 @@
                             event.stopPropagation();
                             navChallenge.removeAttribute('href');
                             console.log("Navigation prevented. Calling showAlert().");
+                            showAlert();
+                        } else if (hasPostQuizResult()) {
                             showAlert();
                         } else {
                             handleOffcanvasClick(event);
@@ -326,7 +330,7 @@
                         
                         
                         var allRes = await fetchResponses(userId);
-                        allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
+                        let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
                         const cycleKeys = allResponses; 
                         if (cycleKeys.length > 0) {
                             const lastKey = cycleKeys.length - 1; 
@@ -342,22 +346,21 @@
                             console.log('Last entry:', entry);
                         }
                         
-                        
-                        if (storedCycle) {
-                            try {
+                        // if (storedCycle) {
+                        //     try {
                                 
-                                preObject = storedCycle?.preResponse ?? null;
-                                preResult = preObject?.result ?? null;
-                                preResponseId =preObject?.responseId ?? null;
+                        //         preObject = storedCycle?.preResponse ?? null;
+                        //         preResult = preObject?.result ?? null;
+                        //         preResponseId =preObject?.responseId ?? null;
                                 
-                                postObject = storedCycle?.postResponse ?? null;
-                                postResult = postObject?.result ?? null;
-                                postResponseId = postObject?.responseId ?? null;
+                        //         postObject = storedCycle?.postResponse ?? null;
+                        //         postResult = postObject?.result ?? null;
+                        //         postResponseId = postObject?.responseId ?? null;
                                 
-                            } catch(err) {
-                                console.log("Couldn't find previous info from history:", err);
-                            }
-                        } 
+                        //     } catch(err) {
+                        //         console.log("Couldn't find previous info from history:", err);
+                        //     }
+                        // } 
                         
                         if(preObject) {
                             var preResult = preObject?.result ?? null;
@@ -366,10 +369,10 @@
                             if (postObject) {
                                 postResult = postObject?.result ?? null;
                                 post_rec = postObject?.recordedDate ?? null;
-                                await updateResponseHistory(postObject, user);
+                                //await updateResponseHistory(postObject, user);
                                 updateButton(nextButton, '#02897A', 'pointer');
                                 quizFrame.style.display = 'none'; 
-                                fallbackMessage.innerHTML = "<div class='void'>Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over. <img src=''./images/in-love.gif'></div>";
+                                fallbackMessage.innerHTML = "<div class='void'>Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over. <img src='./images/in-love.gif'></div>";
                             } else if (!postObject || Object.keys(postObject).length === 0) {
                                 try {
                                     if (!selectTasks) {
@@ -429,54 +432,79 @@
                         hideSpinner([bOverlay, spinner], condition);
                     } 
 
-            // Listen to postResult change in localStorage
-            window.addEventListener('localStorageChange', async (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
-                
-                const netlifyIdentity = window.netlifyIdentity;
-                const user = netlifyIdentity.gotrue.currentUser();
-                
-                
-                if (user) {
-                    user.jwt().then(token => {
-                        if (isTokenExpired(token)) {
-                            console.log("Token expired. Prompting user to re-login...");
-                            netlifyIdentity.logout();
-                            window.location.href = "index.html";
-                        } else {
-                            console.log("Token is valid.");
-                        }
-                    });
-                }
-                
-                const metadata = user.user_metadata;
-                const responseHistory = metadata.responseHistory;
-                const userId = user.id;
-                
-                const quizFrame = document.querySelector('div.content > iframe.quiz');
-                const fallbackMessage = document.querySelector(".fallback");
-                fallbackMessage.classList.add("empty-state");
-                
-                const { type, detail: { key, oldValue, newValue } } = event;
-                console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
-                if (key === 'postResult' && oldValue !== newValue) {
-                    try {
-                        JSON.parse(newValue || undefined);  // force null -> undefined to throw error
-                        quizFrame.style.display = 'none';
-                        fallbackMessage.innerHTML = '<div class="void">Thank you for your response! <img src="./images/in-love.gif"></div>';
-                        setInterval(() => {
-                            updateButton(nextButton, '#02897A', 'pointer');
-                        }, 1000);
-                        console.log('Found post-quiz result in storage!\n', newValue);
-                        if (postObject && user) {await updateResponseHistory(postObject, user)}
-                    } catch(error) {
-                        console.warn('Caught', error, '\nPost-quiz result is not found!');
-                        updateButton(nextButton, 'grey', 'not-allowed');
-                        var quizUrl = initiateSurvey('post', quizFrame);
+                // Listen to postResult change in localStorage
+                window.addEventListener('localStorageChange', async (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
+                    
+                    const netlifyIdentity = window.netlifyIdentity;
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    
+                    
+                    if (user) {
+                        user.jwt().then(token => {
+                            if (isTokenExpired(token)) {
+                                console.log("Token expired. Prompting user to re-login...");
+                                netlifyIdentity.logout();
+                                window.location.href = "index.html";
+                            } else {
+                                console.log("Token is valid.");
+                            }
+                        });
                     }
-                }
+                    
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
+                    const userId = user.id;
+                    
+                    const quizFrame = document.querySelector('div.content > iframe.quiz');
+                    const fallbackMessage = document.querySelector(".fallback");
+                    //fallbackMessage.classList.add("empty-state");
+                    
+                    const { type, detail: { key, oldValue, newValue } } = event;
+                    console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
+                    if (key === 'postResult' && oldValue !== newValue) {
+                        try {
+                            JSON.parse(newValue || undefined);  // force null -> undefined to throw error
+                            console.log('Found newest post-quiz result in storage!\n', newValue);
+                            if (newValue && user) {await updateResponseHistory(JSON.parse(newValue), user)}
+                            quizFrame.style.display = 'none';
+                            fallbackMessage.innerHTML = '<div class="void">Thank you for your response! Click  see your result below <img src="./images/in-love.gif"></div>';
+                            setTimeout(() => {
+                                updateButton(nextButton, '#02897A', 'pointer');
+                            }, 2000);
+                        } catch(error) {
+                            console.warn('Caught', error, '\nPost-quiz result is not found!');
+                            updateButton(nextButton, 'grey', 'not-allowed');
+                            var quizUrl = initiateSurvey('post', quizFrame);
+                        }
+                    }
+                })
+
+                document.addEventListener('visibilitychange', async () => {
+                    let postObject = JSON.parse(localStorage.getItem('postResult'));
+                    const netlifyIdentity = window.netlifyIdentity;
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    
+                    if (user) {
+                        user.jwt().then(token => {
+                            if (isTokenExpired(token)) {
+                                console.log("Token expired. Prompting user to re-login...");
+                                netlifyIdentity.logout();
+                                window.location.href = "index.html";
+                            } else {
+                                console.log("Token is valid.");
+                            }
+                        });
+                    }
+                    
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
+                    const userId = user.id;
+                    if (document.visibilityState === "hidden") {
+                        console.log('Leaving post-quiz page, updating history');
+                        await updateResponseHistory(postObject, user);
+                    }
+                })
             });
-            });
-                
                 
             </script>
             <!-- Bootstrap Javascript -->

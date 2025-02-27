@@ -14,6 +14,19 @@ export function handleOffcanvasClick(event) {
     }
   }
 
+export function handleOffcanvasClickFromElement(linkElement) {
+    // Get the href attribute from the element
+    const targetHref = linkElement.getAttribute('href');
+    const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+    
+    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+    offcanvas.hide();
+    
+    if (targetHref && targetHref !== "#") {
+        window.location.href = targetHref;
+    }
+}
+
 export function showElement(el) {
     el.forEach(element => {element.classList.remove("hidden")})
     

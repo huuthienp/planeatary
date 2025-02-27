@@ -1,19 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page not found</title>
+    <style>
+    :root {
+        --colorRgbFacetsTeal600: 2 128 125;
+        --colorTealAction: var(--colorRgbFacetsTeal600);
+        --colorRgbFacetsNeutralLight200: 233 235 237;
+        --colorHr: var(--colorRgbFacetsNeutralLight200);
+        --colorRgbFacetsNeutralLight700: 53 58 62;
+        --colorGrayDarkest: var(--colorRgbFacetsNeutralLight700);
+        --colorGrayLighter: var(--colorRgbFacetsNeutralLight200);
+        --colorText: var(--colorGrayDarkest);
+        --effectShadowLightShallow: 0 1px 10px 0 rgb(53 58 62 / 6%),
+            0 2px 4px 0 rgb(53 58 62 / 8%);
+        --colorRgbFacetsNeutralDark900: 6 11 16;
+    }
+    body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+            Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
+            "Segoe UI Emoji", "Segoe UI Symbol";
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        line-height: 1.5;
+        color: rgb(var(--colorText));
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: fixed;
+    }
+    @media (prefers-color-scheme: dark) {
+        body {
+            background: rgb(var(--colorRgbFacetsNeutralDark900));
+        }
+    }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
     <link href="style_concat.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Icon CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Congratulations</title>
+    <title>PlanEATary Challenges</title>
 </head>
-<body>
-    
-    <div class="main-container">
+    <body>
         <div class="Header">
             <!-- Sidebar -->
             <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #02897A;">
@@ -41,11 +80,11 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
                                         <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
+                                        <li><a class="dropdown-item Disabled" id="navPost-quiz" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="ch" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -64,92 +103,34 @@
                         </div>
                     </div>
                 </nav>
-            </ul>
-        </nav>
-    </div>
-    <div class="content">
-        <div class="wrap-up">
-            <h3><img src="./images/confetti.gif" style="width: 18vw; height: auto;" /><b>CONGRATULATIONS!</b><img src="./images/confetti.gif" style="width: 18vw; height: auto; transform: scaleX(-1);" /></h3>
-            <p><b>YOU’VE COMPLETED YOUR CHALLENGES!</b></p>
-            <p>Really proud of you to make it this far.</p>
-            <div class="button_take_quiz">
-                <p>Now let’s complete the post-quiz to see how your scores have improved!</p>
-                <a href="qualtrics_post.html"><button button type="button" class="btn btn-success select-tasks take shadow">Take the quiz  &#8594;</button></a>
+            </div>
+        <div class="background1"></div>
+        <div class="main-404">
+            <div class="card-two">
+                <h1>Page not found</h1>
+                <p>Looks like you’ve followed a broken link or entered a URL that does not exist on this site.</p>
+                <p class="your-site">
+                    please visit Netlify’s
+                    <a href="https://answers.netlify.com/t/support-guide-i-ve-deployed-my-site-but-i-still-see-page-not-found/125">“page not found” support guide</a>
+                    for troubleshooting tips.
+                </p>
             </div>
         </div>
-    </div>
-</div>
-<!-- spinner overlay-->
-<section class="overlay hidden" id="spinnerOverlay">
-    <div class="spinner hidden" id="spinner">
-    </div>
-    <div>
-        <span>Loading</span>
-    </div>
-</section>
-
-<script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-<script type="module">
-    import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick,
-        handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
-        //spinner variables
-        let startTime = Date.now();
-        const condition = [false, startTime];
-        const bOverlay = document.getElementById("spinnerOverlay");
-        const spinner = document.getElementById("spinner");
+        <img class="not-found" src="./images/cart.png" />
+        <img class="empty-basket" src="./images/shopping.png" />
+        <div class="background2">
+        </div>
+        <!-- Bootstrap Javascript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         
-        //Dismiss the offcanvas bar after click and execute
-        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-        
-        const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
-        const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
-        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
-        
-        offcanvasLinks.forEach(li => {
-            if (li !== document.getElementById('navChallenge')) {
-                li.addEventListener('click', handleOffcanvasClick);
-            } 
-        });
-        
-        offcanvasDropdown.forEach(li => {
-            li.addEventListener('click', handleOffcanvasClick);
-        });
-        
-        // Function to handle navigation or showing toast
-        offcanvasListItems.forEach(li => {
-            li.addEventListener('click', event => {
-                event.preventDefault();
-                const link = li.querySelector('a.nav-link'); 
-                
-                if (link) {
-                    handleOffcanvasClickFromElement(link);
-                }
-            });
-        });
-        
-        // Function to handle navigation or showing toast
-        offcanvasDropdownItems.forEach(li => {
-            li.addEventListener('click', event => {
-                event.preventDefault();
-                const link = li.querySelector('a.dropdown-item'); 
-                
-                if (link) {
-                    handleOffcanvasClickFromElement(link);
-                }
-            });
-        })
-
-        document.getElementById('logOut').addEventListener('click', async () => {
-            
-            if(confirm("Do you really want to sign out?") == true) {
-                showSpinner([bOverlay, spinner], condition);
-                await logOut();
-                hideSpinner([bOverlay, spinner], condition);
-            }
-        });
-    </script>
-    <!-- Bootstrap Javascript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+        <script type="module">
+            import {  isTokenExpired,
+                handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+                document.getElementById('logOut').addEventListener('click', async () => {
+                    if (confirm("Do you really want to sign out?") == true) {
+                        await logOut();
+                    }
+                });
+        </script>
+    </body>
 </html>

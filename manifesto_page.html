@@ -16,7 +16,7 @@
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #02897A;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -77,11 +77,11 @@
                 <p id="threetask"></p>
             </div>
             <div class="button2">
-                <button class="start">Start</button>
+                <button class="start shadow-sm" style="width: 180px;">Start</button>
             </div>
             <div class="improvement">
-                <button id="good">Good scores</button>
-                <button id="notyet">Need improvement</button>
+                <button id="good" class="shadow-sm">Good scores</button>
+                <button id="notyet" class="shadow-sm">Need improvement</button>
             </div>
             <div class="task-content">
                 <div class="q-task">
@@ -142,7 +142,8 @@
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script type="module">
         import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
-        import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+        import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick,
+            handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
         
         const mainContainer = document.querySelector(".m-content");
         const QContainer = document.querySelector(".q-task");
@@ -159,54 +160,6 @@
         const modalTitle = document.getElementById("modalTitle");
         const close = document.getElementById('close');
         const closeDes = document.getElementById('closeDes');
-        
-        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-        const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
-        const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
-        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
-
-        offcanvasLinks.forEach(li => {
-            if (li !== document.getElementById('navChallenge')) {
-                li.addEventListener('click', handleOffcanvasClick);
-            } 
-        });
-
-        offcanvasDropdown.forEach(li => {
-            li.addEventListener('click', handleOffcanvasClick);
-        });
-
-        offcanvasListItems.forEach(li => {
-            li.addEventListener('click', event => {
-                const link = li.querySelector('a.nav-link'); 
-                
-                if (link) {
-                    
-                    const targetHref = link.getAttribute('href');
-                    if (targetHref && targetHref !== '#') {
-                        window.location.href = targetHref;
-                    }
-                }
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
-            });
-        });
-        
-        offcanvasDropdownItems.forEach(li => {
-            li.addEventListener('click', event => {
-                const link = li.querySelector('a.dropdown-item'); 
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
-                
-                if (link) {
-                    
-                    const targetHref = link.getAttribute('href');
-                    if (targetHref && targetHref !== '#') {
-                        window.location.href = targetHref;
-                    }
-                }
-            });
-        })
 
         function Modal(source) {
             const elements = [close, modal, overlay];
@@ -307,7 +260,7 @@
                 let task_rec = fetched_tasks?.time ?? []; 
                 
                 
-                if (!tasks && !preResult) {
+                if (!tasks || !preResult) {
                     QContainer.innerHTML = "<div class='empty-state'>Error: Unable to load tasks or scores.</div>";
                     return;
                 }
@@ -450,13 +403,23 @@
                         questionDiv.appendChild(taskList);
                         QContainer.appendChild(questionDiv);
                         localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                    }
+                    } 
+
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                    updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
-                });
+                    setTimeout(() => {
+                        updateStartButton(preResponseId, userId, tasks, fetched_tasks);
+                    }, 1000);
+                })
+
+                if (QContainer.innerHTML == "") {
+                    QContainer.innerHTML = "<div class='void'>None of your answers score in this section</div>";
+                }
+
                 var task_counts = calculateSelectedTasks(tasks);
-                updateStartButton(preResponseId, userId, tasks, fetched_tasks); 
-                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)))
+                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                setTimeout(() => {
+                    updateStartButton(preResponseId, userId, tasks, fetched_tasks);
+                }, 1000); 
             }
         
         // update task status on `startButton` click
@@ -484,6 +447,40 @@
             const responseHistory = metadata.responseHistory;
             const userId = user.id;
             console.log("your user id is ", userId);
+
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+            const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+            const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+            const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
+
+            offcanvasLinks.forEach(li => {
+                li.addEventListener('click', handleOffcanvasClick);
+            });
+
+            offcanvasDropdown.forEach(li => {
+                li.addEventListener('click', handleOffcanvasClick);
+            });
+
+            offcanvasListItems.forEach(li => {
+                li.addEventListener('click', event => {
+                    event.preventDefault();
+                    const link = li.querySelector('a.nav-link'); 
+                    if (link) {
+                        handleOffcanvasClickFromElement(link);
+                    }
+                });
+            });
+
+            offcanvasDropdownItems.forEach(li => {
+                li.addEventListener('click', event => {
+                    event.preventDefault();
+                    const link = li.querySelector('a.dropdown-item'); 
+                    if (link) {
+                        handleOffcanvasClickFromElement(link);
+                    }
+                });
+            })
 
             let startTime = Date.now();
             const Condition = [false, startTime];
@@ -591,35 +588,37 @@
                 }
                 
                 // Event listener for "good" button
-                document.getElementById('good').addEventListener('click', function() {
+                document.getElementById('good').addEventListener('click', async () => {
+                    good.style.backgroundColor = '#02897A';
+                    bad.style.backgroundColor = '#a9d1cd';
                     var condition = (score) => score >= 3;
-                    renderQuestions(condition, preObject, userId);
+                    await renderQuestions(condition, preObject, userId);
                     var tContent = document.querySelector(".task-content");
                     if (tContent.innerHTML == '') {
                         tContent.innerHTML == '<p>None of your answers got good score</p>';
                     }
-                    good.style.backgroundColor = '#02897A';
-                    bad.style.backgroundColor = '#a9d1cd';
                 });
                 
                 // Event listener for "bad" button
-                document.getElementById('notyet').addEventListener('click', function() {
+                document.getElementById('notyet').addEventListener('click', async () => {
+                    good.style.backgroundColor = '#a9d1cd';
+                    bad.style.backgroundColor = '#02897A';
                     var condition = (score) => score < 3;
-                    renderQuestions(condition, preObject, userId);
+                    await renderQuestions(condition, preObject, userId);
                     var tContent = document.querySelector(".task-content");
                     if (tContent.innerHTML == '') {
                         tContent.innerHTML == '<p>None of your answers got bad score</p>';
                     }
-                    good.style.backgroundColor = '#a9d1cd';
-                    bad.style.backgroundColor = '#02897A';
                 });
 
                 var condition = (score) => score < 3;
-                renderQuestions(condition, preObject, userId);
+                await renderQuestions(condition, preObject, userId);
                 
             } catch (err) {
                 console.error("Caught error: ", err);
             } finally {
+                var condition = (score) => score < 3;
+                await renderQuestions(condition, preObject, userId);
                 hideSpinner([bOverlay, spinner], Condition);
             }      
         });

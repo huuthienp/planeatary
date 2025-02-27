@@ -17,7 +17,7 @@
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #02897A;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -42,11 +42,11 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
                                         <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item Disabled" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
+                                        <li><a class="dropdown-item Disabled" id="navPost-quiz" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="ch" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link active" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -74,7 +74,7 @@
                 </div>
                 <div class="Card"></div>
                 <div class="btn-next">
-                    <button class="next">Next  &#8594;</button>
+                    <button class="next shadow-sm">Next  &#8594;</button>
                 </div>
             </div>
             <!-- <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating... -->
@@ -82,7 +82,7 @@
         
         <section class="overlay2 hidden" id="modalOverlay">
             <div class="align2">
-                <div class="modal2" id="taskModal"> 
+                <div class="modal2 hidden" id="taskModal"> 
                     <div class="btn">
                         <button class="close">x</button>
                     </div>
@@ -107,7 +107,7 @@
             <div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body">
-                        Please finish your challenge before doing post-quiz.
+                        Please finish all your challenge before heading to do the post-quiz.
                     </div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
@@ -115,9 +115,18 @@
         </div>
         
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-        <script>
-            let time =  [];
-            let scores = [];
+        
+        <script type="module">
+
+            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
+            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, 
+                handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+
+            let preObject = JSON.parse(localStorage.getItem('preResult'));
+            let preResponseId = preObject?.responseId ?? ""; 
+            let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+            let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+            let storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
 
             const modal = document.querySelector(".modal2");
             const overlay = document.querySelector(".overlay2");
@@ -130,15 +139,17 @@
             const modalDescription = document.getElementById("modalDescription");
             
             const nextButtonContainer = document.querySelector(".btn-next");
-            const btn_next = document.querySelector(".next")
+            const btn_next = document.querySelector(".next");
+
+            const navPostQuiz = document.getElementById("navPost-quiz");
             
             const showModal = (title, description) => {
                 modalTitle.textContent = title;
                 modalDescription.innerHTML = description;
-                showElement(modalOverlay);
+                showElement([modalOverlay, modal]);
             };
             
-            const closeModal = () => hideElement(modalOverlay);
+            const closeModal = () => hideElement([modalOverlay, modal]);
             
             document.querySelector(".close").addEventListener("click", closeModal);
             window.addEventListener("click", (event) => {
@@ -155,19 +166,6 @@
                 const myToast = new bootstrap.Toast(toasty);
                 myToast.show();
             }
-            
-        </script>
-        
-        <script type="module">
-
-            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
-            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
-
-            let preObject = JSON.parse(localStorage.getItem('preResult'));
-            let preResponseId = preObject?.responseId ?? ""; 
-            let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
-            let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
-            let storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
 
             //hard-code updating responseHistory (incompleted)
             async function updateResponseHistory(preResponseId, lastTask) {
@@ -191,6 +189,7 @@
                 console.log("Current responseHistory:", responseHistory);
                 console.log("lastTask:", lastTask, "preResponseId:", preResponseId);
                 let index = responseHistory.findIndex(cycle => cycle.preId === preResponseId);
+                document.querySelector(".next").innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Loading...';
                 
                 if (index === -1) {
                     // New preResponseId, add it
@@ -216,8 +215,8 @@
                     });
                     
                     console.log("User metadata successfully updated:", updatedUser.user_metadata);
-                    // Wait for 3 seconds
-                    await new Promise(resolve => setTimeout(resolve, 3000)); 
+                    // Wait for 2 seconds and a half
+                    await new Promise(resolve => setTimeout(resolve, 2500)); 
                     // Fetch and save the latest user object to localStorage
                     const updatedUserDetails = await netlifyIdentity.gotrue.currentUser();
                     console.log("Fetched updated user:", updatedUserDetails.user_metadata);
@@ -237,7 +236,7 @@
             }
                 
                 //Function to update the Next button's state
-                async function updateNextButton(preResponseId, userId, tasks, Tstatus) {
+                function updateNextButton(preResponseId, userId, tasks, Tstatus) {
                     let allCompleted = true;
                     
                     Object.keys(tasks).forEach(questionKey => {
@@ -251,16 +250,18 @@
                     
                     // Enable or disable the next button based on task completion status
                     if (allCompleted) {
+                        navPostQuiz.classList.remove('Disabled');
+                        btn_next.disabled = false;
                         btn_next.style.pointerEvents = "auto"; // Enable the next button
                         btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
                         btn_next.style.cursor = "pointer";
-                        btn_next.disabled = false;
                     } else {
+                        btn_next.disabled = true;
                         btn_next.style.pointerEvents = "none"; // Disable the next button
                         btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
                         btn_next.style.cursor = "not-allowed";
-                        btn_next.disabled = true;
                     }
+                    document.querySelector(".next").innerHTML = 'Next  &#8594;';
                 }
                 
                 // Function to display selected tasks and allow status update
@@ -347,7 +348,7 @@
                                     // Toggle task status between "Done" and "Completed"
                                     
                                     completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
-                                    await delay(500); 
+                                    await delay(1000); 
                                     
                                     task.status = task.status === "Done" ? "Completed" : "Done";
                                     
@@ -378,46 +379,10 @@
                                     // Update task in localStorage
                                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                                     if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
-                                    updateNextButton(preResponseId, userId, tasks, Tstatus);
-                                    console.log("time array:", Tstatus.time);
-                                    
-                                    if (Tstatus.time.findIndex(el => el === "") === -1 && Tstatus.time.length == Tstatus.chosen.length) {
-                                        let latestTimestamp = Math.max(...Tstatus.time);
-                                        var separator = '@';
-                                        const merged = mergeTaskArrays(tasks, separator);
-                                        // Filter out tasks with finish times (those containing "@")
-                                        const tasksWithFinishTimes = merged.chosen.filter(task => task.includes("@"));
-                                        // Map to extract finish times and task numbers
-                                        const taskDetails = tasksWithFinishTimes.map(task => {
-                                            const [taskNumber, finishTime] = task.split("@");
-                                            return { taskNumber: taskNumber, finishTime: Number(finishTime) };
-                                        });
-                                        // Sort tasks by finishTime in descending order
-                                        taskDetails.sort((a, b) => b.finishTime - a.finishTime);
-                                        // Get the task with the latest finish time
-                                        const latestTask = taskDetails[0];
-                                        const lastTask = `${latestTask.taskNumber}@${latestTask.finishTime}`;
-                                        // Update response history
-                                        try {
-                                            await updateResponseHistory(preResponseId, lastTask);
-                                            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                                            console.log(`Response history updated with task: ${lastTask}`);
-                                            console.log("Tasks updated!");
-                                        } catch (err) {
-                                            console.error("Error updating: ", err);
-                                        }
-                                    } else {
-                                        const lastTask = "";
-                                        // Update response history with empty last task
-                                        try {
-                                            await updateResponseHistory(preResponseId, lastTask);
-                                            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                                            console.log(`Response history updated with empty task: ${lastTask}`);
-                                            console.log("Tasks updated!");
-                                        } catch (err) {
-                                            console.error("Error updating: ", err);
-                                        }
-                                    }
+                                    await updateTaskAndResponseHistory(Tstatus, tasks, preResponseId, userId);
+                                    setTimeout(() => {
+                                        updateNextButton(preResponseId, userId, tasks, Tstatus);
+                                    }, 1000);
                                 })      
                             }
                             localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
@@ -429,48 +394,57 @@
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))} 
                     await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                    updateNextButton(preResponseId, userId, tasks, Tstatus);
+                    setTimeout(() => {
+                        updateNextButton(preResponseId, userId, tasks, Tstatus);
+                    }, 1000);
                     cardContainer.appendChild(nextButtonContainer);
+                    //await updateTaskAndResponseHistory(Tstatus, tasks, preResponseId, userId);
+                }
+
+            async function updateTaskAndResponseHistory(Tstatus, tasks, preResponseId, userId) {
+                console.log("time array:", Tstatus.time);
+                // Check if all tasks have finish times and the time array length equals chosen tasks length
+                if (Tstatus.time.findIndex(el => el === "") === -1 && Tstatus.time.length === Tstatus.chosen.length) {
+                    let latestTimestamp = Math.max(...Tstatus.time);
+                    const separator = '@';
                     
-                    console.log("time array:", Tstatus.time);
-                    if (Tstatus.time.findIndex(el => el === "") === -1 && Tstatus.time.length == Tstatus.chosen.length) {
-                        let latestTimestamp = Math.max(...Tstatus.time);
-                        var separator = '@';
-                        const merged = mergeTaskArrays(tasks, separator);
-                        // Filter out tasks with finish times (those containing "@")
-                        const tasksWithFinishTimes = merged.chosen.filter(task => task.includes("@"));
-                        // Map to extract finish times and task numbers
-                        const taskDetails = tasksWithFinishTimes.map(task => {
-                            const [taskNumber, finishTime] = task.split("@");
-                            return { taskNumber: taskNumber, finishTime: Number(finishTime) };
-                        });
-                        // Sort tasks by finishTime in descending order
-                        taskDetails.sort((a, b) => b.finishTime - a.finishTime);
-                        // Get the task with the latest finish time
-                        const latestTask = taskDetails[0];
-                        const lastTask = `${latestTask.taskNumber}@${latestTask.finishTime}`;
-                        // Update response history
-                        try {
-                            await updateResponseHistory(preResponseId, lastTask);
-                            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                            console.log(`Response history updated with task: ${lastTask}`);
-                            console.log("Tasks updated!");
-                        } catch (err) {
-                            console.error("Error updating: ", err);
-                        }
-                    } else {
-                        const lastTask = "";
-                        // Update response history with empty last task
-                        try {
-                            await updateResponseHistory(preResponseId, lastTask);
-                            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
-                            console.log(`Response history updated with empty task: ${lastTask}`);
-                            console.log("Tasks updated!");
-                        } catch (err) {
-                            console.error("Error updating: ", err);
-                        }
+                    // Merge tasks using your mergeTaskArrays function 
+                    const merged = mergeTaskArrays(tasks, separator);
+                    const tasksWithFinishTimes = merged.chosen.filter(task => task.includes(separator));
+                    const taskDetails = tasksWithFinishTimes.map(task => {
+                        const [taskNumber, finishTime] = task.split(separator);
+                        return { taskNumber, finishTime: Number(finishTime) };
+                    });
+                    
+                    taskDetails.sort((a, b) => b.finishTime - a.finishTime);
+                    
+                    // Get the task with the latest finish time
+                    const latestTask = taskDetails[0];
+                    const lastTask = `${latestTask.taskNumber}${separator}${latestTask.finishTime}`;
+                    
+                    try {
+                        // Update the response history with the latest finished task
+                        await updateResponseHistory(preResponseId, lastTask);
+                        // Update task status from localStorage 
+                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                        console.log(`Response history updated with task: ${lastTask}`);
+                        console.log("Tasks updated!");
+                    } catch (err) {
+                        console.error("Error updating:", err);
+                    }
+                } else {
+                    const lastTask = "";
+                    // If not all tasks are completed, update the response history with an empty lastTask
+                    try {
+                        await updateResponseHistory(preResponseId, lastTask);
+                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                        console.log(`Response history updated with empty task: ${lastTask}`);
+                        console.log("Tasks updated!");
+                    } catch (err) {
+                        console.error("Error updating:", err);
                     }
                 }
+            }
             
             document.addEventListener("DOMContentLoaded", async function() {
                 
@@ -505,10 +479,7 @@
                             if (link.classList.contains('Disabled')) {
                                 showToast(); 
                             } else {
-                                const targetHref = link.getAttribute('href');
-                                if (targetHref && targetHref !== '#') {
-                                    window.location.href = targetHref;
-                                }
+                                handleOffcanvasClickFromElement(link);
                             }
                         }
                         const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -525,10 +496,7 @@
                             if (link.classList.contains('Disabled')) {
                                 showToast(); 
                             } else {
-                                const targetHref = link.getAttribute('href');
-                                if (targetHref && targetHref !== '#') {
-                                    window.location.href = targetHref;
-                                }
+                                handleOffcanvasClickFromElement(link);
                             }
                         }
                         const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
@@ -609,7 +577,7 @@
                                 console.log(err);
                             }
                         }
-                        displaySelectedTasks(preResponseId, userId, tasks, Tstatus);
+                        await displaySelectedTasks(preResponseId, userId, tasks, Tstatus);
                     }
                     
                 } catch (err) {
@@ -618,8 +586,44 @@
                     hideSpinner([bOverlay, spinner], condition);
                 }
                 
-            });
-            
+                document.addEventListener('visibilitychange', async () => {
+                    let preObject = JSON.parse(localStorage.getItem('preResult'));
+                    let preResponseId = preObject?.responseId ?? ""; 
+                    let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+                    let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    if (!user) {
+                        console.error("No user is logged in!");
+                        return;
+                    }
+                    
+                    const token = await user.jwt();
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                        window.location.href = 'index.html';
+                        return;
+                    }
+                    
+                    const userId = user.id;
+                    const mergedData = mergeTaskArrays(tasks);
+                    const payload = JSON.stringify({
+                        id: preResponseId,
+                        userId: userId,
+                        chosen: mergedData.chosen,
+                    });
+                    if (document.visibilityState === "hidden") {
+                        if (!preResponseId) {
+                            console.warn("No preResponseId found; skipping beacon update.");
+                            return;
+                        }
+                        //This Beacon api is not working at the moment (404 error). May need adjustments from the backend
+                        const beaconSent = navigator.sendBeacon('/api/manage-tasks', payload);
+                        console.log("Beacon sent:", beaconSent);
+                        //await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                    }
+                });
+            });  
             
         </script>
         <!-- Bootstrap Javascript -->

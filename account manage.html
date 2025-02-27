@@ -18,7 +18,7 @@
 <body>
     <!-- Header Section -->
     <div class="Header">
-        <nav class="navbar navbar-dark navbar-expand-lg" style="background-color: #02897A;">
+        <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #02897A;">
             <div class="container-fluid">
                 <a class="navbar-brand d-flex align-items-center" href="index.html">
                     <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -157,16 +157,28 @@
                     <span>Loading</span>
                 </div>
             </section>
-
+            
+            <!-- Warning Toast -->
+            <div class="toast-container">
+                <div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            Please finish your very first quiz before further proceeding.
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Warning disabling -->
             <div class="toast-container">
                 <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                     <div class="d-flex">
                         <div class="toast-body">
                             <h4>Well done!</h4>
-                            <p>Aww,You are not allowed to do more tasks after doing the post-quiz.</p>
+                            <p>It's a shame that you are not allowed to do more tasks after doing the post-quiz.</p>
                             <hr>
-                            <p class="mb-0">Please restart the cycle by restarting the pre-quiz.</p>
+                            <p class="mb-0">Please restart our journey by restarting the pre-quiz.</p>
                         </div>
                         <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
@@ -177,21 +189,6 @@
     </div>
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script>
-        import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
-        //spinner variables
-        let startTime = Date.now();
-        const condition = [false, startTime];
-        const bOverlay = document.getElementById("spinnerOverlay");
-        const spinner = document.getElementById("spinner");
-        
-        //Dismiss the offcanvas bar after click and execute
-        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-        
-        const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
-        const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
-        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
-        
         
         //For first-timer to see a reminder to do a very first quiz
         function showToast() {
@@ -209,61 +206,8 @@
             const bsAlert = new bootstrap.Toast(alertContainer);
             bsAlert.show();
         }
-        
-        offcanvasLinks.forEach(li => {
-            if (li !== document.getElementById('navChallenge')) {
-                li.addEventListener('click', handleOffcanvasClick);
-            } 
-        });
-        
-        offcanvasDropdown.forEach(li => {
-            li.addEventListener('click', handleOffcanvasClick);
-        });
-        
-        // Function to handle navigation or showing toast
-        offcanvasListItems.forEach(li => {
-            li.addEventListener('click', event => {
-                const link = li.querySelector('a.nav-link'); 
-                
-                if (link) {
-                    if (link.classList.contains('Disabled')) {
-                        showToast(); 
-                    } else {
-                        const targetHref = link.getAttribute('href');
-                        if (targetHref && targetHref !== '#') {
-                            window.location.href = targetHref;
-                        }
-                    }
-                }
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
-            });
-        });
-        
-        // Function to handle navigation or showing toast
-        offcanvasDropdownItems.forEach(li => {
-            li.addEventListener('click', event => {
-                const link = li.querySelector('a.dropdown-item'); 
-                
-                if (link) {
-                    if (link.classList.contains('Disabled')) {
-                        showToast(); 
-                    } else {
-                        const targetHref = link.getAttribute('href');
-                        if (targetHref && targetHref !== '#') {
-                            window.location.href = targetHref;
-                        }
-                    }
-                }
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
-            });
-        })
 
-
-    </script>
-
-    <script>
+        function validate_form() { return false; }
 
         async function updatePassword(newPassword, user) {
             
@@ -290,13 +234,27 @@
                 }
                 
                 alert("Password updated successfully. Please log in again.");
-                netlifyIdentity.logout(); 
+                await netlifyIdentity.gotrue.currentUser().logout(); 
+                window.location.href = "index.html";
                 
             } catch (error) {
                 console.error("Authorization failed:", error);
                 alert("You are not authorized to change the password.");
             }
         }
+
+    </script>
+
+    <script type="module">
+        import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+        
+        //Dismiss the offcanvas bar after click and execute
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+        
+        const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+        const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
 
         // RegEx for checking password
         let uppercaseRegex = /[A-Z]/g;
@@ -329,8 +287,6 @@
                 passwordInput.classList.remove("is-invalid");
             }
         });
-        
-        function validate_form() { return false; }
 
         document.querySelector(".account-form").addEventListener("input", async function(event) {
             const user = netlifyIdentity.gotrue.currentUser();
@@ -364,9 +320,13 @@
             }
         });
         
-        // Load userdata to input boxes
         document.addEventListener("DOMContentLoaded", async function() {
-            
+
+            //spinner variables
+            let startTime = Date.now();
+            const condition = [false, startTime];
+            const bOverlay = document.getElementById("spinnerOverlay");
+            const spinner = document.getElementById("spinner");
             
             const user = netlifyIdentity.gotrue.currentUser();
             const userData = user.user_metadata;
@@ -391,6 +351,50 @@
                 document.getElementById("gender").value     = userData.gender;
                 document.getElementById("user-type").value  = userData.status;
             }
+
+            offcanvasLinks.forEach(li => {
+                if (li !== document.getElementById('navChallenge')) {
+                    li.addEventListener('click', handleOffcanvasClick);
+                } 
+            });
+
+            offcanvasDropdown.forEach(li => {
+                li.addEventListener('click', handleOffcanvasClick);
+            });
+
+            // Function to handle navigation or showing toast
+            offcanvasListItems.forEach(li => {
+                li.addEventListener('click', event => {
+                    const link = li.querySelector('a.nav-link'); 
+                    
+                    if (link) {
+                        if (link.classList.contains('Disabled')) {
+                            showToast(); 
+                        } else {
+                            handleOffcanvasClickFromElement(link);
+                        }
+                    }
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                });
+            });
+
+            // Function to handle navigation or showing toast
+            offcanvasDropdownItems.forEach(li => {
+                li.addEventListener('click', event => {
+                    const link = li.querySelector('a.dropdown-item'); 
+                    
+                    if (link) {
+                        if (link.classList.contains('Disabled')) {
+                            showToast(); 
+                        } else {
+                            handleOffcanvasClickFromElement(link);
+                        }
+                    }
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                });
+            })
 
             const navChallenge = document.getElementById('navChallenge');
 
@@ -447,7 +451,6 @@
                         form_check = 1;
                         console.log("validate form2");
                         
-                        
                         let user_full_name = document.getElementById("name").value;
                         let user_age       = document.getElementById("age").value;
                         let user_gender    = document.getElementById("gender").value;
@@ -476,7 +479,6 @@
                             console.error("❌ Failed to update user:", error);
                             alert("Failed to save account information!");
                         }
-                        
                     }
                     
                     form.classList.add('was-validated')
