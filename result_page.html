@@ -276,8 +276,6 @@
                     let month = String(date.getMonth() + 1).padStart(2, '0'); 
                     let day = String(date.getDate()).padStart(2, '0');
                     
-                    updateProgress(questionsData.result.totalScore);
-                    
                     document.getElementById('curr_score').textContent = questionsData.result.totalScore;
                     document.getElementById('total').textContent = 60;
                     completion_date.innerHTML = `${type}-quiz was completed at ${localHours}:${localMinutes} on ${day}/${month}/${year}`
@@ -307,6 +305,8 @@
                         questionDiv.appendChild(questionPoint);
                         cardContainer.appendChild(questionDiv);
                     });
+
+                    updateProgress(questionsData.result.totalScore);
                     
                 }
 
@@ -343,7 +343,7 @@
                     var task_rec =  detailed?.time ?? [];
                     
                     Object.keys(tasks).forEach(questionKey => {
-                        header.innerHTML = '<img src="./images/battery.png"/>'+'All tasks you have completed';
+                        header.innerHTML = '<img src="./images/battery.png"/>'+'<b>All tasks you have completed</b>';
                         const taskGroup = tasks?.[questionKey]?.tasks ?? [];
                         
                         // Filter tasks that are selected
@@ -376,7 +376,7 @@
                                 taskCard.appendChild(infoIcon); 
                                 taskCard.appendChild(completion);
                                 cardContainer.appendChild(taskCard);
-                                
+
                             }
                             
                         });
@@ -629,6 +629,8 @@
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
                             document.querySelector("button.select-tasks").innerHTML = 'Back to <i class="fa fa-home"></i>';
                             document.querySelector("a.nextB").href = 'index.html';
+                            hideSpinner([bOverlay, spinner], condition);
+                            updateProgress(postObject.result.totalScore);
                             
                         } else if (preObject && !postObject) {
                             
@@ -648,14 +650,15 @@
                             
                             //display preresult by default
                             displayQuestions(preObject, 'PRE');
-                            
                             document.getElementById('preQ').style.backgroundColor = '#02897A';   
-                            document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
+                            document.getElementById('postQ').style.backgroundColor = 'rgba(200, 200, 200, 0.8)';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
                             document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
                             document.querySelector("a.nextB").href = 'manifesto_page.html';
                             document.getElementById('postQ').disabled = true;
                             document.getElementById('postQ').style.cursor = 'not-allowed';  
+                            hideSpinner([bOverlay, spinner], condition);
+                            updateProgress(preObject.result.totalScore);
                             
                         } else {
                             // Handle no user or expired token scenario
@@ -681,6 +684,9 @@
                             
                             document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
                             document.querySelector("a.nextB").href = 'manifesto_page.html';
+                            document.getElementById('postQ').style.backgroundColor = 'rgba(200, 200, 200, 0.8)';
+                            document.getElementById('postQ').disabled = true;
+                            document.getElementById('postQ').style.cursor = 'not-allowed';  
                             
                         } else {
                             const toshow = [
@@ -696,10 +702,10 @@
                             
                             document.querySelector("button.select-tasks").innerHTML = 'Back to <i class="fa fa-home"></i>';
                             document.querySelector("a.nextB").href = 'index.html';
+                            document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
                         }
                         
                         displayQuestions(preObject, 'PRE');
-                        document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
                         document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
                         document.getElementById('preQ').style.backgroundColor = '#02897A';    
                     });
@@ -746,7 +752,12 @@
                         
                         displaySelectedTasks(tasks, detailed);
                         document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
-                        document.getElementById('postQ').style.backgroundColor = '#a9d1cd';    
+                        if (postResult) { document.getElementById('postQ').style.backgroundColor = '#a9d1cd'; }
+                        else { 
+                            document.getElementById('postQ').style.backgroundColor = 'rgba(200, 200, 200, 0.8)';
+                            document.getElementById('postQ').disabled = true;
+                            document.getElementById('postQ').style.cursor = 'not-allowed'; 
+                        }
                         document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
                     });
                 } catch (err) {
@@ -766,11 +777,9 @@
                     tagsToHide.forEach(
                     (tag) => { if(tag) {tag.classList.add('hidden');} }
                     );
-                    cardContainer.innerHTML = `<div class="empty-state">Opps! no results available.\nThe error: ${err} is spotted!\nPlease allow us sometime to fix it.</div>`;
+                    cardContainer.innerHTML = `<div class="empty-state">Opps! no results available.\n ${err} is spotted!\n Please allow us sometime to fix it.</div>`;
                     
                 } finally {
-                    console.log("bOverlay is:", bOverlay);
-                    console.log("spinner is:", spinner);
                     hideSpinner([bOverlay, spinner], condition);
                 }          
             });

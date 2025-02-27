@@ -61,12 +61,6 @@
                                     <li><a class="dropdown-item" data-bs-dismiss="offcanvas" id="logOut">Log out</a></li>
                                 </ul>
                             </li>
-                            <!-- <li class="nav-item">
-                                <button class="signIn"><a class="nav-link" href="#">Sign in</a></button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="signIn"><a class="nav-link" href="#">Sign up</a></button>
-                            </li> -->
                         </div>
                     </div>
                 </div>
@@ -77,7 +71,7 @@
                 <p id="threetask"></p>
             </div>
             <div class="button2">
-                <button class="start shadow-sm" style="width: 180px;">Start</button>
+                <button class="start shadow-sm btn btn-success" style="width: 180px;">Start</button>
             </div>
             <div class="improvement">
                 <button id="good" class="shadow-sm">Good scores</button>
@@ -85,6 +79,15 @@
             </div>
             <div class="task-content">
                 <div class="q-task">
+                    <div class="vertical-tabs-container" style="display: flex; align-items: center; flex-direction: column;">
+                        <!-- Tab navigation on the left -->
+                        <ul id="tabList" class="nav flex-row" style="min-width: 150px; border-right: 1px solid #ddd;">
+                          <!-- Tabs will be created dynamically -->
+                        </ul>
+                        <!-- Content area for the question card -->
+                        <div id="cardContainer" class="tab-content" style="flex: 1;">
+                        </div>
+                      </div>
                 </div>
             </div>
         </div>
@@ -250,179 +253,407 @@
                 localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));   
             }
             
-        async function renderQuestions(condition, preObject, userId) {
-                QContainer.innerHTML = '';
+        // async function renderQuestions(condition, preObject, userId) {
+        //         QContainer.innerHTML = '';
 
-                let preResult = preObject?.result;
-                let preResponseId = preObject.responseId;
-                let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
-                let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
-                let task_rec = fetched_tasks?.time ?? []; 
+        //         let preResult = preObject?.result;
+        //         let preResponseId = preObject?.responseId;
+        //         let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
+        //         let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+        //         let task_rec = fetched_tasks?.time ?? []; 
                 
                 
-                if (!tasks || !preResult) {
-                    QContainer.innerHTML = "<div class='empty-state'>Error: Unable to load tasks or scores.</div>";
-                    return;
-                }
+        //         if (!tasks || !preResult) {
+        //             QContainer.innerHTML = "<div class='empty-state'>Error: Unable to load tasks or scores.</div>";
+        //             return;
+        //         }
 
-                let scores = preResult?.pointArray ?? [];
-                //task_counts = calculateSelectedTasks(tasks);
-                if (fetched_tasks) {
-                    updateStartButton(preResponseId, userId, tasks, fetched_tasks);
-                }
+        //         let scores = preResult?.pointArray ?? [];
+        //         //task_counts = calculateSelectedTasks(tasks);
+        //         if (fetched_tasks) {
+        //             updateStartButton(preResponseId, userId, tasks, fetched_tasks);
+        //         }
 
-                // Iterate over each question
-                Object.keys(tasks).forEach((questionKey, i) => {
-                    const taskGroup = tasks?.[questionKey]?.tasks ?? [];
-                    const score = scores[i]; 
-                    if (condition(score)) {
-                        // Create a container for the question
-                        const questionDiv = document.createElement('div');
-                        questionDiv.classList.add('question-block');
+        //         // Iterate over each question
+        //         Object.keys(tasks).forEach((questionKey, i) => {
+        //             const taskGroup = tasks?.[questionKey]?.tasks ?? [];
+        //             const score = scores[i]; 
+        //             if (condition(score)) {
+        //                 // Create a container for the question
+        //                 const questionDiv = document.createElement('div');
+        //                 questionDiv.classList.add('question-block');
+        //                 questionDiv.style.borderRadius = "20px";
                         
-                        // Display question number and score
-                        const questionTitle = document.createElement('h3');
-                        questionTitle.innerHTML = `Question ${i + 1} - ${score} points `;
+        //                 // Display question number and score
+        //                 const questionTitle = document.createElement('h3');
+        //                 questionTitle.innerHTML = `Question ${i + 1} - ${score} points `;
+        //                 questionTitle.style.borderRadius = "20px";
+        //                 questionTitle.style.padding = '1rem';
                         
-                        if (score < 3) {
-                            questionDiv.style.borderRadius = "20px";
-                            questionDiv.style.boxShadow = "10px 10px 10px rgb(178, 34, 34)";
-                            questionTitle.style.color = '#B22222';
-                        } else {
-                            questionDiv.style.borderRadius = "20px";
-                            questionDiv.style.boxShadow = "10px 10px 10px rgb(46, 139, 87)";
-                            questionTitle.style.color = '#2E8B57';
-                        }
+        //                 if (score < 3) {
+        //                     questionDiv.style.boxShadow = "7px 7px 7px rgb(178, 34, 34)";
+        //                     questionTitle.style.color = '#B22222';
+        //                     questionTitle.style.backgroundColor = 'rgb(174, 34, 34, 0.2)';  
+        //                     questionDiv.style.backgroundColor = 'rgb(174, 34, 34, 0.35)';  
+        //                 } else {
+        //                     questionDiv.style.boxShadow = "7px 7px 7px rgb(65, 141, 98)";
+        //                     questionTitle.style.color = '#2E8B57';
+        //                     questionTitle.style.backgroundColor = 'rgb(65, 141, 98, 0.2)';
+        //                     questionDiv.style.backgroundColor = 'rgb(65, 141, 98, 0.35)';  
+        //                 }
                         
-                        // Add the info icon with a click event to open the modal
-                        const infoIcon = document.createElement('img');
-                        infoIcon.src = './images/info.png';
-                        infoIcon.width = '20';
-                        infoIcon.style.cursor = 'pointer'; 
+        //                 // Add the info icon with a click event to open the modal
+        //                 const infoIcon = document.createElement('img');
+        //                 infoIcon.src = './images/info.png';
+        //                 infoIcon.width = '1em';
+        //                 infoIcon.style.cursor = 'pointer'; 
                         
-                        questionTitle.appendChild(infoIcon); 
-                        questionDiv.appendChild(questionTitle);
+        //                 questionTitle.appendChild(infoIcon); 
+        //                 questionDiv.appendChild(questionTitle);
                         
-                        // Set the click event for the info icon to show the modal with the correct image
-                        infoIcon.addEventListener('click', function() {
-                            Modal(`./images/pop${i + 1}.jpg`); 
-                        });
+        //                 // Set the click event for the info icon to show the modal with the correct image
+        //                 infoIcon.addEventListener('click', function() {
+        //                     Modal(`./images/pop${i + 1}.jpg`); 
+        //                 });
                         
-                        // Create a list to hold the tasks for this question
-                        const taskList = document.createElement('ul');
+        //                 // Create a list to hold the tasks for this question
+        //                 const taskList = document.createElement('ul');
                         
-                        // Iterate over tasks for the question
-                        taskGroup.forEach((task, j) => {
-                            const taskItem = document.createElement('li');
-                            const label = document.createElement('label');
-                            const checkbox = document.createElement('input');
-                            checkbox.type = 'checkbox';
+        //                 // Iterate over tasks for the question
+        //                 taskGroup.forEach((task, j) => {
+        //                     const taskItem = document.createElement('li');
+        //                     const label = document.createElement('label');
+        //                     const checkbox = document.createElement('input');
+        //                     checkbox.type = 'checkbox';
                             
-                            // Add an info icon for task description
-                            const infoIcon2 = document.createElement("span");
-                            infoIcon2.classList.add("info-icon");
-                            infoIcon2.innerHTML = "&#9432;"; 
+        //                     // Add an info icon for task description
+        //                     const infoIcon2 = document.createElement("span");
+        //                     infoIcon2.classList.add("info-icon");
+        //                     infoIcon2.innerHTML = "&#9432;"; 
+        //                     infoIcon2.style.cursor = 'pointer'; 
+
+        //                     label.classList.add('task-label');
                             
-                            label.classList.add('task-label');
+        //                     label.appendChild(checkbox);
+        //                     label.appendChild(document.createTextNode(task.taskName));
+        //                     label.appendChild(infoIcon2);
+        //                     taskItem.appendChild(label);
+        //                     taskList.appendChild(taskItem);
                             
-                            label.appendChild(checkbox);
-                            label.appendChild(document.createTextNode(task.taskName));
-                            label.appendChild(infoIcon2);
-                            taskItem.appendChild(label);
-                            taskList.appendChild(taskItem);
+        //                     // Set task choice and status based on local storage and finish time of fetched_tasks
+        //                     if (!fetched_tasks || !fetched_tasks.chosen) {
+        //                         fetched_tasks = { chosen: [], done:[], time: [] }; 
+        //                     } else if (fetched_tasks) {
+        //                         if (fetched_tasks.chosen && fetched_tasks.done) {
+        //                             if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
+        //                                 task.choice = 'chosen';
+        //                                 checkbox.checked = true;
+        //                                 if (fetched_tasks.done.includes(String(task.taskNumber))) {
+        //                                     const _index = fetched_tasks.done.indexOf(task.taskNumber);
+        //                                     task.finishTime = fetched_tasks.time[_index];
+        //                                     task.status = 'Completed';
+        //                                 } else {
+        //                                     task.finishTime = "";
+        //                                     task.status = 'Done';
+        //                                 }
+        //                             }
+        //                         }
+        //                     }
+        //                     //Also double-check task status in local storage
+        //                     checkbox.disabled = task.status === 'Completed';
+        //                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
                             
-                            // Set task choice and status based on local storage and finish time of fetched_tasks
-                            if (!fetched_tasks || !fetched_tasks.chosen) {
-                                fetched_tasks = { chosen: [], done:[], time: [] }; 
-                            } else if (fetched_tasks) {
-                                if (fetched_tasks.chosen && fetched_tasks.done) {
-                                    if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
-                                        task.choice = 'chosen';
-                                        checkbox.checked = true;
-                                        if (fetched_tasks.done.includes(String(task.taskNumber))) {
-                                            const _index = fetched_tasks.done.indexOf(task.taskNumber);
-                                            task.finishTime = fetched_tasks.time[_index];
-                                            task.status = 'Completed';
-                                        } else {
-                                            task.finishTime = "";
-                                            task.status = 'Done';
-                                        }
+        //                     // Update task count and localStorage on checkbox change
+        //                     checkbox.addEventListener('change', function() {
+        //                         let index = -1
+        //                         if (fetched_tasks.chosen) {
+        //                             index = fetched_tasks.chosen.findIndex(el => el == String(task.taskNumber));
+        //                         }
+        //                         if (!checkbox.disabled) {
+        //                             if (checkbox.checked) {
+        //                                 task.choice = "chosen";
+        //                                 task_counts += 1;
+        //                                 if (index === -1) {fetched_tasks.chosen.push(String(task.taskNumber))}
+        //                             } else {
+        //                                 task.choice = "";                                         
+        //                                 task_counts -= 1;
+        //                                 if (index !== -1) {fetched_tasks.chosen.splice(index, 1)}
+        //                             }
+        //                             task.status = "Done";
+        //                             localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
+        //                             localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));  
+        //                         }
+        //                         updateStartButton(preResponseId, userId, tasks, fetched_tasks);
+        //                     });
+                            
+        //                     label.addEventListener('click', (e) => {
+        //                         // If the input is disabled, show toast
+        //                         if (checkbox.disabled) {
+        //                             const toasty = document.getElementById('task-toast');
+        //                             const myToast = new bootstrap.Toast(toasty);
+        //                             myToast.show();
+        //                         }
+        //                     });
+                            
+        //                     // Event listener for more info
+        //                     infoIcon2.addEventListener('click', function(event) {
+        //                         event.preventDefault();
+        //                         event.stopPropagation(); 
+        //                         ModalDes(task.taskName, task.taskDescription);
+        //                     });
+                            
+        //                     checkbox.checked = task.choice === "chosen";
+        //                     //Check task status on local  storage
+        //                     if (task.choice === "chosen") {task.status = task.status === "Completed"?"Completed":"Done";}
+        //                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
+        //                     localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
+        //                     updateStartButton(preResponseId, userId, tasks, fetched_tasks);
+        //                 });
+        //                 questionDiv.appendChild(taskList);
+        //                 QContainer.appendChild(questionDiv);
+        //                 localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+        //             } 
+
+        //             localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+        //             setTimeout(() => {
+        //                 updateStartButton(preResponseId, userId, tasks, fetched_tasks);
+        //             }, 1000);
+        //         })
+
+        //         if (QContainer.innerHTML == "") {
+        //             QContainer.innerHTML = "<div class='void'>None of your answers score in this section</div>";
+        //         }
+
+        //         var task_counts = calculateSelectedTasks(tasks);
+        //         await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+        //         setTimeout(() => {
+        //             updateStartButton(preResponseId, userId, tasks, fetched_tasks);
+        //         }, 1000); 
+        //     }
+        
+        // // update task status on `startButton` click
+        // startButton.addEventListener('click', async function(event) {
+        //     window.location.href = "challenge_page.html";
+        // });
+
+        async function renderQuestions(condition, preObject, userId) { 
+            // Clear previous content
+            const tabList = document.getElementById('tabList');
+            const cardContainer = document.getElementById('cardContainer');
+            tabList.innerHTML = '';
+            cardContainer.innerHTML = '';
+            
+            // Retrieve data from localStorage and preObject
+            const preResult = preObject?.result;
+            const preResponseId = preObject?.responseId;
+            let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
+            let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+            let task_rec = fetched_tasks?.time ?? []; 
+            
+            if (!tasks || !preResult) {
+                cardContainer.innerHTML = "<div class='empty-state'>Error: Unable to load tasks or scores.</div>";
+                return;
+            }
+            
+            const scores = preResult?.pointArray ?? [];
+            
+            // If fetched_tasks exist, update the start button (assumed function)
+            if (fetched_tasks) {
+                updateStartButton(preResponseId, userId, tasks, fetched_tasks);
+            }
+            let first = 0;
+            // Create a tab and a card for each question
+            Object.keys(tasks).forEach((questionKey, i) => {
+                const taskGroup = tasks[questionKey]?.tasks ?? [];
+                const score = scores[i];
+                if (condition(score)) {
+                    first += 1;
+                    // Create Tab
+                    const tabItem = document.createElement('li');
+                    tabItem.classList.add('nav-item');
+                    const tabLink = document.createElement('a');
+                    tabLink.classList.add('nav-link');
+                    tabLink.href = "#"; 
+                    tabLink.textContent = `Q ${i + 1}`;
+                    // Mark the first tab as active
+                    if (first == 1) {
+                        tabLink.classList.add('active');
+                    }
+
+                    tabItem.appendChild(tabLink);
+                    tabList.appendChild(tabItem);
+                    
+                    tabLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        // Remove active class from all tabs
+                        tabList.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                        // Hide all cards
+                        cardContainer.querySelectorAll('.tab-pane').forEach(card => card.style.display = 'none');
+                        // Set this tab as active
+                        tabLink.classList.add('active');
+                        cardDiv.style.display = 'flex';
+                        cardDiv.style.flexDirection = "column";
+                    });
+
+                    const cardDiv = document.createElement('div');
+                    cardDiv.classList.add('tab-pane');
+                    // Show the first card; hide the rest
+                    cardDiv.style.display = first === 1 ? 'flex' : 'none';
+                    cardDiv.classList.add('question-block');
+                    cardDiv.style.borderRadius = "20px";
+                    
+                    const questionTitle = document.createElement('h3');
+                    questionTitle.innerHTML = `Question ${i + 1} - ${score} points `;
+                    questionTitle.style.borderRadius = "20px";
+                    questionTitle.style.padding = '1rem';
+                    // Style based on score
+                    if (score < 3) {
+                        //cardDiv.style.boxShadow = "7px 7px 7px rgb(178, 34, 34)";
+                        questionTitle.style.color = '#B22222';
+                        questionTitle.style.backgroundColor = 'rgba(174, 34, 34, 0.2)';  
+                        cardDiv.style.backgroundColor = 'rgba(174, 34, 34, 0.35)';  
+                    } else {
+                        //cardDiv.style.boxShadow = "7px 7px 7px rgb(65, 141, 98)";
+                        questionTitle.style.color = '#2E8B57';
+                        questionTitle.style.backgroundColor = 'rgba(65, 141, 98, 0.2)';
+                        cardDiv.style.backgroundColor = 'rgba(65, 141, 98, 0.35)';  
+                    }
+                    
+                    // Add info icon to the question title for a modal
+                    const infoIcon = document.createElement('img');
+                    infoIcon.src = './images/info.png';
+                    infoIcon.width = '1em';
+                    infoIcon.style.cursor = 'pointer'; 
+                    questionTitle.appendChild(infoIcon); 
+                    infoIcon.addEventListener('click', function() {
+                        Modal(`./images/pop${i + 1}.jpg`); 
+                    });
+                    cardDiv.appendChild(questionTitle);
+                    
+                    // Create list for tasks
+                    const taskListEl = document.createElement('ul');
+                    taskGroup.forEach((task, j) => {
+                        const taskItem = document.createElement('li');
+                        const label = document.createElement('label');
+                        label.classList.add('task-label');
+                        
+                        // Create checkbox input
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        
+                        // Add info icon for task details
+                        const infoIcon2 = document.createElement('span');
+                        infoIcon2.classList.add('info-icon');
+                        infoIcon2.innerHTML = "&#9432;";
+                        infoIcon2.style.cursor = 'pointer'; 
+                        
+                        // Build label content
+                        label.appendChild(checkbox);
+                        label.appendChild(document.createTextNode(task.taskName));
+                        label.appendChild(infoIcon2);
+                        taskItem.appendChild(label);
+                        taskListEl.appendChild(taskItem);
+                        
+                        // Set task status based on fetched_tasks data
+                        if (!fetched_tasks || !fetched_tasks.chosen) {
+                            fetched_tasks = { chosen: [], done: [], time: [] };
+                        } else if (fetched_tasks) {
+                            if (fetched_tasks.chosen && fetched_tasks.done) {
+                                if (fetched_tasks.chosen.includes(String(task.taskNumber))) {
+                                    task.choice = 'chosen';
+                                    checkbox.checked = true;
+                                    if (fetched_tasks.done.includes(String(task.taskNumber))) {
+                                        const _index = fetched_tasks.done.indexOf(task.taskNumber);
+                                        task.finishTime = fetched_tasks.time[_index];
+                                        task.status = 'Completed';
+                                    } else {
+                                        task.finishTime = "";
+                                        task.status = 'Done';
                                     }
                                 }
                             }
-                            //Also double-check task status in local storage
-                            checkbox.disabled = task.status === 'Completed';
-                            localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
-                            
-                            // Update task count and localStorage on checkbox change
-                            checkbox.addEventListener('change', function() {
-                                let index = -1
-                                if (fetched_tasks.chosen) {
-                                    index = fetched_tasks.chosen.findIndex(el => el == String(task.taskNumber));
+                        }
+                        // Disable checkbox if task is Completed
+                        checkbox.disabled = task.status === 'Completed';
+                        // Update localStorage for tasks
+                        localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
+                        
+                        // Listen to checkbox change
+                        checkbox.addEventListener('change', function() {
+                            let index = -1;
+                            if (fetched_tasks.chosen) {
+                                index = fetched_tasks.chosen.findIndex(el => el == String(task.taskNumber));
+                            }
+                            if (!checkbox.disabled) {
+                                if (checkbox.checked) {
+                                    task.choice = "chosen";
+                                    task_counts += 1;
+                                    if (index === -1) { fetched_tasks.chosen.push(String(task.taskNumber)); }
+                                } else {
+                                    task.choice = "";                                         
+                                    task_counts -= 1;
+                                    if (index !== -1) { fetched_tasks.chosen.splice(index, 1); }
                                 }
-                                if (!checkbox.disabled) {
-                                    if (checkbox.checked) {
-                                        task.choice = "chosen";
-                                        task_counts += 1;
-                                        if (index === -1) {fetched_tasks.chosen.push(String(task.taskNumber))}
-                                    } else {
-                                        task.choice = "";                                         
-                                        task_counts -= 1;
-                                        if (index !== -1) {fetched_tasks.chosen.splice(index, 1)}
-                                    }
-                                    task.status = "Done";
-                                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
-                                    localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));  
-                                }
-                                updateStartButton(preResponseId, userId, tasks, fetched_tasks);
-                            });
-                            
-                            label.addEventListener('click', (e) => {
-                                // If the input is disabled, show toast
-                                if (checkbox.disabled) {
-                                    const toasty = document.getElementById('task-toast');
-                                    const myToast = new bootstrap.Toast(toasty);
-                                    myToast.show();
-                                }
-                            });
-                            
-                            // Event listener for more info
-                            infoIcon2.addEventListener('click', function(event) {
-                                event.preventDefault();
-                                event.stopPropagation(); 
-                                ModalDes(task.taskName, task.taskDescription);
-                            });
-                            
-                            checkbox.checked = task.choice === "chosen";
-                            //Check task status on local  storage
-                            if (task.choice === "chosen") {task.status = task.status === "Completed"?"Completed":"Done";}
-                            localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
-                            localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
+                                task.status = "Done";
+                                localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
+                                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));  
+                            }
                             updateStartButton(preResponseId, userId, tasks, fetched_tasks);
                         });
-                        questionDiv.appendChild(taskList);
-                        QContainer.appendChild(questionDiv);
-                        localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                    } 
-
-                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                    setTimeout(() => {
+                        
+                        // If the label is clicked and the checkbox is disabled, show a toast
+                        label.addEventListener('click', (e) => {
+                            if (checkbox.disabled) {
+                                const toasty = document.getElementById('task-toast');
+                                const myToast = new bootstrap.Toast(toasty);
+                                myToast.show();
+                            }
+                        });
+                        
+                        // Show more info on task details when clicking the info icon
+                        infoIcon2.addEventListener('click', function(event) {
+                            event.preventDefault();
+                            event.stopPropagation(); 
+                            ModalDes(task.taskName, task.taskDescription);
+                        });
+                        
+                        // Ensure checkbox state matches the task choice
+                        checkbox.checked = task.choice === "chosen";
+                        if (task.choice === "chosen") {
+                            task.status = task.status === "Completed" ? "Completed" : "Done";
+                        }
+                        localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks)); 
+                        localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
                         updateStartButton(preResponseId, userId, tasks, fetched_tasks);
-                    }, 1000);
-                })
-
-                if (QContainer.innerHTML == "") {
-                    QContainer.innerHTML = "<div class='void'>None of your answers score in this section</div>";
+                    });
+                    cardDiv.appendChild(taskListEl);
+                    
+                    // Append card to the content container
+                    cardContainer.appendChild(cardDiv);
                 }
-
-                var task_counts = calculateSelectedTasks(tasks);
-                await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                
+                // Update localStorage for tasks (if needed)
+                localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                
+                // Optional: schedule an update to the start button after 1 second
                 setTimeout(() => {
                     updateStartButton(preResponseId, userId, tasks, fetched_tasks);
-                }, 1000); 
+                }, 1000);
+            });
+            
+            // If no cards were created, show a message
+            if (!cardContainer.innerHTML.trim()) {
+                cardContainer.innerHTML = "<div class='void'>None of your answers score in this section</div>";
             }
+            
+            var task_counts = calculateSelectedTasks(tasks);
+            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+            setTimeout(() => {
+                updateStartButton(preResponseId, userId, tasks, fetched_tasks);
+            }, 1000);
+        }
         
-        // update task status on `startButton` click
+        // Attach event listener to the start button to navigate to the challenge page
         startButton.addEventListener('click', async function(event) {
             window.location.href = "challenge_page.html";
         });
