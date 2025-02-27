@@ -343,7 +343,7 @@
                     var task_rec =  detailed?.time ?? [];
                     
                     Object.keys(tasks).forEach(questionKey => {
-                        header.innerHTML = '<img src="./images/battery.png"/>'+'All tasks you have completed';
+                        header.innerHTML = '<img src="./images/battery.png"/>'+'<b>All tasks you have completed</b>';
                         const taskGroup = tasks?.[questionKey]?.tasks ?? [];
                         
                         // Filter tasks that are selected
@@ -376,7 +376,7 @@
                                 taskCard.appendChild(infoIcon); 
                                 taskCard.appendChild(completion);
                                 cardContainer.appendChild(taskCard);
-                                
+
                             }
                             
                         });
