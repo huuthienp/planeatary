@@ -478,8 +478,8 @@
                     // Mark the first tab as active
                     if (first == 1) {
                         tabLink.classList.add('active');
-                        tabLink.style.color = 'white';
                     }
+
                     tabItem.appendChild(tabLink);
                     tabList.appendChild(tabItem);
                     
@@ -494,6 +494,10 @@
                         cardDiv.style.display = 'flex';
                         cardDiv.style.flexDirection = "column";
                     });
+
+                    if (tabLink.classList.contains('active')) {
+                        tabLink.style.color = 'white';
+                    }
                     
                     const cardDiv = document.createElement('div');
                     cardDiv.classList.add('tab-pane');

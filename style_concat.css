@@ -892,7 +892,7 @@ body {
   --bs-nav-link-hover-color: white;
 }
 
-#tabList:hover, #tabList:focus {
+#tabList > li:hover, #tabList > li:focus {
   background-color: #4c948c;
   border-radius: 20px;
 }
