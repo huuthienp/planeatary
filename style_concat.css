@@ -850,7 +850,6 @@ body {
 .task-content {
   display: flex;
   align-items: center;
-  padding: 2vh 0;
   font-size: 1em;
   flex-direction: row;
   flex-wrap: wrap;
@@ -874,12 +873,21 @@ body {
 }
 
 .question-block {
-  width: 80%;
   padding: 2vh 1vw;
 }
 
 #tabList {
+  flex-direction: row !important;
   background-color: #02897957;
+  width: fit-content;
+  border-radius: 20px;
+  --bs-nav-link-color: white;
+  --bs-nav-link-hover-color: white;
+}
+
+#cardContainer {
+  width: 86vw;
+  margin: 2vh auto;
 }
 
 .q-task ul {
@@ -888,7 +896,8 @@ body {
 }
 
 .nav-link:focus, .nav-link:hover {
- background-color: #02897A;
+ background-color: #8aeee2;
+ border-radius: 20px;
 }
 
 .task-label {
@@ -1497,7 +1506,7 @@ a {
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
   text-decoration-color: rgb(var(--colorTealAction) / 0.5);
-  transition: text-decoration-color 0.15s ease-in-out;
+  transition: text-decoration-color 0.15s ease-in-out !important;
 }
 a:hover,
 a:focus-visible {

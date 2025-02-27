@@ -81,7 +81,7 @@
                 <div class="q-task">
                     <div class="vertical-tabs-container" style="display: flex;">
                         <!-- Tab navigation on the left -->
-                        <ul id="tabList" class="nav flex-column" style="min-width: 150px; border-right: 1px solid #ddd; margin-right: 1rem;">
+                        <ul id="tabList" class="nav flex-row" style="min-width: 150px; border-right: 1px solid #ddd;">
                           <!-- Tabs will be created dynamically -->
                         </ul>
                         <!-- Content area for the question card -->
@@ -496,7 +496,7 @@
                     const cardDiv = document.createElement('div');
                     cardDiv.classList.add('tab-pane');
                     // Show the first card; hide the rest
-                    cardDiv.style.display = i === 0 ? 'block' : 'none';
+                    //cardDiv.style.display = i === 0 ? 'flex' : 'none';
                     cardDiv.classList.add('question-block');
                     cardDiv.style.borderRadius = "20px";
                     
