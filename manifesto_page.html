@@ -71,7 +71,7 @@
                 <p id="threetask"></p>
             </div>
             <div class="button2">
-                <button class="start shadow-sm" style="width: 180px;">Start</button>
+                <button class="start shadow-sm btn btn-success" style="width: 180px;">Start</button>
             </div>
             <div class="improvement">
                 <button id="good" class="shadow-sm">Good scores</button>
@@ -461,12 +461,11 @@
             if (fetched_tasks) {
                 updateStartButton(preResponseId, userId, tasks, fetched_tasks);
             }
-            
+            let first = 0;
             // Create a tab and a card for each question
             Object.keys(tasks).forEach((questionKey, i) => {
                 const taskGroup = tasks[questionKey]?.tasks ?? [];
                 const score = scores[i];
-                let first = 0;
                 if (condition(score)) {
                     first += 1;
                     // Create Tab

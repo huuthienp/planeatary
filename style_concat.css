@@ -874,6 +874,7 @@ body {
 
 .question-block {
   padding: 2vh 1vw;
+  flex-direction: column;
 }
 
 #tabList {
@@ -881,8 +882,10 @@ body {
   background-color: #02897957;
   width: fit-content;
   border-radius: 20px;
-  --bs-nav-link-color: white;
+  --bs-nav-link-color: #5f8771;
   --bs-nav-link-hover-color: white;
+  --bs-nav-link-hover-background-color: #4c948c;
+  --bs-nav-link-hover-border-radius: 20px;
 }
 
 #cardContainer {
@@ -893,11 +896,6 @@ body {
 .q-task ul {
   list-style: none;
   padding: 1vmax;
-}
-
-.nav-link:focus, .nav-link:hover {
- background-color: #4c948c;
- border-radius: 20px;
 }
 
 .task-label {
