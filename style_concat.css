@@ -892,11 +892,11 @@ body {
 
 .q-task ul {
   list-style: none;
-  padding: 2vmax;
+  padding: 1vmax;
 }
 
 .nav-link:focus, .nav-link:hover {
- background-color: #8aeee2;
+ background-color: #4c948c;
  border-radius: 20px;
 }
 

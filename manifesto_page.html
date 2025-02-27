@@ -79,7 +79,7 @@
             </div>
             <div class="task-content">
                 <div class="q-task">
-                    <div class="vertical-tabs-container" style="display: flex;">
+                    <div class="vertical-tabs-container" style="display: flex; align-items: center; flex-direction: column;">
                         <!-- Tab navigation on the left -->
                         <ul id="tabList" class="nav flex-row" style="min-width: 150px; border-right: 1px solid #ddd;">
                           <!-- Tabs will be created dynamically -->
@@ -466,7 +466,9 @@
             Object.keys(tasks).forEach((questionKey, i) => {
                 const taskGroup = tasks[questionKey]?.tasks ?? [];
                 const score = scores[i];
+                let first = 0;
                 if (condition(score)) {
+                    first += 1;
                     // Create Tab
                     const tabItem = document.createElement('li');
                     tabItem.classList.add('nav-item');
@@ -475,7 +477,7 @@
                     tabLink.href = "#"; 
                     tabLink.textContent = `Q ${i + 1}`;
                     // Mark the first tab as active
-                    if (i === 0) {
+                    if (first == 1) {
                         tabLink.classList.add('active');
                     }
                     tabItem.appendChild(tabLink);
@@ -496,7 +498,7 @@
                     const cardDiv = document.createElement('div');
                     cardDiv.classList.add('tab-pane');
                     // Show the first card; hide the rest
-                    //cardDiv.style.display = i === 0 ? 'flex' : 'none';
+                    cardDiv.style.display = first === 1 ? 'flex' : 'none';
                     cardDiv.classList.add('question-block');
                     cardDiv.style.borderRadius = "20px";
                     
