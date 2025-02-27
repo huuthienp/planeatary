@@ -878,9 +878,17 @@ body {
   padding: 2vh 1vw;
 }
 
+#tabList {
+  background-color: #02897957;
+}
+
 .q-task ul {
   list-style: none;
   padding: 2vmax;
+}
+
+.nav-link:focus, .nav-link:hover {
+ background-color: #02897A;
 }
 
 .task-label {
