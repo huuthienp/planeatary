@@ -826,7 +826,7 @@ body {
   border: none;
   font-size: 1em;
   font-family: 'Poppins';
-  padding: 1vh 3.5vw;
+  padding: 1vh 2vw;
   color: rgb(255, 255, 255);
   border-top-left-radius: 0.5em;
   border-bottom-left-radius: 0.5em;
@@ -893,10 +893,16 @@ body {
 }
 
 #tabList > li:hover, #tabList > li:focus {
-  background-color: #4c948c;
+  color: white;
+  background-color: #5cafa5;
   border-radius: 20px;
 }
 
+#tabList a.active {
+  color: white !important;
+  background-color: #4c948c !important;
+  border-radius: 20px !important;
+}
 
 #cardContainer {
   width: 90vw;
