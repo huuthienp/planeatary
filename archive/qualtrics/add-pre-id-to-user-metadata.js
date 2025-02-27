@@ -1,14 +1,15 @@
 function codeTask() {
-    let fetchedResponseHistory;
-	try {
-        fetchedResponseHistory = ~{ch://XXXX_xxxx/$.user_metadata.responseHistory};  // qualtrics piped text syntax (censored)
-	} catch(historyError) {
-        console.error(historyError);
+    let userRespHist;
+	try {  // qualtrics piped text may be empty, causing syntax error
+        // userRespHist = ~{ch://XXXX_xxxx/$.user_metadata.responseHistory};
+	} catch(syntaxErr) {
+        console.error(syntaxErr);
         console.warn('Response history may be undefined!');
-        fetchedResponseHistory = [];
-    }
-    fetchedResponseHistory.push({
-        preId: '${rm://Field/ResponseID}'  // qualtrics piped text syntax
-    });
-    return { newData: { responseHistory: fetchedResponseHistory } };
+        userRespHist = [];
+    }  /* end of try-catch */
+    const preIdArr = userRespHist.map(cycle => cycle.preId);
+    if (!preIdArr.includes('${rm://Field/ResponseID}')) {
+        userRespHist.push({ preId: '${rm://Field/ResponseID}' });  // qualtrics piped text syntax
+	}  /* end of if history already includes the new ID */
+    return { newData: { responseHistory: userRespHist } };
 }
