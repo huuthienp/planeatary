@@ -215,6 +215,11 @@ body {
     justify-content: space-evenly;
     flex-direction: row !important;
   }
+
+  #cardContainer {
+    width: 60vw !important;
+    margin: 2vh auto;
+  }
 }
 
 .main-container {
@@ -814,27 +819,28 @@ body {
 .improvement {
   display: flex;
   justify-content: center;
-  padding: 3vh 0;
+  padding: 2vh 0;
+  align-self: center;
 }
 #good {
   border: none;
   font-size: 1em;
   font-family: 'Poppins';
   padding: 1vh 3.5vw;
-  background-color: #559e4f;
   color: rgb(255, 255, 255);
   border-top-left-radius: 0.5em;
   border-bottom-left-radius: 0.5em;
+  flex: 1;
 }
 #notyet {
   border: none;
   font-size: 1em;
   font-family: 'Poppins';
   padding: 1vh 2vw;
-  background-color: #891202;
   color: white;
   border-top-right-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
+  flex: 1;
 }
 
 .content .Card {
@@ -884,12 +890,16 @@ body {
   border-radius: 20px;
   --bs-nav-link-color: #5f8771;
   --bs-nav-link-hover-color: white;
-  --bs-nav-link-hover-background-color: #4c948c;
-  --bs-nav-link-hover-border-radius: 20px;
 }
 
+#tabList:hover, #tabList:focus {
+  background-color: #4c948c;
+  border-radius: 20px;
+}
+
+
 #cardContainer {
-  width: 86vw;
+  width: 90vw;
   margin: 2vh auto;
 }
 
