@@ -254,7 +254,7 @@
                 QContainer.innerHTML = '';
 
                 let preResult = preObject?.result;
-                let preResponseId = preObject.responseId;
+                let preResponseId = preObject?.responseId;
                 let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)); 
                 let fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                 let task_rec = fetched_tasks?.time ?? []; 
@@ -279,25 +279,30 @@
                         // Create a container for the question
                         const questionDiv = document.createElement('div');
                         questionDiv.classList.add('question-block');
+                        questionDiv.style.borderRadius = "20px";
                         
                         // Display question number and score
                         const questionTitle = document.createElement('h3');
                         questionTitle.innerHTML = `Question ${i + 1} - ${score} points `;
+                        questionTitle.style.borderRadius = "20px";
+                        questionTitle.style.padding = '1rem';
                         
                         if (score < 3) {
-                            questionDiv.style.borderRadius = "20px";
-                            questionDiv.style.boxShadow = "10px 10px 10px rgb(178, 34, 34)";
+                            questionDiv.style.boxShadow = "7px 7px 7px rgb(178, 34, 34)";
                             questionTitle.style.color = '#B22222';
+                            questionTitle.style.backgroundColor = rgb(174, 34, 34, 0.2);  
+                            questionDiv.style.backgroundColor = rgb(174, 34, 34, 0.35);  
                         } else {
-                            questionDiv.style.borderRadius = "20px";
-                            questionDiv.style.boxShadow = "10px 10px 10px rgb(46, 139, 87)";
+                            questionDiv.style.boxShadow = "7px 7px 7px rgb(65, 141, 98)";
                             questionTitle.style.color = '#2E8B57';
+                            questionTitle.style.backgroundColor = rgb(65, 141, 98, 0.2);
+                            questionDiv.style.backgroundColor = rgb(65, 141, 98, 0.35);  
                         }
                         
                         // Add the info icon with a click event to open the modal
                         const infoIcon = document.createElement('img');
                         infoIcon.src = './images/info.png';
-                        infoIcon.width = '20';
+                        infoIcon.width = '1em';
                         infoIcon.style.cursor = 'pointer'; 
                         
                         questionTitle.appendChild(infoIcon); 
@@ -322,7 +327,8 @@
                             const infoIcon2 = document.createElement("span");
                             infoIcon2.classList.add("info-icon");
                             infoIcon2.innerHTML = "&#9432;"; 
-                            
+                            infoIcon2.style.cursor = 'pointer'; 
+
                             label.classList.add('task-label');
                             
                             label.appendChild(checkbox);

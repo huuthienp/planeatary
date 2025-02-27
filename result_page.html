@@ -276,8 +276,6 @@
                     let month = String(date.getMonth() + 1).padStart(2, '0'); 
                     let day = String(date.getDate()).padStart(2, '0');
                     
-                    updateProgress(questionsData.result.totalScore);
-                    
                     document.getElementById('curr_score').textContent = questionsData.result.totalScore;
                     document.getElementById('total').textContent = 60;
                     completion_date.innerHTML = `${type}-quiz was completed at ${localHours}:${localMinutes} on ${day}/${month}/${year}`
@@ -307,6 +305,8 @@
                         questionDiv.appendChild(questionPoint);
                         cardContainer.appendChild(questionDiv);
                     });
+
+                    updateProgress(questionsData.result.totalScore);
                     
                 }
 
@@ -624,6 +624,7 @@
                             //ch.classList.add('disabled');
                             
                             displayQuestions(postObject, 'POST');
+                            updateProgress(postObject.result.totalScore);
                             document.getElementById('postQ').style.backgroundColor = '#02897A';
                             document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
@@ -648,9 +649,9 @@
                             
                             //display preresult by default
                             displayQuestions(preObject, 'PRE');
-                            
+                            updateProgress(preObject.result.totalScore);
                             document.getElementById('preQ').style.backgroundColor = '#02897A';   
-                            document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
+                            //document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
                             document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
                             document.querySelector("a.nextB").href = 'manifesto_page.html';
