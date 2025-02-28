@@ -397,42 +397,42 @@
                         return;
                     }
 
-                    // Batch loading parameters
-                    const batchSize = 5; // number of cards per batch
-                    let currentIndex = 0;
+                    // // Batch loading parameters
+                    // const batchSize = 5; // number of cards per batch
+                    // let currentIndex = 0;
 
-                    // Function to load the next batch of cards
-                    function loadNextBatch() {
-                        for (let i = currentIndex; i < currentIndex + batchSize && i < cardElements.length; i++) {
-                            cardContainer.insertBefore(cardElements[i], sentinel);
-                            cardElements[i].offsetWidth; // read property forces reflow
-                            cardElements[i].classList.add('active');
-                        }
-                        currentIndex += batchSize;
-                        // Disconnect the observer if all cards are loaded
-                        if (currentIndex >= cardElements.length) {
-                            observer.disconnect();
-                        }
-                    }
+                    // // Function to load the next batch of cards
+                    // function loadNextBatch() {
+                    //     for (let i = currentIndex; i < currentIndex + batchSize && i < cardElements.length; i++) {
+                    //         cardContainer.insertBefore(cardElements[i], sentinel);
+                    //         cardElements[i].offsetWidth; // read property forces reflow
+                    //         cardElements[i].classList.add('active');
+                    //     }
+                    //     currentIndex += batchSize;
+                    //     // Disconnect the observer if all cards are loaded
+                    //     if (currentIndex >= cardElements.length) {
+                    //         observer.disconnect();
+                    //     }
+                    // }
 
-                    // Create a sentinel element to detect scroll position
-                    const sentinel = document.createElement('div');
-                    sentinel.id = "sentinel";
-                    cardContainer.appendChild(sentinel);
+                    // // Create a sentinel element to detect scroll position
+                    // const sentinel = document.createElement('div');
+                    // sentinel.id = "sentinel";
+                    // cardContainer.appendChild(sentinel);
 
-                    // Set up the Intersection Observer
-                    const observer = new IntersectionObserver(entries => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                loadNextBatch();
-                            }
-                        });
-                    }, { root: null, rootMargin: '0px', threshold: 0.1 });
+                    // // Set up the Intersection Observer
+                    // const observer = new IntersectionObserver(entries => {
+                    //     entries.forEach(entry => {
+                    //         if (entry.isIntersecting) {
+                    //             loadNextBatch();
+                    //         }
+                    //     });
+                    // }, { root: null, rootMargin: '0px', threshold: 0.1 });
 
-                    observer.observe(sentinel);
+                    // observer.observe(sentinel);
 
-                    // Optionally, load the first batch immediately
-                    loadNextBatch();
+                    // // Optionally, load the first batch immediately
+                    // loadNextBatch();
 
                     //stablise the card length according to the widest one
                     const cards = document.querySelectorAll('.card_completed');
@@ -445,7 +445,7 @@
                     });
                     cards.forEach((card, index) => {
                         card.style.width = `${maxWidth}px`;
-                        card.style.top = `${(index + 1) * 20}px`;
+                        card.style.top = `${(index + 1) * 12}px`;
                     });
 
                     // Update the completion date if needed (your existing logic)
