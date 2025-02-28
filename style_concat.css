@@ -401,6 +401,7 @@ body {
 
 
 .card_completed {
+  top: 30px;
   padding: 2vh 1vw;
   border: none;
   color: rgb(3, 3, 3);
@@ -408,7 +409,7 @@ body {
   border-radius: 1em;
   text-align: center;
   font-size: 1.1rem;
-  position: relative;
+  position: sticky;
   box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
   transition: opacity 0.5s ease, transform 0.5s ease;
   opacity: 0;
@@ -420,7 +421,7 @@ body {
 }
 
 .card_completed:not(:first-child) {
-  margin-top: -2rem;  /* Overlaps the previous card */
+  margin-top: -4rem;  /* Overlaps the previous card */
 }
 
 .card_completion {
