@@ -811,8 +811,8 @@ body {
   font-size: 1em;
   font-family: 'Poppins';
   padding: 1vh 2vw;
-  background-color: grey;
-  color: white;
+  background-color: #04a59252;
+  color: rgb(9, 59, 48);
   border-radius: 0.5em;
 }
 
