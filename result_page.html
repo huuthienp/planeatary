@@ -403,6 +403,8 @@
                     function loadNextBatch() {
                         for (let i = currentIndex; i < currentIndex + batchSize && i < cardElements.length; i++) {
                             cardContainer.insertBefore(cardElements[i], sentinel);
+                            cardElements[i].offsetWidth; // read property forces reflow
+                            cardElements[i].classList.add('active');
                         }
                         currentIndex += batchSize;
                         // Disconnect the observer if all cards are loaded

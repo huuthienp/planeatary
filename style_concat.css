@@ -409,6 +409,13 @@ body {
   text-align: center;
   font-size: 1.1rem;
   box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.card_completed.active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .card_completion {
