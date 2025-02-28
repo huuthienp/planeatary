@@ -150,7 +150,7 @@
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
         <script type="module">
-            import { fetchTaskStatus, extractTaskData, updateAnchors } from './scripts/helpers.mjs';
+            import { fetchTaskStatus, extractTaskData, updateAnchors, updateButton } from './scripts/helpers.mjs';
             import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick
                 , handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
             
@@ -403,6 +403,24 @@
                     if (task_rec.length === 0) {
                         cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
                     }
+
+                    // 1. Select all the cards
+                    const cards = document.querySelectorAll('.card_completed');
+
+                    let maxWidth = 0;
+
+                    // 2. Find the widest card
+                    cards.forEach(card => {
+                        const cardWidth = card.getBoundingClientRect().width;
+                        if (cardWidth > maxWidth) {
+                            maxWidth = cardWidth + 100;
+                        }
+                    });
+
+                    // 3. Set each card's width to the max
+                    cards.forEach(card => {
+                        card.style.width = `${maxWidth}px`;
+                    });
                 }
             
                 
@@ -754,9 +772,9 @@
                         document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                         if (postResult) { document.getElementById('postQ').style.backgroundColor = '#a9d1cd'; }
                         else { 
-                            document.getElementById('postQ').style.backgroundColor = 'rgba(200, 200, 200, 0.8)';
                             document.getElementById('postQ').disabled = true;
-                            document.getElementById('postQ').style.cursor = 'not-allowed'; 
+                            updateButton(document.getElementById('postQ'), 'rgba(200, 200, 200, 0.5)', 'not-allowed');
+                            document.getElementById('postQ').style.color = 'rgba(195, 195, 195)';
                         }
                         document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
                     });

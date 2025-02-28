@@ -118,7 +118,7 @@
         
         <script type="module">
 
-            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
+            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays, updateButton } from './scripts/helpers.mjs';
             import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, 
                 handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
 
@@ -252,14 +252,10 @@
                     if (allCompleted) {
                         navPostQuiz.classList.remove('Disabled');
                         btn_next.disabled = false;
-                        btn_next.style.pointerEvents = "auto"; // Enable the next button
-                        btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
-                        btn_next.style.cursor = "pointer";
+                        updateButton(btn_next,'#02897A', 'pointer');
                     } else {
                         btn_next.disabled = true;
-                        btn_next.style.pointerEvents = "none"; // Disable the next button
-                        btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
-                        btn_next.style.cursor = "not-allowed";
+                        updateButton(btn_next,'#4e958d52', 'not-allowed');
                     }
                     document.querySelector(".next").innerHTML = 'Next  &#8594;';
                 }
@@ -522,10 +518,8 @@
                 try {
                     showSpinner([bOverlay, spinner], condition);
                     
-                    btn_next.id = "btn_next";
-                    btn_next.style.pointerEvents = "none"; 
-                    btn_next.style.backgroundColor = "grey"; 
-                    btn_next.style.cursor = "not-allowed"; 
+                    btn_next.id = "btn_next";  
+                    updateButton(btn_next,'#4e958d52', 'not-allowed');
                     
                     nextButtonContainer.appendChild(btn_next);
                     

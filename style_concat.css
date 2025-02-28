@@ -42,7 +42,7 @@ body {
 }
 
 .Disabled {
-  opacity: 0.7;
+  opacity: 0.5;
   cursor: not-allowed !important;
   pointer-events: none !important;
 }
@@ -401,21 +401,23 @@ body {
 
 
 .card_completed {
-  padding: 3vh 3vw;
+  padding: 2vh 2vw;
   border: none;
   color: rgb(3, 3, 3);
   background: rgb(133, 132, 132);
   border-radius: 1em;
   text-align: center;
+  font-size: 1.25rem;
   box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
 }
 
 .card_completion {
-  padding: 3vh 3vw;
+  padding: 2vh 2vw;
   background: rgb(133, 132, 132);
   border: none;
   border-radius: 1em;
   text-align: center;
+  font-size: 1.25rem;
   box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
 }
 
@@ -811,9 +813,11 @@ body {
   font-size: 1em;
   font-family: 'Poppins';
   padding: 1vh 2vw;
-  background-color: #04a59252;
+  background-color: #4e958d52;
   color: rgb(9, 59, 48);
   border-radius: 0.5em;
+  box-shadow: none;
+  opacity: 0.4;
 }
 
 .improvement {
@@ -1446,11 +1450,25 @@ body {
 
 .void-space {
   padding: 8vh 0;
+  position: relative;
 }
 
 .history-table {
   position: relative;
   padding: 0 5vw;
+  top: 0;
+  height: 65vh;
+}
+
+.history-table .table {
+  --bs-table-striped-bg: rgb(114 219 176 / 9%) !important;
+  --bs-table-hover-bg: rgb(78 209 106 / 43%) !important;
+}
+
+.table > thead {
+  vertical-align: bottom;
+  position: sticky;
+  top: 0;
 }
 
 #h-table {
@@ -1459,11 +1477,14 @@ body {
 
 .empty-state {
   display: flex;
-  padding: 20vh 10vw;
+  padding: 18vh 10vw;
   justify-content: center;
   margin: auto auto;
   font-size: 2em;
   color: #ff6b6b; 
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .void {
@@ -1474,6 +1495,9 @@ body {
   color: #2ecc71;
   padding: 15vh 10vw;
   flex-wrap: wrap;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .void > img {
