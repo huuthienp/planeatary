@@ -410,7 +410,7 @@
                     cards.forEach(card => {
                         const cardWidth = card.getBoundingClientRect().width;
                         if (cardWidth > maxWidth) {
-                            maxWidth = cardWidth + 40;
+                            maxWidth = cardWidth;
                         }
                     });
                     cards.forEach(card => {
@@ -668,10 +668,8 @@
                             document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
                             document.querySelector("a.nextB").href = 'manifesto_page.html';
                             document.getElementById('postQ').disabled = true;
-                            document.getElementById('postQ').color =  'rgb(43 41 41)';
-                            document.getElementById('postQ').style.backgroundColor = 'rgba(200, 200, 200, 0.6)';
-                            document.getElementById('postQ').style.cursor = 'not-allowed' 
-                            document.getElementById('postQ').style.opacity = 0.4;
+                            updateButton(document.getElementById('postQ'), 'rgba(200, 200, 200, 0.6)', 'not-allowed');
+                            document.getElementById('postQ').color =  'rgb(97 94 94)';
                             hideSpinner([bOverlay, spinner], condition);
                             updateProgress(preObject.result.totalScore);
                             
@@ -699,11 +697,9 @@
                             
                             document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
                             document.querySelector("a.nextB").href = 'manifesto_page.html';
-                            document.getElementById('postQ').color =  'rgb(43 41 41)';
-                            document.getElementById('postQ').style.backgroundColor = 'rgba(200, 200, 200, 0.6)';
                             document.getElementById('postQ').disabled = true;
-                            document.getElementById('postQ').style.cursor = 'not-allowed';  
-                            document.getElementById('postQ').style.opacity = 0.4;
+                            updateButton(document.getElementById('postQ'), 'rgba(200, 200, 200, 0.6)', 'not-allowed');
+                            document.getElementById('postQ').color =  'rgb(97 94 94)'; 
                             
                         } else {
                             const toshow = [
@@ -772,8 +768,8 @@
                         if (postResult) { document.getElementById('postQ').style.backgroundColor = '#a9d1cd'; }
                         else { 
                             document.getElementById('postQ').disabled = true;
-                            updateButton(document.getElementById('postQ'), 'rgba(200, 200, 200, 0.5)', 'not-allowed');
-                            document.getElementById('postQ').style.color = 'rgba(195, 195, 195)';
+                            updateButton(document.getElementById('postQ'), 'rgba(200, 200, 200, 0.6)', 'not-allowed');
+                            document.getElementById('postQ').style.color = 'rgb(97 94 94)';
                         }
                         document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
                     });
