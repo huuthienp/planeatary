@@ -104,7 +104,7 @@
                     
                 </div>
                 <div class="q">
-                    <div class="questions"></div>
+                    <div class="questions stack-container"></div>
                 </div>
             </div>
             
@@ -371,7 +371,7 @@
                         cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is no information available to display.</div>";
                         return;
                     }
-                    
+
                     cardContainer.style.flexDirection = 'column';
 
                     let cardElements = [];
@@ -434,7 +434,7 @@
                     // Optionally, load the first batch immediately
                     loadNextBatch();
 
-                    ////stablise the card length according to the widest one
+                    //stablise the card length according to the widest one
                     const cards = document.querySelectorAll('.card_completed');
                     let maxWidth = 0;
                     cards.forEach(card => {
@@ -445,6 +445,7 @@
                     });
                     cards.forEach(card => {
                         card.style.width = `${maxWidth}px`;
+                        card.style.top = `${(index + 1) * 20}px`;
                     });
 
                     // Update the completion date if needed (your existing logic)

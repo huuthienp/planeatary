@@ -399,9 +399,14 @@ body {
   font-size: 1em;
 }
 
+.stack-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  justify-content: center;
+}
 
 .card_completed {
-  top: 30px;
   padding: 2vh 1vw;
   border: none;
   color: rgb(3, 3, 3);
@@ -420,9 +425,9 @@ body {
   transform: translateY(0);
 }
 
-.card_completed:not(:first-child) {
-  margin-top: -4rem;  /* Overlaps the previous card */
-}
+/* .card_completed:not(:first-child) {
+  margin-top: -4rem;  Overlaps the previous card
+} */
 
 .card_completion {
   padding: 2vh 1vw;
@@ -433,11 +438,6 @@ body {
   font-size: 1.1rem;
   box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
 }
-
-/* .card_completed:hover,
-.card_completed:focus {
-  cursor: pointer;
-} */
 
 .card_completion:hover,
 .card_completion:focus {
