@@ -401,23 +401,23 @@ body {
 
 
 .card_completed {
-  padding: 2vh 2vw;
+  padding: 2vh 1vw;
   border: none;
   color: rgb(3, 3, 3);
-  background: rgb(133, 132, 132);
+  background: rgb(139 147 139 / 75%);
   border-radius: 1em;
   text-align: center;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
 }
 
 .card_completion {
-  padding: 2vh 2vw;
-  background: rgb(133, 132, 132);
+  padding: 2vh 1vw;
+  background: rgb(139 147 139 / 75%);
   border: none;
   border-radius: 1em;
   text-align: center;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
 }
 

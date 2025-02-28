@@ -386,6 +386,19 @@
                             updateNextButton(preResponseId, userId, tasks, Tstatus); 
                         });   
                     });
+
+                    //stabilise the card length
+                    const cards = document.querySelectorAll('.card_completion');
+                    let maxWidth = 0;
+                    cards.forEach(card => {
+                        const cardWidth = card.getBoundingClientRect().width;
+                        if (cardWidth > maxWidth) {
+                            maxWidth = cardWidth + 40;
+                        }
+                    });
+                    cards.forEach(card => {
+                        card.style.width = `${maxWidth}px`;
+                    });
                     
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))} 

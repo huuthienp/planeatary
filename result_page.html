@@ -404,20 +404,15 @@
                         cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
                     }
 
-                    // 1. Select all the cards
+                    //stablise the card length
                     const cards = document.querySelectorAll('.card_completed');
-
                     let maxWidth = 0;
-
-                    // 2. Find the widest card
                     cards.forEach(card => {
                         const cardWidth = card.getBoundingClientRect().width;
                         if (cardWidth > maxWidth) {
-                            maxWidth = cardWidth + 100;
+                            maxWidth = cardWidth + 40;
                         }
                     });
-
-                    // 3. Set each card's width to the max
                     cards.forEach(card => {
                         card.style.width = `${maxWidth}px`;
                     });
@@ -669,12 +664,14 @@
                             //display preresult by default
                             displayQuestions(preObject, 'PRE');
                             document.getElementById('preQ').style.backgroundColor = '#02897A';   
-                            document.getElementById('postQ').style.backgroundColor = 'rgba(200, 200, 200, 0.8)';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
                             document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
                             document.querySelector("a.nextB").href = 'manifesto_page.html';
                             document.getElementById('postQ').disabled = true;
-                            document.getElementById('postQ').style.cursor = 'not-allowed';  
+                            document.getElementById('postQ').color =  'rgb(43 41 41)';
+                            document.getElementById('postQ').style.backgroundColor = 'rgba(200, 200, 200, 0.6)';
+                            document.getElementById('postQ').style.cursor = 'not-allowed' 
+                            document.getElementById('postQ').style.opacity = 0.4;
                             hideSpinner([bOverlay, spinner], condition);
                             updateProgress(preObject.result.totalScore);
                             
@@ -702,9 +699,11 @@
                             
                             document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
                             document.querySelector("a.nextB").href = 'manifesto_page.html';
-                            document.getElementById('postQ').style.backgroundColor = 'rgba(200, 200, 200, 0.8)';
+                            document.getElementById('postQ').color =  'rgb(43 41 41)';
+                            document.getElementById('postQ').style.backgroundColor = 'rgba(200, 200, 200, 0.6)';
                             document.getElementById('postQ').disabled = true;
                             document.getElementById('postQ').style.cursor = 'not-allowed';  
+                            document.getElementById('postQ').style.opacity = 0.4;
                             
                         } else {
                             const toshow = [
