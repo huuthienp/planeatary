@@ -310,6 +310,38 @@
                     
                 }
 
+                function buildTaskCard(task) {
+                    // Create a card element for a completed task
+                    const taskCard = document.createElement("div");
+                    taskCard.classList.add("card_completed");
+                    taskCard.style.borderRadius = "20px";
+                    
+                    const taskName = document.createElement("span");
+                    taskName.textContent = task.taskName + " ";
+                    
+                    // Info icon for task description
+                    const infoIcon = document.createElement("span");
+                    infoIcon.classList.add("info-icon");
+                    infoIcon.innerHTML = "&#9432;";
+                    infoIcon.style.cursor = 'pointer';
+                    infoIcon.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        showModal(task.taskName, task.taskDescription);
+                    });
+                    
+                    const completion = document.createElement("span");
+                    completion.classList.add("completion");
+                    completion.textContent = "Completed";
+                    
+                    // Assemble the card
+                    taskCard.appendChild(taskName);
+                    taskCard.appendChild(infoIcon);
+                    taskCard.appendChild(completion);
+                    
+                    return taskCard;
+                }
+
                 // Function to display completed tasks 
                 function displaySelectedTasks(tasks, detailed) {
                     
@@ -339,8 +371,6 @@
                         cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is no information available to display.</div>";
                         return;
                     }
-
-                    var task_rec =  detailed?.time ?? [];
                     
                     Object.keys(tasks).forEach(questionKey => {
                         header.innerHTML = '<img src="./images/battery.png"/>'+'<b>All tasks you have completed</b>';
@@ -349,38 +379,71 @@
                         // Filter tasks that are selected
                         taskGroup.forEach(task => {
                             if (detailed.done.length !== 0 && detailed.done.includes(String(task.taskNumber))) {
-                                // Create and append a card for each completed task
-                                const taskCard = document.createElement("div");
-                                taskCard.classList.add("card_completed");
+                                // cardContainer.appendChild(taskCard);
                                 
-                                const taskName = document.createElement("span");
-                                taskName.textContent = task.taskName + " ";
-                                
-                                // Add an info icon for task description
-                                const infoIcon = document.createElement("span");
-                                infoIcon.classList.add("info-icon");
-                                infoIcon.innerHTML = "&#9432;"; 
-                                
-                                // Set the click event for the info icon to show the modal
-                                infoIcon.addEventListener('click', function(event) {
-                                    event.preventDefault();
-                                    event.stopPropagation();
-                                    showModal(task.taskName, task.taskDescription);
-                                });
-                                
-                                const completion = document.createElement("span");
-                                completion.classList.add("completion");
-                                completion.textContent = "Completed";
-                                
-                                taskCard.appendChild(taskName);
-                                taskCard.appendChild(infoIcon); 
-                                taskCard.appendChild(completion);
-                                cardContainer.appendChild(taskCard);
-
-                            }
-                            
+                                // Create a card for each completed task and add it to the array
+                                let card = buildTaskCard(task);
+                                cardElements.push(card);
+                            } 
                         });
                     });
+
+                    // If no cards were built, show an error message
+                    if (cardElements.length === 0) {
+                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us some time to fix it.</div>";
+                        return;
+                    }
+
+                    // Batch loading parameters
+                    const batchSize = 5; // number of cards per batch
+                    let currentIndex = 0;
+
+                    // Function to load the next batch of cards
+                    function loadNextBatch() {
+                        for (let i = currentIndex; i < currentIndex + batchSize && i < cardElements.length; i++) {
+                            cardContainer.insertBefore(cardElements[i], sentinel);
+                        }
+                        currentIndex += batchSize;
+                        // Disconnect the observer if all cards are loaded
+                        if (currentIndex >= cardElements.length) {
+                            observer.disconnect();
+                        }
+                    }
+
+                    // Create a sentinel element to detect scroll position
+                    const sentinel = document.createElement('div');
+                    sentinel.id = "sentinel";
+                    cardContainer.appendChild(sentinel);
+
+                    // Set up the Intersection Observer
+                    const observer = new IntersectionObserver(entries => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                loadNextBatch();
+                            }
+                        });
+                    }, { root: null, rootMargin: '0px', threshold: 0.1 });
+
+                    observer.observe(sentinel);
+
+                    // Optionally, load the first batch immediately
+                    loadNextBatch();
+
+                    ////stablise the card length according to the widest one
+                    const cards = document.querySelectorAll('.card_completed');
+                    let maxWidth = 0;
+                    cards.forEach(card => {
+                        const cardWidth = card.getBoundingClientRect().width;
+                        if (cardWidth > maxWidth) {
+                            maxWidth = cardWidth;
+                        }
+                    });
+                    cards.forEach(card => {
+                        card.style.width = `${maxWidth}px`;
+                    });
+
+                    // Update the completion date if needed (your existing logic)
+                    var task_rec = detailed?.time ?? [];
                     
                     var firstNullIndex = detailed?.time?.length !== 0 && detailed?.time?.length ==  detailed?.chosen?.length ? detailed?.time?.findIndex(el => el == "") : 0;
                     console.log("time array:", task_rec);
@@ -403,19 +466,6 @@
                     if (task_rec.length === 0) {
                         cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
                     }
-
-                    //stablise the card length
-                    const cards = document.querySelectorAll('.card_completed');
-                    let maxWidth = 0;
-                    cards.forEach(card => {
-                        const cardWidth = card.getBoundingClientRect().width;
-                        if (cardWidth > maxWidth) {
-                            maxWidth = cardWidth;
-                        }
-                    });
-                    cards.forEach(card => {
-                        card.style.width = `${maxWidth}px`;
-                    });
                 }
             
                 
@@ -699,7 +749,7 @@
                             document.querySelector("a.nextB").href = 'manifesto_page.html';
                             document.getElementById('postQ').disabled = true;
                             updateButton(document.getElementById('postQ'), 'rgba(200, 200, 200, 0.6)', 'not-allowed');
-                            document.getElementById('postQ').color =  'rgb(97 94 94)'; 
+                            document.getElementById('postQ').style.color =  'rgb(97 94 94)'; 
                             
                         } else {
                             const toshow = [

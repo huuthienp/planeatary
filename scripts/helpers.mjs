@@ -57,7 +57,6 @@ export function updateButton(button, color='buttonface', cursor='default') {
     button.style.backgroundColor = color;
     button.style.borderColor = color;
     button.style.cursor = cursor;
-    button.style.borderRadius = '0.5em';
     if (cursor == "not-allowed") {
         button.style.color = 'rgb(9, 59, 48)';
         button.style.boxShadow = 'none';

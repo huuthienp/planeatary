@@ -124,7 +124,7 @@ body {
 
   .content {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: flex-start;
     padding-top: 10vh !important;
     gap: 2vmax;
@@ -781,7 +781,7 @@ body {
 .btn_next .next {
   color: white;
   background-color: #02897A;
-  font-family: Poppins;
+  font-family: 'Poppins';
   font-size: 1em;
   text-align: center;
   border: none;
@@ -813,7 +813,7 @@ body {
   font-size: 1em;
   font-family: 'Poppins';
   padding: 1vh 2vw;
-  background-color: #4e958d52;
+  /* background-color: #4e958d52; */
   color: rgb(9, 59, 48);
   border-radius: 0.5em;
   box-shadow: none;
@@ -1129,7 +1129,7 @@ body {
 
 .content {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: flex-start;
   padding-top: 20vh;
   gap: 2vmax;
@@ -1477,11 +1477,13 @@ body {
 
 .empty-state {
   display: flex;
+  width: 86%;
   padding: 18vh 10vw;
   justify-content: center;
   margin: auto auto;
   font-size: 2em;
   color: #ff6b6b; 
+  font-size: 600;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 20px !important;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -1492,7 +1494,9 @@ body {
   justify-content: center;
   margin: auto auto;
   font-size: 2em;
+  width: 86%;
   color: #2ecc71;
+  font-size: 600;
   padding: 15vh 10vw;
   flex-wrap: wrap;
   background: rgba(255, 255, 255, 0.9);
