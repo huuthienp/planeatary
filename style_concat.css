@@ -404,10 +404,14 @@ body {
   align-items: center !important;
   justify-content: center !important;
   flex-direction: column;
+  position: absolute;
+  overflow: hidden;
+  position: absolute;
 }
 
 .card_completed {
-  display: flex;
+  display: grid;
+  position: relative;
   align-items: center;
   padding: 2vh 1vw;
   border: none;
@@ -416,10 +420,8 @@ body {
   border-radius: 1em;
   text-align: center;
   font-size: 1.1rem;
-  position: sticky;
   box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
-  will-change: transform, opacity;
-  animation: stack-container 15s linear infinite;
+  animation: slideUp 15s infinite;
 }
 
 /* .card_completed.active {
@@ -435,36 +437,34 @@ body {
   animation-play-state: paused;
 } */
 
-@keyframes stack-container {
+@keyframes slideUp {
   0% {
     transform: translateY(100%) scale(0.5);
     opacity: 0;
-    visibility: hidden;
   }
-  3%, 20% { /* 3, 100/total number of cards */
+
+  5%,
+  20% {
     transform: translateY(100%) scale(0.7);
     opacity: 0.4;
-    visibility: visible;
   }
-  23%, 40% { /* [(100/total number of cards) + 3], [(100/number of cards) * 2] */
+
+  25%,
+  40% {
     transform: translateY(0) scale(1);
     opacity: 1;
-    visibility: visible;
   }
-  43%, 60% { /* [(100/total number of cards)*2 + 3], [(100/number of cards) * 3] */
+
+  45%,
+  60% {
     transform: translateY(-100%) scale(0.7);
     opacity: 0.4;
-    visibility: visible;
   }
-  63% { /* [(100/total number of cards) * 3] + 3 */
-    transform: translateY(-100%) scale(0.5);
-    opacity: 0;
-    visibility: visible;
-  }
+
+  65%,
   100% {
     transform: translateY(-100%) scale(0.5);
     opacity: 0;
-    visibility: hidden;
   }
 }
 
@@ -1480,6 +1480,7 @@ body {
 .q {
     display: flex;
     flex-direction: column;
+    position: absolute;
 }
 .question {
     background-color: #fff;
