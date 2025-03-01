@@ -248,7 +248,6 @@ body {
 }
 
 #carousel-section .carousel-item {
-  height: 30vmax;
   justify-items: center;
 }
 
@@ -326,7 +325,7 @@ body {
 .m-content {
   display: flex;
   justify-content: space-between;
-  padding: 15vh 0;
+  padding: 15vmax 0;
   gap: 2vmax;
   flex-direction: column;
 }
@@ -376,7 +375,7 @@ body {
 .content .head {
   width: 100%;
   align-items: center;
-  margin: 5vh 0;
+  margin: 5vmax 0;
   text-align: center;
 }
 .status {
@@ -406,7 +405,7 @@ body {
   flex-direction: column;
   position: absolute;
   overflow: hidden;
-  height: 100vh;
+  height: 100vmax;
 }
 
 .card_completed {
@@ -1124,7 +1123,7 @@ body {
 
 #inform {
   width: 80%;
-  max-height: 80vh;
+  max-height: 80vmax;
 }
 
 
@@ -1167,7 +1166,7 @@ body {
 .content .quiz {
   overflow: scroll;
   width: 100%;
-  height: 80vh;
+  height: 80vmax;
   margin: 0 auto;
 }
 
@@ -1175,7 +1174,7 @@ body {
   display: flex;
   width: 100%;
   justify-content: center;
-  gap: 4vw;
+  gap: 4vmax;
 }
 .next {
   font-size: 1em;
@@ -1191,7 +1190,7 @@ body {
   display: flex;
   justify-content: space-evenly;
   align-items: flex-start;
-  padding-top: 20vh;
+  padding-top: 20vmax;
   gap: 2vmax;
   flex-direction: column;
 }
@@ -1324,7 +1323,7 @@ body {
   align-items: center;
   gap: 2vmax;
   color: #02897A;
-  padding-bottom: 5vh;
+  padding-bottom: 5vmax;
 }
 
 .score .circle{
@@ -1517,7 +1516,7 @@ body {
   position: relative;
   padding: 0 5vw;
   top: 0;
-  height: 65vh;
+  height: 65vmax;
 }
 
 .history-table .table {
@@ -1596,7 +1595,7 @@ body {
   font-size: 1rem;
   color: #2b0505;
   z-index: 2;
-  gap: 2vh;
+  gap: 2vmax;
   font-weight: 600;
 }
 
