@@ -401,10 +401,15 @@
                     //stablise the card length according to the widest one
                     const cards = document.querySelectorAll('.card_completed');
                     let maxWidth = 0;
+                    let maxheight = 0;
                     cards.forEach(card => {
                         const cardWidth = card.getBoundingClientRect().width;
+                        const cardHeight = card.getBoundingClientRect().height;
                         if (cardWidth > maxWidth) {
                             maxWidth = cardWidth;
+                        }
+                        if (cardHeight > maxheight) {
+                            maxheight = cardHeight;
                         }
                     });
 
@@ -413,6 +418,7 @@
                         const delay = (j * 3) - 3; 
                         card.style.animationDelay = `${delay}s`;
                         card.style.width = `${maxWidth}px`;
+                        card.style.height = `${maxHeight}px`;
                         lastDelay = delay;
                         card.style.zIndex = cards.length - j; // Ensures the first card is on top
                     });
