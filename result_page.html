@@ -418,7 +418,7 @@
                     sentinel.id = "sentinel";
                     cardContainer.appendChild(sentinel);
 
-                    for (let i = currentIndex; i < currentIndex + batchSize && i < cardElements.length; i++) {
+                    for (let i = 0; i < cardElements.length; i++) {
                         cardContainer.insertBefore(cardElements[i], sentinel);
                     }
 
