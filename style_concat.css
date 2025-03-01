@@ -426,7 +426,7 @@ body {
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  min-height: 40vh;
+  min-height: 42vh;
   max-height: 60vh;
   width: 100vw;
 }
