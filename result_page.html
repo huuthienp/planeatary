@@ -407,12 +407,25 @@
                             maxWidth = cardWidth;
                         }
                     });
+
+                    let lastDelay = 0;
                     cards.forEach((card, j) => {
                         const delay = (j * 3) - 3; 
                         card.style.animationDelay = `${delay}s`;
                         card.style.width = `${maxWidth}px`;
-                        //card.style.top = `${(index + 1) * 12}px`;
+                        lastDelay = delay;
+                        //card.style.zIndex = cards.length - j; // Ensures the first card is on top
                     });
+
+                    const lastCard = cards[cards.length - 1];
+
+                    // Initially, push the last card back
+                    lastCard.style.zIndex = 0; // lower than the others
+
+                    // Later, when it's time for the last card to move, update its z-index:
+                    setTimeout(() => {
+                        lastCard.style.zIndex = 1; // bring it to the front or a desired level
+                    }, lastDelay*1000); 
 
                     // If no cards were built, show an error message
                     if (cardContainer.innerHTML == "") {

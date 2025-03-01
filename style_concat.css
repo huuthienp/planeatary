@@ -426,6 +426,7 @@ body {
   font-size: 1.1rem;
   box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
   animation: slideUp 15s infinite;
+  animation-play-state: running;
 }
 
 /* .card_completed.active {
@@ -472,10 +473,6 @@ body {
     opacity: 0;
   }
 }
-
-/* .card_completed:not(:first-child) {
-  margin-top: -4rem;  Overlaps the previous card
-} */
 
 .card_completion {
   padding: 2vh 1vw;
