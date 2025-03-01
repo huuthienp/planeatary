@@ -401,15 +401,15 @@
                     //stablise the card length according to the widest one
                     const cards = document.querySelectorAll('.card_completed');
                     let maxWidth = 0;
-                    let maxheight = 0;
+                    let maxHeight = 0;
                     cards.forEach(card => {
                         const cardWidth = card.getBoundingClientRect().width;
                         const cardHeight = card.getBoundingClientRect().height;
                         if (cardWidth > maxWidth) {
                             maxWidth = cardWidth;
                         }
-                        if (cardHeight > maxheight) {
-                            maxheight = cardHeight;
+                        if (cardHeight > maxHeight) {
+                            maxHeight = cardHeight;
                         }
                     });
 
