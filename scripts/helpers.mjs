@@ -57,6 +57,18 @@ export function updateButton(button, color='buttonface', cursor='default') {
     button.style.backgroundColor = color;
     button.style.borderColor = color;
     button.style.cursor = cursor;
+    if (cursor == "not-allowed") {
+        button.style.color = 'rgb(9, 59, 48)';
+        button.style.boxShadow = 'none';
+        button.style.opacity = 0.4;
+        button.style.pointerEvents = "none";
+    } else {
+        button.style.color = 'white';
+        button.style.boxShadow = '0 .125rem .25rem rgba(0, 0, 0, .075)';
+        button.style.opacity = 1;
+        button.style.pointerEvents = "auto";
+    }
+    
 }
 
 

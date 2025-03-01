@@ -369,6 +369,7 @@
                     
                     if (link) {
                         if (link.classList.contains('Disabled')) {
+                            link.removeAttribute('href');
                             showToast(); 
                         } else {
                             handleOffcanvasClickFromElement(link);
@@ -386,6 +387,7 @@
                     
                     if (link) {
                         if (link.classList.contains('Disabled')) {
+                            link.removeAttribute('href');
                             showToast(); 
                         } else {
                             handleOffcanvasClickFromElement(link);

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>PlanEATary Quiz</title>  
 </head>
-<body>
+<body style="background-color: whitesmoke !important">
     
     <div class="main-container">
         <div class="Header">
@@ -321,7 +321,7 @@
                         const responseHistory = metadata.responseHistory;
                         const userId = user.id;
 
-                        updateButton(nextButton, 'grey', 'not-allowed');
+                        updateButton(nextButton, '#4e958d52', 'not-allowed');
                         
                         //handle a user directly from the history page
                         var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
@@ -473,7 +473,7 @@
                             }, 2000);
                         } catch(error) {
                             console.warn('Caught', error, '\nPost-quiz result is not found!');
-                            updateButton(nextButton, 'grey', 'not-allowed');
+                            updateButton(nextButton, '#4e958d52', 'not-allowed');
                             var quizUrl = initiateSurvey('post', quizFrame);
                         }
                     }

@@ -144,7 +144,7 @@
     
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script type="module">
-        import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
+        import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays, updateButton } from './scripts/helpers.mjs';
         import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick,
             handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
         
@@ -242,13 +242,11 @@
                 if (task_counts >= 3) {
                     persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
                     persuade.style.color = 'black';
-                    startButton.style.pointerEvents = "auto";
-                    startButton.style.backgroundColor = "#02897A";     
+                    updateButton(startButton, '#02897A', 'pointer');
+
                 } else {
                     persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
-                    persuade.style.color = 'grey';
-                    startButton.style.pointerEvents = "none";
-                    startButton.style.backgroundColor = "grey";
+                    updateButton(startButton, '#4e958d52', 'not-allowed');
                 }
                 localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));   
             }
@@ -522,7 +520,7 @@
                     // Add info icon to the question title for a modal
                     const infoIcon = document.createElement('img');
                     infoIcon.src = './images/info.png';
-                    infoIcon.width = '1em';
+                    infoIcon.style.width = '1em';
                     infoIcon.style.cursor = 'pointer'; 
                     questionTitle.appendChild(infoIcon); 
                     infoIcon.addEventListener('click', function() {

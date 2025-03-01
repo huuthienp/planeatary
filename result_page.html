@@ -104,7 +104,7 @@
                     
                 </div>
                 <div class="q">
-                    <div class="questions"></div>
+                    <div></div>
                 </div>
             </div>
             
@@ -150,7 +150,7 @@
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
         <script type="module">
-            import { fetchTaskStatus, extractTaskData, updateAnchors } from './scripts/helpers.mjs';
+            import { fetchTaskStatus, extractTaskData, updateAnchors, updateButton } from './scripts/helpers.mjs';
             import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick
                 , handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
             
@@ -159,7 +159,7 @@
             const Pre_Q = document.querySelector("#preQ");
             const Post_Q = document.querySelector("#postQ");
             const selectButton = document.querySelector(".select-tasks");
-            const cardContainer = document.querySelector(".questions");
+            const cardContainer = document.querySelector("div.q > div");
             const header = document.getElementById("q-type");
             const completion_date = document.getElementById("date-completion-q");
             
@@ -267,6 +267,9 @@
                         cardContainer.innerHTML = '<div class="empty-state">Opps! no results available.</div>';
                         return;
                     }
+
+                    cardContainer.classList.add('questions');
+                    cardContainer.classList.remove('stack-container');
                     
                     let date = new Date(questionsData.recordedDate);
                     header.innerHTML = `<b>${type}-QUIZ RESULT</b>`;
@@ -310,6 +313,38 @@
                     
                 }
 
+                function buildTaskCard(task) {
+                    // Create a card element for a completed task
+                    const taskCard = document.createElement("div");
+                    taskCard.classList.add("card_completed");
+                    taskCard.style.borderRadius = "20px";
+                    
+                    const taskName = document.createElement("span");
+                    taskName.textContent = task.taskName + " ";
+                    
+                    // Info icon for task description
+                    const infoIcon = document.createElement("span");
+                    infoIcon.classList.add("info-icon");
+                    infoIcon.innerHTML = "&#9432;";
+                    infoIcon.style.cursor = 'pointer';
+                    infoIcon.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        showModal(task.taskName, task.taskDescription);
+                    });
+                    
+                    const completion = document.createElement("p");
+                    completion.classList.add("completion");
+                    completion.textContent = "Completed";
+                    
+                    // Assemble the card
+                    taskName.appendChild(infoIcon);
+                    taskCard.appendChild(taskName);
+                    taskCard.appendChild(completion);
+                    
+                    return taskCard;
+                }
+
                 // Function to display completed tasks 
                 function displaySelectedTasks(tasks, detailed) {
                     
@@ -340,8 +375,11 @@
                         return;
                     }
 
-                    var task_rec =  detailed?.time ?? [];
-                    
+                    cardContainer.classList.add('stack-container');
+                    cardContainer.classList.remove('questions');
+                    //cardContainer.style.flexDirection = 'column';
+
+                    let cardElements = [];
                     Object.keys(tasks).forEach(questionKey => {
                         header.innerHTML = '<img src="./images/battery.png"/>'+'<b>All tasks you have completed</b>';
                         const taskGroup = tasks?.[questionKey]?.tasks ?? [];
@@ -349,38 +387,106 @@
                         // Filter tasks that are selected
                         taskGroup.forEach(task => {
                             if (detailed.done.length !== 0 && detailed.done.includes(String(task.taskNumber))) {
-                                // Create and append a card for each completed task
-                                const taskCard = document.createElement("div");
-                                taskCard.classList.add("card_completed");
+                                // cardContainer.appendChild(taskCard);
                                 
-                                const taskName = document.createElement("span");
-                                taskName.textContent = task.taskName + " ";
-                                
-                                // Add an info icon for task description
-                                const infoIcon = document.createElement("span");
-                                infoIcon.classList.add("info-icon");
-                                infoIcon.innerHTML = "&#9432;"; 
-                                
-                                // Set the click event for the info icon to show the modal
-                                infoIcon.addEventListener('click', function(event) {
-                                    event.preventDefault();
-                                    event.stopPropagation();
-                                    showModal(task.taskName, task.taskDescription);
-                                });
-                                
-                                const completion = document.createElement("span");
-                                completion.classList.add("completion");
-                                completion.textContent = "Completed";
-                                
-                                taskCard.appendChild(taskName);
-                                taskCard.appendChild(infoIcon); 
-                                taskCard.appendChild(completion);
-                                cardContainer.appendChild(taskCard);
+                                // Create a card for each completed task and add it to the array
+                                let card = buildTaskCard(task);
+                                //cardElements.push(card);
+                                cardContainer.appendChild(card);
 
-                            }
-                            
+                            } 
                         });
                     });
+
+                    //stablise the card length according to the widest one
+                    const cards = document.querySelectorAll('.card_completed');
+                    let maxWidth = 0;
+                    let maxHeight = 0;
+                    cards.forEach(card => {
+                        const cardWidth = card.getBoundingClientRect().width;
+                        const cardHeight = card.getBoundingClientRect().height;
+                        if (cardWidth > maxWidth) {
+                            maxWidth = cardWidth;
+                        }
+                        if (cardHeight > maxHeight) {
+                            maxHeight = cardHeight;
+                        }
+                    });
+
+                    let lastDelay = 0;
+                    cards.forEach((card, j) => {
+                        const delay = (j * 3) - 3; 
+                        card.style.animationDelay = `${delay}s`;
+                        card.style.width = `${maxWidth}px`;
+                        card.style.height = `${maxHeight}px`;
+                        lastDelay = delay;
+                        card.style.zIndex = cards.length - j; // Ensures the first card is on top
+                    });
+
+                    // const lastCard = cards[cards.length - 1];
+
+                    // // Initially, push the last card back
+                    // lastCard.style.zIndex = -1; // lower than the others
+
+                    // // Later, when it's time for the last card to move, update its z-index:
+                    // setTimeout(() => {
+                    //     lastCard.style.zIndex = 0; // bring it to the front 
+                    // }, lastDelay*1000); 
+
+                    // If no cards were built, show an error message
+                    if (cardContainer.innerHTML == "") {
+                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us some time to fix it.</div>";
+                        return;
+                    }
+
+                    // Create a sentinel element to detect scroll position
+                    // const sentinel = document.createElement('div');
+                    // sentinel.id = "sentinel";
+                    // cardContainer.appendChild(sentinel);
+
+                    // for (let i = 0; i < cardElements.length; i++) {
+                    //     cardContainer.insertBefore(cardElements[i], sentinel);
+                    // }
+
+                    // // Batch loading parameters
+                    // const batchSize = 5; // number of cards per batch
+                    // let currentIndex = 0;
+
+                    // // Function to load the next batch of cards
+                    // function loadNextBatch() {
+                    //     for (let i = currentIndex; i < currentIndex + batchSize && i < cardElements.length; i++) {
+                    //         cardContainer.insertBefore(cardElements[i], sentinel);
+                    //         cardElements[i].offsetWidth; // read property forces reflow
+                    //         cardElements[i].classList.add('active');
+                    //     }
+                    //     currentIndex += batchSize;
+                    //     // Disconnect the observer if all cards are loaded
+                    //     if (currentIndex >= cardElements.length) {
+                    //         observer.disconnect();
+                    //     }
+                    // }
+
+                    // // Create a sentinel element to detect scroll position
+                    // const sentinel = document.createElement('div');
+                    // sentinel.id = "sentinel";
+                    // cardContainer.appendChild(sentinel);
+
+                    // // Set up the Intersection Observer
+                    // const observer = new IntersectionObserver(entries => {
+                    //     entries.forEach(entry => {
+                    //         if (entry.isIntersecting) {
+                    //             loadNextBatch();
+                    //         }
+                    //     });
+                    // }, { root: null, rootMargin: '0px', threshold: 0.1 });
+
+                    // observer.observe(sentinel);
+
+                    // // Optionally, load the first batch immediately
+                    // loadNextBatch();
+
+                    // Update the completion date if needed (your existing logic)
+                    var task_rec = detailed?.time ?? [];
                     
                     var firstNullIndex = detailed?.time?.length !== 0 && detailed?.time?.length ==  detailed?.chosen?.length ? detailed?.time?.findIndex(el => el == "") : 0;
                     console.log("time array:", task_rec);
@@ -651,12 +757,12 @@
                             //display preresult by default
                             displayQuestions(preObject, 'PRE');
                             document.getElementById('preQ').style.backgroundColor = '#02897A';   
-                            document.getElementById('postQ').style.backgroundColor = 'rgba(200, 200, 200, 0.8)';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
                             document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
                             document.querySelector("a.nextB").href = 'manifesto_page.html';
                             document.getElementById('postQ').disabled = true;
-                            document.getElementById('postQ').style.cursor = 'not-allowed';  
+                            updateButton(document.getElementById('postQ'), 'rgba(200, 200, 200, 0.6)', 'not-allowed');
+                            document.getElementById('postQ').color =  'rgb(97 94 94)';
                             hideSpinner([bOverlay, spinner], condition);
                             updateProgress(preObject.result.totalScore);
                             
@@ -684,9 +790,9 @@
                             
                             document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
                             document.querySelector("a.nextB").href = 'manifesto_page.html';
-                            document.getElementById('postQ').style.backgroundColor = 'rgba(200, 200, 200, 0.8)';
                             document.getElementById('postQ').disabled = true;
-                            document.getElementById('postQ').style.cursor = 'not-allowed';  
+                            updateButton(document.getElementById('postQ'), 'rgba(200, 200, 200, 0.6)', 'not-allowed');
+                            document.getElementById('postQ').style.color =  'rgb(97 94 94)'; 
                             
                         } else {
                             const toshow = [
@@ -754,9 +860,9 @@
                         document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                         if (postResult) { document.getElementById('postQ').style.backgroundColor = '#a9d1cd'; }
                         else { 
-                            document.getElementById('postQ').style.backgroundColor = 'rgba(200, 200, 200, 0.8)';
                             document.getElementById('postQ').disabled = true;
-                            document.getElementById('postQ').style.cursor = 'not-allowed'; 
+                            updateButton(document.getElementById('postQ'), 'rgba(200, 200, 200, 0.6)', 'not-allowed');
+                            document.getElementById('postQ').style.color = 'rgb(97 94 94)';
                         }
                         document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
                     });
