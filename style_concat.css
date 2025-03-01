@@ -405,7 +405,8 @@ body {
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  height: 40vh;
+  min-height: 40vh;
+  max-height: 60vh;
   width: 100vw;
 }
 
@@ -432,11 +433,11 @@ body {
   transform: translateY(0);
 } */
 
-.card_completed:last-child{
+/* .card_completed:last-child{
   animation-delay: calc(-3s * var(--delay));
-}
+} */
 
-.stack-container:hover .card_completed{
+.card_completed:hover {
   animation-play-state: paused;
   transform: scale(1.2);
 }
@@ -472,10 +473,6 @@ body {
   }
 }
 
-.card_completed span:hover{
-  transform: scale(0.94);
-}
-
 /* .card_completed:not(:first-child) {
   margin-top: -4rem;  Overlaps the previous card
 } */
@@ -498,8 +495,9 @@ body {
 .completion {
   display: flex;
   justify-content: flex-end;
-  font-size: 1em;
+  font-size: 1rem;
   font-weight: 800;
+  width: 90%;
 }
 
 .header a:link {
