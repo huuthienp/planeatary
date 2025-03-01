@@ -3,73 +3,81 @@
 <style type="text/css">
 .container {
     background-color: white;
-    border-radius: 5px;
-    box-shadow: 10px 10px 20px rgba(0,0,0,0.1);
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border-radius: 0.5rem;
+    box-shadow: 0.5rem 0.5rem 1rem rgba(0,0,0,0.1);
+    font-family: Verdana, Tahoma, sans-serif;
     line-height: 1.6;
     margin: auto;
-    max-width: 600px;
-    padding: 20px;
+    max-width: 38rem;
+    padding: 1rem;
+    text-align: center;
+}
+p.dear {
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: left;
 }
 .content {
     background-color: rgba(68, 172, 123, 0.3);
-    border-radius: 60px 0 60px 0;
-    padding: 20px;
+    border-radius: 4rem 0 4rem 0;
+    padding: 1rem;
     text-align: center;
 }
 .content > * {
-    margin: 20px 0;
-}
-button {
-    background-color: rgb(69, 175, 74);
-    border-color: rgb(69, 175, 74);
-    border-radius: 10px;
-    border-style: solid;
-    color: white;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 700;
-    padding: 20px;
-    width: auto;
-}
-button:hover {
-    background-color: rgb(54, 133, 58);
-    border-color: rgb(54, 133, 58);
+    margin: 1rem 0;
 }
 a {
     color: rgb(18, 141, 104);
     text-decoration: none;
 }
-a:hover {
-    text-decoration: underline;
+.btn-anchor {
+    background-color: rgb(69, 175, 74);
+    border-color: rgb(69, 175, 74);
+    border-radius: 0.5rem;
+    border-style: solid;
+    color: white;
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 1rem;
+    padding: 1rem;
+}
+.btn-anchor:hover {
+    background-color: rgb(54, 133, 58);
+    border-color: rgb(54, 133, 58);
+}
+p.regard {
+    font-size: 0.9rem;
+    margin-top: 2rem;
+    text-align: left;
 }
 .footer {
     background-color: #f0ebeb;
-    border-radius: 25% 25% 20px 20px;
+    border-radius: 25% 25% 1rem 1rem;
     color: #666;
-    font-size: 10pt;
+    font-size: 0.8rem;
     font-style: italic;
-    margin-top: 20px;
-    padding: 20px;
+    margin-top: 1rem;
+    padding: 1rem;
     text-align: center;
 }
-.footer > img {
+.footer img {
     display: inline-block;
     height: auto;
-    width: 105px;
+    margin: 0 1rem;
+    width: 6.5rem;
 }
 </style>
 <div class="container">
-    <h2>Dear ${aed://name},</h2>
+    <p class="dear">Dear ${aed://name},</p>
     <p>A password reset link has been requested for your account.</p>
     <div class="content">
-        <p>Click the link below to visit our <a href="https://planeatary.netlify.app" target="_blank">website</a> and reset your password.</p>
-        <p><a href="${aed://url}"><button>Reset password</button></a></p><em>${aed://url}</em>
+        <p>Click the link below to visit our website and reset your password.</p>
+        <p><a class="btn-anchor" href="${aed://url}" title="Reset your password at our website">Reset password</a></p>
         <p>This link expires in 10 minutes.</p>
     </div>
-    <p>If this was not requested by you, no action is needed. Your password will remain unchanged.</p>
-    <p>Thanks for being part of the PlanEATary Quest.</p>
-    <p style="font-size: 0.9em">The PlanEATary Quest Development Team</p>
+    <p>If this was not requested by you, no action is needed.<br />Your password will remain unchanged.</p>
+    <p class="regard">Best regards,<br />The PlanEATary Quest Team</p>
     <div class="footer">
         <img src="https://uow.au1.qualtrics.com/ControlPanel/Graphic.php?IM=IM_bau1AkgKURETsIS" />
         <p>The PlanEATary Quest is brought to you by Dietitians Australia’s (DA) Food & Environment Interest group with support from the International Confederation of Dietetic Associations (ICDA).</p>
