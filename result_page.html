@@ -399,6 +399,10 @@
                         return;
                     }
 
+                    for (let i = currentIndex; i < currentIndex + batchSize && i < cardElements.length; i++) {
+                        cardContainer.insertBefore(cardElements);
+                    }
+
                     // // Batch loading parameters
                     // const batchSize = 5; // number of cards per batch
                     // let currentIndex = 0;
@@ -474,7 +478,6 @@
                     if (task_rec.length === 0) {
                         cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
                     }
-                    cardContainer.appendChild(cardElements);
                 }
             
                 
