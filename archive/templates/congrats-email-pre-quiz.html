@@ -1,0 +1,209 @@
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
+<title>Recovery Email</title>
+<style type="text/css">
+body {
+    font-family: 'Poppins' !important;
+    line-height: 1.6;
+    margin: 0 0;
+}
+
+.background {
+    display: flex;
+    justify-content: center;
+    z-index: -1;
+    background-color: #f4f4f4;
+    margin: 0 auto;
+    width: 100vw;
+    height: 100vh;
+    flex-wrap: wrap;
+    position: fixed;
+}
+
+.main-container {
+    display: flex;
+    position: fixed;
+    top: 0;
+    justify-content: flex-start;
+    width: 90%;
+    height: 98%;
+    margin: 0 auto;
+    box-shadow: 10px 10px 20px rgba(0,0,0,0.1);
+    border-radius: 40px;
+    z-index: 1;
+    background-color: white;
+    flex-wrap: wrap;
+}
+
+.header {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(18, 141, 104);
+    font-weight: 700;
+    color: white !important;
+    border-radius: 20px 20px 0 40%;
+    padding-bottom: 5vh;
+    font-size: 2.5vw;
+}
+
+.header h2 {
+    display: flex;
+    margin: 1vh auto;
+    justify-content: center;
+    align-items: center;
+    color: white !important;
+}
+
+.header img {
+    width: 15%;
+    height: auto;
+}
+
+.header h3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white !important;
+    margin: 0 auto;
+    width: 80%;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.container h2 {
+    display: flex;
+    align-self: flex-start;
+    font-size: 2.5vw;
+}
+.container h3 {
+    
+    display: flex;
+    width: 90%;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 0 auto;
+    font-size: 2.5vw;
+}
+
+h3 img {
+    width: 30%;
+    height: auto;
+    position: relative;
+}
+
+a {
+    color: #007BFF;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: blink;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgba(68, 172, 123, 0.3);
+    border-radius: 50px 0 50px 0;
+    padding: 20px;
+    gap: 1vw;
+    width: 90%;
+    font-size: 2.5vw;
+}
+
+button {
+    display: flex;
+    width: auto;
+    font-family: 'Poppins' !important;
+    padding: 2vh 2vw;
+    justify-content: center;
+    flex-direction: column;
+    background-color: rgb(69, 175, 74);
+    border-radius: 10px;
+    border-style: solid;
+    border-color: rgb(69, 175, 74);
+    font-weight: 700;
+    color: white;
+    align-self: center;
+    font-size: 2vw;
+}
+
+button:hover {
+    background-color: rgb(54, 133, 58);
+    border-color: rgb(54, 133, 58);
+}
+
+.content p {
+    font-weight: 500;
+    font-size: 2.5vw;
+}
+
+.content p.regard {
+    display: flex;
+    width: 100%;
+    font-weight: 500;
+    justify-content: flex-start;
+    font-size: 2.5vw;
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    font-size: 2vw;
+    background-color: #f0ebeb;
+    color: #666;
+    padding: 20px;
+    border-radius: 25% 25% 20px 20px;
+    border: none;
+}
+
+.footer p {
+    display: flex;
+    align-items: center;
+    font-size: 1.5vw;
+}
+
+.footer img {
+    width: 10%;
+    height: auto;
+    position: relative;
+}
+
+</style>
+<body>
+    <div class="background">
+        <div class="main-container">
+            <div class="header">
+                <h2>GREAT JOB! <img src="./images/reward.png"></h2>
+                <h3>START YOUR PLANEATARY CHALLENGES TODAY!</h3>
+            </div>
+            <div class="container">
+                <h2>Dear ~{aed://name},</h2>
+                <h3>Congratulations on completing the pre-quiz! <img src="./images/harvest.png"></h3>
+                <div class="content">
+                    <p>You’re now ready to take on exciting challenges to improve your eating habits. Select your challenges and get started today!</p>
+                    <a><button>Select Challenges Now</button></a>
+                    <p class="regard">Regards,<br />
+                        PlanEATary Quest Development Team</p>
+                </div>
+            </div>
+            <div class="footer">
+                <img src="./images/transparent_logo.png">
+                <p>The PlanEATary Quest is brought to you by Dietitians Australia’s (DA) Food & Environment Interest group with support from the International Confederation of Dietetic Associations (ICDA).</p>
+            </div>
+        </div>
+    </div>    
+</body>
