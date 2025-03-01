@@ -220,6 +220,27 @@ body {
     width: 60vw !important;
     margin: 2vh auto;
   }
+
+  .card_completed {
+    display: flex;
+    min-width: 50% !important;
+    max-width: 100% !important;
+    flex-direction: column;
+    justify-content: space-evenly;
+    min-height: 15vh;
+    position: absolute;
+    align-items: center;
+    padding: 2vh 1vw;
+    border: none;
+    color: rgb(3, 3, 3);
+    background: rgba(139, 147, 139);
+    border-radius: 1em;
+    text-align: center;
+    font-size: 1.1rem;
+    box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
+    animation: slideUp 15s infinite;
+    animation-play-state: running;
+  }
 }
 
 .main-container {
@@ -412,9 +433,11 @@ body {
 
 .card_completed {
   display: flex;
-  min-width: 50% !important;
+  min-width: 65%;
   max-width: 100% !important;
   flex-direction: column;
+  justify-content: space-evenly;
+  min-height: 15vh;
   position: absolute;
   align-items: center;
   padding: 2vh 1vw;
