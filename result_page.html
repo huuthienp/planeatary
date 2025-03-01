@@ -372,7 +372,9 @@
                         return;
                     }
 
-                    cardContainer.style.flexDirection = 'column';
+                    cardContainer.classList.add('stack-container');
+                    cardContainer.classList.remove('questions');
+                    //cardContainer.style.flexDirection = 'column';
 
                     let cardElements = [];
                     Object.keys(tasks).forEach(questionKey => {
