@@ -433,11 +433,11 @@ body {
   animation-delay: calc(-3s * var(--delay));
 }
 
-/* .stack-container:hover .card{
+.stack-container:hover .card{
   animation-play-state: paused;
-} */
+}
 
-/* @keyframes slideUp {
+@keyframes slideUp {
   0% {
     transform: translateY(100%) scale(0.5);
     opacity: 0;
@@ -466,7 +466,7 @@ body {
     transform: translateY(-100%) scale(0.5);
     opacity: 0;
   }
-} */
+}
 
 .card_completed span:hover{
   transform: scale(0.94);
