@@ -405,11 +405,12 @@ body {
   flex-direction: column;
   position: absolute;
   overflow: hidden;
-  height: 100vmax;
+  height: 100vh;
+  width: 100%;
 }
 
 .card_completed {
-  display: grid;
+  display: flex;
   position: relative;
   align-items: center;
   padding: 2vh 1vw;
@@ -436,7 +437,7 @@ body {
   animation-play-state: paused;
 } */
 
-@keyframes slideUp {
+/* @keyframes slideUp {
   0% {
     transform: translateY(100%) scale(0.5);
     opacity: 0;
@@ -465,7 +466,7 @@ body {
     transform: translateY(-100%) scale(0.5);
     opacity: 0;
   }
-}
+} */
 
 .card_completed span:hover{
   transform: scale(0.94);
@@ -1540,9 +1541,9 @@ body {
   padding: 18vh 10vw;
   justify-content: center;
   margin: auto auto;
-  font-size: 2em;
+  font-size: 2rem;
   color: #ff6b6b; 
-  font-size: 600;
+  font-weight: 600;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 20px !important;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -1555,7 +1556,7 @@ body {
   font-size: 2em;
   width: 86%;
   color: #2ecc71;
-  font-size: 600;
+  font-weight: 600;
   padding: 15vh 10vw;
   flex-wrap: wrap;
   background: rgba(255, 255, 255, 0.9);

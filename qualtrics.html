@@ -453,7 +453,7 @@
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
-                        quizSpan.innerHTML = "<div class='void'>You have already finished the pre-quiz! Let's continue! <img src=''./images/thumbs-up.gif'></div>";
+                        quizSpan.innerHTML = "<div class='void'>You have already taken the pre-quiz! Let's continue! <img src=''./images/thumbs-up.gif'></div>";
                         //await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         return;
@@ -463,7 +463,7 @@
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
-                        quizSpan.innerHTML = '<div class="void">' + 'You have already finished the pre-quiz and the post-quiz! <img src="./images/thumbs-up.gif">\n Now, it is time you can start over this amazing journey!' + '</div>';
+                        quizSpan.innerHTML = '<div class="void">' + 'You have pull everything off! <img src="./images/thumbs-up.gif">\n Now, it is time you can start over this amazing journey!' + '</div>';
                         //await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         console.log('Found post-quiz result in storage!\n', postObject);
