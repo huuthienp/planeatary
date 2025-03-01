@@ -417,7 +417,6 @@ body {
   font-size: 1.1rem;
   position: sticky;
   box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
-  transition: opacity 0.5s ease, transform 0.5s ease;
   animation: animate 15s linear infinite;
   animation-delay: calc(3s * var(--delay));
 }
