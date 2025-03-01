@@ -403,6 +403,7 @@ body {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  flex-direction: column;
 }
 
 .card_completed {
@@ -417,8 +418,8 @@ body {
   font-size: 1.1rem;
   position: sticky;
   box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
-  animation: animate 15s linear infinite;
-  animation-delay: calc(3s * var(--delay));
+  will-change: transform, opacity;
+  animation: stack-container 15s linear infinite;
 }
 
 /* .card_completed.active {
@@ -430,31 +431,40 @@ body {
   animation-delay: calc(-3s * var(--delay));
 }
 
-.stack-container:hover .card{
+/* .stack-container:hover .card{
   animation-play-state: paused;
-}
+} */
 
-@keyframes animate {
-  0%{
-    opacity: 0;
+@keyframes stack-container {
+  0% {
     transform: translateY(100%) scale(0.5);
-  }
-  5%, 20%{
-    opacity: 0.4;
-    transform: translateY(100%) scale(0.7);
-  }
-  25%, 40%{
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0%) scale(1);
-  }
-  45%, 60%{
-    opacity: 0.4;
-    transform: translateY(-100%) scale(0.7);
-  }
-  65%, 100%{
     opacity: 0;
+    visibility: hidden;
+  }
+  3%, 20% { /* 3, 100/total number of cards */
+    transform: translateY(100%) scale(0.7);
+    opacity: 0.4;
+    visibility: visible;
+  }
+  23%, 40% { /* [(100/total number of cards) + 3], [(100/number of cards) * 2] */
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    visibility: visible;
+  }
+  43%, 60% { /* [(100/total number of cards)*2 + 3], [(100/number of cards) * 3] */
+    transform: translateY(-100%) scale(0.7);
+    opacity: 0.4;
+    visibility: visible;
+  }
+  63% { /* [(100/total number of cards) * 3] + 3 */
     transform: translateY(-100%) scale(0.5);
+    opacity: 0;
+    visibility: visible;
+  }
+  100% {
+    transform: translateY(-100%) scale(0.5);
+    opacity: 0;
+    visibility: hidden;
   }
 }
 
