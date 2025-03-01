@@ -385,14 +385,12 @@
                         const taskGroup = tasks?.[questionKey]?.tasks ?? [];
                         
                         // Filter tasks that are selected
-                        taskGroup.forEach((task, j) => {
+                        taskGroup.forEach(task => {
                             if (detailed.done.length !== 0 && detailed.done.includes(String(task.taskNumber))) {
                                 // cardContainer.appendChild(taskCard);
                                 
                                 // Create a card for each completed task and add it to the array
                                 let card = buildTaskCard(task);
-                                const delay = (j * 3) - 3; 
-                                card.style.animationDelay = `${delay}s`;
                                 //cardElements.push(card);
                                 cardContainer.appendChild(card);
 
@@ -410,6 +408,8 @@
                         }
                     });
                     cards.forEach((card, j) => {
+                        const delay = (j * 3) - 3; 
+                        card.style.animationDelay = `${delay}s`;
                         card.style.width = `${maxWidth}px`;
                         //card.style.top = `${(index + 1) * 12}px`;
                     });

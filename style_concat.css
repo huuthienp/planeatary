@@ -248,7 +248,7 @@ body {
 }
 
 #carousel-section .carousel-item {
-  height: 420px;
+  height: 30vmax;
   justify-items: center;
 }
 
@@ -406,6 +406,7 @@ body {
   flex-direction: column;
   position: absolute;
   overflow: hidden;
+  height: 100vh;
 }
 
 .card_completed {
@@ -526,10 +527,10 @@ body {
   text-align: justify;
   background: url('./images/welcome_background.png') center/cover no-repeat;
   margin: 0 auto;
-  padding-top: 18vh;
-  padding-left: 5vw;
-  padding-right: 5vw;
-  padding-bottom: 10vh;
+  padding-top: 18vmax;
+  padding-left: 5vmax;
+  padding-right: 5vmax;
+  padding-bottom: 10vmax;
 }
 
 .hero .herocontent {
@@ -645,7 +646,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding-top: 5vh !important;
+  padding-top: 5vmax !important;
   gap: 2vmax;
   flex-direction: column;
   max-width: 80%;
@@ -657,20 +658,20 @@ body {
 }
 
 .do-you-know p {
-  font-size: 16px;
+  font-size: 1rem;
   color: #555;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
 }
 
 .do-you-know ul {
   list-style-type: disc;
-  padding-left: 20px;
+  padding-left: 1rem;
 }
 
 .do-you-know ul li {
   font-size: 16px;
   color: #555;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
 }
 
 .do-you-know .video {
@@ -686,31 +687,31 @@ body {
 }
 
 .citation p {
-  margin-bottom: 10px; 
+  margin-bottom: 1rem; 
 }
 
 /*Feedback*/
 .reflect-section {
-  padding: 50px 30px;
-  margin:30px;
+  padding: 3rem 2rem;
+  margin: 2rem;
   text-align: left;
 }
 
 .reflect-section h2 {
-  font-size: 24px;
+  font-size: 1.5rem;
   color: #333;
 }
 
 .reflect-section hr {
   border: none;
   border-top: 1px solid #313131;
-  margin: 20px 0;
+  margin: 1.5rem 0;
 }
 
 .reflect-section p {
-  font-size: 16px;
+  font-size: 1rem;
   color: #555;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
 }
 
 .reflect-section ul {
@@ -719,9 +720,9 @@ body {
 }
 
 .reflect-section ul li {
-  font-size: 16px;
+  font-size: 1rem;
   color: #555;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
 }
 
 .reflect-section a {
@@ -741,7 +742,7 @@ body {
   display: flex;
   flex-wrap: wrap !important;
   justify-content: center;
-  gap: 10px;
+  gap: 1vmax;
 }
 
 .team-member {
@@ -762,11 +763,11 @@ body {
 }
 
 .acknowledgment {
-  margin-top: 30px;
+  margin-top: 10vmax;
 }
 
 .acknowledgment p {
-  font-size: 14px;
+  font-size: 0.9rem;
 }
 
 .icon {
@@ -778,11 +779,11 @@ body {
 
 #c-steps {
   display: block;
-  padding: 2em;
+  padding: 2rem;
 }
 
 .card{
-  margin: 0 .5em;
+  margin: 0 .5rem;
   box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
   border: none;
   height: 100% !important;
@@ -800,7 +801,7 @@ body {
   display: flex;
   width: 100%;
   text-align: center;
-  gap: 3vh;
+  gap: 3vmax;
   flex-direction: column;
   justify-content: center;
   color: rgba(33,52,60,1);
