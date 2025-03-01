@@ -393,14 +393,33 @@
                         });
                     });
 
+                    //stablise the card length according to the widest one
+                    const cards = document.querySelectorAll('.card_completed');
+                    let maxWidth = 0;
+                    cards.forEach(card => {
+                        const cardWidth = card.getBoundingClientRect().width;
+                        if (cardWidth > maxWidth) {
+                            maxWidth = cardWidth;
+                        }
+                    });
+                    cards.forEach((card, index) => {
+                        card.style.width = `${maxWidth}px`;
+                        card.style.top = `${(index + 1) * 12}px`;
+                    });
+
                     // If no cards were built, show an error message
                     if (cardElements.length === 0) {
                         cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us some time to fix it.</div>";
                         return;
                     }
 
+                    // Create a sentinel element to detect scroll position
+                    const sentinel = document.createElement('div');
+                    sentinel.id = "sentinel";
+                    cardContainer.appendChild(sentinel);
+
                     for (let i = currentIndex; i < currentIndex + batchSize && i < cardElements.length; i++) {
-                        cardContainer.insertBefore(cardElements);
+                        cardContainer.insertBefore(cardElements[i], sentinel);
                     }
 
                     // // Batch loading parameters
@@ -439,20 +458,6 @@
 
                     // // Optionally, load the first batch immediately
                     // loadNextBatch();
-
-                    //stablise the card length according to the widest one
-                    const cards = document.querySelectorAll('.card_completed');
-                    let maxWidth = 0;
-                    cards.forEach(card => {
-                        const cardWidth = card.getBoundingClientRect().width;
-                        if (cardWidth > maxWidth) {
-                            maxWidth = cardWidth;
-                        }
-                    });
-                    cards.forEach((card, index) => {
-                        card.style.width = `${maxWidth}px`;
-                        card.style.top = `${(index + 1) * 12}px`;
-                    });
 
                     // Update the completion date if needed (your existing logic)
                     var task_rec = detailed?.time ?? [];
