@@ -104,7 +104,7 @@
                     
                 </div>
                 <div class="q">
-                    <div class="questions stack-container"></div>
+                    <div></div>
                 </div>
             </div>
             
@@ -159,7 +159,7 @@
             const Pre_Q = document.querySelector("#preQ");
             const Post_Q = document.querySelector("#postQ");
             const selectButton = document.querySelector(".select-tasks");
-            const cardContainer = document.querySelector(".questions");
+            const cardContainer = document.querySelector("div.q > div");
             const header = document.getElementById("q-type");
             const completion_date = document.getElementById("date-completion-q");
             
@@ -267,6 +267,9 @@
                         cardContainer.innerHTML = '<div class="empty-state">Opps! no results available.</div>';
                         return;
                     }
+
+                    cardContainer.classList.add('questions');
+                    cardContainer.classList.remove('stack-container');
                     
                     let date = new Date(questionsData.recordedDate);
                     header.innerHTML = `<b>${type}-QUIZ RESULT</b>`;
@@ -382,13 +385,17 @@
                         const taskGroup = tasks?.[questionKey]?.tasks ?? [];
                         
                         // Filter tasks that are selected
-                        taskGroup.forEach(task => {
+                        taskGroup.forEach((task, j) => {
                             if (detailed.done.length !== 0 && detailed.done.includes(String(task.taskNumber))) {
                                 // cardContainer.appendChild(taskCard);
                                 
                                 // Create a card for each completed task and add it to the array
                                 let card = buildTaskCard(task);
-                                cardElements.push(card);
+                                const delay = (j * 3) - 3; 
+                                card.style.animationDelay = `${delay}s`;
+                                //cardElements.push(card);
+                                cardContainer.appendChild(card);
+
                             } 
                         });
                     });
@@ -402,27 +409,25 @@
                             maxWidth = cardWidth;
                         }
                     });
-                    cards.forEach((card, index) => {
-                        const delay = (j * 3) - 3; 
-                        card.style.animationDelay = `${delay}s`;
+                    cards.forEach((card, j) => {
                         card.style.width = `${maxWidth}px`;
                         //card.style.top = `${(index + 1) * 12}px`;
                     });
 
                     // If no cards were built, show an error message
-                    if (cardElements.length === 0) {
+                    if (cardContainer.innerHTML == "") {
                         cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us some time to fix it.</div>";
                         return;
                     }
 
                     // Create a sentinel element to detect scroll position
-                    const sentinel = document.createElement('div');
-                    sentinel.id = "sentinel";
-                    cardContainer.appendChild(sentinel);
+                    // const sentinel = document.createElement('div');
+                    // sentinel.id = "sentinel";
+                    // cardContainer.appendChild(sentinel);
 
-                    for (let i = 0; i < cardElements.length; i++) {
-                        cardContainer.insertBefore(cardElements[i], sentinel);
-                    }
+                    // for (let i = 0; i < cardElements.length; i++) {
+                    //     cardContainer.insertBefore(cardElements[i], sentinel);
+                    // }
 
                     // // Batch loading parameters
                     // const batchSize = 5; // number of cards per batch

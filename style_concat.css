@@ -400,13 +400,12 @@ body {
 }
 
 .stack-container {
-  display: flex !important;
+  display: flex;
   align-items: center !important;
   justify-content: center !important;
   flex-direction: column;
   position: absolute;
   overflow: hidden;
-  position: absolute;
 }
 
 .card_completed {
