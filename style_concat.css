@@ -231,7 +231,7 @@ body {
     max-width: 50% !important;
     flex-direction: column;
     justify-content: space-evenly;
-    min-height: 10vmax !important;
+    height: 16vmax !important;
     align-items: center;
     padding: 2vh 1vw;
     border: none;
@@ -443,19 +443,19 @@ body {
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  min-height: 44vmax;
-  max-height: 60vmax;
+  min-height: 50vmax;
+  max-height: 70vmax;
   width: 80%;
 }
 
 .card_completed {
   display: flex;
   gap: 2vmax;
-  min-width: 65%;
-  max-width: 90% !important;
+  min-width: 60%;
+  max-width: 98% !important;
   flex-direction: column;
   justify-content: space-evenly;
-  min-height: 16vmax;
+  height: 20vmax;
   align-items: center;
   padding: 2vh 1vw;
   border: none;
@@ -1538,6 +1538,7 @@ body {
     width: 100%;
     flex-direction: column;
     position: absolute;
+    align-items: center;
 }
 .question {
     background-color: #fff;
