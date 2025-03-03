@@ -429,6 +429,7 @@
                             card.style.animationName = 'slideUp';
                             card.style.animationDuration = '15s';
                             //card.style.animationDuration = `${cards.length*3}s`; //set the animation duration based on the total number of cards
+                            card.style.animationTimingFunction = 'linear';
                             card.style.animationIterationCount = "infinite";
                             card.style.animationPlayState = 'running';
                             const delay = (j*3) - 3; 
