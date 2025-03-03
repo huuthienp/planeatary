@@ -223,8 +223,8 @@ body {
 
   .card_completed {
     display: flex;
-    min-width: 50% !important;
-    max-width: 100% !important;
+    min-width: 45% !important;
+    max-width: 65% !important;
     flex-direction: column;
     justify-content: space-evenly;
     min-height: 15vh;
@@ -473,11 +473,13 @@ body {
   animation-delay: calc(-3s * var(--delay));
 } */
 
-.stack-container:hover {
+.stack-container:hover,
+.stack-container:focus  {
   animation-play-state: paused;
 }
 
-.card_completed:hover {
+.card_completed:hover,
+.card_completed:focus {
   transform: scale(1.2);
 }
 
