@@ -304,6 +304,8 @@
                                 
                                 // Set card styles based on status
                                 if (task.status === "Completed") {
+                                    taskCard.style.backgroundColor = 'rgb(146 161 146 / 75%)';
+                                    taskCard.style.color = 'dimgrey';
                                     taskName.style.textDecoration = "line-through";
                                 } else {
                                     taskCard.style.color = 'rgb(71, 71, 71)';
@@ -316,20 +318,24 @@
                                     if (Tstatus.chosen.length !== 0) {
                                         if (Tstatus.chosen.includes(String(task.taskNumber))) {
                                             if (Tstatus.done.length !== 0 && Tstatus.done.includes(String(task.taskNumber))) {
+                                                taskCard.style.backgroundColor = 'rgb(146 161 146 / 75%)';
+                                                taskCard.style.color = 'dimgrey';
                                                 taskName.style.textDecoration = "line-through";
                                             }
                                         } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) !== -1) {
                                             let index = Tstatus.chosen.indexOf(String(task.taskNumber));
                                             Tstatus.done[index] = String(task.taskNumber);
                                             Tstatus.time[index] = task.finishTime;
+                                            taskCard.style.backgroundColor = 'rgb(146 161 146 / 75%)';
+                                            taskCard.style.color = 'dimgrey';
                                             taskName.style.textDecoration = "line-through";
                                         }
                                     }
                                     updateNextButton(preResponseId, userId, tasks, Tstatus);
                                 }
                                 localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
+                                taskName.appendChild(infoIcon);
                                 taskCard.appendChild(taskName);
-                                taskCard.appendChild(infoIcon); 
                                 taskCard.appendChild(completion);
                                 cardContainer.appendChild(taskCard);
                                 updateNextButton(preResponseId, userId, tasks, Tstatus); 
@@ -343,6 +349,8 @@
                                     task.status = task.status === "Done" ? "Completed" : "Done";
                                     
                                     if (task.status === "Completed") {
+                                        taskCard.style.backgroundColor = 'rgb(146 161 146 / 75%)';
+                                        taskCard.style.color = 'dimgrey';
                                         taskName.style.textDecoration = "line-through";
                                         completion.innerHTML = task.status;
                                         let timestamp = Date.now();
@@ -390,7 +398,7 @@
                     });
                     cards.forEach(card => {
                         card.style.width = `${maxWidth}px`;
-                        card.style.setProperty('--width', `${maxWidth}px`);
+                        //card.style.setProperty('--width', `${maxWidth}px`);
                     });
                     
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
