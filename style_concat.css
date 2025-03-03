@@ -217,8 +217,12 @@ body {
   }
 
   #cardContainer {
-    width: 60vw !important;
+    width: 60vmax !important;
     margin: 2vh auto;
+  }
+
+  .stack-container {
+    width: 62% !important;
   }
 
   .card_completed {
@@ -441,7 +445,7 @@ body {
   overflow: hidden;
   min-height: 44vmax;
   max-height: 60vmax;
-  width: 100%;
+  width: 80%;
 }
 
 .card_completed {
@@ -462,10 +466,10 @@ body {
   font-size: 1.1rem;
   box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
   animation-name: none;
-  -webkit-transition: background-color 2s ease-out;
-  -moz-transition: background-color 2s ease-out;
-  -o-transition: background-color 2s ease-out;
-  transition: background-color 2s ease-out;
+  -webkit-transition: background-color 1s ease-out;
+  -moz-transition: background-color 1s ease-out;
+  -o-transition: background-color 1s ease-out;
+  transition: background-color 1s ease-out;
 }
 
 /* .card_completed.active {
@@ -473,15 +477,14 @@ body {
   transform: translateY(0);
 } */
 
-.stack-container:hover .card_completed,
+/* .stack-container:hover .card_completed,
 .stack-container:focus .card_completed {
   animation-play-state: paused !important;
-}
+} */
 
 .card_completed:hover,
 .card_completed:focus {
   animation-play-state: paused !important;
-  transform: scale(1.2) !important;
   background-color: rgb(97, 223, 171); 
 }
 
