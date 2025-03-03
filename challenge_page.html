@@ -390,6 +390,7 @@
                     });
                     cards.forEach(card => {
                         card.style.width = `${maxWidth}px`;
+                        card.style.setProperty('--width', `${maxWidth}px`);
                     });
                     
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));

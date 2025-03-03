@@ -223,8 +223,8 @@ body {
 
   .card_completed {
     display: flex;
-    min-width: 40% !important;
-    max-width: 60% !important;
+    min-width: 35% !important;
+    max-width: 50% !important;
     flex-direction: column;
     justify-content: space-evenly;
     min-height: 15vh;
@@ -244,7 +244,7 @@ body {
 
   .card_completion {
     color: rgb(35, 41, 35);
-    width: 45% !important;
+    width: 30% !important;
     padding: 2vh 1vw;
     background: rgba(106, 131, 106, 0.75);
     border: none;
@@ -517,6 +517,7 @@ body {
 }
 
 .card_completion {
+  height: calc(var(--width)/3);
   padding: 2vh 1vw;
   background: rgb(139 147 139 / 75%);
   border: none;
@@ -1520,6 +1521,7 @@ body {
 }
 .q {
     display: flex;
+    width: 100%;
     flex-direction: column;
     position: absolute;
 }
