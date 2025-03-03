@@ -304,8 +304,6 @@
                                 
                                 // Set card styles based on status
                                 if (task.status === "Completed") {
-                                    taskCard.style.color = 'black';
-                                    taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
                                     taskName.style.textDecoration = "line-through";
                                 } else {
                                     taskCard.style.color = 'rgb(71, 71, 71)';
@@ -318,16 +316,12 @@
                                     if (Tstatus.chosen.length !== 0) {
                                         if (Tstatus.chosen.includes(String(task.taskNumber))) {
                                             if (Tstatus.done.length !== 0 && Tstatus.done.includes(String(task.taskNumber))) {
-                                                taskCard.style.color = 'black';
-                                                taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
                                                 taskName.style.textDecoration = "line-through";
                                             }
                                         } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) !== -1) {
                                             let index = Tstatus.chosen.indexOf(String(task.taskNumber));
                                             Tstatus.done[index] = String(task.taskNumber);
                                             Tstatus.time[index] = task.finishTime;
-                                            taskCard.style.color = 'black';
-                                            taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
                                             taskName.style.textDecoration = "line-through";
                                         }
                                     }
@@ -349,8 +343,6 @@
                                     task.status = task.status === "Done" ? "Completed" : "Done";
                                     
                                     if (task.status === "Completed") {
-                                        taskCard.style.color = 'black';
-                                        taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
                                         taskName.style.textDecoration = "line-through";
                                         completion.innerHTML = task.status;
                                         let timestamp = Date.now();

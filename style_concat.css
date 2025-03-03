@@ -232,7 +232,7 @@ body {
     align-items: center;
     padding: 2vh 1vw;
     border: none;
-    color: rgb(3, 3, 3);
+    color: rgb(35, 41, 35);
     background: rgba(139, 147, 139);
     border-radius: 1em;
     text-align: center;
@@ -240,6 +240,18 @@ body {
     box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
     animation: slideUp 15s infinite;
     animation-play-state: running;
+  }
+
+  .card_completion {
+    color: rgb(35, 41, 35);
+    width: 45% !important;
+    padding: 2vh 1vw;
+    background: rgba(106, 131, 106, 0.75);
+    border: none;
+    border-radius: 1em;
+    text-align: center;
+    font-size: 1.1rem;
+    box-shadow: 0 .125rem .25rem rgba(60, 73, 71, 0.6);
   }
 }
 
@@ -461,10 +473,14 @@ body {
   animation-delay: calc(-3s * var(--delay));
 } */
 
-.card_completed:hover {
+.stack-container:hover {
   animation-play-state: paused;
+}
+
+.card_completed:hover {
   transform: scale(1.2);
 }
+
 
 @keyframes slideUp {
   0% {
