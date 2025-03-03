@@ -462,6 +462,10 @@ body {
   font-size: 1.1rem;
   box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
   animation-name: none;
+  -webkit-transition: background-color 2s ease-out;
+  -moz-transition: background-color 2s ease-out;
+  -o-transition: background-color 2s ease-out;
+  transition: background-color 2s ease-out;
 }
 
 /* .card_completed.active {
@@ -471,13 +475,14 @@ body {
 
 .stack-container:hover .card_completed,
 .stack-container:focus .card_completed {
-  animation-play-state: paused;
+  animation-play-state: paused !important;
 }
 
 .card_completed:hover,
 .card_completed:focus {
-  animation-play-state: paused;
-  transform: scale(1.2);
+  animation-play-state: paused !important;
+  transform: scale(1.2) !important;
+  background-color: rgb(97, 223, 171); 
 }
 
 
