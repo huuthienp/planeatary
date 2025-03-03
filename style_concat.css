@@ -223,12 +223,11 @@ body {
 
   .card_completed {
     display: flex;
-    min-width: 35% !important;
+    min-width: 30% !important;
     max-width: 50% !important;
     flex-direction: column;
     justify-content: space-evenly;
-    min-height: 15vh;
-    position: absolute;
+    min-height: 10vmax !important;
     align-items: center;
     padding: 2vh 1vw;
     border: none;
@@ -238,8 +237,6 @@ body {
     text-align: center;
     font-size: 1.1rem;
     box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
-    animation: slideUp 15s infinite;
-    animation-play-state: running;
   }
 
   .card_completion {
@@ -442,18 +439,19 @@ body {
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  min-height: 42vh;
-  max-height: 60vh;
-  width: 100vw;
+  min-height: 44vmax;
+  max-height: 60vmax;
+  width: 100%;
 }
 
 .card_completed {
   display: flex;
+  gap: 2vmax;
   min-width: 65%;
-  max-width: 100% !important;
+  max-width: 90% !important;
   flex-direction: column;
   justify-content: space-evenly;
-  min-height: 15vh;
+  min-height: 16vmax;
   align-items: center;
   padding: 2vh 1vw;
   border: none;
@@ -463,7 +461,6 @@ body {
   text-align: center;
   font-size: 1.1rem;
   box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
-  will-change: transform, opacity;
   animation-name: none;
 }
 
@@ -472,8 +469,8 @@ body {
   transform: translateY(0);
 } */
 
-.stack-container:hover,
-.stack-container:focus  {
+.stack-container:hover .card_completed,
+.stack-container:focus .card_completed {
   animation-play-state: paused;
 }
 
@@ -522,7 +519,7 @@ body {
 
 .card_completion {
   display: flex;
-  max-width: 100%;
+  max-width: 96%;
   flex-direction: column;
   justify-content: center;
   gap: 2vmax;
