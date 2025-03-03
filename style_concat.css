@@ -223,8 +223,8 @@ body {
 
   .card_completed {
     display: flex;
-    min-width: 45% !important;
-    max-width: 65% !important;
+    min-width: 40% !important;
+    max-width: 60% !important;
     flex-direction: column;
     justify-content: space-evenly;
     min-height: 15vh;
@@ -450,7 +450,6 @@ body {
   flex-direction: column;
   justify-content: space-evenly;
   min-height: 15vh;
-  position: absolute;
   align-items: center;
   padding: 2vh 1vw;
   border: none;
@@ -460,17 +459,12 @@ body {
   text-align: center;
   font-size: 1.1rem;
   box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
-  animation: slideUp 15s infinite;
-  animation-play-state: running;
+  will-change: transform, opacity;
 }
 
 /* .card_completed.active {
   opacity: 1;
   transform: translateY(0);
-} */
-
-/* .card_completed:last-child{
-  animation-delay: calc(-3s * var(--delay));
 } */
 
 .stack-container:hover,
@@ -480,6 +474,7 @@ body {
 
 .card_completed:hover,
 .card_completed:focus {
+  animation-play-state: paused;
   transform: scale(1.2);
 }
 
@@ -488,30 +483,35 @@ body {
   0% {
     transform: translateY(100%) scale(0.5);
     opacity: 0;
+    visibility: hidden;
   }
 
   5%,
   20% {
     transform: translateY(100%) scale(0.7);
     opacity: 0.4;
+    visibility: visible;
   }
 
   25%,
   40% {
     transform: translateY(0) scale(1);
     opacity: 1;
+    visibility: visible;
   }
 
   45%,
   60% {
     transform: translateY(-100%) scale(0.7);
     opacity: 0.4;
+    visibility: visible;
   }
 
   65%,
   100% {
     transform: translateY(-100%) scale(0.5);
     opacity: 0;
+    visibility: hidden;
   }
 }
 
