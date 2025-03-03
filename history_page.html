@@ -318,10 +318,6 @@
             }
             
             document.addEventListener("DOMContentLoaded", async () => {
-
-                //ensure the data's cycle selected from history page previously is always removed
-                sessionStorage.removeItem('selectedCycle');
-
                 document.getElementById('logOut').addEventListener('click', async () => {
                     if(confirm("Do you really want to sign out?") == true) {
                         showSpinner([bOverlay, spinner], condition);
@@ -329,104 +325,111 @@
                         hideSpinner([bOverlay, spinner], condition);
                     }
                 })
-
-                showSpinner([bOverlay, spinner], condition);
-                const user = netlifyIdentity.gotrue.currentUser();
                 
-                if (user) {
-                    user.jwt().then(token => {
-                        if (isTokenExpired(token)) {
-                            console.log("Token expired. Prompting user to re-login...");
-                            netlifyIdentity.logout();
-                            window.location.href = "index.html";
-                        } else {
-                            console.log("Token is valid.");
-                        }
-                    });
-                }
+                //ensure the data's cycle selected from history page previously is always removed
+                sessionStorage.removeItem('selectedCycle');
                 
-                const userId = user.id;
-                const metadata = user.user_metadata;
-                const responseHistory = metadata.responseHistory;
-
-                document.querySelector('.history-table').classList.remove('hidden');
-                document.querySelector('.btn-next').classList.remove('hidden');
-                
-                
-                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-                const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-                const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item > li');
-                
-                
-                const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
-                const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
-                
-                offcanvasLinks.forEach(li => {
-                    if (li !== document.getElementById('navChallenge')) {
-                        li.addEventListener('click', handleOffcanvasClick);
-                    } 
-                });
-                
-                offcanvasDropdown.forEach(li => {
-                    if (li !== document.getElementById('navChallenge')) {
-                        li.addEventListener('click', handleOffcanvasClick);
-                    } 
-                });
-            
-                // Function to handle navigation or showing toast
-                offcanvasListItems.forEach(li => {
-                    li.addEventListener('click', event => {
-                        event.preventDefault();
-                        const link = li.querySelector('a.nav-link'); 
-                        if (link && link !== document.getElementById('navChallenge')) {
-                            handleOffcanvasClickFromElement(link);
-                        }
-                    })
+                try {
+                    showSpinner([bOverlay, spinner], condition);
+                    const user = netlifyIdentity.gotrue.currentUser();
                     
-                });
-                
-                // Function to handle navigation or showing toast
-                offcanvasDropdownItems.forEach(li => {
-                    li.addEventListener('click', event => {
-                        event.preventDefault();
-                        const link = li.querySelector('a.dropdown-item'); 
-                        if (link) {
-                            handleOffcanvasClickFromElement(link);
-                        }
-                    });
-                })
-
-                const navChallenge = document.getElementById('navChallenge');
-                
-                if (!navChallenge) {
-                    console.error("Element with id 'navChallenge' not found.");
-                    return;
-                }
-                
-                navChallenge.addEventListener('click', function(event) {
-                    // Debug logs to check values
-                    console.log("navChallenge clicked");
-                    console.log("navChallenge.href:", navChallenge.href);
-                    console.log("hasPostQuizResult() returns:", hasPostQuizResult());
-                    
-                    if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        navChallenge.removeAttribute('href');
-                        console.log("Navigation prevented. Calling showAlert().");
-                        showAlert();
-                    } else if (hasPostQuizResult()) {
-                        showAlert();
-                    } else {
-                        handleOffcanvasClick(event);
+                    if (user) {
+                        user.jwt().then(token => {
+                            if (isTokenExpired(token)) {
+                                console.log("Token expired. Prompting user to re-login...");
+                                netlifyIdentity.logout();
+                                window.location.href = "index.html";
+                            } else {
+                                console.log("Token is valid.");
+                            }
+                        });
                     }
                     
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
-                });
-
-                await displayTable(user, userId);
-                hideSpinner([bOverlay, spinner], condition);     
+                    const userId = user.id;
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
+                    
+                    document.querySelector('.history-table').classList.remove('hidden');
+                    document.querySelector('.btn-next').classList.remove('hidden');
+                    
+                    const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+                    const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+                    const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item > li');
+                    
+                    const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+                    const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
+                    
+                    offcanvasLinks.forEach(li => {
+                        if (li !== document.getElementById('navChallenge')) {
+                            li.addEventListener('click', handleOffcanvasClick);
+                        } 
+                    });
+                    
+                    offcanvasDropdown.forEach(li => {
+                        if (li !== document.getElementById('navChallenge')) {
+                            li.addEventListener('click', handleOffcanvasClick);
+                        } 
+                    });
+                    
+                    // Function to handle navigation or showing toast
+                    offcanvasListItems.forEach(li => {
+                        li.addEventListener('click', event => {
+                            event.preventDefault();
+                            const link = li.querySelector('a.nav-link'); 
+                            if (link && link !== document.getElementById('navChallenge')) {
+                                handleOffcanvasClickFromElement(link);
+                            }
+                        })
+                        
+                    });
+                    
+                    // Function to handle navigation or showing toast
+                    offcanvasDropdownItems.forEach(li => {
+                        li.addEventListener('click', event => {
+                            event.preventDefault();
+                            const link = li.querySelector('a.dropdown-item'); 
+                            if (link) {
+                                handleOffcanvasClickFromElement(link);
+                            }
+                        });
+                    })
+                    
+                    const navChallenge = document.getElementById('navChallenge');
+                    
+                    if (!navChallenge) {
+                        console.error("Element with id 'navChallenge' not found.");
+                        return;
+                    }
+                    
+                    navChallenge.addEventListener('click', function(event) {
+                        // Debug logs to check values
+                        console.log("navChallenge clicked");
+                        console.log("navChallenge.href:", navChallenge.href);
+                        console.log("hasPostQuizResult() returns:", hasPostQuizResult());
+                        
+                        if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            navChallenge.removeAttribute('href');
+                            console.log("Navigation prevented. Calling showAlert().");
+                            showAlert();
+                        } else if (hasPostQuizResult()) {
+                            showAlert();
+                        } else {
+                            handleOffcanvasClick(event);
+                        }
+                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
+                    });
+                    await displayTable(user, userId);
+                    hideSpinner([bOverlay, spinner], condition);     
+                } catch (err) {
+                    console.warn('Found: ', err);
+                    alert('The server detect errors, navigating user back to home page');
+                    window.location.href = 'index.html';
+                } finally {
+                    hideSpinner([bOverlay, spinner], condition);
+                }
             });
             
         </script>
