@@ -413,17 +413,22 @@
                         }
                     });
 
+                    //set the animation only when there are more than 3 cards
+                    if (cards.length > 3) {
+                        cards.style.animationName = 'slideUp';
+                        cards.style.animationDuration = `${cards.length*3}s`; //set the animation duration based on the total number of cards
+                        cards.style.animationIterationCount = "infinite";
+                        cards.style.animationPlayState = 'running';
+                    }
+
                     cards.forEach((card, j) => {
                         card.style.width = `${maxWidth}px`;
                         card.style.height = `${maxHeight}px`;
                         //set the animation only when there are more than 3 cards
                         if (cards.length > 3) {
                             card.style.position = 'absolute';
-                            card.style.animation = 'slideUp 15s infinite';
-                            card.style.animationPlayState = 'running';
                             const delay = (j * 3) - 3; 
                             card.style.animationDelay = `${delay}s`;
-                            card.style.animationDuration = `${cards.length*3}s`; //set the animation duration based on the total number of cards
                             card.style.zIndex = cards.length - j; // Ensures the first card is on top
                         }
                         
