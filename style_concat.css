@@ -993,6 +993,9 @@ body {
   padding: 2vh 2vw;
   flex-wrap: wrap;
   gap: 2vmax;
+  max-width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 
 }
 
@@ -1002,9 +1005,14 @@ body {
 }
 
 #tabList {
+  margin: 2vmax auto;
   flex-direction: row !important;
+  max-width: 100%;
+  text-wrap: auto;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  overflow: auto;
   background-color: #02897957;
-  width: fit-content;
   border-radius: 20px;
   --bs-nav-link-color: #5f8771;
   --bs-nav-link-hover-color: white;
@@ -1023,8 +1031,9 @@ body {
 }
 
 #cardContainer {
-  width: 90vmax;
+  width: 90%;
   margin: 2vmax auto;
+  text-wrap: auto;
 }
 
 .q-task ul {
