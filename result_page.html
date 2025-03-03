@@ -413,7 +413,12 @@
                         }
                     });
 
-                    if (cards.length <= 3) { cardContainer.style.gap = '2vmax';}
+                    if (cards.length <= 3) { 
+                        cardContainer.style.gap = '2vmax';
+                        cardContainer.style.alignItems = 'flex-start';
+                        cardContainer.style.flexDirection = 'row';
+                        cardContainer.style.flexWrap = 'wrap';
+                    }
 
                     cards.forEach((card, j) => {
                         card.style.width = `${maxWidth}px`;
