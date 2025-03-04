@@ -124,7 +124,7 @@ export function emptyStateDisplay(frame, content, img) {
     <span class="placeholder w-40"></span>
     <span class="placeholder w-55"></span>
     <span class="placeholder w-100"></span>
-    <img src="..." alt="..." class="myGif" style="display: none;" />
+    <img src="" alt="..." class="myGif" style="display: none;" />
     </p>
     <p class="placeholder-glow w-100">
     <span class="placeholder w-100"></span>
