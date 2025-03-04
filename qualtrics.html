@@ -128,7 +128,7 @@
 
             import { initiateSurvey, updateAnchors, updateButton, fetchResponses } from './scripts/helpers.mjs';
             import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick,
-                handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+                handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, emptyStateDisplay, logOut } from './scripts/utility.js';
             
             let startTime = Date.now();
             const condition = [false, startTime];
@@ -453,7 +453,7 @@
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
-                        quizSpan.innerHTML = "<div class='void'>You have already taken the pre-quiz! Let's continue! <img src=''./images/thumbs-up.gif'></div>";
+                        emptyStateDisplay(quizSpan, "You have already taken the pre-quiz! Let's continue!", "./images/thumbs-up.gif");
                         //await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         return;
@@ -463,7 +463,7 @@
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#02897A', 'pointer');
                         quizFrame.style.display = 'none';
-                        quizSpan.innerHTML = '<div class="void">' + 'You have pull everything off! <img src="./images/thumbs-up.gif">\n Now, it is time you can start over this amazing journey!' + '</div>';
+                        emptyStateDisplay(quizSpan, 'You have pull everything off! Tt is time to start over this amazing journey!', "./images/thumbs-up.gif");
                         //await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         console.log('Found post-quiz result in storage!\n', postObject);
@@ -541,8 +541,10 @@
                                 updateButton(nextButton, '#02897A', 'pointer');
                             }, 2000);
                             quizFrame.style.display = 'none';
-                            quizSpan.innerHTML = '<div class="void">Thank you for your response! Please click see result! <img src="./images/thumbs-up.gif"></div>';
+                            emptyStateDisplay(quizSpan, 'Thank you for your response! Please click see result!', "./images/thumbs-up.gif");
                             localStorage.setItem("restartFlag", "false"); //set back to false if a latest pre-quiz is done after restarting
+                            updateButton(restartBtn, '#4e958d52', 'not-allowed');
+                            restartBtn.disabled = true;
                         } catch(error) {
                             console.warn('Caught', error, '\nPre-quiz result is not found!');
                             updateAnchors(anchors);

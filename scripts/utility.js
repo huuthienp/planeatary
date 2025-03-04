@@ -118,6 +118,20 @@ export function hasPostQuizCycle() {
     return sessionStorage.getItem('selectedCycle_post') !== null;
 }
 
+export function emptyStateDisplay(frame, content, img) {
+    frame.innerHTML = `<div class="void"><p class="placeholder-glow"><img src=${img} class="myGif" style="display: none;"></p><p class="placeholder-glow"></p><p class="placeholder-glow"></p></div>`
+    // If the image is already loaded (from cache, for example), show it immediately.
+    const gifEl = document.querySelector('.myGif');
+    if (gifEl.complete) {
+        frame.innerHTML = `<div class="void">${content} <img class="myGif" src="${img}" style="display: block;"></div>`;
+    } else {
+        // Otherwise, add an event listener to detect when it finishes loading.
+        gifEl.addEventListener('load', () => {
+            frame.innerHTML = `<div class="void">${content} <img class="myGif" src="${img}" style="display: block;"></div>`;
+        });
+    }
+}
+
 export async function logOut() {
     const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
     
