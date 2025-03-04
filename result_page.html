@@ -645,9 +645,6 @@
                         console.log("User ID:", userId);
                         console.log("Response History:", responseHistory);
                         
-                        //from history page
-                        var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
-                        
                         var preObject = JSON.parse(localStorage.getItem('preResult'));
                         var preResult = preObject?.result ?? null;
                         var pre_rec =  preObject?.recordedDate ?? null;
@@ -660,8 +657,16 @@
                         var tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
                         var detailed = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                         var task_rec =  detailed?.time ?? [];
+
+                        if (!tasks) {
+                            tasks = await fetchTasks(preResponseId);  
+                            localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                            tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+                        }
                         //let preCycle = null;
                         
+                        //from history page
+                        var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
                         if (storedCycle) {
                             
                             preObject = storedCycle?.preResponse ?? null;
@@ -687,12 +692,6 @@
                                 console.warn("Couldn't find history tasks' info:", err);
                             }
                             
-                        }
-                        
-                        if (!tasks) {
-                            tasks = await fetchTasks(preResponseId);  
-                            localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                            tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
                         }
                         
                         if (!detailed && preResponseId) {
