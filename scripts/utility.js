@@ -120,24 +120,24 @@ export function hasPostQuizCycle() {
 
 export function emptyStateDisplay(frame, content, img) {
     frame.innerHTML = `<div class="void">
-    <p class="placeholder-glow">
+    <p class="placeholder-glow  w-100">
     <span class="placholder w-100"></span>
     <img src=${img} class="myGif" style="display: none;" />
     </p>
-    <p class="placeholder-glow">
-    <span class="placeholder w-75"></span>
+    <p class="placeholder-glow w-100">
+    <span class="placeholder w-100"></span>
     </p>
     </div>`
-    // If the image is already loaded (from cache, for example), show it immediately.
-    const gifEl = frame.querySelector('.myGif');
-    if (gifEl.complete) {
-        frame.innerHTML = `<div class="void">${content} <img class="myGif" src="${img}" style="display: block;"></div>`;
-    } else {
-        // Otherwise, add an event listener to detect when it finishes loading.
-        gifEl.addEventListener('load', () => {
-            frame.innerHTML = `<div class="void">${content} <img class="myGif" src="${img}" style="display: block;"></div>`;
-        });
-    }
+    // // If the image is already loaded (from cache, for example), show it immediately.
+    // const gifEl = frame.querySelector('.myGif');
+    // if (gifEl.complete) {
+    //     frame.innerHTML = `<div class="void">${content} <img class="myGif" src="${img}" style="display: block;"></div>`;
+    // } else {
+    //     // Otherwise, add an event listener to detect when it finishes loading.
+    //     gifEl.addEventListener('load', () => {
+    //         frame.innerHTML = `<div class="void">${content} <img class="myGif" src="${img}" style="display: block;"></div>`;
+    //     });
+    // }
 }
 
 export async function logOut() {
