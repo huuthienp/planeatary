@@ -256,7 +256,7 @@ body {
     border-radius: 1rem;
     text-align: center;
     font-size: 1.1rem;
-    box-shadow: 0 .125rem .25rem rgba(60, 73, 71, 0.6);
+    box-shadow: 0.1rem .16rem .3rem rgba(57, 58, 58, 0.6);
   }
 }
 
@@ -467,16 +467,11 @@ body {
   font-size: 1.1rem;
   box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
   animation-name: none;
-  -webkit-transition: background-color 1s ease-out;
-  -moz-transition: background-color 1s ease-out;
-  -o-transition: background-color 1s ease-out;
-  transition: background-color 1s ease-out;
+  -webkit-transition: background-color 1s ease-out, box-shadow 1s linear;
+  -moz-transition: background-color 1s ease-out, box-shadow 1s linear;
+  -o-transition: background-color 1s ease-out, box-shadow 1s linear;
+  transition: background-color 1s ease-out, box-shadow 1s linear;
 }
-
-/* .card_completed.active {
-  opacity: 1;
-  transform: translateY(0);
-} */
 
 /* .stack-container:hover .card_completed,
 .stack-container:focus .card_completed {
@@ -485,8 +480,10 @@ body {
 
 .card_completed:hover,
 .card_completed:focus {
-  animation-play-state: paused !important;
+  /* animation-play-state: paused !important; */
+  box-shadow: 0 0.4rem 0.6rem rgb(43, 59, 52);
   background-color: rgb(97, 223, 171); 
+  cursor: pointer;
 }
 
 
@@ -539,7 +536,7 @@ body {
   border-radius: 1em;
   text-align: center;
   font-size: 1.1rem;
-  box-shadow: 0 .125rem .25rem rgba(0,0,0, .6);
+  box-shadow: 0.1rem .16rem .3rem rgba(57, 58, 58, 0.6);
 }
 
 .card_completion:hover,
@@ -996,6 +993,9 @@ body {
   padding: 2vh 2vw;
   flex-wrap: wrap;
   gap: 2vmax;
+  max-width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 
 }
 
@@ -1005,9 +1005,14 @@ body {
 }
 
 #tabList {
+  margin: 2vmax auto;
   flex-direction: row !important;
+  max-width: 100%;
+  text-wrap: auto;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  overflow: auto;
   background-color: #02897957;
-  width: fit-content;
   border-radius: 20px;
   --bs-nav-link-color: #5f8771;
   --bs-nav-link-hover-color: white;
@@ -1026,8 +1031,9 @@ body {
 }
 
 #cardContainer {
-  width: 90vmax;
+  width: 90%;
   margin: 2vmax auto;
+  text-wrap: auto;
 }
 
 .q-task ul {

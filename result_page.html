@@ -136,7 +136,7 @@
                 <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                     <div class="d-flex">
                         <div class="toast-body">
-                            <h4>Well done!</h4>
+                            <h4>You pulled off this cycle!</h4>
                             <p>It is quite a shame that you are not allowed to do more tasks after doing the post-quiz.</p>
                             <hr>
                             <p class="mb-0">Please start over this beautiful journey at pre-quiz page!</p>
@@ -429,6 +429,7 @@
                             card.style.animationName = 'slideUp';
                             card.style.animationDuration = '15s';
                             //card.style.animationDuration = `${cards.length*3}s`; //set the animation duration based on the total number of cards
+                            card.style.animationTimingFunction = 'linear';
                             card.style.animationIterationCount = "infinite";
                             card.style.animationPlayState = 'running';
                             const delay = (j*3) - 3; 
@@ -659,6 +660,7 @@
                         var tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
                         var detailed = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                         var task_rec =  detailed?.time ?? [];
+                        //let preCycle = null;
                         
                         if (storedCycle) {
                             
@@ -666,6 +668,7 @@
                             preResult = preObject?.result ?? null;
                             pre_rec = preObject?.recordedDate ?? null;
                             preResponseId = preObject?.responseId ?? null;
+                            //preCycle = storedCycle?.preResponse?.responseId ?? null;
                             
                             postObject = storedCycle?.postResponse ?? null;
                             postResult = postObject?.result ?? null;
@@ -673,11 +676,11 @@
 
                             try {
                                 tasks = await fetchTasks(preResponseId);  
-                                localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                                tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+                                sessionStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                                tasks = JSON.parse(sessionStorage.getItem(`${preResponseId}:tasks`));
                                 var selectTasks = await fetchTaskStatus(preResponseId, userId);
-                                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
-                                detailed = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                                sessionStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
+                                detailed = JSON.parse(sessionStorage.getItem(`${preResponseId}:fetched_tasks`));
                                 task_rec = detailed?.time ?? []; 
 
                             } catch(err) {
