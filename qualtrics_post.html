@@ -68,7 +68,7 @@
             <div class="content">
                 <iframe class="quiz" title="PlanEATary Post-Quiz"></iframe>
                 <span class="fallback"></span>
-                <div class="btn-next">
+                <div class="btn-next hidden">
                     <a class="nextB"><button id="nextButt" type="button" class="btn btn-success next shadow-sm" style="width: 180px;">See your result</button></a>
                 </div>
             </div>
@@ -301,7 +301,7 @@
                     
                     try { 
                         showSpinner([bOverlay, spinner], condition);
-                        
+                        document.querySelector('.btn-next').classList.remove('hidden');
                         const netlifyIdentity = window.netlifyIdentity;
                         const user = netlifyIdentity.gotrue.currentUser();
                         

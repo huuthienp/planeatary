@@ -126,7 +126,7 @@ body {
     display: flex;
     justify-content: space-evenly;
     align-items: flex-start;
-    padding-top: 10vh !important;
+    padding-top: 10vmax !important;
     gap: 2vmax;
     flex-direction: column;
   }

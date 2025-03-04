@@ -122,7 +122,7 @@ export function emptyStateDisplay(frame, content, img) {
     frame.innerHTML = `<div class="void">
     <p class="placeholder-glow  w-100">
     <span class="placeholder w-100"></span>
-    <img src=${img} class="myGif" style="display: none;" />
+    <img src="..." alt="..." class="myGif" />
     </p>
     <p class="placeholder-glow w-100">
     <span class="placeholder w-100"></span>
