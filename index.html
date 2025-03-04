@@ -743,12 +743,23 @@
         var preObject = JSON.parse(localStorage.getItem('preResult'));
         
         if(netlifyIdentity.gotrue.currentUser() !== null) {
-            document.querySelectorAll(".home-hide").forEach(element => {
-                element.style.display = "flex";
-            });
-            document.querySelectorAll(".button-hide").forEach(element => {
-                element.style.display = "none";
-            });
+            const user = netlifyIdentity.gotrue.currentUser();
+            if (user) {
+                user.jwt().then(token => {
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                    } else {
+                        console.log("Token is valid.");
+                        document.querySelectorAll(".home-hide").forEach(element => {
+                            element.style.display = "flex";
+                        });
+                        document.querySelectorAll(".button-hide").forEach(element => {
+                            element.style.display = "none";
+                        });
+                    }
+                });
+            }
             if(preObject) {
                 enableFirstTimers();
             } else {

@@ -191,7 +191,7 @@
                 
                 import { initiateSurvey, fetchTaskStatus, extractTaskData, fetchResponses, updateButton } from './scripts/helpers.mjs';
                 import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick,
-                    handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, hasPostQuizCycle, logOut } from './scripts/utility.js';
+                    handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, hasPostQuizCycle, emptyStateDisplay, logOut } from './scripts/utility.js';
                 
                 var preObject = JSON.parse(localStorage.getItem('preResult'));
                 var preResult = preObject?.result;
@@ -372,7 +372,7 @@
                                 //await updateResponseHistory(postObject, user);
                                 updateButton(nextButton, '#02897A', 'pointer');
                                 quizFrame.style.display = 'none'; 
-                                fallbackMessage.innerHTML = "<div class='void'>Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over. <img src='./images/in-love.gif'></div>";
+                                emptyStateDisplay(fallbackMessage, "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over", './images/in-love.gif');
                             } else if (!postObject || Object.keys(postObject).length === 0) {
                                 try {
                                     if (!selectTasks) {
@@ -467,7 +467,7 @@
                             console.log('Found newest post-quiz result in storage!\n', newValue);
                             if (newValue && user) {await updateResponseHistory(JSON.parse(newValue), user)}
                             quizFrame.style.display = 'none';
-                            fallbackMessage.innerHTML = '<div class="void">Thank you for your response! Click  see your result below <img src="./images/in-love.gif"></div>';
+                            emptyStateDisplay(fallbackMessage, ">Thank you for your response! Click  see your result below", "./images/in-love.gif");
                             setTimeout(() => {
                                 updateButton(nextButton, '#02897A', 'pointer');
                             }, 2000);

@@ -1574,7 +1574,7 @@ body {
 }
 
 .void-space {
-  padding: 8vh 0;
+  padding: 8vmax 0;
   position: relative;
 }
 
@@ -1583,17 +1583,22 @@ body {
   padding: 0 5vw;
   top: 0;
   height: 65vmax;
+  overflow: hidden;
+  overflow-y: auto;
 }
 
 .history-table .table {
   --bs-table-striped-bg: rgb(114 219 176 / 9%) !important;
   --bs-table-hover-bg: rgb(78 209 106 / 43%) !important;
+  overflow: auto;
+  height: 100%;
 }
 
 .table > thead {
   vertical-align: bottom;
   position: sticky;
   top: 0;
+  z-index: 1;
 }
 
 #h-table {
