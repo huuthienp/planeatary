@@ -412,7 +412,7 @@
                                     quizFrame.style.display = 'none'; 
                                     document.querySelector('.btn-next').style.display = 'none';
                                     fallbackMessage.style.color = "#ff6b6b";
-                                    fallbackMessage.innerHTML = err + " Directing you to do the selected tasks";
+                                    fallbackMessage.innerHTML = `<div class='empty-state'>${err} is found. Directing you to do the selected tasks</div>`;
                                     window.location.href = "manifesto_page.html";
                                     return;
                                 }  
@@ -425,7 +425,7 @@
                         console.error("Caught error: ", err);
                         quizFrame.style.display = 'none';
                         document.querySelector('.btn-next').style.display = 'none';
-                        fallbackMessage.innerHTML = "<div class='empty-state'>Content cannot be displayed. Please try again later.</div>";
+                        fallbackMessage.innerHTML = `<div class='empty-state'>Content cannot be displayed. ${err} is found. Please try again later.</div>`;
                         nextButton.style.display = "none";
                     } finally {
                         // if (postObject && user) {await updateResponseHistory(postObject, user)}
