@@ -120,12 +120,14 @@ export function hasPostQuizCycle() {
 
 export function emptyStateDisplay(frame, content, img) {
     frame.innerHTML = `<div class="void">
-    <p class="placeholder-glow">
-    <span class="placholder w-75"></span>
-    <img src=${img} class="myGif" style="display: none;" />
+    <p class="placeholder-glow  w-50">
+    <span class="placeholder w-40"></span>
+    <span class="placeholder w-55"></span>
+    <span class="placeholder w-100"></span>
+    <img src="..." alt="..." class="myGif" style="display: none;" />
     </p>
-    <p class="placeholder-glow">
-    <span class="placeholder w-75"></span>
+    <p class="placeholder-glow w-100">
+    <span class="placeholder w-100"></span>
     </p>
     </div>`
     // If the image is already loaded (from cache, for example), show it immediately.

@@ -66,8 +66,8 @@
             </div>
             <div class="content">
                 <iframe class="quiz" title="Planeatary quiz"></iframe>
-                <span></span>
-                <div class="btn-next">
+                <span style="width: 100%;"></span>
+                <div class="btn-next hidden">
                     <a><button class="btn btn-success shadow-sm" id="restartBtn" style="width: 180px;" disabled>Restart the cycle</button></a>
                     <a class="nextB"><button id="nextButt" type="button" class="btn btn-success next shadow-sm" style="width: 180px;">See your result</button></a>
                 </div>
@@ -390,6 +390,7 @@
                     var preQuiz;
                     var postQuiz;
                     showSpinner([bOverlay, spinner], condition);
+                    document.querySelector('.btn-next').classList.remove('hidden');
                     updateButton(restartBtn, '#4e958d52', 'not-allowed');
                     const user = netlifyIdentity.gotrue.currentUser();
                     const userData = await getUserData();
