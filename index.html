@@ -27,7 +27,7 @@
                     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                         <div class="offcanvas-header" style="background-color: #096358;">
                             <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/><strong>PlanEATary</strong></h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" id='offcanvasCloseButton'></button>
                         </div>
                         <div class="offcanvas-body" style="background-color: #02897A;">
                             <ul class="navbar-nav justify-content-end align-items-center flex-grow-1 pe-3 gap-3">
@@ -342,7 +342,7 @@
     </div>
     
     <!-- Sign In Modal-->
-    <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
+    <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -382,7 +382,7 @@
 </div>
 
 <!-- Forgot Password Modal -->
-<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -407,7 +407,7 @@
 </div>
 
         <!-- Reset Password Modal -->
-        <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
+        <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -442,7 +442,7 @@
         </div>
 
 <!-- Sign Up Modal-->
-<div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
+<div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -554,6 +554,7 @@
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 -->
 <script>
+
     document.getElementById('resetPasswordButton').addEventListener('click', function () {
         const resetEmailInput = document.getElementById('resetEmailInput');
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -712,8 +713,7 @@
                 showAlert();
             } else {
                 handleOffcanvasClick(event);
-            }
-            
+            } 
             const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
             offcanvas.hide();
         })
@@ -911,8 +911,7 @@
             return true;
         }
         
-        function showSignInModal() {
-
+        function showSignInModal() {           
             const signInModal = new bootstrap.Modal(document.getElementById('signInModal'));
             signInModal.show();
         }
@@ -921,6 +920,10 @@
             const signInModal = document.getElementById('signInModal');
             const modalInstance = bootstrap.Modal.getInstance(signInModal); 
             modalInstance.hide();
+            // Hide offcanvas
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvas.hide();
         }
 
         document.getElementById('logOut').addEventListener('click', async () => {
@@ -988,7 +991,30 @@
                 myToast.show();
             }
         }
-        
+
+        document.getElementById('signUpModal').addEventListener('hidden.bs.modal', () => {
+            // set focus to the offcanvas close button
+            const offcanvasCloseBtn = document.getElementById('offcanvasCloseButton');
+            if (offcanvasCloseBtn) {
+                offcanvasCloseBtn.focus();
+            }
+        });
+
+        document.getElementById('signInModal').addEventListener('hidden.bs.modal', () => {
+            // set focus to the offcanvas close button
+            const offcanvasCloseBtn = document.getElementById('offcanvasCloseButton');
+            if (offcanvasCloseBtn) {
+                offcanvasCloseBtn.focus();
+            }
+        });
+
+        document.getElementById('forgotPasswordModal').addEventListener('hidden.bs.modal', () => {
+            // set focus to the offcanvas close button
+            const offcanvasCloseBtn = document.getElementById('offcanvasCloseButton');
+            if (offcanvasCloseBtn) {
+                offcanvasCloseBtn.focus();
+            }
+        });
         
         document.getElementById('signInButton').addEventListener('click', () => {
             const emailInput2 = document.getElementById('emailInput2');
@@ -1045,15 +1071,24 @@
 <script>
     
     function showSignUpModal() {
+        // Hide offcanvas
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+        offcanvas.hide();
         const signUpModal = new bootstrap.Modal(document.getElementById('signUpModal'));
         signUpModal.style.display = 'flex';
         signUpModal.show();
+        
     }
 
     function hideSignUpModal() {
         const signUpModal = document.getElementById('signUpModal');
         const modalInstance = bootstrap.Modal.getInstance(signUpModal); 
         modalInstance.hide();
+        // Hide offcanvas
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+        offcanvas.hide();
     }
 
     function validate_form() {

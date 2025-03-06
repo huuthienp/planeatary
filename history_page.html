@@ -100,8 +100,9 @@
                 </table>
                 
             </div>
-            <div class="btn-next hidden" style="display: flex; justify-content: center; padding-top: 3vmax;">
+            <div class="btn-next hidden" style="display: flex; justify-content: space-evenly; padding-top: 3vmax;">
                 <a href="index.html"><button type="button" class="btn btn-success" style="width: 150px;">Back to <i class="fa fa-home"></i></button></a>
+                <button type="button" class="btn btn-success" style="width: 150px;" id="refresh">Refresh <i class="fa fa-refresh"></i></button>
             </div>
         </div>
         
@@ -154,14 +155,13 @@
 
             async function extractHistory(user, userId) {
                 
-                var allRes = await fetchResponses(userId);
                 var allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                 const mockResponse = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`));
                 const ResponseHistory = user?.user_metadata?.responseHistory ?? [];
                 const mockResponseHistory = mockResponse?.meta_data?.responseHistory ?? [];
                 
 
-                if ( allResponses || mockResponseHistory.length > 0) {
+                if (allResponses || mockResponseHistory.length > 0) {
                     console.log("before ", allResponses);
                     let newAllResponses = allResponses.map((cycleKey, i) => {
                         const taskCycle = mockResponseHistory[i]?.lastTask ?? null;
@@ -240,7 +240,9 @@
 
                 const history = await extractHistory(user, userId);
                 const table = document.getElementById('h-table');
-                
+                //Clear the existing display
+                table.innerHTML = "";
+
                 if (!history || history.length === 0) {
                     document.querySelector('div.history-table > table').style.display = 'none';
                     document.querySelector('div.history-table > div.404').classList.remove('hidden');
@@ -324,6 +326,16 @@
                         await logOut();
                         hideSpinner([bOverlay, spinner], condition);
                     }
+                })
+
+                //Refresh the table info on click
+                document.getElementById('refresh').addEventListener('click', async () => {
+                    const { metadata, responseHistory, userId } = await getUserData();
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    var allRes = await fetchResponses(userId);
+                    showSpinner([bOverlay, spinner], condition);
+                    await displayTable(user, userId);
+                    hideSpinner([bOverlay, spinner], condition);
                 })
                 
                 //ensure the data's cycle selected from history page previously is always removed
