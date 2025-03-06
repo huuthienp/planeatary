@@ -143,12 +143,12 @@ export function emptyStateDisplay(frame, content, img) {
 }
 
 export async function logOut() {
-    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-    
     if (netlifyIdentity.gotrue.currentUser() !== null) {
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+        offcanvas.hide();
         let user = netlifyIdentity.gotrue.currentUser();
         const logoutResult = await user.logout();
-        offcanvas.hide();
         sessionStorage.removeItem('selectedCycle');
         console.log('User has been logged out!');
         window.location.href = "index.html";
