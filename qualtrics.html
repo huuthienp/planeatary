@@ -270,6 +270,8 @@
                 // Function to handle navigation or showing toast
                 offcanvasListItems.forEach(li => {
                     li.addEventListener('click', event => {
+                        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
                         event.preventDefault();
                         const link = li.querySelector('a.nav-link'); 
                         
@@ -280,14 +282,14 @@
                                 handleOffcanvasClickFromElement(link);
                             }
                         }
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
                     });
                 });
 
                 // Function to handle navigation or showing toast
                 offcanvasDropdownItems.forEach(li => {
                     li.addEventListener('click', event => {
+                        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
                         event.preventDefault();
                         const link = li.querySelector('a.dropdown-item'); 
                         if (link) {
@@ -297,8 +299,6 @@
                                 handleOffcanvasClickFromElement(link);
                             }
                         }
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
                     });
                 })
 
