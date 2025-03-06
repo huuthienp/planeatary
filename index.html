@@ -992,6 +992,13 @@
             }
         }
 
+        document.getElementById('offcanvasCloseButton').addEventListener('click', () => {
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            // Hide offcanvas
+            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvas.hide();
+        })
+
         document.getElementById('signUpModal').addEventListener('hidden.bs.modal', () => {
             const offcanvasContainer = document.getElementById('offcanvasNavbar');
             const offcanvasInstance = new bootstrap.Offcanvas(offcanvasContainer);
