@@ -919,15 +919,13 @@
         }
 
         function hideSignInModal() {
-            const signInModalEl = document.getElementById('signInModal');
-            const modalInstance = new bootstrap.Modal(signInModalEl);
-            
-            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-            const offcanvasInstance = new bootstrap.Offcanvas(offcanvasNavbar);
-            offcanvasInstance.hide();
-            
+            const signInModal = document.getElementById('signInModal');
+            const modalInstance = bootstrap.Modal.getInstance(signInModal); 
             modalInstance.hide();
-
+            // Hide offcanvas
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvas.hide();
         }
 
         document.getElementById('offcanvasCloseButton').addEventListener('click', (event) => {
@@ -1065,12 +1063,8 @@
     }
 
     function hideSignUpModal() {
-        // Hide offcanvas
-        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-        offcanvas.hide();
         const signUpModal = document.getElementById('signUpModal');
-        const modalInstance = new bootstrap.Modal(signUpModal);
+        const modalInstance = bootstrap.Modal.getInstance(signUpModal); 
         modalInstance.hide();
     }
 
