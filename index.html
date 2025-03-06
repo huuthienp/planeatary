@@ -912,8 +912,8 @@
         }
         
         function showSignInModal() {           
-            const signInModal = new bootstrap.Modal(document.getElementById('signInModal'));
-            const modalInstance = bootstrap.Modal.getInstance(signInModal);
+            const signInModalEl = document.getElementById('signInModal');
+            const modalInstance = new bootstrap.Modal(signInModalEl);
             modalInstance.show();
         }
 
@@ -923,11 +923,14 @@
             
             signInModalEl.addEventListener('hidden.bs.modal', function handler() {
                 signInModalEl.removeEventListener('hidden.bs.modal', handler);
-                // Once the modal is fully hidden, hide the offcanvas
+                // Remove any modal-backdrop elements manually
+                document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                // Now hide the offcanvas
                 const offcanvasNavbar = document.getElementById('offcanvasNavbar');
                 const offcanvasInstance = new bootstrap.Offcanvas(offcanvasNavbar);
                 offcanvasInstance.hide();
-            });        
+            });
+            
             modalInstance.hide();
         }
 
@@ -1058,16 +1061,16 @@
 
 <!--Sign Up -->
 <script>
-    
-    function showSignUpModal() {
-        const signUpModal = new bootstrap.Modal(document.getElementById('signUpModal'));
-        //signUpModal.style.display = 'flex';
-        signUpModal.show();
+
+    function showSignUpModal() {           
+        const signUpModalEl = document.getElementById('signUpModal');
+        const modalInstance = new bootstrap.Modal(signUpModalEl);
+        modalInstance.show();
     }
 
     function hideSignUpModal() {
         const signUpModal = document.getElementById('signUpModal');
-        const modalInstance = bootstrap.Modal.getInstance(signUpModal); 
+        const modalInstance = new bootstrap.Modal(signUpModal); 
         modalInstance.hide();
         // Hide offcanvas
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
