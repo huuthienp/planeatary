@@ -778,26 +778,26 @@
                     preTotalScore = preObject?.result?.totalScore; 
                 } 
 
-                if (storedCycle) {
+                // if (storedCycle) {
                     
-                    preObject = storedCycle?.preResponse;
-                    preResult = preObject?.result;
-                    preResponseId = preObject?.responseId ?? "";
+                //     preObject = storedCycle?.preResponse;
+                //     preResult = preObject?.result;
+                //     preResponseId = preObject?.responseId ?? "";
                     
-                    try {
-                        if (!tasks) {
-                            tasks = await fetchTasks(presReponseId);
-                            localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
-                            tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
-                        }
-                        var selectTasks = await fetchTaskStatus(preResponseId, userId);
-                        localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
-                        fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
-                        task_rec = fetched_tasks?.time ?? []; 
-                    } catch(err) {
-                        console.log("Couldn't find previous tasks' info:", err);
-                    }
-                }
+                //     try {
+                //         if (!tasks) {
+                //             tasks = await fetchTasks(presReponseId);
+                //             localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                //             tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+                //         }
+                //         var selectTasks = await fetchTaskStatus(preResponseId, userId);
+                //         localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
+                //         fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
+                //         task_rec = fetched_tasks?.time ?? []; 
+                //     } catch(err) {
+                //         console.log("Couldn't find previous tasks' info:", err);
+                //     }
+                // }
 
                 if (!tasks) {
                     tasks = await fetchTasks(presReponseId);
