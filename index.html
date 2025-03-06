@@ -27,7 +27,7 @@
                     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                         <div class="offcanvas-header" style="background-color: #096358;">
                             <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/><strong>PlanEATary</strong></h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" id='offcanvasCloseButton' tabindex="0"></button>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" id='offcanvasCloseButton'></button>
                         </div>
                         <div class="offcanvas-body" style="background-color: #02897A;">
                             <ul class="navbar-nav justify-content-end align-items-center flex-grow-1 pe-3 gap-3">
@@ -993,6 +993,8 @@
         }
 
         document.getElementById('signUpModal').addEventListener('hidden.bs.modal', () => {
+            const offcanvasContainer = document.getElementById('offcanvasNavbar');
+            const offcanvasInstance = new bootstrap.Offcanvas(offcanvasContainer);
             // set focus to the offcanvas close button
             const offcanvasCloseBtn = document.getElementById('offcanvasCloseButton');
             if (offcanvasCloseBtn) {
@@ -1001,6 +1003,8 @@
         });
 
         document.getElementById('signInModal').addEventListener('hidden.bs.modal', () => {
+            const offcanvasContainer = document.getElementById('offcanvasNavbar');
+            const offcanvasInstance = new bootstrap.Offcanvas(offcanvasContainer);
             // set focus to the offcanvas close button
             const offcanvasCloseBtn = document.getElementById('offcanvasCloseButton');
             if (offcanvasCloseBtn) {
@@ -1009,6 +1013,18 @@
         });
 
         document.getElementById('forgotPasswordModal').addEventListener('hidden.bs.modal', () => {
+            const offcanvasContainer = document.getElementById('offcanvasNavbar');
+            const offcanvasInstance = new bootstrap.Offcanvas(offcanvasContainer);
+            // set focus to the offcanvas close button
+            const offcanvasCloseBtn = document.getElementById('offcanvasCloseButton');
+            if (offcanvasCloseBtn) {
+                offcanvasCloseBtn.focus();
+            }
+        });
+
+        document.getElementById('resetPasswordModal').addEventListener('hidden.bs.modal', () => {
+            const offcanvasContainer = document.getElementById('offcanvasNavbar');
+            const offcanvasInstance = new bootstrap.Offcanvas(offcanvasContainer);
             // set focus to the offcanvas close button
             const offcanvasCloseBtn = document.getElementById('offcanvasCloseButton');
             if (offcanvasCloseBtn) {
