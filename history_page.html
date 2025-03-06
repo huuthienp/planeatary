@@ -240,7 +240,9 @@
 
                 const history = await extractHistory(user, userId);
                 const table = document.getElementById('h-table');
-                
+                //Clear the existing display
+                table.innerHTML = "";
+
                 if (!history || history.length === 0) {
                     document.querySelector('div.history-table > table').style.display = 'none';
                     document.querySelector('div.history-table > div.404').classList.remove('hidden');
