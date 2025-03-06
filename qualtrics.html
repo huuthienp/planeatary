@@ -182,10 +182,14 @@
                 let responseHistory = user.user_metadata.responseHistory || [];
                 const index = responseHistory.findIndex(cycle => cycle.preId === preResponseId);
                 const mockResponseHistory = {id: userId};
+                var allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                 document.getElementById('nextButt').innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Processing...';
 
                 // If the preResponseId is not already in the history, add it
                 if (index === -1) {
+                    if (allResponses && allResponses.findIndex(cycle => cycle?.preResponse?.responseId === preResponseId) == -1) {
+                        allResponses.push({ preResponse: preObject });
+                    }
                     responseHistory.push({ preId: preResponseId });
                     user.update({
                         data: { responseHistory: responseHistory, restarting: restart}

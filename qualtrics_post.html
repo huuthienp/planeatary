@@ -108,13 +108,12 @@
                     }
                     
                     const userId = user.id;
-                    
                     const postResponseId = postObject?.responseId;
                     if (!postResponseId) {
                         console.error("No postResponseId provided!");
                         return;
                     }
-                    
+                    var allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
                     let responseHistory = user?.user_metadata?.responseHistory ?? [];
                     const index = responseHistory.findIndex(cycle => cycle.postId === postResponseId);
                     const mockResponseHistory = JSON.parse(localStorage.getItem(`${userId}:ResponseHistory`)) || {};
@@ -122,6 +121,9 @@
                     
                     // If the postResponseId is not already in the history, add it
                     if (index === -1) {
+                        if (allResponses && allResponses.findIndex(cycle => cycle?.postResponse?.responseId === postResponseId) == -1) {
+                            allResponses[allResponses.length - 1].postResponse = postObject;
+                        }
                         responseHistory[responseHistory.length - 1].postId = postResponseId;
                         //responseHistory.push({ postId: postResponseId });
                         console.log("The post-quiz updated",  responseHistory)
