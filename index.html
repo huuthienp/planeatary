@@ -660,13 +660,13 @@
                 const link = li.querySelector('a.nav-link'); 
                 if (link) {
                     if (link.classList.contains('Disabled')) {
-                        showToast(); 
+                        showToast();
+                        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide(); 
                     } else {
                         handleOffcanvasClickFromElement(link);
                     }
                 }
-                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
                 
             });
         });
@@ -679,12 +679,12 @@
                 if (link) {
                     if (link.classList.contains('Disabled')) {
                         showToast(); 
+                        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
                     } else {
                         handleOffcanvasClickFromElement(link);
                     }
                 }
-                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
             });
         })
 
