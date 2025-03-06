@@ -919,19 +919,14 @@
 
         function hideSignInModal() {
             const signInModalEl = document.getElementById('signInModal');
-            const modalInstance = bootstrap.Modal.getInstance(signInModalEl);
+            const modalInstance = new bootstrap.Modal(signInModalEl);
             
-            signInModalEl.addEventListener('hidden.bs.modal', function handler() {
-                signInModalEl.removeEventListener('hidden.bs.modal', handler);
-                // Remove any modal-backdrop elements manually
-                document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-                // Now hide the offcanvas
-                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-                const offcanvasInstance = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvasInstance.hide();
-            });
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvasInstance = new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvasInstance.hide();
             
             modalInstance.hide();
+
         }
 
         document.getElementById('offcanvasCloseButton').addEventListener('click', (event) => {
@@ -1069,13 +1064,13 @@
     }
 
     function hideSignUpModal() {
-        const signUpModal = document.getElementById('signUpModal');
-        const modalInstance = new bootstrap.Modal(signUpModal); 
-        modalInstance.hide();
         // Hide offcanvas
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
         const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
         offcanvas.hide();
+        const signUpModal = document.getElementById('signUpModal');
+        const modalInstance = new bootstrap.Modal(signUpModal);
+        modalInstance.hide();
     }
 
     document.getElementById('signUp').addEventListener('click', function(event) {
