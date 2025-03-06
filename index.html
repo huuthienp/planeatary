@@ -935,7 +935,6 @@
             }
             
         });
-
         
         async function signInAndRedirect() {
             try {
@@ -1046,13 +1045,7 @@
 </script>
 
 <!--Sign Up -->
-<!-- <script>
-
-    function showSignUpModal() {           
-        const signUpModalEl = document.getElementById('signUpModal');
-        const modalInstance = new bootstrap.Modal(signUpModalEl);
-        modalInstance.show();
-    }
+<script>
 
     function hideSignUpModal() {
         const signUpModal = document.getElementById('signUpModal');
@@ -1159,23 +1152,24 @@
             
         }
     });
-</script> -->
-        <script defer type="module">  // delay loading video frame until scroll
-        const vdoFrm = document.querySelector('section.do-you-know iframe');
-        const imgUrl = 'https://i.ytimg.com/vi/nYe-ibIFxW4/sddefault.jpg';
-        const vdoUrl = 'https://www.youtube.com/embed/nYe-ibIFxW4?autoplay=0';
-        vdoFrm.style.background = `url('${imgUrl}') no-repeat center / cover`;
-        window.addEventListener('scroll', loadVideo, { passive: true });
-        function loadVideo() {  // for window scroll event
-            const frmRec = vdoFrm.getBoundingClientRect();
-            if (frmRec.top >= 0 && frmRec.bottom <= window.innerHeight && !vdoFrm.src) {
-                vdoFrm.style.removeProperty('background');
-                vdoFrm.src = vdoUrl;
-                window.removeEventListener('scroll', loadVideo);
-            }  // stop listener after video loaded
-        }  // end of loadVideo v1
-        </script>  <!-- end of video-loading script -->
-        <script defer type="module" src="./scripts/process-recovery.mjs"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  <!-- Bootstrap Javascript -->
-    </body>
+</script>
+
+<script defer type="module">  // delay loading video frame until scroll
+    const vdoFrm = document.querySelector('section.do-you-know iframe');
+    const imgUrl = 'https://i.ytimg.com/vi/nYe-ibIFxW4/sddefault.jpg';
+    const vdoUrl = 'https://www.youtube.com/embed/nYe-ibIFxW4?autoplay=0';
+    vdoFrm.style.background = `url('${imgUrl}') no-repeat center / cover`;
+    window.addEventListener('scroll', loadVideo, { passive: true });
+    function loadVideo() {  // for window scroll event
+        const frmRec = vdoFrm.getBoundingClientRect();
+        if (frmRec.top >= 0 && frmRec.bottom <= window.innerHeight && !vdoFrm.src) {
+            vdoFrm.style.removeProperty('background');
+            vdoFrm.src = vdoUrl;
+            window.removeEventListener('scroll', loadVideo);
+        }  // stop listener after video loaded
+    }  // end of loadVideo v1
+</script>  <!-- end of video-loading script -->
+<script defer type="module" src="./scripts/process-recovery.mjs"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  <!-- Bootstrap Javascript -->
+</body>
 </html>
