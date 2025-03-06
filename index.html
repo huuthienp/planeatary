@@ -700,8 +700,6 @@
             console.log("navChallenge clicked");
             console.log("navChallenge.href:", navChallenge.href);
             console.log("hasPostQuizResult() returns:", hasPostQuizResult());
-            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-            offcanvas.hide();
             
             if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
                 event.preventDefault();
@@ -714,6 +712,8 @@
             } else {
                 handleOffcanvasClick(event);
             } 
+            const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvas.hide();
         })
         
         const disableFirstTimers = () => {

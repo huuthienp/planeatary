@@ -6,12 +6,11 @@ export function handleOffcanvasClick(event) {
   
     // Hide offcanvas
     const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
-    offcanvasInstance.hide();
 
-  
     // Navigate if href exists
     if (targetHref && targetHref !== "#") {
-      window.location.href = targetHref;
+        offcanvasInstance.hide();
+        window.location.href = targetHref;
     }
   }
 
@@ -21,9 +20,9 @@ export function handleOffcanvasClickFromElement(linkElement) {
     const offcanvasNavbar = document.getElementById('offcanvasNavbar');
     
     const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
-    offcanvasInstance.hide();
     
     if (targetHref && targetHref !== "#") {
+        offcanvasInstance.hide();
         window.location.href = targetHref;
     }
 }
