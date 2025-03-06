@@ -24,7 +24,7 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas offcanvas-end" tabindex="-0" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                         <div class="offcanvas-header" style="background-color: #096358;">
                             <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/><strong>PlanEATary</strong></h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" id='offcanvasCloseButton'></button>
@@ -1008,8 +1008,8 @@
             // set focus to the offcanvas close button
             const offcanvasCloseBtn = document.getElementById('offcanvasCloseButton');
             if (offcanvasCloseBtn) {
-                console.log("Focus set to offcanvas container.");
                 offcanvasContainer.focus();
+                console.log("Focus set to offcanvas container.");
             }
         });
 
