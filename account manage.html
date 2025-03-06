@@ -370,13 +370,13 @@
                     if (link) {
                         if (link.classList.contains('Disabled')) {
                             link.removeAttribute('href');
-                            showToast(); 
+                            showToast();
+                            const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                            offcanvas.hide();
                         } else {
                             handleOffcanvasClickFromElement(link);
                         }
                     }
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                    offcanvas.hide();
                 });
             });
 
@@ -393,7 +393,7 @@
                             handleOffcanvasClickFromElement(link);
                         }
                     }
-                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
                     offcanvas.hide();
                 });
             })

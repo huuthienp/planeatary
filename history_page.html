@@ -403,6 +403,8 @@
                             if (link) {
                                 handleOffcanvasClickFromElement(link);
                             }
+                            const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                            offcanvas.hide();
                         });
                     })
                     
