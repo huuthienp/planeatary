@@ -347,7 +347,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="signInModalLabel">Sign In</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="signInClose"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Sign-In Form -->
@@ -370,7 +370,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="signInCloseBtn">Close</button>
                     <button type="button" class="btn btn-primary" id="signInButton">Sign In</button>
                 </div>
                 
@@ -930,6 +930,12 @@
             event.preventDefault();
             event.stopPropagation(); // Prevent the event from bubbling up to the offcanvas close listener
             showSignInModal(); 
+        });
+
+        document.getElementById('signInClose').addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation(); // Prevent the event from bubbling up to the offcanvas close listener
+            hideSignInModal();
         });
 
         document.getElementById('logOut').addEventListener('click', async () => {
