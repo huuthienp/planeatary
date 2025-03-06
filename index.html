@@ -931,16 +931,11 @@
             modalInstance.hide();
         }
 
-        document.getElementById('signIn').addEventListener('click', function(event) {
+        document.getElementById('offcanvasCloseButton').addEventListener('click', (event) => {
             event.preventDefault();
-            event.stopPropagation(); // Prevent the event from bubbling up to the offcanvas close listener
-            showSignInModal(); 
-        });
-
-        document.getElementById('signInClose').addEventListener('click', function(event) {
-            event.preventDefault();
-            event.stopPropagation(); // Prevent the event from bubbling up to the offcanvas close listener
-            hideSignInModal();
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvasInstance = new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvasInstance.hide();
         });
 
         document.getElementById('logOut').addEventListener('click', async () => {
@@ -1065,14 +1060,9 @@
 <script>
     
     function showSignUpModal() {
-        // Hide offcanvas
-        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-        offcanvas.hide();
         const signUpModal = new bootstrap.Modal(document.getElementById('signUpModal'));
         signUpModal.style.display = 'flex';
         signUpModal.show();
-        
     }
 
     function hideSignUpModal() {
