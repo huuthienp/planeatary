@@ -712,8 +712,7 @@
                 showAlert();
             } else {
                 handleOffcanvasClick(event);
-            }
-            
+            } 
             const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
             offcanvas.hide();
         })
@@ -921,6 +920,10 @@
             const signInModal = document.getElementById('signInModal');
             const modalInstance = bootstrap.Modal.getInstance(signInModal); 
             modalInstance.hide();
+            // Hide offcanvas
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvas.hide();
         }
 
         document.getElementById('logOut').addEventListener('click', async () => {
@@ -1054,6 +1057,10 @@
         const signUpModal = document.getElementById('signUpModal');
         const modalInstance = bootstrap.Modal.getInstance(signUpModal); 
         modalInstance.hide();
+        // Hide offcanvas
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+        offcanvas.hide();
     }
 
     function validate_form() {
