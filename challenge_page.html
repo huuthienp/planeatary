@@ -497,12 +497,12 @@
                         if (link) {
                             if (link.classList.contains('Disabled')) {
                                 showToast(); 
-                                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
-                                offcanvas.hide();
                             } else {
                                 handleOffcanvasClickFromElement(link);
                             }
                         }
+                        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
                     });
                 })
                 
