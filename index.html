@@ -913,7 +913,8 @@
         
         function showSignInModal() {           
             const signInModal = new bootstrap.Modal(document.getElementById('signInModal'));
-            signInModal.show();
+            const modalInstance = bootstrap.Modal.getInstance(signInModal);
+            modalInstance.show();
         }
 
         function hideSignInModal() {
