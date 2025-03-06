@@ -917,13 +917,17 @@
         }
 
         function hideSignInModal() {
-            const signInModal = document.getElementById('signInModal');
-            const modalInstance = bootstrap.Modal.getInstance(signInModal); 
+            const signInModalEl = document.getElementById('signInModal');
+            const modalInstance = bootstrap.Modal.getInstance(signInModalEl);
+            
+            signInModalEl.addEventListener('hidden.bs.modal', function handler() {
+                signInModalEl.removeEventListener('hidden.bs.modal', handler);
+                // Once the modal is fully hidden, hide the offcanvas
+                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+                const offcanvasInstance = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvasInstance.hide();
+            });        
             modalInstance.hide();
-            // Hide offcanvas
-            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-            offcanvas.hide();
         }
 
         document.getElementById('signIn').addEventListener('click', function(event) {
