@@ -658,6 +658,8 @@
         // Function to handle navigation or showing toast
         offcanvasListItems.forEach(li => {
             li.addEventListener('click', event => {
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
                 event.preventDefault();
                 const link = li.querySelector('a.nav-link'); 
                 
@@ -668,14 +670,15 @@
                         handleOffcanvasClickFromElement(link);
                     }
                 }
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
+                
             });
         });
         
         // Function to handle navigation or showing toast
         offcanvasDropdownItems.forEach(li => {
             li.addEventListener('click', event => {
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
                 event.preventDefault();
                 const link = li.querySelector('a.dropdown-item'); 
                 if (link) {
@@ -685,8 +688,6 @@
                         handleOffcanvasClickFromElement(link);
                     }
                 }
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-                offcanvas.hide();
             });
         })
 
@@ -702,6 +703,8 @@
             console.log("navChallenge clicked");
             console.log("navChallenge.href:", navChallenge.href);
             console.log("hasPostQuizResult() returns:", hasPostQuizResult());
+            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvas.hide();
             
             if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
                 event.preventDefault();
@@ -714,8 +717,6 @@
             } else {
                 handleOffcanvasClick(event);
             } 
-            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-            offcanvas.hide();
         })
         
         const disableFirstTimers = () => {
