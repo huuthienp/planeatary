@@ -658,11 +658,10 @@
         // Function to handle navigation or showing toast
         offcanvasListItems.forEach(li => {
             li.addEventListener('click', event => {
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
                 offcanvas.hide();
                 event.preventDefault();
                 const link = li.querySelector('a.nav-link'); 
-                
                 if (link) {
                     if (link.classList.contains('Disabled')) {
                         showToast(); 
@@ -677,7 +676,7 @@
         // Function to handle navigation or showing toast
         offcanvasDropdownItems.forEach(li => {
             li.addEventListener('click', event => {
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
                 offcanvas.hide();
                 event.preventDefault();
                 const link = li.querySelector('a.dropdown-item'); 
@@ -1066,6 +1065,10 @@
         const signUpModal = document.getElementById('signUpModal');
         const modalInstance = bootstrap.Modal.getInstance(signUpModal); 
         modalInstance.hide();
+        // Hide offcanvas
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+        offcanvas.hide();
     }
 
     document.getElementById('signUp').addEventListener('click', function(event) {

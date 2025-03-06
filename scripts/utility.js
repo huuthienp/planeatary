@@ -5,8 +5,9 @@ export function handleOffcanvasClick(event) {
     const offcanvasNavbar = document.getElementById('offcanvasNavbar');
   
     // Hide offcanvas
-    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-    offcanvas.hide();
+    const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+    offcanvasInstance.hide();
+
   
     // Navigate if href exists
     if (targetHref && targetHref !== "#") {
@@ -19,8 +20,8 @@ export function handleOffcanvasClickFromElement(linkElement) {
     const targetHref = linkElement.getAttribute('href');
     const offcanvasNavbar = document.getElementById('offcanvasNavbar');
     
-    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-    offcanvas.hide();
+    const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+    offcanvasInstance.hide();
     
     if (targetHref && targetHref !== "#") {
         window.location.href = targetHref;
