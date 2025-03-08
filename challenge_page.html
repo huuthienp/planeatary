@@ -8,8 +8,6 @@
     <link href="style_concat.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Bootstrap Javascript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Icon CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>PlanEATary Challenges</title>
@@ -17,14 +15,13 @@
 <body>
     
     <div class="main-container">
-        <div class="spinner hidden" id="spinner"></div>
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #02897A;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
-                        <strong>Planeatary</strong>
+                        <strong>PlanEATary</strong>
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <span class="navbar-toggler-icon"></span>
@@ -37,31 +34,31 @@
                         <div class="offcanvas-body" style="background-color: #02897A;">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" href="index.html"><i class="fa fa-home"></i> Home</a>
+                                    <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle disabled" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item disabled" href="qualtrics.html">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item disabled" href="qualtrics_post.html">Post-quiz</a></li>
+                                        <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
+                                        <li><a class="dropdown-item Disabled" id="navPost-quiz" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="ch" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link active" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                    <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
+                                    <a class="nav-link" href="history_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-calendar-check-o"></i> History</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item" href="#">My account</a></li>
-                                        <li><a class="dropdown-item" href="#">Log out</a></li>
+                                        <li><a class="dropdown-item" href="account manage.html" data-bs-dismiss="offcanvas">My account</a></li>
+                                        <li><a class="dropdown-item" id="logOut">Log out</a></li>
                                     </ul>
                                 </li>
                             </div>
@@ -69,435 +66,577 @@
                     </div>
                 </nav>
             </div>
-        <div class="content">
-            <div class="head">
-                <img src="./images/battery.png"/>
-                <h1 class="status">CHALLENGE IN PROGRESS</h1>
-                <p class="suggestion">Please click Done when you complete your tasks</p>
-            </div>
-            <div class="card"></div>
-            <div class="btn-next">
-                <button class="next">Next  &#8594;</button>
-            </div>
-        </div>
-        <!-- <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating... -->
-    </div>
-
-    <section class="overlay2 hidden2" id="modalOverlay">
-        <div class="align2">
-            <div class="modal2 hidden2" id="taskModal"> 
-                <div class="btn">
-                    <button class="close">x</button>
+            <div class="content hidden">
+                <div class="head">
+                    <img src="./images/battery.png"/>
+                    <h1 class="status">CHALLENGE IN PROGRESS</h1>
+                    <p class="suggestion">Please click Done when you complete your tasks</p>
                 </div>
-                <div class="modal-content">
-                    <h2 id="modalTitle" style="padding: 0 20px;"></h2>
-                    <p id="modalDescription" style="padding: 0 20px;"></p>
+                <div class="Card"></div>
+                <div class="btn-next">
+                    <button class="next shadow-sm" style="width: 150px;">Next  &#8594;</button>
                 </div>
             </div>
+            <!-- <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating... -->
         </div>
-    </section>
-    <!-- spinner overlay-->
-    <section class="overlay hidden" id="spinnerOverlay"></section>
-
-    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script type="module">
-        import { fetchTaskStatus, updateTaskStatus, mergeTaskArrays } from './scripts/helpers.mjs';
         
-        let time =  [];
-        let scores = [];
-        let spinnerStartTime;
-        let isLoading;
-        const minDisplayTime = 1000;
-        let preResponseId = localStorage.getItem('preResponseId');
-        const modal = document.querySelector(".modal");
-        const overlay = document.querySelector(".overlay");
-        const closeButt = document.querySelector('.close');
-        const spinner = document.querySelector('.spinner');
-        const spOver = document.getElementById("spinnerOverlay");
+        <section class="overlay2 hidden" id="modalOverlay">
+            <div class="align2">
+                <div class="modal2 hidden" id="taskModal"> 
+                    <div class="btn">
+                        <button class="close">x</button>
+                    </div>
+                    <div class="modal_content">
+                        <h2 id="modalTitle" style="padding: 0 20px;"></h2>
+                        <p id="modalDescription" style="padding: 0 20px;"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+         <!-- spinner overlay-->
+         <section class="overlay hidden" id="spinnerOverlay">
+            <div class="spinner" id="spinner">
+            </div>
+            <div>
+                <span>Loading</span>
+            </div>
+        </section>
+
+        <!-- Warning Toast -->
+        <div class="toast-container">
+            <div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Please finish all your challenge before heading to do the post-quiz.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
         
-        const cardContainer = document.querySelector(".card");
-        // Function to show the spinner
+        <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+        
+        <script type="module">
 
-        function delay(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
+            import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays, updateButton } from './scripts/helpers.mjs';
+            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, 
+                handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
 
-        function showSpinner() {
-            //console.log("Showing spinner...");
-            spinner.classList.remove('hidden');
-            spOver.classList.remove('hidden');
-            isLoading = true;
-            spinnerStartTime = Date.now();
-        }
-
-        // Function to hide the spinner
-        function hideSpinner() {
-            const elapsedTime = Date.now() - spinnerStartTime;
+            const modal = document.querySelector(".modal2");
+            const overlay = document.querySelector(".overlay2");
+            const closeButt = document.querySelector('.close');
             
-            if (elapsedTime < minDisplayTime) {
-                // Delay hiding spinner until the minimum display time
-                setTimeout(() => {
-                    //console.log("Hiding spinner after min time...");
-                    spinner.classList.add('hidden');
-                    spOver.classList.add('hidden');
-                    isLoading = false;
-                }, minDisplayTime - elapsedTime);
-            } else {
-                //console.log("Hiding spinner...");
-                spinner.classList.add('hidden');
-                spOver.classList.add('hidden');
-                isLoading = false;
-            }
+            const cardContainer = document.querySelector(".Card");
             
-        }
-
-        function logOut() {
-            if (netlifyIdentity.gotrue.currentUser() !== null) {
-                let user = netlifyIdentity.gotrue.currentUser();
-                user.logout().then(() => {
-                    console.log('User has been logged out!');
-                    window.location.href = "index.html";
-                });
-            } else {
-                console.log("No user is logged in!");
-            }
-        }
-
-        document.getElementById('logOut').addEventListener('click', () => {
-            alert("Do you really want to sign out?");
-            showSpinner();
-            logOut();
-            showSpinner();
-        });
-
-
-        document.addEventListener("DOMContentLoaded", async function() {
-
-
-            function showSpinner() {
-                    //console.log("Showing spinner...");
-                    spinner.classList.remove('hidden');
-                    spOver.classList.remove('hidden');
-                    
-                    closeButt.classList.add('hidden');
-                    isLoading = true;
-                    spinnerStartTime = Date.now();
-            }
-                    
-            // Function to hide the spinner
-            function hideSpinner() {
-                const elapsedTime = Date.now() - spinnerStartTime;
-                        
-                if (elapsedTime < minDisplayTime) {
-                    // Delay hiding spinner until the minimum display time
-                    setTimeout(() => {
-                        //console.log("Hiding spinner after min time...");
-                        spinner.classList.add('hidden');
-                        spOver.classList.add('hidden');
-                        isLoading = false;
-                    }, minDisplayTime - elapsedTime);
-                } else {
-                    //console.log("Hiding spinner...");
-                    spinner.classList.add('hidden');
-                    spOver.classList.add('hidden');
-                    isLoading = false;
-                }
-                        
-            }
-
-            // Retrieve tasks from localStorage or fetch if not available
-            async function fetchTasks() {
-                const taskData = localStorage.getItem('tasks');
-                if (!taskData) {
-                    try {
-                        const response = await fetch('updated_tasks_final.json');
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok ' + response.statusText);
-                        }
-                        const data = await response.json();
-                        return data;
-                    } catch (error) {
-                        console.error('Fetch error:', error);
-                        alert('Failed to load tasks. Please try again later.');
-                        return null;
-                    };
-                    
-                }
-                return JSON.parse(taskData);
-            }
-
-            // Function to get task status from the API
-            async function fetchTaskStatus_() {  // archive
-                try {
-                    
-                    showSpinner();
-                    const response = await fetch('/api/manage-tasks', {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Q-RESPONSE-ID': preResponseId,
-                        }
-
-                    });
-                    
-                    const data = await response.json();
-                    console.log('Task status fetched:', data);
-                    hideSpinner();
-                    return data;
-                } catch (error) {
-                    hideSpinner();
-                    console.error('Error fetching task status:', error);
-                    return null;
-                }
-            }
-
-            // Function to update task status using the API
-            async function updateTaskStatus_(task) {  // archive
-
-                try {
-                    const taskData = JSON.parse(localStorage.getItem('tasks'));
-                    const extracted = mergeTaskArrays(taskData);
-                    let task = {
-                        id: preResponseId,
-                        chosen: extracted.chosen,
-                        // done: extracted.done,
-                        // time: extracted.time
-                    }
-                    const response = await fetch('/api/manage-tasks', {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Q-RESPONSE-ID': preResponseId,
-                        },
-                        body: JSON.stringify(task),
-                    });
-                    const data = await response.json();
-                    console.log('Task updated successfully:', data);
-
-                } catch (error) {
-                    console.error('Error updating task status:', error);
-                    
-                }
-            }
-            
-            // Retrieve tasks from localStorage
-            let tasks = JSON.parse(localStorage.getItem('tasks'));
-            let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));  
-
-            //fetch up-to-date info
-            if (!Tstatus.done || !Tstatus.chosen) {
-                    showSpinner();
-                    let Tstatus = await fetchTaskStatus(preResponseId);
-                    hideSpinner();
-
-                    localStorage.setItem('fetched_tasks', JSON.stringify(fetched_tasks));
-                    Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
-                    
-                }
-
-            const cardContainer = document.querySelector(".card");
-            const modal = document.getElementById("taskModal");
             const modalOverlay = document.getElementById("modalOverlay");
             const modalTitle = document.getElementById("modalTitle");
             const modalDescription = document.getElementById("modalDescription");
-
-            // Function to show the modal
-            function showModal(title, description) {
-                closeButt.classList.remove('hidden');
-                modalTitle.textContent = title;
-                modalDescription.innerHTML = description;
-                modal.classList.remove("hidden");
-                modal.style.backgroundColor = 'white';
-                modalOverlay.classList.remove("hidden");
-            }
-
-            // Function to close the modal
-            function closeModal() {
-                closeButt.classList.remove('hidden');
-                modal.classList.add("hidden");
-                modalOverlay.classList.add("hidden");
-            }
-
-            // Close modal when user clicks the close button
-            document.querySelector(".close").addEventListener("click", closeModal);
-
-            // Close modal when user clicks outside the modal
-            window.addEventListener("click", function(event) {
-                if (event.target === modalOverlay) {
-                    closeModal();
-                }
-            });
-
             
             const nextButtonContainer = document.querySelector(".btn-next");
-            const btn_next = document.querySelector(".next")
-            btn_next.id = "btn_next";
-            btn_next.style.pointerEvents = "none"; 
-            btn_next.style.backgroundColor = "grey"; 
-            btn_next.style.cursor = "not-allowed"; 
+            const btn_next = document.querySelector(".next");
 
-            nextButtonContainer.appendChild(btn_next);
-
-            btn_next.addEventListener("click", function () {
-                if (btn_next.style.pointerEvents === "auto") {
-                    window.location.href = "congrat_page.html";
-                }
+            const navPostQuiz = document.getElementById("navPost-quiz");
+            
+            const showModal = (title, description) => {
+                modalTitle.textContent = title;
+                modalDescription.innerHTML = description;
+                showElement([modalOverlay, modal]);
+            };
+            
+            const closeModal = () => hideElement([modalOverlay, modal]);
+            
+            document.querySelector(".close").addEventListener("click", closeModal);
+            window.addEventListener("click", (event) => {
+                if (event.target === modalOverlay) closeModal();
             });
             
-
-            // Check if tasks exist in localStorage
-            if (tasks) {
-                displaySelectedTasks(tasks); // Display tasks
-            } else {
-                let tasks = await fetchTasks();
-                localStorage.setItem('tasks', JSON.stringify(tasks));
-                tasks = JSON.parse(localStorage.getItem('tasks'));
-                showSpinner();
-                let fetchedTasks = await fetchTaskStatus(preResponseId); 
-                hideSpinner();
-                localStorage.setItem('fetched_tasks', JSON.stringify(fetchedTasks)); 
-                let Tstatus = JSON.parse(localStorage.getItem('fetched_tasks'));
-                displaySelectedTasks(tasks);
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            
+            //For first-timer to see a reminder to do a very first quiz
+            function showToast() {
+                const toasty = document.getElementById('first-timer-toast');
+                const myToast = new bootstrap.Toast(toasty);
+                myToast.show();
             }
 
-        // Function to display selected tasks and allow status update
-        function displaySelectedTasks(tasks) {
-            cardContainer.innerHTML = '';  // Clear any existing content
+            //hard-code updating responseHistory (incompleted)
+            async function updateResponseHistory(preResponseId, lastTask) {
+                const user = netlifyIdentity.gotrue.currentUser();
+                if (!user) {
+                    console.error("No user is logged in!");
+                    return;
+                }
+                
+                const token = await user.jwt();
+                if (isTokenExpired(token)) {
+                    console.log("Token expired. Prompting user to re-login...");
+                    netlifyIdentity.logout();
+                    return;
+                }
 
-            Object.keys(tasks).forEach(questionKey => {
-                const taskGroup = tasks[questionKey].tasks;
+                const userId = user.id;
+                
+                console.log("Token is valid.");
+                let responseHistory = user.user_metadata.responseHistory || [];
+                console.log("Current responseHistory:", responseHistory);
+                console.log("lastTask:", lastTask, "preResponseId:", preResponseId);
+                let index = responseHistory.findIndex(cycle => cycle.preId === preResponseId);
+                document.querySelector(".next").innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Loading...';
+                
+                if (index === -1) {
+                    // New preResponseId, add it
+                    responseHistory.push({ lastTask: lastTask, preId: preResponseId });
+                } else if (!responseHistory[index].lastTask) {
+                    // Update existing entry with lastTask if it's missing
+                    responseHistory[index].lastTask = lastTask;
+                } 
+                
+                if (responseHistory[index].lastTask) {
+                    // Update existing entry with lastTask 
+                    responseHistory[index].lastTask = lastTask;
+                }
 
-                // Filter tasks that are selected
-                taskGroup.forEach(task => {
-                    if (task.choice === 'chosen') {
-                        // Create and append a card for each selected task
-                        const taskCard = document.createElement("div");
-                        taskCard.classList.add("task-card", task.status === "Completed" ? "card_completed" : "card_incompleted");
-
-                        const taskName = document.createElement("span");
-                        taskName.textContent = task.taskName;
-
-                        // Add an info icon for task description
-                        const infoIcon = document.createElement("span");
-                        infoIcon.classList.add("info-icon");
-                        infoIcon.innerHTML = "&#9432;"; 
-
-                        // Set the click event for the info icon to show the modal
-                        infoIcon.addEventListener('click', function(event) {
-                            event.stopPropagation(); 
-                            showModal(task.taskName, task.taskDescription);
+                console.log("Updated responseHistory to save:", responseHistory);
+                //manually keep in local storage (remove after logging out)
+                const mockResponseHistory = {id: userId,
+                    meta_data: { responseHistory: responseHistory } };
+                try {
+                    // Update user metadata
+                    const updatedUser = await user.update({
+                        data: { responseHistory: responseHistory },
+                    });
+                    
+                    console.log("User metadata successfully updated:", updatedUser.user_metadata);
+                    // Wait for 2 seconds and a half
+                    await new Promise(resolve => setTimeout(resolve, 2500)); 
+                    // Fetch and save the latest user object to localStorage
+                    const updatedUserDetails = await netlifyIdentity.gotrue.currentUser();
+                    console.log("Fetched updated user:", updatedUserDetails.user_metadata);
+                    
+                    // Verify the updated responseHistory
+                    if (updatedUserDetails.user_metadata.responseHistory) {
+                        localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
+                        console.log("Updated user saved to localStorage:", updatedUserDetails);
+                    } else {
+                        console.warn("Updated responseHistory not found in the user object.");
+                    }
+                } catch (error) {
+                    console.error("Error updating user metadata:", error);
+                } finally {
+                    localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
+                }
+            }
+                
+                //Function to update the Next button's state
+                function updateNextButton(preResponseId, userId, tasks, Tstatus) {
+                    let allCompleted = true;
+                    
+                    Object.keys(tasks).forEach(questionKey => {
+                        const taskGroup = tasks?.[questionKey]?.tasks ?? [];
+                        taskGroup.forEach(task => {
+                            if (task.choice === "chosen" && task.status !== "Completed") {
+                                allCompleted = false; // If any selected task is not "Completed", set false
+                            } 
                         });
-
-                        const completion = document.createElement("span");
-                        completion.classList.add("completion");
-                        completion.textContent = task.status === "Completed" ? "Completed" : "Done";
-
-                        // Set card styles based on status
-                        if (task.status === "Completed") {
-                            taskCard.classList.add("card_completed");
-                            taskName.style.textDecoration = "line-through";
-                        } else {
-                            taskCard.classList.add("card_incompleted");
-                        }
-
-                        taskCard.appendChild(taskName);
-                        taskCard.appendChild(infoIcon); // Add info icon to the card
-                        taskCard.appendChild(completion);
-                        cardContainer.appendChild(taskCard);
-
-                        // Set task choice and status based on local storage
-                        if (Tstatus.chosen && Tstatus.done) {
-                            
-                            if (Tstatus.chosen.includes(String(task.taskNumber))) {
-                                if (Tstatus.done.includes(String(task.taskNumber))) {
-                                    taskCard.classList.add("card_completed");
+                    });
+                    
+                    // Enable or disable the next button based on task completion status
+                    if (allCompleted) {
+                        navPostQuiz.classList.remove('Disabled');
+                        btn_next.disabled = false;
+                        updateButton(btn_next,'#02897A', 'pointer');
+                    } else {
+                        btn_next.disabled = true;
+                        updateButton(btn_next,'#4e958d52', 'not-allowed');
+                    }
+                    document.querySelector(".next").innerHTML = 'Next  &#8594;';
+                }
+                
+                // Function to display selected tasks and allow status update
+                async function displaySelectedTasks(preResponseId, userId, tasks, Tstatus) {
+                    const cardContainer = document.querySelector(".Card");
+                    cardContainer.innerHTML = '';  
+                    
+                    //Handle no tasks information from previous page
+                    if(!tasks) {
+                        cardContainer.innerHTML = "<div class='empty-state'>The system is down. Please try again later</div>";
+                        return;
+                    }
+                    
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                    
+                    Object.keys(tasks).forEach(async (questionKey) => {
+                        const taskGroup = tasks?.[questionKey]?.tasks ?? [];
+                        // Filter tasks that are selected
+                        taskGroup.forEach(task => 
+                        {
+                            if (task.choice === 'chosen') {
+                                // Create and append a card for each selected task
+                                const taskCard = document.createElement("div");
+                                taskCard.classList.add("task-card", "card_completion");
+                                
+                                const taskName = document.createElement("span");
+                                taskName.textContent = task.taskName + " ";
+                                
+                                // Add an info icon for task description
+                                const infoIcon = document.createElement("span");
+                                infoIcon.classList.add("info-icon");
+                                infoIcon.innerHTML = "&#9432;"; 
+                                
+                                // Set the click event for the info icon to show the modal
+                                infoIcon.addEventListener('click', function(event) {
+                                    event.preventDefault();
+                                    event.stopPropagation(); 
+                                    showModal(task.taskName, task.taskDescription);
+                                });
+                                
+                                const completion = document.createElement("span");
+                                completion.classList.add("completion");
+                                completion.textContent = task.status === "Completed" ? "Completed" : "Done";
+                                
+                                // Set card styles based on status
+                                if (task.status === "Completed") {
+                                    taskCard.style.backgroundColor = 'rgb(146 161 146 / 75%)';
+                                    taskCard.style.color = 'dimgrey';
                                     taskName.style.textDecoration = "line-through";
+                                } else {
+                                    taskCard.style.color = 'rgb(71, 71, 71)';
+                                    taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
+                                    taskName.style.textDecoration = "none";
                                 }
+                                
+                                // Set task choice and status based on local storage
+                                if (Tstatus) {
+                                    if (Tstatus.chosen.length !== 0) {
+                                        if (Tstatus.chosen.includes(String(task.taskNumber))) {
+                                            if (Tstatus.done.length !== 0 && Tstatus.done.includes(String(task.taskNumber))) {
+                                                taskCard.style.backgroundColor = 'rgb(146 161 146 / 75%)';
+                                                taskCard.style.color = 'dimgrey';
+                                                taskName.style.textDecoration = "line-through";
+                                            }
+                                        } else if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) !== -1) {
+                                            let index = Tstatus.chosen.indexOf(String(task.taskNumber));
+                                            Tstatus.done[index] = String(task.taskNumber);
+                                            Tstatus.time[index] = task.finishTime;
+                                            taskCard.style.backgroundColor = 'rgb(146 161 146 / 75%)';
+                                            taskCard.style.color = 'dimgrey';
+                                            taskName.style.textDecoration = "line-through";
+                                        }
+                                    }
+                                    updateNextButton(preResponseId, userId, tasks, Tstatus);
+                                }
+                                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
+                                taskName.appendChild(infoIcon);
+                                taskCard.appendChild(taskName);
+                                taskCard.appendChild(completion);
+                                cardContainer.appendChild(taskCard);
+                                updateNextButton(preResponseId, userId, tasks, Tstatus); 
+                                
+                                taskCard.addEventListener('click', async (event) => {
+                                    // Toggle task status between "Done" and "Completed"
+                                    
+                                    completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
+                                    await delay(1000); 
+                                    
+                                    task.status = task.status === "Done" ? "Completed" : "Done";
+                                    
+                                    if (task.status === "Completed") {
+                                        taskCard.style.backgroundColor = 'rgb(146 161 146 / 75%)';
+                                        taskCard.style.color = 'dimgrey';
+                                        taskName.style.textDecoration = "line-through";
+                                        completion.innerHTML = task.status;
+                                        let timestamp = Date.now();
+                                        task.finishTime = timestamp;
+                                        if (Tstatus && Object.keys(Tstatus).length !== 0) {
+                                            let index = Tstatus.chosen.indexOf(String(task.taskNumber));
+                                            Tstatus.done[index] = String(task.taskNumber);
+                                            Tstatus.time[index] = task.finishTime;
+                                        }
+                                    } else {
+                                        taskCard.style.color = 'rgb(71, 71, 71)';
+                                        taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
+                                        taskName.style.textDecoration = "none";
+                                        completion.innerHTML = task.status;
+                                        task.finishTime = "";
+                                        if (Tstatus && Object.keys(Tstatus).length !== 0) {
+                                            let index = Tstatus.done.indexOf(String(task.taskNumber));
+                                            Tstatus.done[index] = "";
+                                            Tstatus.time[index] = task.finishTime;
+                                        }
+                                    }
+                                    // Update task in localStorage
+                                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                                    if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
+                                    await updateTaskAndResponseHistory(Tstatus, tasks, preResponseId, userId);
+                                    setTimeout(() => {
+                                        updateNextButton(preResponseId, userId, tasks, Tstatus);
+                                    }, 1000);
+                                })      
+                            }
+                            localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                            if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))}
+                            updateNextButton(preResponseId, userId, tasks, Tstatus); 
+                        });   
+                    });
+
+                    //stabilise the card length
+                    const cards = document.querySelectorAll('.card_completion');
+                    let maxWidth = 0;
+                    cards.forEach(card => {
+                        const cardWidth = card.getBoundingClientRect().width;
+                        if (cardWidth > maxWidth) {
+                            maxWidth = cardWidth;
+                        }
+                    });
+                    cards.forEach(card => {
+                        card.style.width = `${maxWidth}px`;
+                        //card.style.setProperty('--width', `${maxWidth}px`);
+                    });
+                    
+                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                    if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))} 
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                    setTimeout(() => {
+                        updateNextButton(preResponseId, userId, tasks, Tstatus);
+                    }, 1000);
+                    cardContainer.appendChild(nextButtonContainer);
+                    //await updateTaskAndResponseHistory(Tstatus, tasks, preResponseId, userId);
+                }
+
+            async function updateTaskAndResponseHistory(Tstatus, tasks, preResponseId, userId) {
+                console.log("time array:", Tstatus.time);
+                // Check if all tasks have finish times and the time array length equals chosen tasks length
+                if (Tstatus.time.findIndex(el => el === "") === -1 && Tstatus.time.length === Tstatus.chosen.length) {
+                    let latestTimestamp = Math.max(...Tstatus.time);
+                    const separator = '@';
+                    
+                    // Merge tasks using your mergeTaskArrays function 
+                    const merged = mergeTaskArrays(tasks, separator);
+                    const tasksWithFinishTimes = merged.chosen.filter(task => task.includes(separator));
+                    const taskDetails = tasksWithFinishTimes.map(task => {
+                        const [taskNumber, finishTime] = task.split(separator);
+                        return { taskNumber, finishTime: Number(finishTime) };
+                    });
+                    
+                    taskDetails.sort((a, b) => b.finishTime - a.finishTime);
+                    
+                    // Get the task with the latest finish time
+                    const latestTask = taskDetails[0];
+                    const lastTask = `${latestTask.taskNumber}${separator}${latestTask.finishTime}`;
+                    
+                    try {
+                        // Update the response history with the latest finished task
+                        await updateResponseHistory(preResponseId, lastTask);
+                        // Update task status from localStorage 
+                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                        console.log(`Response history updated with task: ${lastTask}`);
+                        console.log("Tasks updated!");
+                    } catch (err) {
+                        console.error("Error updating:", err);
+                    }
+                } else {
+                    const lastTask = "";
+                    // If not all tasks are completed, update the response history with an empty lastTask
+                    try {
+                        await updateResponseHistory(preResponseId, lastTask);
+                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                        console.log(`Response history updated with empty task: ${lastTask}`);
+                        console.log("Tasks updated!");
+                    } catch (err) {
+                        console.error("Error updating:", err);
+                    }
+                }
+            }
+            
+            document.addEventListener("DOMContentLoaded", async function() {
+                
+                let startTime = Date.now();
+                const condition = [false, startTime];
+                const bOverlay = document.getElementById("spinnerOverlay");
+                const spinner = document.getElementById("spinner");
+                
+                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+                const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+                
+                const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+                const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+                const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
+                
+                offcanvasLinks.forEach(li => {
+                    if (li !== document.getElementById('navChallenge')) {
+                        li.addEventListener('click', handleOffcanvasClick);
+                    } 
+                });
+                
+                offcanvasDropdown.forEach(li => {
+                    li.addEventListener('click', handleOffcanvasClick)
+                });
+                
+                // Function to handle navigation or showing toast
+                offcanvasListItems.forEach(li => {
+                    li.addEventListener('click', event => {
+                        const link = li.querySelector('a.nav-link'); 
+                        if (link) {
+                            if (link.classList.contains('Disabled')) {
+                                showToast(); 
+                                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                                offcanvas.hide();
+                            } else {
+                                handleOffcanvasClickFromElement(link);
+                            }
+                        }
+                    });
+                });
+                
+                // Function to handle navigation or showing toast
+                offcanvasDropdownItems.forEach(li => {
+                    li.addEventListener('click', event => {
+                        const link = li.querySelector('a.dropdown-item');  
+                        if (link) {
+                            if (link.classList.contains('Disabled')) {
+                                showToast(); 
+                            } else {
+                                handleOffcanvasClickFromElement(link);
+                            }
+                        }
+                        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
+                    });
+                })
+                
+
+                document.getElementById('logOut').addEventListener('click', async () => {
+                    if (confirm("Do you really want to sign out?") == true) {
+                        showSpinner([bOverlay, spinner], condition);
+                        await logOut();
+                        hideSpinner([bOverlay, spinner], condition);
+                    }
+                });
+                
+                btn_next.addEventListener("click", function () {
+                    if (btn_next.style.pointerEvents === "auto") {
+                        window.location.href = "congrat_page.html";
+                    }
+                });
+                
+                try {
+                    showSpinner([bOverlay, spinner], condition);
+                    document.querySelector('.content').classList.remove('hidden');
+
+                    let preObject = JSON.parse(localStorage.getItem('preResult'));
+                    let preResponseId = preObject?.responseId ?? null; 
+                    let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+                    let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                    let storedCycle = JSON.parse(localStorage.getItem('selectedCycle'));
+
+                    btn_next.id = "btn_next";  
+                    updateButton(btn_next,'#4e958d52', 'not-allowed');
+                    nextButtonContainer.appendChild(btn_next);
+                    
+                    const userData = await getUserData();
+                    if (userData) {
+                        const { metadata, responseHistory, userId } = userData;
+                        // Use user data as needed
+                        console.log("User ID:", userId);
+                        console.log("Response History:", responseHistory);
+                        
+                        if (!preResponseId) {
+                            preResponseId = responseHistory[responseHistory.length-1]?.preResponse?.responseId;
+                            console.log("Latest pre-quiz id:", preResponseId);
+                        }
+                        
+                        if (storedCycle) {
+                            
+                            preObject = storedCycle?.preResponse;
+                            preResult = preObject?.result;
+                            pre_rec = preObject?.recordedDate;
+                            preResponseId = preObject?.responseId ?? "";
+                            
+                            postObject = storedCycle?.postResponse;
+                            postResult = postObject?.result;
+                            post_rec = postObject?.recordedDate;
+                            
+                            try {
+                                Tstatus = await fetchTaskStatus(preResponseId, userId);
+                                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
+                                Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || {};
+                                if (Object.keys(Tstatus).length === 0) {
+                                    Tstatus.done = [];
+                                    Tstatus.chosen = [];
+                                    Tstatus.time = [];
+                                }
+                            } catch(err) {
+                                console.log("Couldn't find history tasks' info:", err);
                             }
                         }
                         
-                        // Add event listener to task card to update status
-                        taskCard.addEventListener('click', async function() {
-
-                            completion.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
-                            await delay(1000);
-
-                            // Toggle task status between "Done" and "Completed"
-                            task.status = task.status === "Done" ? "Completed" : "Done";
-
-                            if (task.status === "Completed") {
-                                taskCard.style.color = 'black';
-                                taskCard.style.backgroundColor = 'rgb(133, 132, 132)';
-                                taskName.style.textDecoration = "line-through";
-                                completion.innerHTML = "Completed";
-                                let timestamp = Date.now();
-                                task.finishTime = timestamp;
-                                //time.push(timestamp);
-                            } else {
-                                taskCard.style.color = 'rgb(71, 71, 71)';
-                                taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
-                                taskName.style.textDecoration = "none";
-                                completion.innerHTML = "Done";
-                                task.finishTime = '';
-                                //time.splice(-1, 1);
+                        if(!Tstatus) {
+                            try {
+                                var fetched = await fetchTaskStatus(preResponseId, userId);
+                                localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched));
+                                Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || {};
+                                if (Object.keys(Tstatus).length === 0) {
+                                    Tstatus.done = [];
+                                    Tstatus.chosen = [];
+                                    Tstatus.time = [];
+                                }
+                            } catch(err) {
+                                console.log(err);
                             }
+                        }
+                        await displaySelectedTasks(preResponseId, userId, tasks, Tstatus);
+                    }
+                    
+                } catch (err) {
+                    console.error("Caught error: ", err);
+                } finally {
+                    hideSpinner([bOverlay, spinner], condition);
+                }
+                
+                document.addEventListener('visibilitychange', async () => {
 
-                            // Update task in localStorage
-                            localStorage.setItem('tasks', JSON.stringify(tasks));
-                            localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus));
-                            //localStorage.setItem('time', JSON.stringify(time));
-                            // updateTaskStatus(task);
-                            showSpinner();
-                            updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
-                            hideSpinner();
-                            updateNextButton();
-                            
-                        });
-                        localStorage.setItem('tasks', JSON.stringify(tasks));
-                        localStorage.setItem('fetched_tasks', JSON.stringify(Tstatus)); 
-                        //localStorage.setItem('time', JSON.stringify(time));
-
-                        // updateTaskStatus(task);
-                        showSpinner();
-                        updateTaskStatus(preResponseId, JSON.parse(localStorage.getItem('tasks')));
-                        hideSpinner();
-                        
+                    let preObject = JSON.parse(localStorage.getItem('preResult'));
+                    let preResponseId = preObject?.responseId ?? null; 
+                    let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+                    let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    if (!user) {
+                        console.error("No user is logged in!");
+                        return;
+                    }
+                    
+                    const token = await user.jwt();
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                        window.location.href = 'index.html';
+                        return;
+                    }
+                    
+                    const userId = user.id;
+                    const mergedData = mergeTaskArrays(tasks);
+                    const payload = JSON.stringify({
+                        id: preResponseId,
+                        userId: userId,
+                        chosen: mergedData.chosen,
+                    });
+                    if (document.visibilityState === "hidden") {
+                        if (!preResponseId) {
+                            console.warn("No preResponseId found; skipping beacon update.");
+                            return;
+                        }
+                        //This Beacon api is not working at the moment (404 error). May need adjustments from the backend
+                        const beaconSent = navigator.sendBeacon('/api/manage-tasks', payload);
+                        console.log("Beacon sent:", beaconSent);
+                        //await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
                     }
                 });
-            });
-            cardContainer.appendChild(nextButtonContainer);
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-            //localStorage.setItem('time', JSON.stringify(time)); 
-            updateNextButton(); 
-        }
-
-        // Function to update the Next button's state
-        function updateNextButton() {
-            let allCompleted = true;
-
-            Object.keys(tasks).forEach(questionKey => {
-                const taskGroup = tasks[questionKey].tasks;
-                taskGroup.forEach(task => {
-                    if (task.choice === "chosen" && task.status !== "Completed") {
-                        allCompleted = false; // If any selected task is not "Completed", set false
-                    }
-                });
-            });
-
-            // Enable or disable the next button based on task completion status
-            if (allCompleted) {
-                btn_next.style.pointerEvents = "auto"; // Enable the next button
-                btn_next.style.backgroundColor = "#02897A"; // Update button color when enabled
-                btn_next.style.cursor = "pointer";
-                btn_next.disabled = false;
-            } else {
-                btn_next.style.pointerEvents = "none"; // Disable the next button
-                btn_next.style.backgroundColor = "grey"; // Keep it grey if not all tasks are completed
-                btn_next.style.cursor = "not-allowed";
-                btn_next.disabled = true;
-            }
-        }
-});
-    </script>
-</body>
-</html>
+            });  
+            
+        </script>
+        <!-- Bootstrap Javascript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+    </html>
