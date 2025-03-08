@@ -10,9 +10,9 @@ export default async (request) => {
     try {  // validate user request and fetch task data from Qualtrics
         /* check for required metadata */
         const isPostPutMethod = ['POST', 'PUT'].includes(request.method.toUpperCase());
-        const reqJSON = isPostPutMethod ? await request.json() : null;  // error caught below if any
-        let respId = request.headers.get('x-response-id') ?? reqJSON.id;
-        let userId = request.headers.get('x-user-id') ?? reqJSON.userId;
+        const reqJSON = isPostPutMethod ? await request.json() : {};  // error caught below if any
+        const respId = request.headers.get('x-response-id') ?? reqJSON.id;
+        const userId = request.headers.get('x-user-id') ?? reqJSON.userId;
         const badMtdt = [];
         if (!respIdRegex.test(respId)) { badMtdt.push(respId?respId:'missing response id'); }
         if (!userIdRegex.test(userId)) { badMtdt.push(userId?userId:'missing user id'); }
