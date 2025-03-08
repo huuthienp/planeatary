@@ -144,39 +144,33 @@ export function storeResponseData(reformattedData) {
 // Function to update task status using the API
 export async function updateTaskStatus(preResponseId, userId, taskData) {
     try {
-        // showSpinner();  // to be called outside
-        // const taskData = JSON.parse(localStorage.getItem('tasks'));  // to be called outside
         const mergedData = mergeTaskArrays(taskData);
         const requestBody = {
             id: preResponseId,
             chosen: mergedData.chosen,
-            // done: mergedData.done,
-            // time: mergedData.time,
         };
-        const response = await fetch('/api/manage-tasks', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Q-RESPONSE-ID': preResponseId,
-                'user-id': userId,
-            },
-            body: JSON.stringify(requestBody),
-        });
-        const { ok, status } = response;
-        if (!ok) {
-            throw new Error(JSON.stringify({
-                status: status,  // fix error object
-                response: await response.text(),
-            }));
-        }
-        const responseBody = await response.json();
-        console.log('Task updated successfully!\n', responseBody);
-        // hideSpinner();  // to be called outside
-    } catch (error) {
-        // hideSpinner();  // to be called outside
-        console.warn('Caught', error, '\nin updateTaskStatus');
-    }
-}
+        const fetchOpt = { method: 'PUT',
+            body: JSON.stringify(requestBody),  // unchanged, while fetch options are rewritten
+            headers: new Headers(),
+        };  /* end of defining fetch options */
+        fetchOpt.headers.set('content-type', 'application/json');
+        fetchOpt.headers.set('x-response-id', preResponseId);
+        fetchOpt.headers.set('x-user-id', userId);
+        const udTaskResp = await fetch('/api/manage-tasks', fetchOpt);
+        if (!udTaskResp.ok) {
+            const code =  udTaskResp.status;
+            const msg = await udTaskResp.text();
+            const udTaskErr = new Error();
+            udTaskErr.message = JSON.stringify({ code, msg });
+            udTaskErr.name = 'UpdateTaskError';
+            throw udTaskErr;
+        }  /* end of checking if updating task is ok */
+        const responseBody = await udTaskResp.json();
+        console.log('Tasks updated!\n', responseBody);
+    } catch (udTaskErr) {
+        console.warn('Caught', udTaskErr, '\nin updateTaskStatus');
+    }  /* end of catching task-updating error */
+}  /* end of updateTaskStatus */
 
 
 export function mergeTaskArrays(data, separator = '@') {
