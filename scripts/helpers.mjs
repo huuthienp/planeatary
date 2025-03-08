@@ -16,6 +16,62 @@ export class LocalStorageService {
 }
 
 
+export function initiateSurvey(quizType, quizFrame) {
+    const qDataCtId = 'uow.syd1';
+    const qSurveyId = quizType === 'pre' ? 'SV_8es3au3sYKpwaii' : quizType === 'post' ? 'SV_5njEnh46h0tSueG' : undefined;
+    let quizUrl = `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}`;
+    try {
+        quizUrl += `?userId=${JSON.parse(localStorage['gotrue.user']).id || ''}`;  // contains sensitive info
+    } catch(nonUserError) {
+        console.warn(`Caught ${nonUserError}'\nYou are not logged in!`);
+    }
+    if (quizType === 'post') {
+        try {
+            quizUrl += `&preResponseId=${JSON.parse(localStorage['preResult']).responseId || ''}`;
+        } catch(noPreResultError) {
+            console.warn(`Caught ${noPreResultError}\nPre-quiz result is not found!`);
+        }
+    }
+    quizFrame.contentWindow.location = quizUrl;  // load quiz frame, safer than src
+    return quizUrl;
+}
+
+
+export function updateAnchors(anchors, hrefs=[]) {
+    for (const [i, a] of Object.entries(anchors)) {
+        const h = hrefs[i];
+        if (h) {
+            a.removeAttribute('Disabled');
+            a.href = h;
+            a.style.cursor = 'pointer';
+        } else {
+            a.removeAttribute('href');
+            a.disabled = true;
+            a.style.cursor = 'not-allowed';
+        }
+    }
+}
+
+
+export function updateButton(button, color='buttonface', cursor='default') {
+    button.style.backgroundColor = color;
+    button.style.borderColor = color;
+    button.style.cursor = cursor;
+    if (cursor == "not-allowed") {
+        button.style.color = 'rgb(9, 59, 48)';
+        button.style.boxShadow = 'none';
+        button.style.opacity = 0.4;
+        button.style.pointerEvents = "none";
+    } else {
+        button.style.color = 'white';
+        button.style.boxShadow = '0 .125rem .25rem rgba(0, 0, 0, .075)';
+        button.style.opacity = 1;
+        button.style.pointerEvents = "auto";
+    }
+    
+}
+
+
 export async function fetchData(url, options) {
     try {
         const response = await fetch(url, options);
@@ -86,40 +142,35 @@ export function storeResponseData(reformattedData) {
 
 
 // Function to update task status using the API
-export async function updateTaskStatus(preResponseId, taskData) {
+export async function updateTaskStatus(preResponseId, userId, taskData) {
     try {
-        // showSpinner();  // to be called outside
-        // const taskData = JSON.parse(localStorage.getItem('tasks'));  // to be called outside
         const mergedData = mergeTaskArrays(taskData);
         const requestBody = {
             id: preResponseId,
             chosen: mergedData.chosen,
-            // done: mergedData.done,
-            // time: mergedData.time,
         };
-        const response = await fetch('/api/manage-tasks', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Q-RESPONSE-ID': preResponseId,
-            },
-            body: JSON.stringify(requestBody),
-        });
-        const { ok, status } = response;
-        if (!ok) {
-            throw new Error(JSON.stringify({
-                status: status,  // fix error object
-                response: await response.text(),
-            }));
-        }
-        const responseBody = await response.json();
-        console.log('Task updated successfully!\n', responseBody);
-        // hideSpinner();  // to be called outside
-    } catch (error) {
-        // hideSpinner();  // to be called outside
-        console.warn('Caught', error, '\nin updateTaskStatus');
-    }
-}
+        const fetchOpt = { method: 'PUT',
+            body: JSON.stringify(requestBody),  // unchanged, while fetch options are rewritten
+            headers: new Headers(),
+        };  /* end of defining fetch options */
+        fetchOpt.headers.set('content-type', 'application/json');
+        fetchOpt.headers.set('x-response-id', preResponseId);
+        fetchOpt.headers.set('x-user-id', userId);
+        const udTaskResp = await fetch('/api/manage-tasks', fetchOpt);
+        if (!udTaskResp.ok) {
+            const code =  udTaskResp.status;
+            const msg = await udTaskResp.text();
+            const udTaskErr = new Error();
+            udTaskErr.message = JSON.stringify({ code, msg });
+            udTaskErr.name = 'UpdateTaskError';
+            throw udTaskErr;
+        }  /* end of checking if updating task is ok */
+        const responseBody = await udTaskResp.json();
+        console.log('Tasks updated!\n', responseBody);
+    } catch (udTaskErr) {
+        console.warn('Caught', udTaskErr, '\nin updateTaskStatus');
+    }  /* end of catching task-updating error */
+}  /* end of updateTaskStatus */
 
 
 export function mergeTaskArrays(data, separator = '@') {
@@ -172,7 +223,7 @@ export function mergeTaskArrays(data, separator = '@') {
 
 
 // Function to get task status from the API
-export async function fetchTaskStatus(preResponseId) {
+export async function fetchTaskStatus(preResponseId, userId) {
     try {
         // showSpinner(); // put this outside
         const response = await fetch('/api/manage-tasks', {
@@ -180,6 +231,8 @@ export async function fetchTaskStatus(preResponseId) {
             headers: {
                 'Content-Type': 'application/json',
                 'Q-RESPONSE-ID': preResponseId,
+                'user-id': userId,
+
             }
         });
         const { ok, status } = response;
@@ -242,51 +295,29 @@ export function extractTaskData(responseBody, separator='@') {
     }
 }
 
-
-export async function confirmUser(identt, fragment) {  // not used
-    if (fragment === null) {
-        console.warn('Token is missing in attempt to confirm signup.');
-        return null;
-    }
-    const token = fragment.value;
+export async function fetchResponses(userId) {
     try {
-        const response = await identt.confirm(token, true);
-        netlifyIdentity.open();
-        return response;
-    }
-    catch(e) {
-        console.error(e);
-        netlifyIdentity.open();
-        showFlashMessage('Email could not be confirmed.');
+        const response = await fetch('/api/fetch-responses', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Q-RESPONSE-ID': userId,
+            }
+        });
+        const { ok, status } = response;
+        if (!ok) {
+            throw new Error(JSON.stringify({
+                status: status,  
+                response: await response.text(),
+            }));
+        }
+        const data = await response.json();
+        console.log('Responses fetched!\n', data);
+        localStorage.setItem(`${userId}:allResponses`, JSON.stringify(data));
+        return data;
+        
+    } catch (error) {
+        console.warn('Caught', error, '\nin fetchResponse');
         return null;
     }
-}
-
-
-export function checkFragment(name) {
-    let fragment = {};
-    const _split = window.location.hash.substring(1).split('=');
-    const exists = name === _split[0];
-    if (exists) {
-        fragment.name = name;
-        fragment.value = _split[1] || '';
-        return fragment;
-    } else {
-        return null;
-    }
-}
-
-
-export function showFlashMessage(message) {  // not used
-    const flashMessage = document.querySelector('div.modalContent div.flashMessage');
-    if (flashMessage === null) {
-        const container = document.createElement('div');
-        const header = document.querySelector('div.modalContent div.header') || document.querySelector('body');
-        container.classList.add('flashMessage', 'error');
-        container.textContent = message;
-        header.insertAdjacentHTML('afterEnd', container.outerHTML);
-    } else {
-        flashMessage.textContent = message;
-    }
-    return;
 }
