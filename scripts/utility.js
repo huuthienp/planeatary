@@ -5,12 +5,12 @@ export function handleOffcanvasClick(event) {
     const offcanvasNavbar = document.getElementById('offcanvasNavbar');
   
     // Hide offcanvas
-    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-    offcanvas.hide();
-  
+    const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+
     // Navigate if href exists
     if (targetHref && targetHref !== "#") {
-      window.location.href = targetHref;
+        offcanvasInstance.hide();
+        window.location.href = targetHref;
     }
   }
 
@@ -19,10 +19,10 @@ export function handleOffcanvasClickFromElement(linkElement) {
     const targetHref = linkElement.getAttribute('href');
     const offcanvasNavbar = document.getElementById('offcanvasNavbar');
     
-    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-    offcanvas.hide();
+    const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
     
     if (targetHref && targetHref !== "#") {
+        offcanvasInstance.hide();
         window.location.href = targetHref;
     }
 }
@@ -118,13 +118,37 @@ export function hasPostQuizCycle() {
     return sessionStorage.getItem('selectedCycle_post') !== null;
 }
 
+export function emptyStateDisplay(frame, content, img) {
+    frame.innerHTML = `<div class="void">
+    <p class="placeholder-glow  w-50">
+    <span class="placeholder w-40"></span>
+    <span class="placeholder w-55"></span>
+    <span class="placeholder w-100"></span>
+    <img src="" alt="..." class="myGif" style="display: none;" />
+    </p>
+    <p class="placeholder-glow w-100">
+    <span class="placeholder w-100"></span>
+    </p>
+    </div>`
+    // If the image is already loaded (from cache, for example), show it immediately.
+    const gifEl = frame.querySelector('.myGif');
+    if (gifEl.complete) {
+        frame.innerHTML = `<div class="void">${content} <img class="myGif" src="${img}" style="display: block;"></div>`;
+    } else {
+        // Otherwise, add an event listener to detect when it finishes loading.
+        gifEl.addEventListener('load', () => {
+            frame.innerHTML = `<div class="void">${content} <img class="myGif" src="${img}" style="display: block;"></div>`;
+        });
+    }
+}
+
 export async function logOut() {
-    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-    
     if (netlifyIdentity.gotrue.currentUser() !== null) {
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+        offcanvas.hide();
         let user = netlifyIdentity.gotrue.currentUser();
         const logoutResult = await user.logout();
-        offcanvas.hide();
         sessionStorage.removeItem('selectedCycle');
         console.log('User has been logged out!');
         window.location.href = "index.html";

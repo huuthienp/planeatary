@@ -27,7 +27,7 @@
                     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                         <div class="offcanvas-header" style="background-color: #096358;">
                             <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/><strong>PlanEATary</strong></h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" id='offcanvasCloseButton' autofocus></button>
                         </div>
                         <div class="offcanvas-body" style="background-color: #02897A;">
                             <ul class="navbar-nav justify-content-end align-items-center flex-grow-1 pe-3 gap-3">
@@ -60,10 +60,10 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item button-hide">
-                                    <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-dismiss="offcanvas" data-bs-target="#signInModal">Sign in</button>
+                                    <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signInModal" id="signIn">Sign in</button>
                                 </li>
                                 <li class="nav-item button-hide">
-                                    <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-dismiss="offcanvas" data-bs-target="#signUpModal">Sign up</button>
+                                    <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signUpModal" id="signUp">Sign up</button>
                                 </li>
                             </ul>
                         </div>
@@ -89,7 +89,7 @@
             </div>             
         </div>
         
-        <section class="container p-3">
+        <section class="container p-3" style="position: relative;">
             
             <div class="row d-flex justify-content-center">
                 <h2 style="text-align: center;">Promoting planetary health, one bite at a time</h2>
@@ -109,7 +109,7 @@
                                 <img src="./images/plug.png" class="card-img-top">
                                 <div class="card-body">
                                     <h5 class="card-title">Complete the Quiz</h5>
-                                    <p class="card-text">Let's see where you're kicking goals. Start the journey now!</p>
+                                    <p class="card-text">Start the journey to see where you kick the goal!</p>
                                 </div>
                             </div>
                         </div>
@@ -118,7 +118,7 @@
                                 <img src="./images/bulb.png" class="card-img-top">
                                 <div class="card-body">
                                     <h5 class="card-title">Design your Challenge</h5>
-                                    <p class="card-text">Complete 10 tasks to improve your score</p>
+                                    <p class="card-text">Complete many tasks to improve your score</p>
                                 </div>
                             </div>
                         </div>
@@ -127,7 +127,7 @@
                                 <img src="./images/leaveBulb.png" class="card-img-top">
                                 <div class="card-body">
                                     <h5 class="card-title">Complete the Challenge</h5>
-                                    <p class="card-text">Spend 2-3 weeks to complete your goal</p>
+                                    <p class="card-text">Spend around 2-3 weeks to reach your goal</p>
                                 </div>
                             </div>
                         </div>
@@ -136,7 +136,7 @@
                                 <img src="./images/hanger.png" class="card-img-top">
                                 <div class="card-body">
                                     <h5 class="card-title">Complete Post Quiz</h5>
-                                    <p class="card-text">Check how your score has been improved</p>
+                                    <p class="card-text">Check how your score has been improved so far</p>
                                 </div>
                             </div>
                         </div>
@@ -342,12 +342,12 @@
     </div>
     
     <!-- Sign In Modal-->
-    <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
+    <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="signInModalLabel">Sign In</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="signInClose"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Sign-In Form -->
@@ -370,7 +370,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="signInCloseBtn">Close</button>
                     <button type="button" class="btn btn-primary" id="signInButton">Sign In</button>
                 </div>
                 
@@ -382,7 +382,7 @@
 </div>
 
 <!-- Forgot Password Modal -->
-<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -407,7 +407,7 @@
 </div>
 
         <!-- Reset Password Modal -->
-        <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
+        <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -442,7 +442,7 @@
         </div>
 
 <!-- Sign Up Modal-->
-<div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
+<div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -550,10 +550,9 @@
         <span>Loading</span>
     </div>
 </section>
-<!-- already in head
-<script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
--->
+
 <script>
+
     document.getElementById('resetPasswordButton').addEventListener('click', function () {
         const resetEmailInput = document.getElementById('resetEmailInput');
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -659,7 +658,6 @@
             li.addEventListener('click', event => {
                 event.preventDefault();
                 const link = li.querySelector('a.nav-link'); 
-                
                 if (link) {
                     if (link.classList.contains('Disabled')) {
                         showToast(); 
@@ -667,8 +665,9 @@
                         handleOffcanvasClickFromElement(link);
                     }
                 }
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
                 offcanvas.hide();
+                
             });
         });
         
@@ -684,7 +683,7 @@
                         handleOffcanvasClickFromElement(link);
                     }
                 }
-                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
                 offcanvas.hide();
             });
         })
@@ -712,9 +711,8 @@
                 showAlert();
             } else {
                 handleOffcanvasClick(event);
-            }
-            
-            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            } 
+            const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
             offcanvas.hide();
         })
         
@@ -743,12 +741,23 @@
         var preObject = JSON.parse(localStorage.getItem('preResult'));
         
         if(netlifyIdentity.gotrue.currentUser() !== null) {
-            document.querySelectorAll(".home-hide").forEach(element => {
-                element.style.display = "flex";
-            });
-            document.querySelectorAll(".button-hide").forEach(element => {
-                element.style.display = "none";
-            });
+            const user = netlifyIdentity.gotrue.currentUser();
+            if (user) {
+                user.jwt().then(token => {
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                    } else {
+                        console.log("Token is valid.");
+                        document.querySelectorAll(".home-hide").forEach(element => {
+                            element.style.display = "flex";
+                        });
+                        document.querySelectorAll(".button-hide").forEach(element => {
+                            element.style.display = "none";
+                        });
+                    }
+                });
+            }
             if(preObject) {
                 enableFirstTimers();
             } else {
@@ -900,17 +909,23 @@
             return true;
         }
         
-        function showSignInModal() {
-
-            const signInModal = new bootstrap.Modal(document.getElementById('signInModal'));
-            signInModal.show();
-        }
 
         function hideSignInModal() {
             const signInModal = document.getElementById('signInModal');
             const modalInstance = bootstrap.Modal.getInstance(signInModal); 
             modalInstance.hide();
+            // Hide offcanvas
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvas.hide();
         }
+
+        document.getElementById('offcanvasCloseButton').addEventListener('click', (event) => {
+            event.preventDefault();
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvasInstance = new bootstrap.Offcanvas(offcanvasNavbar);
+            offcanvasInstance.hide();
+        });
 
         document.getElementById('logOut').addEventListener('click', async () => {
             if(confirm("Do you really want to sign out?") == true) {
@@ -920,7 +935,6 @@
             }
             
         });
-
         
         async function signInAndRedirect() {
             try {
@@ -977,7 +991,7 @@
                 myToast.show();
             }
         }
-        
+
         
         document.getElementById('signInButton').addEventListener('click', () => {
             const emailInput2 = document.getElementById('emailInput2');
@@ -1032,17 +1046,15 @@
 
 <!--Sign Up -->
 <script>
-    
-    function showSignUpModal() {
-        const signUpModal = new bootstrap.Modal(document.getElementById('signUpModal'));
-        signUpModal.style.display = 'flex';
-        signUpModal.show();
-    }
 
     function hideSignUpModal() {
         const signUpModal = document.getElementById('signUpModal');
         const modalInstance = bootstrap.Modal.getInstance(signUpModal); 
         modalInstance.hide();
+        // Hide offcanvas
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+        offcanvas.hide();
     }
 
     function validate_form() {
@@ -1141,22 +1153,23 @@
         }
     });
 </script>
-        <script defer type="module">  // delay loading video frame until scroll
-        const vdoFrm = document.querySelector('section.do-you-know iframe');
-        const imgUrl = 'https://i.ytimg.com/vi/nYe-ibIFxW4/sddefault.jpg';
-        const vdoUrl = 'https://www.youtube.com/embed/nYe-ibIFxW4?autoplay=0';
-        vdoFrm.style.background = `url('${imgUrl}') no-repeat center / cover`;
-        window.addEventListener('scroll', loadVideo, { passive: true });
-        function loadVideo() {  // for window scroll event
-            const frmRec = vdoFrm.getBoundingClientRect();
-            if (frmRec.top >= 0 && frmRec.bottom <= window.innerHeight && !vdoFrm.src) {
-                vdoFrm.style.removeProperty('background');
-                vdoFrm.src = vdoUrl;
-                window.removeEventListener('scroll', loadVideo);
-            }  // stop listener after video loaded
-        }  // end of loadVideo v1
-        </script>  <!-- end of video-loading script -->
-        <script defer type="module" src="./scripts/process-recovery.mjs"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  <!-- Bootstrap Javascript -->
-    </body>
+
+<script defer type="module">  // delay loading video frame until scroll
+    const vdoFrm = document.querySelector('section.do-you-know iframe');
+    const imgUrl = 'https://i.ytimg.com/vi/nYe-ibIFxW4/sddefault.jpg';
+    const vdoUrl = 'https://www.youtube.com/embed/nYe-ibIFxW4?autoplay=0';
+    vdoFrm.style.background = `url('${imgUrl}') no-repeat center / cover`;
+    window.addEventListener('scroll', loadVideo, { passive: true });
+    function loadVideo() {  // for window scroll event
+        const frmRec = vdoFrm.getBoundingClientRect();
+        if (frmRec.top >= 0 && frmRec.bottom <= window.innerHeight && !vdoFrm.src) {
+            vdoFrm.style.removeProperty('background');
+            vdoFrm.src = vdoUrl;
+            window.removeEventListener('scroll', loadVideo);
+        }  // stop listener after video loaded
+    }  // end of loadVideo v1
+</script>  <!-- end of video-loading script -->
+<script defer type="module" src="./scripts/process-recovery.mjs"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  <!-- Bootstrap Javascript -->
+</body>
 </html>
