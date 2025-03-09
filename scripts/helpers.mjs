@@ -226,15 +226,14 @@ export function mergeTaskArrays(data, separator = '@') {
 export async function fetchTaskStatus(preResponseId, userId) {
     try {
         // showSpinner(); // put this outside
-        const response = await fetch('/api/manage-tasks', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Q-RESPONSE-ID': preResponseId,
-                'user-id': userId,
-
-            }
-        });
+        const fetchOpt = { method: 'PUT',
+            body: JSON.stringify(requestBody),  // unchanged, while fetch options are rewritten
+            headers: new Headers(),
+        };  /* end of defining fetch options */
+        fetchOpt.headers.set('content-type', 'application/json');
+        fetchOpt.headers.set('x-response-id', preResponseId);
+        fetchOpt.headers.set('x-user-id', userId);
+        const response = await fetch('/api/manage-tasks', fetchOpt);
         const { ok, status } = response;
         if (!ok) {
             throw new Error(JSON.stringify({

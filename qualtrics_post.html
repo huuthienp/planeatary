@@ -195,14 +195,6 @@
                 import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick,
                     handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, hasPostQuizCycle, emptyStateDisplay, logOut } from './scripts/utility.js';
                 
-                var preObject = JSON.parse(localStorage.getItem('preResult'));
-                var preResult = preObject?.result;
-                var preResponseId = preObject?.responseId;
-                var postObject = JSON.parse(localStorage.getItem('postResult'));
-                var postResponseId = postObject?.responseId;
-                var postResult = postObject?.result;
-                var post_rec = postObject?.recordedDate;
-                
                 document.addEventListener("DOMContentLoaded", async () => {
                     
                     const nextButton = document.getElementById('nextButt');
@@ -326,9 +318,17 @@
                         const userId = user.id;
 
                         updateButton(nextButton, '#4e958d52', 'not-allowed');
+
+                        var preObject = JSON.parse(localStorage.getItem('preResult'));
+                        var preResult = preObject?.result;
+                        var preResponseId = preObject?.responseId;
+                        var postObject = JSON.parse(localStorage.getItem('postResult'));
+                        var postResponseId = postObject?.responseId;
+                        var postResult = postObject?.result;
+                        var post_rec = postObject?.recordedDate;
                         
-                        //handle a user directly from the history page
-                        var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
+                        // //handle a user directly from the history page
+                        // var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
                         let postQuiz = null;
                         let preQuiz = null;
                         
