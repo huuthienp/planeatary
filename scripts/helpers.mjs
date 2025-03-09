@@ -226,8 +226,7 @@ export function mergeTaskArrays(data, separator = '@') {
 export async function fetchTaskStatus(preResponseId, userId) {
     try {
         // showSpinner(); // put this outside
-        const fetchOpt = { method: 'PUT',
-            body: JSON.stringify(requestBody),  // unchanged, while fetch options are rewritten
+        const fetchOpt = { method: 'GET',
             headers: new Headers(),
         };  /* end of defining fetch options */
         fetchOpt.headers.set('content-type', 'application/json');
