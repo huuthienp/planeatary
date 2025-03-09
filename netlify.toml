@@ -3,10 +3,16 @@
 
 [[redirects]]
   from = '/api/recovery'
-  to = '.netlify/functions/recovery'
+  to = '/.netlify/functions/recovery'
   status = 200
 
 [[redirects]]
+  from = '/archive/*/*/*/*/*'
+  to = '/404.html'
+  status = 301
+  force = true
+
+[[redirects]]
   from = '/*'
-  to = '/index.html'
-  status = 404
+  to = '/404.html'
+  status = 301
