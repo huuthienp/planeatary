@@ -3,20 +3,40 @@ body {
   margin: 0;
   padding: 0;
   background-color: whitesmoke;
-  transition: background-color .5s;
+  animation: fadeInAnimation ease 3s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+      opacity: 0;
+  }
+
+  100% {
+      opacity: 1;
+  }
 }
 
 .Header {
+  display: flex;
   width: 100%;
+  position: relative;
   font-family: 'Poppins';
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
 .navbar {
   position: fixed !important;
-  width: 100% !important;
+  width: 100vw !important;
   z-index: 1000;
   top: 0;
+  background-color: black;
+}
+
+.wave {
+  position: absolute;
+  transform: rotate(-180deg);
 }
 
 .greet-user {
@@ -50,35 +70,33 @@ body {
 /* styles for larger screens */
 @media (min-width: 992px) {
 
-  .hero {
+  .hero-wave {
     position: relative;
     width: 100%;
     display: flex;
     text-align: left !important;
     align-items: center;
-    background: url('./images/welcome_background.png') center/cover no-repeat;
     margin: 0 auto;
+    padding-bottom: 0 !important;
   }
 
   .hero .herocontent {
     display: flex !important;
     margin: auto 0;
     flex-direction: row;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 20px !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* border-radius: 20px !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
   }
 
 
   .herocontent .hero-text {
     display: flex;
-    width: 60%;
+    width: 70%;
     height: auto;
     flex-wrap: wrap;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    padding: 40px 40px 40px 70px;
   }
 
   .hero-text h1 {
@@ -141,7 +159,7 @@ body {
     justify-content: space-between;
     flex-direction: row !important;
     padding: 2vmax;
-    background-color: #f9f9f9;
+    background-image: linear-gradient(#00abc9, #7cd7e7);
   }
 
   .do-you-know .d-content {
@@ -309,7 +327,7 @@ body {
   margin: 5vmax auto;
 }
 .button_next .next{
-  background-color: #02897A;
+  background-color: #00af8c;
   color: white;
   border: none;
   padding: 2vh 2vw;
@@ -348,7 +366,7 @@ body {
   font-size: 1rem !important;
   flex-direction: column;
   font-weight: 600;
-  color: #02897A;
+  color: #00af8c;
 }
 
 .button_next a:link {
@@ -371,7 +389,7 @@ body {
 .spinner {
   width: 100px;
   height: 100px;
-  background-color: #02897A;
+  background-color: #00af8c;
   border-radius: 50%;
   position: fixed;
   box-shadow: 0 0 30px 4px rgba(0, 0, 0, 0.5) inset,
@@ -482,7 +500,7 @@ body {
 .card_completed:focus {
   /* animation-play-state: paused !important; */
   box-shadow: 0 0.4rem 0.6rem rgb(43, 59, 52);
-  background-color: rgb(97, 223, 171); 
+  background-color: #00af8c8c; 
   cursor: pointer;
 }
 
@@ -572,19 +590,26 @@ body {
 }
 
 /*hero section*/
-.hero {
-  position: relative;
+
+.hero-wave {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5) 20%, #00af8c), url('./images/vegetables.png');
+  background-size: cover;
+  margin: 0 auto;
+  padding-top: 10vmax;
+  padding-left: 5vmax;
+  padding-right: 5vmax;
+  padding-bottom: 10vmax;
+}
+
+.hero {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: justify;
-  background: url('./images/welcome_background.png') center/cover no-repeat;
-  margin: 0 auto;
-  padding-top: 18vmax;
-  padding-left: 5vmax;
-  padding-right: 5vmax;
-  padding-bottom: 10vmax;
 }
 
 .hero .herocontent {
@@ -592,28 +617,26 @@ body {
   width: 100%;
   height: auto;
   z-index: 2;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 1rem;
-  box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.1);
+  /* border-radius: 1rem;
+  box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.1); */
 }
 
 .hero-text {
   display: flex;
-  padding: 30px;
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .hero-text h1 {
-  font-size: 30px;
+  font-size: 2.5rem;
   margin: 0 0 20px;
-  color: #333;
+  color: #fefffe;
 }
 
 .hero-text p {
-  font-size: 16px;
+  font-size: 1.5rem;
   margin: 0 0 20px;
-  color: #555;
+  color: #cee9e5;
 }
 
 .hero-text .herobtn {
@@ -627,7 +650,7 @@ body {
 }
 
 /*step section*/
-.step-section {
+/* .step-section {
   display: flex;
   text-align: center;
   background-color: #f9f9f9;
@@ -665,7 +688,7 @@ body {
 .step p {
   font-size: 14px;
   color: #555;
-}
+} */
 
 /*carousel section*/
 #carousel-section {
@@ -692,7 +715,7 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
-  background-color: #f9f9f9;
+  background-image: linear-gradient(#00abc9, #7cd7e7);
   text-align: justify;
 }
 
@@ -708,12 +731,12 @@ body {
 
 .do-you-know h2 {
   font-size: 1.5rem;
-  color: #333;
+  color: #1a1a1a;
 }
 
 .do-you-know p {
   font-size: 1rem;
-  color: #555;
+  color: #2b2a2a;
   margin-bottom: 1rem;
 }
 
@@ -724,7 +747,7 @@ body {
 
 .do-you-know ul li {
   font-size: 1em;
-  color: #555;
+  color: #2b2a2a;
   margin-bottom: 1rem;
 }
 
@@ -735,9 +758,11 @@ body {
 }
 
 .citation {
-  margin: 3vmax; 
-  font-size: 1em;
-  color: #555;
+  margin: 0 auto; 
+  padding: 0 2vmax;
+  font-size: 0.8rem;
+  color: #3a3a3a;
+  background-color: #7cd7e7;
 }
 
 .citation p {
@@ -747,7 +772,7 @@ body {
 /*Feedback*/
 .reflect-section {
   padding: 3rem 2rem;
-  margin: 2rem;
+  margin: 0 auto;
   text-align: left;
 }
 
@@ -817,11 +842,24 @@ body {
 }
 
 .acknowledgment {
-  margin-top: 10vmax;
+  display: flex;
+  flex-direction: column;
+  padding: 2vw 2vh;
+  justify-content: center;
+  background-image: linear-gradient(#f3f4f5, #06947875), url("./images/footerVeg.jpg");
 }
 
 .acknowledgment p {
   font-size: 0.9rem;
+}
+
+.acknowledgment ul {
+  list-style: none;
+}
+
+.acknowledgment li {
+  display: inline-block;
+  font-size: 0.8rem;
 }
 
 .icon {
@@ -883,7 +921,7 @@ body {
   margin: 0 auto;
 }
 .content .info_space p {
-  color: #02897A;
+  color: #00af8c;
 }
 .btn_next {
   display: flex;
@@ -894,7 +932,7 @@ body {
 }
 .btn_next .next {
   color: white;
-  background-color: #02897A;
+  background-color: #00af8c;
   font-family: 'Poppins';
   font-size: 1rem;
   text-align: center;
@@ -1069,7 +1107,7 @@ body {
   top: 70px;
   left: auto;
   font-family: 'Poppins';
-  color: #02897A; 
+  color: #00af8c; 
 }
 
 .toast-container {
@@ -1202,7 +1240,7 @@ body {
 .close:hover,
 .close:focus {
   cursor: pointer;
-  background-color: #02897A;  /* Use the brand color for hover */
+  background-color: #00af8c;  /* Use the brand color for hover */
   color: white;  /* Make the text color white for better contrast */
   transform: scale(1.1);  /* Increase size slightly on hover */
 }
@@ -1246,7 +1284,7 @@ body {
   padding: 1vh 2vw;
   border-radius: 0.5rem;
   border: none;
-  background-color: #02897A;
+  background-color: #00af8c;
   color: white;
 }
 
@@ -1270,8 +1308,8 @@ body {
 }
 .content .up .section {
   width: 50%;
-  border-right: 1.5rem solid #02897A;;
-  border-bottom: 1.5rem solid #02897A;;
+  border-right: 1.5rem solid #00af8c;
+  border-bottom: 1.5rem solid #00af8c;
   border-radius: 2rem;
 }
 .q-num {
@@ -1280,7 +1318,7 @@ body {
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   border: none;
-  background-color: #02897A;
+  background-color: #00af8c;
   color: white;
 }
 .qhead {
@@ -1295,8 +1333,8 @@ body {
 }
 .content .down .section {
   width: 50%;
-  border-right: 0.3rem solid #02897A;;
-  border-bottom: 0.3rem solid #02897A;;
+  border-right: 0.3rem solid #00af8c;
+  border-bottom: 0.3rem solid #00af8c;
   border-radius: 0.1rem;
 }
 
@@ -1327,7 +1365,7 @@ body {
 }
 #postQ {
   font-family: 'Poppins';
-  background-color: #02897A;
+  background-color: #00af8c;
   color: white;
   border: none;
   padding: 1vh 1vw;
@@ -1336,7 +1374,7 @@ body {
 
 #com-tasks {
   font-family: 'Poppins';
-  background-color: #02897A;
+  background-color: #00af8c;
   color: white;
   border: none;
   padding: 1vh 1vw;
@@ -1375,7 +1413,7 @@ body {
 }
 .result h1 {
     font-size: 2.1rem;
-    color: #02897A;
+    color: #00af8c;
 }
 
 .result .score {
@@ -1386,7 +1424,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 2vmax;
-  color: #02897A;
+  color: #00af8c;
   padding-bottom: 5vmax;
 }
 
@@ -1513,7 +1551,7 @@ body {
 .result .next-step {
     padding: 0.5vh 0;
     font-size: 1rem;
-    color: #02897A;
+    color: #00af8c;
 }
 
 .result .suggestion {
@@ -1523,7 +1561,7 @@ body {
 }
 
 .result .select-tasks {
-    background-color: #02897A;
+    background-color: #00af8c;
     color: white;
     padding: 2vh 1vw;
     border: none;
