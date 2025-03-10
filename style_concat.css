@@ -17,6 +17,7 @@ body {
   width: 100% !important;
   z-index: 1000;
   top: 0;
+  background-color: #028f73;
 }
 
 .greet-user {
