@@ -1,51 +1,61 @@
-import { CustomResponse } from '../../scripts/custom-classes.mjs';
 import { fetchData } from '../../scripts/helpers.mjs';
+
+const { env } = Netlify;
+const url = new URL(`https://${env.get('QDC_ID')}.qualtrics.com`);
+const respIdRegex = /^R_[a-zA-Z0-9]{15}$/;
+const userIdRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 
 export default async (request) => {
     try {  // validate user request and fetch task data from Qualtrics
-        const { headers: reqHeaders, method: reqMethod } = request;
-        const id = reqHeaders.get('q-response-id');
-        const userId = reqHeaders.get('user-id');
-        if (!id || !userId) {
-            const message = `Bad headers: ${id?id:'empty q-response-id'}, ${userId?userId:'empty user-id'}`;
-            console.error('[manage-tasks]', message);
-            return new CustomResponse(message, 400);
-        }
-        const { env } = Netlify;  // follow Netlify's documentation
-        const method = 'GET';
-        const url = new URL(`https://${env.get('QDC_ID')}.qualtrics.com`);
-        const headers = new Headers();
-        url.pathname = `/API/v3/imported-data-projects/${env.get('TASKS_IDP_ID')}/records/${id}`;
-        headers.set('accept', 'application/json');
-        headers.set('x-api-token', env.get('Q_API_TOKEN'));
-        const options = ({ method, headers });
-        let qResponse = await fetchData(url, options);
-        if (userId !== qResponse.result.userId) {
-            const message = 'User ID does not match!';
-            console.warn('[manage-tasks]', message);
-            return new CustomResponse(message, 401);
-        } // end of matching user ID
-        if ('PUT' === reqMethod.toUpperCase()) {
-            const reqJSON = await request.json();  // error caught below
-            validateTaskData(reqJSON);  // error caught below
+        /* check for required metadata */
+        const isPostPutMethod = ['POST', 'PUT'].includes(request.method.toUpperCase());
+        const reqJSON = isPostPutMethod ? await request.json() : {};  // error caught below if any
+        const respId = request.headers.get('x-response-id') ?? reqJSON.id;
+        const userId = request.headers.get('x-user-id') ?? reqJSON.userId;
+        const badMtdt = [];
+        if (!respIdRegex.test(respId)) { badMtdt.push(respId?respId:'missing response id'); }
+        if (!userIdRegex.test(userId)) { badMtdt.push(userId?userId:'missing user id'); }
+        if (badMtdt.length > 0) {
+            const msg = `Bad request: ${badMtdt.join(', ')}`;
+            console.error('[manage-tasks]', msg);
+            return new Response(msg, { status: 400 });
+        }  /* end of checking headers */
+        /* send GET request to Qualtrics */
+        url.pathname = `/API/v3/imported-data-projects/${env.get('TASKS_IDP_ID')}/records/${respId}`;
+        const fetchOpt = { method: 'GET', headers: new Headers() };
+        fetchOpt.headers.set('accept', 'application/json');
+        fetchOpt.headers.set('x-api-token', env.get('Q_API_TOKEN'));
+        let qResponse = await fetchData(url, fetchOpt);
+        if (userId === qResponse.result.userId) {
+            console.log(userId, 'authoriesd to manage tasks!');
+        } else {  // quiz response does not match user
+            const msg = 'Quiz response does not match user!';
+            console.warn('[manage-tasks]', msg, respId);
+            return new Response(msg, { status: 401 });
+        } /* end of matching user ID */
+        if (isPostPutMethod) {
+            /* send PUT request to Qualtrics */
+            validateTaskData(reqJSON);  // error caught below if any
             url.searchParams.append('nonDestructive', true);
-            options.method = reqMethod;
-            options.headers.set('content-type', 'application/json');
-            options.body = JSON.stringify(reqJSON);
-            qResponse = await fetchData(url, options);
-        }  // end of updating task data
-        console.log('[manage-tasks]', reqMethod, id);
-        return new CustomResponse(qResponse); // default status is 200
-    } catch (manageTaskError) {  // e.g. invalid task data, response not ok
-        console.error('[manage-tasks]', 'Caught:', manageTaskError);
-        const { message, status } = manageTaskError;
-        return new CustomResponse(message, status || 500);
-    }  // end of catching error when managing task
-};
+            fetchOpt.method = 'PUT';
+            fetchOpt.headers.set('content-type', 'application/json');
+            fetchOpt.body = JSON.stringify(reqJSON);
+            qResponse = await fetchData(url, fetchOpt);
+        }  /* end of updating task data */
+        console.log('[manage-tasks]', request.method, respId);
+        return Response.json(qResponse); // default status is 200
+    } catch (manaTaskErr) {  // e.g. invalid task data, response not ok
+        console.error('[manage-tasks]', 'Caught:', manaTaskErr);
+        return new Response(manaTaskErr.message, { status: manaTaskErr.status ?? 500 });
+    }  /* end of catching error when managing task */
+};  /* end of function handler */
 
 
-export const config = { method: ['GET', 'PUT'], path: '/api/manage-tasks' };
+export const config = {
+    method: ['GET', 'PUT', 'POST'],  // POST for navigator.sendBeacon
+    path: '/api/manage-tasks',
+};  /* end of config */
 
 
 function validateTaskData(data, requiredKeys = ['chosen']) {
