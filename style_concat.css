@@ -118,8 +118,8 @@ body {
     width: 100%;
     height: auto;
     z-index: 100;
-    top: -10%;
-    right: -8%;
+    /* top: -10%;
+    right: -8%; */
   }
 
   .herobtn {
@@ -596,7 +596,7 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5) 20%, #00af8c), url('./images/vegetables.png');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.75) 20%, #00af8c), url('./images/vegetables.png');
   background-size: cover;
   margin: 0 auto;
   padding-top: 10vmax;
