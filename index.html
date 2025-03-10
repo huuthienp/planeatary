@@ -12,333 +12,333 @@
     </head>
     <body>
         <div class="main-container">
-        </div>
-        <div class="Header">
-            <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-xl shadow" id="homie">
-                <div class="container-fluid">
-                    <a class="navbar-brand d-flex align-items-center" href="index.html">
-                        <img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/>
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                        <div class="offcanvas-header" style="background-color: #096358;">
-                            <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" id='offcanvasCloseButton' autofocus></button>
-                        </div>
-                        <div class="offcanvas-body" style="background-color: #028f73;">
-                            <ul class="navbar-nav justify-content-end align-items-center flex-grow-1 pe-3 gap-3">
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" data-bs-dismiss="offcanvas" href="index.html">Home</a>
-                                </li>
-                                <li class="nav-item dropdown home-hide">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa fa-edit"></i>  <strong>Quiz</strong>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item first-timer" aria-disabled="false" data-bs-dismiss="offcanvas" href="qualtrics_post.html">Post-quiz</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item home-hide">
-                                    <a class="nav-link first-timer" id="navChallenge" aria-disabled="false" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
-                                </li>
-                                <li class="nav-item home-hide">
-                                    <a class="nav-link first-timer" aria-disabled="false" data-bs-dismiss="offcanvas" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
-                                </li>
-                                <li class="nav-item home-hide">
-                                    <a class="nav-link first-timer" aria-disabled="false" data-bs-dismiss="offcanvas" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
-                                </li>
-                                <li class="nav-item dropdown home-hide">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
-                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item" href="account manage.html" data-bs-dismiss="offcanvas">My account</a></li>
-                                        <li><a class="dropdown-item" id="logOut">Log out</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item button-hide">
-                                    <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signInModal" id="signIn">Sign in</button>
-                                </li>
-                                <li class="nav-item button-hide">
-                                    <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signUpModal" id="signUp">Sign up</button>
-                                </li>
-                            </ul>
+            <div class="Header">
+                <!-- Sidebar -->
+                <nav class="navbar navbar-dark navbar-expand-xl shadow" id="homie">
+                    <div class="container-fluid">
+                        <a class="navbar-brand d-flex align-items-center" href="index.html">
+                            <img  src="./images/transparent_logo.png" height="80px" width="auto" class="d-inline-block align-text-top"/>
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                            <div class="offcanvas-header" style="background-color: #0b7a6d;">
+                                <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" id='offcanvasCloseButton' autofocus></button>
+                            </div>
+                            <div class="offcanvas-body" style="background-color: #028f73;">
+                                <ul class="navbar-nav justify-content-end align-items-center flex-grow-1 pe-3 gap-3">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" aria-current="page" data-bs-dismiss="offcanvas" href="index.html">Home</a>
+                                    </li>
+                                    <li class="nav-item dropdown home-hide">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa fa-edit"></i>  <strong>Quiz</strong>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                            <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
+                                            <li><a class="dropdown-item first-timer" aria-disabled="false" data-bs-dismiss="offcanvas" href="qualtrics_post.html">Post-quiz</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item home-hide">
+                                        <a class="nav-link first-timer" id="navChallenge" aria-disabled="false" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                    </li>
+                                    <li class="nav-item home-hide">
+                                        <a class="nav-link first-timer" aria-disabled="false" data-bs-dismiss="offcanvas" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                    </li>
+                                    <li class="nav-item home-hide">
+                                        <a class="nav-link first-timer" aria-disabled="false" data-bs-dismiss="offcanvas" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
+                                    </li>
+                                    <li class="nav-item dropdown home-hide">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
+                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                            <li><a class="dropdown-item" href="account manage.html" data-bs-dismiss="offcanvas">My account</a></li>
+                                            <li><a class="dropdown-item" id="logOut">Log out</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item button-hide">
+                                        <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signInModal" id="signIn">Sign in</button>
+                                    </li>
+                                    <li class="nav-item button-hide">
+                                        <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signUpModal" id="signUp">Sign up</button>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </nav>
-        </div>
-        
-        <!--Hero section at the top-->
-        <div class="hero">
-            <div class="herocontent shadow">
-                <div class="hero-text">
-                    <h1>Welcome to the PlanEATary Quest!</h1>
-                    <p>
-                        Embark on a delicious adventure to learn how we can create a more sustainable food system
-                        and improve our planet's health for current and future generations.
-                    </p>
-                    <button type="button" class="btn btn-success shadow-sm"><a class="herobtn">Get started</a></button>
-                </div>
-                <div class="hero-image">
-                    <img src="./images/welcome-removebg.png"/>  
-                </div>
-            </div>             
-        </div>
-        
-        <section class="container p-3" style="position: relative;">
+                </nav>
+            </div>
             
-            <div class="row d-flex justify-content-center">
-                <h2 style="text-align: center;">Promoting planetary health, one bite at a time</h2>
-                <div class="col-md-12 d-flex
-                justify-content-center">
+            <!--Hero section at the top-->
+            <div class="hero">
+                <div class="herocontent shadow">
+                    <div class="hero-text">
+                        <h1>Welcome to the PlanEATary Quest!</h1>
+                        <p>
+                            Embark on a delicious adventure to learn how we can create a more sustainable food system
+                            and improve our planet's health for current and future generations.
+                        </p>
+                        <button type="button" class="btn btn-success shadow-sm"><a class="herobtn">Get started</a></button>
+                    </div>
+                    <div class="hero-image">
+                        <img src="./images/welcome-removebg.png"/>  
+                    </div>
+                </div>      
+            </div>
+            
+            <section class="container p-3" style="position: relative;">
                 
-                <div class="carousel slide" id="carousel-section">
-                    <div class="carousel-indicators d-lg-none">
-                        <button type="button" data-bs-target="#carousel-section" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Complete the Quiz"></button>
-                        <button type="button" data-bs-target="#carousel-section" data-bs-slide-to="1" aria-label="Design your Challenge"></button>
-                        <button type="button" data-bs-target="#carousel-section" data-bs-slide-to="2" aria-label="Complete your Challenge"></button>
-                        <button type="button" data-bs-target="#carousel-section" data-bs-slide-to="3" aria-label="Complete Post Quiz"></button>
+                <div class="row d-flex justify-content-center">
+                    <h2 style="text-align: center;">Promoting planetary health, one bite at a time</h2>
+                    <div class="col-md-12 d-flex
+                    justify-content-center">
+                    
+                    <div class="carousel slide" id="carousel-section">
+                        <div class="carousel-indicators d-lg-none">
+                            <button type="button" data-bs-target="#carousel-section" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Complete the Quiz"></button>
+                            <button type="button" data-bs-target="#carousel-section" data-bs-slide-to="1" aria-label="Design your Challenge"></button>
+                            <button type="button" data-bs-target="#carousel-section" data-bs-slide-to="2" aria-label="Complete your Challenge"></button>
+                            <button type="button" data-bs-target="#carousel-section" data-bs-slide-to="3" aria-label="Complete Post Quiz"></button>
+                        </div>
+                        <div class="carousel-inner" id="c-steps">
+                            <div class="carousel-item active c-items">
+                                <div class="card" style="background-color: #D0F0C0;">
+                                    <img src="./images/plug.png" class="card-img-top">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Complete the Quiz</h5>
+                                        <p class="card-text">Start the journey to see where you kick the goal!</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item c-items">
+                                <div class="card" style="background-color: #aad693;">
+                                    <img src="./images/bulb.png" class="card-img-top">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Design your Challenge</h5>
+                                        <p class="card-text">Complete many tasks to improve your score</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item c-items">
+                                <div class="card" style="background-color: #95d376;">
+                                    <img src="./images/leaveBulb.png" class="card-img-top">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Complete the Challenge</h5>
+                                        <p class="card-text">Spend around 2-3 weeks to reach your goal</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item c-items">
+                                <div class="card" style="background-color: #729760;">
+                                    <img src="./images/hanger.png" class="card-img-top">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Complete Post Quiz</h5>
+                                        <p class="card-text">Check how your score has been improved so far</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev d-lg-none" type="button" style="color: #445839;" data-bs-target="#carousel-section" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next d-lg-none" type="button" style="color: #445839;" data-bs-target="#carousel-section" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
-                    <div class="carousel-inner" id="c-steps">
-                        <div class="carousel-item active c-items">
-                            <div class="card" style="background-color: #D0F0C0;">
-                                <img src="./images/plug.png" class="card-img-top">
-                                <div class="card-body">
-                                    <h5 class="card-title">Complete the Quiz</h5>
-                                    <p class="card-text">Start the journey to see where you kick the goal!</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item c-items">
-                            <div class="card" style="background-color: #aad693;">
-                                <img src="./images/bulb.png" class="card-img-top">
-                                <div class="card-body">
-                                    <h5 class="card-title">Design your Challenge</h5>
-                                    <p class="card-text">Complete many tasks to improve your score</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item c-items">
-                            <div class="card" style="background-color: #95d376;">
-                                <img src="./images/leaveBulb.png" class="card-img-top">
-                                <div class="card-body">
-                                    <h5 class="card-title">Complete the Challenge</h5>
-                                    <p class="card-text">Spend around 2-3 weeks to reach your goal</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item c-items">
-                            <div class="card" style="background-color: #729760;">
-                                <img src="./images/hanger.png" class="card-img-top">
-                                <div class="card-body">
-                                    <h5 class="card-title">Complete Post Quiz</h5>
-                                    <p class="card-text">Check how your score has been improved so far</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="carousel-control-prev d-lg-none" type="button" style="color: #445839;" data-bs-target="#carousel-section" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next d-lg-none" type="button" style="color: #445839;" data-bs-target="#carousel-section" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
                 </div>
             </div>
-        </div>
-    </section>
-    
-    <div class="b-example-divider"></div>
-    
-    <!--do you know section-->
-    <section class="do-you-know">
-        <div class="d-content">
-            <h2>DO YOU KNOW...?</h2>
-            <p>(1) Our global food system is contributing approximately one-third of greenhouse gas emissions.<br/>
-                (2) Experts have called for an urgent transformation to the way food is produced and consumed, including a population-wide shift to healthy and sustainable diets.</p>
-                
-                The PlanEATary Quest is a fun, interactive intervention that aims to help you:
-                <ul>
-                    <li>Identify how you can improve the way you’re interacting with our food system to promote human and planetary health.</li>
-                    <li>Adopt new healthy and environmentally sustainable food habits, inspired by a supportive and collegial approach.</li>
-                    <li>Reflect on the factors that help or hinder your environmentally sustainable food habits.</li>
-                </ul>
-            </div>
-            <div class="video">
-                <div class="ratio ratio-16x9">
-                    <!-- delay loading until scroll
-                    src="https://www.youtube.com/embed/nYe-ibIFxW4" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    -->
-                <iframe allow="clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" title="YouTube Video Player"></iframe>
-            </div>
-        </div>
-    </section>
-    <div class="citation">
-        <p>(1) Intergovernmental Panel on Climate Change (IPCC), Summary for Policymakers. Climate Change and Land: an IPCC special report on climate change, desertification, land degradation, sustainable land management, food security, and greenhouse gas fluxes in terrestrial ecosystems. 2019. Accessed: https://www.ipcc.ch/srccl/ (September, 2023).</p>
-        <p>(2) Willett, W., et al., Food in the Anthropocene: the EAT–Lancet Commission on healthy diets from sustainable food systems. The Lancet. 2019. 393(10170): p. 447-492.</p>
-    </div>
-    <!--Feedback section-->
-    <section class="reflect-section">
-        <h2><b>REFLECT: Tell us how you went!</b></h2>
-        <hr>
-        <h5><b>We'd love to learn about your journey on the PlanEATary Quest!</b></h4>
-            <p>
-                Please write a short reflection, thinking about the factors that helped or hindered your ability to complete the challenge. For example:
-            </p>
-            <ul>
-                <li>Your own motivation to change?</li>
-                <li>Your household - the people and living environment?</li>
-                <li>Your community?</li>
-                <li>Your Local Government Authority? (e.g., Any initiatives that promote more environmentally sustainable eating practices)</li>
-                <li>Your State or Territory Government?</li>
-            </ul>
-            <p>
-                If you would like to share your short reflection with us, we'd love to read it. Please submit your writing 
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdKqX8bxsmJlcy1mKSnv9kN2JyyElmt7ZC4-PICtAcMLANwQg/viewform?usp=sf_link" target="_blank">HERE</a>.
-            </p>
         </section>
-        <!--Last section - development team-->
         
-        <!-- <div class="background-content">
-            
-        </div> -->
         <div class="b-example-divider"></div>
         
-        <section class="container-fluid p-5">
-            <h2><b>BACKGROUND: How was the PlanEATary Quest developed?</b></h2>
-            <hr>
-            <div class="row d-flex">
-                <div class="people">
-                    <div class="person">
-                        <img src="./images/bulb.png" alt="Dr Liza Barbour">
-                        <p><strong>Dr Liza Barbour</strong><br>Monash University</p>
-                    </div>
-                    <div class="person">
-                        <img src="./images/bulb.png" alt="Sandy Murray">
-                        <p><strong>Sandy Murray</strong><br>University of Tasmania</p>
-                    </div>
+        <!--do you know section-->
+        <section class="do-you-know">
+            <div class="d-content">
+                <h2>DO YOU KNOW...?</h2>
+                <p>(1) Our global food system is contributing approximately one-third of greenhouse gas emissions.<br/>
+                    (2) Experts have called for an urgent transformation to the way food is produced and consumed, including a population-wide shift to healthy and sustainable diets.</p>
+                    
+                    The PlanEATary Quest is a fun, interactive intervention that aims to help you:
+                    <ul>
+                        <li>Identify how you can improve the way you’re interacting with our food system to promote human and planetary health.</li>
+                        <li>Adopt new healthy and environmentally sustainable food habits, inspired by a supportive and collegial approach.</li>
+                        <li>Reflect on the factors that help or hinder your environmentally sustainable food habits.</li>
+                    </ul>
                 </div>
-                <div class="d-block">
-                    <div id="carouselInterval" class="carousel slide carousel-dark p-carousel" data-bs-ride="carousel" data-bs-interval="7000">
-                        <div class="carousel-inner rounded-5 shadow-4-strong">
-                            <div class="carousel-item active">
-                                <img src="./images/bulb.png" class="d-block w-80"/>
-                                <div class="carousel-caption d-block">
-                                    <h5><strong>Dr Liza Barbour</strong></h5>
-                                    <p>Monash University</p>
-                                </div> 
-                            </div>
-                            <div class="carousel-item">
-                                <img src="./images/bulb.png" class="d-block w-80"/>
-                                <div class="carousel-caption d-block">
-                                    <h5><strong>Sandy Murray</strong></h5>
-                                    <p>University of Tasmania</p>
+                <div class="video">
+                    <div class="ratio ratio-16x9">
+                        <!-- delay loading until scroll
+                        src="https://www.youtube.com/embed/nYe-ibIFxW4" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        -->
+                    <iframe allow="clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" title="YouTube Video Player"></iframe>
+                </div>
+            </div>
+        </section>
+        <div class="citation">
+            <p>(1) Intergovernmental Panel on Climate Change (IPCC), Summary for Policymakers. Climate Change and Land: an IPCC special report on climate change, desertification, land degradation, sustainable land management, food security, and greenhouse gas fluxes in terrestrial ecosystems. 2019. Accessed: https://www.ipcc.ch/srccl/ (September, 2023).</p>
+            <p>(2) Willett, W., et al., Food in the Anthropocene: the EAT–Lancet Commission on healthy diets from sustainable food systems. The Lancet. 2019. 393(10170): p. 447-492.</p>
+        </div>
+        <!--Feedback section-->
+        <section class="reflect-section">
+            <h2><b>REFLECT: Tell us how you went!</b></h2>
+            <hr>
+            <h5><b>We'd love to learn about your journey on the PlanEATary Quest!</b></h4>
+                <p>
+                    Please write a short reflection, thinking about the factors that helped or hindered your ability to complete the challenge. For example:
+                </p>
+                <ul>
+                    <li>Your own motivation to change?</li>
+                    <li>Your household - the people and living environment?</li>
+                    <li>Your community?</li>
+                    <li>Your Local Government Authority? (e.g., Any initiatives that promote more environmentally sustainable eating practices)</li>
+                    <li>Your State or Territory Government?</li>
+                </ul>
+                <p>
+                    If you would like to share your short reflection with us, we'd love to read it. Please submit your writing 
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdKqX8bxsmJlcy1mKSnv9kN2JyyElmt7ZC4-PICtAcMLANwQg/viewform?usp=sf_link" target="_blank">HERE</a>.
+                </p>
+            </section>
+            <!--Last section - development team-->
+            
+            <!-- <div class="background-content">
+                
+            </div> -->
+            <div class="b-example-divider"></div>
+            
+            <section class="container-fluid p-5">
+                <h2><b>BACKGROUND: How was the PlanEATary Quest developed?</b></h2>
+                <hr>
+                <div class="row d-flex">
+                    <div class="people">
+                        <div class="person">
+                            <img src="./images/bulb.png" alt="Dr Liza Barbour">
+                            <p><strong>Dr Liza Barbour</strong><br>Monash University</p>
+                        </div>
+                        <div class="person">
+                            <img src="./images/bulb.png" alt="Sandy Murray">
+                            <p><strong>Sandy Murray</strong><br>University of Tasmania</p>
+                        </div>
+                    </div>
+                    <div class="d-block">
+                        <div id="carouselInterval" class="carousel slide carousel-dark p-carousel" data-bs-ride="carousel" data-bs-interval="7000">
+                            <div class="carousel-inner rounded-5 shadow-4-strong">
+                                <div class="carousel-item active">
+                                    <img src="./images/bulb.png" class="d-block w-80"/>
+                                    <div class="carousel-caption d-block">
+                                        <h5><strong>Dr Liza Barbour</strong></h5>
+                                        <p>Monash University</p>
+                                    </div> 
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="./images/bulb.png" class="d-block w-80"/>
+                                    <div class="carousel-caption d-block">
+                                        <h5><strong>Sandy Murray</strong></h5>
+                                        <p>University of Tasmania</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                </div>
-                <hr>
-                <div class="team">
-                    <div class="team-member">
-                        <img src="./images/bulb.png" alt="Nicole Senior">
-                        <p><strong>Nicole Senior</strong></p>
-                    </div>
-                    <div class="team-member">
-                        <img src="./images/bulb.png" alt="Sara Forbes">
-                        <p><strong>Sara Forbes</strong></p>
-                    </div>
-                    <div class="team-member">
-                        <img src="./images/bulb.png" alt="Nathan Cook">
-                        <p><strong>Nathan Cook</strong></p>
-                    </div>
-                    <div class="team-member">
-                        <img src="./images/bulb.png" alt="Aimee Bowles">
-                        <p><strong>Aimee Bowles</strong></p>
-                    </div>
-                    <div class="team-member">
-                        <img src="./images/bulb.png" alt="Grace Zadow">
-                        <p><strong>Grace Zadow</strong></p>
-                    </div>
-                </div>
-                <div>
-                    
-                    <div id="carouselTeam" class="carousel slide">
                         
-                        <div class="carousel-inner">
-                             
-                            <div class="carousel-item active">
-                                <div class="row">
-                                    <div class="col-sm-4 team-member">
-                                        <img src="./images/info.png" alt="Nicole Senior">
-                                        <p><strong>Nicole Senior</strong></p>
+                    </div>
+                    <hr>
+                    <div class="team">
+                        <div class="team-member">
+                            <img src="./images/bulb.png" alt="Nicole Senior">
+                            <p><strong>Nicole Senior</strong></p>
+                        </div>
+                        <div class="team-member">
+                            <img src="./images/bulb.png" alt="Sara Forbes">
+                            <p><strong>Sara Forbes</strong></p>
+                        </div>
+                        <div class="team-member">
+                            <img src="./images/bulb.png" alt="Nathan Cook">
+                            <p><strong>Nathan Cook</strong></p>
+                        </div>
+                        <div class="team-member">
+                            <img src="./images/bulb.png" alt="Aimee Bowles">
+                            <p><strong>Aimee Bowles</strong></p>
+                        </div>
+                        <div class="team-member">
+                            <img src="./images/bulb.png" alt="Grace Zadow">
+                            <p><strong>Grace Zadow</strong></p>
+                        </div>
+                    </div>
+                    <div>
+                        
+                        <div id="carouselTeam" class="carousel slide">
+                            
+                            <div class="carousel-inner">
+                                 
+                                <div class="carousel-item active">
+                                    <div class="row">
+                                        <div class="col-sm-4 team-member">
+                                            <img src="./images/info.png" alt="Nicole Senior">
+                                            <p><strong>Nicole Senior</strong></p>
+                                        </div>
+                                        <div class="col-sm-4 team-member">
+                                            <img src="./images/info.png" alt="Sara Forbes">
+                                            <p><strong>Sara Forbes</strong></p>
+                                        </div>
+                                        <div class="col-sm-4 team-member">
+                                            <img src="./images/info.png" alt="Nathan Cook">
+                                            <p><strong>Nathan Cook</strong></p>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-4 team-member">
-                                        <img src="./images/info.png" alt="Sara Forbes">
-                                        <p><strong>Sara Forbes</strong></p>
-                                    </div>
-                                    <div class="col-sm-4 team-member">
-                                        <img src="./images/info.png" alt="Nathan Cook">
-                                        <p><strong>Nathan Cook</strong></p>
+                                </div>
+                                
+                                <div class="carousel-item">
+                                    <div class="row">
+                                        <div class="col-sm-4 team-member">
+                                            <img src="./images/info.png" alt="Aimee Bowles">
+                                            <p><strong>Aimee Bowles</strong></p>
+                                        </div>
+                                        <div class="col-sm-4 team-member">
+                                            <img src="./images/info.png" alt="Grace Zadow">
+                                            <p><strong>Grace Zadow</strong></p>
+                                        </div>
+                                        <div class="col-sm-4 team-member">
+                                            <img src="./images/info.png" alt="Nicole Senior">
+                                            <p><strong>Nicole Senior</strong></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             
-                            <div class="carousel-item">
-                                <div class="row">
-                                    <div class="col-sm-4 team-member">
-                                        <img src="./images/info.png" alt="Aimee Bowles">
-                                        <p><strong>Aimee Bowles</strong></p>
-                                    </div>
-                                    <div class="col-sm-4 team-member">
-                                        <img src="./images/info.png" alt="Grace Zadow">
-                                        <p><strong>Grace Zadow</strong></p>
-                                    </div>
-                                    <div class="col-sm-4 team-member">
-                                        <img src="./images/info.png" alt="Nicole Senior">
-                                        <p><strong>Nicole Senior</strong></p>
-                                    </div>
-                                </div>
-                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselTeam" data-bs-slide="prev" style="color: #445839;">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselTeam" data-bs-slide="next" style="color: #445839;">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                            
                         </div>
-                        
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselTeam" data-bs-slide="prev" style="color: #445839;">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselTeam" data-bs-slide="next" style="color: #445839;">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                        
+                    </div>
+                    <div class="d-inline-flex flex-column mt-5 p-3 bd-highlight">
+                        <p>
+                            This resource was developed by this dedicated Working Group of seven volunteers, all dietitians and members of DA’s Food & Environment Leadership Committee. This project was funded by a grant from the International Congress of Dietetic Associations (ICDA) and led by grant applicants Dr Liza Barbour and Sandy Murray.
+                        </p>
+                        <p>
+                            We would like to acknowledge and thank Monash University dietetic students, Zi Wong, Jingjun (Phoebe) Wu, Wancin (Wendy) Tan, Halle Yip and Jessica Gleeson, and their supervisors Kathy Faulkner, Stacey Holden and Stefanie Carino for piloting this intervention with the wonderful team at Eastern Health in Victoria.
+                        </p>
+                        <p>
+                            For further information about the resources, intervention and evaluation, please contact: 
+                            <a href="mailto:liza.barbour@monash.edu" style="color: #007bff;">liza.barbour@monash.edu</a>.
+                        </p>
                     </div>
                 </div>
-                <div class="d-inline-flex flex-column mt-5 p-3 bd-highlight">
-                    <p>
-                        This resource was developed by this dedicated Working Group of seven volunteers, all dietitians and members of DA’s Food & Environment Leadership Committee. This project was funded by a grant from the International Congress of Dietetic Associations (ICDA) and led by grant applicants Dr Liza Barbour and Sandy Murray.
-                    </p>
-                    <p>
-                        We would like to acknowledge and thank Monash University dietetic students, Zi Wong, Jingjun (Phoebe) Wu, Wancin (Wendy) Tan, Halle Yip and Jessica Gleeson, and their supervisors Kathy Faulkner, Stacey Holden and Stefanie Carino for piloting this intervention with the wonderful team at Eastern Health in Victoria.
-                    </p>
-                    <p>
-                        For further information about the resources, intervention and evaluation, please contact: 
-                        <a href="mailto:liza.barbour@monash.edu" style="color: #007bff;">liza.barbour@monash.edu</a>.
-                    </p>
-                </div>
-            </div>
-            <footer class="acknowledgment">
-                <p>The PlanEATary Quest is brought to you by Dietitians Australia’s (DA) Food & Environment Interest group with support from the International Confederation of Dietetic Associations (ICDA).</p>
-                <p>We acknowledge the Traditional Owners of Country throughout Australia. We pay our respects to Elders past and present, and this respect extends to the knowledge and value systems required to maintain a truly sustainable food system here in Australia for over 60,000 years.</p>
-            </footer>
-        </section>
-    </div>
+                <footer class="acknowledgment">
+                    <p>The PlanEATary Quest is brought to you by Dietitians Australia’s (DA) Food & Environment Interest group with support from the International Confederation of Dietetic Associations (ICDA).</p>
+                    <p>We acknowledge the Traditional Owners of Country throughout Australia. We pay our respects to Elders past and present, and this respect extends to the knowledge and value systems required to maintain a truly sustainable food system here in Australia for over 60,000 years.</p>
+                </footer>
+            </section>
+        </div>
+        </div>
     
     <!-- Sign In Modal-->
     <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel">
@@ -612,6 +612,15 @@
     const spinner = document.getElementById("spinner");
     
     document.addEventListener("DOMContentLoaded", async function() {
+        // const nav = document.querySelector('.navbar');
+        // const wave = document.querySelector('.wave');
+        
+        // // Retrieve the computed style of the top element
+        // const computedStyle = window.getComputedStyle(nav);
+        // const topHeight = computedStyle.getPropertyValue('height');
+        
+        // // Apply it to the bottom div
+        // wave.style.top = `${nav.offsetHeight - 1}px`;
 
         //ensure the data's cycle selected from history page is always removed
         sessionStorage.removeItem('selectedCycle');
