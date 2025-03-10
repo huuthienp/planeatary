@@ -23,11 +23,11 @@
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                            <div class="offcanvas-header" style="background-color: #0b7a6d;">
+                            <div class="offcanvas-header" style="background-color: black;">
                                 <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" id='offcanvasCloseButton' autofocus></button>
                             </div>
-                            <div class="offcanvas-body" style="background-color: #028f73;">
+                            <div class="offcanvas-body" style="background-color: black;">
                                 <ul class="navbar-nav justify-content-end align-items-center flex-grow-1 pe-3 gap-3">
                                     <li class="nav-item">
                                         <a class="nav-link active" aria-current="page" data-bs-dismiss="offcanvas" href="index.html">Home</a>
@@ -36,7 +36,7 @@
                                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                         </a>
-                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: black;">
                                             <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
                                             <li><a class="dropdown-item first-timer" aria-disabled="false" data-bs-dismiss="offcanvas" href="qualtrics_post.html">Post-quiz</a></li>
                                         </ul>
@@ -52,7 +52,7 @@
                                     </li>
                                     <li class="nav-item dropdown home-hide">
                                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
-                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: black;">
                                             <li><a class="dropdown-item" href="account manage.html" data-bs-dismiss="offcanvas">My account</a></li>
                                             <li><a class="dropdown-item" id="logOut">Log out</a></li>
                                         </ul>
@@ -69,23 +69,31 @@
                     </div>
                 </nav>
             </div>
-            
+              
             <!--Hero section at the top-->
-            <div class="hero">
-                <div class="herocontent shadow">
-                    <div class="hero-text">
-                        <h1>Welcome to the PlanEATary Quest!</h1>
-                        <p>
-                            Embark on a delicious adventure to learn how we can create a more sustainable food system
-                            and improve our planet's health for current and future generations.
-                        </p>
-                        <button type="button" class="btn btn-success shadow-sm"><a class="herobtn">Get started</a></button>
+            <section>
+                <div class="hero-wave">
+                    <div class="hero">
+                        <div class="herocontent">
+                            <div class="hero-text">
+                                <h1>Welcome to the PlanEATary Quest!</h1>
+                                <p>
+                                    Embark on a delicious adventure to learn how we can create a more sustainable food system
+                                    and improve our planet's health for current and future generations.
+                                </p>
+                                <button type="button" class="btn btn-primary shadow"><a class="herobtn"><h3>Get started</h3></a></button>
+                            </div>
+                            <div class="hero-image">
+                                <img src="./images/forhome.png"/>  
+                            </div>
+                        </div>
                     </div>
-                    <div class="hero-image">
-                        <img src="./images/welcome-removebg.png"/>  
-                    </div>
-                </div>      
-            </div>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                    <path fill="#04ffcdf5" fill-opacity="1" d="M0,160L24,138.7C48,117,96,75,144,74.7C192,75,240,117,288,112C336,107,384,53,432,37.3C480,21,528,43,576,80C624,117,672,171,720,165.3C768,160,816,96,864,74.7C912,53,960,75,1008,117.3C1056,160,1104,224,1152,245.3C1200,267,1248,245,1296,240C1344,235,1392,245,1416,250.7L1440,256L1440,0L1416,0C1392,0,1344,0,1296,0C1248,0,1200,0,1152,0C1104,0,1056,0,1008,0C960,0,912,0,864,0C816,0,768,0,720,0C672,0,624,0,576,0C528,0,480,0,432,0C384,0,336,0,288,0C240,0,192,0,144,0C96,0,48,0,24,0L0,0Z">
+                    </path>
+                </svg>
+            </section>
             
             <section class="container p-3" style="position: relative;">
                 
@@ -202,11 +210,8 @@
                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSdKqX8bxsmJlcy1mKSnv9kN2JyyElmt7ZC4-PICtAcMLANwQg/viewform?usp=sf_link" target="_blank">HERE</a>.
                 </p>
             </section>
+
             <!--Last section - development team-->
-            
-            <!-- <div class="background-content">
-                
-            </div> -->
             <div class="b-example-divider"></div>
             
             <section class="container-fluid p-5">
@@ -332,13 +337,19 @@
                         </p>
                     </div>
                 </div>
-                <footer class="acknowledgment">
-                    <p>The PlanEATary Quest is brought to you by Dietitians Australia’s (DA) Food & Environment Interest group with support from the International Confederation of Dietetic Associations (ICDA).</p>
-                    <p>We acknowledge the Traditional Owners of Country throughout Australia. We pay our respects to Elders past and present, and this respect extends to the knowledge and value systems required to maintain a truly sustainable food system here in Australia for over 60,000 years.</p>
-                </footer>
             </section>
         </div>
-        </div>
+        <section>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#f3f4f5" fill-opacity="1" d="M0,32L40,69.3C80,107,160,181,240,181.3C320,181,400,107,480,74.7C560,43,640,53,720,69.3C800,85,880,107,960,128C1040,149,1120,171,1200,165.3C1280,160,1360,128,1400,112L1440,96L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path></svg>
+            <footer class="acknowledgment">
+                <p>The PlanEATary Quest is brought to you by Dietitians Australia’s (DA) Food & Environment Interest group with support from the International Confederation of Dietetic Associations (ICDA).</p>
+                <p>We acknowledge the Traditional Owners of Country throughout Australia. We pay our respects to Elders past and present, and this respect extends to the knowledge and value systems required to maintain a truly sustainable food system here in Australia for over 60,000 years.</p>
+                <p>Photo by Jo Sonn on <a href="https://unsplash.com/photos/cooked-rice-with-vegetable-salad-in-brown-wooden-bowl-M-tzZD5z720">Unsplash</a></p>
+                <p>Photo by Brenda Godinez on <a href="https://unsplash.com/photos/slice-strawberry-fruit-on-fruit-shake-with-petaled-flowers-nkHBFwVBzkg">Unsplash</a></p>
+                <p>Photo by Chantal Garnier on <a href="https://unsplash.com/photos/variety-of-vegetables-910GanwBoew">Unsplash</a></p>
+            </footer>
+        </section>
+    </div>
     
     <!-- Sign In Modal-->
     <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel">
@@ -612,15 +623,20 @@
     const spinner = document.getElementById("spinner");
     
     document.addEventListener("DOMContentLoaded", async function() {
-        // const nav = document.querySelector('.navbar');
-        // const wave = document.querySelector('.wave');
+        const nav = document.querySelector('.navbar');
+        const wave = document.querySelector('.wave');
+        const heroWave = document.querySelector('.hero-wave');
         
-        // // Retrieve the computed style of the top element
-        // const computedStyle = window.getComputedStyle(nav);
-        // const topHeight = computedStyle.getPropertyValue('height');
+        // Retrieve the computed style of the top element
+        const computedNav = window.getComputedStyle(nav);
+        //const computedWave = window.getComputedStyle(wave);
+        //const computedHeroWave = window.getComputedStyle(heroWave);
         
-        // // Apply it to the bottom div
-        // wave.style.top = `${nav.offsetHeight - 1}px`;
+        // Apply them 
+        heroWave.style.marginTop = `${nav.offsetHeight}px`;
+        //wave.style.height = `${1380 - heroWave.offsetHeight}px`;
+        //wave.style.width = `${2070 - heroWave.offsetwidth}px`;
+        wave.style.marginTop = `${nav.offsetHeight}px`;
 
         //ensure the data's cycle selected from history page is always removed
         sessionStorage.removeItem('selectedCycle');
