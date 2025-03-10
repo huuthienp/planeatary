@@ -15,7 +15,7 @@
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #00af8c;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -29,7 +29,7 @@
                             <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>planeatary</h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
-                        <div class="offcanvas-body" style="background-color: #02897A;">
+                        <div class="offcanvas-body" style="background-color: #00af8c;">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
                                     <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
@@ -335,7 +335,7 @@
                     await delay(2000);
                     restartBtn.removeAttribute("disabled");
                     restartBtn.innerHTML = 'Restart the cycle';
-                    updateButton(restartBtn, '#02897A', 'pointer');
+                    updateButton(restartBtn, '#00af8c', 'pointer');
                 }
                 
                 const anchors = [
@@ -456,7 +456,7 @@
                     
                     if (preObject && !postObject) {
                         updateAnchors(anchors, hrefs);
-                        updateButton(nextButton, '#02897A', 'pointer');
+                        updateButton(nextButton, '#00af8c', 'pointer');
                         quizFrame.style.display = 'none';
                         emptyStateDisplay(quizSpan, "You have already taken the pre-quiz! Let's continue!", "./images/thumbs-up.gif");
                         //await updateResponseHistory(preObject, user)
@@ -466,7 +466,7 @@
                     } else if (preObject && postObject) {
                         document.getElementById("navPost-quiz").classList.remove('Disabled');
                         updateAnchors(anchors, hrefs);
-                        updateButton(nextButton, '#02897A', 'pointer');
+                        updateButton(nextButton, '#00af8c', 'pointer');
                         quizFrame.style.display = 'none';
                         emptyStateDisplay(quizSpan, 'You have pull everything off! It is time to start over this amazing journey!', "./images/thumbs-up.gif");
                         //await updateResponseHistory(preObject, user)
@@ -543,7 +543,7 @@
                             await updateResponseHistory(JSON.parse(newValue), user, 'no');
                             setTimeout(() => {
                                 updateAnchors(anchors, hrefs);
-                                updateButton(nextButton, '#02897A', 'pointer');
+                                updateButton(nextButton, '#00af8c', 'pointer');
                             }, 2000);
                             quizFrame.style.display = 'none';
                             emptyStateDisplay(quizSpan, 'Thank you for your response! Please click see result!', "./images/thumbs-up.gif");

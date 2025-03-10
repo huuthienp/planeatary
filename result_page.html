@@ -17,7 +17,7 @@
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #00af8c;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -31,7 +31,7 @@
                             <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>planeatary</h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
-                        <div class="offcanvas-body" style="background-color: #02897A;">
+                        <div class="offcanvas-body" style="background-color: #00af8c;">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
                                     <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
@@ -749,7 +749,7 @@
                             //ch.classList.add('disabled');
                             
                             displayQuestions(postObject, 'POST');
-                            document.getElementById('postQ').style.backgroundColor = '#02897A';
+                            document.getElementById('postQ').style.backgroundColor = '#00af8c';
                             document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
                             document.querySelector("button.select-tasks").innerHTML = 'Back to <i class="fa fa-home"></i>';
@@ -775,7 +775,7 @@
                             
                             //display preresult by default
                             displayQuestions(preObject, 'PRE');
-                            document.getElementById('preQ').style.backgroundColor = '#02897A';   
+                            document.getElementById('preQ').style.backgroundColor = '#00af8c';   
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
                             document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
                             document.querySelector("a.nextB").href = 'manifesto_page.html';
@@ -832,7 +832,7 @@
                         
                         displayQuestions(preObject, 'PRE');
                         document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
-                        document.getElementById('preQ').style.backgroundColor = '#02897A';    
+                        document.getElementById('preQ').style.backgroundColor = '#00af8c';    
                     });
                     
                     document.getElementById('postQ').addEventListener('click', function() {
@@ -869,7 +869,7 @@
                             displayQuestions(postObject, 'POST');
                             document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
-                            document.getElementById('postQ').style.backgroundColor = '#02897A';    
+                            document.getElementById('postQ').style.backgroundColor = '#00af8c';    
                         }
                     });
                     
@@ -883,7 +883,7 @@
                             updateButton(document.getElementById('postQ'), 'rgba(200, 200, 200, 0.6)', 'not-allowed');
                             document.getElementById('postQ').style.color = 'rgb(97 94 94)';
                         }
-                        document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
+                        document.getElementById('com-tasks').style.backgroundColor = '#00af8c';    
                     });
                 } catch (err) {
                     //Debugging handling errors

@@ -309,7 +309,7 @@ body {
   margin: 5vmax auto;
 }
 .button_next .next{
-  background-color: #02897A;
+  background-color: #00af8c;
   color: white;
   border: none;
   padding: 2vh 2vw;
@@ -348,7 +348,7 @@ body {
   font-size: 1rem !important;
   flex-direction: column;
   font-weight: 600;
-  color: #02897A;
+  color: #00af8c;
 }
 
 .button_next a:link {
@@ -371,7 +371,7 @@ body {
 .spinner {
   width: 100px;
   height: 100px;
-  background-color: #02897A;
+  background-color: #00af8c;
   border-radius: 50%;
   position: fixed;
   box-shadow: 0 0 30px 4px rgba(0, 0, 0, 0.5) inset,
@@ -482,7 +482,7 @@ body {
 .card_completed:focus {
   /* animation-play-state: paused !important; */
   box-shadow: 0 0.4rem 0.6rem rgb(43, 59, 52);
-  background-color: rgb(97, 223, 171); 
+  background-color: #00af8c8c; 
   cursor: pointer;
 }
 
@@ -883,7 +883,7 @@ body {
   margin: 0 auto;
 }
 .content .info_space p {
-  color: #02897A;
+  color: #00af8c;
 }
 .btn_next {
   display: flex;
@@ -894,7 +894,7 @@ body {
 }
 .btn_next .next {
   color: white;
-  background-color: #02897A;
+  background-color: #00af8c;
   font-family: 'Poppins';
   font-size: 1rem;
   text-align: center;
@@ -1069,7 +1069,7 @@ body {
   top: 70px;
   left: auto;
   font-family: 'Poppins';
-  color: #02897A; 
+  color: #00af8c; 
 }
 
 .toast-container {
@@ -1202,7 +1202,7 @@ body {
 .close:hover,
 .close:focus {
   cursor: pointer;
-  background-color: #02897A;  /* Use the brand color for hover */
+  background-color: #00af8c;  /* Use the brand color for hover */
   color: white;  /* Make the text color white for better contrast */
   transform: scale(1.1);  /* Increase size slightly on hover */
 }
@@ -1246,7 +1246,7 @@ body {
   padding: 1vh 2vw;
   border-radius: 0.5rem;
   border: none;
-  background-color: #02897A;
+  background-color: #00af8c;
   color: white;
 }
 
@@ -1270,8 +1270,8 @@ body {
 }
 .content .up .section {
   width: 50%;
-  border-right: 1.5rem solid #02897A;;
-  border-bottom: 1.5rem solid #02897A;;
+  border-right: 1.5rem solid #00af8c;
+  border-bottom: 1.5rem solid #00af8c;
   border-radius: 2rem;
 }
 .q-num {
@@ -1280,7 +1280,7 @@ body {
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   border: none;
-  background-color: #02897A;
+  background-color: #00af8c;
   color: white;
 }
 .qhead {
@@ -1295,8 +1295,8 @@ body {
 }
 .content .down .section {
   width: 50%;
-  border-right: 0.3rem solid #02897A;;
-  border-bottom: 0.3rem solid #02897A;;
+  border-right: 0.3rem solid #00af8c;
+  border-bottom: 0.3rem solid #00af8c;
   border-radius: 0.1rem;
 }
 
@@ -1327,7 +1327,7 @@ body {
 }
 #postQ {
   font-family: 'Poppins';
-  background-color: #02897A;
+  background-color: #00af8c;
   color: white;
   border: none;
   padding: 1vh 1vw;
@@ -1336,7 +1336,7 @@ body {
 
 #com-tasks {
   font-family: 'Poppins';
-  background-color: #02897A;
+  background-color: #00af8c;
   color: white;
   border: none;
   padding: 1vh 1vw;
@@ -1375,7 +1375,7 @@ body {
 }
 .result h1 {
     font-size: 2.1rem;
-    color: #02897A;
+    color: #00af8c;
 }
 
 .result .score {
@@ -1386,7 +1386,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 2vmax;
-  color: #02897A;
+  color: #00af8c;
   padding-bottom: 5vmax;
 }
 
@@ -1513,7 +1513,7 @@ body {
 .result .next-step {
     padding: 0.5vh 0;
     font-size: 1rem;
-    color: #02897A;
+    color: #00af8c;
 }
 
 .result .suggestion {
@@ -1523,7 +1523,7 @@ body {
 }
 
 .result .select-tasks {
-    background-color: #02897A;
+    background-color: #00af8c;
     color: white;
     padding: 2vh 1vw;
     border: none;

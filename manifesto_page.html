@@ -16,7 +16,7 @@
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #00af8c;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -30,7 +30,7 @@
                             <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>planeatary</h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
-                        <div class="offcanvas-body" style="background-color: #02897A;">
+                        <div class="offcanvas-body" style="background-color: #00af8c;">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
                                     <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
@@ -154,7 +154,7 @@
         const good = document.getElementById("good");
         const bad = document.getElementById("notyet");
         good.style.backgroundColor = '#a9d1cd';
-        bad.style.backgroundColor = '#02897A';
+        bad.style.backgroundColor = '#00af8c';
         
         const modal = document.querySelector(".modal");
         const overlay = document.querySelector(".overlay");
@@ -242,7 +242,7 @@
                 if (task_counts >= 3) {
                     persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
                     persuade.style.color = 'black';
-                    updateButton(startButton, '#02897A', 'pointer');
+                    updateButton(startButton, '#00af8c', 'pointer');
 
                 } else {
                     persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
@@ -820,7 +820,7 @@
                 
                 // Event listener for "good" button
                 document.getElementById('good').addEventListener('click', async () => {
-                    good.style.backgroundColor = '#02897A';
+                    good.style.backgroundColor = '#00af8c';
                     bad.style.backgroundColor = '#a9d1cd';
                     var condition = (score) => score >= 3;
                     await renderQuestions(condition, preObject, userId);
@@ -833,7 +833,7 @@
                 // Event listener for "bad" button
                 document.getElementById('notyet').addEventListener('click', async () => {
                     good.style.backgroundColor = '#a9d1cd';
-                    bad.style.backgroundColor = '#02897A';
+                    bad.style.backgroundColor = '#00af8c';
                     var condition = (score) => score < 3;
                     await renderQuestions(condition, preObject, userId);
                     var tContent = document.querySelector(".task-content");

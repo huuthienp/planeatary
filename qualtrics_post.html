@@ -16,7 +16,7 @@
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #00af8c;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
@@ -30,7 +30,7 @@
                             <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>planeatary</h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
-                        <div class="offcanvas-body" style="background-color: #02897A;">
+                        <div class="offcanvas-body" style="background-color: #00af8c;">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
                                     <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
@@ -374,7 +374,7 @@
                                 postResult = postObject?.result ?? null;
                                 post_rec = postObject?.recordedDate ?? null;
                                 //await updateResponseHistory(postObject, user);
-                                updateButton(nextButton, '#02897A', 'pointer');
+                                updateButton(nextButton, '#00af8c', 'pointer');
                                 quizFrame.style.display = 'none'; 
                                 emptyStateDisplay(fallbackMessage, "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over", './images/in-love.gif');
                             } else if (!postObject || Object.keys(postObject).length === 0) {
@@ -473,7 +473,7 @@
                             quizFrame.style.display = 'none';
                             emptyStateDisplay(fallbackMessage, ">Thank you for your response! Click  see your result below", "./images/in-love.gif");
                             setTimeout(() => {
-                                updateButton(nextButton, '#02897A', 'pointer');
+                                updateButton(nextButton, '#00af8c', 'pointer');
                             }, 2000);
                         } catch(error) {
                             console.warn('Caught', error, '\nPost-quiz result is not found!');
