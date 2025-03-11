@@ -38,12 +38,12 @@ try {  // get recovery parameters and send request on button click
         newPwInp.value = '';
         confPwInp.value = '';
         removeFeedback(newPwInp, confPwInp, apiFb);
-        makeDispFlex(container).then(x=>console.log(x)).catch(e=>console.warn('Caught', e));
+        changeDisplay(container, 'flex', 200).then(x=>console.log(x)).catch(e=>console.warn('Caught', e));
     };  /* open modal in flex display and with no feedback or input */
     addPwResetBtn(clickOpenModal);
     /* Show modal */
     modal.show();
-    makeDispFlex(container).then(x=>console.log(x)).catch(e=>console.warn('Caught', e));
+    changeDisplay(container, 'flex', 200).then(x=>console.log(x)).catch(e=>console.warn('Caught', e));
 } catch(err) {
     console.error('Caught:', err);
 }  /* end of main try-catch */
@@ -122,9 +122,9 @@ function addPwResetBtn(clickHandler, target='#resetPasswordModal', text='Reset p
 }  /* end of addPwResetBtn */
 
 
-async function makeDispFlex(tag) {
-    await new Promise(x => setTimeout(x, 200));
-    tag.style.display = 'flex';
+async function changeDisplay(tag, display, timeMs) {
+    await new Promise(x => setTimeout(x, timeMs));
+    tag.style.display = display;
     const id = tag.id ? `#${tag.id}` : '';
     return `${tag.tagName}${id} displayed as ${tag.style.display}`;
-}  /* end of makeDispFlex */
+}  /* end of changeDisplay */
