@@ -90,7 +90,7 @@
                 </div>
             </div>
         </div>
-        <footer class="footer" style="position: fixed; bottom: 0;">
+        <footer class="footer">
             <ul>
                 <li>Photo by <a href="https://unsplash.com/@elbaidak?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Elena Baidak</a> on <a href="https://unsplash.com/photos/yellow-lemon-fruits-on-black-surface-hr3a-VnCIYY?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Unsplash</a></li>
             </ul>
@@ -119,7 +119,11 @@
                 </div>
                 <div class="modal_content">
                     <h2 id="modalTitle" style="padding: 0 20px;"></h2>
-                    <p id="inform" style="padding: 0 20px;"></p>
+                    <div class="modal-section">
+                        <img src="./images/plant.jpg" />
+                        <p id="inform" style="padding: 0 20px;"></p>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -687,7 +691,7 @@
             // Retrieve the computed style of the top element
             const computedNav = window.getComputedStyle(nav);
             // Apply them 
-            content.style.paddingTop = `${nav.offsetHeight + 100}px`;
+            content.style.paddingTop = `${nav.offsetHeight + 70}px`;
 
             const offcanvasNavbar = document.getElementById('offcanvasNavbar');
             const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');

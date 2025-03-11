@@ -293,7 +293,7 @@ body {
   }
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 1100px) {
   #homie .offcanvas-end {
     background-image: none !important;
   }
@@ -1160,6 +1160,13 @@ body {
   flex-direction: column;
   align-items: center;
   overflow: auto;
+}
+
+.modal-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 #visual_info {
