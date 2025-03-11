@@ -629,6 +629,7 @@ body {
   font-size: 2.5rem;
   margin: 0 0 20px;
   color: #fefffe;
+  font-weight: 600;
 }
 
 .hero-text p {
@@ -844,7 +845,18 @@ body {
   flex-direction: column;
   padding: 2vw 2vh;
   justify-content: center;
-  background-image: linear-gradient(#f3f4f5, #06947875), url("./images/footerVeg.jpg");
+  align-items: center;
+  background-image: linear-gradient(#e4e2e2, #06947875), url("./images/footerVeg.jpg");
+}
+
+.acknowledgment div {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.acknowledgment img {
+  width: 150px;
 }
 
 .acknowledgment p {
