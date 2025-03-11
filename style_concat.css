@@ -77,6 +77,11 @@ body {
 /* styles for larger screens */
 @media (min-width: 992px) {
 
+  #homie .offcanvas-end {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7) 20%, #00af8c), url('./images/vegetables.png') !important; 
+    background-size: cover;
+  }
+
   .offcanvas-end {
     background-image: none !important;
   }
@@ -285,6 +290,12 @@ body {
     text-align: center;
     font-size: 1.1rem;
     box-shadow: 0.1rem .16rem .3rem rgba(57, 58, 58, 0.6);
+  }
+}
+
+@media (min-width: 1000px) {
+  #homie .offcanvas-end {
+    background-image: none !important;
   }
 }
 

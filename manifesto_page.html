@@ -687,7 +687,7 @@
             // Retrieve the computed style of the top element
             const computedNav = window.getComputedStyle(nav);
             // Apply them 
-            content.style.paddingTop = `${nav.offsetHeight}px + 10vmax`;
+            content.style.paddingTop = `${nav.offsetHeight + 100}px`;
 
             const offcanvasNavbar = document.getElementById('offcanvasNavbar');
             const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
