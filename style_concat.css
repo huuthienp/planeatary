@@ -31,7 +31,7 @@ body {
   width: 100vw !important;
   z-index: 1000;
   top: 0;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .wave {
@@ -596,10 +596,9 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.75) 20%, #00af8c), url('./images/vegetables.png');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7) 20%, #00af8c), url('./images/vegetables.png');
   background-size: cover;
   margin: 0 auto;
-  padding-top: 10vmax;
   padding-left: 5vmax;
   padding-right: 5vmax;
   padding-bottom: 10vmax;
@@ -609,7 +608,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: justify;
 }
 
 .hero .herocontent {

@@ -22,12 +22,12 @@
                         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                            <div class="offcanvas-header" style="background-color: black;">
+                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-color: rgba(0, 0, 0);">
+                            <div class="offcanvas-header" style="background-color: rgba(0, 0, 0);">
                                 <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" id='offcanvasCloseButton' autofocus></button>
                             </div>
-                            <div class="offcanvas-body" style="background-color: black;">
+                            <div class="offcanvas-body">
                                 <ul class="navbar-nav justify-content-end align-items-center flex-grow-1 pe-3 gap-3">
                                     <li class="nav-item">
                                         <a class="nav-link active" aria-current="page" data-bs-dismiss="offcanvas" href="index.html">Home</a>
@@ -631,12 +631,14 @@
     document.addEventListener("DOMContentLoaded", async function() {
         const nav = document.querySelector('.navbar');
         const heroWave = document.querySelector('.hero-wave');
+        const hero = document.querySelector('.hero');
         
         // Retrieve the computed style of the top element
         const computedNav = window.getComputedStyle(nav);
         
         // Apply them 
-        heroWave.style.marginTop = `${nav.offsetHeight}px`;
+        heroWave.style.paddingTop = `${nav.offsetHeight}px + 10vmax`;
+        hero.style.marginTop = `${nav.offsetHeight}px`;
 
         //ensure the data's cycle selected from history page is always removed
         sessionStorage.removeItem('selectedCycle');
