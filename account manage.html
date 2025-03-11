@@ -18,7 +18,7 @@
 <body>
     <!-- Header Section -->
     <div class="Header">
-        <nav class="navbar navbar-dark navbar-expand-lg shadow">
+        <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#063a34d0, 20%, #0963587a), url('./images/ella-olsson.jpg'); background-size: cover;">
             <div class="container-fluid">
                 <a class="navbar-brand d-flex align-items-center" href="index.html">
                     <img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/>
@@ -26,12 +26,12 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                    <div class="offcanvas-header" style="background-color: #096358;">
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(#063a34d0, 20%, #0963587a), url('./images/ella-olsson.jpg'); background-size: cover;">
+                    <div class="offcanvas-header">
                         <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
-                    <div class="offcanvas-body" style="background-color: #028f73;">
+                    <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li class="nav-item">
                                 <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
@@ -40,7 +40,7 @@
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #00af8c;">
                                     <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
                                     <li><a class="dropdown-item" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
                                 </ul>
@@ -56,7 +56,7 @@
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
-                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #00af8c;">
                                     <li><a class="dropdown-item" href="account manage.html" data-bs-dismiss="offcanvas">My account</a></li>
                                     <li><a class="dropdown-item" id="logOut">Log out</a></li>
                                 </ul>
@@ -68,7 +68,7 @@
         </nav>
     </div>
     <div class="void-space"></div>
-    <div class="container-sm">
+    <div class="container-sm" style="padding-bottom: 2vmax;">
         <!-- Account Management Section -->
         <div id="account" class="account-page">
             <h1 class="display-5">Manage Your Account</h1>
@@ -147,45 +147,50 @@
                 <div id="form_validate_msg"></div>
                 <button type="submit" class="btn btn-primary">Save Changes</button>
             </form>
-            
-            <!-- spinner overlay-->
-            <section class="overlay hidden" id="spinnerOverlay">
-                <div class="spinner hidden" id="spinner">
-                </div>
-                <div>
-                    <span>Loading</span>
-                </div>
-            </section>
-            
-            <!-- Warning Toast -->
-            <div class="toast-container">
-                <div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            Please finish your very first quiz before further proceeding.
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Warning disabling -->
-            <div class="toast-container">
-                <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <h4>Well done!</h4>
-                            <p>It's a shame that you are not allowed to do more tasks after doing the post-quiz.</p>
-                            <hr>
-                            <p class="mb-0">Please restart our journey by restarting the pre-quiz.</p>
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                </div>
-            </div>
-            
         </div>
     </div>
+    <footer class="footer">
+        <ul>
+            <li>Photo by <a href="https://unsplash.com/@ellaolsson?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Ella Olsson</a> on <a href="https://unsplash.com/photos/assorted-fruit-and-seasoning-on-table-I-uYa5P-EgM?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Unsplash</a></li>
+        </ul>
+    </footer>
+
+    <!-- spinner overlay-->
+    <section class="overlay hidden" id="spinnerOverlay">
+        <div class="spinner hidden" id="spinner">
+        </div>
+        <div>
+            <span>Loading</span>
+        </div>
+    </section>
+    
+    <!-- Warning Toast -->
+    <div class="toast-container">
+        <div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Please finish your very first quiz before further proceeding.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Warning disabling -->
+    <div class="toast-container">
+        <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <h4>Well done!</h4>
+                    <p>It's a shame that you are not allowed to do more tasks after doing the post-quiz.</p>
+                    <hr>
+                    <p class="mb-0">Please restart our journey by restarting the pre-quiz.</p>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script>
         
