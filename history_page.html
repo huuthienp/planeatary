@@ -14,10 +14,10 @@
 </head>
 <body>
     
-    <div class="main-container">
+    <div class="main-container" style="width: 100vw; height: 100vh;">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#096358c7, 20%, #0963587e), url('./images/jakub-kapusnak.jpg'); background-size: cover;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#096358c7, 20%, #0963587e), url('./images/jakub-kapusnak.jpg'); background-size: cover; background-position: center;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/>
@@ -25,7 +25,7 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(#096358e1, 20%, #09635898), url('./images/jakub-kapusnak.jpg'); background-size: cover;">
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(#096358e1, 20%, #09635898), url('./images/jakub-kapusnak.jpg'); background-size: cover; background-position: center;">
                         <div class="offcanvas-header">
                             <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -71,7 +71,6 @@
                     </div>
                 </nav>
             </div>
-            <div class="void-space"></div>
             <div class="table-responsive-sm history-table hidden">
                 <div class="404 empty-state hidden">There is no information available</div>
                 <!--Table structure-->
@@ -99,17 +98,16 @@
                 </table>
                 
             </div>
-            <div class="btn-next hidden" style="display: flex; justify-content: space-evenly; padding-top: 3vmax;">
+            <div class="btn-next hidden" style="display: flex; justify-content: space-evenly; padding-top: 3vmax; padding-bottom: 3vmax;">
                 <a href="index.html"><button type="button" class="btn btn-success" style="width: 150px;">Back to <i class="fa fa-home"></i></button></a>
                 <button type="button" class="btn btn-success" style="width: 150px;" id="refresh">Refresh <i class="fa fa-refresh"></i></button>
             </div>
-            <footer class="footer">
-                <ul>
-                    <li>Photo by <a href="https://unsplash.com/@foodiesfeed?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Jakub Kapusnak</a> on <a href="https://unsplash.com/photos/top-view-photo-of-produce-stand-vnNFWKY7Tj4?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Unsplash</a></li>
-                </ul>
-            </footer>
         </div>
-        
+        <footer class="footer">
+            <ul>
+                <li>Photo by <a href="https://unsplash.com/@foodiesfeed?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Jakub Kapusnak</a> on <a href="https://unsplash.com/photos/top-view-photo-of-produce-stand-vnNFWKY7Tj4?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Unsplash</a></li>
+            </ul>
+        </footer>
         
         <!-- spinner overlay-->
         <section class="overlay hidden" id="spinnerOverlay">

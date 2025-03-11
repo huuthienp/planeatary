@@ -17,7 +17,7 @@
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#063a34d0, 20%, #0963587a), url('./images/amoon-ra.jpg'); background-size: cover;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#063a34d0, 20%, #0963587a), url('./images/amoon-ra.jpg'); background-size: cover; background-position: center;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/>
@@ -25,7 +25,7 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(#063a34d0, 20%, #0963587a), url('./images/amoon-ra.jpg'); background-size: cover;">
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(#063a34d0, 20%, #0963587a), url('./images/amoon-ra.jpg'); background-size: cover; background-position: center;">
                         <div class="offcanvas-header">
                             <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -88,68 +88,75 @@
                                 <div class="progress-value">
                                     <div id="Score">
                                         <div id="curr_score">0</div>
-                                        </hr style="border-width: 5px; color: white;">
-                                        <span id="total">60</span>
-                                    </div>
+                                    </hr style="border-width: 5px; color: white;">
+                                    <span id="total">60</span>
                                 </div>
                             </div>
-                            <p id="improvement"></p>
-                            <p class="next-step">Next step: Select 10 Tasks To Improve Your Scores!</p>
-                            <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
                         </div>
-                        <div class="btn-next">
+                        <p id="improvement"></p>
+                        <p class="next-step">Next step: Select 10 Tasks To Improve Your Scores!</p>
+                        <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
+                    </div>
+                    <div class="btn-next">
                         <a class="nextB" href="manifesto_page.html"><button type="button" class="btn btn-success select-tasks shadow-sm" style="width: 180px;">Select Tasks →</button></a>
-                        </div>
+                    </div>
                     
                 </div>
                 <div class="q">
                     <div></div>
+                    <footer class="footer">
+                        <ul>
+                            <li>Photo by <a href="https://unsplash.com/@amoonra?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">amoon ra</a> on <a href="https://unsplash.com/photos/sliced-vegetable-and-fruits-on-board-n8vDuIpGb0c?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></li>
+                        </ul>
+                    </footer>
                 </div>
             </div>
-            
-            <section class="overlay2 hidden" id="modalOverlay">
-                <div class="align2">
-                    <div class="modal2 hidden" id="taskModal"> 
-                        <div class="btn">
-                            <button class="close">x</button>
-                        </div>
-                        <div class="modal_content">
-                            <h2 id="modalTitle" style="padding: 0 20px;"></h2>
-                            <p id="modalDescription" style="padding: 0 20px;"></p>
-                        </div>
+        </div>
+    </div>
+    <section class="overlay2 hidden" id="modalOverlay">
+        <div class="align2">
+            <div class="modal2 hidden" id="taskModal"> 
+                <div class="btn">
+                    <button class="close">x</button>
+                </div>
+                <div class="modal_content">
+                    <h2 id="modalTitle" style="padding: 0 20px;"></h2>
+                    <div class="modal-section">
+                        <img src="./images/plant.jpg" />
+                        <p id="modalDescription" style="padding: 0 20px;"></p>
                     </div>
-                </div>
-            </section>
-            
-            <!-- spinner overlay-->
-            <section class="overlay hidden" id="spinnerOverlay">
-                <div class="spinner hidden" id="spinner">
-                </div>
-                <div>
-                    <span>Loading</span>
-                </div>
-            </section>
-
-            <!-- Warning disabling -->
-            <div class="toast-container">
-                <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <h4>You pulled off this cycle!</h4>
-                            <p>It is quite a shame that you are not allowed to do more tasks after doing the post-quiz.</p>
-                            <hr>
-                            <p class="mb-0">Please start over this beautiful journey at pre-quiz page!</p>
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    <div class="modal-footer">
+                        <footer>
+                            Blah Blah Blah
+                        </footer>
                     </div>
                 </div>
             </div>
         </div>
-        <footer class="footer">
-            <ul>
-                <li>Photo by <a href="https://unsplash.com/@amoonra?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">amoon ra</a> on <a href="https://unsplash.com/photos/sliced-vegetable-and-fruits-on-board-n8vDuIpGb0c?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></li>
-            </ul>
-        </footer>
+    </section>
+    
+    <!-- spinner overlay-->
+    <section class="overlay hidden" id="spinnerOverlay">
+        <div class="spinner hidden" id="spinner">
+        </div>
+        <div>
+            <span>Loading</span>
+        </div>
+    </section>
+    
+    <!-- Warning disabling -->
+    <div class="toast-container">
+        <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <h4>You pulled off this cycle!</h4>
+                    <p>It is quite a shame that you are not allowed to do more tasks after doing the post-quiz.</p>
+                    <hr>
+                    <p class="mb-0">Please start over this beautiful journey at pre-quiz page!</p>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
     </div>
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
@@ -261,6 +268,7 @@
             
                 function displayQuestions(questionsData, type) {
                     
+                    document.querySelector("div.q").style.height = "5%";
                     cardContainer.innerHTML = ''; 
                     comparison.innerHTML = ''; 
                     header.innerHTML='';
@@ -356,7 +364,7 @@
                     comparison.innerHTML = ''; 
                     header.innerHTML='';
                     completion_date.innerHTML='';
-                    
+                    document.querySelector("div.q").style.height = "80%";
                     // Remove next step, suggestion, and select-tasks button if display tasks
                     const tohide = [
                     'div.circle',
@@ -534,6 +542,14 @@
                 
             
             document.addEventListener("DOMContentLoaded", async function() {
+
+                const nav = document.querySelector('.navbar');
+                const content = document.querySelector('.m-content');
+
+                // Retrieve the computed style of the top element
+                const computedNav = window.getComputedStyle(nav);
+                // Apply them 
+                content.style.paddingTop = `${nav.offsetHeight + 60}px`;
 
                 let startTime = Date.now();
                 const condition = [false, startTime];

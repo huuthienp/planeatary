@@ -1,4 +1,6 @@
 body {
+  width: 100vw;
+  height: 100vh;
   font-family: 'Poppins' !important;
   margin: 0;
   padding: 0;
@@ -38,6 +40,7 @@ body {
   bottom: 0;
   width: 100%;
   padding: 2vmax;
+  font-size: 0.8rem;
   background-color: #e4e2e2;
 }
 
@@ -76,6 +79,11 @@ body {
 
 /* styles for larger screens */
 @media (min-width: 992px) {
+
+  #homie .offcanvas-end {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7) 20%, #00af8c), url('./images/vegetables.png') !important; 
+    background-size: cover;
+  }
 
   .offcanvas-end {
     background-image: none !important;
@@ -145,7 +153,6 @@ body {
   .m-content {
     display: flex;
     justify-content: space-between;
-    padding: 15vh 0 !important;
     gap: 2vmax;
     flex-direction: column;
   }
@@ -154,8 +161,6 @@ body {
     display: flex;
     justify-content: space-evenly;
     align-items: flex-start;
-    margin-top: 5vmax !important;
-    padding-top: 5vmax !important;
     gap: 2vmax;
     flex-direction: column;
   }
@@ -280,19 +285,36 @@ body {
     color: dimgrey;
     width: 30% !important;
     padding: 2vh 1vw;
-    background: rgb(146 161 146 / 75%);
+    background: rgb(146 161 146);
     border: none;
     border-radius: 1rem;
     text-align: center;
     font-size: 1.1rem;
     box-shadow: 0.1rem .16rem .3rem rgba(57, 58, 58, 0.6);
   }
+
+  .modal-section {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-section img {
+    width: 50% !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  #homie .offcanvas-end {
+    background-image: none !important;
+  }
 }
 
 .main-container {
   display: flex;
   width: 100%;
-  height: 100%;
+  justify-content: space-between;
   margin: 0 auto;
   flex-direction: column;
   font-family: 'Poppins';
@@ -391,7 +413,6 @@ body {
 .m-content {
   display: flex;
   justify-content: space-between;
-  padding: 15vmax 0;
   gap: 2vmax;
   flex-direction: column;
 }
@@ -472,8 +493,7 @@ body {
   position: relative;
   overflow: auto;
   flex-wrap: wrap; 
-  min-height: 55%;
-  max-height: 72%;
+  min-height: 90%;
   width: 80%;
 }
 
@@ -1030,7 +1050,7 @@ body {
   flex-wrap: nowrap;
   white-space: nowrap;
   overflow: auto;
-  background-color: #02897957;
+  background-color: #94c7c1fc;
   border-radius: 20px;
   --bs-nav-link-color: #5f8771;
   --bs-nav-link-hover-color: white;
@@ -1153,6 +1173,24 @@ body {
   overflow: auto;
 }
 
+.modal-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-section img {
+  width: 100%;
+}
+
+.modal-footer {
+  width: 100%;
+  display: flex;
+  padding: 50px 0 !important;
+  justify-content: center !important;
+}
+
 #visual_info {
   width: 95%;
 }
@@ -1179,15 +1217,15 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 80%;
+  width: 90%;
   height: 100%;
 }
 
 
 .modal2 {
   display: flex;
-  width: 80%;
-  max-height: 80%;
+  width: 100%;
+  max-height: 90%;
   margin: 0 auto;
   border-radius: 0.5rem;
   justify-content: center;
@@ -1204,7 +1242,7 @@ body {
 
 
 #inform {
-  width: 80%;
+  width: 100%;
   max-height: 80vmax;
 }
 
@@ -1257,6 +1295,7 @@ body {
   width: 100%;
   justify-content: center;
   gap: 4vmax;
+  padding-bottom: 4vmax;
 }
 .next {
   font-size: 1rem;
@@ -1274,6 +1313,7 @@ body {
   align-items: flex-start;
   margin-top: 10vmax;
   padding-top: 10vmax;
+  padding-bottom: 10vmax;
   gap: 2vmax;
   flex-direction: column;
 }
@@ -1558,12 +1598,13 @@ body {
     gap: 1vmax;
     margin: 0 auto;
     justify-content: center;
+    padding-bottom: 4vmax;
 }
 .q {
     display: flex;
     width: 100%;
-    height: 100%;
     flex-direction: column;
+    justify-content: space-between;
     position: absolute;
     align-items: center;
 }
@@ -1602,7 +1643,6 @@ body {
   position: relative;
   padding: 0 5vw;
   top: 0;
-  height: 65vmax;
   overflow: hidden;
   overflow-y: auto;
 }
