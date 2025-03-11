@@ -22,8 +22,8 @@
                         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-color: rgba(0, 0, 0);">
-                            <div class="offcanvas-header" style="background-color: rgba(0, 0, 0);">
+                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7) 20%, #00af8c), url('./images/vegetables.png'); background-size: cover;">
+                            <div class="offcanvas-header">
                                 <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" id='offcanvasCloseButton' autofocus></button>
                             </div>
@@ -642,7 +642,7 @@
         
         // Apply them 
         heroWave.style.paddingTop = `${nav.offsetHeight}px + 10vmax`;
-        hero.style.marginTop = `${nav.offsetHeight}px`;
+        hero.style.marginTop = `${nav.offsetHeight}px + 2vmax`;
 
         //ensure the data's cycle selected from history page is always removed
         sessionStorage.removeItem('selectedCycle');

@@ -145,7 +145,6 @@ body {
   .m-content {
     display: flex;
     justify-content: space-between;
-    padding: 15vh 0 !important;
     gap: 2vmax;
     flex-direction: column;
   }
@@ -391,7 +390,6 @@ body {
 .m-content {
   display: flex;
   justify-content: space-between;
-  padding: 15vmax 0;
   gap: 2vmax;
   flex-direction: column;
 }
@@ -1257,6 +1255,7 @@ body {
   width: 100%;
   justify-content: center;
   gap: 4vmax;
+  padding-bottom: 2vmax;
 }
 .next {
   font-size: 1rem;
@@ -1274,6 +1273,7 @@ body {
   align-items: flex-start;
   margin-top: 10vmax;
   padding-top: 10vmax;
+  padding-bottom: 10vmax;
   gap: 2vmax;
   flex-direction: column;
 }
@@ -1602,7 +1602,6 @@ body {
   position: relative;
   padding: 0 5vw;
   top: 0;
-  height: 65vmax;
   overflow: hidden;
   overflow-y: auto;
 }

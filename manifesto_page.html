@@ -681,6 +681,14 @@
             const userId = user.id;
             console.log("your user id is ", userId);
 
+            const nav = document.querySelector('.navbar');
+            const content = document.querySelector('.m-content');
+        
+            // Retrieve the computed style of the top element
+            const computedNav = window.getComputedStyle(nav);
+            // Apply them 
+            content.style.paddingTop = `${nav.offsetHeight}px + 10vmax`;
+
             const offcanvasNavbar = document.getElementById('offcanvasNavbar');
             const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
             const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
