@@ -641,8 +641,8 @@
         const computedNav = window.getComputedStyle(nav);
         
         // Apply them 
-        heroWave.style.paddingTop = `${nav.offsetHeight}px + 10vmax`;
-        hero.style.marginTop = `${nav.offsetHeight}px + 2vmax`;
+        heroWave.style.paddingTop = `${nav.offsetHeight + 100}px`;
+        hero.style.marginTop = `${nav.offsetHeight + 100}px`;
 
         //ensure the data's cycle selected from history page is always removed
         sessionStorage.removeItem('selectedCycle');
