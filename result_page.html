@@ -535,6 +535,14 @@
             
             document.addEventListener("DOMContentLoaded", async function() {
 
+                const nav = document.querySelector('.navbar');
+                const content = document.querySelector('.m-content');
+
+                // Retrieve the computed style of the top element
+                const computedNav = window.getComputedStyle(nav);
+                // Apply them 
+                content.style.paddingTop = `${nav.offsetHeight + 100}px`;
+
                 let startTime = Date.now();
                 const condition = [false, startTime];
                 const bOverlay = document.getElementById("spinnerOverlay");
