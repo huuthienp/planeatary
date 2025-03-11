@@ -1297,7 +1297,7 @@ body {
   width: 100%;
   justify-content: center;
   gap: 4vmax;
-  padding-bottom: 2vmax;
+  padding-bottom: 4vmax;
 }
 .next {
   font-size: 1rem;

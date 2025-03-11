@@ -74,7 +74,7 @@
             </div>
             <div class="improvement">
                 <button id="good" class="shadow-sm">Good scores</button>
-                <button id="notyet" class="shadow-sm">Need improvement</button>
+                <button id="notyet" class="shadow-sm">Soon-to-be Good scores</button>
             </div>
             <div class="task-content" style="background-color: #08080880;">
                 <div class="q-task">
@@ -696,7 +696,8 @@
             // Retrieve the computed style of the top element
             const computedNav = window.getComputedStyle(nav);
             // Apply them 
-            content.style.paddingTop = `${nav.offsetHeight + 70}px`;
+            content.style.paddingTop = `${nav.offsetHeight + 100}px`;
+            content.style.paddingBottom = `${nav.offsetHeight + 100}px`;
 
             const offcanvasNavbar = document.getElementById('offcanvasNavbar');
             const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
