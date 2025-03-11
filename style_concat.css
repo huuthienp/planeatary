@@ -291,9 +291,20 @@ body {
     font-size: 1.1rem;
     box-shadow: 0.1rem .16rem .3rem rgba(57, 58, 58, 0.6);
   }
+
+  .modal-section {
+    display: flex;
+    flex-direction: column !important;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-section img {
+    width: 50% !important;
+  }
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 1200px) {
   #homie .offcanvas-end {
     background-image: none !important;
   }
@@ -1169,6 +1180,10 @@ body {
   align-items: center;
 }
 
+.modal-section img {
+  width: 100%;
+}
+
 #visual_info {
   width: 95%;
 }
@@ -1220,7 +1235,7 @@ body {
 
 
 #inform {
-  width: 80%;
+  width: 100%;
   max-height: 80vmax;
 }
 
