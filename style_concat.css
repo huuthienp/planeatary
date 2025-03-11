@@ -31,7 +31,14 @@ body {
   width: 100vw !important;
   z-index: 1000;
   top: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #096358ab;
+}
+
+.footer {
+  bottom: 0;
+  width: 100%;
+  padding: 2vmax;
+  background-color: #e4e2e2;
 }
 
 .wave {
@@ -70,6 +77,9 @@ body {
 /* styles for larger screens */
 @media (min-width: 992px) {
 
+  .offcanvas-end {
+    background-image: none !important;
+  }
   .hero-wave {
     position: relative;
     width: 100%;
@@ -115,7 +125,7 @@ body {
 
   .hero-image img {
     position: relative;
-    width: 100%;
+    width: 90%;
     height: auto;
     z-index: 100;
     /* top: -10%;
@@ -144,7 +154,8 @@ body {
     display: flex;
     justify-content: space-evenly;
     align-items: flex-start;
-    padding-top: 10vmax !important;
+    margin-top: 5vmax !important;
+    padding-top: 5vmax !important;
     gap: 2vmax;
     flex-direction: column;
   }
@@ -357,16 +368,15 @@ body {
 
 .content .wrap-up {
   display: flex;
-  width: 100%;
-  padding: 5vh 0;
+  padding: 5vh 2vw;
+  align-self: center;
   align-items: center;
   justify-content: center;
-  gap: 3vmax;
   font-family: 'Poppins';
-  font-size: 1rem !important;
   flex-direction: column;
   font-weight: 600;
-  color: #00af8c;
+  color: #00abc9;
+  border-radius: 1rem;
 }
 
 .button_next a:link {
@@ -648,47 +658,6 @@ body {
   display: none;
 }
 
-/*step section*/
-/* .step-section {
-  display: flex;
-  text-align: center;
-  background-color: #f9f9f9;
-  flex-direction: column !important;
-  padding: 50px 20px;
-}
-
-.step-section h2 {
-  font-size: 24px;
-  margin-bottom: 30px;
-  color: #333;
-}
-
-.steps {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-}
-
-.step {
-  max-width: 200px;
-  text-align: center;
-}
-
-.step img {
-  max-width: 100%;
-  height: auto;
-}
-
-.step h3 {
-  font-size: 18px;
-  margin-top: 10px;
-}
-
-.step p {
-  font-size: 14px;
-  color: #555;
-} */
-
 /*carousel section*/
 #carousel-section {
   display: flex;
@@ -847,6 +816,7 @@ body {
   justify-content: center;
   align-items: center;
   background-image: linear-gradient(#e4e2e2, #06947875), url("./images/footerVeg.jpg");
+  background-size: cover;
 }
 
 .acknowledgment div {
@@ -1302,7 +1272,8 @@ body {
   display: flex;
   justify-content: space-evenly;
   align-items: flex-start;
-  padding-top: 20vmax;
+  margin-top: 10vmax;
+  padding-top: 10vmax;
   gap: 2vmax;
   flex-direction: column;
 }
@@ -1755,12 +1726,26 @@ hr {
 }
 
 .background2 {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-end;
   position: fixed;
   bottom: 0;
   width: 100%;
   height: 50%;
   background-color: rgba(99, 93, 76, 0.753);
   z-index: -1;
+}
+
+.background2 div {
+  display: flex;
+  flex-direction: column;
+  width: 98%;
+  justify-content: flex-end;
+}
+
+.background2 div a {
+  color: rgb(77, 71, 71);
 }
 
 .not-found {
