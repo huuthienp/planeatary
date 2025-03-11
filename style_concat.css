@@ -40,6 +40,7 @@ body {
   bottom: 0;
   width: 100%;
   padding: 2vmax;
+  font-size: 0.8rem;
   background-color: #e4e2e2;
 }
 
@@ -1189,9 +1190,10 @@ body {
 
 .modal-footer {
   width: 100%;
-  padding: 100px 0;
+  display: flex;
+  padding: 50px 0 !important;
+  justify-content: center !important;
 }
-
 
 #visual_info {
   width: 95%;
@@ -1600,6 +1602,7 @@ body {
     gap: 1vmax;
     margin: 0 auto;
     justify-content: center;
+    padding-bottom: 4vmax;
 }
 .q {
     display: flex;
@@ -1607,7 +1610,6 @@ body {
     flex-direction: column;
     position: absolute;
     align-items: center;
-    padding-bottom: 4vmax;
 }
 .question {
     background-color: #fff;
