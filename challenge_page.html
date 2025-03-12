@@ -153,8 +153,8 @@
 
             const navPostQuiz = document.getElementById("navPost-quiz");
             
-            const showModal = (title, description) => {
-                const taskDescription = des.replace('target="_blank"', 'rel="noopener noreferrer"');
+            const showModal = (title, description, picture, footer) => {
+                const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
                 const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
                 modalTitle.textContent = title;
                 modalPic.src = picture;
