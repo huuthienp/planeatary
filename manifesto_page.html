@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Start Challenges</title>
 </head>
-<body style="background-image: linear-gradient(#060606ad, 20%, #f8f8f63b), url('./images/adalia-botha.jpg'); background-size: cover; background-position: center;">
-    <div class="main-container">
+<body style="background-image: linear-gradient(#060606ad, 20%, #f8f8f63b), url('./images/arturrro.jpg'); background-size: cover; background-position: center;">
+    <div class="main-container" style="height: 100%;">
         <div class="Header">
             <!-- Sidebar -->
             <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#465f01f6, 20%, #c8f3097e), url('./images/elena-baidak.jpg'); background-size: cover;">
@@ -92,8 +92,8 @@
         </div>
         <footer class="footer">
             <ul>
-                <li>Photo by <a href="https://unsplash.com/@adaliabotha?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Adalia Botha</a> on <a href="https://unsplash.com/photos/strawberries-on-persons-hand-GjQ1gdgWk24?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></li>
-                <li>Photo by <a href="https://unsplash.com/@elbaidak?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Elena Baidak</a> on <a href="https://unsplash.com/photos/yellow-lemon-fruits-on-black-surface-hr3a-VnCIYY?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Unsplash</a></li>
+                <li>Photo by <a href="https://unsplash.com/@artek123?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Arturrro</a> on <a href="https://unsplash.com/photos/shallow-focus-photography-of-strawberries-on-persons-palm-GdTLaWamFHw?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Unsplash</a></li>
+                <li>Photo by <a href="https://unsplash.com/@elbaidak?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Elena Baidak</a> on <a href="https://unsplash.com/photos/yellow-lemon-fruits-on-black-surface-hr3a-VnCIYY?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Unsplash</a></li>
             </ul>
         </footer>
     </div>
@@ -121,11 +121,11 @@
                 <div class="modal_content">
                     <h2 id="modalTitle" style="padding: 0 20px;"></h2>
                     <div class="modal-section">
-                        <img src="./images/plant.jpg" />
+                        <img id="modal-pic" src="./images/plant.jpg" />
                         <p id="inform" style="padding: 0 20px;"></p>
                     </div>
                     <div class="modal-footer">
-                        <footer>
+                        <footer id="mo-footer">
                             Blah Blah Blah
                         </footer>
                     </div>
@@ -171,9 +171,12 @@
         
         const modal = document.querySelector(".modal");
         const overlay = document.querySelector(".overlay");
+
         const modal2 = document.querySelector(".modal2");
         const overlay2 = document.querySelector(".overlay2");
         const modalTitle = document.getElementById("modalTitle");
+        const modalPic = document.getElementById("modal-pic");
+
         const close = document.getElementById('close');
         const closeDes = document.getElementById('closeDes');
 
@@ -185,13 +188,17 @@
             showElement(elements);
         }
         
-        function ModalDes(title, des) {
+        function ModalDes(title, des, picture, footer) {
             const elements = [closeDes, modal2, overlay2];
             const modalContent = document.querySelector(".modal-content");
+            const modalFooter = document.getElementById("mo-footer");
             const text = document.getElementById("inform");
-            modalTitle.textContent = title;
             const taskDescription = des.replace('target="_blank"', 'rel="noopener noreferrer"');
+            const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
+            modalTitle.textContent = title;
             text.innerHTML = taskDescription;
+            modalPic.src = picture;
+            modalFooter.innerHTML = taskFooter;
             showElement(elements);
             
         }
@@ -625,7 +632,7 @@
                         infoIcon2.addEventListener('click', function(event) {
                             event.preventDefault();
                             event.stopPropagation(); 
-                            ModalDes(task.taskName, task.taskDescription);
+                            ModalDes(task.taskName, task.taskDescription, task.taskPic, task.taskFooter);
                         });
                         
                         // Ensure checkbox state matches the task choice

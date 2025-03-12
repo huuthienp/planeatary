@@ -17,7 +17,7 @@
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#063a34d0, 20%, #0963587a), url('./images/amoon-ra.jpg'); background-size: cover; background-position: center;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#063a34d8, 20%, #0963587a), url('./images/amoon-ra.jpg'); background-size: cover; background-position: center;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/>
@@ -106,7 +106,7 @@
                     <div></div>
                     <footer class="footer">
                         <ul>
-                            <li>Photo by <a href="https://unsplash.com/@amoonra?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">amoon ra</a> on <a href="https://unsplash.com/photos/sliced-vegetable-and-fruits-on-board-n8vDuIpGb0c?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></li>
+                            <li>Photo by <a href="https://unsplash.com/@amoonra?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">amoon ra</a> on <a href="https://unsplash.com/photos/sliced-vegetable-and-fruits-on-board-n8vDuIpGb0c?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Unsplash</a></li>
                         </ul>
                     </footer>
                 </div>
@@ -122,11 +122,11 @@
                 <div class="modal_content">
                     <h2 id="modalTitle" style="padding: 0 20px;"></h2>
                     <div class="modal-section">
-                        <img src="./images/plant.jpg" />
+                        <img id="modal-pic" src="./images/plant.jpg" />
                         <p id="modalDescription" style="padding: 0 20px;"></p>
                     </div>
                     <div class="modal-footer">
-                        <footer>
+                        <footer id="mo-footer">
                             Blah Blah Blah
                         </footer>
                     </div>
@@ -180,12 +180,18 @@
             const modalOverlay = document.getElementById("modalOverlay");
             const modalTitle = document.getElementById("modalTitle");
             const modalDescription = document.getElementById("modalDescription");
+            const modalPic = document.getElementById("modal-pic");
+            const modalFooter = document.getElementById("mo-footer");
             
             const comparison = document.getElementById('improvement');
             
-            const showModal = (title, description) => {
+            const showModal = (title, description, picture, footer) => {
                 modalTitle.textContent = title;
-                modalDescription.innerHTML = description;
+                const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
+                const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
+                modalPic.src = picture;
+                modalDescription.innerHTML = taskDescription;
+                modalFooter.innerHTML = taskFooter;
                 showElement([modalOverlay, tmodal]);
             };
             
@@ -342,7 +348,7 @@
                     infoIcon.addEventListener('click', function(event) {
                         event.preventDefault();
                         event.stopPropagation();
-                        showModal(task.taskName, task.taskDescription);
+                        showModal(task.taskName, task.taskDescription, task.taskPic, task.taskFooter);
                     });
                     
                     const completion = document.createElement("p");
