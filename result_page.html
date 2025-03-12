@@ -348,7 +348,7 @@
                     infoIcon.addEventListener('click', function(event) {
                         event.preventDefault();
                         event.stopPropagation();
-                        showModal(task.taskName, task.taskDescription);
+                        showModal(task.taskName, task.taskDescription, task.taskPic, task.taskFooter);
                     });
                     
                     const completion = document.createElement("p");
