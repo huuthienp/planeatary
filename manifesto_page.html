@@ -121,11 +121,11 @@
                 <div class="modal_content">
                     <h2 id="modalTitle" style="padding: 0 20px;"></h2>
                     <div class="modal-section">
-                        <img src="./images/plant.jpg" />
+                        <img id="modal-pic" src="./images/plant.jpg" />
                         <p id="inform" style="padding: 0 20px;"></p>
                     </div>
                     <div class="modal-footer">
-                        <footer>
+                        <footer id="mo-footer">
                             Blah Blah Blah
                         </footer>
                     </div>
@@ -171,9 +171,13 @@
         
         const modal = document.querySelector(".modal");
         const overlay = document.querySelector(".overlay");
+
         const modal2 = document.querySelector(".modal2");
         const overlay2 = document.querySelector(".overlay2");
         const modalTitle = document.getElementById("modalTitle");
+        const modalPic = document.getElementById("modal-pic");
+        const modalFooter = document.getElementById("mo-footer");
+
         const close = document.getElementById('close');
         const closeDes = document.getElementById('closeDes');
 
@@ -185,13 +189,16 @@
             showElement(elements);
         }
         
-        function ModalDes(title, des) {
+        function ModalDes(title, des, picture, footer) {
             const elements = [closeDes, modal2, overlay2];
             const modalContent = document.querySelector(".modal-content");
+            const taskDescription = des.replace('target="_blank"', 'rel="noopener noreferrer"');
+            const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
             const text = document.getElementById("inform");
             modalTitle.textContent = title;
-            const taskDescription = des.replace('target="_blank"', 'rel="noopener noreferrer"');
             text.innerHTML = taskDescription;
+            modalPic.src = picture;
+            modalFooter.innerHTML = taskFooter;
             showElement(elements);
             
         }
