@@ -241,10 +241,6 @@ body {
     display: flex !important;
   }
 
-  #inform {
-    font-size: 1.8rem !important;
-  }
-
   .content .Card {
     margin: 0 auto;
     display: flex;
@@ -305,7 +301,7 @@ body {
   }
   
   .modal-section img {
-    width: 50% !important;
+    width: 40% !important;
   }
 }
 
@@ -959,6 +955,9 @@ body {
   text-align: center;
   justify-content: center;
   font-weight: bold;
+  font-size: calc(1.1rem + 0.1vw);
+  background-color: #00af8c9c;
+  color: white;
 }
 .button2 {
   display: flex;
@@ -966,7 +965,7 @@ body {
 }
 .button2 > .start {
   border: none;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-family: 'Poppins';
   padding: 1vh 2vw;
   /* background-color: #4e958d52; */
@@ -981,6 +980,7 @@ body {
   justify-content: center;
   padding: 2vh 0;
   align-self: center;
+  font-size: 1.1rem;
 }
 #good {
   border: none;
@@ -1016,7 +1016,7 @@ body {
 .task-content {
   display: flex;
   align-items: center;
-  font-size: 1rem;
+  font-size: calc(1.1rem + 0.1vw);
   flex-direction: row;
   flex-wrap: wrap;
 }
@@ -1182,10 +1182,13 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 20px 0;
+  gap: 20px;
 }
 
 .modal-section img {
   width: 100%;
+  padding: 0 20px;
 }
 
 .modal-footer {
@@ -1248,7 +1251,7 @@ body {
 #inform {
   width: 100%;
   max-height: 80vmax;
-  font-size: 1rem;
+  font-size: calc(1rem + 0.2vw);
 }
 
 
