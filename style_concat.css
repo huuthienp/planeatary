@@ -464,6 +464,7 @@ body {
   align-items: center;
   margin: 5vmax 0;
   text-align: center;
+  background-color: #fdfdfd8c;
 }
 .status {
   display: flex;
@@ -956,7 +957,6 @@ body {
   justify-content: center;
   font-weight: bold;
   font-size: calc(1.1rem + 0.1vw);
-  background-color: #00af8c9c;
   color: white;
 }
 .button2 {
@@ -1184,6 +1184,10 @@ body {
   align-items: center;
   padding: 20px 0;
   gap: 20px;
+}
+
+#modalTitle {
+  font-weight: 600;
 }
 
 .modal-section img {
@@ -1436,6 +1440,7 @@ body {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  background: #0dcaf04f;
 }
 .result img {
     width: 5vmax;
@@ -1454,7 +1459,10 @@ body {
   align-items: center;
   gap: 2vmax;
   color: #00af8c;
-  padding-bottom: 5vmax;
+  padding: 3vmax 0;
+  background-image: linear-gradient(#7fb0f19f, 30%, #8ad5f898), url('./images/ella-olsson-food.jpg'); 
+  background-size: cover; 
+  background-position: center;
 }
 
 .score .circle{
@@ -1502,7 +1510,7 @@ body {
   margin: 20px;
   box-shadow: none;
   position: relative;
-  background-color: white !important;
+  background-color: #ffffff0a !important;
 }
 .progress:after {
   content: "";
@@ -1615,6 +1623,7 @@ body {
     justify-content: space-between;
     position: absolute;
     align-items: center;
+    padding: 3vmax 0;
 }
 .question {
     background-color: #fff;

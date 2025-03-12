@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Quiz Results</title>
 </head>
-<body>
+<body style="background-color: whitesmoke;">
     
     <div class="main-container">
         <div class="Header">
@@ -106,6 +106,7 @@
                     <div></div>
                     <footer class="footer">
                         <ul>
+                            <li>Photo by <a href="https://unsplash.com/@ellaolsson?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Ella Olsson</a> on <a href="https://unsplash.com/photos/three-bowls-of-salad-dish-with-lemon-on-table-rD3YrnhTmf0?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Unsplash</a></li>
                             <li>Photo by <a href="https://unsplash.com/@amoonra?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">amoon ra</a> on <a href="https://unsplash.com/photos/sliced-vegetable-and-fruits-on-board-n8vDuIpGb0c?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Unsplash</a></li>
                         </ul>
                     </footer>
@@ -373,6 +374,7 @@
                     document.querySelector("div.q").style.height = "80%";
                     // Remove next step, suggestion, and select-tasks button if display tasks
                     const tohide = [
+                    'div.score',
                     'div.circle',
                     'p.next-step',
                     'p.improvement',
@@ -389,7 +391,7 @@
                     );
                     
                     if (!detailed) {
-                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is no information available to display.</div>";
+                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is no information available to be displayed.</div>";
                         return;
                     }
 
@@ -399,7 +401,7 @@
 
                     let cardElements = [];
                     Object.keys(tasks).forEach(questionKey => {
-                        header.innerHTML = '<img src="./images/battery.png"/>'+'<b>All tasks you have completed</b>';
+                        header.innerHTML = '<b>All tasks you have completed</b>';
                         const taskGroup = tasks?.[questionKey]?.tasks ?? [];
                         
                         // Filter tasks that are selected
@@ -457,69 +459,12 @@
                         
                     });
 
-                    // const lastCard = cards[cards.length - 1];
-
-                    // // Initially, push the last card back
-                    // lastCard.style.zIndex = -1; // lower than the others
-
-                    // // Later, when it's time for the last card to move, update its z-index:
-                    // setTimeout(() => {
-                    //     lastCard.style.zIndex = 0; // bring it to the front 
-                    // }, lastDelay*1000); 
-
                     // If no cards were built, show an error message
                     if (cardContainer.innerHTML == "") {
-                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us some time to fix it.</div>";
+                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is no available task data to be displayed.</div>";
                         return;
                     }
 
-                    // Create a sentinel element to detect scroll position
-                    // const sentinel = document.createElement('div');
-                    // sentinel.id = "sentinel";
-                    // cardContainer.appendChild(sentinel);
-
-                    // for (let i = 0; i < cardElements.length; i++) {
-                    //     cardContainer.insertBefore(cardElements[i], sentinel);
-                    // }
-
-                    // // Batch loading parameters
-                    // const batchSize = 5; // number of cards per batch
-                    // let currentIndex = 0;
-
-                    // // Function to load the next batch of cards
-                    // function loadNextBatch() {
-                    //     for (let i = currentIndex; i < currentIndex + batchSize && i < cardElements.length; i++) {
-                    //         cardContainer.insertBefore(cardElements[i], sentinel);
-                    //         cardElements[i].offsetWidth; // read property forces reflow
-                    //         cardElements[i].classList.add('active');
-                    //     }
-                    //     currentIndex += batchSize;
-                    //     // Disconnect the observer if all cards are loaded
-                    //     if (currentIndex >= cardElements.length) {
-                    //         observer.disconnect();
-                    //     }
-                    // }
-
-                    // // Create a sentinel element to detect scroll position
-                    // const sentinel = document.createElement('div');
-                    // sentinel.id = "sentinel";
-                    // cardContainer.appendChild(sentinel);
-
-                    // // Set up the Intersection Observer
-                    // const observer = new IntersectionObserver(entries => {
-                    //     entries.forEach(entry => {
-                    //         if (entry.isIntersecting) {
-                    //             loadNextBatch();
-                    //         }
-                    //     });
-                    // }, { root: null, rootMargin: '0px', threshold: 0.1 });
-
-                    // observer.observe(sentinel);
-
-                    // // Optionally, load the first batch immediately
-                    // loadNextBatch();
-
-                    // Update the completion date if needed (your existing logic)
                     var task_rec = detailed?.time ?? [];
                     
                     var firstNullIndex = detailed?.time?.length !== 0 && detailed?.time?.length ==  detailed?.chosen?.length ? detailed?.time?.findIndex(el => el == "") : 0;
@@ -541,7 +486,7 @@
                         completion_date.innerHTML = '';
                     }
                     if (task_rec.length === 0) {
-                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
+                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is no available task data to be displayed.</div>";
                     }
                 }
             

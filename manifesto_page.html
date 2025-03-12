@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Start Challenges</title>
 </head>
-<body style="background-image: linear-gradient(#060606ad, 20%, #f8f8f63b), url('./images/arturrro.jpg'); background-size: cover; background-position: center;">
+<body>
     <div class="main-container" style="height: 100%;">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#465f01f6, 20%, #c8f3097e), url('./images/elena-baidak.jpg'); background-size: cover;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#222e01f6, 20%, #85a1077e), url('./images/elena-baidak.jpg'); background-size: cover;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/>
@@ -24,7 +24,7 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(#465f01f6, 20%, #c8f3097e), url('./images/elena-baidak.jpg'); background-size: cover; background-position: center;">
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(#222e01f6, 30%, #85a1077e), url('./images/elena-baidak.jpg'); background-size: cover; background-position: center;">
                         <div class="offcanvas-header">
                             <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -65,16 +65,16 @@
                 </div>
             </nav>
         </div>
-        <div class="m-content hidden">
+        <div class="m-content hidden" style="background-image: linear-gradient(#060606ad, 20%, #f8f8f63b), url('./images/arturrro.jpg'); background-position: center; background-repeat:no-repeat; background-size: cover;">
             <div class="subheader">
                 <p id="threetask"></p>
             </div>
             <div class="button2">
-                <button class="start shadow-sm btn btn-success" style="width: 180px;">Start</button>
+                <button class="start shadow btn btn-success" style="width: 180px;">Start</button>
             </div>
             <div class="improvement">
-                <button id="good" class="shadow-sm">Good scores</button>
-                <button id="notyet" class="shadow-sm">Soon-to-be Good scores</button>
+                <button id="good" class="shadow">Good scores</button>
+                <button id="notyet" class="shadow">Soon-to-be Good scores</button>
             </div>
             <div class="task-content" style="background-color: #08080880;">
                 <div class="q-task">
@@ -261,6 +261,7 @@
                 let task_counts = calculateSelectedTasks(tasks);
                 if (task_counts >= 3) {
                     persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
+                    persuade.style.animation = 'fadeInAnimation ease 3s';
                     updateButton(startButton, '#00af8c', 'pointer');
 
                 } else {

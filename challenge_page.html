@@ -17,7 +17,7 @@
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#333a21d8, 20%, #d6f35441), url('./images/enzo-lo-presti.jpg'); background-size: cover; background-position: center;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#212515d8, 25%, #9db33d41), url('./images/enzo-lo-presti.jpg'); background-size: cover; background-position: center;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
                         <img  src="./images/transparent_logo.png" height="80px" width="auto" class="d-inline-block align-text-top"/>
@@ -25,7 +25,7 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(#333a21f6, 20%, #d6f35441), url('./images/enzo-lo-presti.jpg'); background-size: cover; background-position: center;">
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(#212515d8, 30%, #9db33d41), url('./images/enzo-lo-presti.jpg'); background-size: cover; background-position: center;">
                         <div class="offcanvas-header">
                             <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -67,7 +67,7 @@
             </div>
             <div class="content hidden" style="background-image: linear-gradient(#faf9f9d8, 25%, #f8f8f63b), url('./images/plant.jpg'); background-size: cover; background-position: center;">
                 <div class="head">
-                    <img src="./images/soy-bean.png" width="20%"/>
+                    <img src="./images/soy-bean.png"     style="width: calc(10% + 6vh);" />
                     <h1 class="status">CHALLENGE IN PROGRESS</h1>
                     <p class="suggestion">Please click Done when you complete your tasks</p>
                 </div>
@@ -267,11 +267,12 @@
                         navPostQuiz.classList.remove('Disabled');
                         btn_next.disabled = false;
                         updateButton(btn_next,'#00af8c', 'pointer');
+                        document.querySelector(".next").innerHTML = 'Next  &#8594;';
                     } else {
                         btn_next.disabled = true;
                         updateButton(btn_next,'#4e958d52', 'not-allowed');
+                        document.querySelector(".next").innerHTML = "Finish'em off first!";
                     }
-                    document.querySelector(".next").innerHTML = 'Next  &#8594;';
                 }
                 
                 // Function to display selected tasks and allow status update
