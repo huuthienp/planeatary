@@ -482,7 +482,7 @@ body {
 .suggestion {
   display: flex;
   justify-content: center;
-  color: rgba(0,0,0,1);
+  color: #111827;
   font-size: 1em;
 }
 
@@ -1440,7 +1440,8 @@ body {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  background: #0dcaf04f;
+  background: #03679473;
+  padding: 2vmax 0;
 }
 .result img {
     width: 5vmax;
@@ -1460,7 +1461,7 @@ body {
   gap: 2vmax;
   color: #00af8c;
   padding: 3vmax 0;
-  background-image: linear-gradient(#7fb0f19f, 30%, #8ad5f898), url('./images/ella-olsson-food.jpg'); 
+  background-image: linear-gradient(#3c557757, 30%, #8ad5f861), url('./images/ella-olsson-food.jpg'); 
   background-size: cover; 
   background-position: center;
 }

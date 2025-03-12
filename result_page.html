@@ -104,7 +104,7 @@
                 </div>
                 <div class="q">
                     <div></div>
-                    <footer class="footer">
+                    <footer class="footer" style="justify-items: flex-start;">
                         <ul>
                             <li>Photo by <a href="https://unsplash.com/@ellaolsson?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Ella Olsson</a> on <a href="https://unsplash.com/photos/three-bowls-of-salad-dish-with-lemon-on-table-rD3YrnhTmf0?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Unsplash</a></li>
                             <li>Photo by <a href="https://unsplash.com/@amoonra?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">amoon ra</a> on <a href="https://unsplash.com/photos/sliced-vegetable-and-fruits-on-board-n8vDuIpGb0c?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Unsplash</a></li>
@@ -596,6 +596,7 @@
 
                     // Show next step, suggestion, and select-tasks button as default
                     const toshow = [
+                    'div.score',
                     'p.next-step',
                     'p.suggestion',
                     'div.btn-next'
@@ -732,6 +733,7 @@
                             
                             // Show next step, suggestion, and select-tasks button as default
                             const toshow = [
+                            'div.score',
                             'p.next-step',
                             'p.suggestion',
                             'div.btn-next',
@@ -766,6 +768,7 @@
                         
                         if (preResult && !postResult) {
                             const toshow = [
+                            'div.score',
                             'p.next-step',
                             'p.suggestion',
                             'div.btn-next',
@@ -786,6 +789,7 @@
                             
                         } else {
                             const toshow = [
+                            'div.score',
                             'div.btn-next',
                             'div.circle'
                             ];
