@@ -176,7 +176,6 @@
         const overlay2 = document.querySelector(".overlay2");
         const modalTitle = document.getElementById("modalTitle");
         const modalPic = document.getElementById("modal-pic");
-        const modalFooter = document.getElementById("mo-footer");
 
         const close = document.getElementById('close');
         const closeDes = document.getElementById('closeDes');
@@ -192,9 +191,10 @@
         function ModalDes(title, des, picture, footer) {
             const elements = [closeDes, modal2, overlay2];
             const modalContent = document.querySelector(".modal-content");
+            const modalFooter = document.getElementById("mo-footer");
+            const text = document.getElementById("inform");
             const taskDescription = des.replace('target="_blank"', 'rel="noopener noreferrer"');
             const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
-            const text = document.getElementById("inform");
             modalTitle.textContent = title;
             text.innerHTML = taskDescription;
             modalPic.src = picture;
