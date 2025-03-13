@@ -160,7 +160,7 @@
                 <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
                 <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`;
                 modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
-                picture.addEventListener('load', () => {
+                modalPic.addEventListener('load', () => {
                     modalPic.src = picture;
                     modalTitle.innerHTML.replace(`<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`, title);
                     modalDescription.innerHTML.replace(`<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>
@@ -194,12 +194,12 @@
             function animateTaskCard(card, gradientColor, TextColor) {
                 card.animate(
                 [
-                { backgroundSize: "0 0", backgroundImage: "none" },
+                { backgroundSize: "0 0", backgroundImage: `radial-gradient(circle at 50% 50%, ${gradientColor} 100%, transparent 10%)` },
                 { backgroundSize: "1000% 1000%", backgroundImage: `radial-gradient(circle at 50% 50%, ${gradientColor} 100%, transparent 10%)` }
                 ],
                 { duration: 1800, fill: "forwards" }
                 ).finished.then(() => {
-                    card.style.backgroundColor = gradientColor;
+                    //card.style.backgroundColor = gradientColor;
                     card.style.color = TextColor;
                 });
             }

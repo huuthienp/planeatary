@@ -200,7 +200,7 @@
             <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
             <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`;
             modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
-            picture.addEventListener('load', () => {
+            modalPic.addEventListener('load', () => {
                 modalPic.src = picture;
                 modalTitle.innerHTML.replace(`<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`, title);
                 modalDescription.innerHTML.replace(`<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>

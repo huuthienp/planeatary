@@ -127,6 +127,7 @@ export function emptyStateDisplay(frame, content, img) {
     <span class="placeholder w-100"></span>
     <span class="placeholder w-100"></span>
     </p>
+    <img src="" alt="..." class="myGif" style="display: none;" />
     </div>`;
     // If the image is already loaded (from cache, for example), show it immediately.
     const gifEl = frame.querySelector('.myGif');
