@@ -45,7 +45,7 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link active" style="text-decoration: underline white;" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -195,18 +195,17 @@
 
             // Use for task card ripple
             function animateTaskCard(card, gradientColor, TextColor) {
-                card.style.transformOrigin = "50% 50%";
-                card.style.backgroundImage = `radial-gradient(circle at 50% 50%, ${gradientColor} 5%, transparent 30%)`
-                card.animate(
-                [  
-                { transform: "translate(-50%, -50%) scale(0)" },
-                { transform: "translate(-50%, -50%) scale(30)" }
-                ],
-                { duration: 1800, fill: "forwards" }
-                ).finished.then(() => {
-                    card.style.backgroundColor = gradientColor;
-                    card.style.color = TextColor;
+                // Add the ripple class
+                card.style.background = `radial-gradient(circle at center, ${gradientColor} 10%, transparent 10%)`;
+                card.classList.add('ripple');
+
+                card.addEventListener('animationend', function handler() {
+                    card.classList.remove('ripple');
+                    card.removeEventListener('animationend', handler);
                 });
+
+                card.style.backgroundColor = gradientColor;
+                card.style.color = TextColor;
             }
 
 

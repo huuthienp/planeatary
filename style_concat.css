@@ -589,6 +589,35 @@ body {
   overflow: hidden;
 }
 
+.card_completion::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;  
+  height: 10px;
+  background: radial-gradient(circle at center, rgb(170, 228, 162) 5%, transparent 10%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0); 
+  opacity: 1;
+  pointer-events: none;
+}
+
+.card_completion.ripple::after {
+  animation: ripple 1.8s linear forwards;
+}
+
+@keyframes ripple {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(20); 
+    opacity: 0;
+  }
+}
+
 .card_completion:hover,
 .card_completion:focus {
   cursor: pointer;
