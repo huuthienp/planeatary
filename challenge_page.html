@@ -156,19 +156,18 @@
                 const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
                 const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
                 modalTitle.innerHTML = `<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`;
-                modalPic.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
-                modalDescription.innerHTML = `<p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
+                modalDescription.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>
                 <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
                 <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`;
                 modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
-                if (picture.complete) {
+                picture.addEventListener('load', () => {
                     modalPic.src = picture;
                     modalTitle.innerHTML.replace(`<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`, title);
-                    modalDescription.innerHTML.replace(`<p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
-                <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
-                <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`, taskDescription);
+                    modalDescription.innerHTML.replace(`<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>
+                    <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
+                    <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`, taskDescription);
                     modalFooter.innerHTML.replace(`<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`, taskFooter);
-                }
+                });
                 
                 showElement([modalOverlay, modal]);
             };
@@ -195,13 +194,14 @@
             function animateTaskCard(card, gradientColor, TextColor) {
                 card.animate(
                 [
-                { backgroundSize: "0 0", backgroundImage: `radial-gradient(circle at 50% 50%, ${gradientColor} 100%, transparent 5%)` },
-                { backgroundSize: "1000% 1000%", backgroundImage: `radial-gradient(circle at 50% 50%, ${gradientColor} 100%, transparent 5%)` }
+                { backgroundSize: "0 0", backgroundImage: "none" },
+                { backgroundSize: "1000% 1000%", backgroundImage: `radial-gradient(circle at 50% 50%, ${gradientColor} 100%, transparent 10%)` }
                 ],
                 { duration: 1800, fill: "forwards" }
-                )
-                card.style.backgroundColor = gradientColor;
-                card.style.color = TextColor;
+                ).finished.then(() => {
+                    card.style.backgroundColor = gradientColor;
+                    card.style.color = TextColor;
+                });
             }
 
 
@@ -388,7 +388,7 @@
                                     task.status = task.status === "Done" ? "Completed" : "Done";
                                     
                                     if (task.status === "Completed") {
-                                        animateTaskCard(taskCard, "rgb(146, 161, 146)", "rgb(146, 161, 146)", "dimgrey");
+                                        animateTaskCard(taskCard, "rgb(146, 161, 146)", "dimgrey");
                                         taskName.style.textDecoration = "line-through";
                                         completion.innerHTML = task.status;
                                         let timestamp = Date.now();

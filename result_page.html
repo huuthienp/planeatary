@@ -192,19 +192,18 @@
                 const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
                 const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
                 modalTitle.innerHTML = `<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`;
-                modalPic.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
-                modalDescription.innerHTML = `<p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
+                modalDescription.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>
                 <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
                 <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`;
                 modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
-                if (picture.complete) {
-                    modalTitle.innerHTML.replace(`<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`, title);
+                picture.addEventListener('load', () => {
                     modalPic.src = picture;
+                    modalTitle.innerHTML.replace(`<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`, title);
                     modalDescription.innerHTML.replace(`<p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
-                <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
-                <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`, taskDescription);
+                    <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
+                    <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`, taskDescription);
                     modalFooter.innerHTML.replace(`<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`, taskFooter);
-                }
+                });
                 showElement([modalOverlay, tmodal]);
             };
             
