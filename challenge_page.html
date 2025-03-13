@@ -197,11 +197,11 @@
             function animateTaskCard(card, gradientColor, TextColor) {
                 // Add the ripple class
                 card.style.background = `radial-gradient(circle at center, ${gradientColor} 10%, transparent 10%)`;
-                document.querySelector('span.ripple-span').classList.add('ripple');
+                card.querySelector('span.ripple-span').classList.add('ripple');
 
-                document.querySelector('span.ripple-span').addEventListener('animationend', function handler() {
-                    document.querySelector('span.ripple-span').classList.remove('ripple');
-                    document.querySelector('span.ripple-span').removeEventListener('animationend', handler);
+                card.querySelector('span.ripple-span').addEventListener('animationend', function handler() {
+                    card.querySelector('span.ripple-span').classList.remove('ripple');
+                    card.querySelector('span.ripple-span').removeEventListener('animationend', handler);
                 });
 
                 card.style.backgroundColor = gradientColor;
@@ -335,7 +335,7 @@
                                 infoIcon.innerHTML = "&#9432;"; 
 
                                 const ripple = document.createElement("span");
-                                ripple.classList.add('.ripple-span');
+                                ripple.classList.add('ripple-span');
                                 // Set the click event for the info icon to show the modal
                                 infoIcon.addEventListener('click', function(event) {
                                     event.preventDefault();
