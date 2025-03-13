@@ -73,7 +73,7 @@
                 </div>
                 <div class="Card"></div>
                 <div class="btn-next" style="padding-top: 4vmax;">
-                    <button class="next shadow" style="width: 150px;">Next  &#8594;</button>
+                    <button class="next btn btn-success shadow" style="width: 150px;">Next  &#8594;</button>
                 </div>
             </div>
             <!-- <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating... -->
@@ -170,7 +170,7 @@
                 if (event.target === modalOverlay) closeModal();
             });
             
-            function delay(ms) {
+            async function delay(ms) {
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
             
@@ -318,12 +318,12 @@
                                 
                                 // Set card styles based on status
                                 if (task.status === "Completed") {
-                                    taskCard.style.backgroundColor = 'rgb(146, 161, 146)';
+                                    taskCard.style.backgroundImage = "radial-gradient(circle at 50% 50%, rgb(146, 161, 146) 10%, transparent 10%)";
                                     taskCard.style.color = 'dimgrey';
                                     taskName.style.textDecoration = "line-through";
                                 } else {
                                     taskCard.style.color = 'rgb(71, 71, 71)';
-                                    taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
+                                    taskCard.style.backgroundColor = "radial-gradient(circle at 50% 50%, rgb(95, 201, 109) 10%, transparent 10%)";
                                     taskName.style.textDecoration = "none";
                                 }
                                 
@@ -332,7 +332,7 @@
                                     if (Tstatus.chosen.length !== 0) {
                                         if (Tstatus.chosen.includes(String(task.taskNumber))) {
                                             if (Tstatus.done.length !== 0 && Tstatus.done.includes(String(task.taskNumber))) {
-                                                taskCard.style.backgroundColor = 'rgb(146, 161, 146)';
+                                                taskCard.style.backgroundImage = "radial-gradient(circle at 50% 50%, rgb(146, 161, 146) 10%, transparent 10%);";
                                                 taskCard.style.color = 'dimgrey';
                                                 taskName.style.textDecoration = "line-through";
                                             }
@@ -340,7 +340,7 @@
                                             let index = Tstatus.chosen.indexOf(String(task.taskNumber));
                                             Tstatus.done[index] = String(task.taskNumber);
                                             Tstatus.time[index] = task.finishTime;
-                                            taskCard.style.backgroundColor = 'rgb(146, 161, 146)';
+                                            taskCard.style.backgroundColor = "radial-gradient(circle at 50% 50%, rgb(146, 161, 146) 10%, transparent 10%);";
                                             taskCard.style.color = 'dimgrey';
                                             taskName.style.textDecoration = "line-through";
                                         }
@@ -363,7 +363,7 @@
                                     task.status = task.status === "Done" ? "Completed" : "Done";
                                     
                                     if (task.status === "Completed") {
-                                        taskCard.style.backgroundColor = 'rgb(146, 161, 146)';
+                                        taskCard.style.backgroundImage = "radial-gradient(circle at 50% 50%, rgb(146, 161, 146) 10%, transparent 10%)";
                                         taskCard.style.color = 'dimgrey';
                                         taskName.style.textDecoration = "line-through";
                                         completion.innerHTML = task.status;
@@ -376,7 +376,7 @@
                                         }
                                     } else {
                                         taskCard.style.color = 'rgb(71, 71, 71)';
-                                        taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
+                                        taskCard.style.backgroundImage = "radial-gradient(circle at 50% 50%, rgb(95, 201, 109) 10%, transparent 10%)";
                                         taskName.style.textDecoration = "none";
                                         completion.innerHTML = task.status;
                                         task.finishTime = "";

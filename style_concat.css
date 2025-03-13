@@ -36,6 +36,10 @@ body {
   background-color: #096358ab;
 }
 
+.navbar .nav-link:active, .navbar .nav-link:hover {
+  border-bottom: 3px solid white;
+}
+
 .footer {
   bottom: 0;
   width: 100%;
@@ -589,6 +593,23 @@ body {
   text-align: center;
   font-size: 1.1rem;
   box-shadow: 0.1rem .16rem .3rem rgba(57, 58, 58, 0.6);
+}
+
+.card_completion:active {
+  background-image: none;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: 0 0;
+  animation: ripple 1s;
+}
+
+@keyframes ripple {
+  from {
+    background-size: 0 0;
+  }
+  to {
+    background-size: 1000% 1000%;
+  }
 }
 
 .card_completion:hover,
@@ -1182,6 +1203,43 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.placeholder {
+  background: #eee;
+  border-radius: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.placeholder:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100px;
+  background: linear-gradient(90deg, #eee, #f4f4f4, #eee);
+  animation: gradient 1s infinite ease-in-out;
+}
+.image-placeholder {
+  aspect-ratio: 16 / 12;
+}
+
+.title-placeholder {
+  aspect-ratio: 16 / 1.5;
+}
+.text-placeholder {
+  aspect-ratio: 16 / 1;
+}
+
+@keyframes gradient {
+  form {
+    left: 0%;
+  }
+  
+  to {
+    left: 100%;
+  }
 }
 
 .modal-section img {

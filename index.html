@@ -831,12 +831,19 @@
             }
         }
 
+        async function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
         heroButton.addEventListener('click', async () => {
             if (netlifyIdentity.gotrue.currentUser()) {
                 let preObject = localStorage.getItem('preResult');
                 const userData = await getUserData();
                 const { metadata, responseHistory, userId } = userData;
 
+                heroButton.innerHTML = "Let's go!";
+                await delay(1500);
+                
                 if (metadata.restarting == 'yes') {
                     alert("Let's do your restarting pre-quiz!");
                     window.location.href = "qualtrics.html";

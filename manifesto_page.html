@@ -70,7 +70,7 @@
                 <p id="threetask"></p>
             </div>
             <div class="button2">
-                <button class="start shadow-sm btn btn-success" style="width: 180px;">Start</button>
+                <button class="start shadow btn btn-success" style="width: 180px;">Start</button>
             </div>
             <div class="improvement">
                 <button id="good" class="shadow-sm">Good scores</button>
@@ -195,12 +195,29 @@
             const text = document.getElementById("inform");
             const taskDescription = des.replace('target="_blank"', 'rel="noopener noreferrer"');
             const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
-            modalTitle.textContent = title;
-            text.innerHTML = taskDescription;
-            modalPic.src = picture;
-            modalFooter.innerHTML = taskFooter;
+            modalTitle.classList.add('.title-placeholder');
+            modalTitle.classList.add('.placeholder');
+            modalPic.classList.add('.image-placeholder');
+            modalPic.classList.add('.placeholder');
+            text.classList.add('.text-placeholder');
+            text.classList.add('.placeholder');
+            modalFooter.classList.add('.text-placeholder');
+            modalFooter.classList.add('.placeholder');
+            if (picture.complete) {
+                modalTitle.classList.remove('.title-placeholder');
+                modalTitle.classList.remove('.placeholder');
+                modalPic.classList.remove('.image-placeholder');
+                modalPic.classList.remove('.placeholder');
+                text.classList.remove('.text-placeholder');
+                text.classList.remove('.placeholder');
+                modalFooter.classList.remove('.text-placeholder');
+                modalFooter.classList.remove('.placeholder');
+                modalTitle.textContent = title;
+                text.innerHTML = taskDescription;
+                modalPic.src = picture;
+                modalFooter.innerHTML = taskFooter;
+            } 
             showElement(elements);
-            
         }
 
         const Close = () => hideElement([close, modal, overlay]);    
