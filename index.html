@@ -30,7 +30,7 @@
                             <div class="offcanvas-body">
                                 <ul class="navbar-nav justify-content-end align-items-center flex-grow-1 pe-3 gap-3">
                                     <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" data-bs-dismiss="offcanvas" href="index.html">Home</a>
+                                        <a class="nav-link active" style="text-decoration: underline white;" aria-current="page" data-bs-dismiss="offcanvas" href="index.html">Home</a>
                                     </li>
                                     <li class="nav-item dropdown home-hide">
                                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -833,12 +833,19 @@
             }
         }
 
+        async function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
         heroButton.addEventListener('click', async () => {
             if (netlifyIdentity.gotrue.currentUser()) {
                 let preObject = localStorage.getItem('preResult');
                 const userData = await getUserData();
                 const { metadata, responseHistory, userId } = userData;
 
+                heroButton.innerHTML = "Let's go!";
+                await delay(1500);
+                
                 if (metadata.restarting == 'yes') {
                     alert("Let's do your restarting pre-quiz!");
                     window.location.href = "qualtrics.html";
@@ -986,7 +993,7 @@
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 const user = netlifyIdentity.currentUser();
                 if (!user) throw new Error("Login failed: No user object found");
-                console.log("Successful login!", emailInput2.value);
+                console.log("Successfully login!", emailInput2.value);
                 
                 hideSignInModal();
                 
@@ -996,24 +1003,22 @@
                 if (r === true) {
                     enableFirstTimers();
                     //Need lana to test and edit the flow here if neccessary
-                    alert("Successful login!, proceeding");
                     const userData = await getUserData();
                     const { metadata, responseHistory, userId } = userData;
                     //Once a user chose to restart the cycle and does not finish it, redirect the user to pre-quiz page
                     if (metadata.restarting == 'yes') {
-                        alert("Let's do your restarting pre-quiz!");
+                        alert("Successfully login! Let's do your restarting pre-quiz!");
                         window.location.href = "qualtrics.html";
                     } else {
-                        alert("Let's see your latest result!");
+                        alert("Successfully login! Let's see your latest result!");
                         window.location.href = "result_page.html";
                     }
                 } else {
                     disableFirstTimers();
-                    alert("Successful login!, proceeding");
+                    
                     // Delay navigation slightly
                     setTimeout(() => {
-                        //Needs confirmation from Linh about the flow here
-                        alert("Welcome to our website!");
+                        alert("Successfully login!, Welcome to our website!");
                         window.location.href = "index.html";
                     }, 500);
                 }
@@ -1173,7 +1178,7 @@
             { full_name: nameField.value, age: ageField.value, gender: genderField.value, status: statusField.value })
             .then(async (r) => {
                 await new Promise(resolve => setTimeout(resolve, 1500));
-                console.log('Successful signup!', emailInput.value);
+                alert('Successfully signup! Please check your email inbox');
                 hideSignUpModal();
             })
             .catch((e) => {

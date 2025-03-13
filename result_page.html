@@ -48,7 +48,7 @@
                                     <a class="nav-link" id="navChallenge" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                    <a class="nav-link active" style="text-decoration: underline white;" aria-current="page" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="history_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-calendar-check-o"></i> History</a>
@@ -121,14 +121,13 @@
                     <button class="close">x</button>
                 </div>
                 <div class="modal_content">
-                    <h2 id="modalTitle" style="padding: 0 20px;"></h2>
+                    <h2 id="modalTitle" style="padding: 0 20px; width: 100%"></h2>
                     <div class="modal-section">
-                        <img id="modal-pic" src="./images/plant.jpg" />
-                        <p id="modalDescription" style="padding: 0 20px;"></p>
+                        <img id="modal-pic" />
+                        <p id="modalDescription" style="padding: 0 20px; width: 100%"></p>
                     </div>
                     <div class="modal-footer">
-                        <footer id="mo-footer">
-                            Blah Blah Blah
+                        <footer id="mo-footer" style="width: 100%">
                         </footer>
                     </div>
                 </div>
@@ -179,20 +178,54 @@
 
             const tmodal = document.getElementById("taskModal");
             const modalOverlay = document.getElementById("modalOverlay");
-            const modalTitle = document.getElementById("modalTitle");
-            const modalDescription = document.getElementById("modalDescription");
-            const modalPic = document.getElementById("modal-pic");
-            const modalFooter = document.getElementById("mo-footer");
+           
             
             const comparison = document.getElementById('improvement');
             
             const showModal = (title, description, picture, footer) => {
-                modalTitle.textContent = title;
+                const modalContent = document.querySelector(".modal_content");
+                const modalSection = document.querySelector(".modal-section");
+                const modalTitle = document.getElementById("modalTitle");
+                const modalDescription = document.getElementById("modalDescription");
+                const modalPic = document.getElementById("modal-pic");
+                const modalFooter = document.getElementById("mo-footer");
                 const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
                 const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
+                const placeholder1 = document.createElement("p");
+                placeholder1.className = "placeholder-glow text-placeholder";
+                placeholder1.innerHTML = `<span class="placeholder w-100"></span>`;
+                
+                const placeholder2 = document.createElement("p");
+                placeholder2.className = "placeholder-glow text-placeholder";
+                placeholder2.innerHTML = `<span class="placeholder w-100"></span>`;
+                
                 modalPic.src = picture;
-                modalDescription.innerHTML = taskDescription;
-                modalFooter.innerHTML = taskFooter;
+                if (modalPic.complete) {
+                    // If the image is already loaded (from cache), update immediately.
+                    modalPic.style.display = "flex";
+                    modalTitle.innerHTML = title;
+                    modalDescription.innerHTML = taskDescription;
+                    modalFooter.innerHTML = taskFooter;
+                } else {
+                    modalPic.style.display = "none";
+                    modalSection.appendChild(placeholder);
+                    modalSection.appendChild(placeholder);
+                    modalTitle.innerHTML = `<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`;
+                    modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
+                    modalDescription.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
+                }
+                modalPic.addEventListener('load', () => {
+                    modalPic.style.display = "flex";
+                    if (placeholder1 && placeholder1.parentNode) {
+                        placeholder1.remove();
+                    }
+                    if (placeholder2 && placeholder2.parentNode) {
+                        placeholder2.remove();
+                    }
+                    modalTitle.innerHTML =  title;
+                    modalDescription.innerHTML = taskDescription;
+                    modalFooter.innerHTML = taskFooter;
+                });
                 showElement([modalOverlay, tmodal]);
             };
             
@@ -328,8 +361,7 @@
                         cardContainer.appendChild(questionDiv);
                     });
 
-                    updateProgress(questionsData.result.totalScore);
-                    
+                    //updateProgress(questionsData.result.totalScore); 
                 }
 
                 function buildTaskCard(task) {
@@ -804,7 +836,7 @@
                             document.querySelector("a.nextB").href = 'index.html';
                             document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
                         }
-                        
+                        updateProgress(preObject.result.totalScore);
                         displayQuestions(preObject, 'PRE');
                         document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
                         document.getElementById('preQ').style.backgroundColor = '#00af8c';    
@@ -840,7 +872,7 @@
                             document.querySelector("button.select-tasks").innerHTML = 'Back to <i class="fa fa-home"></i>';
                             document.querySelector("a.nextB").href = 'index.html';
                             
-                            
+                            updateProgress(preObject.result.totalScore);
                             displayQuestions(postObject, 'POST');
                             document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    

@@ -45,7 +45,7 @@
                                 </li>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" href="manifesto_page.html" aria-current="page" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                <a class="nav-link active" style="text-decoration: underline white;" href="manifesto_page.html" aria-current="page" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -119,13 +119,13 @@
                     <button class="close" id = "closeDes">x</button>
                 </div>
                 <div class="modal_content">
-                    <h2 id="modalTitle" style="padding: 0 20px;"></h2>
+                    <h2 id="modalTitle" style="padding: 0 20px; width: 100%"></h2>
                     <div class="modal-section">
-                        <img id="modal-pic" src="./images/plant.jpg" />
-                        <p id="inform" style="padding: 0 20px;"></p>
+                        <img id="modal-pic" />
+                        <p id="inform" style="padding: 0 20px; width: 100%"></p>
                     </div>
                     <div class="modal-footer">
-                        <footer id="mo-footer">
+                        <footer id="mo-footer" style="width: 100%">
                             Blah Blah Blah
                         </footer>
                     </div>
@@ -184,23 +184,73 @@
             const elements = [close, modal, overlay];
             const modalContent = document.querySelector(".modal_content");
             const image = document.getElementById("visual_info");
+            let placeholder = document.createElement("p");
+            placeholder.className = "placeholder-glow image-placeholder";
+            placeholder.innerHTML = `<span class="placeholder w-100"></span>`;
             image.src = source;
+            if (image.complete) {
+                image.style.display = "flex";
+            }
+            else {
+                image.style.display = "none";
+                modalContent.appendChild(placeholder);
+            }
+            image.addEventListener('load', () => {
+                if (placeholder && placeholder.parentNode) {
+                    placeholder.remove();
+                }
+                image.style.display = "flex";
+            });
             showElement(elements);
         }
         
-        function ModalDes(title, des, picture, footer) {
+        function ModalDes(title, description, picture, footer) {
             const elements = [closeDes, modal2, overlay2];
-            const modalContent = document.querySelector(".modal-content");
+            const modalContent = document.querySelector(".modal_content");
+            const modalSection = document.querySelector(".modal-section");
             const modalFooter = document.getElementById("mo-footer");
-            const text = document.getElementById("inform");
-            const taskDescription = des.replace('target="_blank"', 'rel="noopener noreferrer"');
+            const modalDescription = document.getElementById("inform");
+            const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
             const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
-            modalTitle.textContent = title;
-            text.innerHTML = taskDescription;
-            modalPic.src = picture;
-            modalFooter.innerHTML = taskFooter;
-            showElement(elements);
+            const placeholder1 = document.createElement("p");
+            placeholder1.className = "placeholder-glow text-placeholder";
+            placeholder1.innerHTML = `<span class="placeholder w-100"></span>`;
             
+            const placeholder2 = document.createElement("p");
+            placeholder2.className = "placeholder-glow text-placeholder";
+            placeholder2.innerHTML = `<span class="placeholder w-100"></span>`;
+            
+            modalSection.appendChild(placeholder1);
+            modalSection.appendChild(placeholder2);
+            
+            modalPic.src = picture;
+            if (modalPic.complete) {
+                // If the image is already loaded (from cache), update immediately.
+                modalPic.style.display = "flex";
+                modalTitle.innerHTML = title;
+                modalDescription.innerHTML = taskDescription;
+                modalFooter.innerHTML = taskFooter;
+            } else {
+                modalPic.style.display = "none";
+                modalSection.appendChild(placeholder1);
+                modalSection.appendChild(placeholder2);
+                modalTitle.innerHTML = `<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`;
+                modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
+                modalDescription.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
+            }
+            modalPic.addEventListener('load', () => {
+                modalPic.style.display = "flex";
+                if (placeholder1 && placeholder1.parentNode) {
+                    placeholder1.remove();
+                }
+                if (placeholder2 && placeholder2.parentNode) {
+                    placeholder2.remove();
+                }
+                modalTitle.innerHTML =  title;
+                modalDescription.innerHTML = taskDescription;
+                modalFooter.innerHTML = taskFooter;
+            });
+            showElement(elements);
         }
 
         const Close = () => hideElement([close, modal, overlay]);    
