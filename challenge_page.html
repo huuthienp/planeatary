@@ -156,9 +156,13 @@
                 const modalFooter = document.getElementById("mo-footer");
                 const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
                 const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
-                let placeholder = document.createElement("p");
-                placeholder.className = "placeholder-glow text-placeholder";
-                placeholder.innerHTML = `<span class="placeholder w-100"></span>`;
+                const placeholder1 = document.createElement("p");
+                placeholder1.className = "placeholder-glow text-placeholder";
+                placeholder1.innerHTML = `<span class="placeholder w-100"></span>`;
+                
+                const placeholder2 = document.createElement("p");
+                placeholder2.className = "placeholder-glow text-placeholder";
+                placeholder2.innerHTML = `<span class="placeholder w-100"></span>`;
                 
                 modalPic.src = picture;
                 if (modalPic.complete) {
@@ -177,8 +181,11 @@
                 }
                 modalPic.addEventListener('load', () => {
                     modalPic.style.display = "flex";
-                    if (placeholder && placeholder.parentNode) {
-                        placeholder.remove();
+                    if (placeholder1 && placeholder1.parentNode) {
+                        placeholder1.remove();
+                    }
+                    if (placeholder2 && placeholder2.parentNode) {
+                        placeholder2.remove();
                     }
                     modalTitle.innerHTML =  title;
                     modalDescription.innerHTML = taskDescription;

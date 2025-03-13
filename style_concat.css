@@ -620,7 +620,7 @@ body {
   }
   to {
     transform: translate(-50%, -50%) scale(30); 
-    opacity: 0.5;
+    opacity: 0.7;
   }
 }
 

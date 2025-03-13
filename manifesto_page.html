@@ -212,9 +212,16 @@
             const modalDescription = document.getElementById("inform");
             const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
             const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
-            let placeholder = document.createElement("p");
-            placeholder.className = "placeholder-glow text-placeholder";
-            placeholder.innerHTML = `<span class="placeholder w-100"></span>`;
+            const placeholder1 = document.createElement("p");
+            placeholder1.className = "placeholder-glow text-placeholder";
+            placeholder1.innerHTML = `<span class="placeholder w-100"></span>`;
+            
+            const placeholder2 = document.createElement("p");
+            placeholder2.className = "placeholder-glow text-placeholder";
+            placeholder2.innerHTML = `<span class="placeholder w-100"></span>`;
+            
+            modalSection.appendChild(placeholder1);
+            modalSection.appendChild(placeholder2);
             
             modalPic.src = picture;
             if (modalPic.complete) {
@@ -225,16 +232,19 @@
                 modalFooter.innerHTML = taskFooter;
             } else {
                 modalPic.style.display = "none";
-                modalSection.appendChild(placeholder);
-                modalSection.appendChild(placeholder);
+                modalSection.appendChild(placeholder1);
+                modalSection.appendChild(placeholder2);
                 modalTitle.innerHTML = `<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`;
                 modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
                 modalDescription.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
             }
             modalPic.addEventListener('load', () => {
                 modalPic.style.display = "flex";
-                if (placeholder && placeholder.parentNode) {
-                    placeholder.remove();
+                if (placeholder1 && placeholder1.parentNode) {
+                    placeholder1.remove();
+                }
+                if (placeholder2 && placeholder2.parentNode) {
+                    placeholder2.remove();
                 }
                 modalTitle.innerHTML =  title;
                 modalDescription.innerHTML = taskDescription;
