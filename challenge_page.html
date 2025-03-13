@@ -333,7 +333,9 @@
                                 const infoIcon = document.createElement("span");
                                 infoIcon.classList.add("info-icon");
                                 infoIcon.innerHTML = "&#9432;"; 
-                                
+
+                                const ripple = document.createElement("span");
+                                ripple.classList.add('.ripple-span');
                                 // Set the click event for the info icon to show the modal
                                 infoIcon.addEventListener('click', function(event) {
                                     event.preventDefault();
@@ -379,6 +381,7 @@
                                 localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
                                 taskName.appendChild(infoIcon);
                                 taskCard.appendChild(taskName);
+                                taskCard.appendChild(ripple); 
                                 taskCard.appendChild(completion);
                                 cardContainer.appendChild(taskCard);
                                 updateNextButton(preResponseId, userId, tasks, Tstatus); 
