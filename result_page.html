@@ -188,7 +188,6 @@
                 const modalDescription = document.getElementById("modalDescription");
                 const modalPic = document.getElementById("modal-pic");
                 const modalFooter = document.getElementById("mo-footer");
-                modalTitle.textContent = title;
                 const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
                 const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
                 modalTitle.innerHTML = `<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`;
@@ -203,9 +202,8 @@
                 modalPic.addEventListener('load', () => {
                     modalPic.style.display = "flex";
                     modalTitle.innerHTML = modalTitle.innerHTML.replace(`<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`, title);
-                    modalDescription.innerHTML = modalDescription.innerHTML.replace(`<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>
-                    <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
-                    <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`, taskDescription);
+                    modalDescription.innerHTML = "";
+                    modalDescription.innerHTML = taskDescription;
                     modalFooter.innerHTML = modalFooter.innerHTML.replace(`<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`, taskFooter);
                 });
                 showElement([modalOverlay, tmodal]);
