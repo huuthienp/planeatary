@@ -131,10 +131,12 @@ export function emptyStateDisplay(frame, content, img) {
     // If the image is already loaded (from cache, for example), show it immediately.
     const gifEl = frame.querySelector('.myGif');
     if (gifEl.complete) {
+        frame.innerHTML = "";
         frame.innerHTML = `<div class="void">${content} <img class="myGif" src="${img}" style="display: block;"></div>`;
     } else {
         // Otherwise, add an event listener to detect when it finishes loading.
         gifEl.addEventListener('load', () => {
+            frame.innerHTML= "";
             frame.innerHTML = `<div class="void">${content} <img class="myGif" src="${img}" style="display: block;"></div>`;
         });
     }

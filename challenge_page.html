@@ -93,14 +93,13 @@
                         <button class="close">x</button>
                     </div>
                     <div class="modal_content">
-                        <h2 id="modalTitle" style="padding: 0 20px;"></h2>
+                        <h2 id="modalTitle" style="padding: 0 20px; width: 100%"></h2>
                         <div class="modal-section">
-                            <img id="modal-pic" src="./images/plant.jpg"/>
-                            <p id="modalDescription" style="padding: 0 20px;"></p>
+                            <img id="modal-pic" />
+                            <p id="modalDescription" style="padding: 0 20px; width: 100%"></p>
                         </div>
                         <div class="modal-footer">
-                            <footer id="mo-footer">
-                                Blah Blah Blah
+                            <footer id="mo-footer" style="width: 100%">
                             </footer>
                         </div>
                     </div>
@@ -158,14 +157,18 @@
                 const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
                 modalTitle.innerHTML = `<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`;
                 modalPic.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
-                modalDescription.innerHTML = `<p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`;
+                modalDescription.innerHTML = `<p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
+                <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
+                <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`;
                 modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
                 if (picture.complete) {
-                    modalTitle.textContent = title;
                     modalPic.src = picture;
-                    modalDescription.innerHTML = taskDescription;
-                    modalFooter.innerHTML = taskFooter;
-                } 
+                    modalTitle.innerHTML.replace(`<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`, title);
+                    modalDescription.innerHTML.replace(`<p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
+                <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
+                <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`, taskDescription);
+                    modalFooter.innerHTML.replace(`<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`, taskFooter);
+                }
                 
                 showElement([modalOverlay, modal]);
             };
@@ -192,11 +195,12 @@
             function animateTaskCard(card, gradientColor, TextColor) {
                 card.animate(
                 [
-                { backgroundSize: "0 0", backgroundImage: `radial-gradient(circle at 50% 50%, ${gradientColor}, transparent 10%)` },
-                { backgroundSize: "1000% 1000%", backgroundImage: `radial-gradient(circle at 50% 50%, ${gradientColor}, transparent 10%)` }
+                { backgroundSize: "0 0", backgroundImage: `radial-gradient(circle at 50% 50%, ${gradientColor} 100%, transparent 5%)` },
+                { backgroundSize: "1000% 1000%", backgroundImage: `radial-gradient(circle at 50% 50%, ${gradientColor} 100%, transparent 5%)` }
                 ],
                 { duration: 1800, fill: "forwards" }
                 )
+                card.style.backgroundColor = gradientColor;
                 card.style.color = TextColor;
             }
 

@@ -1209,12 +1209,12 @@ body {
 
 .text-placeholder {
   display: flex;
-  width: 40%;
+  width: 100%;
 }
 
 .image-placeholder {
   display: flex;
-  width: 50%;
+  width: 100%;
   aspect-ratio: 16/8;
 }
 

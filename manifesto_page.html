@@ -119,13 +119,13 @@
                     <button class="close" id = "closeDes">x</button>
                 </div>
                 <div class="modal_content">
-                    <h2 id="modalTitle" style="padding: 0 20px;"></h2>
+                    <h2 id="modalTitle" style="padding: 0 20px; width: 100%"></h2>
                     <div class="modal-section">
-                        <img id="modal-pic" src="./images/plant.jpg" />
-                        <p id="inform" style="padding: 0 20px;"></p>
+                        <img id="modal-pic" />
+                        <p id="inform" style="padding: 0 20px; width: 100%"></p>
                     </div>
                     <div class="modal-footer">
-                        <footer id="mo-footer">
+                        <footer id="mo-footer" style="width: 100%">
                             Blah Blah Blah
                         </footer>
                     </div>
@@ -197,13 +197,17 @@
             const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
             modalTitle.innerHTML = `<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`;
             modalPic.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
-            modalDescription.innerHTML = `<p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`;
+            modalDescription.innerHTML = `<p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
+            <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
+            <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`;
             modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
             if (picture.complete) {
-                modalTitle.textContent = title;
+                modalTitle.innerHTML.replace(`<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`, title);
                 modalPic.src = picture;
-                modalDescription.innerHTML = taskDescription;
-                modalFooter.innerHTML = taskFooter;
+                modalDescription.innerHTML.replace(`<p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
+                <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
+                <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`, taskDescription);
+                modalFooter.innerHTML.replace(`<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`, taskFooter);
             }
             showElement(elements);
         }
