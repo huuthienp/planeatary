@@ -1211,43 +1211,6 @@ body {
   font-weight: 600;
 }
 
-.placeholder {
-  background: #eee;
-  border-radius: 1rem;
-  position: relative;
-  overflow: hidden;
-}
-.placeholder:after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 100px;
-  background: linear-gradient(90deg, #eee, #f4f4f4, #eee);
-  animation: gradient 1s infinite ease-in-out;
-}
-.image-placeholder {
-  aspect-ratio: 16 / 12;
-}
-
-.title-placeholder {
-  aspect-ratio: 16 / 1.5;
-}
-.text-placeholder {
-  aspect-ratio: 16 / 1;
-}
-
-@keyframes gradient {
-  form {
-    left: 0%;
-  }
-  
-  to {
-    left: 100%;
-  }
-}
-
 .modal-section img {
   width: 100%;
   padding: 0 20px;
