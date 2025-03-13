@@ -245,10 +245,6 @@ body {
     display: flex !important;
   }
 
-  #inform {
-    font-size: 1.8rem !important;
-  }
-
   .content .Card {
     margin: 0 auto;
     display: flex;
@@ -309,7 +305,7 @@ body {
   }
   
   .modal-section img {
-    width: 50% !important;
+    width: 40% !important;
   }
 }
 
@@ -472,6 +468,7 @@ body {
   align-items: center;
   margin: 5vmax 0;
   text-align: center;
+  background-color: #fdfdfd8c;
 }
 .status {
   display: flex;
@@ -489,7 +486,7 @@ body {
 .suggestion {
   display: flex;
   justify-content: center;
-  color: rgba(0,0,0,1);
+  color: #111827;
   font-size: 1em;
 }
 
@@ -980,6 +977,8 @@ body {
   text-align: center;
   justify-content: center;
   font-weight: bold;
+  font-size: calc(1.1rem + 0.1vw);
+  color: white;
 }
 .button2 {
   display: flex;
@@ -987,7 +986,7 @@ body {
 }
 .button2 > .start {
   border: none;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-family: 'Poppins';
   padding: 1vh 2vw;
   /* background-color: #4e958d52; */
@@ -1002,6 +1001,7 @@ body {
   justify-content: center;
   padding: 2vh 0;
   align-self: center;
+  font-size: 1.1rem;
 }
 #good {
   border: none;
@@ -1037,7 +1037,7 @@ body {
 .task-content {
   display: flex;
   align-items: center;
-  font-size: 1rem;
+  font-size: calc(1.1rem + 0.1vw);
   flex-direction: row;
   flex-wrap: wrap;
 }
@@ -1203,6 +1203,12 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 20px 0;
+  gap: 20px;
+}
+
+#modalTitle {
+  font-weight: 600;
 }
 
 .placeholder {
@@ -1244,6 +1250,7 @@ body {
 
 .modal-section img {
   width: 100%;
+  padding: 0 20px;
 }
 
 .modal-footer {
@@ -1306,7 +1313,7 @@ body {
 #inform {
   width: 100%;
   max-height: 80vmax;
-  font-size: 1rem;
+  font-size: calc(1rem + 0.2vw);
 }
 
 
@@ -1491,6 +1498,8 @@ body {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  background: #03679473;
+  padding: 2vmax 0;
 }
 .result img {
     width: 5vmax;
@@ -1509,7 +1518,10 @@ body {
   align-items: center;
   gap: 2vmax;
   color: #00af8c;
-  padding-bottom: 5vmax;
+  padding: 3vmax 0;
+  background-image: linear-gradient(#3c557757, 30%, #8ad5f861), url('./images/ella-olsson-food.jpg'); 
+  background-size: cover; 
+  background-position: center;
 }
 
 .score .circle{
@@ -1557,7 +1569,7 @@ body {
   margin: 20px;
   box-shadow: none;
   position: relative;
-  background-color: white !important;
+  background-color: #ffffff0a !important;
 }
 .progress:after {
   content: "";
@@ -1670,6 +1682,7 @@ body {
     justify-content: space-between;
     position: absolute;
     align-items: center;
+    padding: 3vmax 0;
 }
 .question {
     background-color: #fff;
