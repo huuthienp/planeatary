@@ -4,67 +4,79 @@
             {
                 "taskNumber": "t0101",
                 "taskName": "Embrace Food Citizenship",
-                "taskDescription": "Read the <a href=\"https://foodcitizenship.info/wp-content/uploads/2021/03/food-citizenship-manifesto.pdf\" target=\"_blank\">Food Citizenship manifesto</a>. What is one action you could take to practice food citizenship?<br/>Share this to social media using the hashtags <br/>#foodcitizen #PlanEATaryQuest"
+                "taskDescription": "Read the <a href=\"https://foodcitizenship.info/wp-content/uploads/2021/03/food-citizenship-manifesto.pdf\" target=\"_blank\">Food Citizenship manifesto</a>. What is one action you could take to practice food citizenship?<br/>Share this to social media using the hashtags <br/>#foodcitizen #PlanEATaryQuest",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0102",
                 "taskName": "Diet Impact Reduction Action",
-                "taskDescription": "Read the CSIRO webpage on <a href=\"https://www.csiro.au/en/research/environmental-impacts/sustainability/environmental-impact-of-diets\" target=\"_blank\">Reducing the environmental impact of your diet</a>.<br/>What is one achievable change you could make to reduce the impact of your diet?"
-
+                "taskDescription": "Read the CSIRO webpage on <a href=\"https://www.csiro.au/en/research/environmental-impacts/sustainability/environmental-impact-of-diets\" target=\"_blank\">Reducing the environmental impact of your diet</a>.<br/>What is one achievable change you could make to reduce the impact of your diet?",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0103",
                 "taskName": "Ethical Food Choice",
-                "taskDescription": "Visit the website <a href=\"https://ethical.org.au/\" target=\"_blank\">Shop Ethical</a>. Look up a core food category (e.g. cereals or dairy) and identify a product and brand that rates well.<br/>Consider switching to this brand and share your experience on social media using the hashtags <br/>#ethicalfood #PlanEATaryQuest"
-
+                "taskDescription": "Visit the website <a href=\"https://ethical.org.au/\" target=\"_blank\">Shop Ethical</a>. Look up a core food category (e.g. cereals or dairy) and identify a product and brand that rates well.<br/>Consider switching to this brand and share your experience on social media using the hashtags <br/>#ethicalfood #PlanEATaryQuest",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0104",
                 "taskName": "Livestock and Alternatives Summary",
-                "taskDescription": "Review <a href=\"https://www.csiro.au/en/research/environmental-impacts/sustainability/environmental-impact-of-diets\" target=\"_blank\">Meat, metrics and mindsets: exploring the debates on the role of livestock and alternatives in diets and farming</a> by Sustainable Table.<br/>How would you summarise this article in one sentence?"
-
+                "taskDescription": "Review <a href=\"https://www.csiro.au/en/research/environmental-impacts/sustainability/environmental-impact-of-diets\" target=\"_blank\">Meat, metrics and mindsets: exploring the debates on the role of livestock and alternatives in diets and farming</a> by Sustainable Table.<br/>How would you summarise this article in one sentence?",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0105",
                 "taskName": "Sustainable Sourcing: Guides for Ethical Producers",
-                "taskDescription": "Do some research to find producers that promote environmental sustainability and animal welfare.<br/>o <a href=\"https://www.sustainabletable.org.au/journal/beef\" target=\"_blank\">Beef Sustainable Table Guide</a><br/>o <a href=\"https://www.sustainabletable.org.au/journal/pigs\" target=\"_blank\">Pork Sustainable Table Guide</a><br/>o <a href=\"https://www.sustainabletable.org.au/journal/eggs\" target=\"_blank\">Eggs Sustainable Table Guide</a><br/>o <a href=\"https://www.sustainabletable.org.au/journal/ethical-guide-dairy\" target=\"_blank\">Dairy Sustainable Table Guide</a><br/>o <a href=\"https://www.fish.gov.au/about/app\" target=\"_blank\">Seafood SAFS app (Status of Australia Fish Stocks)</a> or <a href=\"https://goodfish.org.au/sustainable-seafood-guide/\" target=\"_blank\">Sustainable Seafood Guide</a>"
-
+                "taskDescription": "Do some research to find producers that promote environmental sustainability and animal welfare.<br/>o <a href=\"https://www.sustainabletable.org.au/journal/beef\" target=\"_blank\">Beef Sustainable Table Guide</a><br/>o <a href=\"https://www.sustainabletable.org.au/journal/pigs\" target=\"_blank\">Pork Sustainable Table Guide</a><br/>o <a href=\"https://www.sustainabletable.org.au/journal/eggs\" target=\"_blank\">Eggs Sustainable Table Guide</a><br/>o <a href=\"https://www.sustainabletable.org.au/journal/ethical-guide-dairy\" target=\"_blank\">Dairy Sustainable Table Guide</a><br/>o <a href=\"https://www.fish.gov.au/about/app\" target=\"_blank\">Seafood SAFS app (Status of Australia Fish Stocks)</a> or <a href=\"https://goodfish.org.au/sustainable-seafood-guide/\" target=\"_blank\">Sustainable Seafood Guide</a>",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0106",
                 "taskName": "Reflection on Animal-Derived Food Choices",
-                "taskDescription": "Choose one animal-derived food that you eat regularly (e.g. beef, pork, poultry, fish, seafood, eggs) and reflect on:<br/>o The various indicators/measures of environmental impact;<br/>o Where you purchase this from, and;<br/>o How much you know about the way in which it’s been produced."
-
+                "taskDescription": "Choose one animal-derived food that you eat regularly (e.g. beef, pork, poultry, fish, seafood, eggs) and reflect on:<br/>o The various indicators/measures of environmental impact;<br/>o Where you purchase this from, and;<br/>o How much you know about the way in which it’s been produced.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0107",
                 "taskName": "Exploring Regenerative Agriculture in Beef Supply",
-                "taskDescription": "Find out about <a href=\"https://tabledebates.org/building-blocks/what-is-regenerative-agriculture\" target=\"_blank\">regenerative agriculture</a> and search for a local beef supplier using these practices. How does your current meat supplier rate compared to this supplier? Would you consider switching? Why, or why not?"
-
+                "taskDescription": "Find out about <a href=\"https://tabledebates.org/building-blocks/what-is-regenerative-agriculture\" target=\"_blank\">regenerative agriculture</a> and search for a local beef supplier using these practices. How does your current meat supplier rate compared to this supplier? Would you consider switching? Why, or why not?",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0108",
                 "taskName": "Webinar Insights on Sustainable Dietetics",
-                "taskDescription": "Dietitian Connection has some great resources. Take the time to watch some of their webinars including <a href=\"https://dietitianconnection.com/product/consumer-behaviour-diet-sustainability/\" target=\"_blank\">Consumer behaviour, diet and sustainability: how are they connected?</a> Answer the questions: what is one new thing you learned? What implications does it have for your area of dietetic practice (or if you are a student, the area of practice that most interests you)?<br/><a href=\"https://dietitianconnection.com/product/unlocking-sustainable-eating/\" target=\"_blank\">Unlocking sustainable eating. How can dietitians empower their clients to eat more sustainably?</a> is another informative webinar. After watching, answer the question: What are two things presented that the public might find surprising?"
-
+                "taskDescription": "Dietitian Connection has some great resources. Take the time to watch some of their webinars including <a href=\"https://dietitianconnection.com/product/consumer-behaviour-diet-sustainability/\" target=\"_blank\">Consumer behaviour, diet and sustainability: how are they connected?</a> Answer the questions: what is one new thing you learned? What implications does it have for your area of dietetic practice (or if you are a student, the area of practice that most interests you)?<br/><a href=\"https://dietitianconnection.com/product/unlocking-sustainable-eating/\" target=\"_blank\">Unlocking sustainable eating. How can dietitians empower their clients to eat more sustainably?</a> is another informative webinar. After watching, answer the question: What are two things presented that the public might find surprising?",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0109",
                 "taskName": "CPD Goals and Self-Assessment for Dietitians",
-                "taskDescription": "For Dietitians Australia members: Do a self-assessment and create CPD goals and tasks as part of your annual CPD plan: <a href=\"https://icdasustainability.org/learning-modules/sustainability-self-assessment/\" target=\"_blank\">https://icdasustainability.org/learning-modules/sustainability-self-assessment/</a>"
-
+                "taskDescription": "For Dietitians Australia members: Do a self-assessment and create CPD goals and tasks as part of your annual CPD plan: <a href=\"https://icdasustainability.org/learning-modules/sustainability-self-assessment/\" target=\"_blank\">https://icdasustainability.org/learning-modules/sustainability-self-assessment/</a>",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0110",
                 "taskName": "Key Takeaways from Australian Diets and Climate Impact",
-                "taskDescription": "Read the published paper, <a href=\"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8065846/\" target=\"_blank\">Diets within Environmental limits: the climate impact of current and recommended Australian diets.</a> What are at least 3 key messages you take from it? Answer the following questions: which two foods are climate neutral in Australia and why? What are two other non-climate indicators of environmental impact?"
-
+                "taskDescription": "Read the published paper, <a href=\"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8065846/\" target=\"_blank\">Diets within Environmental limits: the climate impact of current and recommended Australian diets.</a> What are at least 3 key messages you take from it? Answer the following questions: which two foods are climate neutral in Australia and why? What are two other non-climate indicators of environmental impact?",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0111",
                 "taskName": "Environmental Impact of Food: Communication Challenge",
-                "taskDescription": "For Dietitians Australia members:<br/>View the DA Food & Environment Interest Group webinars, <a href=\"https://member.dietitiansaustralia.org.au/ItemDetail?iProductCode=2309FEIGP&Category=WEBINARS&WebsiteKey=03ff812d-ea2b-487f-936a-969228cc2690\" target=\"_blank\">Measuring the environmental impact of food, and Assessing the environmental impact of food</a> via the Centre For Advanced Learning. Answer the question: what would be your 1-minute lift conversation about the environmental impact of food? Record yourself on video. Seek feedback about it from a colleague or friend to determine if you communicated clearly and convincingly. Upload to social media if you wish using the hashtag #PlanEATaryQuest."
-
+                "taskDescription": "For Dietitians Australia members:<br/>View the DA Food & Environment Interest Group webinars, <a href=\"https://member.dietitiansaustralia.org.au/ItemDetail?iProductCode=2309FEIGP&Category=WEBINARS&WebsiteKey=03ff812d-ea2b-487f-936a-969228cc2690\" target=\"_blank\">Measuring the environmental impact of food, and Assessing the environmental impact of food</a> via the Centre For Advanced Learning. Answer the question: what would be your 1-minute lift conversation about the environmental impact of food? Record yourself on video. Seek feedback about it from a colleague or friend to determine if you communicated clearly and convincingly. Upload to social media if you wish using the hashtag #PlanEATaryQuest.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             }
         ]
     },
@@ -73,63 +85,79 @@
             {
                 "taskNumber": "t0201",
                 "taskName": "Support Indigenous Food Companies",
-                "taskDescription": "Research examples of food companies that are Indigenous-owned and take action to promote (e.g., share on your socials, purchase some products from them, etc.). Research your favourite food product that uses native ingredients to see who benefits financially from product sales (e.g., is the business Indigenous-owned?). <a href=\"https://seasonedtraveller.com/best-of-lists/indigenous-australian-owned-food-restaurant-directory\" target=\"_blank\">Seasoned Traveller</a>."
-
+                "taskDescription": "Research examples of food companies that are Indigenous-owned and take action to promote (e.g., share on your socials, purchase some products from them, etc.). Research your favourite food product that uses native ingredients to see who benefits financially from product sales (e.g., is the business Indigenous-owned?). <a href=\"https://seasonedtraveller.com/best-of-lists/indigenous-australian-owned-food-restaurant-directory\" target=\"_blank\">Seasoned Traveller</a>.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0202",
                 "taskName": "Explore Australian Bushfoods",
-                "taskDescription": "Watch SBS Food’s <a href=\"https://www.sbs.com.au/ondemand/watch/1849880131747\" target=\"_blank\">‘12 Australian bushfoods you may not know about’</a> (8 mins) to gain some insight into bush foods and how these can be cooked."
+                "taskDescription": "Watch SBS Food’s <a href=\"https://www.sbs.com.au/ondemand/watch/1849880131747\" target=\"_blank\">‘12 Australian bushfoods you may not know about’</a> (8 mins) to gain some insight into bush foods and how these can be cooked.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0203",
                 "taskName": "Find Ethically Sourced Native Cuisine",
-                "taskDescription": "Do some research to see if there are restaurants, cafes, or caterers near you that are ethically sourcing and serving Australian native ingredients. Consider whether you could host your next social gathering at, or have a work function catered by, these businesses. <a href=\"https://seasonedtraveller.com/best-of-lists/indigenous-australian-owned-food-restaurant-directory\" target=\"_blank\">Indigenous Australian-Owned Food & Restaurant Directory - Seasoned Traveller</a>."
-
+                "taskDescription": "Do some research to see if there are restaurants, cafes, or caterers near you that are ethically sourcing and serving Australian native ingredients. Consider whether you could host your next social gathering at, or have a work function catered by, these businesses. <a href=\"https://seasonedtraveller.com/best-of-lists/indigenous-australian-owned-food-restaurant-directory\" target=\"_blank\">Indigenous Australian-Owned Food & Restaurant Directory - Seasoned Traveller</a>.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0204",
                 "taskName": "Explore Australian Native Ingredients",
-                "taskDescription": "Familiarise yourself with at least one Australian native ingredient to learn about its history, properties, flavour, and culinary use. <a href=\"https://anfab.org.au/main.asp?_=Fact%20Sheets\" target=\"_blank\">Australian Native Food & Botanicals</a>."
-
+                "taskDescription": "Familiarise yourself with at least one Australian native ingredient to learn about its history, properties, flavour, and culinary use. <a href=\"https://anfab.org.au/main.asp?_=Fact%20Sheets\" target=\"_blank\">Australian Native Food & Botanicals</a>.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0205",
                 "taskName": "Incorporate Native Ingredients into Your Menu",
-                "taskDescription": "Incorporate at least one new Australian native ingredient into a meal on your weekly menu."
+                "taskDescription": "Incorporate at least one new Australian native ingredient into a meal on your weekly menu.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0206",
                 "taskName": "Cooking with Native Ingredients: Warndu Mai",
-                "taskDescription": "Warndu Mai - Good Food\u2019 is a great starting point if you are interested in trying some native recipes.\nThis cookbook was created by Damnie Coulthard and Rebecca Sullivan and serves as an excellent, easy-to-follow guide to native flavours and ingredients."
+                "taskDescription": "Warndu Mai - Good Food’ is a great starting point if you are interested in trying some native recipes.\nThis cookbook was created by Damnie Coulthard and Rebecca Sullivan and serves as an excellent, easy-to-follow guide to native flavours and ingredients.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0207",
                 "taskName": "Learn from Tracy Hardy: Wattleseed Nutrition",
-                "taskDescription": "Learn from Tracy Hardy (Accredited Practising Dietitian) by following @wattleseednutrition on Instagram or completing one of her workshops"
+                "taskDescription": "Learn from Tracy Hardy (Accredited Practising Dietitian) by following @wattleseednutrition on Instagram or completing one of her workshops",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0208",
                 "taskName": "Climate Change and Australia's Native Food Industry",
-                "taskDescription": "For food and sustainability, have a read of articles such as <a href=\"https://nit.com.au/15-08-2022/3560/how-climate-change-is-reshaping-australias-native-food-industry\" target=\"_blank\">‘How climate change is reshaping Australia's native food industry’</a> to explore various First Nation perspectives on the impact of climate change on native foods."
-
+                "taskDescription": "For food and sustainability, have a read of articles such as <a href=\"https://nit.com.au/15-08-2022/3560/how-climate-change-is-reshaping-australias-native-food-industry\" target=\"_blank\">‘How climate change is reshaping Australia's native food industry’</a> to explore various First Nation perspectives on the impact of climate change on native foods.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0209",
                 "taskName": "Engage with the National Indigenous Times",
-                "taskDescription": "Subscribe or take a look at the <a href=\"https://nit.com.au/posts/general\" target=\"_blank\">National Indigenous Times.</a>"
-
+                "taskDescription": "Subscribe or take a look at the <a href=\"https://nit.com.au/posts/general\" target=\"_blank\">National Indigenous Times.</a>",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0210",
                 "taskName": "Explore Pre-Colonial Agriculture in \"Dark Emu\"",
-                "taskDescription": "Read Bruce Pascoe\u2019s \u2018Dark Emu\u2019 to learn about pre- colonial agriculture and food systems."
+                "taskDescription": "Read Bruce Pascoe’s ‘Dark Emu’ to learn about pre- colonial agriculture and food systems.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0211",
                 "taskName": "Explore First Nations Agriculture through Black Duck Foods",
-                "taskDescription": "Investigate Bruce Pascoe’s <a href=\"https://www.blackduckfoods.com.au/news\" target=\"_blank\">website</a> to explore First Nation’s agriculture."
-
+                "taskDescription": "Investigate Bruce Pascoe’s <a href=\"https://www.blackduckfoods.com.au/news\" target=\"_blank\">website</a> to explore First Nation’s agriculture.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             }
         ]
     },
@@ -138,35 +166,44 @@
             {
                 "taskNumber": "t0301",
                 "taskName": "Source Local Honey: Save the Bees",
-                "taskDescription": "Try sourcing your honey locally. Using the 'Save the bees' website, navigate to the 'Honey Map' tab to assist with finding a local gem. <a href=\"https://www.beethecure.com.au/\" target=\"_blank\">www.beethecure.com.au</a>"
-
+                "taskDescription": "Try sourcing your honey locally. Using the 'Save the bees' website, navigate to the 'Honey Map' tab to assist with finding a local gem. <a href=\"https://www.beethecure.com.au/\" target=\"_blank\">www.beethecure.com.au</a>",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0302",
                 "taskName": "Transform Your Nature Strip into Edible Space",
-                "taskDescription": "Create an edible nature strip by converting the existing grassy area next to the footpath into a space abundant with a variety of edible plants."
+                "taskDescription": "Create an edible nature strip by converting the existing grassy area next to the footpath into a space abundant with a variety of edible plants.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0303",
                 "taskName": "Choose Local: Country-of-Origin for Fresh Produce",
-                "taskDescription": "Check the country-of-origin of fresh produce and avoid imported produce."
+                "taskDescription": "Check the country-of-origin of fresh produce and avoid imported produce.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0304",
                 "taskName": "Explore Your Local Farmers Market",
-                "taskDescription": "Investigate your local farmers market. To find your local market go to <a href=\"https://farmersmarkets.org.au/\" target=\"_blank\">www.farmersmarkets.org.au</a>. When you are there, try to interact with the local producers to learn more about the products. This may change/challenge the way you think about your food when you next go grocery shopping."
-
+                "taskDescription": "Investigate your local farmers market. To find your local market go to <a href=\"https://farmersmarkets.org.au/\" target=\"_blank\">www.farmersmarkets.org.au</a>. When you are there, try to interact with the local producers to learn more about the products. This may change/challenge the way you think about your food when you next go grocery shopping.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0305",
                 "taskName": "Get Involved in Community Gardens",
-                "taskDescription": "Visit your local council’s website to find a list of community gardens and community food swaps within your area. There are several ways you could get involved:<br/>- Volunteering: help with gardening tasks<br/>- Join workshops: participate in workshops offered by the community garden to learn about gardening techniques, composting, and worm farming.<br/>- Gardening plots: Rent a garden plot to cultivate your own plants and contribute to the overall garden.<br/>- Connect with others: Interact with fellow gardeners, volunteers, and organizers to build relationships and exchange knowledge."
-
+                "taskDescription": "Visit your local council’s website to find a list of community gardens and community food swaps within your area. There are several ways you could get involved:<br/>- Volunteering: help with gardening tasks<br/>- Join workshops: participate in workshops offered by the community garden to learn about gardening techniques, composting, and worm farming.<br/>- Gardening plots: Rent a garden plot to cultivate your own plants and contribute to the overall garden.<br/>- Connect with others: Interact with fellow gardeners, volunteers, and organizers to build relationships and exchange knowledge.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0306",
                 "taskName": "Explore Local and Native Foods",
-                "taskDescription": "Research a uniquely local food to your area or Australian state and learn about/become familiar with what is grown in your area.\nThis may be an introduced food or a wild ingredient (mushrooms, Warrigal greens, native mint, lemon myrtle, finger limes, Davidson plum etc)."
+                "taskDescription": "Research a uniquely local food to your area or Australian state and learn about/become familiar with what is grown in your area.\nThis may be an introduced food or a wild ingredient (mushrooms, Warrigal greens, native mint, lemon myrtle, finger limes, Davidson plum etc).",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             }
         ]
     },
@@ -175,34 +212,44 @@
             {
                 "taskNumber": "t0401",
                 "taskName": "Handy Seasonal Food Guides for Meal Planning",
-                "taskDescription": "Browse seasonal food guides and consider keeping a copy handy either on your fridge or phone to help plan meals and shopping lists. See a few of our favourites below:<br/><a href=\"https://www.sustainabletable.org.au/journal/seasonal-produce-guide\" target=\"_blank\">- https://www.sustainabletable.org.au/journal/seasonal-produce-guide (Australia) (7)</a><br/><a href=\"http://seasonalfoodguide.com/\" target=\"_blank\">http://seasonalfoodguide.com/ (by state) (8)</a>"
-
+                "taskDescription": "Browse seasonal food guides and consider keeping a copy handy either on your fridge or phone to help plan meals and shopping lists. See a few of our favourites below:<br/><a href=\"https://www.sustainabletable.org.au/journal/seasonal-produce-guide\" target=\"_blank\">- https://www.sustainabletable.org.au/journal/seasonal-produce-guide (Australia) (7)</a><br/><a href=\"http://seasonalfoodguide.com/\" target=\"_blank\">http://seasonalfoodguide.com/ (by state) (8)</a>",
+                "taskPic": "./images/Q4T1.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0402",
                 "taskName": "Joining a Community Garden for Local Produce",
-                "taskDescription": "Find a community garden in your area to grow local, seasonal produce with others. <a href=\"https://communitygarden.org.au/\" target=\"_blank\">https://communitygarden.org.au/</a> (9)"
-
+                "taskDescription": "Find a community garden in your area to grow local, seasonal produce with others. <a href=\"https://communitygarden.org.au/\" target=\"_blank\">https://communitygarden.org.au/</a> (9)",
+                "taskPic": "./images/Q4T2.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0403",
                 "taskName": "Exploring Local Farmers Markets",
-                "taskDescription": "Explore your local farmer\u2019s markets. You will likely discover a variety of fruits, vegetables, and other produce that you might not find in a regular supermarket."
+                "taskDescription": "Explore your local farmer’s markets. You will likely discover a variety of fruits, vegetables, and other produce that you might not find in a regular supermarket.",
+                "taskPic": "./images/Q4T3.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0404",
                 "taskName": "Seasonal Recipes for Fresh Produce",
-                "taskDescription": "Find some great recipes using seasonal fruit and vegetables (Sum/Aut/Win/Spr).\nTry searching online for recipes using the seasonal ingredient, for example search \u201ceggplant recipes\u201d or \u201cpear recipes\u201d"
+                "taskDescription": "Find some great recipes using seasonal fruit and vegetables (Sum/Aut/Win/Spr).\nTry searching online for recipes using the seasonal ingredient, for example search “eggplant recipes” or “pear recipes”",
+                "taskPic": "./images/Q4T4.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0405",
                 "taskName": "Cultivating Your Home Garden",
-                "taskDescription": "Develop your green-thumb and plant some veggies, herbs or fruit trees (in a garden or in pots), considering what grows well in your area.\nShare a photo of any home-grown goodies on your socials, using the hashtags #homegrown #kitchengarden #planeataryquest"
+                "taskDescription": "Develop your green-thumb and plant some veggies, herbs or fruit trees (in a garden or in pots), considering what grows well in your area.\nShare a photo of any home-grown goodies on your socials, using the hashtags #homegrown #kitchengarden #planeataryquest",
+                "taskPic": "./images/Q4T5.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0406",
                 "taskName": "Flexible Shopping Lists for Seasonal Produce",
-                "taskDescription": "When preparing your shopping list, rather than listing specific fresh items, allow some flexibility to purchase in-season items by colour or group (eg. \u201cgreens\u201d,\n\u201chand fruit\u201d, \u201corange-veg\u201d etc)."
+                "taskDescription": "When preparing your shopping list, rather than listing specific fresh items, allow some flexibility to purchase in-season items by colour or group (eg. “greens”,\n“hand fruit”, “orange-veg” etc).",
+                "taskPic": "./images/Q4T6.jpeg",
+                "taskFooter": ""
             }
         ]
     },
@@ -211,39 +258,51 @@
             {
                 "taskNumber": "t0501",
                 "taskName": "Weekly Plant Food Tracker",
-                "taskDescription": "Create a list of the plant foods you eat across a week. What category could you try and get a few more plants from? See this <a href=\"https://dietitianconnection.com/patient-resources/aim-for-30-plants-each-week/\" target=\"_blank\">plant food tracker</a> from Dietitian Connection for inspiration (8)."
-
+                "taskDescription": "Create a list of the plant foods you eat across a week. What category could you try and get a few more plants from? See this <a href=\"https://dietitianconnection.com/patient-resources/aim-for-30-plants-each-week/\" target=\"_blank\">plant food tracker</a> from Dietitian Connection for inspiration (8).",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0502",
                 "taskName": "Plant-Based Ingredient Swap in Your Favorite Meal",
-                "taskDescription": "Choose a favourite meal and substitute one of the animal-based ingredients (e.g. meat) for something plant-based.\nFor example using lentils instead of mince in pasta sauce, or tofu instead of chicken in a stir-fry."
+                "taskDescription": "Choose a favourite meal and substitute one of the animal-based ingredients (e.g. meat) for something plant-based.\nFor example using lentils instead of mince in pasta sauce, or tofu instead of chicken in a stir-fry.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0503",
                 "taskName": "Weekly Plant Food Swap Challenge",
-                "taskDescription": "Once a week, swap out a common plant food for something new or different.\nFor example, switch pasta for quinoa, rice for barley, oats for chia seeds, or potato for sweet potato."
+                "taskDescription": "Once a week, swap out a common plant food for something new or different.\nFor example, switch pasta for quinoa, rice for barley, oats for chia seeds, or potato for sweet potato.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0504",
                 "taskName": "Incorporate Nuts into Your Daily Diet",
-                "taskDescription": "Nuts are a common forgotten plant food but are nutritional powerhouses.\nAdd a serving of nuts each day such as a handful in the afternoon, added to breakfast cereal, crushed on a salad, in a nut-based spread on toast or added to smoothies."
+                "taskDescription": "Nuts are a common forgotten plant food but are nutritional powerhouses.\nAdd a serving of nuts each day such as a handful in the afternoon, added to breakfast cereal, crushed on a salad, in a nut-based spread on toast or added to smoothies.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0505",
                 "taskName": "Explore Solutions to Reduce Dietary Eco-Footprint",
-                "taskDescription": "Is a plant-based diet the only solution to reducing our dietary eco-footprint? Read this <a href=\"https://www.mdpi.com/2072-6643/13/4/1122\" target=\"_blank\">Australian research</a> and suggest other effective ways to achieve this goal (9)."
-
+                "taskDescription": "Is a plant-based diet the only solution to reducing our dietary eco-footprint? Read this <a href=\"https://www.mdpi.com/2072-6643/13/4/1122\" target=\"_blank\">Australian research</a> and suggest other effective ways to achieve this goal (9).",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0506",
                 "taskName": "Weekly Wildcard Plant-Food Challenge",
-                "taskDescription": "Once a week or whenever possible, purchase an unfamiliar \u2018wildcard\u2019 plant-food to create a meal with.\nMake sure it is in-season and try to source it from somewhere other than the supermarket (farmers market, local producer, community garden)."
+                "taskDescription": "Once a week or whenever possible, purchase an unfamiliar ‘wildcard’ plant-food to create a meal with.\nMake sure it is in-season and try to source it from somewhere other than the supermarket (farmers market, local producer, community garden).",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0507",
                 "taskName": "Promote Plant-Based Recipes and Community Engagement",
-                "taskDescription": "Share and promote plant-based recipes among your friends, work colleagues and in your community.\nHave a vegetarian dinner party\nTake a vegetarian dish to a \u2018bring-a-plate\u2019 gatherings\nCreate Meatless Monday at work\nShare recipes and photos of your vegetarian meals on social media using the hashtag #plantbased"
+                "taskDescription": "Share and promote plant-based recipes among your friends, work colleagues and in your community.\nHave a vegetarian dinner party\nTake a vegetarian dish to a ‘bring-a-plate’ gatherings\nCreate Meatless Monday at work\nShare recipes and photos of your vegetarian meals on social media using the hashtag #plantbased",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             }
         ]
     },
@@ -252,67 +311,79 @@
             {
                 "taskNumber": "t0601",
                 "taskName": "Key Insights from the FAO Report on Animal Source Foods",
-                "taskDescription": "To begin your journey read the FAO report: <a href=\"https://openknowledge.fao.org/server/api/core/bitstreams/0c1bfa99-18d4-42e4-b94f-27160126f826/content\" target=\"_blank\">Contribution of terrestrial animal source food to healthy diets for improved nutrition and health outcomes (7)</a> and compile a list of key messages."
-
+                "taskDescription": "To begin your journey read the FAO report: <a href=\"https://openknowledge.fao.org/server/api/core/bitstreams/0c1bfa99-18d4-42e4-b94f-27160126f826/content\" target=\"_blank\">Contribution of terrestrial animal source food to healthy diets for improved nutrition and health outcomes (7)</a> and compile a list of key messages.",
+                "taskPic": "./images/Q6T1.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0602",
                 "taskName": "Explore Mycoprotein: Food Security and Environmental Benefits",
-                "taskDescription": "Read <a href=\"https://www.tandfonline.com/doi/full/10.1080/10942912.2023.2178456\" target=\"_blank\">this paper</a> about mycoprotein and its potential food security and environmental advantages. (10)"
-
+                "taskDescription": "Read <a href=\"https://www.tandfonline.com/doi/full/10.1080/10942912.2023.2178456\" target=\"_blank\">this paper</a> about mycoprotein and its potential food security and environmental advantages. (10)",
+                "taskPic": "./images/Q6T2.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0603",
                 "taskName": "Cooking with Mycoprotein: Recipe Modification Challenge",
-                "taskDescription": "Watch Quorn Foods <a href=\"https://www.youtube.com/watch?v=jcX2BcUailY\" target=\"_blank\">‘Magic of Mycoprotein’</a> video. (11) Modify a recipe you usually cook and make it with a mycoprotein-based product instead. Share your results on social media using the hashtags #altproteins #mycoprotein."
-
+                "taskDescription": "Watch Quorn Foods <a href=\"https://www.youtube.com/watch?v=jcX2BcUailY\" target=\"_blank\">‘Magic of Mycoprotein’</a> video. (11) Modify a recipe you usually cook and make it with a mycoprotein-based product instead. Share your results on social media using the hashtags #altproteins #mycoprotein.",
+                "taskPic": "./images/Q6T3.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0604",
                 "taskName": "Reflecting on Animal-Derived Protein Choices",
-                "taskDescription": "Choose an animal-derived protein food that you eat regularly (e.g., beef, lamb, pork, poultry, fish, seafood, eggs) and reflect on:<br/>(i) the various aspects of environmental impact;<br/>(ii) where you purchase this from, and<br/>(iii) how much you know about the way in which it’s been produced.<br/>Do some research to find producers that promote environmental sustainability and animal welfare."
-
+                "taskDescription": "Choose an animal-derived protein food that you eat regularly (e.g., beef, lamb, pork, poultry, fish, seafood, eggs) and reflect on:<br/>(i) the various aspects of environmental impact;<br/>(ii) where you purchase this from, and<br/>(iii) how much you know about the way in which it’s been produced.<br/>Do some research to find producers that promote environmental sustainability and animal welfare.",
+                "taskPic": "./images/Q6T4.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0605",
                 "taskName": "Convenient Meat-Free and Plant-Based Options",
-                "taskDescription": "If you would like to try eating less meat and you don\u2019t have time to cook from scratch there are many convenient options available.\nChoose healthier meat-free, plant-protein and vegan options (choose products with a higher Health Star Rating)."
+                "taskDescription": "If you would like to try eating less meat and you don’t have time to cook from scratch there are many convenient options available.\nChoose healthier meat-free, plant-protein and vegan options (choose products with a higher Health Star Rating).",
+                "taskPic": "./images/Q6T5.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0606",
                 "taskName": "Cooking with Kangaroo Meat: A Sustainable Choice",
-                "taskDescription": "Read about the <a href=\"https://agrifutures.com.au/pdf-view/?pdf=08-142&file=publications/08-142\" target=\"_blank\">nutritional composition of kangaroo meat (8)</a> and <a href=\"https://www.abc.net.au/news/2018-10-24/how-to-cook-and-enjoy-kangaroo/10408336\" target=\"_blank\">how to cook it.</a> (9) Prepare a recipe and share it to social media using the hashtags #sustainablefood #Australianfood #nativefood."
-
+                "taskDescription": "Read about the <a href=\"https://agrifutures.com.au/pdf-view/?pdf=08-142&file=publications/08-142\" target=\"_blank\">nutritional composition of kangaroo meat (8)</a> and <a href=\"https://www.abc.net.au/news/2018-10-24/how-to-cook-and-enjoy-kangaroo/10408336\" target=\"_blank\">how to cook it.</a> (9) Prepare a recipe and share it to social media using the hashtags #sustainablefood #Australianfood #nativefood.",
+                "taskPic": "./images/Q6T6.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0607",
                 "taskName": "Reflect on Cultivated Meat: Considerations and Choices",
-                "taskDescription": "Read a <a href=\"https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2020.00007/full\" target=\"_blank\">review of cultivated meat</a> from Food Frontier. Reflect on whether you would try it, and the factors influencing your decision."
-
+                "taskDescription": "Read a <a href=\"https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2020.00007/full\" target=\"_blank\">review of cultivated meat</a> from Food Frontier. Reflect on whether you would try it, and the factors influencing your decision.",
+                "taskPic": "./images/Q6T7.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0608",
                 "taskName": "Generation Z and Cultured Meat: Social Science Insights",
-                "taskDescription": "Read social science about <a href=\"https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2020.00148/full\" target=\"_blank\">Generation Z’s perspectives on cultured meat.</a>"
-
-
+                "taskDescription": "Read social science about <a href=\"https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2020.00148/full\" target=\"_blank\">Generation Z’s perspectives on cultured meat.</a>",
+                "taskPic": "./images/Q6T8.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0609",
                 "taskName": "Explore Dietitian-Approved Plant-Based Recipes",
-                "taskDescription": "Try dietitian-approved plant-based recipes on the Doctors for Nutrition <a href=\"https://www.doctorsfornutrition.org/general-public/getting-started/recipes/?gclid=Cj0KCQjwocShBhCOARIsAFVYq0gAg8KTZ4nU2AZvSZGuFcdAtqxXFHL8zHRcxsoiqaTQeh_KVbekx20aAsAHEALw_wcB\" target=\"_blank\">Recipe web page.</a>"
-
+                "taskDescription": "Try dietitian-approved plant-based recipes on the Doctors for Nutrition <a href=\"https://www.doctorsfornutrition.org/general-public/getting-started/recipes/?gclid=Cj0KCQjwocShBhCOARIsAFVYq0gAg8KTZ4nU2AZvSZGuFcdAtqxXFHL8zHRcxsoiqaTQeh_KVbekx20aAsAHEALw_wcB\" target=\"_blank\">Recipe web page.</a>",
+                "taskPic": "./images/Q6T9.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0610",
                 "taskName": "Experiment with Wild Game and Alternative Proteins",
-                "taskDescription": "Try a recipe using wild game meats (e.g. kangaroo, rabbit), fish you\u2019ve caught, \u2018new-age\u2019 foods including cultivated meat, fungi / mycoprotein or insects."
+                "taskDescription": "Try a recipe using wild game meats (e.g. kangaroo, rabbit), fish you’ve caught, ‘new-age’ foods including cultivated meat, fungi / mycoprotein or insects.",
+                "taskPic": "./images/Q6T10.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0611",
                 "taskName": "Learn About Edible Insects: Share Your Insights",
-                "taskDescription": "Watch National Geographic’s video <a href=\"https://www.globalcitizen.org/en/content/edible-insects-national-geographics-future-of-food/?gclid=Cj0KCQjw_r6hBhDdARIsAMIDhV_Jne55aI8mG3thFOJ5CMGemMWaU_GfpGEEa3K6wDQBk7dw6sNlXBIaAmR2EALw_wcB\" target=\"_blank\">‘Edible Insects’</a>. Share what you have learnt with a friend or family member, or share your thoughts on social media using the hashtags #edibleinsects #entomophagy."
-
+                "taskDescription": "Watch National Geographic’s video <a href=\"https://www.globalcitizen.org/en/content/edible-insects-national-geographics-future-of-food/?gclid=Cj0KCQjw_r6hBhDdARIsAMIDhV_Jne55aI8mG3thFOJ5CMGemMWaU_GfpGEEa3K6wDQBk7dw6sNlXBIaAmR2EALw_wcB\" target=\"_blank\">‘Edible Insects’</a>. Share what you have learnt with a friend or family member, or share your thoughts on social media using the hashtags #edibleinsects #entomophagy.",
+                "taskPic": "./images/Q6T11.jpeg",
+                "taskFooter": ""
             }
         ]
     },
@@ -321,40 +392,51 @@
             {
                 "taskNumber": "t0701",
                 "taskName": "Pantry & Fridge Stocktake: Identifying Discretionary and Ultra-Processed Foods",
-                "taskDescription": "Do a kitchen stocktake of your pantry and fridge to identify the foods and beverages which are both discretionary foods and/or highly processed or ultra processed foods. Then see what alternatives are available that are less processed and more nutritious.\n\nTips on how to assess:\n- Use the Dietary Guidelines to identify discretionary foods, and/or the Health Star Rating (HSR) of below 3.5 stars.\n- Give yourself a free-pass for processed products that help you prepare balanced, tasty meals, such as flavour bases, spice kits and condiments, which could be classified as Group 2 Foods \u2018Processed culinary ingredients\u2019\n- To estimate the impact of processing, ask yourself:\no How far removed is this food from its original form? Further removed = highly processed.\no How much nutrition has been lost in its processing? A lot = highly processed.\no Would it be classified by NOVA as an UPF?"
+                "taskDescription": "Do a kitchen stocktake of your pantry and fridge to identify the foods and beverages which are both discretionary foods and/or highly processed or ultra processed foods. Then see what alternatives are available that are less processed and more nutritious.\n\nTips on how to assess:\n- Use the Dietary Guidelines to identify discretionary foods, and/or the Health Star Rating (HSR) of below 3.5 stars.\n- Give yourself a free-pass for processed products that help you prepare balanced, tasty meals, such as flavour bases, spice kits and condiments, which could be classified as Group 2 Foods ‘Processed culinary ingredients’\n- To estimate the impact of processing, ask yourself:\no How far removed is this food from its original form? Further removed = highly processed.\no How much nutrition has been lost in its processing? A lot = highly processed.\no Would it be classified by NOVA as an UPF?",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0702",
                 "taskName": "Healthy Takeaway Alternatives Challenge",
-                "taskDescription": "Choose one or more of the highly processed, nutritionally poor foods or takeaway meals you frequently purchase.\n- Is there a healthier alternative to this food?\n- Could you make it from scratch with minimally processed ingredients?\n- Can you come up with a version of a takeaway meal to make at home with healthier ingredients and less packaging? e.g. home-made Mediterranean vegetable pizza instead of frozen pepperoni pizza, or natural yoghurt with honey and nuts instead of a chocolate-coated ice cream on a stick?\n\nShare your recipe on social media, using the hashtag #HomeMade or #BetterThanTakeaway"
+                "taskDescription": "Choose one or more of the highly processed, nutritionally poor foods or takeaway meals you frequently purchase.\n- Is there a healthier alternative to this food?\n- Could you make it from scratch with minimally processed ingredients?\n- Can you come up with a version of a takeaway meal to make at home with healthier ingredients and less packaging? e.g. home-made Mediterranean vegetable pizza instead of frozen pepperoni pizza, or natural yoghurt with honey and nuts instead of a chocolate-coated ice cream on a stick?\n\nShare your recipe on social media, using the hashtag #HomeMade or #BetterThanTakeaway",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0703",
                 "taskName": "Local Love: Find Your Favorite Processed Treat!",
-                "taskDescription": "Think of a favourite food/beverage you enjoy that is considered highly processed and nutritionally poor, for example an apple pie, block of chocolate or alcoholic beverage. Could you find it produced locally, such as from a bakery, chocolatier, or small brewer/distiller? This way you can support your local food system and the people in it.\n\nShare your experience using the hashtag #LocalFood"
+                "taskDescription": "Think of a favourite food/beverage you enjoy that is considered highly processed and nutritionally poor, for example an apple pie, block of chocolate or alcoholic beverage. Could you find it produced locally, such as from a bakery, chocolatier, or small brewer/distiller? This way you can support your local food system and the people in it.\n\nShare your experience using the hashtag #LocalFood",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0704",
                 "taskName": "Evaluate the NOVA Classification System for Ultra-Processed Foods",
-                "taskDescription": "Download the ‘NOVA Open Food Facts’ app to help with understanding its classifications and what makes an ‘ultra processed food.’ Consider the following questions:<br/>- Can you see any issues with this system?<br/>- How well does this system fit within the <a href=\"https://www.eatforhealth.gov.au/guidelines/australian-dietary-guidelines-1-5\" target=\"_blank\">Australian Dietary Guidelines?</a><br/>- Have you found foods that NOVA would classify as UPF but you think are OK for health and the environment? Why?"
-
+                "taskDescription": "Download the ‘NOVA Open Food Facts’ app to help with understanding its classifications and what makes an ‘ultra processed food.’ Consider the following questions:<br/>- Can you see any issues with this system?<br/>- How well does this system fit within the <a href=\"https://www.eatforhealth.gov.au/guidelines/australian-dietary-guidelines-1-5\" target=\"_blank\">Australian Dietary Guidelines?</a><br/>- Have you found foods that NOVA would classify as UPF but you think are OK for health and the environment? Why?",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0705",
                 "taskName": "Grocery Trolley Nutritional Audit",
-                "taskDescription": "When shopping at a supermarket, keep track of how much of your trolley comprises foods from the perimeter (fruit, veg, bakery, deli) compared to the middle aisles. Typically, highly processed, nutritionally poor foods are found closer to the centre. Can you set yourself a goal that the majority of items come from the outside aisles and less from the middle?<br/>- Are there exceptions to this ‘foods in centre aisles are nutritionally poor‘ rule?<br/>- What foods do you see in the centre aisles that are minimally processed and nutritious?<br/>- What highly processed, nutritionally poor foods can you spot in the outer ‘fresh’ aisles?"
-                  
+                "taskDescription": "When shopping at a supermarket, keep track of how much of your trolley comprises foods from the perimeter (fruit, veg, bakery, deli) compared to the middle aisles. Typically, highly processed, nutritionally poor foods are found closer to the centre. Can you set yourself a goal that the majority of items come from the outside aisles and less from the middle?<br/>- Are there exceptions to this ‘foods in centre aisles are nutritionally poor‘ rule?<br/>- What foods do you see in the centre aisles that are minimally processed and nutritious?<br/>- What highly processed, nutritionally poor foods can you spot in the outer ‘fresh’ aisles?",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0706",
                 "taskName": "Key Messages on Diet and Climate Change from Selected Articles",
-                "taskDescription": "Read these:<br/>- Hendrie GA, Baird D, Ridoutt B et al.. Overconsumption of Energy and Excessive Discretionary Food Intake Inflates Dietary Greenhouse Gas Emissions in Australia. Nutrients. 2016 Oct 31;8(11):690. doi: 10.3390/nu8110690. PMID: 27809233; PMCID: PMC5133078. Available from: https://pubmed.ncbi.nlm.nih.gov/27809233/<br/>- Forbes S, Bicknell E, Guilovica L, Wingrove K, Charlton K. A Rapid Review of the Environmental Impacts Associated with Food Consumption in Australia and New Zealand. Current nutrition reports. 2021;10(4):334–51."
-
+                "taskDescription": "Read these:<br/>- Hendrie GA, Baird D, Ridoutt B et al.. Overconsumption of Energy and Excessive Discretionary Food Intake Inflates Dietary Greenhouse Gas Emissions in Australia. Nutrients. 2016 Oct 31;8(11):690. doi: 10.3390/nu8110690. PMID: 27809233; PMCID: PMC5133078. Available from: https://pubmed.ncbi.nlm.nih.gov/27809233/<br/>- Forbes S, Bicknell E, Guilovica L, Wingrove K, Charlton K. A Rapid Review of the Environmental Impacts Associated with Food Consumption in Australia and New Zealand. Current nutrition reports. 2021;10(4):334–51.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0707",
                 "taskName": "Processed Foods Discussion Insights",
-                "taskDescription": "Read this article: Lockyer S, Spiro A, Berry S et al. How do we differentiate not demonise \u2013 Is there a role for healthier processed foods in an age of food insecurity? Proceedings of a roundtable event. Nutrition Bulletin 2023;48: 278\u2013 295. Available from: https://doi.org/10.1111/nbu.12617\n\nQ: If you were at a BBQ with a group of friends and someone asked you your opinion about processed foods, what are the three main points you\u2019d say in response?"
+                "taskDescription": "Read this article: Lockyer S, Spiro A, Berry S et al. How do we differentiate not demonise – Is there a role for healthier processed foods in an age of food insecurity? Proceedings of a roundtable event. Nutrition Bulletin 2023;48: 278– 295. Available from: https://doi.org/10.1111/nbu.12617\n\nQ: If you were at a BBQ with a group of friends and someone asked you your opinion about processed foods, what are the three main points you’d say in response?",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             }
         ]
     },
@@ -363,61 +445,79 @@
             {
                 "taskNumber": "t0801",
                 "taskName": "Meal Planning & Smart Shopping",
-                "taskDescription": "Plan meals and use a shopping list to buy only what you need. Download some helpful apps from this list"
+                "taskDescription": "Plan meals and use a shopping list to buy only what you need. Download some helpful apps from this list",
+                "taskPic": "./images/Q8T1.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0802",
                 "taskName": "Australia's Food Waste Reduction Commitment",
-                "taskDescription": "Read about Australia’s commitment and roadmap to halving food waste by 2030 here: <a href=\"https://www.dcceew.gov.au/environment/protection/waste/food-waste\" target=\"_blank\">Reducing Australia’s food waste - DCCEEW</a>."
-
+                "taskDescription": "Read about Australia’s commitment and roadmap to halving food waste by 2030 here: <a href=\"https://www.dcceew.gov.au/environment/protection/waste/food-waste\" target=\"_blank\">Reducing Australia’s food waste - DCCEEW</a>.",
+                "taskPic": "./images/Q8T2.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0803",
                 "taskName": "Leftover Management and Food Waste Audit",
-                "taskDescription": "Don’t discard leftovers. Consider how they could be used, such as freezing for another day or transforming them into a new meal. Record in a diary what food is wasted in your bin (quantities if possible e.g. 2 slices bread) or complete a food waste audit (e.g weighed food waste record) (see tool <a href=\"https://sevengenerationsahead.org/wp-content/uploads/2020/08/Food-Waste-Activity.pdf\" target=\"_blank\">here</a>)."
-
+                "taskDescription": "Don’t discard leftovers. Consider how they could be used, such as freezing for another day or transforming them into a new meal. Record in a diary what food is wasted in your bin (quantities if possible e.g. 2 slices bread) or complete a food waste audit (e.g weighed food waste record) (see tool <a href=\"https://sevengenerationsahead.org/wp-content/uploads/2020/08/Food-Waste-Activity.pdf\" target=\"_blank\">here</a>).",
+                "taskPic": "./images/Q8T3.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0804",
                 "taskName": "Inventory Check: Optimize Your Shopping List by Assessing Your Fridge and Freezer",
-                "taskDescription": "Take a good look in your fridge and freezer when making a shopping list to avoid overbuying"
+                "taskDescription": "Take a good look in your fridge and freezer when making a shopping list to avoid overbuying",
+                "taskPic": "./images/Q8T4.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0805",
                 "taskName": "Proper Food Storage for Longevity",
-                "taskDescription": "Store food according to manufacturers/producers instructions properly to extend the life of your food"
+                "taskDescription": "Store food according to manufacturers/producers instructions properly to extend the life of your food",
+                "taskPic": "./images/Q8T5.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0806",
                 "taskName": "Smart Recipe Selection for Leftover Ingredients",
-                "taskDescription": "Select recipes wisely to avoid wasting leftover ingredients (think one ingredient, but 2 recipes)"
+                "taskDescription": "Select recipes wisely to avoid wasting leftover ingredients (think one ingredient, but 2 recipes)",
+                "taskPic": "./images/Q8T6.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0807",
                 "taskName": "Label and Organize Perishable Foods",
-                "taskDescription": "Label perishable foods in the fridge with the date and use while it is still safe (you can use masking tape and a black marker). Bring the food to be eaten first to the front of the shelf"
+                "taskDescription": "Label perishable foods in the fridge with the date and use while it is still safe (you can use masking tape and a black marker). Bring the food to be eaten first to the front of the shelf",
+                "taskPic": "./images/Q8T7.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0808",
                 "taskName": "Buy Short-Date Foods Mindfully",
-                "taskDescription": "Only buy short date-marked food on sale if you will eat them, or else they will be wasted"
+                "taskDescription": "Only buy short date-marked food on sale if you will eat them, or else they will be wasted",
+                "taskPic": "./images/Q8T8.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0809",
                 "taskName": "Creative Uses for Non-Edible Food Waste",
-                "taskDescription": "Utilise non-edible food waste creatively and safely in compost, stocks and broths, vinegar, cleaning, mulch or animal feed"
+                "taskDescription": "Utilise non-edible food waste creatively and safely in compost, stocks and broths, vinegar, cleaning, mulch or animal feed",
+                "taskPic": "./images/Q8T9.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0810",
                 "taskName": "Understand Use-By vs. Best-Before Dates to Reduce Food Waste",
-                "taskDescription": "Educate yourself and others on the difference between ‘use-by’ and ‘best-before’ dates to reduce unnecessary waste of edible food by viewing and sharing this <a href=\"https://www.youtube.com/watch?v=jDg8DQl7ZeQ\" target=\"_blank\">video</a>."
-
+                "taskDescription": "Educate yourself and others on the difference between ‘use-by’ and ‘best-before’ dates to reduce unnecessary waste of edible food by viewing and sharing this <a href=\"https://www.youtube.com/watch?v=jDg8DQl7ZeQ\" target=\"_blank\">video</a>.",
+                "taskPic": "./images/Q8T10.jpeg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t0811",
                 "taskName": "Implement 'Use It Up Tape' in Kitchens",
-                "taskDescription": "Order <a href=\"https://www.ozharvest.org/use-it-up/tape/?gclid=Cj0KCQjw1OmoBhDXARIsAAAYGSFqDQzpxb22BMmNmCrFPn0rVB-loHbRx2_uo1tLps8TU_pNtobcM60aAkbHEALw_wcB\" target=\"_blank\">‘use it up tape’</a> from OzHarvest for free, and implement it in home freezer, pantry and workplace kitchens. Simply label food or keep a shelf labeled to have a visual reminder of what needs to be used up soon."
-
+                "taskDescription": "Order <a href=\"https://www.ozharvest.org/use-it-up/tape/?gclid=Cj0KCQjw1OmoBhDXARIsAAAYGSFqDQzpxb22BMmNmCrFPn0rVB-loHbRx2_uo1tLps8TU_pNtobcM60aAkbHEALw_wcB\" target=\"_blank\">‘use it up tape’</a> from OzHarvest for free, and implement it in home freezer, pantry and workplace kitchens. Simply label food or keep a shelf labeled to have a visual reminder of what needs to be used up soon.",
+                "taskPic": "./images/Q8T11.jpeg",
+                "taskFooter": ""
             }
         ]
     },
@@ -426,44 +526,58 @@
             {
                 "taskNumber": "t0901",
                 "taskName": "Improve Composting Skills through Workshops, Tutorials, and Educational Resources",
-                "taskDescription": "Learn how to compost correctly by attending a composting workshop, look up tutorials on YouTube, buying a guidebook or read this blog <a href=\"https://www.environment.sa.gov.au/goodliving/posts/2019/05/guide-to-composting\" target=\"_blank\">here</a> from the Good Living Team at the South Australian Department for Environment and Water."
-
+                "taskDescription": "Learn how to compost correctly by attending a composting workshop, look up tutorials on YouTube, buying a guidebook or read this blog <a href=\"https://www.environment.sa.gov.au/goodliving/posts/2019/05/guide-to-composting\" target=\"_blank\">here</a> from the Good Living Team at the South Australian Department for Environment and Water.",
+                "taskPic": "./images/t0901.jpg",
+                "taskFooter": "Photo by <a href=\"https://unsplash.com/@jupp?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\"  target=\"_blank\">Jonathan Kemper</a> on <a href=\"https://unsplash.com/photos/text-D0acDFb38XE?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\"  target=\"_blank\">Unsplash</a>"
             },
             {
                 "taskNumber": "t0902",
                 "taskName": "Explore Local Food Waste Disposal Options: Composting, Farm Animals, and FOGO Services",
-                "taskDescription": "Investigate what options there are available in your council or area for food waste such as composting or farm animals that could consume your food waste. You can check out the <a href=\"https://www.dcceew.gov.au/environment/protection/waste/food-waste/recovering-organic-waste\" target=\"_blank\">interactive map</a> on the Department of Climate Change, Energy, the Environment and Water site to see if FOGO is available in your council area or download the <a href=\"https://sharewaste.com/\" target=\"_blank\">sharewaste</a> app and meet neighbours, recycle organics."
-
+                "taskDescription": "Investigate what options there are available in your council or area for food waste such as composting or farm animals that could consume your food waste. You can check out the <a href=\"https://www.dcceew.gov.au/environment/protection/waste/food-waste/recovering-organic-waste\" target=\"_blank\">interactive map</a> on the Department of Climate Change, Energy, the Environment and Water site to see if FOGO is available in your council area or download the <a href=\"https://sharewaste.com/\" target=\"_blank\">sharewaste</a> app and meet neighbours, recycle organics.",
+                "taskPic": "./images/t0902.jpg",
+                "taskFooter": "Photo by <a href=\"https://unsplash.com/@t_ahmetler?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Tolga Ahmetler</a> on <a href=\"https://unsplash.com/photos/a-seagull-spreads-its-wings-over-a-pile-of-dead-fish-GTXi6g3tQSo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Unsplash</a>"
             },
             {
                 "taskNumber": "t0903",
                 "taskName": "Minimize Edible Food Waste: At Home and On-the-Go",
-                "taskDescription": "Aim for zero edible food waste into landfill in your house and when eating/drinking out of the house"
+                "taskDescription": "Aim for zero edible food waste into landfill in your house and when eating/drinking out of the house",
+                "taskPic": "./images/t0903.jpg",
+                "taskFooter": "Photo by <a href=\"https://unsplash.com/@jupp?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Jonathan Kemper</a> on <a href=\"https://unsplash.com/photos/brown-and-white-plastic-egg-toy-AC7qWU5XLoo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Unsplash</a>"
             },
             {
                 "taskNumber": "t0904",
                 "taskName": "Promote Responsible Food Waste Management through Social Media Engagement",
-                "taskDescription": "Help educate others about responsible food waste management e.g. post a photo of your new management strategy on\nsocial media and add a hashtag #planEATaryquest"
+                "taskDescription": "Help educate others about responsible food waste management e.g. post a photo of your new management strategy on\nsocial media and add a hashtag #planEATaryquest",
+                "taskPic": "./images/t0904.png",
+                "taskFooter": "Image by <a href=\"https://pixabay.com/users/smtwastebrokers-324212/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=384790\" target=\"_blank\">Jarrod Blamey</a> from <a href=\"https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=384790\" target=\"_blank\">Pixabay</a>"
             },
             {
                 "taskNumber": "t0905",
                 "taskName": "Advocate for FOGO Collection Implementation in Your Local Council",
-                "taskDescription": "Lobby your local Council to start the FOGO collection in your area"
+                "taskDescription": "Lobby your local Council to start the FOGO collection in your area",
+                "taskPic": "./images/t0905.png",
+                "taskFooter": "Image generated using Canva’s AI image generator."
             },
             {
                 "taskNumber": "t0906",
                 "taskName": "Feed Animals Safely at Home",
-                "taskDescription": "Feed animals at home if safe and able to do so"
+                "taskDescription": "Feed animals at home if safe and able to do so",
+                "taskPic": "./images/t0906.jpg",
+                "taskFooter": "Photo by <a href=\"https://unsplash.com/@jesseschoff?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Jesse Schoff</a> on <a href=\"https://unsplash.com/photos/brown-chicken-on-brown-sand-qVneOrTN06c?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Unsplash</a>"
             },
             {
                 "taskNumber": "t0907",
                 "taskName": "Set Up and Maintain a Home Composting System",
-                "taskDescription": "Source a worm farm, compost bin or Bokashi bin for your household and learn how to maintain and benefit from it"
+                "taskDescription": "Source a worm farm, compost bin or Bokashi bin for your household and learn how to maintain and benefit from it",
+                "taskPic": "./images/t0907.jpg",
+                "taskFooter": "Photo by SHVETS <a href=\"https://www.pexels.com/photo/woman-standing-on-a-counter-holding-a-banana-peel-7512979/\" target=\"_blank\">production:</a>"
             },
             {
                 "taskNumber": "t0908",
                 "taskName": "Share Leftover Food with Colleagues/Neighbours",
-                "taskDescription": "Share leftover food with others by taking food to work or give to neighbours, let them know in advance"
+                "taskDescription": "Share leftover food with others by taking food to work or give to neighbours, let them know in advance",
+                "taskPic": "./images/t0908.jpg",
+                "taskFooter": "Photo by Yan Krukau: <a href=\"https://www.pexels.com/photo/children-eating-on-a-table-8617560/\" target=\"_blank\">production: </a>"
             }
         ]
     },
@@ -472,116 +586,156 @@
             {
                 "taskNumber": "t1001",
                 "taskName": "Food Packaging Waste Analysis and Alternatives",
-                "taskDescription": "Record what food packaging you discard and investigate if there are other options available with less packaging (i.e. dried beans vs canned)"
+                "taskDescription": "Record what food packaging you discard and investigate if there are other options available with less packaging (i.e. dried beans vs canned)",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1002",
                 "taskName": "Pesky Plastics Quiz and Social Media Share",
-                "taskDescription": "Complete the <a href=\"https://survey.thinkfieldpanel.com.au/wcfs/29402\" target=\"_blank\">Pesky Plastics Quiz tool</a> to discover the items you use and decide what you would like to refuse. Share what you decide on social media using #planEATary."
-
+                "taskDescription": "Complete the <a href=\"https://survey.thinkfieldpanel.com.au/wcfs/29402\" target=\"_blank\">Pesky Plastics Quiz tool</a> to discover the items you use and decide what you would like to refuse. Share what you decide on social media using #planEATary.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1003",
                 "taskName": "Food Storage: Reuse and Upcycle Household Items",
-                "taskDescription": "Look around your house to see what items can be reused, upcycled or repurposed in some way for storing food"
+                "taskDescription": "Look around your house to see what items can be reused, upcycled or repurposed in some way for storing food",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1004",
                 "taskName": "Reduce Single-Serve Product Purchases",
-                "taskDescription": "Avoid purchasing single serve products"
+                "taskDescription": "Avoid purchasing single serve products",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1005",
                 "taskName": "Use Reusable Shopping Bags",
-                "taskDescription": "Shop with your own reusable bags"
+                "taskDescription": "Shop with your own reusable bags",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1006",
                 "taskName": "Bulk Purchasing to Minimize Packaging",
-                "taskDescription": "Buy foods in bulk or larger quantities to reduce individual packaging"
+                "taskDescription": "Buy foods in bulk or larger quantities to reduce individual packaging",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1007",
                 "taskName": "Sustainable Food Packaging Choices",
-                "taskDescription": "Buy foods with zero or less packaging, or biodegradable or recyclable packaging (i.e. glass, cans)"
+                "taskDescription": "Buy foods with zero or less packaging, or biodegradable or recyclable packaging (i.e. glass, cans)",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1008",
                 "taskName": "Use Reusable Containers for Bulk Purchases",
-                "taskDescription": "Take your own reusable containers and/or bags when buying loose/bulk items (fruit, vegetables, nuts, beans)"
+                "taskDescription": "Take your own reusable containers and/or bags when buying loose/bulk items (fruit, vegetables, nuts, beans)",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1009",
                 "taskName": "Support Local Farmers Markets",
-                "taskDescription": "Shop at farmers markets as many products are sold without any packaging"
+                "taskDescription": "Shop at farmers markets as many products are sold without any packaging",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1010",
                 "taskName": "DIY Cloth Bags from Unwanted Fabric",
-                "taskDescription": "Make your own cloth bags from unwanted fabric to avoid them going to landfill"
+                "taskDescription": "Make your own cloth bags from unwanted fabric to avoid them going to landfill",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1011",
                 "taskName": "DIY Fizzy Soft Drinks with Sparkling Water Machine",
-                "taskDescription": "Make your own fizzy soft drinks using a sparkling water machine and flavoured syrups such as SodaStream"
+                "taskDescription": "Make your own fizzy soft drinks using a sparkling water machine and flavoured syrups such as SodaStream",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1012",
                 "taskName": "Subscription to Zero-Waste Produce Box",
-                "taskDescription": "Subscribe to a fruit & vegetable box service to avoid packaging"
+                "taskDescription": "Subscribe to a fruit & vegetable box service to avoid packaging",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1013",
                 "taskName": "Scratch Cooking & Recipe Sharing",
-                "taskDescription": "Make your own food from scratch to reduce the amount of packaging waste generated. Perhaps share your recipe online\nand why you cooked it using #planEATary"
+                "taskDescription": "Make your own food from scratch to reduce the amount of packaging waste generated. Perhaps share your recipe online\nand why you cooked it using #planEATary",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1014",
                 "taskName": "Batch Cooking and Freezing Legumes and Grains",
-                "taskDescription": "Batch cook legumes and grains in large amounts and store in meal-size portions in the freezer using your own containers instead of purchasing cans"
+                "taskDescription": "Batch cook legumes and grains in large amounts and store in meal-size portions in the freezer using your own containers instead of purchasing cans",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1015",
                 "taskName": "Advocacy for Sustainable Packaging in Food Businesses",
-                "taskDescription": "Advocate for food businesses to switch to biodegradable/compostable packaging and/or use recyclable packaging"
+                "taskDescription": "Advocate for food businesses to switch to biodegradable/compostable packaging and/or use recyclable packaging",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1016",
                 "taskName": "Creative Reuse of Food Packaging",
-                "taskDescription": "Explore creative re-use of food packaging yourself, like using jars for food gifts such as pickles or as pencil holders. Take a picture and share it using the hashtag #planEATary"
+                "taskDescription": "Explore creative re-use of food packaging yourself, like using jars for food gifts such as pickles or as pencil holders. Take a picture and share it using the hashtag #planEATary",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1017",
                 "taskName": "Eco-Friendly Leftover Storage",
-                "taskDescription": "Avoid plastic wrap - store your leftovers in reusable containers, place a plate over the container or switch to wax wraps"
+                "taskDescription": "Avoid plastic wrap - store your leftovers in reusable containers, place a plate over the container or switch to wax wraps",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1018",
                 "taskName": "Familiarization with the Australasian Recycling Label (ARL)",
-                "taskDescription": "Learn about the <a href=\"https://www.dcceew.gov.au/environment/protection/waste/packaging/australasian-recycling-label\" target=\"_blank\">Australasian Recycling Label (ARL)</a>."
-
+                "taskDescription": "Learn about the <a href=\"https://www.dcceew.gov.au/environment/protection/waste/packaging/australasian-recycling-label\" target=\"_blank\">Australasian Recycling Label (ARL)</a>.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1019",
                 "taskName": "Promote Responsible Recycling Practices",
-                "taskDescription": "Be a good recycler, and ‘check it before you chuck it’ using the <a href=\"https://recyclingnearyou.com.au/arl/\" target=\"_blank\">Australian recycling label</a>."
-
+                "taskDescription": "Be a good recycler, and ‘check it before you chuck it’ using the <a href=\"https://recyclingnearyou.com.au/arl/\" target=\"_blank\">Australian recycling label</a>.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1020",
                 "taskName": "Local Council Recycling Information Check",
-                "taskDescription": "Check out <a href=\"https://recyclingnearyou.com.au/councils/\" target=\"_blank\">recycling available in your local Council</a>."
-
+                "taskDescription": "Check out <a href=\"https://recyclingnearyou.com.au/councils/\" target=\"_blank\">recycling available in your local Council</a>.",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1021",
                 "taskName": "Cash-Back Recycling Initiatives",
-                "taskDescription": "Make money by using cash-back recycling schemes like \u2018Return & Earn\u2019 for drinks bottles/cans"
+                "taskDescription": "Make money by using cash-back recycling schemes like ‘Return & Earn’ for drinks bottles/cans",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1022",
                 "taskName": "Recycling Contamination Reduction",
-                "taskDescription": "Reduce contamination of recycling bins by flattening boxes, emptying food and liquid from containers, and not putting plastic bags into the recycling bin"
+                "taskDescription": "Reduce contamination of recycling bins by flattening boxes, emptying food and liquid from containers, and not putting plastic bags into the recycling bin",
+                "taskPic": "./images/plant.jpg",
+                "taskFooter": ""
             }
         ]
     },
@@ -590,71 +744,93 @@
             {
                 "taskNumber": "t1101",
                 "taskName": "Promote Reusable Items",
-                "taskDescription": "Bring a reusable cup <a href=\"https://www.plasticfreejuly.org/campaigns/choose-to-up-cup/\" target=\"_blank\">(Choose to Up Cup</a>), water bottle, eating utensils and/or reusable straw and encourage others to do so."
-
+                "taskDescription": "Bring a reusable cup <a href=\"https://www.plasticfreejuly.org/campaigns/choose-to-up-cup/\" target=\"_blank\">(Choose to Up Cup</a>), water bottle, eating utensils and/or reusable straw and encourage others to do so.",
+                "taskPic": "./images/t1101.jpg",
+                "taskFooter": "Photo by <a href=\"https://www.pexels.com/photo/person-holding-brown-and-clear-glass-container-3737811/\"  target=\"_blank\">cottonbro studio</a>"
             },
             {
                 "taskNumber": "t1102",
                 "taskName": "Bring Your Own Containers for Food and Water",
-                "taskDescription": "Take food and water in your own containers from home when going out and about (cheaper and better for you too)"
+                "taskDescription": "Take food and water in your own containers from home when going out and about (cheaper and better for you too)",
+                "taskPic": "./images/t1102.jpg",
+                "taskFooter": "Photo by <a href=\"https://unsplash.com/@swell?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\"  target=\"_blank\">S'well</a> on <a href=\"https://unsplash.com/photos/fruit-bowls-DXaq7QpZ2A0?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\"  target=\"_blank\">Unsplash</a>"
             },
             {
                 "taskNumber": "t1103",
                 "taskName": "Dine-In Instead of Takeaway",
-                "taskDescription": "Eat in at a cafe or restaurant rather than purchasing take away"
+                "taskDescription": "Eat in at a cafe or restaurant rather than purchasing take away",
+                "taskPic": "./images/t1103.jpg",
+                "taskFooter": "Photo by <a href=\"https://unsplash.com/@lightscape?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Lightscape</a> on <a href=\"https://unsplash.com/photos/ramen-on-bowl-0BhsN70JVA8?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Unsplash</a>"
             },
             {
                 "taskNumber": "t1104",
-                "taskName": "Identify Sustainable Caf\u00e9s with Swap and Go or Mug Library",
-                "taskDescription": "Find a Responsible Cafe or a cafe which offers \u2018Swap and go\u2019 or a \u2018mug library\u2019"
+                "taskName": "Identify Sustainable Cafés with Swap and Go or Mug Library",
+                "taskDescription": "Find a Responsible Cafe or a cafe which offers ‘Swap and go’ or a ‘mug library’",
+                "taskPic": "./images/t1104.jpg",
+                "taskFooter": "Photo by <a href=\"https://www.pexels.com/photo/person-holding-silicon-collapsible-cup-7262699/\"  target=\"_blank\">Sarah  Chai</a>"
             },
             {
                 "taskNumber": "t1105",
                 "taskName": "Identify and Advocate for Water Refill Stations",
-                "taskDescription": "Find out where you can refill your reusable water bottle when you are out and about. Your town, city or state may have a water refill station map such as <a href=\"https://www.unitywater.com/community/water-on-tap-project/water-refill-stations\" target=\"_blank\">Unity Water</a>. Or advocate for one by writing a letter to your local council. If you find one you may want to share how it can be used online #planEATary."
-
+                "taskDescription": "Find out where you can refill your reusable water bottle when you are out and about. Your town, city or state may have a water refill station map such as <a href=\"https://www.unitywater.com/community/water-on-tap-project/water-refill-stations\" target=\"_blank\">Unity Water</a>. Or advocate for one by writing a letter to your local council. If you find one you may want to share how it can be used online #planEATary.",
+                "taskPic": "./images/t1105.jpg",
+                "taskFooter": "Photo by <a href=\"https://www.pexels.com/photo/a-smiling-woman-filling-up-her-water-bottle-13821183/\" target=\"_blank\">Rene Terp</a>"
             },
             {
                 "taskNumber": "t1106",
                 "taskName": "Procurement of Compostable Takeaway Supplies",
-                "taskDescription": "Purchase from vendors who offer compostable takeaway utensils and containers"
+                "taskDescription": "Purchase from vendors who offer compostable takeaway utensils and containers",
+                "taskPic": "./images/t1106.png",
+                "taskFooter": "Image generated using Canva’s AI image generator."
             },
             {
                 "taskNumber": "t1107",
                 "taskName": "Responsible Recycling and Composting on the Go",
-                "taskDescription": "When out and about, take recyclable items/food waste home if community recycling is not available and you can recycle/compost responsibly at home"
+                "taskDescription": "When out and about, take recyclable items/food waste home if community recycling is not available and you can recycle/compost responsibly at home",
+                "taskPic": "./images/t1107.jpg",
+                "taskFooter": "Photo by <a href=\"https://www.pexels.com/photo/glass-bottles-in-bag-3735218/\" target=\"_blank\">Polina Tankilevitch</a>"
             },
             {
                 "taskNumber": "t1108",
                 "taskName": "Safe Leftover Management",
-                "taskDescription": "Take home any leftovers (if safe to do so)"
+                "taskDescription": "Take home any leftovers (if safe to do so)",
+                "taskPic": "./images/t1108.png",
+                "taskFooter": "Photo by <a href=\"https://www.pexels.com/photo/leftover-food-on-the-table-6728517/\" target=\"_blank\">cottonbro studio</a>"
             },
             {
                 "taskNumber": "t1109",
                 "taskName": "Use Personal Containers for Take-Away",
-                "taskDescription": "When buying take-away take your own containers"
+                "taskDescription": "When buying take-away take your own containers",
+                "taskPic": "./images/t1109.png",
+                "taskFooter": "Image generated using Canva’s AI image generator."
             },
             {
                 "taskNumber": "t1110",
                 "taskName": "Sustainable Meal Packaging Practices",
-                "taskDescription": "Wash and re-use or recycle packaging of home delivered/take-away meals, or avoid home delivery altogether"
+                "taskDescription": "Wash and re-use or recycle packaging of home delivered/take-away meals, or avoid home delivery altogether",
+                "taskPic": "./images/t1110.png",
+                "taskFooter": "Image generated using Canva’s AI image generator."
             },
             {
                 "taskNumber": "t1111",
                 "taskName": "Promote Proper Recycling Practices with Recycle Mate",
-                "taskDescription": "Do not contaminate recycling bins with packaging which cannot be recycled - check with <a href=\"https://www.cleanup.org.au/recyclemate\" target=\"_blank\">Recycle Mate</a>. You could download the app on your phone and share it with friends."
-
+                "taskDescription": "Do not contaminate recycling bins with packaging which cannot be recycled - check with <a href=\"https://www.cleanup.org.au/recyclemate\" target=\"_blank\">Recycle Mate</a>. You could download the app on your phone and share it with friends.",
+                "taskPic": "./images/t1111.jpg",
+                "taskFooter": "Photo by <a href=\"https://unsplash.com/@splashabout?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\"  target=\"_blank\">Nareeta Martin</a> on <a href=\"https://unsplash.com/photos/red-yellow-and-green-trash-bins-FoG7PKNYjpM?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\"  target=\"_blank\">Unsplash</a>"
             },
             {
                 "taskNumber": "t1112",
                 "taskName": "Workplace Recycling Advocacy and Education",
-                "taskDescription": "Advocate for recycling facilities in your workplace and educate others on their proper use"
+                "taskDescription": "Advocate for recycling facilities in your workplace and educate others on their proper use",
+                "taskPic": "./images/t1112.jpg",
+                "taskFooter": "Photo by <a href=\"https://www.pexels.com/photo/men-writing-on-board-3184645/\" target=\"_blank\">fauxels</a>"
             },
             {
                 "taskNumber": "t1113",
                 "taskName": "Community Litter Cleanup and Awareness",
-                "taskDescription": "Help to clean up your local area to prevent litter entering the natural environment, and encourage others to do the same. For example - <a href=\"https://www.take3.org/\" target=\"_blank\">3 for the sea</a>. Take a photo of what you collect and share it on social media using the hashtag #planEATary."
-
+                "taskDescription": "Help to clean up your local area to prevent litter entering the natural environment, and encourage others to do the same. For example - <a href=\"https://www.take3.org/\" target=\"_blank\">3 for the sea</a>. Take a photo of what you collect and share it on social media using the hashtag #planEATary.",
+                "taskPic": "./images/t1113.jpg",
+                "taskFooter": "Image by <a href=\"https://pixabay.com/users/mariebertinart-29614520/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=8701165\">Marie Bertin</a> from <a href=\"https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=8701165\">Pixabay</a>"
             }
         ]
     },
@@ -663,77 +839,93 @@
             {
                 "taskNumber": "t1201",
                 "taskName": "Create a Social Media Flyer on the Planetary Health Benefits of Breastfeeding",
-                "taskDescription": "Read the following UNICEF <a href=\"https://www.unicef.org.uk/babyfriendly/news-and-research/baby-friendly-research/research-supporting-breastfeeding/research-on-breastfeeding-and-climate-change/\" target=\"_blank\">page</a> (5) and develop a one page flyer/poster/infographic on the planetary health benefits of breastfeeding suitable for sharing on social media, using the hashtag #Breastfeeding and #breastisbest."
-
+                "taskDescription": "Read the following UNICEF <a href=\"https://www.unicef.org.uk/babyfriendly/news-and-research/baby-friendly-research/research-supporting-breastfeeding/research-on-breastfeeding-and-climate-change/\" target=\"_blank\">page</a> (5) and develop a one page flyer/poster/infographic on the planetary health benefits of breastfeeding suitable for sharing on social media, using the hashtag #Breastfeeding and #breastisbest.",
+                "taskPic": "./images/t1201.png",
+                "taskFooter": "Image generated using Canva’s AI image generator."
             },
             {
                 "taskNumber": "t1202",
                 "taskName": "Research Local Baby-Friendly Hospital Initiative (BFHI) Accredited Facilities",
-                "taskDescription": "Investigate which local health care facilities are accredited with the <a href=\"https://bfhi.org.au/parents//\" target=\"_blank\">Baby-Friendly Hospital Initiative (BFHI)</a>."
-
+                "taskDescription": "Investigate which local health care facilities are accredited with the <a href=\"https://bfhi.org.au/parents//\" target=\"_blank\">Baby-Friendly Hospital Initiative (BFHI)</a>.",
+                "taskPic": "./images/t1202.jpg",
+                "taskFooter": "Photo by <a href=\"https://www.pexels.com/photo/smiling-newborn-baby-3279207/\" target=\"_blank\">Jonathan Borba</a>"
             },
             {
                 "taskNumber": "t1203",
                 "taskName": "Support Breastfeeding Mothers with Encouragement and Resources",
-                "taskDescription": "Support breastfeeding mothers within your family, friends and community by offering encouragement, support and resources. Checkout the <a href=\"https://www.breastfeeding.asn.au/discover-our-accessible-baby-care-rooms-across-australia\" target=\"_blank\">Australian Breastfeeding Association</a> for information, resources, support and education groups in your local area.(7)"
-
+                "taskDescription": "Support breastfeeding mothers within your family, friends and community by offering encouragement, support and resources. Checkout the <a href=\"https://www.breastfeeding.asn.au/discover-our-accessible-baby-care-rooms-across-australia\" target=\"_blank\">Australian Breastfeeding Association</a> for information, resources, support and education groups in your local area.(7)",
+                "taskPic": "./images/t1203.jpg",
+                "taskFooter": "Photo by KATRIN <a href=\"https://www.pexels.com/photo/mother-with-children-on-couch-and-windowsill-4868552/\" target=\"_blank\">BOLOVTSOVA:</a>"
             },
             {
                 "taskNumber": "t1204",
                 "taskName": "Identify or Advocate for Comfortable Baby Care Rooms in the Community",
-                "taskDescription": "Find comfortable places to breastfeed away from home at <a href=\"https://www.breastfeeding.asn.au/discover-our-accessible-baby-care-rooms-across-australia\" target=\"_blank\">Baby Care Rooms</a>. (9) If you can’t find any, lobby for comfortable and safe spaces for breastfeeding in your local community."
-
+                "taskDescription": "Find comfortable places to breastfeed away from home at <a href=\"https://www.breastfeeding.asn.au/discover-our-accessible-baby-care-rooms-across-australia\" target=\"_blank\">Baby Care Rooms</a>. (9) If you can’t find any, lobby for comfortable and safe spaces for breastfeeding in your local community.",
+                "taskPic": "./images/t1204.png",
+                "taskFooter": "Image generated using Canva’s AI image generator."
             },
             {
                 "taskNumber": "t1205",
                 "taskName": "Participate in WHO World Breastfeeding Week and Share Campaign Messages",
-                "taskDescription": "Participate in <a href=\"https://www.who.int/campaigns/world-breastfeeding-week\" target=\"_blank\">WHO World Breastfeeding Week</a> and share campaign messages on social media.(8)"
-
+                "taskDescription": "Participate in <a href=\"https://www.who.int/campaigns/world-breastfeeding-week\" target=\"_blank\">WHO World Breastfeeding Week</a> and share campaign messages on social media.(8)",
+                "taskPic": "./images/t1205.png",
+                "taskFooter": "Image generated using Canva’s AI image generator."
             },
             {
                 "taskNumber": "t1206",
                 "taskName": "Breastfeeding Events Participation",
-                "taskDescription": "Attend or host breastfeeding events such as support groups or awareness events"
+                "taskDescription": "Attend or host breastfeeding events such as support groups or awareness events",
+                "taskPic": "./images/t1206.png",
+                "taskFooter": "Image generated using Canva’s AI image generator."
             },
             {
                 "taskNumber": "t1207",
                 "taskName": "Workplace Breastfeeding Advocacy",
-                "taskDescription": "Provide or advocate for a comfortable and safe space for breastfeeding in your workplace"
+                "taskDescription": "Provide or advocate for a comfortable and safe space for breastfeeding in your workplace",
+                "taskPic": "./images/t1207.avif",
+                "taskFooter": "Photo by <a href=\"https://unsplash.com/@luizabraun?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Luiza Braun</a> on <a href=\"https://unsplash.com/photos/woman-in-blue-denim-jacket-holding-baby-qhaAXVw3r8w?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash target=\"_blank\" \">Unsplash</a>"
             },
             {
                 "taskNumber": "t1208",
                 "taskName": "Regulate Infant Formula Advertising",
-                "taskDescription": "Infant formula should not be advertised/promoted to the public. <a href=\"https://www.health.gov.au/committees-and-groups/maif-complaints-committee\">Report</a> inappropriate promotion of infant formula.(11)"
-
+                "taskDescription": "Infant formula should not be advertised/promoted to the public. <a href=\"https://www.health.gov.au/committees-and-groups/maif-complaints-committee\">Report</a> inappropriate promotion of infant formula.(11)",
+                "taskPic": "./images/t1208.png",
+                "taskFooter": ""
             },
             {
                 "taskNumber": "t1209",
                 "taskName": "Understand Employer Responsibilities for Breastfeeding Support",
-                "taskDescription": "Breastfeeding is <a href=\"https://www.fairwork.gov.au/leave/parental-leave#breastfeeding-in-the-workplace\" target=\"_blank\">protected by anti-discrimination laws</a>.(10) Find out what employers are expected to do in order to provide a supportive, non-discriminatory workplace for breastfeeding women."
-
+                "taskDescription": "Breastfeeding is <a href=\"https://www.fairwork.gov.au/leave/parental-leave#breastfeeding-in-the-workplace\" target=\"_blank\">protected by anti-discrimination laws</a>.(10) Find out what employers are expected to do in order to provide a supportive, non-discriminatory workplace for breastfeeding women.",
+                "taskPic": "./images/t1209.jpg",
+                "taskFooter": "Photo by <a href=\"https://unsplash.com/@wocintechchat?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Christina @ wocintechchat.com</a> on <a href=\"https://unsplash.com/photos/people-on-conference-table-looking-at-talking-woman-Q80LYxv_Tbs?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Unsplash</a>"
             },
             {
                 "taskNumber": "t1210",
                 "taskName": "Model Breastfeeding Behavior",
-                "taskDescription": "Model ideal behaviour by breastfeeding yourself if you can, or support your partner to breastfeed"
+                "taskDescription": "Model ideal behaviour by breastfeeding yourself if you can, or support your partner to breastfeed",
+                "taskPic": "./images/t1210.jpg",
+                "taskFooter": "Photo by <a href=\"https://unsplash.com/@davidoclubb?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Dave Clubb</a> on <a href=\"https://unsplash.com/photos/woman-holding-baby-sitting-under-the-tree-bcmvJT9tyvo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Unsplash</a>"
             },
             {
                 "taskNumber": "t1211",
                 "taskName": "Analysis of The Conversation Article on Breastfeeding",
-                "taskDescription": "Read <a href=\"https://theconversation.com/breastfeeding-can-help-tackle-climate-crisis-but-its-on-governments-not-mums-to-save-the-world-124676\">The Conversation article (12)</a> on breastfeeding and answer these questions:<br/>Who/What do the public health practitioners suggest should play a bigger role in increasing breastfeeding rates?<br/>What are the five things the authors suggest require investment to increase breastfeeding rates?<br/>What should health professionals keep in mind when promoting breastfeeding to women?"
-
+                "taskDescription": "Read <a href=\"https://theconversation.com/breastfeeding-can-help-tackle-climate-crisis-but-its-on-governments-not-mums-to-save-the-world-124676\">The Conversation article (12)</a> on breastfeeding and answer these questions:<br/>Who/What do the public health practitioners suggest should play a bigger role in increasing breastfeeding rates?<br/>What are the five things the authors suggest require investment to increase breastfeeding rates?<br/>What should health professionals keep in mind when promoting breastfeeding to women?",
+                "taskPic": "./images/t1211.jpg",
+                "taskFooter": "Photo by <a href=\"https://www.pexels.com/photo/mother-using-phone-while-breastfeeding-her-child-6392810/\" target=\"_blank\">William  Fortunato</a>"
             },
             {
                 "taskNumber": "t1212",
                 "taskName": "Review of the Baby-Friendly Hospital Initiative (BFHI) and Accreditation Process",
-                "taskDescription": "Review the Baby-friendly hospital Initiative Australia <a href=\"https://bfhi.org.au/\">(BFHI)</a> (6) and answer the following questions:<br/>- What are the ten steps to successful breastfeeding?<br/>- How does a healthcare facility become accredited with BFHI?"
-
+                "taskDescription": "Review the Baby-friendly hospital Initiative Australia <a href=\"https://bfhi.org.au/\">(BFHI)</a> (6) and answer the following questions:<br/>- What are the ten steps to successful breastfeeding?<br/>- How does a healthcare facility become accredited with BFHI?",
+                "taskPic": "./images/t1212.jpg",
+                "taskFooter": "Photo by <a href=\"https://unsplash.com/@romaindancre?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Romain Dancre</a> on <a href=\"https://unsplash.com/photos/person-in-orange-long-sleeve-shirt-writing-on-white-paper-doplSDELX7E?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Unsplash</a>"
             },
             {
                 "taskNumber": "t1213",
                 "taskName": "Analysis of the MAIF Agreement and Related Questions",
-                "taskDescription": "Read the summary of the <a href=\"https://www.health.gov.au/topics/pregnancy-birth-and-baby/breastfeeding-infant-nutrition/marketing-infant-formula\">‘Marketing in Australia of Infant Formulas’ (MAIF)</a> (11) Manufacturers and Importers’ (MAIF) Agreement and answer the following questions:<br/>- Which International Code is the MAIF based on?<br/>- What are the four aims of the MAIF?<br/>- Give one example of a complaint made about failure to comply with the MAIF agreement?<br/>- What is a current issue related to the MAIF that has public health advocates concerned?"
-
+                "taskDescription": "Read the summary of the <a href=\"https://www.health.gov.au/topics/pregnancy-birth-and-baby/breastfeeding-infant-nutrition/marketing-infant-formula\">‘Marketing in Australia of Infant Formulas’ (MAIF)</a> (11) Manufacturers and Importers’ (MAIF) Agreement and answer the following questions:<br/>- Which International Code is the MAIF based on?<br/>- What are the four aims of the MAIF?<br/>- Give one example of a complaint made about failure to comply with the MAIF agreement?<br/>- What is a current issue related to the MAIF that has public health advocates concerned?",
+                "taskPic": "./images/t1213.jpg",
+                "taskFooter": "Photo by <a href=\"https://unsplash.com/@jopwell?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">The Jopwell Collection</a> on <a href=\"https://unsplash.com/photos/three-women-sitting-on-a-bench-looking-at-a-laptop-ZZlMCi6d5FY?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Unsplash</a>"
             }
         ]
     }

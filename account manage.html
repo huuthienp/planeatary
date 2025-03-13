@@ -3,283 +3,497 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>PlanEATary Account Management</title>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: white;
-            transition: background-color .5s;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 2vw 2vh;
-            border-bottom: 0.2em solid #02897A;
-            gap: 1vw;
-        }
-        .header .logo {
-            font-weight: Bold;
-            color: #02897A;
-            font-size: 2em;
-        }
-        .header nav ul {
-            list-style: none;
-            margin: auto auto;
-            padding: 0;
-            gap: 1vw;
-        }
-        .header nav ul li {
-            display: inline-block;
-            font-size: 1em;
-        }
-        .header nav ul li a {
-            text-decoration: none;
-            color: #02897A;
-            font-weight: bold;
-        }
-        .account-page {
-            padding: 2em;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .account-page h1 {
-            color: #02897A;
-            text-align: center;
-        }
-        .account-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5em;
-        }
-        .account-form label {
-            font-weight: bold;
-            margin-bottom: 0.5em;
-        }
-        .account-form input, .account-form select, .account-form button {
-            padding: 0.5em;
-            font-size: 1em;
-            border: 1px solid #ccc;
-            border-radius: 0.5em;
-        }
-        .account-form button {
-            background-color: #02897A;
-            color: white;
-            cursor: pointer;
-        }
-        .account-form button:hover {
-            background-color: #0cbba6;
-        }
-
-        #form_validate_msg {
-            color: red;
-        }
-
-        /* For password warning text*/
-        .password-message-item {
-            gap: 0;
-        }
-
-        #password-message {
-            display: none;
-        }
-
-        .invalid {
-            color: red;
-        }
-
-        .invalid:before {
-            position: relative;
-            content: "✖";
-        }
-
-        .valid {
-            color: green;
-        }
-
-        .valid:before {
-            position: relative;
-            content: "✔";
-        }
-
-    </style>
+    
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
+    <link href="style_concat.css" rel="stylesheet" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Icon CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
     <!-- Header Section -->
-    <header class="header">
-        <div class="logo">PlanEATary</div>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#account">Account</a></li>
-                <li><a href="#">About</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Account Management Section -->
-    <div id="account" class="account-page">
-        <h1>Manage Your Account</h1>
-        <form class="account-form" onsubmit="return validate_form()">
-            <label for="name">Name:</label>
-            <input type="text" id="name" placeholder="Enter your name">
-
-			<label for="age">Age:</label>
-            <input type="number" id="age" placeholder="Enter your age" min="0">            
-			
-			<label for="gender">Gender:</label>
-            <select id="gender">
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-            </select>
-
-            <label for="email">Change Additional Email Address:</label>
-            <input type="email" id="email" placeholder="Enter your email">
-
-            <label for="user-type">User Type:</label>
-            <select id="user-type">
-                <option value="student">Student</option>
-                <option value="other">Dietician</option>
-                <option value="other">Academic staff</option>
-                <option value="other">Other</option>
-            </select>
-
-            <label for="password">Change Password:</label>
-            <input type="password" id="password" placeholder="Enter new password">
-            
-            <div id="password-message">
-                <span>Password must contain:</span>
-                <span class="password-message-item invalid">At least <b>one lowercase letter</b> </span>
-                <span class="password-message-item invalid">At least <b>one uppercase letter</b> </span>
-                <span class="password-message-item invalid">At least <b>one number</b> </span>
-                <span class="password-message-item invalid">Minimum  <b>8 characters</b> </span>
+    <div class="Header">
+        <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#063a34d0, 20%, #0963587a), url('./images/ella-olsson.jpg'); background-size: cover; background-position: center;">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="index.html">
+                    <img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(#063a34d0, 20%, #0963587a), url('./images/ella-olsson.jpg'); background-size: cover; background-position: center;">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-edit"></i>  <strong>Quiz</strong>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #00af8c;">
+                                    <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
+                                    <li><a class="dropdown-item" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="navChallenge" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="history_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-calendar-check-o"></i> History</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link active dropdown-toggle" style="text-decoration: underline white;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
+                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #00af8c;">
+                                    <li><a class="dropdown-item" href="account manage.html" data-bs-dismiss="offcanvas">My account</a></li>
+                                    <li><a class="dropdown-item" id="logOut">Log out</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+        </nav>
+    </div>
+    <div class="void-space"></div>
+    <div class="container-sm" style="padding-bottom: 2vmax;">
+        <!-- Account Management Section -->
+        <div id="account" class="account-page">
+            <h1 class="display-5">Manage Your Account</h1>
+            <form class="account-form needs-validation" onsubmit="return validate_form()" novalidate>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                    <div class="invalid-feedback">
+                        Please type in correct name
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="age" class="form-label">Age:</label>
+                    <input type="number" class="form-control" id="age" placeholder="Enter your age" min="0" required>
+                    <div class="invalid-feedback">
+                        Please type in correct age
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="gender" class="form-label">Gender:</label>
+                    <select id="gender" class="form-select mb-3" aria-label="Select gender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="user-type" class="form-label">User Type:</label>
+                    <select id="user-type" class="form-select mb-3" aria-label="User type" required>
+                        <option value="student">Student</option>
+                        <option value="dietician">Dietician</option>
+                        <option value="academic">Academic staff</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="password" class="form-label">Change Password:</label>
+                    <input type="password" class="form-control" id="password" placeholder="Enter new password">
+                    <div id="passwordHelpBlock" class="form-text">
+                        Your password must be 8-20 characters long, contain at least one lowercase letter, one uppercase letter and one number
+                    </div>
+                    <div class="invalid-feedback">
+                        Please use stronger password.
+                    </div>
+                </div>
+                
+                <div class="mb-3 d-none" id="password-message">
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-danger" id="password-msg-lowercase">
+                            <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                            <i class="fa fa-check text-success d-none" aria-hidden="true"></i>
+                            At least <b>one lowercase letter</b>
+                        </li>
+                        <li class="list-group-item list-group-item-danger" id="password-msg-uppercase">
+                            <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                            <i class="fa fa-check text-success d-none" aria-hidden="true"></i>
+                            At least <b>one uppercase letter</b>
+                        </li>
+                        <li class="list-group-item list-group-item-danger" id="password-msg-number">
+                            <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                            <i class="fa fa-check text-success d-none" aria-hidden="true"></i>
+                            At least <b>one number</b>
+                        </li>
+                        <li class="list-group-item list-group-item-danger" id="password-msg-minchar">
+                            <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                            <i class="fa fa-check text-success d-none" aria-hidden="true"></i>
+                            Minimum  <b>8 characters</b>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div id="form_validate_msg"></div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+    <footer class="footer" style="position: fixed; bottom: 0;">
+        <ul>
+            <li>Photo by <a href="https://unsplash.com/@ellaolsson?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Ella Olsson</a> on <a href="https://unsplash.com/photos/assorted-fruit-and-seasoning-on-table-I-uYa5P-EgM?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Unsplash</a></li>
+        </ul>
+    </footer>
 
-            <span id="form_validate_msg"></span>
-            <button type="submit">Save Changes</button>
-        </form>
+    <!-- spinner overlay-->
+    <section class="overlay hidden" id="spinnerOverlay">
+        <div class="spinner hidden" id="spinner">
+        </div>
+        <div>
+            <span>Loading</span>
+        </div>
+    </section>
+    
+    <!-- Warning Toast -->
+    <div class="toast-container">
+        <div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Please finish your very first quiz before further proceeding.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Warning disabling -->
+    <div class="toast-container">
+        <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <h4>Well done!</h4>
+                    <p>It's a shame that you are not allowed to do more tasks after doing the post-quiz.</p>
+                    <hr>
+                    <p class="mb-0">Please restart our journey by restarting the pre-quiz.</p>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
     </div>
 
+    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script>
-        // JavaScript for form handling or additional interactivity
-        var password_check_valid = 0;
-
-        // Input fields validate
-        function validate_form() {
-            // Collecting input fields
-            var name_field     = document.getElementById("name");
-            var email_field    = document.getElementById("email");
-            var password_field = document.getElementById("password");
-            var msg_string     = "";
-            var validate_flag = 1;
-            //----------Checking name fields----------------
-            if (name_field.value == "") {
-                validate_flag = 0;
-                msg_string = msg_string + "**Name is blank."
-            }
-            //-----------Checking email fields-------------
-            if (email_field.value == "") {
-                validate_flag = 0;
-                msg_string = msg_string + "<br />" + "**Email is blank."
-            }
-
-            //----------Checking password fields------------
-            if (password_field.value.length > 0) {
-                let uppercaseRegex = /[A-Z]/g;
-                if (!password_field.value.match(uppercaseRegex)) {
-                    validate_flag = 0;
-                }
-    
-                // checking lowercase letters
-                let lowercaseRegex = /[a-z]/g;
-                if (!password_field.value.match(lowercaseRegex)) {
-                    validate_flag = 0;
-                }
-    
-                // checking the number
-                let numbersRegex = /[0-9]/g;
-                if (!password_field.value.match(numbersRegex)) {
-                    validate_flag = 0;
-                }
-    
-                // Checking length of the password
-                if (!password_field.value.length >= 8) {
-                    validate_flag = 0;
-                }
-            }
-
-            //----------Printing warning message for user------------
-            document.getElementById("form_validate_msg").innerHTML = msg_string;
-            console.log(msg_string);
-
-            if (validate_flag) {
-                alert('Account information saved!');
-                window.location.href = 'https://planeatary.netlify.app/'; //redirect to homepage
-            }
-            else {
-                alert('Some fields are not valid. Please check your input again!');
-            }
-            return false;
+        
+        //For first-timer to see a reminder to do a very first quiz
+        function showToast() {
+            const toasty = document.getElementById('first-timer-toast');
+            const myToast = new bootstrap.Toast(toasty);
+            myToast.show();
         }
 
+        function showAlert() {
+            const alertContainer = document.getElementById('alertContainer');
+            if (!alertContainer) {
+                console.error('No alert container found.');
+                return;
+            }
+            const bsAlert = new bootstrap.Toast(alertContainer);
+            bsAlert.show();
+        }
+
+        function validate_form() { return false; }
+
+        async function updatePassword(newPassword, user) {
+            
+            if (!user) {
+                alert("You are not logged in. Please sign in");
+                return;
+            }
+            
+            try {
+                // Get JWT Token
+                const token = await user.jwt();
+                
+                const response = await fetch("/.netlify/identity/user", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`  
+                    },
+                    body: JSON.stringify({ password: newPassword }),
+                });
+                
+                if (!response.ok) {
+                    throw new Error("Failed to update password.");
+                }
+                
+                alert("Password updated successfully. Please log in again.");
+                await netlifyIdentity.gotrue.currentUser().logout(); 
+                window.location.href = "index.html";
+                
+            } catch (error) {
+                console.error("Authorization failed:", error);
+                alert("You are not authorized to change the password.");
+            }
+        }
+
+    </script>
+
+    <script type="module">
+        import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+        
+        //Dismiss the offcanvas bar after click and execute
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+        
+        const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+        const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
+
+        // RegEx for checking password
+        let uppercaseRegex = /[A-Z]/g;
+        let lowercaseRegex = /[a-z]/g;
+        let numbersRegex = /[0-9]/g;
+        
         // Password validate
         var passwordInput = document.getElementById("password");
         var passwordMessageItems = document.getElementsByClassName("password-message-item");
         var passwordMessage = document.getElementById("password-message");
-
-        function password_display_check() {
-            if (passwordInput.value.length == 0)
-                passwordMessage.style.display = "none";
-            else if (passwordInput.value.length > 0) {
-                passwordMessage.style.display = "contents";
+        var form_check = 0;
+        
+        passwordInput.addEventListener("focus", () => {
+            passwordMessage.classList.remove("d-none");
+            if (!password.classList.contains("is-valid")) {
+                password.classList.add("is-invalid");
             }
-        }
-
-        passwordInput.onkeyup = function () {
-            password_display_check()
-
-            // checking uppercase letters
-            let uppercaseRegex = /[A-Z]/g;
-            if (passwordInput.value.match(uppercaseRegex)) {
-                passwordMessageItems[1].classList.remove("invalid");
-                passwordMessageItems[1].classList.add("valid");
-            } else {
-                passwordMessageItems[1].classList.remove("valid");
-                passwordMessageItems[1].classList.add("invalid");
+        });
+        
+        passwordInput.addEventListener("input", () => {
+            document.getElementById("password-msg-lowercase").classList.toggle("d-none", passwordInput.value.match(lowercaseRegex));
+            document.getElementById("password-msg-uppercase").classList.toggle("d-none", passwordInput.value.match(uppercaseRegex));
+            document.getElementById("password-msg-number").classList.toggle("d-none", passwordInput.value.match(numbersRegex));
+            document.getElementById("password-msg-minchar").classList.toggle("d-none", (passwordInput.value.length >= 8));
+        });
+        
+        passwordInput.addEventListener("blur", () => {
+            passwordMessage.classList.add("d-none");
+            if (passwordInput.classList.contains("is-invalid") && passwordInput.value.length == 0) {
+                passwordInput.classList.remove("is-invalid");
             }
+        });
 
-            // checking lowercase letters
-            let lowercaseRegex = /[a-z]/g;
-            if (passwordInput.value.match(lowercaseRegex)) {
-                passwordMessageItems[0].classList.remove("invalid");
-                passwordMessageItems[0].classList.add("valid");
-            } else {
-                passwordMessageItems[0].classList.remove("valid");
-                passwordMessageItems[0].classList.add("invalid");
-            }
+        document.querySelector(".account-form").addEventListener("input", async function(event) {
+            const user = netlifyIdentity.gotrue.currentUser();
 
-            // checking the number
-            let numbersRegex = /[0-9]/g;
-            if (passwordInput.value.match(numbersRegex)) {
-                passwordMessageItems[2].classList.remove("invalid");
-                passwordMessageItems[2].classList.add("valid");
-            } else {
-                passwordMessageItems[2].classList.remove("valid");
-                passwordMessageItems[2].classList.add("invalid");
+            if (!user) {
+                console.error("No user is logged in!");
+                netlifyIdentity.logout();
             }
 
-            // Checking length of the password
-            if (passwordInput.value.length >= 8) {
-                passwordMessageItems[3].classList.remove("invalid");
-                passwordMessageItems[3].classList.add("valid");
-            } else {
-                passwordMessageItems[3].classList.remove("valid");
-                passwordMessageItems[3].classList.add("invalid");
+            const userData = user.user_metadata;
+
+            if (user) {
+                user.jwt().then(token => {
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                        window.location.href = "index.html";
+                        return;
+                    } else {
+                        console.log("Token is valid.");
+                    }
+                });
+                if (validate_form()) {
+                    event.currentTarget.dataset.modified = "true";
+                    console.log("Form has been modified.");
+                    document.getElementById("name").value       = userData.full_name;
+                    document.getElementById("age").value        = userData.age;
+                    document.getElementById("gender").value     = userData.gender;
+                    document.getElementById("user-type").value  = userData.status;
+                }
             }
-        }
+        });
+        
+        document.addEventListener("DOMContentLoaded", async function() {
+
+            //spinner variables
+            let startTime = Date.now();
+            const condition = [false, startTime];
+            const bOverlay = document.getElementById("spinnerOverlay");
+            const spinner = document.getElementById("spinner");
+            
+            const user = netlifyIdentity.gotrue.currentUser();
+            const userData = user.user_metadata;
+            
+            if (!user) {
+                console.error("No user is logged in!");
+                netlifyIdentity.logout();
+            }
+            
+            if (user) {
+                user.jwt().then(token => {
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                        window.location.href = "index.html";
+                    } else {
+                        console.log("Token is valid.");
+                    }
+                });
+                document.getElementById("name").value       = userData.full_name;
+                document.getElementById("age").value        = userData.age;
+                document.getElementById("gender").value     = userData.gender;
+                document.getElementById("user-type").value  = userData.status;
+            }
+
+            offcanvasLinks.forEach(li => {
+                if (li !== document.getElementById('navChallenge')) {
+                    li.addEventListener('click', handleOffcanvasClick);
+                } 
+            });
+
+            offcanvasDropdown.forEach(li => {
+                li.addEventListener('click', handleOffcanvasClick);
+            });
+
+            // Function to handle navigation or showing toast
+            offcanvasListItems.forEach(li => {
+                li.addEventListener('click', event => {
+                    const link = li.querySelector('a.nav-link'); 
+                    
+                    if (link) {
+                        if (link.classList.contains('Disabled')) {
+                            link.removeAttribute('href');
+                            showToast();
+                            const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                            offcanvas.hide();
+                        } else {
+                            handleOffcanvasClickFromElement(link);
+                        }
+                    }
+                });
+            });
+
+            // Function to handle navigation or showing toast
+            offcanvasDropdownItems.forEach(li => {
+                li.addEventListener('click', event => {
+                    const link = li.querySelector('a.dropdown-item'); 
+                    
+                    if (link) {
+                        if (link.classList.contains('Disabled')) {
+                            link.removeAttribute('href');
+                            showToast(); 
+                        } else {
+                            handleOffcanvasClickFromElement(link);
+                        }
+                    }
+                    const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                });
+            })
+
+            const navChallenge = document.getElementById('navChallenge');
+
+            if (!navChallenge) {
+                console.error("Element with id 'navChallenge' not found.");
+                return;
+            }
+
+            navChallenge.addEventListener('click', function(event) {
+                // Debug logs to check values
+                console.log("navChallenge clicked");
+                console.log("navChallenge.href:", navChallenge.href);
+                console.log("hasPostQuizResult() returns:", hasPostQuizResult());
+                
+                if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    navChallenge.removeAttribute('href');
+                    console.log("Navigation prevented. Calling showAlert().");
+                    showAlert();
+                } else if (hasPostQuizResult()) {
+                    showAlert();
+                } else {
+                    handleOffcanvasClick(event);
+                }
+                
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+            });
+
+            document.getElementById('logOut').addEventListener('click', async () => {
+                if (confirm("Do you really want to sign out?") == true) {
+                    showSpinner([bOverlay, spinner], condition);
+                    await logOut();
+                    hideSpinner([bOverlay, spinner], condition);
+                }
+            });
+            
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+            
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                
+                form.addEventListener('submit', async (event) => {
+                    
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        form_check = 0;
+                    }
+                    else  
+                    {
+                        form_check = 1;
+                        console.log("validate form2");
+                        
+                        let user_full_name = document.getElementById("name").value;
+                        let user_age       = document.getElementById("age").value;
+                        let user_gender    = document.getElementById("gender").value;
+                        let user_type      = document.getElementById("user-type").value;
+                        let user_password  = document.getElementById("password").value;
+                        const user_datail = { full_name: user_full_name, gender: user_gender, age: user_age, status: user_type };
+                        
+                        try {
+                            // If password is provided, update it first
+                            if (user_password !== "") {
+                                await updatePassword(user_password, user);
+                            }
+                            
+                            // Update user metadata
+                            const updatedUser = await user.update({ data: user_datail });
+                            
+                            console.log("✅ Updated user:", JSON.stringify(updatedUser));
+                            alert("Account information saved!");
+                            
+                            // Fetch and store updated user details
+                            const updatedUserDetails = await netlifyIdentity.gotrue.currentUser();
+                            localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
+                            
+                            console.log("🔄 Updated user saved to localStorage:", updatedUserDetails);
+                        } catch (error) {
+                            console.error("❌ Failed to update user:", error);
+                            alert("Failed to save account information!");
+                        }
+                    }
+                    
+                    form.classList.add('was-validated')
+                }, false)
+            })
+            
+        });
     </script>
+    <!-- Bootstrap Javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

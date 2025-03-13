@@ -17,21 +17,20 @@
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#212515d8, 25%, #9db33d41), url('./images/enzo-lo-presti.jpg'); background-size: cover; background-position: center;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
-                        <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
-                        <strong>PlanEATary</strong>
+                        <img  src="./images/transparent_logo.png" height="80px" width="auto" class="d-inline-block align-text-top"/>
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                        <div class="offcanvas-header" style="background-color: #096358;">
-                            <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>planeatary</h5>
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(#212515d8, 30%, #9db33d41), url('./images/enzo-lo-presti.jpg'); background-size: cover; background-position: center;">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
-                        <div class="offcanvas-body" style="background-color: #02897A;">
+                        <div class="offcanvas-body">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
                                     <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
@@ -40,13 +39,13 @@
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                     </a>
-                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #00af8c;">
                                         <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
                                         <li><a class="dropdown-item Disabled" id="navPost-quiz" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link active" style="text-decoration: underline white;" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -56,7 +55,7 @@
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
-                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #00af8c;">
                                         <li><a class="dropdown-item" href="account manage.html" data-bs-dismiss="offcanvas">My account</a></li>
                                         <li><a class="dropdown-item" id="logOut">Log out</a></li>
                                     </ul>
@@ -66,18 +65,25 @@
                     </div>
                 </nav>
             </div>
-            <div class="content hidden">
+            <div class="content hidden" style="background-image: linear-gradient(#faf9f9d8, 25%, #f8f8f63b), url('./images/plant.jpg'); background-size: cover; background-position: center;">
                 <div class="head">
-                    <img src="./images/battery.png"/>
+                    <img src="./images/soy-bean.png"     style="width: calc(10% + 6vh);" />
                     <h1 class="status">CHALLENGE IN PROGRESS</h1>
                     <p class="suggestion">Please click Done when you complete your tasks</p>
                 </div>
                 <div class="Card"></div>
-                <div class="btn-next">
-                    <button class="next shadow-sm" style="width: 150px;">Next  &#8594;</button>
+                <div class="btn-next" style="padding-top: 4vmax;">
+                    <button class="next btn btn-success shadow" style="width: 180px;">Next  &#8594;</button>
                 </div>
             </div>
             <!-- <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating... -->
+            <footer class="footer" style="height: 100%;">
+                <ul>
+                    <li><a href="https://www.flaticon.com/free-icons/soy-bean" title="soy bean icons">Soy bean icons created by Heykiyou - Flaticon</a></li>
+                    <li>Photo by <a href="https://unsplash.com/@noahbuscher?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Noah Buscher</a> on <a href="https://unsplash.com/photos/green-plant-x8ZStukS2PM?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Unsplash</a></li>
+                    <li>Photo by <a href="https://unsplash.com/@lopresti_enzo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Enzo Lo Presti</a> on <a href="https://unsplash.com/photos/green-round-fruit-in-close-up-photography-33Vcafu2_YQ?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Unsplash</a></li>
+                </ul>
+            </footer>
         </div>
         
         <section class="overlay2 hidden" id="modalOverlay">
@@ -87,8 +93,15 @@
                         <button class="close">x</button>
                     </div>
                     <div class="modal_content">
-                        <h2 id="modalTitle" style="padding: 0 20px;"></h2>
-                        <p id="modalDescription" style="padding: 0 20px;"></p>
+                        <h2 id="modalTitle" style="padding: 0 20px; width: 100%"></h2>
+                        <div class="modal-section">
+                            <img id="modal-pic" />
+                            <p id="modalDescription" style="padding: 0 20px; width: 100%"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <footer id="mo-footer" style="width: 100%">
+                            </footer>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -129,17 +142,56 @@
             const cardContainer = document.querySelector(".Card");
             
             const modalOverlay = document.getElementById("modalOverlay");
-            const modalTitle = document.getElementById("modalTitle");
-            const modalDescription = document.getElementById("modalDescription");
             
             const nextButtonContainer = document.querySelector(".btn-next");
             const btn_next = document.querySelector(".next");
 
             const navPostQuiz = document.getElementById("navPost-quiz");
             
-            const showModal = (title, description) => {
-                modalTitle.textContent = title;
-                modalDescription.innerHTML = description;
+            const showModal = (title, description, picture, footer) => {
+                const modalTitle = document.getElementById("modalTitle");
+                const modalSection = document.querySelector(".modal-section");
+                const modalDescription = document.getElementById("modalDescription");
+                const modalPic = document.getElementById("modal-pic");
+                const modalFooter = document.getElementById("mo-footer");
+                const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
+                const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
+                const placeholder1 = document.createElement("p");
+                placeholder1.className = "placeholder-glow text-placeholder";
+                placeholder1.innerHTML = `<span class="placeholder w-100"></span>`;
+                
+                const placeholder2 = document.createElement("p");
+                placeholder2.className = "placeholder-glow text-placeholder";
+                placeholder2.innerHTML = `<span class="placeholder w-100"></span>`;
+                
+                modalPic.src = picture;
+                if (modalPic.complete) {
+                    // If the image is already loaded (from cache), update immediately.
+                    modalPic.style.display = "flex";
+                    modalTitle.innerHTML = title;
+                    modalDescription.innerHTML = taskDescription;
+                    modalFooter.innerHTML = taskFooter;
+                } else {
+                    modalPic.style.display = "none";
+                    modalSection.appendChild(placeholder1);
+                    modalSection.appendChild(placeholder2);
+                    modalTitle.innerHTML = `<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`;
+                    modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
+                    modalDescription.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
+                }
+                modalPic.addEventListener('load', () => {
+                    modalPic.style.display = "flex";
+                    if (placeholder1 && placeholder1.parentNode) {
+                        placeholder1.remove();
+                    }
+                    if (placeholder2 && placeholder2.parentNode) {
+                        placeholder2.remove();
+                    }
+                    modalTitle.innerHTML =  title;
+                    modalDescription.innerHTML = taskDescription;
+                    modalFooter.innerHTML = taskFooter;
+                });
+                
                 showElement([modalOverlay, modal]);
             };
             
@@ -150,7 +202,7 @@
                 if (event.target === modalOverlay) closeModal();
             });
             
-            function delay(ms) {
+            async function delay(ms) {
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
             
@@ -160,6 +212,22 @@
                 const myToast = new bootstrap.Toast(toasty);
                 myToast.show();
             }
+
+            // Use for task card ripple
+            function animateTaskCard(card, gradientColor, TextColor) {
+                // Add the ripple class
+                card.querySelector('span.ripple-span').style.setProperty('--ripple-color', gradientColor);
+                card.querySelector('span.ripple-span').classList.add('ripple');
+
+                card.querySelector('span.ripple-span').addEventListener('animationend', function handler() {
+                    card.querySelector('span.ripple-span').classList.remove('ripple');
+                    card.querySelector('span.ripple-span').removeEventListener('animationend', handler);
+                    card.style.backgroundColor = gradientColor;
+                    card.style.color = TextColor;
+                });
+
+            }
+
 
             //hard-code updating responseHistory (incompleted)
             async function updateResponseHistory(preResponseId, lastTask) {
@@ -246,12 +314,13 @@
                     if (allCompleted) {
                         navPostQuiz.classList.remove('Disabled');
                         btn_next.disabled = false;
-                        updateButton(btn_next,'#02897A', 'pointer');
+                        updateButton(btn_next,'#00af8c', 'pointer');
+                        document.querySelector(".next").innerHTML = 'Next  &#8594;';
                     } else {
                         btn_next.disabled = true;
                         updateButton(btn_next,'#4e958d52', 'not-allowed');
+                        document.querySelector(".next").innerHTML = "Finish'em off first!";
                     }
-                    document.querySelector(".next").innerHTML = 'Next  &#8594;';
                 }
                 
                 // Function to display selected tasks and allow status update
@@ -284,12 +353,14 @@
                                 const infoIcon = document.createElement("span");
                                 infoIcon.classList.add("info-icon");
                                 infoIcon.innerHTML = "&#9432;"; 
-                                
+
+                                const ripple = document.createElement("span");
+                                ripple.classList.add('ripple-span');
                                 // Set the click event for the info icon to show the modal
                                 infoIcon.addEventListener('click', function(event) {
                                     event.preventDefault();
                                     event.stopPropagation(); 
-                                    showModal(task.taskName, task.taskDescription);
+                                    showModal(task.taskName, task.taskDescription, task.taskPic, task.taskFooter);
                                 });
                                 
                                 const completion = document.createElement("span");
@@ -298,12 +369,12 @@
                                 
                                 // Set card styles based on status
                                 if (task.status === "Completed") {
-                                    taskCard.style.backgroundColor = 'rgb(146 161 146 / 75%)';
+                                    taskCard.style.backgroundColor = "rgb(146, 161, 146)";
                                     taskCard.style.color = 'dimgrey';
                                     taskName.style.textDecoration = "line-through";
                                 } else {
                                     taskCard.style.color = 'rgb(71, 71, 71)';
-                                    taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
+                                    taskCard.style.backgroundColor = "rgb(95, 201, 109)";
                                     taskName.style.textDecoration = "none";
                                 }
                                 
@@ -312,7 +383,7 @@
                                     if (Tstatus.chosen.length !== 0) {
                                         if (Tstatus.chosen.includes(String(task.taskNumber))) {
                                             if (Tstatus.done.length !== 0 && Tstatus.done.includes(String(task.taskNumber))) {
-                                                taskCard.style.backgroundColor = 'rgb(146 161 146 / 75%)';
+                                                taskCard.style.backgroundColor = "rgb(146, 161, 146)";
                                                 taskCard.style.color = 'dimgrey';
                                                 taskName.style.textDecoration = "line-through";
                                             }
@@ -320,7 +391,7 @@
                                             let index = Tstatus.chosen.indexOf(String(task.taskNumber));
                                             Tstatus.done[index] = String(task.taskNumber);
                                             Tstatus.time[index] = task.finishTime;
-                                            taskCard.style.backgroundColor = 'rgb(146 161 146 / 75%)';
+                                            taskCard.style.backgroundColor = "rgb(146, 161, 146)";
                                             taskCard.style.color = 'dimgrey';
                                             taskName.style.textDecoration = "line-through";
                                         }
@@ -330,6 +401,7 @@
                                 localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
                                 taskName.appendChild(infoIcon);
                                 taskCard.appendChild(taskName);
+                                taskCard.appendChild(ripple); 
                                 taskCard.appendChild(completion);
                                 cardContainer.appendChild(taskCard);
                                 updateNextButton(preResponseId, userId, tasks, Tstatus); 
@@ -343,8 +415,7 @@
                                     task.status = task.status === "Done" ? "Completed" : "Done";
                                     
                                     if (task.status === "Completed") {
-                                        taskCard.style.backgroundColor = 'rgb(146 161 146 / 75%)';
-                                        taskCard.style.color = 'dimgrey';
+                                        animateTaskCard(taskCard, "rgb(146, 161, 146)", "dimgrey");
                                         taskName.style.textDecoration = "line-through";
                                         completion.innerHTML = task.status;
                                         let timestamp = Date.now();
@@ -355,8 +426,7 @@
                                             Tstatus.time[index] = task.finishTime;
                                         }
                                     } else {
-                                        taskCard.style.color = 'rgb(71, 71, 71)';
-                                        taskCard.style.backgroundColor = 'rgb(95, 201, 109)';
+                                        animateTaskCard(taskCard, "rgb(95, 201, 109)", "rgb(71, 71, 71)");
                                         taskName.style.textDecoration = "none";
                                         completion.innerHTML = task.status;
                                         task.finishTime = "";
@@ -451,6 +521,14 @@
             }
             
             document.addEventListener("DOMContentLoaded", async function() {
+                
+                const nav = document.querySelector('.navbar');
+                const content = document.querySelector('div.content');
+                // Retrieve the computed style of the top element
+                const computedNav = window.getComputedStyle(nav);
+                
+                // Apply them 
+                content.style.marginTop = `${nav.offsetHeight}px`;
                 
                 let startTime = Date.now();
                 const condition = [false, startTime];

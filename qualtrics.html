@@ -1,68 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
-        <link href="style_concat.css" rel="stylesheet" />
-        <!-- Bootstrap CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <!-- Icon CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <!-- Bootstrap Javascript -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="/scripts/listen-to-qualtrics.mjs" type="module"></script> 
-        <title>PlanEATary Quiz</title> 
-    </head>
-    <body>
-        <div class="main-container">
-            <div class="spinner hidden" id="spinner"></div>
-            <div class="Header">
-                <!-- Sidebar -->
-                <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
-                    <div class="container-fluid">
-                        <a class="navbar-brand d-flex align-items-center" href="#">
-                            <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
-                            <strong>Planeatary</strong>
-                        </a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                            <div class="offcanvas-header" style="background-color: #096358;">
-                                <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>planeatary</h5>
-                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                            </div>
-                            <div class="offcanvas-body" style="background-color: #02897A;">
-                                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                                    <li class="nav-item">
-                                        <a class="nav-link disabled" href="index.html"><i class="fa fa-home"></i> Home</a>
-                                    </li>
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle active" href="#" aria-current="page" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa fa-edit"></i>  <strong>Quiz</strong>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                            <li><a class="dropdown-item active" aria-current="page" href="qualtrics.html">Pre-quiz</a></li>
-                                            <li><a class="dropdown-item disabled" href="qualtrics_post.html">Post-quiz</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="navChallenge" ><i class="fa fa-rocket"></i>Challenge</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="navDashboard"><i class="fa fa-line-chart"></i>Dashboard</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="navHistory"><i class="fa fa-calendar-check-o"></i>History</a>
-                                    </li>
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
-                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                            <li><a class="dropdown-item" href="account manage.html">My account</a></li>
-                                            <li><a class="dropdown-item" id="logOut">Log out</a></li>
-                                        </ul>
-                                    </li>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
+    <link href="style_concat.css" rel="stylesheet" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Icon CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>PlanEATary Quiz</title> 
+</head>
+<body style="background-color: whitesmoke !important">
+    <div class="main-container" style="height: 100%;">
+        <div class="Header">
+            <!-- Sidebar -->
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#096358d7, 20%, #0963587c), url('./images/ella-olsson.jpg'); background-size: cover;">
+                <div class="container-fluid">
+                    <a class="navbar-brand d-flex align-items-center" href="index.html">
+                        <img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(#096358da, 20%, #09635891), url('./images/ella-olsson.jpg'); background-size: cover;">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle active" style="text-decoration: underline white;" href="#" aria-current="page" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-edit"></i>  <strong>Quiz</strong>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #00af8c;">
+                                        <li><a class="dropdown-item active" aria-current="page" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
+                                        <li><a class="dropdown-item" href="qualtrics_post.html" id="navPost-quiz" data-bs-dismiss="offcanvas">Post-quiz</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="navChallenge" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i>Challenge</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="navDashboard" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i>Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="navHistory" data-bs-dismiss="offcanvas" href="history_page.html"><i class="fa fa-calendar-check-o"></i>History</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #00af8c;">
+                                        <li><a class="dropdown-item" href="account manage.html" data-bs-dismiss="offcanvas">My account</a></li>
+                                        <li><a class="dropdown-item" id="logOut">Log out</a></li>
+                                    </ul>
+                                </li>
                             </div>
                         </div>
                     </div>
@@ -70,160 +65,536 @@
             </div>
             <div class="content">
                 <iframe class="quiz" title="Planeatary quiz"></iframe>
-                <span class="void"></span>
-                <div class="btn-next">
-                    <button class="btn btn-success" id="restartBtn" style="width: 150px;">Restart</button>
-                    <a><button id="nextButt" type="button" class="btn btn-success next" style="width: 150px;">Next  &#8594;</button></a>
+                <span style="width: 100%;"></span>
+                <div class="btn-next hidden">
+                    <a><button class="btn btn-success shadow-sm" id="restartBtn" style="width: 180px;" disabled>Restart the cycle</button></a>
+                    <a class="nextB"><button id="nextButt" type="button" class="btn btn-success next shadow-sm" style="width: 180px;">See your result</button></a>
+                </div>
+            </div>
+            <footer class="footer">
+                <ul>
+                    <li><a href="https://www.flaticon.com/free-animated-icons/emoticon" title="animated icons" rel="noopener noreferrer">animated icons created by Freepik - Flaticon</a></li>
+                    <li>Photo by <a href="https://unsplash.com/@ellaolsson?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Ella Olsson</a> on <a href="https://unsplash.com/photos/assorted-fruit-and-seasoning-on-table-I-uYa5P-EgM?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Unsplash</a></li>
+                </ul>
+            </footer>
+        </div>
+        
+        <!-- spinner overlay-->
+        <section class="overlay hidden" id="spinnerOverlay">
+            <div class="spinner hidden" id="spinner">
+            </div>
+            <div>
+                <span>Loading</span>
+            </div>
+        </section>
+        
+        <!-- Warning Toast -->
+        <div class="toast-container hidden" id="firstToast">
+            <div id="first-timer-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Please take your pre-quiz before further proceeding.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Another Warning Toast -->
+        <div class="toast-container hidden" id="secondToast">
+            <div id="cycle-toast" class="toast align-items-center text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Please finish pre-quiz, chosen tasks, and post-quiz accordingly to restart the journey.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
             </div>
         </div>
 
-        <!-- spinner overlay-->
-        <section class="overlay hidden" id="spinnerOverlay"></section>
-
+         <!-- Warning disabling -->
+         <div class="toast-container hidden" id="finalToast">
+            <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <h4>Can't be more proud of you!</h4>
+                        <p>Sadly, you are not allowed to do more tasks after doing the post-quiz.</p>
+                        <hr>
+                        <p class="mb-0">Please click restart the pre-quiz and stay with us longer!</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-        <script>
-            const getUserId = () => JSON.parse(localStorage['gotrue.user']).id || '';
-            //May modification for the case that another user sign up on the same device as previous user did the pre-quiz. 
-            // The pre-quiz page needs to acknowledge different users and allow doing pre-quiz
-            const getResult = () => JSON.parse(localStorage['preResult']);
 
-            const spinner = document.getElementById('spinner');
-            let isLoading = false;
-            const minDisplayTime = 1000;
-            let spinnerStartTime;
+        <script defer type="module">
+
+            import { initiateSurvey, updateAnchors, updateButton, fetchResponses } from './scripts/helpers.mjs';
+            import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick,
+                handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, emptyStateDisplay, logOut } from './scripts/utility.js';
+            
+            let startTime = Date.now();
+            const condition = [false, startTime];
             const bOverlay = document.getElementById("spinnerOverlay");
-                        
-            function updateAnchor(anchor, url=null) {
-                if (url) {
-                    anchor.removeAttribute('disabled');
-                    anchor.href = url;
-                    anchor.style.cursor = 'pointer';
-                } else {
-                    anchor.removeAttribute('href');
-                    anchor.disabled = true;
-                    anchor.style.cursor = 'not-allowed';
-                }
+            const spinner = document.getElementById("spinner");
+
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
             }
 
-            function showSpinner() {
-                console.log("Showing spinner...");
-                spinner.classList.remove('hidden');
-                bOverlay.classList.remove('hidden');
-                isLoading = true;
-                spinnerStartTime = Date.now();
-            };
-
-            function hideSpinner() {
-                const elapsedTime = Date.now() - spinnerStartTime;
-                if (elapsedTime < minDisplayTime) {
-                    setTimeout(() => {
-                        console.log("Hiding spinner after min time...");
-                        spinner.classList.add('hidden');
-                        bOverlay.classList.add('hidden');
-                        isLoading = false;
-                    }, minDisplayTime - elapsedTime);
-                    spinner.classList.add('hidden');
-                    bOverlay.classList.add('hidden');
-                    isLoading = false;
-                }
+            //For a user to see a reminder to complete the current cycle
+            function showCycleToast() {
+                document.getElementById("secondToast").classList.remove('hidden');
+                const toasty = document.getElementById('cycle-toast');
+                const myToast = new bootstrap.Toast(toasty);
+                myToast.show();
+            }
+            
+            //For first-timer to see a reminder to do a very first quiz
+            function showToast() {
+                document.getElementById("firstToast").classList.remove('hidden');
+                const toasty = document.getElementById('first-timer-toast');
+                const myToast = new bootstrap.Toast(toasty);
+                myToast.show();
             }
 
-            function logOut() {
-                if (netlifyIdentity.gotrue.currentUser() !== null) {
-                    let user = netlifyIdentity.gotrue.currentUser();
-                    user.logout().then(() => {
-                        console.log('User has been logged out!');
-                        window.location.href = "index.html";
+            function showAlert() {
+                document.getElementById("finalToast").classList.remove('hidden');
+                const alertContainer = document.getElementById('alertContainer');
+                if (!alertContainer) {
+                    console.error('No alert container found.');
+                    return;
+                }
+                const bsAlert = new bootstrap.Toast(alertContainer);
+                bsAlert.show();
+            }
+            
+            //hard-code updating responseHistory
+            async function updateResponseHistory(preObject, user, restart) {
+                if (!user) {
+                    console.error("No user is logged in!");
+                    return;
+                }
+                const preResponseId = preObject?.responseId;
+                if (!preResponseId) {
+                    console.error("No preResponseId provided!");
+                    return;
+                }
+                
+                const userId = user.id;
+                let responseHistory = user.user_metadata.responseHistory || [];
+                const index = responseHistory.findIndex(cycle => cycle.preId === preResponseId);
+                const mockResponseHistory = {id: userId};
+                var allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
+                document.getElementById('nextButt').innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Processing...';
+
+                // If the preResponseId is not already in the history, add it
+                if (index === -1) {
+                    if (allResponses && allResponses.findIndex(cycle => cycle?.preResponse?.responseId === preResponseId) == -1) {
+                        allResponses.push({ preResponse: preObject });
+                    }
+                    responseHistory.push({ preId: preResponseId });
+                    user.update({
+                        data: { responseHistory: responseHistory, restarting: restart}
+                    }).then((updatedUser) => {
+                        console.log("User metadata updated:", updatedUser);
+                        // Fetch the latest user object instead of using reload()
+                        netlifyIdentity.gotrue.currentUser()
+                        .jwt()
+                        .then((token) => {
+                            const updatedUserDetails = netlifyIdentity.gotrue.currentUser();
+                            localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
+                            console.log("Updated user saved to localStorage:", updatedUserDetails);
+                        })
+                        .catch((error) => {
+                            console.error("Error fetching updated user details:", error);
+                        });
+                    }).catch((error) => {
+                        console.error("Error updating user metadata:", error);
                     });
                 } else {
-                    console.log("No user is logged in!");
+                    console.log("Pre response ID already exists in response history.");
+                    user.update({
+                        data: { restarting: restart }
+                    }).then((updatedUser) => {
+                        console.log("User metadata updated:", updatedUser);
+                        // Fetch the latest user object instead of using reload()
+                        netlifyIdentity.gotrue.currentUser()
+                        .jwt()
+                        .then((token) => {
+                            const updatedUserDetails = netlifyIdentity.gotrue.currentUser();
+                            localStorage.setItem("gotrue.user", JSON.stringify(updatedUserDetails));
+                            console.log("Updated user saved to localStorage:", updatedUserDetails);
+                        })
+                        .catch((error) => {
+                            console.error("Error fetching updated user details:", error);
+                        });
+                    }).catch((error) => {
+                        console.error("Error updating user metadata:", error);
+                    });
                 }
+                Object.assign(mockResponseHistory, { user_metadata: { responseHistory: responseHistory } });
+                localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
+                document.getElementById('nextButt').innerHTML = 'See your result';
             }
+            
+            document.addEventListener('DOMContentLoaded', async () => {
 
-            document.getElementById('logOut').addEventListener('click', () => {
-                alert("Do you really want to sign out?");
-                showSpinner();
-                logOut();
-                hideSpinner();
-            });
-            
-            const navChallenge = document.getElementById('navChallenge');
-            const navDashboard = document.getElementById('navDashboard');
-            const navNext = document.querySelector('div.btn-next > a');
-            const nextButton = document.getElementById('nextButt');
-            const restartBtn = document.getElementById('restartBtn');
-            const quizFrame = document.querySelector('div.content > iframe.quiz');
-            const quizSpan = document.querySelector('div.content > span.void');
-            
-            function enableButtons() {
-                nextButton.style.backgroundColor = '#02897A';
-                nextButton.style.borderColor = '#02897A';
-                nextButton.style.cursor = 'pointer';
-                updateAnchor(navChallenge, 'manifesto_page');
-                updateAnchor(navDashboard, 'result_page');
-                updateAnchor(navNext, 'result_page');
-            }
-            function disableButtons() {
-                nextButton.style.backgroundColor = 'grey';
-                nextButton.style.borderColor = 'grey';
-                nextButton.style.cursor = 'not-allowed';
-                updateAnchor(navChallenge);
-                updateAnchor(navDashboard);
-                updateAnchor(navNext);
-            }
-            function displayQuiz(frame, span, display=true) {
-                if (display) {
-                    frame.style.display = null;
-                    span.innerText = '';
-                } else {
-                    frame.style.display = 'none';
-                    span.innerText = 'You have already finished the pre-quiz!';
-                }
-            }
-        </script>
-        <script defer type="module">
-            const qDataCtId = 'uow.syd1';
-            const qSurveyId = 'SV_8es3au3sYKpwaii';
-            let quizUrl = `https://${qDataCtId}.qualtrics.com/jfe/form/${qSurveyId}`;
-            try {
-                quizUrl += `?userId=${getUserId()}`;  // contains sensitive info
-            } catch(error) {
-                console.warn('Caught', error, '\nYou are not logged in!');
-            }
-            quizFrame.contentWindow.location = quizUrl;  // load quiz frame, safer than src
-            // Initial preResult check
-            try {
-                const preResult = getResult();
-                enableButtons();
-                displayQuiz(quizFrame, quizSpan, false);
-                console.log('Found pre-quiz result in storage!\n', preResult);
-            } catch(error) {
-                console.warn('Caught', error, '\nPre-quiz result is not found!');
-                disableButtons();
-                displayQuiz(quizFrame, quizSpan);
-            }
-            // Listen to preResult change in localStorage
-            window.addEventListener('localStorageChange', (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
-                const { type, detail: { key, oldValue, newValue } } = event;
-                console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
-                if (key === 'preResult' && oldValue !== newValue) {
-                    try {
-                        JSON.parse(newValue || undefined);  // force null -> undefined to throw error
-                        enableButtons();
-                        quizSpan.innerText = 'Thank you for your response!';
-                        console.log('Found pre-quiz result in storage!\n', newValue);
-                    } catch(error) {
-                        console.warn('Caught', error, '\nPre-quiz result is not found!');
-                        disableButtons();
-                        displayQuiz(quizFrame, quizSpan);
+                var preObject = JSON.parse(localStorage.getItem('preResult'));
+                var storedCycle = JSON.parse(sessionStorage.getItem('selectedCycle'));
+                var preResult;
+                var preResponseId;
+                var postObject = JSON.parse(localStorage.getItem('postResult'));
+                var postResult;
+                var postResponseId;
+
+                const quizFrame = document.querySelector('div.content > iframe.quiz');
+                const quizSpan = document.querySelector('div.content > span');
+                
+                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+                const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+                const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+                const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+                const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
+                
+                
+                offcanvasLinks.forEach(li => {
+                    if (li !== document.getElementById('navChallenge') && li.classList.contains('Disabled') == false) {
+                        li.addEventListener('click', handleOffcanvasClick);
                     }
+                });
+                
+                offcanvasDropdown.forEach(li => {
+                    if (li !== document.getElementById('navChallenge') && li.classList.contains('Disabled') == false) {
+                        li.addEventListener('click', handleOffcanvasClick);
+                    }
+                });
+
+                // Function to handle navigation or showing toast
+                offcanvasListItems.forEach(li => {
+                    li.addEventListener('click', event => {
+                        event.preventDefault();
+                        const link = li.querySelector('a.nav-link'); 
+                        
+                        if (link) {
+                            if (link.classList.contains('Disabled')) {
+                                showToast(); 
+                                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                                offcanvas.hide();
+                            } else {
+                                handleOffcanvasClickFromElement(link);
+                            }
+                        }
+                    });
+                });
+
+                // Function to handle navigation or showing toast
+                offcanvasDropdownItems.forEach(li => {
+                    li.addEventListener('click', event => {
+                        event.preventDefault();
+                        const link = li.querySelector('a.dropdown-item'); 
+                        if (link) {
+                            if (link.classList.contains('Disabled')) {
+                                showToast(); 
+                            } else {
+                                handleOffcanvasClickFromElement(link);
+                            }
+                        }
+                        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                        offcanvas.hide();
+                    });
+                })
+
+                const navChallenge = document.getElementById('navChallenge');
+
+                navChallenge.addEventListener('click', function(event) {
+                    // Debug logs to check values
+                    console.log("navChallenge clicked");
+                    console.log("navChallenge.href:", navChallenge.href);
+                    console.log("hasPostQuizResult() returns:", hasPostQuizResult());
+                    
+                    if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        navChallenge.removeAttribute('href');
+                        console.log("Navigation prevented. Calling showAlert().");
+                        showAlert();
+                    } else if (hasPostQuizResult()) {
+                        console.log("Navigation prevented. Calling showAlert().");
+                        showAlert();
+                    } else {
+                        handleOffcanvasClick(event);
+                    }
+                    
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                    offcanvas.hide();
+                });
+                
+                const nextButton = document.getElementById('nextButt');
+                const restartBtn = document.getElementById('restartBtn');
+
+                async function enableRestartButton() {
+                    restartBtn.innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Enabling restart...'; 
+                    await delay(2000);
+                    restartBtn.removeAttribute("disabled");
+                    restartBtn.innerHTML = 'Restart the cycle';
+                    updateButton(restartBtn, '#00af8c', 'pointer');
                 }
-            });
-            restartBtn.addEventListener('click', () => {
-                quizFrame.style.display = null;
-                quizFrame.contentWindow.location = quizUrl;  // reload quiz frame
+                
+                const anchors = [
+                document.getElementById('navChallenge'),
+                document.getElementById('navDashboard'),
+                // document.getElementById('navHistory'),
+                document.querySelector('div.btn-next > a.nextB'),  // inside next button
+                ];
+                
+                const hrefs = [
+                'manifesto_page',
+                'result_page',
+                'result_page'
+                ];
+                
+                const disabledButton = document.querySelectorAll('.btn-next > a');
+                disabledButton.forEach(button => {  
+                    button.addEventListener('click', event => {
+                        const disable = button.querySelector('button');
+                        if (disable.disabled == true) {
+                            showCycleToast();
+                        }
+                    });
+                })
+                
+                restartBtn.addEventListener('click', async () => {
+                    //localStorage.removeItem(`${preResponseId}:fetched_tasks`);
+                    //localStorage.removeItem(`${preResponseId}:tasks`);
+                    document.getElementById("navPost-quiz").classList.add('Disabled');
+                    document.getElementById('navChallenge').classList.add('Disabled');
+                    document.getElementById('navDashboard').classList.add('Disabled');
+                    // Set a flag to indicate that restart has been clicked
+                    //localStorage.setItem("restartFlag", "true");
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    await updateResponseHistory(preObject, user, 'yes');
+                    localStorage.removeItem('preResult');
+                    localStorage.removeItem('postResult');
+                    updateAnchors(anchors);
+                    updateButton(restartBtn, '#4e958d52', 'not-allowed');
+                    updateButton(nextButton, '#4e958d52', 'not-allowed');
+                    quizFrame.style.display = 'flex';
+                    quizSpan.innerHTML = '';
+                    var quizUrl = initiateSurvey('pre', quizFrame);
+                })
+                
+                document.getElementById('logOut').addEventListener('click', async () => {
+                    if(confirm("Do you really want to sign out?") == true) {
+                        showSpinner([bOverlay, spinner], condition);
+                        await logOut();
+                        hideSpinner([bOverlay, spinner], condition);
+                    }
+                })
+                
+                try {
+
+                    var preQuiz;
+                    var postQuiz;
+                    showSpinner([bOverlay, spinner], condition);
+                    document.querySelector('.btn-next').classList.remove('hidden');
+                    updateButton(restartBtn, '#4e958d52', 'not-allowed');
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    const userData = await getUserData();
+                    const { metadata, responseHistory, userId } = userData;
+                    // Use user data as needed
+                    console.log("User ID:", userId);
+                    console.log("Response History:", responseHistory);
+                    console.log("User metadata:", metadata);
+                    
+                    //let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`));
+                    // if (allResponses) {
+                    //     allResponses.forEach((cycleKey) => {
+                    //         if (cycleKey?.preResponse) {
+                    //             //get the latest preResponse and postResponse if any
+                    //             preQuiz = cycleKey?.preResponse ?? null;
+                    //             postQuiz = cycleKey?.postResponse ?? null;
+                    //         } 
+                    //     });
+                        
+                    //     preObject = preQuiz;
+                    //     preResponseId = preQuiz?.responseId;
+                    //     postObject = postQuiz;
+                    //     postResponseId = postQuiz?.responseId;
+                        
+                    // } else {
+                        var allRes = await fetchResponses(userId);
+                        let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
+                        console.log("All responses fetched! ", allResponses);
+                        const cycleKeys = allResponses; 
+                        if (cycleKeys.length > 0) {
+                            const lastKey = cycleKeys.length - 1; 
+                            const entry = cycleKeys[lastKey]; 
+                            
+                            // Access preQuiz and postQuiz safely
+                            preQuiz = entry?.preResponse ?? null;
+                            preObject = preQuiz;
+                            preResponseId = preQuiz?.responseId ?? null;
+                            postQuiz = entry?.postResponse ?? null;
+                            postObject = postQuiz;
+                            postResponseId = postQuiz?.responseId ?? null;
+                            
+                            console.log('Last fetched entry:', entry);
+                        }
+                    //}
+                    
+                    // if (storedCycle) {
+                    //     try {  
+                    //         if (storedCycle.preResponse && !storedCycle.postResponse) {
+                    //             preObject = storedCycle?.preResponse ?? null;
+                    //             preResult = preObject?.result ?? null;
+                    //             preResponseId = preObject?.responseId ?? null;
+                    //         }          
+                            
+                    //     } catch(err) {
+                    //         console.warn("Couldn't find previous info from history:", err);
+                    //     }
+                        
+                    // } 
+                    
+                    if (preObject && !postObject) {
+                        updateAnchors(anchors, hrefs);
+                        updateButton(nextButton, '#00af8c', 'pointer');
+                        quizFrame.style.display = 'none';
+                        emptyStateDisplay(quizSpan, "You have already taken the pre-quiz! Let's continue!", "./images/thumbs-up.gif");
+                        //await updateResponseHistory(preObject, user)
+                        console.log('Found pre-quiz result in storage!\n', preObject);
+                        return;
+
+                    } else if (preObject && postObject) {
+                        document.getElementById("navPost-quiz").classList.remove('Disabled');
+                        updateAnchors(anchors, hrefs);
+                        updateButton(nextButton, '#00af8c', 'pointer');
+                        quizFrame.style.display = 'none';
+                        emptyStateDisplay(quizSpan, 'You have pull everything off! It is time to start over this amazing journey!', "./images/thumbs-up.gif");
+                        //await updateResponseHistory(preObject, user)
+                        console.log('Found pre-quiz result in storage!\n', preObject);
+                        console.log('Found post-quiz result in storage!\n', postObject);
+                        enableRestartButton();
+                        
+        
+                    } else {
+                        document.getElementById("navPost-quiz").classList.add('Disabled');
+                        var quizUrl = initiateSurvey('pre', quizFrame);
+                        quizSpan.innerHTML = '';
+                        updateAnchors(anchors);
+                        updateButton(nextButton, '#4e958d52', 'not-allowed');
+                        updateButton(restartBtn, '#4e958d52', 'not-allowed');
+                    }
+
+                    const restartFlag = metadata?.restarting ?? 'no';
+                    
+                    if (restartFlag === "yes") {
+                        //restartBtn.setAttribute("disabled", "");
+                        updateAnchors(anchors);
+                        document.getElementById("navPost-quiz").classList.add('Disabled');
+                        document.getElementById('navChallenge').classList.add('Disabled');
+                        document.getElementById('navDashboard').classList.add('Disabled');
+                        updateButton(restartBtn, '#4e958d52', 'not-allowed');
+                        updateButton(nextButton, '#4e958d52', 'not-allowed');
+                        // The user has restarted, so keep the iframe visible.
+                        quizFrame.style.display = 'flex';
+                        var quizUrl = initiateSurvey('pre', quizFrame);
+                        quizSpan.innerHTML = '';
+                    } 
+                    
+                } catch(error) {
+                    console.warn('Caught', error, '\nPre-quiz result is not found!');
+                    updateAnchors(anchors);
+                    updateButton(nextButton, '#4e958d52', 'not-allowed');
+                    updateButton(restartBtn, '#4e958d52', 'not-allowed');
+                    var quizUrl = initiateSurvey('pre', quizFrame);
+                    quizSpan.innerHTML = '';
+                    
+                } finally {
+                    //if (preObject && user) {await updateResponseHistory(preObject, user)}
+                    hideSpinner([bOverlay, spinner], condition);
+                }
+                
+                // Listen to preResult change in localStorage
+                window.addEventListener('localStorageChange', async (event) => {  // custom event by LocalStorageService in ./scripts/helpers.mjs
+                    const netlifyIdentity = window.netlifyIdentity;
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    
+                    if (user) {
+                        user.jwt().then(token => {
+                            if (isTokenExpired(token)) {
+                                console.log("Token expired. Prompting user to re-login...");
+                                netlifyIdentity.logout();
+                                window.location.href = "index.html";
+                            } else {
+                                console.log("Token is valid.");
+                            }
+                        });
+                    }
+                    
+                    const metadata = user.user_metadata;
+                    const responseHistory = metadata.responseHistory;
+                    const userId = user.id;
+                    
+                    const { type, detail: { key, oldValue, newValue } } = event;
+                    console.log(type, 'event:', key, 'changed from', oldValue, 'to', newValue);
+                    if (key === 'preResult' && oldValue !== newValue) {
+                        try {
+                            JSON.parse(newValue || undefined);  // force null -> undefined to throw error
+                            console.log('Found newest pre-quiz result in storage!\n', newValue);
+                            await updateResponseHistory(JSON.parse(newValue), user, 'no');
+                            setTimeout(() => {
+                                updateAnchors(anchors, hrefs);
+                                updateButton(nextButton, '#00af8c', 'pointer');
+                            }, 2000);
+                            quizFrame.style.display = 'none';
+                            emptyStateDisplay(quizSpan, 'Thank you for your response! Please click see result!', "./images/thumbs-up.gif");
+                            localStorage.setItem("restartFlag", "false"); //set back to false if a latest pre-quiz is done after restarting
+                            updateButton(restartBtn, '#4e958d52', 'not-allowed');
+                            restartBtn.disabled = true;
+                        } catch(error) {
+                            console.warn('Caught', error, '\nPre-quiz result is not found!');
+                            updateAnchors(anchors);
+                            updateButton(nextButton, '#4e958d52', 'not-allowed');
+                            updateButton(restartBtn, '#4e958d52', 'not-allowed');
+                            quizUrl = initiateSurvey('pre', quizFrame);
+                            quizSpan.innerHTML = '';
+                        }
+                    }
+                })
+
+                document.addEventListener('visibilitychange', async () => {
+                    let preObject = JSON.parse(localStorage.getItem('preResult')); 
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    if (!user) {
+                        console.error("No user is logged in!");
+                        return;
+                    }
+                    const token = await user.jwt();
+                    if (isTokenExpired(token)) {
+                        console.log("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                        window.location.href = "index.html";
+                        return;
+                    }
+                    
+                    const userId = user.id;
+                    if (document.visibilityState === "hidden") {
+                        console.log('Leaving pre-quiz page, updating history');
+                        if (preObject) {
+                            await updateResponseHistory(preObject, user, 'no');
+                        } else {
+                            await updateResponseHistory(preObject, user, 'yes');
+                        }
+                    }
+                })
             });
         </script>
+        <script defer type="module" src="./scripts/listen-to-qualtrics.mjs"></script>
+        <!-- Bootstrap Javascript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
-</html>
+    </html>

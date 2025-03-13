@@ -11,53 +11,51 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Congratulations</title>
 </head>
-<body>
+<body style=" width: 100vw; height: 100vh; background-image: linear-gradient(#02020246, 20%, #fcffff49), url('./images/orange.jpg'); background-size: cover; background-position: center;">
     
-    <div class="main-container">
-        <div class="spinner hidden" id="spinner"></div>
+    <div class="main-container" style="height: 100%;">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg sticky-top" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#096358c7, 20%, #0963587e);">
                 <div class="container-fluid">
-                    <a class="navbar-brand d-flex align-items-center" href="#">
-                        <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
-                        <strong>Planeatary</strong>
+                    <a class="navbar-brand d-flex align-items-center" href="index.html">
+                        <img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/>
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                        <div class="offcanvas-header" style="background-color: #096358;">
-                            <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>planeatary</h5>
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(#096358c7, 20%, #0963587e), url('./images/vegetables.png'); background-size: cover; background-position: center;">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
-                        <div class="offcanvas-body" style="background-color: #02897A;">
+                        <div class="offcanvas-body">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" href="index.html"><i class="fa fa-home"></i> Home</a>
+                                    <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle disabled" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                     </a>
-                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item disabled" href="qualtrics.html">Pre-quiz</a></li>
-                                        <li><a class="dropdown-item disabled" href="qualtrics_post.html">Post-quiz</a></li>
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #00af8c;">
+                                        <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
+                                        <li><a class="dropdown-item" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" id="ch" href="manifesto_page.html"><i class="fa fa-rocket"></i> Challenge</a>
+                                    <a class="nav-link" id="ch" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                    <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
+                                    <a class="nav-link" href="history_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-calendar-check-o"></i> History</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
-                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
-                                        <li><a class="dropdown-item" href="account manage.html">My account</a></li>
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #00af8c;">
+                                        <li><a class="dropdown-item" href="account manage.html" data-bs-dismiss="offcanvas">My account</a></li>
                                         <li><a class="dropdown-item" id="logOut">Log out</a></li>
                                     </ul>
                                 </li>
@@ -68,67 +66,96 @@
             </ul>
         </nav>
     </div>
-    <div class="content">
-        <div class="wrap-up">
-            <img src="images/battery_1.png" />
-            <h2>CONGRATULATIONS! YOU’VE COMPLETED YOUR CHALLENGE</h2>
+    <div class="content" style="padding-bottom: 10vmax;">
+        <div class="wrap-up"  style="background-color: white;">
+            <h5><img src="./images/confetti.gif" style="width: 5rem; height: auto;" /><b>CONGRATULATIONS!</b><img src="./images/confetti.gif" style="width: 5rem; height: auto; transform: scaleX(-1);" /></h5>
+            <p><b>YOU’VE COMPLETED YOUR CHALLENGES!</b></p>
+            <p>Really proud of you to make it this far.</p>
             <div class="button_take_quiz">
-                <p>Now let’s complete the quiz below to how your scores have improved.</p>
-                <a href="qualtrics_post.html"><button class="take">Take the quiz &#8594;</button></a>
+                <p>Now let’s complete the post-quiz to see how your scores have improved!</p>
+                <a href="qualtrics_post.html"><button button type="button" class="btn btn-success select-tasks take shadow">Take the quiz  &#8594;</button></a>
             </div>
         </div>
     </div>
+    <footer class="footer">
+        <ul>
+            <li><a href="https://www.flaticon.com/free-animated-icons/confetti" title="confetti animated icons">Confetti animated icons created by Freepik - Flaticon</a></li>
+            <li>Photo by <a href="https://unsplash.com/@moniqa?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Monika Grabkowska</a> on <a href="https://unsplash.com/photos/orange-fruits-qSkWlOBHia0?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Unsplash</a></li>
+            <li>Photo by <a href="https://unsplash.com/@ja_ma?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Jacopo Maiarelli</a> on <a href="https://unsplash.com/photos/assorted-fruits-at-the-market--gOUx23DNks?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Unsplash</a></li>
+        </ul>
+    </footer>
 </div>
+<!-- spinner overlay-->
+<section class="overlay hidden" id="spinnerOverlay">
+    <div class="spinner hidden" id="spinner">
+    </div>
+    <div>
+        <span>Loading</span>
+    </div>
+</section>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-<script>
-    
-    const spinner = document.getElementById('spinner');
-    const minDisplayTime = 2000; 
-    let spinnerStartTime;
-    let isLoading;
-    const bOverlay = document.getElementById("spinnerOverlay");
-    
-    function showSpinner() {
-        spinner.classList.remove('hidden');
-        bOverlay.classList.remove('hidden');
-        isLoading = true;
-        spinnerStartTime = Date.now();
-    };
-    
-    function hideSpinner() {
-        const elapsedTime = Date.now() - spinnerStartTime;
-        if (elapsedTime < minDisplayTime) {
-            setTimeout(() => {
-                spinner.classList.add('hidden');
-                bOverlay.classList.add('hidden');
-                isLoading = false;
-            }, minDisplayTime - elapsedTime);
-            spinner.classList.add('hidden');
-            bOverlay.classList.add('hidden');
-            isLoading = false;
-        }
-    }
-    
-    function logOut() {
-        if (netlifyIdentity.gotrue.currentUser() !== null) {
-            let user = netlifyIdentity.gotrue.currentUser();
-            user.logout().then(() => {
-                console.log('User has been logged out!');
-                window.location.href = "index.html";
+<script type="module">
+    import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick,
+        handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+        //spinner variables
+        let startTime = Date.now();
+        const condition = [false, startTime];
+        const bOverlay = document.getElementById("spinnerOverlay");
+        const spinner = document.getElementById("spinner");
+        
+        //Dismiss the offcanvas bar after click and execute
+        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+        
+        const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+        const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
+        
+        offcanvasLinks.forEach(li => {
+            if (li !== document.getElementById('navChallenge')) {
+                li.addEventListener('click', handleOffcanvasClick);
+            } 
+        });
+        
+        offcanvasDropdown.forEach(li => {
+            li.addEventListener('click', handleOffcanvasClick);
+        });
+        
+        // Function to handle navigation or showing toast
+        offcanvasListItems.forEach(li => {
+            li.addEventListener('click', event => {
+                event.preventDefault();
+                const link = li.querySelector('a.nav-link'); 
+                if (link) {
+                    handleOffcanvasClickFromElement(link);
+                }
             });
-        } else {
-            console.log("No user is logged in!");
-        }
-    }
-    
-    document.getElementById('logOut').addEventListener('click', () => {
-        alert("Do you really want to sign out?");
-        showSpinner();
-        logOut();
-        hideSpinner();
-    });
-</script>
+        });
+        
+        // Function to handle navigation or showing toast
+        offcanvasDropdownItems.forEach(li => {
+            li.addEventListener('click', event => {
+                event.preventDefault();
+                const link = li.querySelector('a.dropdown-item'); 
+                if (link) {
+                    handleOffcanvasClickFromElement(link);
+                }
+                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+            });
+        })
+
+        document.getElementById('logOut').addEventListener('click', async () => {
+            
+            if(confirm("Do you really want to sign out?") == true) {
+                showSpinner([bOverlay, spinner], condition);
+                await logOut();
+                hideSpinner([bOverlay, spinner], condition);
+            }
+        });
+    </script>
+    <!-- Bootstrap Javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

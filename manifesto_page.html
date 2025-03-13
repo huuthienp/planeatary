@@ -13,24 +13,23 @@
     <title>Start Challenges</title>
 </head>
 <body>
-    <div class="main-container">
+    <div class="main-container" style="height: 100%;">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#222e01f6, 20%, #85a1077e), url('./images/elena-baidak.jpg'); background-size: cover;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
-                        <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
-                        <strong>PlanEATary</strong>
+                        <img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/>
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                        <div class="offcanvas-header" style="background-color: #096358;">
-                            <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>planeatary</h5>
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(#222e01f6, 30%, #85a1077e), url('./images/elena-baidak.jpg'); background-size: cover; background-position: center;">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
-                        <div class="offcanvas-body" style="background-color: #02897A;">
+                        <div class="offcanvas-body">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
                                     <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
@@ -39,14 +38,14 @@
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                     </a>
-                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #00af8c;">
                                         <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
                                         <li><a class="dropdown-item disabled" id="post-p" data-bs-dismiss="offcanvas" href="qualtrics_post.html">Post-quiz</a></li>
                                     </ul>
                                 </li>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" href="manifesto_page.html" aria-current="page" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
+                                <a class="nav-link active" style="text-decoration: underline white;" href="manifesto_page.html" aria-current="page" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
@@ -56,7 +55,7 @@
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
-                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #00af8c;">
                                     <li><a class="dropdown-item" href="account manage.html" data-bs-dismiss="offcanvas">My account</a></li>
                                     <li><a class="dropdown-item" data-bs-dismiss="offcanvas" id="logOut">Log out</a></li>
                                 </ul>
@@ -66,18 +65,18 @@
                 </div>
             </nav>
         </div>
-        <div class="m-content hidden">
+        <div class="m-content hidden" style="background-image: linear-gradient(#060606ad, 20%, #f8f8f63b), url('./images/arturrro.jpg'); background-position: center; background-repeat:no-repeat; background-size: cover;">
             <div class="subheader">
                 <p id="threetask"></p>
             </div>
             <div class="button2">
-                <button class="start shadow-sm btn btn-success" style="width: 180px;">Start</button>
+                <button class="start shadow btn btn-success" style="width: 180px;">Start</button>
             </div>
             <div class="improvement">
-                <button id="good" class="shadow-sm">Good scores</button>
-                <button id="notyet" class="shadow-sm">Need improvement</button>
+                <button id="good" class="shadow">Good scores</button>
+                <button id="notyet" class="shadow">Soon-to-be Good scores</button>
             </div>
-            <div class="task-content">
+            <div class="task-content" style="background-color: #08080880;">
                 <div class="q-task">
                     <div class="vertical-tabs-container" style="display: flex; align-items: center; flex-direction: column; overflow: auto;">
                         <!-- Tab navigation on the left -->
@@ -91,6 +90,12 @@
                 </div>
             </div>
         </div>
+        <footer class="footer">
+            <ul>
+                <li>Photo by <a href="https://unsplash.com/@artek123?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Arturrro</a> on <a href="https://unsplash.com/photos/shallow-focus-photography-of-strawberries-on-persons-palm-GdTLaWamFHw?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Unsplash</a></li>
+                <li>Photo by <a href="https://unsplash.com/@elbaidak?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Elena Baidak</a> on <a href="https://unsplash.com/photos/yellow-lemon-fruits-on-black-surface-hr3a-VnCIYY?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Unsplash</a></li>
+            </ul>
+        </footer>
     </div>
     
     <section class="overlay hidden" id="modalOverlay">
@@ -114,8 +119,16 @@
                     <button class="close" id = "closeDes">x</button>
                 </div>
                 <div class="modal_content">
-                    <h2 id="modalTitle" style="padding: 0 20px;"></h2>
-                    <p id="inform" style="padding: 0 20px;"></p>
+                    <h2 id="modalTitle" style="padding: 0 20px; width: 100%"></h2>
+                    <div class="modal-section">
+                        <img id="modal-pic" />
+                        <p id="inform" style="padding: 0 20px; width: 100%"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <footer id="mo-footer" style="width: 100%">
+                            Blah Blah Blah
+                        </footer>
+                    </div>
                 </div>
             </div>
         </div>
@@ -154,13 +167,16 @@
         const good = document.getElementById("good");
         const bad = document.getElementById("notyet");
         good.style.backgroundColor = '#a9d1cd';
-        bad.style.backgroundColor = '#02897A';
+        bad.style.backgroundColor = '#00af8c';
         
         const modal = document.querySelector(".modal");
         const overlay = document.querySelector(".overlay");
+
         const modal2 = document.querySelector(".modal2");
         const overlay2 = document.querySelector(".overlay2");
         const modalTitle = document.getElementById("modalTitle");
+        const modalPic = document.getElementById("modal-pic");
+
         const close = document.getElementById('close');
         const closeDes = document.getElementById('closeDes');
 
@@ -168,19 +184,73 @@
             const elements = [close, modal, overlay];
             const modalContent = document.querySelector(".modal_content");
             const image = document.getElementById("visual_info");
+            let placeholder = document.createElement("p");
+            placeholder.className = "placeholder-glow image-placeholder";
+            placeholder.innerHTML = `<span class="placeholder w-100"></span>`;
             image.src = source;
+            if (image.complete) {
+                image.style.display = "flex";
+            }
+            else {
+                image.style.display = "none";
+                modalContent.appendChild(placeholder);
+            }
+            image.addEventListener('load', () => {
+                if (placeholder && placeholder.parentNode) {
+                    placeholder.remove();
+                }
+                image.style.display = "flex";
+            });
             showElement(elements);
         }
         
-        function ModalDes(title, des) {
+        function ModalDes(title, description, picture, footer) {
             const elements = [closeDes, modal2, overlay2];
-            const modalContent = document.querySelector(".modal-content");
-            const text = document.getElementById("inform");
-            modalTitle.textContent = title;
-            const taskDescription = des.replace('target="_blank"', 'rel="noopener noreferrer"');
-            text.innerHTML = taskDescription;
-            showElement(elements);
+            const modalContent = document.querySelector(".modal_content");
+            const modalSection = document.querySelector(".modal-section");
+            const modalFooter = document.getElementById("mo-footer");
+            const modalDescription = document.getElementById("inform");
+            const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
+            const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
+            const placeholder1 = document.createElement("p");
+            placeholder1.className = "placeholder-glow text-placeholder";
+            placeholder1.innerHTML = `<span class="placeholder w-100"></span>`;
             
+            const placeholder2 = document.createElement("p");
+            placeholder2.className = "placeholder-glow text-placeholder";
+            placeholder2.innerHTML = `<span class="placeholder w-100"></span>`;
+            
+            modalSection.appendChild(placeholder1);
+            modalSection.appendChild(placeholder2);
+            
+            modalPic.src = picture;
+            if (modalPic.complete) {
+                // If the image is already loaded (from cache), update immediately.
+                modalPic.style.display = "flex";
+                modalTitle.innerHTML = title;
+                modalDescription.innerHTML = taskDescription;
+                modalFooter.innerHTML = taskFooter;
+            } else {
+                modalPic.style.display = "none";
+                modalSection.appendChild(placeholder1);
+                modalSection.appendChild(placeholder2);
+                modalTitle.innerHTML = `<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`;
+                modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
+                modalDescription.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
+            }
+            modalPic.addEventListener('load', () => {
+                modalPic.style.display = "flex";
+                if (placeholder1 && placeholder1.parentNode) {
+                    placeholder1.remove();
+                }
+                if (placeholder2 && placeholder2.parentNode) {
+                    placeholder2.remove();
+                }
+                modalTitle.innerHTML =  title;
+                modalDescription.innerHTML = taskDescription;
+                modalFooter.innerHTML = taskFooter;
+            });
+            showElement(elements);
         }
 
         const Close = () => hideElement([close, modal, overlay]);    
@@ -241,8 +311,8 @@
                 let task_counts = calculateSelectedTasks(tasks);
                 if (task_counts >= 3) {
                     persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
-                    persuade.style.color = 'black';
-                    updateButton(startButton, '#02897A', 'pointer');
+                    persuade.style.animation = 'fadeInAnimation ease 3s';
+                    updateButton(startButton, '#00af8c', 'pointer');
 
                 } else {
                     persuade.innerHTML = `Number of selected tasks: ${task_counts}`;
@@ -509,12 +579,12 @@
                         //cardDiv.style.boxShadow = "7px 7px 7px rgb(178, 34, 34)";
                         questionTitle.style.color = '#B22222';
                         questionTitle.style.backgroundColor = 'rgba(174, 34, 34, 0.2)';  
-                        cardDiv.style.backgroundColor = 'rgba(174, 34, 34, 0.35)';  
+                        cardDiv.style.backgroundColor = 'rgb(205, 164, 164)';  
                     } else {
                         //cardDiv.style.boxShadow = "7px 7px 7px rgb(65, 141, 98)";
                         questionTitle.style.color = '#2E8B57';
                         questionTitle.style.backgroundColor = 'rgba(65, 141, 98, 0.2)';
-                        cardDiv.style.backgroundColor = 'rgba(65, 141, 98, 0.35)';  
+                        cardDiv.style.backgroundColor = 'rgb(145, 189, 164)';  
                     }
                     
                     // Add info icon to the question title for a modal
@@ -612,7 +682,7 @@
                         infoIcon2.addEventListener('click', function(event) {
                             event.preventDefault();
                             event.stopPropagation(); 
-                            ModalDes(task.taskName, task.taskDescription);
+                            ModalDes(task.taskName, task.taskDescription, task.taskPic, task.taskFooter);
                         });
                         
                         // Ensure checkbox state matches the task choice
@@ -676,6 +746,15 @@
             const responseHistory = metadata.responseHistory;
             const userId = user.id;
             console.log("your user id is ", userId);
+
+            const nav = document.querySelector('.navbar');
+            const content = document.querySelector('.m-content');
+        
+            // Retrieve the computed style of the top element
+            const computedNav = window.getComputedStyle(nav);
+            // Apply them 
+            content.style.paddingTop = `${nav.offsetHeight + 100}px`;
+            content.style.paddingBottom = `${nav.offsetHeight + 100}px`;
 
             const offcanvasNavbar = document.getElementById('offcanvasNavbar');
             const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
@@ -820,7 +899,7 @@
                 
                 // Event listener for "good" button
                 document.getElementById('good').addEventListener('click', async () => {
-                    good.style.backgroundColor = '#02897A';
+                    good.style.backgroundColor = '#00af8c';
                     bad.style.backgroundColor = '#a9d1cd';
                     var condition = (score) => score >= 3;
                     await renderQuestions(condition, preObject, userId);
@@ -833,7 +912,7 @@
                 // Event listener for "bad" button
                 document.getElementById('notyet').addEventListener('click', async () => {
                     good.style.backgroundColor = '#a9d1cd';
-                    bad.style.backgroundColor = '#02897A';
+                    bad.style.backgroundColor = '#00af8c';
                     var condition = (score) => score < 3;
                     await renderQuestions(condition, preObject, userId);
                     var tContent = document.querySelector(".task-content");

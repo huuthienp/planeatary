@@ -12,26 +12,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Quiz Results</title>
 </head>
-<body>
+<body style="background-color: whitesmoke;">
     
     <div class="main-container">
         <div class="Header">
             <!-- Sidebar -->
-            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-color: #02897A;">
+            <nav class="navbar navbar-dark navbar-expand-lg shadow" style="background-image: linear-gradient(#063a34d8, 20%, #0963587a), url('./images/amoon-ra.jpg'); background-size: cover; background-position: center;">
                 <div class="container-fluid">
                     <a class="navbar-brand d-flex align-items-center" href="index.html">
-                        <img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>
-                        <strong>PlanEATary</strong>
+                        <img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/>
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                        <div class="offcanvas-header" style="background-color: #096358;">
-                            <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" width="40" height="auto" class="d-inline-block align-text-top"/>planeatary</h5>
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(#063a34d0, 20%, #0963587a), url('./images/amoon-ra.jpg'); background-size: cover; background-position: center;">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
-                        <div class="offcanvas-body" style="background-color: #02897A;">
+                        <div class="offcanvas-body">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
                                     <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas"><i class="fa fa-home"></i> Home</a>
@@ -40,7 +39,7 @@
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-edit"></i>  <strong>Quiz</strong>
                                     </a>
-                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #00af8c;">
                                         <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
                                         <li><a class="dropdown-item" href="qualtrics_post.html" data-bs-dismiss="offcanvas">Post-quiz</a></li>
                                     </ul>
@@ -49,14 +48,14 @@
                                     <a class="nav-link" id="navChallenge" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
+                                    <a class="nav-link active" style="text-decoration: underline white;" aria-current="page" href="result_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-line-chart"></i> Dashboard</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="history_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-calendar-check-o"></i> History</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
-                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #25b3a2;">
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: #00af8c;">
                                         <li><a class="dropdown-item" href="account manage.html" data-bs-dismiss="offcanvas">My account</a></li>
                                         <li><a class="dropdown-item" id="logOut">Log out</a></li>
                                     </ul>
@@ -89,64 +88,76 @@
                                 <div class="progress-value">
                                     <div id="Score">
                                         <div id="curr_score">0</div>
-                                        </hr style="border-width: 5px; color: white;">
-                                        <span id="total">60</span>
-                                    </div>
+                                    </hr style="border-width: 5px; color: white;">
+                                    <span id="total">60</span>
                                 </div>
                             </div>
-                            <p id="improvement"></p>
-                            <p class="next-step">Next step: Select 10 Tasks To Improve Your Scores!</p>
-                            <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
                         </div>
-                        <div class="btn-next">
+                        <p id="improvement"></p>
+                        <p class="next-step">Next step: Select 10 Tasks To Improve Your Scores!</p>
+                        <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
+                    </div>
+                    <div class="btn-next">
                         <a class="nextB" href="manifesto_page.html"><button type="button" class="btn btn-success select-tasks shadow-sm" style="width: 180px;">Select Tasks →</button></a>
-                        </div>
+                    </div>
                     
                 </div>
                 <div class="q">
                     <div></div>
+                    <footer class="footer" style="justify-items: flex-start;">
+                        <ul>
+                            <li>Photo by <a href="https://unsplash.com/@ellaolsson?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Ella Olsson</a> on <a href="https://unsplash.com/photos/three-bowls-of-salad-dish-with-lemon-on-table-rD3YrnhTmf0?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Unsplash</a></li>
+                            <li>Photo by <a href="https://unsplash.com/@amoonra?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">amoon ra</a> on <a href="https://unsplash.com/photos/sliced-vegetable-and-fruits-on-board-n8vDuIpGb0c?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Unsplash</a></li>
+                        </ul>
+                    </footer>
                 </div>
             </div>
-            
-            <section class="overlay2 hidden" id="modalOverlay">
-                <div class="align2">
-                    <div class="modal2 hidden" id="taskModal"> 
-                        <div class="btn">
-                            <button class="close">x</button>
-                        </div>
-                        <div class="modal_content">
-                            <h2 id="modalTitle" style="padding: 0 20px;"></h2>
-                            <p id="modalDescription" style="padding: 0 20px;"></p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- spinner overlay-->
-            <section class="overlay hidden" id="spinnerOverlay">
-                <div class="spinner hidden" id="spinner">
-                </div>
-                <div>
-                    <span>Loading</span>
-                </div>
-            </section>
-
-            <!-- Warning disabling -->
-            <div class="toast-container">
-                <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <h4>You pulled off this cycle!</h4>
-                            <p>It is quite a shame that you are not allowed to do more tasks after doing the post-quiz.</p>
-                            <hr>
-                            <p class="mb-0">Please start over this beautiful journey at pre-quiz page!</p>
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                </div>
-            </div>
-            
         </div>
+    </div>
+    <section class="overlay2 hidden" id="modalOverlay">
+        <div class="align2">
+            <div class="modal2 hidden" id="taskModal"> 
+                <div class="btn">
+                    <button class="close">x</button>
+                </div>
+                <div class="modal_content">
+                    <h2 id="modalTitle" style="padding: 0 20px; width: 100%"></h2>
+                    <div class="modal-section">
+                        <img id="modal-pic" />
+                        <p id="modalDescription" style="padding: 0 20px; width: 100%"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <footer id="mo-footer" style="width: 100%">
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- spinner overlay-->
+    <section class="overlay hidden" id="spinnerOverlay">
+        <div class="spinner hidden" id="spinner">
+        </div>
+        <div>
+            <span>Loading</span>
+        </div>
+    </section>
+    
+    <!-- Warning disabling -->
+    <div class="toast-container">
+        <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <h4>You pulled off this cycle!</h4>
+                    <p>It is quite a shame that you are not allowed to do more tasks after doing the post-quiz.</p>
+                    <hr>
+                    <p class="mb-0">Please start over this beautiful journey at pre-quiz page!</p>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
         <script type="module">
@@ -167,14 +178,54 @@
 
             const tmodal = document.getElementById("taskModal");
             const modalOverlay = document.getElementById("modalOverlay");
-            const modalTitle = document.getElementById("modalTitle");
-            const modalDescription = document.getElementById("modalDescription");
+           
             
             const comparison = document.getElementById('improvement');
             
-            const showModal = (title, description) => {
-                modalTitle.textContent = title;
-                modalDescription.innerHTML = description;
+            const showModal = (title, description, picture, footer) => {
+                const modalContent = document.querySelector(".modal_content");
+                const modalSection = document.querySelector(".modal-section");
+                const modalTitle = document.getElementById("modalTitle");
+                const modalDescription = document.getElementById("modalDescription");
+                const modalPic = document.getElementById("modal-pic");
+                const modalFooter = document.getElementById("mo-footer");
+                const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
+                const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
+                const placeholder1 = document.createElement("p");
+                placeholder1.className = "placeholder-glow text-placeholder";
+                placeholder1.innerHTML = `<span class="placeholder w-100"></span>`;
+                
+                const placeholder2 = document.createElement("p");
+                placeholder2.className = "placeholder-glow text-placeholder";
+                placeholder2.innerHTML = `<span class="placeholder w-100"></span>`;
+                
+                modalPic.src = picture;
+                if (modalPic.complete) {
+                    // If the image is already loaded (from cache), update immediately.
+                    modalPic.style.display = "flex";
+                    modalTitle.innerHTML = title;
+                    modalDescription.innerHTML = taskDescription;
+                    modalFooter.innerHTML = taskFooter;
+                } else {
+                    modalPic.style.display = "none";
+                    modalSection.appendChild(placeholder1);
+                    modalSection.appendChild(placeholder2);
+                    modalTitle.innerHTML = `<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`;
+                    modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
+                    modalDescription.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
+                }
+                modalPic.addEventListener('load', () => {
+                    modalPic.style.display = "flex";
+                    if (placeholder1 && placeholder1.parentNode) {
+                        placeholder1.remove();
+                    }
+                    if (placeholder2 && placeholder2.parentNode) {
+                        placeholder2.remove();
+                    }
+                    modalTitle.innerHTML =  title;
+                    modalDescription.innerHTML = taskDescription;
+                    modalFooter.innerHTML = taskFooter;
+                });
                 showElement([modalOverlay, tmodal]);
             };
             
@@ -257,6 +308,7 @@
             
                 function displayQuestions(questionsData, type) {
                     
+                    document.querySelector("div.q").style.height = "5%";
                     cardContainer.innerHTML = ''; 
                     comparison.innerHTML = ''; 
                     header.innerHTML='';
@@ -309,8 +361,7 @@
                         cardContainer.appendChild(questionDiv);
                     });
 
-                    updateProgress(questionsData.result.totalScore);
-                    
+                    //updateProgress(questionsData.result.totalScore); 
                 }
 
                 function buildTaskCard(task) {
@@ -330,7 +381,7 @@
                     infoIcon.addEventListener('click', function(event) {
                         event.preventDefault();
                         event.stopPropagation();
-                        showModal(task.taskName, task.taskDescription);
+                        showModal(task.taskName, task.taskDescription, task.taskPic, task.taskFooter);
                     });
                     
                     const completion = document.createElement("p");
@@ -352,9 +403,10 @@
                     comparison.innerHTML = ''; 
                     header.innerHTML='';
                     completion_date.innerHTML='';
-                    
+                    document.querySelector("div.q").style.height = "80%";
                     // Remove next step, suggestion, and select-tasks button if display tasks
                     const tohide = [
+                    'div.score',
                     'div.circle',
                     'p.next-step',
                     'p.improvement',
@@ -371,7 +423,7 @@
                     );
                     
                     if (!detailed) {
-                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is no information available to display.</div>";
+                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is no information available to be displayed.</div>";
                         return;
                     }
 
@@ -381,7 +433,7 @@
 
                     let cardElements = [];
                     Object.keys(tasks).forEach(questionKey => {
-                        header.innerHTML = '<img src="./images/battery.png"/>'+'<b>All tasks you have completed</b>';
+                        header.innerHTML = '<b>All tasks you have completed</b>';
                         const taskGroup = tasks?.[questionKey]?.tasks ?? [];
                         
                         // Filter tasks that are selected
@@ -439,69 +491,12 @@
                         
                     });
 
-                    // const lastCard = cards[cards.length - 1];
-
-                    // // Initially, push the last card back
-                    // lastCard.style.zIndex = -1; // lower than the others
-
-                    // // Later, when it's time for the last card to move, update its z-index:
-                    // setTimeout(() => {
-                    //     lastCard.style.zIndex = 0; // bring it to the front 
-                    // }, lastDelay*1000); 
-
                     // If no cards were built, show an error message
                     if (cardContainer.innerHTML == "") {
-                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us some time to fix it.</div>";
+                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is no available task data to be displayed.</div>";
                         return;
                     }
 
-                    // Create a sentinel element to detect scroll position
-                    // const sentinel = document.createElement('div');
-                    // sentinel.id = "sentinel";
-                    // cardContainer.appendChild(sentinel);
-
-                    // for (let i = 0; i < cardElements.length; i++) {
-                    //     cardContainer.insertBefore(cardElements[i], sentinel);
-                    // }
-
-                    // // Batch loading parameters
-                    // const batchSize = 5; // number of cards per batch
-                    // let currentIndex = 0;
-
-                    // // Function to load the next batch of cards
-                    // function loadNextBatch() {
-                    //     for (let i = currentIndex; i < currentIndex + batchSize && i < cardElements.length; i++) {
-                    //         cardContainer.insertBefore(cardElements[i], sentinel);
-                    //         cardElements[i].offsetWidth; // read property forces reflow
-                    //         cardElements[i].classList.add('active');
-                    //     }
-                    //     currentIndex += batchSize;
-                    //     // Disconnect the observer if all cards are loaded
-                    //     if (currentIndex >= cardElements.length) {
-                    //         observer.disconnect();
-                    //     }
-                    // }
-
-                    // // Create a sentinel element to detect scroll position
-                    // const sentinel = document.createElement('div');
-                    // sentinel.id = "sentinel";
-                    // cardContainer.appendChild(sentinel);
-
-                    // // Set up the Intersection Observer
-                    // const observer = new IntersectionObserver(entries => {
-                    //     entries.forEach(entry => {
-                    //         if (entry.isIntersecting) {
-                    //             loadNextBatch();
-                    //         }
-                    //     });
-                    // }, { root: null, rootMargin: '0px', threshold: 0.1 });
-
-                    // observer.observe(sentinel);
-
-                    // // Optionally, load the first batch immediately
-                    // loadNextBatch();
-
-                    // Update the completion date if needed (your existing logic)
                     var task_rec = detailed?.time ?? [];
                     
                     var firstNullIndex = detailed?.time?.length !== 0 && detailed?.time?.length ==  detailed?.chosen?.length ? detailed?.time?.findIndex(el => el == "") : 0;
@@ -523,13 +518,21 @@
                         completion_date.innerHTML = '';
                     }
                     if (task_rec.length === 0) {
-                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is something wrong in the system. Please allow us sometime to fix it.</div>";
+                        cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is no available task data to be displayed.</div>";
                     }
                 }
             
                 
             
             document.addEventListener("DOMContentLoaded", async function() {
+
+                const nav = document.querySelector('.navbar');
+                const content = document.querySelector('.m-content');
+
+                // Retrieve the computed style of the top element
+                const computedNav = window.getComputedStyle(nav);
+                // Apply them 
+                content.style.paddingTop = `${nav.offsetHeight + 60}px`;
 
                 let startTime = Date.now();
                 const condition = [false, startTime];
@@ -625,6 +628,7 @@
 
                     // Show next step, suggestion, and select-tasks button as default
                     const toshow = [
+                    'div.score',
                     'p.next-step',
                     'p.suggestion',
                     'div.btn-next'
@@ -749,7 +753,7 @@
                             //ch.classList.add('disabled');
                             
                             displayQuestions(postObject, 'POST');
-                            document.getElementById('postQ').style.backgroundColor = '#02897A';
+                            document.getElementById('postQ').style.backgroundColor = '#00af8c';
                             document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
                             document.querySelector("button.select-tasks").innerHTML = 'Back to <i class="fa fa-home"></i>';
@@ -761,6 +765,7 @@
                             
                             // Show next step, suggestion, and select-tasks button as default
                             const toshow = [
+                            'div.score',
                             'p.next-step',
                             'p.suggestion',
                             'div.btn-next',
@@ -775,7 +780,7 @@
                             
                             //display preresult by default
                             displayQuestions(preObject, 'PRE');
-                            document.getElementById('preQ').style.backgroundColor = '#02897A';   
+                            document.getElementById('preQ').style.backgroundColor = '#00af8c';   
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
                             document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
                             document.querySelector("a.nextB").href = 'manifesto_page.html';
@@ -795,6 +800,7 @@
                         
                         if (preResult && !postResult) {
                             const toshow = [
+                            'div.score',
                             'p.next-step',
                             'p.suggestion',
                             'div.btn-next',
@@ -815,6 +821,7 @@
                             
                         } else {
                             const toshow = [
+                            'div.score',
                             'div.btn-next',
                             'div.circle'
                             ];
@@ -829,10 +836,10 @@
                             document.querySelector("a.nextB").href = 'index.html';
                             document.getElementById('postQ').style.backgroundColor = '#a9d1cd';
                         }
-                        
+                        updateProgress(preObject.result.totalScore);
                         displayQuestions(preObject, 'PRE');
                         document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
-                        document.getElementById('preQ').style.backgroundColor = '#02897A';    
+                        document.getElementById('preQ').style.backgroundColor = '#00af8c';    
                     });
                     
                     document.getElementById('postQ').addEventListener('click', function() {
@@ -865,11 +872,11 @@
                             document.querySelector("button.select-tasks").innerHTML = 'Back to <i class="fa fa-home"></i>';
                             document.querySelector("a.nextB").href = 'index.html';
                             
-                            
+                            updateProgress(preObject.result.totalScore);
                             displayQuestions(postObject, 'POST');
                             document.getElementById('preQ').style.backgroundColor = '#a9d1cd';
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';    
-                            document.getElementById('postQ').style.backgroundColor = '#02897A';    
+                            document.getElementById('postQ').style.backgroundColor = '#00af8c';    
                         }
                     });
                     
@@ -883,7 +890,7 @@
                             updateButton(document.getElementById('postQ'), 'rgba(200, 200, 200, 0.6)', 'not-allowed');
                             document.getElementById('postQ').style.color = 'rgb(97 94 94)';
                         }
-                        document.getElementById('com-tasks').style.backgroundColor = '#02897A';    
+                        document.getElementById('com-tasks').style.backgroundColor = '#00af8c';    
                     });
                 } catch (err) {
                     //Debugging handling errors
