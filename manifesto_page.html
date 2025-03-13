@@ -190,12 +190,12 @@
         
         function ModalDes(title, des, picture, footer) {
             const elements = [closeDes, modal2, overlay2];
-            const modalContent = document.querySelector(".modal-content");
+            const modalContent = document.querySelector(".modal_content");
             const modalFooter = document.getElementById("mo-footer");
             const text = document.getElementById("inform");
             const taskDescription = des.replace('target="_blank"', 'rel="noopener noreferrer"');
             const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
-            modalContent.innerHTML = `<div class="void">
+            modalContent.innerHTML = `<div>
             <p class="placeholder-glow  w-50 h-50">
             <span class="placeholder w-40"></span>
             <span class="placeholder w-55"></span>

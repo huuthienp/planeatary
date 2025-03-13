@@ -179,20 +179,37 @@
 
             const tmodal = document.getElementById("taskModal");
             const modalOverlay = document.getElementById("modalOverlay");
-            const modalTitle = document.getElementById("modalTitle");
-            const modalDescription = document.getElementById("modalDescription");
-            const modalPic = document.getElementById("modal-pic");
-            const modalFooter = document.getElementById("mo-footer");
+           
             
             const comparison = document.getElementById('improvement');
             
             const showModal = (title, description, picture, footer) => {
+                const modalContent = document.querySelector(".modal_content");
+                const modalTitle = document.getElementById("modalTitle");
+                const modalDescription = document.getElementById("modalDescription");
+                const modalPic = document.getElementById("modal-pic");
+                const modalFooter = document.getElementById("mo-footer");
                 modalTitle.textContent = title;
                 const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
                 const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
-                modalPic.src = picture;
-                modalDescription.innerHTML = taskDescription;
-                modalFooter.innerHTML = taskFooter;
+                modalContent.innerHTML = `<div>
+                <p class="placeholder-glow  w-50 h-50">
+                <span class="placeholder w-40"></span>
+                <span class="placeholder w-55"></span>
+                <span class="placeholder w-100"></span>
+                <img src="" alt="..." class="myGif" style="display: none;" />
+                </p>
+                <p class="placeholder-glow w-100">
+                <span class="placeholder w-100"></span>
+                </p>
+                </div>`;
+                if (picture.complete) {
+                    modalContent.innerHTML = "";
+                    modalTitle.textContent = title;
+                    modalDescription.innerHTML = taskDescription;
+                    modalPic.src = picture;
+                    modalFooter.innerHTML = taskFooter;
+                } 
                 showElement([modalOverlay, tmodal]);
             };
             
