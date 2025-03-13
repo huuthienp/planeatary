@@ -184,13 +184,21 @@
             const elements = [close, modal, overlay];
             const modalContent = document.querySelector(".modal_content");
             const image = document.getElementById("visual_info");
+            let placeholder = document.createElement("p");
+            placeholder.className = "placeholder-glow image-placeholder";
+            placeholder.innerHTML = `<span class="placeholder w-100"></span>`;
             image.src = source;
-            if (!image.complete) {
+            if (image.complete) {
+                image.style.display = "flex";
+            }
+            else {
                 image.style.display = "none";
-                modalContent.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
+                modalContent.appendChild(placeholder);
             }
             image.addEventListener('load', () => {
-                modalContent.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
+                if (placeholder && placeholder.parentNode) {
+                    placeholder.remove();
+                }
                 image.style.display = "flex";
             });
             showElement(elements);
@@ -199,25 +207,38 @@
         function ModalDes(title, description, picture, footer) {
             const elements = [closeDes, modal2, overlay2];
             const modalContent = document.querySelector(".modal_content");
+            const modalSection = document.querySelector(".modal-section");
             const modalFooter = document.getElementById("mo-footer");
             const modalDescription = document.getElementById("inform");
             const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
             const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
-            modalTitle.innerHTML = `<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`;
-            modalDescription.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>
-            <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
-            <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`;
-            modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
+            let placeholder = document.createElement("p");
+            placeholder.className = "placeholder-glow image-placeholder";
+            placeholder.innerHTML = `<span class="placeholder w-100"></span>`;
+            
             modalPic.src = picture;
-            if (!modalPic.complete) {
+            if (modalPic.complete) {
+                // If the image is already loaded (from cache), update immediately.
+                modalPic.style.display = "flex";
+                modalTitle.innerHTML = title;
+                modalDescription.innerHTML = taskDescription;
+                modalFooter.innerHTML = taskFooter;
+            } else {
                 modalPic.style.display = "none";
+                modalSection.appendChild(placeholder);
+                modalTitle.innerHTML = `<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`;
+                modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
+                modalDescription.innerHTML = `<p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
+                                      <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`;
             }
             modalPic.addEventListener('load', () => {
                 modalPic.style.display = "flex";
-                modalTitle.innerHTML = modalTitle.innerHTML.replace(`<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`, title);
-                modalDescription.innerHTML = "";
+                if (placeholder && placeholder.parentNode) {
+                    placeholder.remove();
+                }
+                modalTitle.innerHTML =  title;
                 modalDescription.innerHTML = taskDescription;
-                modalFooter.innerHTML = modalFooter.innerHTML.replace(`<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`, taskFooter);
+                modalFooter.innerHTML = taskFooter;
             });
             showElement(elements);
         }
