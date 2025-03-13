@@ -196,8 +196,12 @@
                 <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
                 <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`;
                 modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
+                modalPic.src = picture;
+                if (!modalPic.complete) {
+                    modalPic.style.display = "none";
+                }
                 modalPic.addEventListener('load', () => {
-                    modalPic.src = picture;
+                    modalPic.style.display = "flex";
                     modalTitle.innerHTML = modalTitle.innerHTML.replace(`<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`, title);
                     modalDescription.innerHTML = modalDescription.innerHTML.replace(`<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>
                     <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>

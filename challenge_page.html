@@ -160,8 +160,12 @@
                 <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
                 <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`;
                 modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
+                modalPic.src = picture;
+                if (!modalPic.complete) {
+                    modalPic.style.display = "none";
+                }
                 modalPic.addEventListener('load', () => {
-                    modalPic.src = picture;
+                    modalPic.style.display = "flex";
                     modalTitle.innerHTML = modalTitle.innerHTML.replace(`<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`, title);
                     modalDescription.innerHTML = modalDescription.innerHTML.replace(`<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>
                     <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
@@ -192,15 +196,14 @@
 
             // Use for task card ripple
             function animateTaskCard(card, gradientColor, TextColor) {
-                card.style.backgroundImage = `radial-gradient(circle at 50% 50%, ${gradientColor} 10%, transparent 10%)`;
                 card.animate(
                 [
-                { backgroundSize: "0 0" },
-                { backgroundSize: "1000% 1000%" }
+                { backgroundImage: `radial-gradient(circle at 50% 50%, ${gradientColor} 10%, transparent 10%)` },
+                { backgroundImage: `radial-gradient(circle at 50% 50%, ${gradientColor} 100%, transparent 10%)` }
                 ],
                 { duration: 1800, fill: "forwards" }
                 ).finished.then(() => {
-                    //card.style.backgroundColor = gradientColor;
+                    card.style.backgroundColor = gradientColor;
                     card.style.color = TextColor;
                 });
             }
