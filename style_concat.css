@@ -37,7 +37,7 @@ body {
 }
 
 .navbar .nav-link:active, .navbar .nav-link:hover {
-  border-bottom: 1px solid white;
+  text-decoration: underline white;
 }
 
 .footer {
@@ -583,13 +583,12 @@ body {
   justify-content: center;
   gap: 2vmax;
   padding: 2vh 1vw;
-  background: rgb(146 161 146 / 75%);
   color: dimgrey;
   border: none;
   border-radius: 1em;
   text-align: center;
   font-size: 1.1rem;
-  box-shadow: 0.1rem .16rem .3rem rgba(57, 58, 58, 0.6);
+  box-shadow: 0.2rem .26rem .34rem rgba(57, 58, 58, 0.6);
 }
 
 .card_completion:active {
@@ -597,7 +596,7 @@ body {
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: 0 0;
-  animation: ripple 1s;
+  animation: ripple 1.8s;
 }
 
 @keyframes ripple {
@@ -1200,11 +1199,34 @@ body {
 
 .modal-section {
   display: flex;
+  width: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 20px 0;
   gap: 20px;
+}
+
+.text-placeholder {
+  display: flex;
+  width: 40%;
+}
+
+.image-placeholder {
+  display: flex;
+  width: 50%;
+  aspect-ratio: 16/8;
+}
+
+.title-placeholder {
+  display: flex;
+  width: 100%;
+  aspect-ratio: 16/2;
+}
+
+.footer-placeholder {
+  display: flex;
+  width: 100%;
 }
 
 #modalTitle {

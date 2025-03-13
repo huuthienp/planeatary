@@ -120,13 +120,11 @@ export function hasPostQuizCycle() {
 
 export function emptyStateDisplay(frame, content, img) {
     frame.innerHTML = `<div class="void">
-    <p class="placeholder-glow  w-50">
-    <span class="placeholder w-40"></span>
-    <span class="placeholder w-55"></span>
+    <p class="placeholder-glow title-placeholder">
     <span class="placeholder w-100"></span>
-    <img src="" alt="..." class="myGif" style="display: none;" />
     </p>
-    <p class="placeholder-glow w-100">
+    <p class="placeholder-glow text-placeholder">
+    <span class="placeholder w-100"></span>
     <span class="placeholder w-100"></span>
     </p>
     </div>`;

@@ -150,27 +150,18 @@
             const navPostQuiz = document.getElementById("navPost-quiz");
             
             const showModal = (title, description, picture, footer) => {
-                const modalContent = document.querySelector(".modal_content");
                 const modalTitle = document.getElementById("modalTitle");
                 const modalDescription = document.getElementById("modalDescription");
                 const modalPic = document.getElementById("modal-pic");
                 const modalFooter = document.getElementById("mo-footer");
                 const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
                 const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
-                modalContent.innerHTML = `<div>
-                <p class="placeholder-glow  w-50 h-50">
-                <span class="placeholder w-40"></span>
-                <span class="placeholder w-55"></span>
-                <span class="placeholder w-100"></span>
-                <img src="" alt="..." class="myGif" style="display: none;" />
-                </p>
-                <p class="placeholder-glow w-100">
-                <span class="placeholder w-100"></span>
-                </p>
-                </div>`;
+                modalTitle.innerHTML = `<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`;
+                modalPic.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
+                modalDescription.innerHTML = `<p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`;
+                modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
                 if (picture.complete) {
-                    modalContent.innerHTML = "";
-                    modalTitle.textContent = title;modalTitle.textContent = title;
+                    modalTitle.textContent = title;
                     modalPic.src = picture;
                     modalDescription.innerHTML = taskDescription;
                     modalFooter.innerHTML = taskFooter;
@@ -196,6 +187,20 @@
                 const myToast = new bootstrap.Toast(toasty);
                 myToast.show();
             }
+
+            // Use for task card ripple
+            function animateTaskCard(card, gradientColor, finalTextDecoration, TextColor) {
+                card.animate(
+                [
+                { backgroundSize: "0 0", backgroundImage: `radial-gradient(circle at 50% 50%, ${gradientColor}, transparent 10%)` },
+                { backgroundSize: "1000% 1000%", backgroundImage: `radial-gradient(circle at 50% 50%, ${gradientColor}, transparent 10%)` }
+                ],
+                { duration: 1800, fill: "forwards" }
+                )
+                card.style.color = TextColor;
+                taskName.style.textDecoration = TextDecoration;
+            }
+
 
             //hard-code updating responseHistory (incompleted)
             async function updateResponseHistory(preResponseId, lastTask) {
@@ -335,12 +340,12 @@
                                 
                                 // Set card styles based on status
                                 if (task.status === "Completed") {
-                                    taskCard.style.backgroundImage = "radial-gradient(circle at 50% 50%, rgb(146, 161, 146) 100%, transparent 10%)";
+                                    taskCard.style.backgroundColor = "rgb(146, 161, 146)";
                                     taskCard.style.color = 'dimgrey';
                                     taskName.style.textDecoration = "line-through";
                                 } else {
                                     taskCard.style.color = 'rgb(71, 71, 71)';
-                                    taskCard.style.backgroundColor = "radial-gradient(circle at 50% 50%, rgb(95, 201, 109) 100%, transparent 10%)";
+                                    taskCard.style.backgroundColor = "rgb(95, 201, 109)";
                                     taskName.style.textDecoration = "none";
                                 }
                                 
@@ -349,7 +354,7 @@
                                     if (Tstatus.chosen.length !== 0) {
                                         if (Tstatus.chosen.includes(String(task.taskNumber))) {
                                             if (Tstatus.done.length !== 0 && Tstatus.done.includes(String(task.taskNumber))) {
-                                                taskCard.style.backgroundImage = "radial-gradient(circle at 50% 50%, rgb(146, 161, 146) 100%, transparent 10%);";
+                                                taskCard.style.backgroundColor = "rgb(146, 161, 146)";
                                                 taskCard.style.color = 'dimgrey';
                                                 taskName.style.textDecoration = "line-through";
                                             }
@@ -357,7 +362,7 @@
                                             let index = Tstatus.chosen.indexOf(String(task.taskNumber));
                                             Tstatus.done[index] = String(task.taskNumber);
                                             Tstatus.time[index] = task.finishTime;
-                                            taskCard.style.backgroundColor = "radial-gradient(circle at 50% 50%, rgb(146, 161, 146) 100%, transparent 10%);";
+                                            taskCard.style.backgroundColor = "rgb(146, 161, 146)";
                                             taskCard.style.color = 'dimgrey';
                                             taskName.style.textDecoration = "line-through";
                                         }
@@ -380,9 +385,7 @@
                                     task.status = task.status === "Done" ? "Completed" : "Done";
                                     
                                     if (task.status === "Completed") {
-                                        taskCard.style.backgroundImage = "radial-gradient(circle at 50% 50%, rgb(146, 161, 146) 100%, transparent 10%)";
-                                        taskCard.style.color = 'dimgrey';
-                                        taskName.style.textDecoration = "line-through";
+                                        animateTaskCard(taskCard, "rgb(146, 161, 146)", "rgb(146, 161, 146)", "line-through", "dimgrey");
                                         completion.innerHTML = task.status;
                                         let timestamp = Date.now();
                                         task.finishTime = timestamp;
@@ -392,9 +395,7 @@
                                             Tstatus.time[index] = task.finishTime;
                                         }
                                     } else {
-                                        taskCard.style.color = 'rgb(71, 71, 71)';
-                                        taskCard.style.backgroundImage = "radial-gradient(circle at 50% 50%, rgb(95, 201, 109) 100%, transparent 10%)";
-                                        taskName.style.textDecoration = "none";
+                                        animateTaskCard(taskCard, "rgb(95, 201, 109)", "rgb(95, 201, 109)", "none", "rgb(71, 71, 71)");
                                         completion.innerHTML = task.status;
                                         task.finishTime = "";
                                         if (Tstatus && Object.keys(Tstatus).length !== 0) {

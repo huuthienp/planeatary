@@ -192,24 +192,16 @@
                 modalTitle.textContent = title;
                 const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
                 const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
-                modalContent.innerHTML = `<div>
-                <p class="placeholder-glow  w-50 h-50">
-                <span class="placeholder w-40"></span>
-                <span class="placeholder w-55"></span>
-                <span class="placeholder w-100"></span>
-                <img src="" alt="..." class="myGif" style="display: none;" />
-                </p>
-                <p class="placeholder-glow w-100">
-                <span class="placeholder w-100"></span>
-                </p>
-                </div>`;
+                modalTitle.innerHTML = `<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`;
+                modalPic.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
+                modalDescription.innerHTML = `<p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`;
+                modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
                 if (picture.complete) {
-                    modalContent.innerHTML = "";
                     modalTitle.textContent = title;
-                    modalDescription.innerHTML = taskDescription;
                     modalPic.src = picture;
+                    modalDescription.innerHTML = taskDescription;
                     modalFooter.innerHTML = taskFooter;
-                } 
+                }
                 showElement([modalOverlay, tmodal]);
             };
             
