@@ -192,7 +192,7 @@
                 const taskDescription = description.replace('target="_blank"', 'rel="noopener noreferrer"');
                 const taskFooter = footer.replace('target="_blank"', 'rel="noopener noreferrer"');
                 let placeholder = document.createElement("p");
-                placeholder.className = "placeholder-glow image-placeholder";
+                placeholder.className = "placeholder-glow text-placeholder";
                 placeholder.innerHTML = `<span class="placeholder w-100"></span>`;
                 
                 modalPic.src = picture;
@@ -205,10 +205,10 @@
                 } else {
                     modalPic.style.display = "none";
                     modalSection.appendChild(placeholder);
+                    modalSection.appendChild(placeholder);
                     modalTitle.innerHTML = `<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`;
                     modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
-                    modalDescription.innerHTML = `<p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
-                                      <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`;
+                    modalDescription.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
                 }
                 modalPic.addEventListener('load', () => {
                     modalPic.style.display = "flex";
