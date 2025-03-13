@@ -603,7 +603,7 @@ body {
   pointer-events: none;
 }
 
-.card_completion.ripple::after {
+.card_completion span.ripple-span.ripple::after {
   animation: ripple 1.8s linear forwards;
 }
 
