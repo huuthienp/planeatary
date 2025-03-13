@@ -162,11 +162,11 @@
                 modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
                 modalPic.addEventListener('load', () => {
                     modalPic.src = picture;
-                    modalTitle.innerHTML.replace(`<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`, title);
-                    modalDescription.innerHTML.replace(`<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>
+                    modalTitle.innerHTML = modalTitle.innerHTML.replace(`<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`, title);
+                    modalDescription.innerHTML = modalDescription.innerHTML.replace(`<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>
                     <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
                     <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`, taskDescription);
-                    modalFooter.innerHTML.replace(`<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`, taskFooter);
+                    modalFooter.innerHTML = modalFooter.innerHTML.replace(`<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`, taskFooter);
                 });
                 
                 showElement([modalOverlay, modal]);
@@ -192,10 +192,11 @@
 
             // Use for task card ripple
             function animateTaskCard(card, gradientColor, TextColor) {
+                card.style.backgroundImage = `radial-gradient(circle at 50% 50%, ${gradientColor} 10%, transparent 10%)`;
                 card.animate(
                 [
-                { backgroundSize: "0 0", backgroundImage: `radial-gradient(circle at 50% 50%, ${gradientColor} 100%, transparent 10%)` },
-                { backgroundSize: "1000% 1000%", backgroundImage: `radial-gradient(circle at 50% 50%, ${gradientColor} 100%, transparent 10%)` }
+                { backgroundSize: "0 0" },
+                { backgroundSize: "1000% 1000%" }
                 ],
                 { duration: 1800, fill: "forwards" }
                 ).finished.then(() => {

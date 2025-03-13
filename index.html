@@ -993,7 +993,7 @@
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 const user = netlifyIdentity.currentUser();
                 if (!user) throw new Error("Login failed: No user object found");
-                console.log("Successful login!", emailInput2.value);
+                console.log("Successfully login!", emailInput2.value);
                 
                 hideSignInModal();
                 
@@ -1003,24 +1003,22 @@
                 if (r === true) {
                     enableFirstTimers();
                     //Need lana to test and edit the flow here if neccessary
-                    alert("Successful login!, proceeding");
                     const userData = await getUserData();
                     const { metadata, responseHistory, userId } = userData;
                     //Once a user chose to restart the cycle and does not finish it, redirect the user to pre-quiz page
                     if (metadata.restarting == 'yes') {
-                        alert("Let's do your restarting pre-quiz!");
+                        alert("Successfully login! Let's do your restarting pre-quiz!");
                         window.location.href = "qualtrics.html";
                     } else {
-                        alert("Let's see your latest result!");
+                        alert("Successfully login! Let's see your latest result!");
                         window.location.href = "result_page.html";
                     }
                 } else {
                     disableFirstTimers();
-                    alert("Successful login!, proceeding");
+                    
                     // Delay navigation slightly
                     setTimeout(() => {
-                        //Needs confirmation from Linh about the flow here
-                        alert("Welcome to our website!");
+                        alert("Successfully login!, Welcome to our website!");
                         window.location.href = "index.html";
                     }, 500);
                 }
@@ -1180,7 +1178,7 @@
             { full_name: nameField.value, age: ageField.value, gender: genderField.value, status: statusField.value })
             .then(async (r) => {
                 await new Promise(resolve => setTimeout(resolve, 1500));
-                console.log('Successful signup!', emailInput.value);
+                alert('Successfully signup! Please check your email inbox');
                 hideSignUpModal();
             })
             .catch((e) => {

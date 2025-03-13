@@ -198,11 +198,11 @@
                 modalFooter.innerHTML = `<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`;
                 modalPic.addEventListener('load', () => {
                     modalPic.src = picture;
-                    modalTitle.innerHTML.replace(`<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`, title);
-                    modalDescription.innerHTML.replace(`<p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
+                    modalTitle.innerHTML = modalTitle.innerHTML.replace(`<p class="placeholder-glow title-placeholder"><span class="placeholder w-100"></span></p>`, title);
+                    modalDescription.innerHTML = modalDescription.innerHTML.replace(`<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>
                     <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>
                     <p class="placeholder-glow text-placeholder"><span class="placeholder w-100"></span></p>`, taskDescription);
-                    modalFooter.innerHTML.replace(`<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`, taskFooter);
+                    modalFooter.innerHTML = modalFooter.innerHTML.replace(`<p class="placeholder-glow footer-placeholder"><span class="placeholder w-100"></span></p>`, taskFooter);
                 });
                 showElement([modalOverlay, tmodal]);
             };
