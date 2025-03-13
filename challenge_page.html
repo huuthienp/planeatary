@@ -196,7 +196,7 @@
             // Use for task card ripple
             function animateTaskCard(card, gradientColor, TextColor) {
                 // Add the ripple class
-                card.style.background = `radial-gradient(circle at center, ${gradientColor} 10%, transparent 10%)`;
+                card.querySelector('span.ripple-span').style.background = `radial-gradient(circle at center, ${gradientColor} 10%, transparent 10%)`;
                 card.querySelector('span.ripple-span').classList.add('ripple');
 
                 card.querySelector('span.ripple-span').addEventListener('animationend', function handler() {

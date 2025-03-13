@@ -185,6 +185,14 @@
             const modalContent = document.querySelector(".modal_content");
             const image = document.getElementById("visual_info");
             image.src = source;
+            if (!image.complete) {
+                image.style.display = "none";
+                modalContent.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
+            }
+            image.addEventListener('load', () => {
+                modalContent.innerHTML = `<p class="placeholder-glow image-placeholder"><span class="placeholder w-100"></span></p>`;
+                image.style.display = "flex";
+            });
             showElement(elements);
         }
         

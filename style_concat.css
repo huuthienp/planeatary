@@ -295,6 +295,17 @@ body {
     box-shadow: 0.1rem .16rem .3rem rgba(57, 58, 58, 0.6);
   }
 
+  .text-placeholder {
+    display: flex;
+    width: 50% !important;
+  }
+  
+  .image-placeholder {
+    display: flex;
+    width: 40% !important;
+    aspect-ratio: 16/8;
+  }
+
   .modal-section {
     display: flex;
     flex-direction: row !important;
@@ -579,6 +590,7 @@ body {
   max-width: 96%;
   flex-direction: column;
   justify-content: center;
+  position: relative;
   gap: 2vmax;
   padding: 2vh 1vw;
   border: none;
@@ -594,8 +606,8 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 20px;  
-  height: 20px;
+  width: 70px;  
+  height: 70px;
   background: radial-gradient(circle at center, rgb(170, 228, 162) 10%, transparent 10%);
   border-radius: 50%;
   transform: translate(-50%, -50%) scale(0); 
@@ -613,7 +625,7 @@ body {
     opacity: 1;
   }
   to {
-    transform: translate(-50%, -50%) scale(20); 
+    transform: translate(-50%, -50%) scale(30); 
     opacity: 0;
   }
 }
