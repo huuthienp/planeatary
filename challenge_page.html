@@ -189,7 +189,7 @@
             }
 
             // Use for task card ripple
-            function animateTaskCard(card, gradientColor, TextDecoration, TextColor, taskName) {
+            function animateTaskCard(card, gradientColor, TextColor) {
                 card.animate(
                 [
                 { backgroundSize: "0 0", backgroundImage: `radial-gradient(circle at 50% 50%, ${gradientColor}, transparent 10%)` },
@@ -198,7 +198,6 @@
                 { duration: 1800, fill: "forwards" }
                 )
                 card.style.color = TextColor;
-                taskName.style.textDecoration = TextDecoration;
             }
 
 
@@ -385,7 +384,8 @@
                                     task.status = task.status === "Done" ? "Completed" : "Done";
                                     
                                     if (task.status === "Completed") {
-                                        animateTaskCard(taskCard, "rgb(146, 161, 146)", "rgb(146, 161, 146)", "line-through", "dimgrey", taskName);
+                                        animateTaskCard(taskCard, "rgb(146, 161, 146)", "rgb(146, 161, 146)", "dimgrey");
+                                        taskName.style.textDecoration = "line-through";
                                         completion.innerHTML = task.status;
                                         let timestamp = Date.now();
                                         task.finishTime = timestamp;
@@ -395,7 +395,8 @@
                                             Tstatus.time[index] = task.finishTime;
                                         }
                                     } else {
-                                        animateTaskCard(taskCard, "rgb(95, 201, 109)", "rgb(95, 201, 109)", "none", "rgb(71, 71, 71)", taskName);
+                                        animateTaskCard(taskCard, "rgb(95, 201, 109)", "rgb(95, 201, 109)", "rgb(71, 71, 71)");
+                                        taskName.style.textDecoration = "none";
                                         completion.innerHTML = task.status;
                                         task.finishTime = "";
                                         if (Tstatus && Object.keys(Tstatus).length !== 0) {
