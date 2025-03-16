@@ -36,7 +36,7 @@ body {
   background-color: #096358ab;
 }
 
-.navbar .nav-link:active, .navbar .nav-link:hover {
+.navbar .nav-link:active, .navbar .nav-link:hover, .navbar .nav-link:focus {
   text-decoration: underline white;
 }
 
