@@ -527,57 +527,57 @@
                 "taskNumber": "t0901",
                 "taskName": "Improve Composting Skills through Workshops, Tutorials, and Educational Resources",
                 "taskDescription": "Learn how to compost correctly by attending a composting workshop, look up tutorials on YouTube, buying a guidebook or read this blog <a href=\"https://www.environment.sa.gov.au/goodliving/posts/2019/05/guide-to-composting\" target=\"_blank\">here</a> from the Good Living Team at the South Australian Department for Environment and Water.",
-                "taskPic": "./images/plant.jpg",
-                "taskFooter": ""
+                "taskPic": "./images/t0901.jpg",
+                "taskFooter": "Photo by <a href=\"https://unsplash.com/@jupp?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\"  target=\"_blank\">Jonathan Kemper</a> on <a href=\"https://unsplash.com/photos/text-D0acDFb38XE?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\"  target=\"_blank\">Unsplash</a>"
             },
             {
                 "taskNumber": "t0902",
                 "taskName": "Explore Local Food Waste Disposal Options: Composting, Farm Animals, and FOGO Services",
                 "taskDescription": "Investigate what options there are available in your council or area for food waste such as composting or farm animals that could consume your food waste. You can check out the <a href=\"https://www.dcceew.gov.au/environment/protection/waste/food-waste/recovering-organic-waste\" target=\"_blank\">interactive map</a> on the Department of Climate Change, Energy, the Environment and Water site to see if FOGO is available in your council area or download the <a href=\"https://sharewaste.com/\" target=\"_blank\">sharewaste</a> app and meet neighbours, recycle organics.",
-                "taskPic": "./images/plant.jpg",
-                "taskFooter": ""
+                "taskPic": "./images/t0902.jpg",
+                "taskFooter": "Photo by <a href=\"https://unsplash.com/@t_ahmetler?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Tolga Ahmetler</a> on <a href=\"https://unsplash.com/photos/a-seagull-spreads-its-wings-over-a-pile-of-dead-fish-GTXi6g3tQSo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Unsplash</a>"
             },
             {
                 "taskNumber": "t0903",
                 "taskName": "Minimize Edible Food Waste: At Home and On-the-Go",
                 "taskDescription": "Aim for zero edible food waste into landfill in your house and when eating/drinking out of the house",
-                "taskPic": "./images/plant.jpg",
-                "taskFooter": ""
+                "taskPic": "./images/t0903.jpg",
+                "taskFooter": "Photo by <a href=\"https://unsplash.com/@jupp?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Jonathan Kemper</a> on <a href=\"https://unsplash.com/photos/brown-and-white-plastic-egg-toy-AC7qWU5XLoo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Unsplash</a>"
             },
             {
                 "taskNumber": "t0904",
                 "taskName": "Promote Responsible Food Waste Management through Social Media Engagement",
                 "taskDescription": "Help educate others about responsible food waste management e.g. post a photo of your new management strategy on\nsocial media and add a hashtag #planEATaryquest",
-                "taskPic": "./images/plant.jpg",
-                "taskFooter": ""
+                "taskPic": "./images/t0904.png",
+                "taskFooter": "Image by <a href=\"https://pixabay.com/users/smtwastebrokers-324212/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=384790\" target=\"_blank\">Jarrod Blamey</a> from <a href=\"https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=384790\" target=\"_blank\">Pixabay</a>"
             },
             {
                 "taskNumber": "t0905",
                 "taskName": "Advocate for FOGO Collection Implementation in Your Local Council",
                 "taskDescription": "Lobby your local Council to start the FOGO collection in your area",
-                "taskPic": "./images/plant.jpg",
-                "taskFooter": ""
+                "taskPic": "./images/t0905.png",
+                "taskFooter": "Image generated using Canva’s AI image generator."
             },
             {
                 "taskNumber": "t0906",
                 "taskName": "Feed Animals Safely at Home",
                 "taskDescription": "Feed animals at home if safe and able to do so",
-                "taskPic": "./images/plant.jpg",
-                "taskFooter": ""
+                "taskPic": "./images/t0906.jpg",
+                "taskFooter": "Photo by <a href=\"https://unsplash.com/@jesseschoff?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Jesse Schoff</a> on <a href=\"https://unsplash.com/photos/brown-chicken-on-brown-sand-qVneOrTN06c?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash\" target=\"_blank\">Unsplash</a>"
             },
             {
                 "taskNumber": "t0907",
                 "taskName": "Set Up and Maintain a Home Composting System",
                 "taskDescription": "Source a worm farm, compost bin or Bokashi bin for your household and learn how to maintain and benefit from it",
-                "taskPic": "./images/plant.jpg",
-                "taskFooter": ""
+                "taskPic": "./images/t0907.jpg",
+                "taskFooter": "Photo by SHVETS <a href=\"https://www.pexels.com/photo/woman-standing-on-a-counter-holding-a-banana-peel-7512979/\" target=\"_blank\">production:</a>"
             },
             {
                 "taskNumber": "t0908",
                 "taskName": "Share Leftover Food with Colleagues/Neighbours",
                 "taskDescription": "Share leftover food with others by taking food to work or give to neighbours, let them know in advance",
-                "taskPic": "./images/plant.jpg",
-                "taskFooter": ""
+                "taskPic": "./images/t0908.jpg",
+                "taskFooter": "Photo by Yan Krukau: <a href=\"https://www.pexels.com/photo/children-eating-on-a-table-8617560/\" target=\"_blank\">production: </a>"
             }
         ]
     },
