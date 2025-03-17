@@ -446,77 +446,77 @@
                 "taskNumber": "t0801",
                 "taskName": "Meal Planning & Smart Shopping",
                 "taskDescription": "Plan meals and use a shopping list to buy only what you need. Download some helpful apps from this list",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/Q8T1.jpeg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t0802",
                 "taskName": "Australia's Food Waste Reduction Commitment",
                 "taskDescription": "Read about Australia’s commitment and roadmap to halving food waste by 2030 here: <a href=\"https://www.dcceew.gov.au/environment/protection/waste/food-waste\" target=\"_blank\">Reducing Australia’s food waste - DCCEEW</a>.",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/Q8T2.jpeg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t0803",
                 "taskName": "Leftover Management and Food Waste Audit",
                 "taskDescription": "Don’t discard leftovers. Consider how they could be used, such as freezing for another day or transforming them into a new meal. Record in a diary what food is wasted in your bin (quantities if possible e.g. 2 slices bread) or complete a food waste audit (e.g weighed food waste record) (see tool <a href=\"https://sevengenerationsahead.org/wp-content/uploads/2020/08/Food-Waste-Activity.pdf\" target=\"_blank\">here</a>).",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/Q8T3.jpeg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t0804",
                 "taskName": "Inventory Check: Optimize Your Shopping List by Assessing Your Fridge and Freezer",
                 "taskDescription": "Take a good look in your fridge and freezer when making a shopping list to avoid overbuying",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/Q8T4.jpeg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t0805",
                 "taskName": "Proper Food Storage for Longevity",
                 "taskDescription": "Store food according to manufacturers/producers instructions properly to extend the life of your food",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/Q8T5.jpeg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t0806",
                 "taskName": "Smart Recipe Selection for Leftover Ingredients",
                 "taskDescription": "Select recipes wisely to avoid wasting leftover ingredients (think one ingredient, but 2 recipes)",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/Q8T6.jpeg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t0807",
                 "taskName": "Label and Organize Perishable Foods",
                 "taskDescription": "Label perishable foods in the fridge with the date and use while it is still safe (you can use masking tape and a black marker). Bring the food to be eaten first to the front of the shelf",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/Q8T7.jpeg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t0808",
                 "taskName": "Buy Short-Date Foods Mindfully",
                 "taskDescription": "Only buy short date-marked food on sale if you will eat them, or else they will be wasted",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/Q8T8.jpeg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t0809",
                 "taskName": "Creative Uses for Non-Edible Food Waste",
                 "taskDescription": "Utilise non-edible food waste creatively and safely in compost, stocks and broths, vinegar, cleaning, mulch or animal feed",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/Q8T9.jpeg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t0810",
                 "taskName": "Understand Use-By vs. Best-Before Dates to Reduce Food Waste",
                 "taskDescription": "Educate yourself and others on the difference between ‘use-by’ and ‘best-before’ dates to reduce unnecessary waste of edible food by viewing and sharing this <a href=\"https://www.youtube.com/watch?v=jDg8DQl7ZeQ\" target=\"_blank\">video</a>.",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/Q8T10.jpeg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t0811",
                 "taskName": "Implement 'Use It Up Tape' in Kitchens",
                 "taskDescription": "Order <a href=\"https://www.ozharvest.org/use-it-up/tape/?gclid=Cj0KCQjw1OmoBhDXARIsAAAYGSFqDQzpxb22BMmNmCrFPn0rVB-loHbRx2_uo1tLps8TU_pNtobcM60aAkbHEALw_wcB\" target=\"_blank\">‘use it up tape’</a> from OzHarvest for free, and implement it in home freezer, pantry and workplace kitchens. Simply label food or keep a shelf labeled to have a visual reminder of what needs to be used up soon.",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/Q8T11.jpeg",
                 "taskFooter": ""
             }
         ]
