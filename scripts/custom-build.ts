@@ -23,6 +23,8 @@ declare global {
             SECRET_AUTH_HEADER: string;
             TASK_CONGRATS_OFFSET_DAYS: string;
             TASK_REMINDER_ENDPOINT: string;
+            TASK_REMINDER_OFFSET_DAYS: string;
+            TASKS_IDP_ID: string;
         }
     }
 }
