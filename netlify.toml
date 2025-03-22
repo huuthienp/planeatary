@@ -1,6 +1,9 @@
 [functions]
   node_bundler = 'esbuild'
 
+[functions.recovery]
+  method = ['POST', 'PUT']
+
 [[redirects]]
   from = '/api/recovery'
   to = '/.netlify/functions/recovery'
