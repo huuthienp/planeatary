@@ -721,6 +721,34 @@
         
         // Attach event listener to the start button to navigate to the challenge page
         startButton.addEventListener('click', async function(event) {
+            let preObject = JSON.parse(localStorage.getItem('preResult'));
+            let preResponseId = preObject?.responseId ?? null; 
+            let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+            let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+            const user = netlifyIdentity.gotrue.currentUser();
+            if (!user) {
+                console.error("No user is logged in!");
+                return;
+            }
+            
+            const token = await user.jwt();
+            if (isTokenExpired(token)) {
+                alert("Token expired. Prompting user to re-login...");
+                netlifyIdentity.logout();
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            const userId = user.id;
+            const mergedData = mergeTaskArrays(tasks);
+            const payload = JSON.stringify({
+                id: preResponseId,
+                userId: userId,
+                chosen: mergedData.chosen,
+            });
+            const beaconSent = navigator.sendBeacon('/api/manage-tasks', payload);
+            console.log("Beacon sent:", beaconSent);
+            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
             window.location.href = "challenge_page.html";
         });
 
@@ -731,7 +759,7 @@
             if (user) {
                 user.jwt().then(token => {
                     if (isTokenExpired(token)) {
-                        console.log("Token expired. Prompting user to re-login...");
+                        alert("Token expired. Prompting user to re-login...");
                         netlifyIdentity.logout();
                         window.location.href = "index.html";
                     } else {
@@ -822,7 +850,7 @@
                 if (user) {
                     user.jwt().then(token => {
                         if (isTokenExpired(token)) {
-                            console.log("Token expired. Prompting user to re-login...");
+                            alert("Token expired. Prompting user to re-login...");
                             netlifyIdentity.logout();
                             window.location.href = "index.html";
                         } else {
@@ -944,7 +972,7 @@
                 
                 const token = await user.jwt();
                 if (isTokenExpired(token)) {
-                    console.log("Token expired. Prompting user to re-login...");
+                    alert("Token expired. Prompting user to re-login...");
                     netlifyIdentity.logout();
                     window.location.href = 'index.html';
                     return;

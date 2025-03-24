@@ -239,7 +239,7 @@
                 
                 const token = await user.jwt();
                 if (isTokenExpired(token)) {
-                    console.log("Token expired. Prompting user to re-login...");
+                    alert("Token expired. Prompting user to re-login...");
                     netlifyIdentity.logout();
                     return;
                 }

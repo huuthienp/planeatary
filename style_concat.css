@@ -1306,7 +1306,7 @@ body {
   border-radius: 0.5rem;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
+  flex-direction: column;
   background-color: whitesmoke;
 }
 
