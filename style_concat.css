@@ -1296,7 +1296,13 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: white;
+  background-color: whitesmoke;
+}
+
+.split-section {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
 }
 
 .modal2 > .btn {

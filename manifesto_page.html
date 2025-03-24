@@ -114,20 +114,20 @@
     <!-- The Modal 2-->
     <section class="overlay2 hidden">
         <div class="align2">
-            <div class="modal2 hidden" style="background-color: white;"> 
-                <div class="btn">
-                    <button class="close" id = "closeDes">x</button>
-                </div>
-                <div class="modal_content">
-                    <h2 id="modalTitle" style="padding: 0 20px; width: 100%"></h2>
-                    <div class="modal-section">
-                        <img id="modal-pic" />
-                        <p id="inform" style="padding: 0 20px; width: 100%"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <footer id="mo-footer" style="width: 100%">
-                            Blah Blah Blah
-                        </footer>
+            <div class="modal2 hidden"> 
+                <div class="split-section">
+                    <img id="modal-pic" />
+                    <div class="modal_content">
+                        <div class="btn">
+                            <button class="close" id = "closeDes">x</button>
+                        </div>
+                        <div class="modal-section">
+                            <h2 id="modalTitle" style="padding: 0 20px; width: 100%"></h2>
+                            <p id="inform" style="padding: 0 20px; width: 100%"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <footer id="mo-footer" style="width: 100%"></footer>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -715,7 +715,7 @@
             }
             
             var task_counts = calculateSelectedTasks(tasks);
-            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+            //await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
             setTimeout(() => {
                 updateStartButton(preResponseId, userId, tasks, fetched_tasks);
             }, 1000);
@@ -930,7 +930,45 @@
                 var condition = (score) => score < 3;
                 await renderQuestions(condition, preObject, userId);
                 hideSpinner([bOverlay, spinner], Condition);
-            }      
+            }
+            
+            document.addEventListener('visibilitychange', async () => {
+                
+                let preObject = JSON.parse(localStorage.getItem('preResult'));
+                let preResponseId = preObject?.responseId ?? null; 
+                let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+                let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                const user = netlifyIdentity.gotrue.currentUser();
+                if (!user) {
+                    console.error("No user is logged in!");
+                    return;
+                }
+                
+                const token = await user.jwt();
+                if (isTokenExpired(token)) {
+                    console.log("Token expired. Prompting user to re-login...");
+                    netlifyIdentity.logout();
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                const userId = user.id;
+                const mergedData = mergeTaskArrays(tasks);
+                const payload = JSON.stringify({
+                    id: preResponseId,
+                    userId: userId,
+                    chosen: mergedData.chosen,
+                });
+                if (document.visibilityState === "hidden") {
+                    if (!preResponseId) {
+                        console.warn("No preResponseId found; skipping beacon update.");
+                        return;
+                    }
+                    const beaconSent = navigator.sendBeacon('/api/manage-tasks', payload);
+                    console.log("Beacon sent:", beaconSent);
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                }
+            });
         });
     </script>
     <!-- Bootstrap Javascript -->
