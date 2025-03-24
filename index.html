@@ -214,7 +214,6 @@
                 </p>
             </section>
 
-            
             <div class="b-example-divider"></div>
             <!--Monash team section-->
             <section class="container-fluid p-5">
@@ -337,7 +336,7 @@
                 <path fill="#e4e2e2" fill-opacity="1" d="M0,32L40,69.3C80,107,160,181,240,213.3C320,245,400,235,480,234.7C560,235,640,245,720,224C800,203,880,149,960,133.3C1040,117,1120,139,1200,160C1280,181,1360,203,1400,213.3L1440,224L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path>
             </svg>
             <div class="our-team" style="margin-top: -1px; background-color: #e4e2e2;">
-                <div style="display: flex; width: 100%;">
+                <div style="display: flex; width: 100%; justify-content: center;">
                     <h3><strong>Meet our development team!</strong></h3>
                 </div>
                 <div class="team-member">
@@ -573,16 +572,16 @@
 </div>
 
 <!-- Nav Modal -->
-<!-- Nav Modal container -->
 <div class="modal fade" id="navModal" tabindex="-1" aria-labelledby="customAlertLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="navModal-title"></h5>
+        <div class="modal-header" id="navModal-header" style="justify-content: center;">
+            <img id="navModal-pic" />
+            <h4 class="modal-title" id="navModal-title" style="font-weight: 600; color: white;"></h4>
         </div>
-        <div class="modal-body" id="navModal-body">
+        <div class="modal-body" id="navModal-body" style="justify-content: center;">
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer" style="padding: 10px !important; justify-content: flex-end;">
           <button type="button" id="navModal-close" class="btn btn-primary">Close</button>
         </div>
       </div>
@@ -689,7 +688,18 @@
         }
 
         async function showNavModal(title, content, type) {
-            
+            const navModalPic= document.getElementById('navModal-pic');
+            const navModalHeader = document.getElementById('navModal-header');
+            if (type == "succeed") {
+                navModalHeader.style.backgroundColor = "#00af8c";
+                navModalPic.src = "./images/tick.gif";
+            } else if (type == "send") {
+                navModalHeader.style.backgroundColor = "#00abc9";
+                navModalPic.src = "./images/mail.gif";
+            } else if (type == "fail") {
+                navModalHeader.style.backgroundColor = "#ff5073";
+                navModalPic.src = "./images/cancel.png";
+            }
             return new Promise((resolve) => {
                 const navModalContainer = document.getElementById('navModal');
                 if (! navModalContainer) {
@@ -884,13 +894,13 @@
                 await delay(1500);
                 
                 if (metadata.restarting == 'yes') {
-                    await showNavModal("Let's go!", "Let's do your restarting pre-quiz!", "navigation");
+                    await showNavModal("Let's go!", "Let's do your restarting pre-quiz!", "succeed");
                     window.location.href = "qualtrics.html";
                 } else if (preObject) {
-                    await showNavModal("Let's go!", "Let's see your latest result", "navigation");
+                    await showNavModal("Let's go!", "Let's see your latest result", "succeed");
                     window.location.href = "result_page.html";
                 } else {
-                    await showNavModal("Let's go!", "Let's do your pre-quiz!", "navigation");
+                    await showNavModal("Let's go!", "Let's do your pre-quiz!", "succeed");
                     window.location.href = "qualtrics.html";
                 }
                 
@@ -1149,7 +1159,7 @@
             if (response.ok) {
             console.log(response.status, msg);
             console.log('Recovery email sent', { response });
-            await showNavModal("Successful recovery email!", "Recovery email sent successfully. Please check your inbox.", "succeed");
+            await showNavModal("Successful recovery email!", "Recovery email sent successfully. Please check your inbox.", "send");
             // Close the modal after success
             const modalElement = document.getElementById('forgotPasswordModal');
             const modalInstance = bootstrap.Modal.getInstance(modalElement);
@@ -1221,7 +1231,7 @@
         if (validateFlag) {
             return true;
         } else {
-            await showNavModal("", "Please correct the highlighted errors.", "fail");
+            await showNavModal("Errors", "Please correct the highlighted errors.", "fail");
             return false;
         }
     }
@@ -1264,7 +1274,7 @@
             { full_name: nameField.value, age: ageField.value, gender: genderField.value, status: statusField.value })
             .then(async (r) => {
                 await new Promise(resolve => setTimeout(resolve, 1500));
-                await showNavModal("Successfully signup!", "Please check your email inbox", "succeed");
+                await showNavModal("Successfully signup!", "Please check your email inbox", "send");
                 hideSignUpModal();
             })
             .catch((e) => {

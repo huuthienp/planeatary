@@ -879,7 +879,7 @@ body {
   padding: 2vw 2vh;
   justify-content: center;
   align-items: center;
-  background-image: linear-gradient(#e4e2e2, #06947875), url("./images/footerVeg.jpg");
+  background-image: linear-gradient(#00af8c, #06947875), url("./images/footerVeg.jpg");
   background-size: cover;
 }
 
