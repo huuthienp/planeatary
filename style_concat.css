@@ -844,6 +844,18 @@ body {
   gap: 1vmax;
 }
 
+.team-section {
+  margin: 0 auto;
+  background-color: #e4e2e2;
+}
+
+.our-team {
+  display: flex;
+  flex-wrap: wrap !important;
+  justify-content: center;
+  gap: 1vmax;
+}
+
 .team-member {
   text-align: center;
 }
@@ -867,7 +879,7 @@ body {
   padding: 2vw 2vh;
   justify-content: center;
   align-items: center;
-  background-image: linear-gradient(#e4e2e2, #06947875), url("./images/footerVeg.jpg");
+  background-image: linear-gradient(#00af8c, #06947875), url("./images/footerVeg.jpg");
   background-size: cover;
 }
 
@@ -1200,7 +1212,6 @@ body {
 
 .modal_content {
   display: flex;
-  width: 80%;
   max-height: 90%;
   text-align: justify;
   flex-direction: column;
@@ -1296,10 +1307,10 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: white;
+  background-color: whitesmoke;
 }
 
-.modal2 > .btn {
+.modal2 .btn {
   display: flex;
   width: 100%;
   justify-content: flex-end;

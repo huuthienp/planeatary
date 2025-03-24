@@ -93,7 +93,7 @@
                         <button class="close">x</button>
                     </div>
                     <div class="modal_content">
-                        <h2 id="modalTitle" style="padding: 0 20px; width: 100%"></h2>
+                        <h2 id="modalTitle" style="padding: 0 20px; width: 100%; text-align: center;"></h2>
                         <div class="modal-section">
                             <img id="modal-pic" />
                             <p id="modalDescription" style="padding: 0 20px; width: 100%"></p>
@@ -239,7 +239,7 @@
                 
                 const token = await user.jwt();
                 if (isTokenExpired(token)) {
-                    console.log("Token expired. Prompting user to re-login...");
+                    alert("Token expired. Prompting user to re-login...");
                     netlifyIdentity.logout();
                     return;
                 }

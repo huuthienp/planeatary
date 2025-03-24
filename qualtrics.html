@@ -526,7 +526,7 @@
                     if (user) {
                         user.jwt().then(token => {
                             if (isTokenExpired(token)) {
-                                console.log("Token expired. Prompting user to re-login...");
+                                alert("Token expired. Prompting user to re-login...");
                                 netlifyIdentity.logout();
                                 window.location.href = "index.html";
                             } else {
@@ -575,7 +575,7 @@
                     }
                     const token = await user.jwt();
                     if (isTokenExpired(token)) {
-                        console.log("Token expired. Prompting user to re-login...");
+                        alert("Token expired. Prompting user to re-login...");
                         netlifyIdentity.logout();
                         window.location.href = "index.html";
                         return;
