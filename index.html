@@ -344,12 +344,12 @@
         </div>
 
         <!--Development team section-->
-        <section>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" class="first-wave" style="margin-top: -1px; position: relative;">
-                <path fill="#e4e2e2" fill-opacity="1" d="M0,160L24,138.7C48,117,96,75,144,74.7C192,75,240,117,288,112C336,107,384,53,432,37.3C480,21,528,43,576,80C624,117,672,171,720,165.3C768,160,816,96,864,74.7C912,53,960,75,1008,117.3C1056,160,1104,224,1152,245.3C1200,267,1248,245,1296,240C1344,235,1392,245,1416,250.7L1440,256L1440,0L1416,0C1392,0,1344,0,1296,0C1248,0,1200,0,1152,0C1104,0,1056,0,1008,0C960,0,912,0,864,0C816,0,768,0,720,0C672,0,624,0,576,0C528,0,480,0,432,0C384,0,336,0,288,0C240,0,192,0,144,0C96,0,48,0,24,0L0,0Z">
-                </path>
+        <section style="background-color: #e4e2e2;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" style="margin-bottom: -1px;">
+                <path fill="#e4e2e2" fill-opacity="1" d="M0,32L40,69.3C80,107,160,181,240,213.3C320,245,400,235,480,234.7C560,235,640,245,720,224C800,203,880,149,960,133.3C1040,117,1120,139,1200,160C1280,181,1360,203,1400,213.3L1440,224L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path>
             </svg>
             <div class="our-team" style="margin-top: -1px;">
+                <h3>Meet our development team!</h3>
                 <div class="team-member">
                     <img src="./images/bulb.png" alt="Thi Hoang Kim Mai">
                     <p><strong>Thi Hoang Kim Mai</strong></p>
@@ -376,8 +376,9 @@
                     <p>Software Tester</p>
                 </div>
             </div>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" style="margin-bottom: -1px;">
-                <path fill="#e4e2e2" fill-opacity="1" d="M0,32L40,69.3C80,107,160,181,240,213.3C320,245,400,235,480,234.7C560,235,640,245,720,224C800,203,880,149,960,133.3C1040,117,1120,139,1200,160C1280,181,1360,203,1400,213.3L1440,224L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" class="first-wave" style="margin-top: -1px; position: relative;">
+                <path fill="#e4e2e2" fill-opacity="1" d="M0,160L24,138.7C48,117,96,75,144,74.7C192,75,240,117,288,112C336,107,384,53,432,37.3C480,21,528,43,576,80C624,117,672,171,720,165.3C768,160,816,96,864,74.7C912,53,960,75,1008,117.3C1056,160,1104,224,1152,245.3C1200,267,1248,245,1296,240C1344,235,1392,245,1416,250.7L1440,256L1440,0L1416,0C1392,0,1344,0,1296,0C1248,0,1200,0,1152,0C1104,0,1056,0,1008,0C960,0,912,0,864,0C816,0,768,0,720,0C672,0,624,0,576,0C528,0,480,0,432,0C384,0,336,0,288,0C240,0,192,0,144,0C96,0,48,0,24,0L0,0Z">
+                </path>
             </svg>
         </section>
 
@@ -664,19 +665,19 @@
             if (response.ok) {
             console.log(response.status, msg);
             console.log('Recovery email sent', { response });
-            alert('Recovery email sent successfully. Please check your inbox.');
+            showNavModal("Successful recovery email!", "Recovery email sent successfully. Please check your inbox.", "succeed");
             // Close the modal after success
             const modalElement = document.getElementById('forgotPasswordModal');
             const modalInstance = bootstrap.Modal.getInstance(modalElement);
             modalInstance.hide();
             } else {
             console.error(response.status, msg);
-            alert('There was an error sending the recovery email. Please try again later.');
+            showNavModal("Failed to recovery email!", "There was an error sending the recovery email. Please try again later.", "fail");
             }
         })
         .catch((error) => {
             console.error('Error sending recovery email:', error);
-            alert('There was an error sending the recovery email. Please try again later.');
+            showNavModal("Error sending recovery email!", error, "fail");
         });
     });
     document.querySelector("#forgotPasswordForm").addEventListener('submit', () => {
@@ -919,13 +920,13 @@
                 await delay(1500);
                 
                 if (metadata.restarting == 'yes') {
-                    alert("Let's do your restarting pre-quiz!");
+                    showNavModal("Let's go!", "Let's do your restarting pre-quiz!", "navigation");
                     window.location.href = "qualtrics.html";
                 } else if (preObject) {
-                    alert("Let's see your latest result");
+                    showNavModal("Let's go!", "Let's see your latest result", "navigation");
                     window.location.href = "result_page.html";
                 } else {
-                    alert("Let's do your pre-quiz!");
+                    showNavModal("Let's go!", "Let's do your pre-quiz!", "navigation");
                     window.location.href = "qualtrics.html";
                 }
                 
@@ -1079,10 +1080,10 @@
                     const { metadata, responseHistory, userId } = userData;
                     //Once a user chose to restart the cycle and does not finish it, redirect the user to pre-quiz page
                     if (metadata.restarting == 'yes') {
-                        alert("Successfully login! Let's do your restarting pre-quiz!");
+                        showNavModal("Successfully login!", "Let's do your restarting pre-quiz!", "succeed");
                         window.location.href = "qualtrics.html";
                     } else {
-                        alert("Successfully login! Let's see your latest result!");
+                        showNavModal("Successfully login!", "Let's see your latest result!", "succeed");
                         window.location.href = "result_page.html";
                     }
                 } else {
@@ -1090,7 +1091,7 @@
                     
                     // Delay navigation slightly
                     setTimeout(() => {
-                        alert("Successfully login!, Welcome to our website!");
+                        showNavModal("Successfully login!", "Welcome to our website!", "succeed");
                         window.location.href = "index.html";
                     }, 500);
                 }
@@ -1207,7 +1208,7 @@
         if (validateFlag) {
             return true;
         } else {
-            alert("Please correct the highlighted errors.");
+            showNavModal("", "Please correct the highlighted errors.", "fail");
             return false;
         }
     }
@@ -1250,7 +1251,7 @@
             { full_name: nameField.value, age: ageField.value, gender: genderField.value, status: statusField.value })
             .then(async (r) => {
                 await new Promise(resolve => setTimeout(resolve, 1500));
-                alert('Successfully signup! Please check your email inbox');
+                showNavModal("Successfully signup!", "Please check your email inbox", "succeed");
                 hideSignUpModal();
             })
             .catch((e) => {
