@@ -575,13 +575,13 @@
 <div class="modal fade" id="navModal" tabindex="-1" aria-labelledby="customAlertLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header" id="navModal-header" style="justify-content: center;">
-            <img id="navModal-pic" />
-            <h4 class="modal-title" id="navModal-title" style="font-weight: 600; color: white;"></h4>
+        <div class="modal-header" id="navModal-header" style="justify-content: center; flex-direction: column;">
+            <img id="navModal-pic" style="width: 100px;"/>
+            <h3 class="modal-title" id="navModal-title" style="font-weight: 600; color: white;"></h3>
         </div>
-        <div class="modal-body" id="navModal-body" style="justify-content: center;">
+        <div class="modal-body" id="navModal-body" style="align-self: center; padding: 2.5rem; font-size: 1.2rem;">
         </div>
-        <div class="modal-footer" style="padding: 10px !important; justify-content: flex-end;">
+        <div class="modal-footer" style="padding: 10px !important; justify-content: flex-end !important;">
           <button type="button" id="navModal-close" class="btn btn-primary">Close</button>
         </div>
       </div>
@@ -714,8 +714,17 @@
                     backdrop: 'static', // prevent closing by clicking outside
                     keyboard: false     // prevent closing with the Esc key
                 });
-                
-                bsModal.show();
+
+                if (navModalPic.complete) {
+                    // If the image is already loaded (from cache), update immediately.
+                    bsModal.show();
+                    
+                } else {
+                    bsModal.hide();
+                }
+                navModalPic.addEventListener('load', () => {
+                    bsModal.show();
+                });
                 
                 // When the close button is clicked, hide the modal and resolve the promise
                 document.getElementById('navModal-close').addEventListener('click', function handler() {
