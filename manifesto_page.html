@@ -143,7 +143,7 @@
     </section>
 
     <!-- Before Navigation Modal -->
-    <div class="modal fade" id="navModal" tabindex="-1" aria-labelledby="customAlertLabel" aria-hidden="true">
+    <div class="modal fade" id="navModal" tabindex="-1" aria-labelledby="customAlertLabel">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header" id="navModal-header" style="justify-content: center; flex-direction: column; background-color: #00abc9;">
@@ -151,7 +151,7 @@
                     <h3 class="modal-title" id="navModal-title" style="font-weight: 600; color: white;">Save your action?</h3>
                 </div>
                 <div class="modal-body" id="navModal-body" style="align-self: center; padding: 2.5rem; font-size: 1.2rem;">
-                    Before leaving page, do you want to save your cuurent task choices?
+                    Before leaving page, do you want to save your current task choices?
                 </div>
                 <div class="modal-footer" style="padding: 10px !important; justify-content: space-evenly !important;">
                     <button type="button" id="navModal-ok" class="btn btn-primary">Save the data</button>
@@ -868,22 +868,21 @@
             const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
 
             offcanvasLinks.forEach(li => {
-                li.addEventListener('click', async(event) => {
+                li.addEventListener('click', async() => {
                     await showNavModal();
-                    handleOffcanvasClick(event);
+                    handleOffcanvasClick();
                 });
             });
 
             offcanvasDropdown.forEach(li => {
-                li.addEventListener('click', async(event) => {
+                li.addEventListener('click', async() => {
                     await showNavModal();
-                    handleOffcanvasClick(event);
+                    handleOffcanvasClick();
                 });
             });
 
             offcanvasListItems.forEach(li => {
-                li.addEventListener('click', async(event) => {
-                    event.preventDefault();
+                li.addEventListener('click', async() => {
                     await showNavModal();
                     const link = li.querySelector('a.nav-link'); 
                     if (link) {
@@ -893,8 +892,7 @@
             });
 
             offcanvasDropdownItems.forEach(li => {
-                li.addEventListener('click', async(event) => {
-                    event.preventDefault();
+                li.addEventListener('click', async() => {
                     await showNavModal();
                     const link = li.querySelector('a.dropdown-item'); 
                     if (link) {
