@@ -1212,6 +1212,7 @@ body {
 
 .modal_content {
   display: flex;
+  width: 80%;
   max-height: 90%;
   text-align: justify;
   flex-direction: column;

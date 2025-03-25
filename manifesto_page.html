@@ -868,16 +868,18 @@
             const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
 
             offcanvasLinks.forEach(li => {
-                li.addEventListener('click', async() => {
+                li.addEventListener('click', async(event) => {
+                    event.preventDefault();
                     await showNavModal();
-                    handleOffcanvasClick();
+                    handleOffcanvasClick(event);
                 });
             });
 
             offcanvasDropdown.forEach(li => {
-                li.addEventListener('click', async() => {
+                li.addEventListener('click', async(event) => {
+                    event.preventDefault();
                     await showNavModal();
-                    handleOffcanvasClick();
+                    handleOffcanvasClick(event);
                 });
             });
 
