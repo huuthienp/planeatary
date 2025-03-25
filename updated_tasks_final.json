@@ -259,49 +259,49 @@
                 "taskNumber": "t0501",
                 "taskName": "Weekly Plant Food Tracker",
                 "taskDescription": "Create a list of the plant foods you eat across a week. What category could you try and get a few more plants from? See this <a href=\"https://dietitianconnection.com/patient-resources/aim-for-30-plants-each-week/\" target=\"_blank\">plant food tracker</a> from Dietitian Connection for inspiration (8).",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t0501.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t0502",
                 "taskName": "Plant-Based Ingredient Swap in Your Favorite Meal",
                 "taskDescription": "Choose a favourite meal and substitute one of the animal-based ingredients (e.g. meat) for something plant-based.\nFor example using lentils instead of mince in pasta sauce, or tofu instead of chicken in a stir-fry.",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t0502.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t0503",
                 "taskName": "Weekly Plant Food Swap Challenge",
                 "taskDescription": "Once a week, swap out a common plant food for something new or different.\nFor example, switch pasta for quinoa, rice for barley, oats for chia seeds, or potato for sweet potato.",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t0503.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t0504",
                 "taskName": "Incorporate Nuts into Your Daily Diet",
                 "taskDescription": "Nuts are a common forgotten plant food but are nutritional powerhouses.\nAdd a serving of nuts each day such as a handful in the afternoon, added to breakfast cereal, crushed on a salad, in a nut-based spread on toast or added to smoothies.",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t0504.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t0505",
                 "taskName": "Explore Solutions to Reduce Dietary Eco-Footprint",
                 "taskDescription": "Is a plant-based diet the only solution to reducing our dietary eco-footprint? Read this <a href=\"https://www.mdpi.com/2072-6643/13/4/1122\" target=\"_blank\">Australian research</a> and suggest other effective ways to achieve this goal (9).",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t0505.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t0506",
                 "taskName": "Weekly Wildcard Plant-Food Challenge",
                 "taskDescription": "Once a week or whenever possible, purchase an unfamiliar ‘wildcard’ plant-food to create a meal with.\nMake sure it is in-season and try to source it from somewhere other than the supermarket (farmers market, local producer, community garden).",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t0506.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t0507",
                 "taskName": "Promote Plant-Based Recipes and Community Engagement",
                 "taskDescription": "Share and promote plant-based recipes among your friends, work colleagues and in your community.\nHave a vegetarian dinner party\nTake a vegetarian dish to a ‘bring-a-plate’ gatherings\nCreate Meatless Monday at work\nShare recipes and photos of your vegetarian meals on social media using the hashtag #plantbased",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t0507.jpg",
                 "taskFooter": ""
             }
         ]
