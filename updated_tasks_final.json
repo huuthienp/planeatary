@@ -587,154 +587,154 @@
                 "taskNumber": "t1001",
                 "taskName": "Food Packaging Waste Analysis and Alternatives",
                 "taskDescription": "Record what food packaging you discard and investigate if there are other options available with less packaging (i.e. dried beans vs canned)",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1001.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1002",
                 "taskName": "Pesky Plastics Quiz and Social Media Share",
                 "taskDescription": "Complete the <a href=\"https://survey.thinkfieldpanel.com.au/wcfs/29402\" target=\"_blank\">Pesky Plastics Quiz tool</a> to discover the items you use and decide what you would like to refuse. Share what you decide on social media using #planEATary.",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1002.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1003",
                 "taskName": "Food Storage: Reuse and Upcycle Household Items",
                 "taskDescription": "Look around your house to see what items can be reused, upcycled or repurposed in some way for storing food",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1003.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1004",
                 "taskName": "Reduce Single-Serve Product Purchases",
                 "taskDescription": "Avoid purchasing single serve products",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1004.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1005",
                 "taskName": "Use Reusable Shopping Bags",
                 "taskDescription": "Shop with your own reusable bags",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1005.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1006",
                 "taskName": "Bulk Purchasing to Minimize Packaging",
                 "taskDescription": "Buy foods in bulk or larger quantities to reduce individual packaging",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1006.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1007",
                 "taskName": "Sustainable Food Packaging Choices",
                 "taskDescription": "Buy foods with zero or less packaging, or biodegradable or recyclable packaging (i.e. glass, cans)",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1007.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1008",
                 "taskName": "Use Reusable Containers for Bulk Purchases",
                 "taskDescription": "Take your own reusable containers and/or bags when buying loose/bulk items (fruit, vegetables, nuts, beans)",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1008.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1009",
                 "taskName": "Support Local Farmers Markets",
                 "taskDescription": "Shop at farmers markets as many products are sold without any packaging",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1009.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1010",
                 "taskName": "DIY Cloth Bags from Unwanted Fabric",
                 "taskDescription": "Make your own cloth bags from unwanted fabric to avoid them going to landfill",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1010.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1011",
                 "taskName": "DIY Fizzy Soft Drinks with Sparkling Water Machine",
                 "taskDescription": "Make your own fizzy soft drinks using a sparkling water machine and flavoured syrups such as SodaStream",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1011.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1012",
                 "taskName": "Subscription to Zero-Waste Produce Box",
                 "taskDescription": "Subscribe to a fruit & vegetable box service to avoid packaging",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1012.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1013",
                 "taskName": "Scratch Cooking & Recipe Sharing",
                 "taskDescription": "Make your own food from scratch to reduce the amount of packaging waste generated. Perhaps share your recipe online\nand why you cooked it using #planEATary",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1013.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1014",
                 "taskName": "Batch Cooking and Freezing Legumes and Grains",
                 "taskDescription": "Batch cook legumes and grains in large amounts and store in meal-size portions in the freezer using your own containers instead of purchasing cans",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1014.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1015",
                 "taskName": "Advocacy for Sustainable Packaging in Food Businesses",
                 "taskDescription": "Advocate for food businesses to switch to biodegradable/compostable packaging and/or use recyclable packaging",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1015.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1016",
                 "taskName": "Creative Reuse of Food Packaging",
                 "taskDescription": "Explore creative re-use of food packaging yourself, like using jars for food gifts such as pickles or as pencil holders. Take a picture and share it using the hashtag #planEATary",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1016.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1017",
                 "taskName": "Eco-Friendly Leftover Storage",
                 "taskDescription": "Avoid plastic wrap - store your leftovers in reusable containers, place a plate over the container or switch to wax wraps",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1017.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1018",
                 "taskName": "Familiarization with the Australasian Recycling Label (ARL)",
                 "taskDescription": "Learn about the <a href=\"https://www.dcceew.gov.au/environment/protection/waste/packaging/australasian-recycling-label\" target=\"_blank\">Australasian Recycling Label (ARL)</a>.",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1018.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1019",
                 "taskName": "Promote Responsible Recycling Practices",
                 "taskDescription": "Be a good recycler, and ‘check it before you chuck it’ using the <a href=\"https://recyclingnearyou.com.au/arl/\" target=\"_blank\">Australian recycling label</a>.",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1019.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1020",
                 "taskName": "Local Council Recycling Information Check",
                 "taskDescription": "Check out <a href=\"https://recyclingnearyou.com.au/councils/\" target=\"_blank\">recycling available in your local Council</a>.",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1020.jpg",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1021",
                 "taskName": "Cash-Back Recycling Initiatives",
                 "taskDescription": "Make money by using cash-back recycling schemes like ‘Return & Earn’ for drinks bottles/cans",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1021.png",
                 "taskFooter": ""
             },
             {
                 "taskNumber": "t1022",
                 "taskName": "Recycling Contamination Reduction",
                 "taskDescription": "Reduce contamination of recycling bins by flattening boxes, emptying food and liquid from containers, and not putting plastic bags into the recycling bin",
-                "taskPic": "./images/plant.jpg",
+                "taskPic": "./images/t1022.jpg",
                 "taskFooter": ""
             }
         ]
