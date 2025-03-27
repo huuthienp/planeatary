@@ -346,6 +346,11 @@ body {
   justify-items: center;
 }
 
+.carousel-caption {
+  padding-bottom: 0 !important;
+  bottom: 0 !important;
+}
+
 .greeting {
   width: 80%;
   margin: 0 auto;
@@ -723,10 +728,10 @@ body {
 
 .carousel-control-prev, .carousel-control-next{
   background-color: #e1e1e1 !important;
-  width: 6vmax !important;
-  height: 6vmax !important;
+  width: 70px !important;
+  height: 70px !important;
   border-radius: 50% !important;
-  top: 50% !important;
+  top: 50px !important;
 }
 
 /*do you know section*/
@@ -860,7 +865,7 @@ body {
 }
 
 .team-member img {
-  width: 100px;
+  width: 160px;
   height: auto;
 }
 
