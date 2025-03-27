@@ -1,22 +1,21 @@
-import { fetchData } from '../../scripts/helpers.mjs';
 import { connectLambda, getStore } from '@netlify/blobs';
 import { randomBytes } from 'node:crypto';
 import { compare, hash } from 'bcryptjs';
+import { fetchData, getStrongBlob, isEmpty } from '../../scripts/helpers.mjs';
+import { passwdWholeRegex } from '../../scripts/regex.js';
+import { formulateErrorResponse } from '../../scripts/custom-http.ts';
 
 const goodMethods = ['POST', 'PUT'];
-const isBadString = x => 'string' !== typeof x || '' === x.trim();
-const isBadObject = x => 'object' !== typeof x || null === x;
-const passwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-var strongBlobUrl;
 
 
 export async function handler(event, context) {
     const eventTime = Date.now();
     try {
         if (!goodMethods.includes(event.httpMethod)) {
-            const badMthErr = new Error(`${event.httpMethod} not allowed, use ${goodMethods.join(' or ')}`);
+            const code = 405;
+            const msg = `${event.httpMethod} not allowed, use ${goodMethods.join(' or ')}`;
+            const badMthErr = new Error(JSON.stringify({ code, msg }));
             badMthErr.name = 'BadMethodError';
-            badMthErr.status = 405;
             throw badMthErr;
         }  // reject if method is not allowed
         /* Pre-Processing */
@@ -27,39 +26,42 @@ export async function handler(event, context) {
         const authHd = env.SECRET_AUTH_HEADER;
         const tkSpecs = JSON.parse(env.RECOVERY_TOKEN_SPECS);
         const tkStore = getStore(tkSpecs.storeId);
-        strongBlobUrl = env.URL + '/api/get-strong-blob';
         if ('PUT' === event.httpMethod) {
             /* Validate decoy and token */
             const { decoy, token } = eventBody;
-            const decoyBlob = await getStrongBlob(authHd, tkSpecs.storeId, decoy);
-            const tk404Err = new Error('Decoy is not found, please try again');
-            tk404Err.name = 'AuthorizationError';
-            tk404Err.status = 401;
-            if (null === decoyBlob) { throw tk404Err; }  // reject if decoy blob is not found
+            console.warn('Use `env.URL` in `getStrongBlob` for production!')
+            const decoyBlob = await getStrongBlob(env.URL, authHd, tkSpecs.storeId, decoy);
+            const authErr = new Error();
+            const authErrCode = 401;
+            authErr.name = 'AuthorizationError';
+            if (null === decoyBlob) {
+                const msg = 'Decoy is not found, please try again';
+                authErr.message = JSON.stringify({ code: authErrCode, msg });
+                throw authErr;
+            }  // reject if decoy blob is not found
             const { data: userId, metadata: mtdt } = decoyBlob;
             if (eventTime >= mtdt.expiresAt) {
-                const tkExpErr = new Error('Token is expired, please request another one');
-                tkExpErr.name = 'AuthorizationError';
-                tkExpErr.status = 401;
-                throw tkExpErr;
+                const msg = 'Token is expired, please request another one';
+                authErr.message = JSON.stringify({ code: authErrCode, msg });
+                throw authErr;
             }  // reject if token is expired
-            const tkBlob = await getStrongBlob(authHd, tkSpecs.storeId, userId);
+            const tkBlob = await getStrongBlob(env.URL, authHd, tkSpecs.storeId, userId);
             if (null === tkBlob)  /* unlikely */  { throw tk404Err; }  // reject if token blob is not found
             const isGoodTk = await compare(token, tkBlob.data /* hash */);
             if (!isGoodTk) {
-                const badTkErr = new Error('Token does not match, please try again');
-                badTkErr.name = 'AuthorizationError';
-                badTkErr.status = 401;
-                throw badTkErr;
+                const msg = 'Token does not match, please try again';
+                authErr.message = JSON.stringify({ code: authErrCode, msg });
+                throw authErr;
             }  // reject if token does not match stored hash
             /* Delete decoy and token blobs */
             await tkStore.delete(decoy);
             await tkStore.delete(userId);
             const newPasswd = eventBody.password;
-            if ('string' !== typeof newPasswd || !passwdRegex.test(newPasswd)) {
-                const badPwErr = new Error('Password is invalid or weak, but token is now expired, please request another one');
+            if ('string' !== typeof newPasswd || !passwdWholeRegex.test(newPasswd)) {
+                const code = 400;
+                const msg = 'Password is invalid or weak, but token is now expired, please request another one';
+                const badPwErr = new Error(JSON.stringify({ code, msg }));
                 badPwErr.name = 'ValidationError';
-                badPwErr.status = 400;
                 throw badPwErr;
             }  // reject if password is weak
             const url = `${identity.url}/admin/users/${userId}`;
@@ -76,30 +78,33 @@ export async function handler(event, context) {
             return resp;
         } else {  /* start of POST */
             const { email } = eventBody;
-            if (isBadString(email)) {
-                const emErr = new Error('Please enter a valid email');
+            if (isEmpty(email)) {
+                const code = 400;
+                const msg = 'Please enter a valid email';
+                const emErr = new Error(JSON.stringify({ code, msg }));
                 emErr.name = 'EmailError';
-                emErr.status = 400;
                 throw emErr;
             }  // reject if email is bad
             /* Find user ID */
             const foundUser = await findUserByEmail(identity, email);
-            if (isBadObject(foundUser)) {
-                const emErr = new Error('User not found');
+            if (isEmpty(foundUser)) {
+                const code = 404;
+                const msg = 'User not found';
+                const emErr = new Error(JSON.stringify({ code, msg }));
                 emErr.name = 'EmailError';
-                emErr.status = 404;
                 throw emErr;
             }  // reject if user with email is not found
             const { id: userId, user_metadata: { full_name: name } } = foundUser;
             /* Check existing token */
-            const blob = await getStrongBlob(authHd, tkSpecs.storeId, userId);
+            const blob = await getStrongBlob(env.URL, authHd, tkSpecs.storeId, userId);
             const mtdt = null===blob ? null : blob.metadata;
             if (mtdt && eventTime < Number(mtdt.expiresAt)) {
+                const code = 429;
+                const headers = { 'Retry-After': retryTime };
                 const retryTime = Math.ceil((Number(mtdt.expiresAt) - eventTime) / 1000 / 100) * 100;  // round up to hundred
-                const manyReqErr = new Error(`A similar request is recent, please retry in ${retryTime} seconds`);
+                const msg = `A similar request is recent, please retry in ${retryTime} seconds`;
+                const manyReqErr = new Error(JSON.stringify({ code, headers, msg }));
                 manyReqErr.name = 'TooManyRequestsError';
-                manyReqErr.status = 429;
-                manyReqErr.headers = { 'Retry-After': retryTime };
                 throw manyReqErr;
             };  // reject if token is alive
             mtdt && await tkStore.delete(mtdt.decoy);  // delete existing decoy
@@ -129,11 +134,9 @@ export async function handler(event, context) {
             resp.statusCode = 202;
             return resp;
         }  /* end of POST */
-    } catch(anyErr) {  // catch any error and formulate response
-        console.error(anyErr);
-        anyErr.body = anyErr.toString();
-        anyErr.statusCode ??= anyErr.status ?? 500;
-        return anyErr;
+    } catch(rcvrErr) {  // catch any error and formulate response
+        console.error('Caught:\n', rcvrErr);
+        return formulateErrorResponse(rcvrErr, { lambda: true });
     }  /* end of try-catch */
 };  /* end of handler */
 
@@ -145,13 +148,3 @@ async function findUserByEmail(clientIdentity, emailToFind) {
     const { users } = await fetchData(usersUrl, ({ method, headers }));  // may throw when response not ok
     return users.find(user => user.email === emailToFind);  // undefined if false
 }  /* end of findUserByEmail */
-
-
-async function getStrongBlob(authHd, tkStoreId, userId) {
-    const method = 'GET';
-    const headers = new Headers();
-    headers.set('authorization', authHd);
-    headers.set('netlify-store-id', tkStoreId);
-    headers.set('netlify-blob-key', userId);
-    return await fetchData(strongBlobUrl, ({ method, headers }));  // may return null
-}  /* end of getStrongBlob */
