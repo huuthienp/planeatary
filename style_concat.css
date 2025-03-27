@@ -238,7 +238,6 @@ body {
   .person img {
     width: 300px;
     height: auto;
-    border-radius: 50%;
   }
 
   #carouselTeam {
@@ -879,7 +878,7 @@ body {
   padding: 2vw 2vh;
   justify-content: center;
   align-items: center;
-  background-image: linear-gradient(#82fae2, #03574675), url("./images/footerVeg.jpg");
+  background-image: linear-gradient(#82fae2, #03574691), url("./images/footerVeg.jpg");
   background-size: cover;
 }
 
@@ -903,7 +902,7 @@ body {
 
 .acknowledgment li {
   display: inline-block;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
 }
 
 .icon {
