@@ -10,12 +10,6 @@ body {
   animation-fill-mode: forwards;
 }
 
-.team-member img {
-    width: 150px; 
-    height: 150px; 
-    object-fit: cover; 
-    border-radius: 10px; 
-}
 
 @keyframes fadeInAnimation {
   0% {
@@ -873,7 +867,7 @@ body {
 
 .team-member img {
   width: 160px;
-  height: auto;
+  height: 160px;
 }
 
 .team-member p {
