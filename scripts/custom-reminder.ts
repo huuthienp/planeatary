@@ -1,6 +1,6 @@
 import type { HandlerContext } from "@netlify/functions";
 import { type Store, getStore } from '@netlify/blobs';
-import { fetchData, fetchUserData } from './helpers.mjs';
+import { fetchData, fetchTaskStatus, fetchUserData } from './helpers.mjs';
 import type { TaskData, QuizResponseCycle } from './custom-data.ts';
 import { isTaskData } from './custom-data.ts';
 import { userIdRegex, respIdWholeRegex } from './regex.js';
@@ -18,10 +18,14 @@ class NfBlobManager {
     constructor(storeName: string) {
         this.store = getStore(storeName);
     }  /* end of NfBlobManager constructor */
+    public async deleteBlob(key: string): Promise<void> {
+        await this.store.delete(key);  // remove current reminder to free storage
+    } /* end of deleteBlob */
 }  /* end of NfBlobManager */
 
 
 class ReminderSetter extends NfBlobManager {
+    public static earlyFactor = 2;
     public static lastSeenPrfx: string = 'last-seen';
     public static optOutPrfx: string = 'opt-out';
     public static postQuizPrfx: string = 'post-quiz';
@@ -35,6 +39,9 @@ class ReminderSetter extends NfBlobManager {
         // check any post-quiz ID in the last cycle
         return respIdWholeRegex.test(respHist.at(-1)?.postId ?? '');
     }  /* end of hasDonePostQuiz */
+    public static matchUserId(key: string) {
+        return key.match(userIdRegex)?.[0] ?? '';
+    } /* end of matchUserId */
     public nowDate: Date;
     public timeZone: string;
     public offset: number;
@@ -60,29 +67,34 @@ class ReminderSetter extends NfBlobManager {
             ReminderSetter.getISODateString(this.nowDate)
         );  // store date when user is last seen
     }  /* end of setLastSeen */
-    public async setReminder(basename: string, data: TaskData, prefix: string = ''): Promise<void> {
-        /** blob structure
-         * key: .../yyyy-mm-dd/user-id-in-uuid-format
-         * value: { "chosen": [], "done": [], "pending":[] }
-         * metadata: { ampm } */
+    public async setReminder(basename: string, prefix: string = ''): Promise<void> {
         const datedKey = this.getDatedKey(basename, this.offset);
         const reminderKey = NfBlobManager.getHierKey({ basename: datedKey, prefix });
         const metadata = { ampm: (this.nowDate.getHours() < 12) ? 'am' : 'pm' };
-        await this.store.setJSON(reminderKey, data, { metadata })
+        await this.store.set(reminderKey, '1', { metadata })
     }  /* end of setReminder */
-    public async setTaskReminder(basename: string, data: TaskData): Promise<void> {
-        await this.setReminder(basename, data); // key's format: yyyy-mm-dd/user-id-in-uuid-format
-        if (this.verbose) { console.log('Task reminder is set!', basename.substring(9, 18)) };
+    public async setTaskReminder(basename: string): Promise<void> {
+        // key's format: yyyy-mm-dd/user-id-in-uuid-format
+        await this.setReminder(basename);
+        if (this.verbose) console.log('Task reminder is set!', basename.substring(9, 18));
     }  /* end of setTaskReminder */
-    public async setPostQuizReminder(basename: string, data: TaskData, offset?: number): Promise<void> {
-        const _offset = this.offset;
+    public async setPostQuizReminder(basename: string, offset?: number): Promise<void> {
+        const offsetTemp = this.offset;
         this.offset = offset ?? this.offset;
         const prefix = ReminderSetter.postQuizPrfx;
-        await this.setReminder(basename, data, prefix);
         // key's format: post-quiz/yyyy-mm-dd/user-id-in-uuid-format
-        this.offset = _offset;
-        if (this.verbose) { console.log('Post-quiz reminder is set!', basename.substring(9, 18)) };
+        await this.setReminder(basename, prefix);
+        this.offset = offsetTemp;
+        if (this.verbose) console.log('Post-quiz reminder is set!', basename.substring(9, 18));
     }  /* end of setPostQuizReminder */
+    public async hasPostQuizReminder(userId: string): Promise<boolean> {
+        const prefix = ReminderSetter.postQuizPrfx;
+        const { blobs } = await this.store.list({ prefix });
+        for (const { key } of blobs) {  // array of { etag, key }
+            if (key.includes(userId)) return true;
+        }  /* end of looping through all blobs that match prefix */
+        return false;
+    }  /* end of hasPostQuizReminder */
     public async isOptOut(userId: string): Promise<boolean> {
         const prefix = ReminderSetter.optOutPrfx;
         const key = NfBlobManager.getHierKey({ basename: userId, prefix });
@@ -99,70 +111,101 @@ class ReminderSetter extends NfBlobManager {
 class ReminderSender extends ReminderSetter {
     private endpoint: { auth: string, url: string };
     private netlifyIdentity: { url: string, token: string };
+    private siteURL: URL;
     constructor(storeName: string, context: HandlerContext, endpoint: { auth: string, url: string },
         { timeZone = undefined, offset = 0 }: { timeZone?: string, offset?: number }) {
         super(storeName, { timeZone, offset });
         this.endpoint = endpoint;
         this.netlifyIdentity = context.clientContext?.identity;
+        this.siteURL = new URL(this.netlifyIdentity.url);
     }  /* end of ReminderSender constructor */
-    public async sendReminders({ prefix }: { prefix: string }): Promise<void> {
+    private async inspectUser(userId: string): Promise<{
+        email: string, data: TaskData, diffDays: number, hasDonePostQuiz: boolean,
+        hasPostQuizReminder: boolean, isAllDone: boolean, userName: string
+    }> {
+        const lastSeenDate = await this.getLastSeen(userId);
+        const diffDays = (this.nowDate.getTime() - lastSeenDate.getTime()) / 1000 / 3600 / 24;
+        const hasPostQuizReminder = await this.hasPostQuizReminder(userId);
+        const userData = await fetchUserData(userId, this.netlifyIdentity);
+        const { email, user_metadata: userMtDt }: { email: string, user_metadata: any } = userData;
+        const userName: string = userMtDt.full_name;
+        const respHist: Array<QuizResponseCycle> = userMtDt.responseHistory;
+        const preResponseId = respHist.at(-1)?.preId ?? '';
+        const data = await this.getTaskData(preResponseId, userId);
+        const isAllDone = ReminderSetter.checkAllDone(data);
+        const hasDonePostQuiz = !ReminderSetter.hasDonePostQuiz(respHist);
+        return { email, data, diffDays, hasDonePostQuiz, hasPostQuizReminder, isAllDone, userName };
+    }  /* end of inspectUser */
+    public async sendTaskReminders(): Promise<void> {
+        const prefix = this.getDatedKey();  // returns yyyy-mm-dd/
         const { blobs } = await this.store.list({ directories: true, prefix });
         // list() returns { blobs: [], directories: [] }
         if (this.verbose) console.log(blobs.map(x=>x.key));
         for (const { key } of blobs) {  // array of { etag, key }
-            const userId = key.match(userIdRegex)?.[0] ?? '';
-            if (await this.isOptOut(userId)) {
-                await this.store.delete(key);
-                continue;
-            }  // skip if user has opted out of reminder
-            const { email, user_metadata: { full_name: name, responseHistory: respHist } } = await fetchUserData(userId, this.netlifyIdentity);
-            const taskData = await this.getTaskData(userId);
-            const isAllDone = ReminderSetter.checkAllDone(taskData);
-            const diffDays = (this.nowDate.getTime() - (await this.getLastSeen(userId)).getTime()) / 1000 / 3600 / 24;
-            /* send reminder if user has not opened tasks recently or is done with all tasks */
-            if (isAllDone || diffDays >= this.offset) {
-                try {  // call email endpoint
-                    const respBody = await this.callEmailEndpoint(JSON.stringify({ email, name, ...taskData }));
-                    if (this.verbose) { console.log(userId.substring(9, 18), JSON.stringify(respBody)); }
-                } catch(respErr) {
-                    console.error('For', userId.substring(9, 18), 'Caught:\n', respErr);
-                }  /* end of try-catch */
+            const userId = ReminderSetter.matchUserId(key);
+            if (await this.isOptOut(userId)) continue;  // skip if user has opted out of reminder
+            const { email, data, diffDays, hasPostQuizReminder, isAllDone, userName } = await this.inspectUser(userId);
+            // 1. send reminder if user has not done all tasks and not opened tasks recently, or
+            // 2. send congrats if user has done all tasks and not had a post-quiz reminder
+            const sendRmdrFlag: boolean = !isAllDone && diffDays >= this.offset;
+            const sendCngrFlag: boolean = isAllDone && !hasPostQuizReminder;
+            if (sendCngrFlag || sendRmdrFlag) {
+                await this.callEmailEndpoint(email, { userName, data });
             }  /* end of checking difference in days between last seen and today */
-            await this.store.delete(key);  // remove current reminder to free storage
-            /* set another reminder */
-            if (isAllDone) {
-                if (!ReminderSetter.hasDonePostQuiz(respHist))
-                // set post-quiz reminder if all tasks are done and post-quiz is not done
-                await this.setPostQuizReminder(userId, taskData);
-            } else {  // set task reminder if some tasks remain
-                await this.setTaskReminder(userId, taskData);
-            }  /* end of setting another reminder */
+            // set task reminder if some tasks remain
+            if (sendRmdrFlag) await this.setTaskReminder(userId);
+            if (sendCngrFlag) await this.setPostQuizReminder(userId,
+                Math.floor(this.offset / ReminderSetter.earlyFactor));  // set first post-quiz reminder earlier
+            if (this.verbose) {
+                const logOutput = { data, diffDays, hasPostQuizReminder, isAllDone, sendRmdrFlag, sendCngrFlag };
+                console.log(logOutput);
+            }  // end of verbose logging
+            await this.deleteBlob(key);
         }  /* end of looping through all blobs that match prefix */
-    }  /* end of sendReminders */
-    public async sendTaskReminders(): Promise<void> {
-        const prefix = this.getDatedKey();  // returns yyyy-mm-dd/
-        await this.sendReminders({ prefix });
     }  /* end of sendTaskReminders */
     public async sendPostQuizReminders(): Promise<void> {
         const prefix = NfBlobManager.getHierKey({
             basename: this.getDatedKey(),
             prefix: ReminderSetter.postQuizPrfx,
         });  // prefix's format: post-quiz/yyyy-mm-dd/
-        await this.sendReminders({ prefix });
+        const { blobs } = await this.store.list({ directories: true, prefix });
+        // list() returns { blobs: [], directories: [] }
+        if (this.verbose) console.log(blobs.map(x=>x.key));
+        for (const { key } of blobs) {  // array of { etag, key }
+            const userId = ReminderSetter.matchUserId(key);
+            if (await this.isOptOut(userId)) continue;  // skip if user has opted out of reminder
+            const { email, data, hasDonePostQuiz, isAllDone, userName } = await this.inspectUser(userId);
+            const sendRmdrFlag: boolean = isAllDone && hasDonePostQuiz;
+            if (sendRmdrFlag) {
+                await this.callEmailEndpoint(email, { userName, data });
+                await this.setPostQuizReminder(userId);  // normal offset
+            }  /* end of checking if all tasks are done and post-quiz not done */
+            if (this.verbose) {
+                const logOutput = { data, hasDonePostQuiz, isAllDone, sendRmdrFlag };
+                console.log(logOutput);
+            }  // end of verbose logging
+            await this.deleteBlob(key);
+        }  /* end of looping through all blobs that match prefix */
     }  /* end of sendPostQuizReminders */
-    private async callEmailEndpoint(payload: string): Promise<void> {
-        const opt = { body: '', headers: new Headers(), method: 'POST' };
-        opt.body = payload.replace(/`/g, '\`');
-        opt.headers.set('content-type', 'application/json');
-        opt.headers.set('authorization', this.endpoint.auth);
-        return await fetchData(this.endpoint.url, opt);  // may throw ResponseNotOkError
+    private async callEmailEndpoint(email: string, { userName, data }: { userName: string, data: TaskData }): Promise<void> {
+        try {  // call email endpoint
+            const payload = JSON.stringify({ email, userName, ...data });
+            const opt = { body: '', headers: new Headers(), method: 'POST' };
+            opt.body = payload.replace(/`/g, '\`');
+            opt.headers.set('content-type', 'application/json');
+            opt.headers.set('authorization', this.endpoint.auth);
+            const respBody = await fetchData(this.endpoint.url, opt);  // error be caught
+            if (this.verbose) { console.log(JSON.stringify(respBody)); }
+        } catch(respErr) {
+            console.error('Caught:\n', respErr);
+        }  /* end of try-catch */
     }  /* end of callEmailEndpoint */
-    private async getTaskData(basename: string): Promise<TaskData> {
-        const storedData = JSON.parse(await this.store.get(this.getDatedKey(basename)));
+    private async getTaskData(preResponseId: string, userId: string): Promise<TaskData> {
+        const storedData = await fetchTaskStatus(preResponseId, userId, { origin: this.siteURL.origin });
         if (storedData && isTaskData(storedData)) {
             return storedData as TaskData;
         } else {  // throw data error
-            const dataErr = new Error('Invalid task data for ' + basename.substring(9, 18));
+            const dataErr = new Error('Invalid task data for ' + userId.substring(9, 18));
             dataErr.name = 'DataError';
             throw dataErr;
         }  /* end of validating task data */

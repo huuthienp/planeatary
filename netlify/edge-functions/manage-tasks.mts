@@ -58,7 +58,7 @@ export default async (request: Request) => {
             respBody.meta = (await fetchData(endpoint, fetchOpt) as QTaskPayload).meta;
             respBody.result.chosen = reqBody.chosen;
         }  /* end of updating task data v3.1 */
-        requestReminder({ ...respBody.result, userId }, new URL(request.url).origin);
+        requestReminder({ ...respBody.result, userId }, request.method, new URL(request.url));
         console.log(request.method, respId.substring(2, 8));
         return Response.json(respBody); // default status is 200
     } catch (manaTaskErr) {  // e.g. response from Qualtrics not ok
@@ -74,12 +74,14 @@ export const config: Config = {
 };  /* end of config */
 
 
-function requestReminder(data: ImportedTaskData, origin: string): void {  // fire and forget
-    const endpoint: string = origin + '/api/set-reminders';
+function requestReminder(data: ImportedTaskData, refMethod: string, url: URL, pathname = '/api/set-reminders'): void {
+    // fire and forget
+    url.pathname = pathname;
     const fetchOpt: RequestInit = { method: 'POST' };
     fetchOpt.body = JSON.stringify(data);
     fetchOpt.headers = new Headers();
     fetchOpt.headers.set('authorization', env.get('SECRET_AUTH_HEADER') ?? '');
     fetchOpt.headers.set('content-type', 'application/json');
-    fetch(endpoint, fetchOpt).catch(err => console.error('Caught:\n', err));
+    fetchOpt.headers.set('x-referer-method', refMethod);
+    fetch(url, fetchOpt).catch(err => console.error('Caught:\n', err));
 }  /* end of requestReminder */

@@ -213,30 +213,22 @@ export function mergeTaskArrays(data, separator = '@') {
 
 
 // Function to get task status from the API
-export async function fetchTaskStatus(preResponseId, userId) {
+export async function fetchTaskStatus(preResponseId, userId, { origin = '', pathname = '/api/manage-tasks' }) {
     try {
-        // showSpinner(); // put this outside
-        const fetchOpt = { method: 'GET',
-            headers: new Headers(),
-        };  /* end of defining fetch options */
-        fetchOpt.headers.set('content-type', 'application/json');
-        fetchOpt.headers.set('x-response-id', preResponseId);
-        fetchOpt.headers.set('x-user-id', userId);
-        const response = await fetch('/api/manage-tasks', fetchOpt);
-        const { ok, status } = response;
-        if (!ok) {
-            throw new Error(JSON.stringify({
-                status: status,  // fix error object
-                response: await response.text(),
-            }));
-        }
-        const data = extractTaskData(await response.json());
-        console.log('Task status fetched!\n', data);
-        // hideSpinner(); // put this outside
-        return data;
-    } catch (error) {
-        // hideSpinner(); // put this outside
-        console.warn('Caught', error, '\nin fetchTaskStatus');
+        let url = pathname;
+        if (!isEmpty(origin)) {  // define origin if called outside browser
+            url = new URL(origin);
+            url.pathname = pathname;
+        }  // if origin is not empty, it is used to construct url
+        const opt = { method: 'GET', headers: new Headers() };
+        opt.headers.set('content-type', 'application/json');
+        opt.headers.set('x-response-id', preResponseId);
+        opt.headers.set('x-user-id', userId);
+        const data = await fetchData(url, opt); // error be caught
+        console.log('Tasks fetched!', preResponseId);
+        return extractTaskData(data);
+    } catch (fetchTaskErr) {
+        console.warn('Caught:\n', fetchTaskErr);
         return null;
     }
 }
