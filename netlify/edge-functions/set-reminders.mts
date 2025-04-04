@@ -6,9 +6,8 @@ import { formulateErrorResponse } from '../../scripts/custom-http.ts';
 const { env } = Netlify;
 const taskStoreId = env.get('REMINDER_STORE_ID') ?? 'default-store';
 const timeZone = env.get('CLIENT_TZ');
-const reminderOffset = Number(env.get('TASK_REMINDER_OFFSET_DAYS'));
-const congratsOffset = Number(env.get('TASK_CONGRATS_OFFSET_DAYS'));
-const postQuizOffset = Number(env.get('POST_QUIZ_REMINDER_OFFSET_DAYS'));
+const reminderOffset = Number(env.get('REMINDER_OFFSET_DAYS'));
+const congratsOffset = Math.floor(reminderOffset / ReminderSetter.earlyFactor);
 
 
 export default async (request: Request) => {
@@ -27,32 +26,35 @@ export default async (request: Request) => {
      * @throws {500} Server Error - For other errors
      */
     const { headers } = request;
+    const refMethod = headers.get('x-referer-method')?.toUpperCase() ?? '';
     try {  /* check if auth and set reminder */
         if (env.get('SECRET_AUTH_HEADER') !== headers.get('authorization')) {
             const msg = 'Unauthorized';
-            console.error(msg);
-            return Response.json({ code: 401, msg }, { status: 401 });
-        } else {  // continue if auth
-            const { chosen, userId }: { chosen: Array<string>, userId: string } = await request.json();
+            const code = 401;
+            const authErr = new Error(JSON.stringify({ code, msg }));
+            authErr.name = 'AuthorizationError';
+            throw authErr;
+        }  /* end of checking auth header */
+        // continue if authorised
+        const { chosen, userId }
+            : { chosen: Array<string>, userId: string }
+            = await request.json();
+        const helper = new ReminderSetter(taskStoreId, { timeZone });
+        if (await helper.isOptOut(userId)) {
+            const code = 422;
+            const msg = 'User has opted out of reminders.';
+            const optOutErr = new Error(JSON.stringify({ code, msg }));
+            optOutErr.name = 'UserOptOutError';
+            throw optOutErr;
+        }  // continue if user has not opted out
+        await helper.setLastSeen(userId);
+        if (['POST', 'PUT'].includes(refMethod)) {
             const taskData = extractWithNames({ chosen });
             const isAllDone = ReminderSetter.checkAllDone(taskData);
-            const helper = new ReminderSetter(taskStoreId,
-                { timeZone, offset: isAllDone ? congratsOffset : reminderOffset },
-            );  // initiate a helper to set a reminder
-            if (await helper.isOptOut(userId)) {
-                const code = 422;
-                const msg = 'User has opted out of reminders.';
-                const optOutErr = new Error(JSON.stringify({ code, msg }));
-                optOutErr.name = 'UserOptOutError';
-                throw optOutErr;
-            }  // continue if user has not opted out
-            await helper.setLastSeen(userId);
-            await helper.setReminder(userId, taskData);
-            if (isAllDone) {  /* set post-quiz reminder */
-                helper.setPostQuizReminder(userId, taskData, postQuizOffset);
-            }  // use another offset value for post-quiz reminder
-            return new Response(null, { status: 204 });
-        }  /* end of checking auth header */
+            helper.offset = isAllDone ? congratsOffset : reminderOffset;
+            await helper.setTaskReminder(userId);
+        }  // end of setting reminder
+        return new Response(null, { status: 204 });
     } catch(setRmdrErr) {
         console.error('Caught:\n', setRmdrErr);
         return formulateErrorResponse(setRmdrErr);
