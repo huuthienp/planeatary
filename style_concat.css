@@ -343,7 +343,7 @@ body {
 }
 
 #carouselInterval .carousel-item {
-  height: 180px;
+  height: 280px;
   justify-items: center;
 }
 
@@ -700,10 +700,10 @@ body {
 }
 
 .hero-text h4 {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   margin: 0 0 20px;
   color: #fefffe;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .hero-text p {
