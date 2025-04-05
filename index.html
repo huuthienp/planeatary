@@ -802,7 +802,7 @@
             })
 
             document.querySelectorAll('#progressbar li').forEach(li => {
-                li.addEventlistener('click', event => {
+                li.addEventListener('click', event => {
                     li.classList.add('active');
                 })
             });
