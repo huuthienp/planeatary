@@ -82,23 +82,6 @@
                 </div>
                 
                 <div class="mb-3">
-                    <label for="age" class="form-label">Age:</label>
-                    <input type="number" class="form-control" id="age" placeholder="Enter your age" min="0" required>
-                    <div class="invalid-feedback">
-                        Please type in correct age
-                    </div>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="gender" class="form-label">Gender:</label>
-                    <select id="gender" class="form-select mb-3" aria-label="Select gender">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                
-                <div class="mb-3">
                     <label for="user-type" class="form-label">User Type:</label>
                     <select id="user-type" class="form-select mb-3" aria-label="User type" required>
                         <option value="student">Student</option>
@@ -317,8 +300,6 @@
                     event.currentTarget.dataset.modified = "true";
                     console.log("Form has been modified.");
                     document.getElementById("name").value       = userData.full_name;
-                    document.getElementById("age").value        = userData.age;
-                    document.getElementById("gender").value     = userData.gender;
                     document.getElementById("user-type").value  = userData.status;
                 }
             }
@@ -351,8 +332,6 @@
                     }
                 });
                 document.getElementById("name").value       = userData.full_name;
-                document.getElementById("age").value        = userData.age;
-                document.getElementById("gender").value     = userData.gender;
                 document.getElementById("user-type").value  = userData.status;
             }
 
@@ -458,11 +437,9 @@
                         console.log("validate form2");
                         
                         let user_full_name = document.getElementById("name").value;
-                        let user_age       = document.getElementById("age").value;
-                        let user_gender    = document.getElementById("gender").value;
                         let user_type      = document.getElementById("user-type").value;
                         let user_password  = document.getElementById("password").value;
-                        const user_datail = { full_name: user_full_name, gender: user_gender, age: user_age, status: user_type };
+                        const user_datail = { full_name: user_full_name, status: user_type };
                         
                         try {
                             // If password is provided, update it first

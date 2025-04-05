@@ -82,6 +82,90 @@ body {
   pointer-events: none !important;
 }
 
+/*Icon progressbar*/
+#progressbar {
+  margin-bottom: 1vmax;
+  overflow: hidden;
+  color: #e4e2e2;
+  padding-top: 2vmax;
+}
+
+#progressbar .active {
+  color: #00abc9;
+}
+
+#progressbar li {
+  list-style-type: none;
+  font-size: 15px;
+  width: 25%;
+  float: left;
+  position: relative;
+  font-weight: 400;
+  display: block;
+  justify-items: center;
+  cursor: pointer;
+}
+
+/*Icons in the ProgressBar*/
+#progressbar #first-step:before {
+  font-family: FontAwesome;
+  content: "\f13e";
+  justify-content: center;
+  display: flex;
+}
+
+#progressbar #second-step:before {
+  font-family: FontAwesome;
+  content: "\f018";
+  justify-content: center;
+  display: flex;
+}
+
+#progressbar #third-step:before {
+  font-family: FontAwesome;
+  content: "\f018";
+  justify-content: center;
+  display: flex;
+}
+
+#progressbar #final-step:before {
+  font-family: FontAwesome;
+  content: "\f00c";
+  justify-content: center;
+  display: flex;
+}
+
+/*Icon ProgressBar before any progress*/
+#progressbar li:before {
+  width: 50px;
+  height: 50px;
+  line-height: 45px;
+  display: block;
+  font-size: 20px;
+  color: #ffffff;
+  background: #e4e2e2;
+  border-radius: 50%;
+  margin: 0 auto 10px auto;
+  padding: 2px;
+}
+
+/*ProgressBar connectors*/
+#progressbar li:after {
+  content: '';
+  width: 100%;
+  height: 2px;
+  background: #e4e2e2;
+  position: absolute;
+  left: 0;
+  top: 25px;
+  z-index: -1;
+}
+
+/*Color number of the step and the connector before it*/
+#progressbar li.active:before, #progressbar li.active:after {
+  background: #00abc9;
+}
+
 /* styles for larger screens */
 @media (min-width: 992px) {
 
@@ -173,6 +257,11 @@ body {
   .void-space {
     padding: 10vh 0 !important;
   }
+
+  #carousel-section {
+    width: 70%;
+  }
+
    /*do you know section*/
    .do-you-know {
     display: flex;
@@ -203,11 +292,11 @@ body {
     flex-direction: row !important;
   }
 
-  .c-items {
+  /* .c-items {
     margin-right: 0 !important;
     flex: 0 0 25% !important;
     display: block !important;
-  }
+  } */
 
   .card{
     margin: 0 .5rem;
