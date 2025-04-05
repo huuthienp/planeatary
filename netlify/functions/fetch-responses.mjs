@@ -1,5 +1,5 @@
-import { CustomResponse } from '../../scripts/custom-classes.mjs';
 import { fetchData, fetchResponse, reformatResponseData } from '../../scripts/helpers.mjs';
+import { formulateErrorResponse } from '../../scripts/custom-http.ts';
 
 
 export default async (request, context) => {
@@ -15,7 +15,9 @@ export default async (request, context) => {
         const nf_jwt = context.cookies.get('nf_jwt');
         const authHeader = nf_jwt ? `Bearer ${nf_jwt}` : request.headers.get('Authorization');
         if (!authHeader) {  // when neither nf_jwt cookie nor auth header can be found
-            return new CustomResponse('Unauthorised!', 401);
+            const code = 401;
+            const msg = 'Unauthorised!';
+            return Response.json({ code, msg }, { status: code });
         }  // else, send token for verification
         const { id, user_metadata: { responseHistory } } = await fetchData(targetUrl, {
             method: 'GET',
@@ -29,11 +31,11 @@ export default async (request, context) => {
             data.push(({ preResponse, postResponse }));
         }  // end of fetching all cycles
         console.log('Fetching is done!', query.lengthOk, '/', query.length);
-        return new CustomResponse(data, query.lengthOk === query.length ? 200 : query.lengthOk === 0 ? 404 : 207);
-    } catch(breakError) {  // e.g. invalid token
-        console.warn('Caught', breakError);
-        const { message, stack, status } = breakError;
-        return new CustomResponse(stack || message, status || 500);
+        const code = query.lengthOk === query.length ? 200 : query.lengthOk === 0 ? 404 : 207;
+        return Response.json(data, { status: code });
+    } catch(fetchQRespErr) {  // e.g. invalid token
+        console.error('Caught:\n', fetchQRespErr);
+        return formulateErrorResponse(fetchQRespErr);
     }  // end of catching breaking error, which interrupts fetching
 };
 
@@ -46,14 +48,14 @@ async function tryDecideFetchResponse(query, quizType, responseId, env) {
         if (query.requestedTypes.includes(quizType) && responseId) {
             query.length += 1;
             const fetchedResponse = reformatResponseData(await fetchResponse(responseId, quizType, env));
-            query.lengthOk += 1;
+            query.lengthOk +=1;
             console.log(responseId, 'is fetched!');
             return fetchedResponse;
         } else {  // when the request specifies just either 'pre' or 'post'
             return null;  // skip fetching
         }  //  or when response ID is not found in history (user has not done post-quiz)
     } catch (fetchError) {  // not breaking, moving on to next quiz type or cycle
-        console.warn('Caught', fetchError);
-        return ({ fetchError });
+        console.warn('Caught:\n', fetchError);
+        return { fetchError };
     }  // end of try deciding to fetch a response
 }

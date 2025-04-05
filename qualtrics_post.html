@@ -106,6 +106,10 @@
             
             <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
             <script>
+
+                async function delay(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                }
                 
                 //hard-code updating responseHistory
                 async function updateResponseHistory(postObject, user) {
@@ -397,8 +401,11 @@
                                                 alert("Please finish all the chosen tasks before doing post-quiz.");
                                                 quizFrame.style.display = 'none'; 
                                                 document.querySelector('.btn-next').style.display = 'none';
-                                                fallbackMessage.innerHTML = "<div class='empty-state'>Please finish all selected tasks before doing the post quiz.</div>";
-                                                window.location.href = "manifesto_page.html";
+                                                fallbackMessage.innerHTML = "<div class='empty-state'>Please finish all selected tasks before doing the post quiz. </div>";
+                                                await delay(3000);
+                                                if (confirm("Can we redirect you to where you selected tasks?") == true) {
+                                                    window.location.href = "manifesto_page.html";
+                                                }
                                                 return;
                                             } else {
                                                 var quizUrl = initiateSurvey('post', quizFrame);
@@ -412,7 +419,10 @@
                                             quizFrame.style.display = 'none'; 
                                             document.querySelector('.btn-next').style.display = 'none';
                                             fallbackMessage.innerHTML = "<div class='empty-state'>Please finish all selected tasks before doing the post quiz.</div>";
-                                            window.location.href = "manifesto_page.html";
+                                            await delay(3000);
+                                            if (confirm("Can we redirect you to where you selected tasks?") == true) {
+                                                window.location.href = "manifesto_page.html";
+                                            }
                                             return;
                                         } else {
                                             var quizUrl = initiateSurvey('post', quizFrame);
@@ -423,8 +433,7 @@
                                     quizFrame.style.display = 'none'; 
                                     document.querySelector('.btn-next').style.display = 'none';
                                     fallbackMessage.style.color = "#ff6b6b";
-                                    fallbackMessage.innerHTML = `<div class='empty-state'>${err} is found. Directing you to do the selected tasks</div>`;
-                                    window.location.href = "manifesto_page.html";
+                                    fallbackMessage.innerHTML = `<div class='empty-state'>${err} is found.</div>`;
                                     return;
                                 }  
                             } 

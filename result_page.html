@@ -344,7 +344,7 @@
                         const questionTitle = document.createElement('h3');
                         questionTitle.textContent = `Question ${index + 1}`;
                         const questionPoint = document.createElement('h4');
-                        questionPoint.textContent = `${score} points`;
+                        questionPoint.textContent = `you earned ${score} out of 5 points`;
                         
 
                         // Apply styling based on score
@@ -422,7 +422,7 @@
                     (tag) => { if(tag) {tag.classList.add('hidden');} }
                     );
                     
-                    if (!detailed) {
+                    if (!detailed || !tasks) {
                         cardContainer.innerHTML = "<div class='empty-state'>Sorry, there is no information available to be displayed.</div>";
                         return;
                     }

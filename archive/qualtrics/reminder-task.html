@@ -1,0 +1,174 @@
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title></title>
+<style type="text/css">.container {
+    background-color: white;
+    box-shadow: 0.5rem 0.5rem 1rem rgba(0,0,0,0.1);
+    color: #333;
+    font-family: Verdana, Tahoma, sans-serif;
+    line-height: 1.6;
+    margin: auto;
+    max-width: 38rem;
+    padding: 1rem;
+    text-align: center;
+}
+
+.header {
+    background-color: rgb(18, 141, 104);
+    font-weight: 700;
+    color: white !important;
+    border-radius: 1rem 1rem 0 40%;
+    padding: 1rem;
+}
+
+.header p {
+    margin: 1rem auto;
+    width: 80%;
+}
+
+p.dear {
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+.container img {
+    width: 6.5rem;
+    height: auto;
+    position: relative;
+    vertical-align: middle;
+}
+
+a {
+    color: rgb(18, 141, 104);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: blink;
+}
+
+.content {
+    background-color: rgba(68, 172, 123, 0.3);
+    padding: 1rem;
+    text-align: center;
+    border-top: 2rem solid rgba(68, 172, 123, 0.3);
+    border-bottom: 2rem solid rgba(68, 172, 123, 0.3);
+    border-left: 1.5rem solid transparent;
+    border-right: 1.5rem solid transparent;
+    border-radius: 3rem 0 3rem 0;
+}
+
+
+.btn-anchor {
+    background-color: rgb(69, 175, 74);
+    border-color: rgb(69, 175, 74);
+    border-radius: 0.5rem;
+    border-style: solid;
+    color: white;
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 1rem;
+    padding: 1rem;
+} /* end of button-like anchor */
+.btn-anchor:hover {
+    background-color: rgb(54, 133, 58);
+    border-color: rgb(54, 133, 58);
+}  /* end of anchor-hover */
+
+p.regard {
+    font-size: 0.9rem;
+    margin-top: 2rem;
+    text-align: left;
+}
+
+.footer {
+    background-color: #f0ebeb;
+    border-radius: 25% 25% 1rem 1rem;
+    color: #666;
+    font-size: 0.8rem;
+    font-style: italic;
+    margin-top: 1rem;
+    padding: 1rem;
+    text-align: center;
+}
+
+.footer img {
+    display: inline-block;
+    height: auto;
+    margin: 0 1rem;
+    width: 6.5rem;
+}
+
+div.details {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    margin: 1rem 0;
+    max-height: 24rem;
+    overflow: auto;
+    overflow-wrap: break-word;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+.task-list {
+    margin: auto;
+    margin-bottom: 0.75rem;
+    padding: inherit;
+}
+
+.task-list li {
+    margin-left: 1rem;
+    margin-bottom: inherit;
+    padding-left: 0.5rem;
+}
+
+.task-list.completed li {
+    color: #666;
+    text-decoration: line-through;
+}
+
+.task-list li::marker {
+    content: "🌱";
+}
+
+.task-list.completed li::marker {
+    content: "🥕";
+}
+</style>
+<div class="container">
+<div class="header"><img src="https://uow.au1.qualtrics.com/ControlPanel/Graphic.php?IM=IM_g0SPpEjqHzDFfR4" style="width: 3rem;" /></div>
+
+<p class="dear">Hi ${aed://name},</p>
+<p><strong>You're getting there!</strong></p>
+<img src="https://uow.au1.qualtrics.com/ControlPanel/Graphic.php?IM=IM_czkOeteD1MAgaOi" />
+
+<div class="content">
+<p>You have marked ~{ch://OCAC_2g1LQEbyeAKu7IV/doneCount}&nbsp;/&nbsp;~{ch://OCAC_2g1LQEbyeAKu7IV/chosenCountText} as completed!</p>
+<div class="details">
+<ul class="task-list">
+    <li>~{ch://OCAC_2g1LQEbyeAKu7IV/pendingHtml}</li>
+</ul>
+
+<ul class="task-list completed">
+    <li>~{ch://OCAC_2g1LQEbyeAKu7IV/doneHtml}</li>
+</ul>
+</div>
+
+<p><a class="btn-anchor" href="https://planeatary.netlify.app/challenge_page" target="_blank" title="Update your challenges">My Challenges</a></p>
+</div>
+
+<p>Keep the momentum!</p>
+
+<p class="regard">Thank you,<br />
+The PlanEATary Quest Team</p>
+
+<div class="footer"><img src="https://uow.au1.qualtrics.com/ControlPanel/Graphic.php?IM=IM_bau1AkgKURETsIS" />
+<p>The PlanEATary Quest is brought to you by Dietitians Australia’s (DA) Food &amp; Environment Interest group with support from the International Confederation of Dietetic Associations (ICDA).</p>
+<img src="https://uow.au1.qualtrics.com/ControlPanel/Graphic.php?IM=IM_mXd5iG78UTdNXY7" /> <img src="https://uow.au1.qualtrics.com/ControlPanel/Graphic.php?IM=IM_0VmYW7kUTIQs23m" />
+<hr style="margin: 1rem auto" />
+<p style="margin: auto">Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com" title="Flaticon">www.flaticon.com</a></p>
+</div>
+</div>

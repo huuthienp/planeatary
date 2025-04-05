@@ -70,11 +70,11 @@
                 <p id="threetask"></p>
             </div>
             <div class="button2">
-                <button class="start shadow btn btn-success" style="width: 180px;">Start</button>
+                <button class="start shadow btn btn-success" style="width: 180px;">Start your selected Challenges!</button>
             </div>
             <div class="improvement">
-                <button id="good" class="shadow">Good scores</button>
-                <button id="notyet" class="shadow">Soon-to-be Good scores</button>
+                <button id="good" class="shadow">Areas to keep up the amazing work</button>
+                <button id="notyet" class="shadow">Opportunities for improvement</button>
             </div>
             <div class="task-content" style="background-color: #08080880;">
                 <div class="q-task">
@@ -92,6 +92,7 @@
         </div>
         <footer class="footer">
             <ul>
+                <li><a href="https://www.flaticon.com/free-animated-icons/document" rel="noopener noreferrer" title="document animated icons">Document animated icons created by Freepik - Flaticon</a></li>
                 <li>Photo by <a href="https://unsplash.com/@artek123?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Arturrro</a> on <a href="https://unsplash.com/photos/shallow-focus-photography-of-strawberries-on-persons-palm-GdTLaWamFHw?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Unsplash</a></li>
                 <li>Photo by <a href="https://unsplash.com/@elbaidak?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Elena Baidak</a> on <a href="https://unsplash.com/photos/yellow-lemon-fruits-on-black-surface-hr3a-VnCIYY?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" rel="noopener noreferrer">Unsplash</a></li>
             </ul>
@@ -131,7 +132,7 @@
             </div>
         </div>
     </section>
-    
+
       <!-- spinner overlay-->
       <section class="overlay hidden" id="spinnerOverlay">
         <div class="spinner hidden" id="spinner">
@@ -140,6 +141,25 @@
             <span>Loading</span>
         </div>
     </section>
+
+    <!-- Before Navigation Modal -->
+    <div class="modal fade" id="navModal" tabindex="-1" aria-labelledby="customAlertLabel">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" id="navModal-header" style="justify-content: center; flex-direction: column; background-color: #00abc9;">
+                    <img id="navModal-pic" style="width: 100px;"/>
+                    <h3 class="modal-title" id="navModal-title" style="font-weight: 600; color: white;">Save your action?</h3>
+                </div>
+                <div class="modal-body" id="navModal-body" style="align-self: center; padding: 2.5rem; font-size: 1.2rem;">
+                    Before leaving page, do you want to save your current task choices?
+                </div>
+                <div class="modal-footer" style="padding: 10px !important; justify-content: space-evenly !important;">
+                    <button type="button" id="navModal-ok" class="btn btn-primary">Save the data</button>
+                    <button type="button" id="navModal-close" class="btn btn-primary">No, discard it</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- Warning Toast -->
     <div class="toast-container">
@@ -177,6 +197,65 @@
 
         const close = document.getElementById('close');
         const closeDes = document.getElementById('closeDes');
+
+        async function showNavModal() {
+            const navModalPic= document.getElementById('navModal-pic');
+            const navModalHeader = document.getElementById('navModal-header');
+            navModalPic.src = "./images/save.gif";
+            let preObject = JSON.parse(localStorage.getItem('preResult'));
+            let preResponseId = preObject?.responseId ?? null; 
+            let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+            let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+            const user = netlifyIdentity.gotrue.currentUser();
+            if (!user) {
+                console.error("No user is logged in!");
+                return;
+            }
+            const token = await user.jwt();
+            if (isTokenExpired(token)) {
+                alert("Token expired. Prompting user to re-login...");
+                netlifyIdentity.logout();
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            const userId = user.id;
+            
+            return new Promise((resolve) => {
+                const navModalContainer = document.getElementById('navModal');
+                if (! navModalContainer) {
+                    console.error('No alert container found.');
+                    return;
+                }
+                const navModalTitle = document.getElementById('navModal-title');
+                const navModalBody = document.getElementById('navModal-body');
+                const bsModal = new bootstrap.Modal(navModalContainer, {
+                    backdrop: 'static', // prevent closing by clicking outside
+                    keyboard: false     // prevent closing with the Esc key
+                });
+
+                if (navModalPic.complete) {
+                    // If the image is already loaded (from cache), update immediately.
+                    bsModal.show();
+                } else {
+                    bsModal.hide();
+                }
+                navModalPic.addEventListener('load', () => {
+                    bsModal.show();
+                });
+                // When the close button is clicked, hide the modal and resolve the promise
+                document.getElementById('navModal-ok').addEventListener('click', async function handler() {
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                    bsModal.hide();
+                    resolve(); // Notify that the modal was dismissed
+                }, { once: true });
+                // When the close button is clicked, hide the modal and resolve the promise
+                document.getElementById('navModal-close').addEventListener('click', function handler() {
+                    bsModal.hide();
+                    resolve(); // Notify that the modal was dismissed
+                }, { once: true });
+            });
+        }
 
         function Modal(source) {
             const elements = [close, modal, overlay];
@@ -308,7 +387,7 @@
                 const persuade = document.getElementById("threetask");
                 let task_counts = calculateSelectedTasks(tasks);
                 if (task_counts >= 3) {
-                    persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
+                    persuade.innerHTML = 'You’ve selected at least 3 tasks. You are now ready to start the challenge!!';
                     persuade.style.animation = 'fadeInAnimation ease 3s';
                     updateButton(startButton, '#00af8c', 'pointer');
 
@@ -569,7 +648,7 @@
                     cardDiv.style.borderRadius = "20px";
                     
                     const questionTitle = document.createElement('h3');
-                    questionTitle.innerHTML = `Question ${i + 1} - ${score} points `;
+                    questionTitle.innerHTML = `Question ${i + 1} - ${score} out of 5 points `;
                     questionTitle.style.borderRadius = "20px";
                     questionTitle.style.padding = '1rem';
                     // Style based on score
@@ -789,16 +868,24 @@
             const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
 
             offcanvasLinks.forEach(li => {
-                li.addEventListener('click', handleOffcanvasClick);
+                li.addEventListener('click', async(event) => {
+                    //event.preventDefault();
+                    await showNavModal();
+                    handleOffcanvasClick(event);
+                });
             });
 
             offcanvasDropdown.forEach(li => {
-                li.addEventListener('click', handleOffcanvasClick);
+                li.addEventListener('click', async(event) => {
+                    //event.preventDefault();
+                    await showNavModal();
+                    handleOffcanvasClick(event);
+                });
             });
 
             offcanvasListItems.forEach(li => {
-                li.addEventListener('click', event => {
-                    event.preventDefault();
+                li.addEventListener('click', async() => {
+                    await showNavModal();
                     const link = li.querySelector('a.nav-link'); 
                     if (link) {
                         handleOffcanvasClickFromElement(link);
@@ -807,8 +894,8 @@
             });
 
             offcanvasDropdownItems.forEach(li => {
-                li.addEventListener('click', event => {
-                    event.preventDefault();
+                li.addEventListener('click', async() => {
+                    await showNavModal();
                     const link = li.querySelector('a.dropdown-item'); 
                     if (link) {
                         handleOffcanvasClickFromElement(link);
@@ -825,6 +912,7 @@
 
             document.getElementById('logOut').addEventListener('click', async () => {
                 if(confirm("Do you really want to sign out?") == true) {
+                    await showNavModal();
                     showSpinner([bOverlay, spinner], Condition);
                     await logOut();
                     hideSpinner([bOverlay, spinner], Condition);
@@ -947,7 +1035,7 @@
                     }
                 });
 
-                var condition = (score) => score < 3;
+                var condition = (score) => score > 3;
                 await renderQuestions(condition, preObject, userId);
                 
             } catch (err) {

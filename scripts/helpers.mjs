@@ -75,15 +75,15 @@ export function updateButton(button, color='buttonface', cursor='default') {
 export async function fetchData(url, options) {
     try {
         const response = await fetch(url, options);
-        const { ok, status } = response;
-        if (ok) {
-            return await response.json();  // error caught below
-        } else {  // throw error
-            const notOkError = new Error(await response.text());
-            notOkError.name = 'ResponseNotOkError';
-            notOkError.status = status;
-            throw notOkError;  // error caught below
-        }  // v1.1
+        if (response.ok) {
+            return await response.json();  // parsing-error be caught below
+        } else {  // formulate and throw error
+            const code = response.status;
+            const msg = await response.text();
+            const notOkErr = new Error(JSON.stringify({ code, msg }));
+            notOkErr.name = 'FetchNotOkError';
+            throw notOkErr;  // thrown error be caught below
+        }  // v1.2
     } catch(fetchError) {
         throw fetchError;
     }
@@ -198,55 +198,37 @@ export function mergeTaskArrays(data, separator = '@') {
  * }
  */
     const chosen = [];
-    // const done = [];
-    // const time = [];
-    Object.values(data).forEach(question => {
-        question['tasks'].forEach(task => {
-            if (task.choice === 'chosen') {
-                const completed = task.status === 'Completed';
-                const finishTime = task.finishTime || ''; // in case undefined
-                const suffix = (completed || finishTime) ? separator+finishTime : '';
-                chosen.push(task.taskNumber + suffix);
-            }
-            // if (task.status === 'Completed') {
-            // done.push(task.taskNumber);
-            // }
-            // time.push(task.finish);
-        });
-    });
-    return {
-        chosen: chosen,
-        // done: done,
-        // time: time
-    };
-}
+    for (const qNumber of Object.keys(data)) {
+        for (const task of data[qNumber].tasks) {
+            if ('chosen' === task.choice) {
+                const { taskNumber, finishTime } = task;
+                if (!isEmpty(finishTime)) {
+                    chosen.push([taskNumber, finishTime].join(separator));
+                } else { chosen.push(taskNumber); }
+            }  /* end of checking if task is chosen */
+        }  /* end of looping through tasks per question */
+    }  /* end of looping through questions */
+    return { chosen };
+}  /* end of mergeTaskArrays */
 
 
 // Function to get task status from the API
-export async function fetchTaskStatus(preResponseId, userId) {
+export async function fetchTaskStatus(preResponseId, userId, { origin = '', pathname = '/api/manage-tasks' }) {
     try {
-        // showSpinner(); // put this outside
-        const fetchOpt = { method: 'GET',
-            headers: new Headers(),
-        };  /* end of defining fetch options */
-        fetchOpt.headers.set('content-type', 'application/json');
-        fetchOpt.headers.set('x-response-id', preResponseId);
-        fetchOpt.headers.set('x-user-id', userId);
-        const response = await fetch('/api/manage-tasks', fetchOpt);
-        const { ok, status } = response;
-        if (!ok) {
-            throw new Error(JSON.stringify({
-                status: status,  // fix error object
-                response: await response.text(),
-            }));
-        }
-        const data = extractTaskData(await response.json());
-        console.log('Task status fetched!\n', data);
-        // hideSpinner(); // put this outside
-        return data;
-    } catch (error) {
-        // hideSpinner(); // put this outside
-        console.warn('Caught', error, '\nin fetchTaskStatus');
+        let url = pathname;
+        if (!isEmpty(origin)) {  // define origin if called outside browser
+            url = new URL(origin);
+            url.pathname = pathname;
+        }  // if origin is not empty, it is used to construct url
+        const opt = { method: 'GET', headers: new Headers() };
+        opt.headers.set('content-type', 'application/json');
+        opt.headers.set('x-response-id', preResponseId);
+        opt.headers.set('x-user-id', userId);
+        const data = await fetchData(url, opt); // error be caught
+        console.log('Tasks fetched!', preResponseId);
+        return extractTaskData(data);
+    } catch (fetchTaskErr) {
+        console.warn('Caught:\n', fetchTaskErr);
         return null;
     }
 }
@@ -273,24 +255,19 @@ export function extractTaskData(responseBody, separator='@') {
      * }
      * @returns {Object} An object containing arrays: chosen, done, and time.
      */
-    const chosen = [];
-    const done = [];
-    const time = [];
-    responseBody.result.chosen.forEach( (merged_string) => {
-        const _split = merged_string.split(separator);
-        const isDone = merged_string.includes(separator);
-        const finishTime = _split[1] || '';
-        chosen.push(_split[0]);
-        time.push(finishTime);
-        if (isDone) {
-            done.push(_split[0]);
-        }
-    });
-    return {
-        chosen: chosen,
-        done: done,
-        time: time,
-    }
+    const chosen = [], done = [], pending = [], time = [];
+    for (const mergedString of responseBody.result.chosen) {
+        const [ taskNumber, finishTime ] = mergedString.split(separator);
+        chosen.push(taskNumber);
+        if (!isEmpty(finishTime)) {
+            time.push(finishTime);
+            done.push(taskNumber);
+        } else {  // task string has empty finish time or none
+            time.push(null);
+            pending.push(taskNumber);
+        }  /* end of checking task is done or not */
+    }  /* end of looping through task data fetched from Qualtrics */
+    return { chosen, done, pending, time };
 }
 
 export async function fetchResponses(userId) {
@@ -319,3 +296,28 @@ export async function fetchResponses(userId) {
         return null;
     }
 }
+
+
+export async function getStrongBlob(siteUrl, authHd, storeId, userId) {
+    const strongBlobUrl = siteUrl + '/api/get-strong-blob';
+    const opt = { headers: new Headers(), method: 'GET' };
+    opt.headers.set('authorization', authHd);
+    opt.headers.set('netlify-store-id', storeId);
+    opt.headers.set('netlify-blob-key', userId);
+    return await fetchData(strongBlobUrl, opt);  // may return null
+}  /* end of getStrongBlob v1.1 */
+
+
+export async function fetchUserData(userId, identity) {
+    const url = `${identity.url}/admin/users/${userId}`;
+    const opt = { headers: new Headers(), method: 'GET' };
+    opt.headers.set('authorization', `Bearer ${identity.token}`);
+    return await fetchData(url, opt);
+}  /* end of fetchUserData v1.0 */
+
+
+export function isEmpty(x) {
+    if (typeof x === 'string') return x.trim() === '';
+    if (typeof x === 'object') return x === null || Object.keys(x).length === 0;
+    return !x;
+};  /* end of isEmpty v1.0 */

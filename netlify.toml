@@ -1,6 +1,11 @@
 [functions]
   node_bundler = 'esbuild'
 
+[functions.'init-reminder-*']
+  schedule = '0 20 * * *'
+  # once a day, at 20:00 (8 PM) UTC
+  # the workflows on Qualtrics can be delayed (different time zone)
+
 [[redirects]]
   from = '/api/recovery'
   to = '/.netlify/functions/recovery'
