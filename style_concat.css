@@ -166,6 +166,10 @@ body {
   background: #00abc9;
 }
 
+#progressbar li:not(.active):before, #progressbar li:not(.active):after {
+  background: #e4e2e2;
+}
+
 /* styles for larger screens */
 @media (min-width: 992px) {
 

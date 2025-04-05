@@ -801,10 +801,13 @@
                 });
             })
 
+            //For toggle steps
             document.querySelectorAll('#progressbar li').forEach(li => {
                 li.addEventListener('click', event => {
+                    document.querySelectorAll('#progressbar li').forEach(item => item.classList.remove('active'));
+                    // Add active class to only clicked element
                     li.classList.add('active');
-                })
+                });
             });
             
             const navChallenge = document.getElementById('navChallenge');
