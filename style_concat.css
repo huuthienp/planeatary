@@ -237,7 +237,7 @@ body {
   }
   
   .person img {
-    width: 200px;
+    width: 170px;
     height: auto;
   }
 
@@ -343,7 +343,7 @@ body {
 }
 
 #carouselInterval .carousel-item {
-  height: 300px;
+  height: 180px;
   justify-items: center;
 }
 
@@ -699,6 +699,13 @@ body {
   font-weight: 600;
 }
 
+.hero-text h4 {
+  font-size: 1.5rem;
+  margin: 0 0 20px;
+  color: #fefffe;
+  font-weight: 600;
+}
+
 .hero-text p {
   font-size: 1.5rem;
   margin: 0 0 20px;
@@ -732,7 +739,7 @@ body {
   width: 70px !important;
   height: 70px !important;
   border-radius: 50% !important;
-  top: 50px !important;
+  top: 50% !important;
 }
 
 /*do you know section*/
@@ -783,6 +790,7 @@ body {
 }
 
 .citation {
+  width: 100%;
   margin: 0 auto; 
   padding: 0 2vmax;
   font-size: 0.8rem;
@@ -794,22 +802,9 @@ body {
   margin-bottom: 1rem; 
 }
 
-/*Feedback*/
-.reflect-section {
-  padding: 3rem 2rem;
-  margin: 0 auto;
-  text-align: left;
-}
-
+/*Reflect*/
 .reflect-section h2 {
-  font-size: 1.5rem;
   color: #333;
-}
-
-.reflect-section hr {
-  border: none;
-  border-top: 1px solid #313131;
-  margin: 1.5rem 0;
 }
 
 .reflect-section p {
@@ -820,7 +815,6 @@ body {
 
 .reflect-section ul {
   list-style-type: square;
-  padding-left: 0.2vmax;
 }
 
 .reflect-section ul li {
@@ -866,8 +860,8 @@ body {
 }
 
 .team-member img {
-  width: 160px;
-  height: 160px;
+  width: 150px;
+  aspect-ratio: 1/1;
 }
 
 .team-member p {
@@ -881,7 +875,7 @@ body {
 .acknowledgment {
   display: flex;
   flex-direction: column;
-  padding: 2vw 2vh;
+  padding: 3rem;
   justify-content: center;
   align-items: center;
   background-image: linear-gradient(#82fae2, #03574691), url("./images/footerVeg.jpg");
