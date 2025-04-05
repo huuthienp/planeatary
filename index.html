@@ -77,9 +77,9 @@
                         <div class="herocontent">
                             <div class="hero-text">
                                 <h1>Welcome to the PlanEATary Quest!</h1>
+                                <h4>Promoting planetary health, one bite at a time.</h4>
                                 <p>
-                                    Embark on a delicious adventure to learn how we can create a more sustainable food system
-                                    and improve our planet's health for current and future generations.
+                                    You are about to embark on a delicious, choose-your-own-adventure challenge to learn how we, as individuals, can create a more sustainable food system and improve the health of our planet for current and future generations. 
                                 </p>
                                 <button type="button" class="btn btn-primary shadow" style="padding: 1vh 2vw;"><a class="herobtn"><h3>Get started</h3></a></button>
                             </div>
@@ -98,7 +98,7 @@
             <section class="container p-3" style="position: relative;">
                 
                 <div class="row d-flex justify-content-center">
-                    <h2 style="text-align: center;">Promoting planetary health, one bite at a time</h2>
+                    <h2 style="text-align: center;">Follow these steps to complete the PlanEATary Quest! we will take you on a journey through these steps!</h2>
                     <div class="col-md-12 d-flex
                     justify-content-center">
                     
@@ -114,7 +114,7 @@
                                 <div class="card" style="background-color: #D0F0C0;">
                                     <img src="./images/excercise.avif" class="card-img-top">
                                     <div class="card-body">
-                                        <h5 class="card-title">Complete Pre-Quiz</h5>
+                                        <h5 class="card-title">First Step: Complete Pre-Quiz</h5>
                                         <p class="card-text">Start the journey to see where you kick the goal!</p>
                                     </div>
                                 </div>
@@ -123,7 +123,7 @@
                                 <div class="card" style="background-color: #aad693;">
                                     <img src="./images/plan.jpg" class="card-img-top">
                                     <div class="card-body">
-                                        <h5 class="card-title">Design your Challenge</h5>
+                                        <h5 class="card-title">Second Step: Design your Challenge</h5>
                                         <p class="card-text">Complete many tasks to improve your score</p>
                                     </div>
                                 </div>
@@ -132,7 +132,7 @@
                                 <div class="card" style="background-color: #95d376;">
                                     <img src="./images/plant.jpg" class="card-img-top">
                                     <div class="card-body">
-                                        <h5 class="card-title">Complete the Challenge</h5>
+                                        <h5 class="card-title">Third Step: Complete the Challenge</h5>
                                         <p class="card-text">Spend around 2-3 weeks to reach your goal</p>
                                     </div>
                                 </div>
@@ -141,7 +141,7 @@
                                 <div class="card" style="background-color: #729760;">
                                     <img src="./images/coffee.jpg" class="card-img-top">
                                     <div class="card-body">
-                                        <h5 class="card-title">Complete Post-Quiz</h5>
+                                        <h5 class="card-title">Final Step: Complete Post-Quiz</h5>
                                         <p class="card-text">Check how your score has been improved so far</p>
                                     </div>
                                 </div>
@@ -217,8 +217,11 @@
             <div class="b-example-divider"></div>
             <!--Monash team section-->
             <section class="container-fluid p-5">
-                <h2><b>BACKGROUND: How was the PlanEATary Quest developed?</b></h2>
+                <h2 id="accordion" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><b>BACKGROUND: How was the PlanEATary Quest developed?</b></h2>
                 <hr>
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    The PlanEATary Quest was first developed by Dietitians Australia's Food and Environment Interest Group in 2009, then known as the 'Eco-Friendly Food Challenge' (EFFC). Acknowledgements to Barbara Radcliffe for leading this project. This was a 4-week, structured challenge that prompted participants to complete (i)  a bin audit to measure food-related waste destined for landfill, (ii) a visit to a local farmets market to promote connection with primary producers, (iii) a pantry audit to identify local VS imported items, and (iv) a recipe challenge to encourage the use of plant-derived proteins. This resource was used as a tool to promote healthy and sustainable dietary behaviours amongst dietitians, and was used as an assessment task by many educators involved in teaching our future dietetic workforce, including Monash University, Deakin University, University of Tasmania and University of Wollongong. In 2022, Dr Liza Barbour and Sandy Murray successfully applied for a grant from the International Congress of Dietetic Associations, as part of their Sustainable Food Systems Toolkit. All members of Dietitians Australia's Food & Environment Interest Group's Leadership Committee were invited to join a small working group to implement this project. Nicole Senior, Sara Forbes, Nathan Cook, Grace Zadow and Aimee Bowles took this opportunity and met with Liza and Sandy every 4-6 weeks from September 2022 - September 2023 to revamp the EFFC to reflect current evidence. A graphic designer was engaged to develop a brand identity, and the PlanEATary Quest was born! The PlanEATary Quest is intended to promote self-reflection about the way we interact with our food system, and a shift towards more environmentally sustainable practices. Intended initially for the nutrition and dietetic workforce, this resource will be expanded for use by other health professionals, workforces, the general public and ultimately children and young people. 
+                </div>
                 <div class="row d-flex">
                     <div class="people">
                         <div class="person">
@@ -530,18 +533,6 @@
                         <input type="text" class="form-control" id="name" placeholder="Enter your name">
                     </div>
                     <div class="mb-3">
-                        <label for="age">Age:</label>
-                        <input type="number" class="form-control" id="age" placeholder="Enter your age" min="0">
-                    </div>
-                    <div class="mb-3">
-                        <label for="gender">Gender:</label>
-                        <select class="form-select" id="gender">
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
                         <label for="email">Additional Email Address:</label>
                         <input type="email" class="form-control" id="email" placeholder="Enter your email">
                     </div>
@@ -646,663 +637,642 @@
     import { fetchResponses, fetchData, reformatResponseData, mergeTaskArrays, fetchTaskStatus } from './scripts/helpers.mjs';
     import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick,
         handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
-    
-    let startTime = Date.now();
-    const condition = [false, startTime];
-    const bOverlay = document.getElementById("spinnerOverlay");
-    const spinner = document.getElementById("spinner");
-    
-    document.addEventListener("DOMContentLoaded", async function() {
-        const nav = document.querySelector('.navbar');
-        const heroWave = document.querySelector('.hero-wave');
-        const hero = document.querySelector('.hero');
         
-        // Retrieve the computed style of the top element
-        const computedNav = window.getComputedStyle(nav);
+        let startTime = Date.now();
+        const condition = [false, startTime];
+        const bOverlay = document.getElementById("spinnerOverlay");
+        const spinner = document.getElementById("spinner");
         
-        // Apply them 
-        heroWave.style.paddingTop = `${nav.offsetHeight + 100}px`;
-
-        //ensure the data's cycle selected from history page is always removed
-        sessionStorage.removeItem('selectedCycle');
-        
-        const greetingDiv = document.querySelector('.greeting');
-        const heroButton = document.querySelector('.herobtn');
-
-        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-        const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
-        const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
-        const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
-        const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
-
-        //For first-timer to see a reminder to do a very first quiz
-        function showToast() {
-            const toasty = document.getElementById('first-timer-toast');
-            const myToast = new bootstrap.Toast(toasty);
-            myToast.show();
-        }
-
-        function showAlert() {
-            const alertContainer = document.getElementById('alertContainer');
-            if (!alertContainer) {
-                console.error('No alert container found.');
-                return;
+        document.addEventListener("DOMContentLoaded", async function() {
+            const nav = document.querySelector('.navbar');
+            const heroWave = document.querySelector('.hero-wave');
+            const hero = document.querySelector('.hero');
+            
+            // Retrieve the computed style of the top element
+            const computedNav = window.getComputedStyle(nav);
+            
+            // Apply them 
+            heroWave.style.paddingTop = `${nav.offsetHeight + 100}px`;
+            
+            //ensure the data's cycle selected from history page is always removed
+            sessionStorage.removeItem('selectedCycle');
+            
+            const greetingDiv = document.querySelector('.greeting');
+            const heroButton = document.querySelector('.herobtn');
+            
+            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+            const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
+            const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
+            const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
+            const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
+            
+            //For first-timer to see a reminder to do a very first quiz
+            function showToast() {
+                const toasty = document.getElementById('first-timer-toast');
+                const myToast = new bootstrap.Toast(toasty);
+                myToast.show();
             }
-            const bsAlert = new bootstrap.Toast(alertContainer);
-            bsAlert.show();
-        }
-
-        async function showNavModal(title, content, type) {
-            const navModalPic= document.getElementById('navModal-pic');
-            const navModalHeader = document.getElementById('navModal-header');
-            if (type == "succeed") {
-                navModalHeader.style.backgroundColor = "#00af8c";
-                navModalPic.src = "./images/tick.gif";
-            } else if (type == "send") {
-                navModalHeader.style.backgroundColor = "#00abc9";
-                navModalPic.src = "./images/mail.gif";
-            } else if (type == "fail") {
-                navModalHeader.style.backgroundColor = "#ff5073";
-                navModalPic.src = "./images/cancel.png";
-            }
-            return new Promise((resolve) => {
-                const navModalContainer = document.getElementById('navModal');
-                if (! navModalContainer) {
+            
+            function showAlert() {
+                const alertContainer = document.getElementById('alertContainer');
+                if (!alertContainer) {
                     console.error('No alert container found.');
                     return;
                 }
-                const navModalTitle = document.getElementById('navModal-title');
-                const navModalBody = document.getElementById('navModal-body');
-                navModalTitle.innerHTML = title;
-                navModalBody.innerHTML = content;
-                const bsModal = new bootstrap.Modal(navModalContainer, {
-                    backdrop: 'static', // prevent closing by clicking outside
-                    keyboard: false     // prevent closing with the Esc key
-                });
-
-                if (navModalPic.complete) {
-                    // If the image is already loaded (from cache), update immediately.
-                    bsModal.show();
-                    
-                } else {
-                    bsModal.hide();
+                const bsAlert = new bootstrap.Toast(alertContainer);
+                bsAlert.show();
+            }
+            
+            async function showNavModal(title, content, type) {
+                const navModalPic= document.getElementById('navModal-pic');
+                const navModalHeader = document.getElementById('navModal-header');
+                if (type == "succeed") {
+                    navModalHeader.style.backgroundColor = "#00af8c";
+                    navModalPic.src = "./images/tick.gif";
+                } else if (type == "send") {
+                    navModalHeader.style.backgroundColor = "#00abc9";
+                    navModalPic.src = "./images/mail.gif";
+                } else if (type == "fail") {
+                    navModalHeader.style.backgroundColor = "#ff5073";
+                    navModalPic.src = "./images/cancel.png";
                 }
-                navModalPic.addEventListener('load', () => {
-                    bsModal.show();
+                return new Promise((resolve) => {
+                    const navModalContainer = document.getElementById('navModal');
+                    if (! navModalContainer) {
+                        console.error('No alert container found.');
+                        return;
+                    }
+                    const navModalTitle = document.getElementById('navModal-title');
+                    const navModalBody = document.getElementById('navModal-body');
+                    navModalTitle.innerHTML = title;
+                    navModalBody.innerHTML = content;
+                    const bsModal = new bootstrap.Modal(navModalContainer, {
+                        backdrop: 'static', // prevent closing by clicking outside
+                        keyboard: false     // prevent closing with the Esc key
+                    });
+                    
+                    if (navModalPic.complete) {
+                        // If the image is already loaded (from cache), update immediately.
+                        bsModal.show();
+                        
+                    } else {
+                        bsModal.hide();
+                    }
+                    navModalPic.addEventListener('load', () => {
+                        bsModal.show();
+                    });
+                    
+                    // When the close button is clicked, hide the modal and resolve the promise
+                    document.getElementById('navModal-close').addEventListener('click', function handler() {
+                        bsModal.hide();
+                        resolve(); // Notify that the modal was dismissed
+                    }, { once: true });
                 });
-                
-                // When the close button is clicked, hide the modal and resolve the promise
-                document.getElementById('navModal-close').addEventListener('click', function handler() {
-                    bsModal.hide();
-                    resolve(); // Notify that the modal was dismissed
-                }, { once: true });
+            }
+            
+            offcanvasLinks.forEach(li => {
+                if (li !== document.getElementById('navChallenge')) {
+                    li.addEventListener('click', handleOffcanvasClick);
+                } 
             });
-        }
-        
-        offcanvasLinks.forEach(li => {
-            if (li !== document.getElementById('navChallenge')) {
+            
+            offcanvasDropdown.forEach(li => {
                 li.addEventListener('click', handleOffcanvasClick);
-            } 
-        });
-        
-        offcanvasDropdown.forEach(li => {
-            li.addEventListener('click', handleOffcanvasClick);
-        });
-        
-        // Function to handle navigation or showing toast
-        offcanvasListItems.forEach(li => {
-            li.addEventListener('click', event => {
-                event.preventDefault();
-                const link = li.querySelector('a.nav-link'); 
-                if (link) {
-                    if (link.classList.contains('Disabled')) {
-                        showToast();
-                        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide(); 
-                    } else {
-                        handleOffcanvasClickFromElement(link);
-                    }
-                }
-                
             });
-        });
-        
-        // Function to handle navigation or showing toast
-        offcanvasDropdownItems.forEach(li => {
-            li.addEventListener('click', event => {
-                event.preventDefault();
-                const link = li.querySelector('a.dropdown-item'); 
-                if (link) {
-                    if (link.classList.contains('Disabled')) {
-                        showToast(); 
-                        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
-                        offcanvas.hide();
-                    } else {
-                        handleOffcanvasClickFromElement(link);
-                    }
-                }
-            });
-        })
-
-        const navChallenge = document.getElementById('navChallenge');
-
-        if (!navChallenge) {
-            console.error("Element with id 'navChallenge' not found.");
-            return;
-        }
-
-        navChallenge.addEventListener('click', function(event) {
-            // Debug logs to check values
-            console.log("navChallenge clicked");
-            console.log("navChallenge.href:", navChallenge.href);
-            console.log("hasPostQuizResult() returns:", hasPostQuizResult());
             
-            if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
-                event.preventDefault();
-                event.stopPropagation();
-                navChallenge.removeAttribute('href');
-                console.log("Navigation prevented. Calling showAlert().");
-                showAlert();
-            } else if (hasPostQuizResult()) {
-                showAlert();
-            } else {
-                handleOffcanvasClick(event);
-            } 
-            const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
-            offcanvas.hide();
-        })
-        
-        const disableFirstTimers = () => {
-            document.querySelectorAll("a.first-timer").forEach(a => {
-                a.classList.add('Disabled');
-                a.setAttribute("href", "#");
-                a.setAttribute("data-bs-toggle", "tooltips");
-                a.setAttribute("data-bs-placement", "bottom");
-                a.setAttribute("title", "Complete the pre-quiz first.");
-                console.log("Disabling tabs");
-            });
-        };
-        
-        const enableFirstTimers = () => {
-            const anchor = ["qualtrics_post.html", "manifesto_page.html", "result_page.html", "history_page.html"];
-            document.querySelectorAll("a.first-timer").forEach((a, index) => {
-                a.classList.remove('Disabled');
-                a.removeAttribute("data-bs-toggle");
-                a.removeAttribute("data-bs-placement");
-                a.href = anchor[index];
-                console.log("Enabling tabs");
-            })
-        }
-        
-        var preObject = JSON.parse(localStorage.getItem('preResult'));
-        
-        if(netlifyIdentity.gotrue.currentUser() !== null) {
-            const user = netlifyIdentity.gotrue.currentUser();
-            if (user) {
-                user.jwt().then(token => {
-                    if (isTokenExpired(token)) {
-                        console.log("Token expired. Prompting user to re-login...");
-                        netlifyIdentity.logout();
-                    } else {
-                        console.log("Token is valid.");
-                        document.querySelectorAll(".home-hide").forEach(element => {
-                            element.style.display = "flex";
-                        });
-                        document.querySelectorAll(".button-hide").forEach(element => {
-                            element.style.display = "none";
-                        });
-                    }
-                });
-            }
-            if(preObject) {
-                enableFirstTimers();
-            } else {
-                disableFirstTimers();
-            }
-        }
-        
-        // Retrieve tasks from localStorage or fetch if not available
-        async function fetchTasks(preResponseId) {
-            const taskData = localStorage.getItem(`${preResponseId}:tasks`);
-            if (!taskData) {
-                try {
-                    const response = await fetch('updated_tasks_final.json');
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    const data = await response.json();
-                    return data;
-                } catch (error) {
-                    console.error('Fetch error:', error);
-                    alert('Failed to load tasks. Please try again later.');
-                    return null;
-                };
-            }
-            return JSON.parse(taskData);
-        }
-        
-        function disableButton(button) {
-            button.disabled = true;
-            button.classList.add('disabled');
-        }
-        
-        function enableButton(button, href=null) {
-            button.disabled = false;
-            button.classList.remove('disabled');
-            if (href) {
-                button.innerHTML = `<a href="${href}">${button.textContent}</a>`;
-            }
-        }
-
-        async function delay(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        heroButton.addEventListener('click', async () => {
-            if (netlifyIdentity.gotrue.currentUser()) {
-                let preObject = localStorage.getItem('preResult');
-                const userData = await getUserData();
-                const { metadata, responseHistory, userId } = userData;
-
-                heroButton.innerHTML = "Let's go!";
-                await delay(1500);
-                
-                if (metadata.restarting == 'yes') {
-                    await showNavModal("Let's go!", "Let's do your restarting pre-quiz!", "succeed");
-                    window.location.href = "qualtrics.html";
-                } else if (preObject) {
-                    await showNavModal("Let's go!", "Let's see your latest result", "succeed");
-                    window.location.href = "result_page.html";
-                } else {
-                    await showNavModal("Let's go!", "Let's do your pre-quiz!", "succeed");
-                    window.location.href = "qualtrics.html";
-                }
-                
-            } else {
-                document.getElementById('e-toast').textContent = 'Please sign in or sign up first';
-                const toastEl = document.getElementById('liveToast');
-                const myToast = new bootstrap.Toast(toastEl);
-                myToast.show();
-            }
-            
-        });
-
-        function ExtractUserMetadata() {
-            const user = netlifyIdentity.gotrue.currentUser();
-            if (user) {
-                user.jwt().then(token => {
-                    if (isTokenExpired(token)) {
-                        console.log("Token expired. Prompting user to re-login...");
-                        netlifyIdentity.logout();
-                    } else {
-                        console.log("Token is valid.");
-                    }
-                });
-            }
-
-            const metadata = user.user_metadata;
-            const responseHistory = metadata?.responseHistory ?? [];
-            let latest_pre = "";
-            let latest_post = "";
-            let history = [];
-            let id = user.id;
-            
-            //handle first-time user
-            if (responseHistory.length === 0) {
-                console.warn("No responseHistory found for this user.");
-                return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
-            } else {
-                responseHistory.forEach((cycleKey) =>{
-                    const entry = cycleKey;
-                    history.push(entry);
-                    if (entry.preId && entry.postId) {
-                        latest_pre = entry.preId;
-                        latest_post = entry.postId;
-                    }
-                    if (!entry.postId) {
-                        latest_pre = entry.preId;
-                        latest_post = "";
+            // Function to handle navigation or showing toast
+            offcanvasListItems.forEach(li => {
+                li.addEventListener('click', event => {
+                    event.preventDefault();
+                    const link = li.querySelector('a.nav-link'); 
+                    if (link) {
+                        if (link.classList.contains('Disabled')) {
+                            showToast();
+                            const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                            offcanvas.hide(); 
+                        } else {
+                            handleOffcanvasClickFromElement(link);
+                        }
                     }
                     
+                });
+            });
+            
+            // Function to handle navigation or showing toast
+            offcanvasDropdownItems.forEach(li => {
+                li.addEventListener('click', event => {
+                    event.preventDefault();
+                    const link = li.querySelector('a.dropdown-item'); 
+                    if (link) {
+                        if (link.classList.contains('Disabled')) {
+                            showToast(); 
+                            const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                            offcanvas.hide();
+                        } else {
+                            handleOffcanvasClickFromElement(link);
+                        }
+                    }
+                });
+            })
+            
+            const navChallenge = document.getElementById('navChallenge');
+            
+            if (!navChallenge) {
+                console.error("Element with id 'navChallenge' not found.");
+                return;
+            }
+            
+            navChallenge.addEventListener('click', function(event) {
+                // Debug logs to check values
+                console.log("navChallenge clicked");
+                console.log("navChallenge.href:", navChallenge.href);
+                console.log("hasPostQuizResult() returns:", hasPostQuizResult());
+                
+                if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    navChallenge.removeAttribute('href');
+                    console.log("Navigation prevented. Calling showAlert().");
+                    showAlert();
+                } else if (hasPostQuizResult()) {
+                    showAlert();
+                } else {
+                    handleOffcanvasClick(event);
+                } 
+                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+            })
+            
+            const disableFirstTimers = () => {
+                document.querySelectorAll("a.first-timer").forEach(a => {
+                    a.classList.add('Disabled');
+                    a.setAttribute("href", "#");
+                    a.setAttribute("data-bs-toggle", "tooltips");
+                    a.setAttribute("data-bs-placement", "bottom");
+                    a.setAttribute("title", "Complete the pre-quiz first.");
+                    console.log("Disabling tabs");
+                });
+            };
+            
+            const enableFirstTimers = () => {
+                const anchor = ["qualtrics_post.html", "manifesto_page.html", "result_page.html", "history_page.html"];
+                document.querySelectorAll("a.first-timer").forEach((a, index) => {
+                    a.classList.remove('Disabled');
+                    a.removeAttribute("data-bs-toggle");
+                    a.removeAttribute("data-bs-placement");
+                    a.href = anchor[index];
+                    console.log("Enabling tabs");
                 })
             }
             
-            const quizPair = {lastPre: latest_pre, lastPost: latest_post};
-            console.log("responseId pre", quizPair.lastPre);
-            console.log("responseId post", quizPair.lastPost);
-            return {quizObj: quizPair, historyObj: history, userId: id}
-        }
-        
-        async function ExtractQuizInfo() {
-            localStorage.removeItem('postResult');
-            const {quizObj, historyObj, userId} = ExtractUserMetadata();
-            var allRes = await fetchResponses(userId);
-            let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
-            if (quizObj.lastPost !== "" || allResponses.length > 0) {
-                allResponses.forEach((cycleKey) => {
-                    const preQuiz = cycleKey?.preResponse ?? null;
-                    const postQuiz = cycleKey?.postResponse ?? null;
-                    //for debugging purpose
-                    console.log("Cycle Key:", cycleKey);
-                    if (preQuiz?.responseId && preQuiz?.responseId == quizObj.lastPre) {
-                        localStorage.setItem("preResult", JSON.stringify(preQuiz));
+            var preObject = JSON.parse(localStorage.getItem('preResult'));
+            
+            if(netlifyIdentity.gotrue.currentUser() !== null) {
+                const user = netlifyIdentity.gotrue.currentUser();
+                if (user) {
+                    user.jwt().then(token => {
+                        if (isTokenExpired(token)) {
+                            console.log("Token expired. Prompting user to re-login...");
+                            netlifyIdentity.logout();
+                        } else {
+                            console.log("Token is valid.");
+                            document.querySelectorAll(".home-hide").forEach(element => {
+                                element.style.display = "flex";
+                            });
+                            document.querySelectorAll(".button-hide").forEach(element => {
+                                element.style.display = "none";
+                            });
+                        }
+                    });
+                }
+                if(preObject) {
+                    enableFirstTimers();
+                } else {
+                    disableFirstTimers();
+                }
+            }
+            
+            // Retrieve tasks from localStorage or fetch if not available
+            async function fetchTasks(preResponseId) {
+                const taskData = localStorage.getItem(`${preResponseId}:tasks`);
+                if (!taskData) {
+                    try {
+                        const response = await fetch('updated_tasks_final.json');
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        const data = await response.json();
+                        return data;
+                    } catch (error) {
+                        console.error('Fetch error:', error);
+                        alert('Failed to load tasks. Please try again later.');
+                        return null;
+                    };
+                }
+                return JSON.parse(taskData);
+            }
+            
+            function disableButton(button) {
+                button.disabled = true;
+                button.classList.add('disabled');
+            }
+            
+            function enableButton(button, href=null) {
+                button.disabled = false;
+                button.classList.remove('disabled');
+                if (href) {
+                    button.innerHTML = `<a href="${href}">${button.textContent}</a>`;
+                }
+            }
+            
+            async function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            
+            heroButton.addEventListener('click', async () => {
+                if (netlifyIdentity.gotrue.currentUser()) {
+                    let preObject = localStorage.getItem('preResult');
+                    const userData = await getUserData();
+                    const { metadata, responseHistory, userId } = userData;
+                    
+                    heroButton.innerHTML = "Let's go!";
+                    await delay(1500);
+                    
+                    if (metadata.restarting == 'yes') {
+                        await showNavModal("Let's go!", "Let's do your restarting pre-quiz!", "succeed");
+                        window.location.href = "qualtrics.html";
+                    } else if (preObject) {
+                        await showNavModal("Let's go!", "Let's see your latest result", "succeed");
+                        window.location.href = "result_page.html";
+                    } else {
+                        await showNavModal("Let's go!", "Let's do your pre-quiz!", "succeed");
+                        window.location.href = "qualtrics.html";
                     }
-                    if (postQuiz?.responseId && postQuiz?.responseId == quizObj.lastPost) {
-                        localStorage.setItem("postResult", JSON.stringify(postQuiz));
+                    
+                } else {
+                    document.getElementById('e-toast').textContent = 'Please sign in or sign up first';
+                    const toastEl = document.getElementById('liveToast');
+                    const myToast = new bootstrap.Toast(toastEl);
+                    myToast.show();
+                }
+                
+            });
+            
+            function ExtractUserMetadata() {
+                const user = netlifyIdentity.gotrue.currentUser();
+                if (user) {
+                    user.jwt().then(token => {
+                        if (isTokenExpired(token)) {
+                            console.log("Token expired. Prompting user to re-login...");
+                            netlifyIdentity.logout();
+                        } else {
+                            console.log("Token is valid.");
+                        }
+                    });
+                }
+                
+                const metadata = user.user_metadata;
+                const responseHistory = metadata?.responseHistory ?? [];
+                let latest_pre = "";
+                let latest_post = "";
+                let history = [];
+                let id = user.id;
+                
+                //handle first-time user
+                if (responseHistory.length === 0) {
+                    console.warn("No responseHistory found for this user.");
+                    return { quizObj: { lastPre: "", lastPost: "" }, historyObj: [] };
+                } else {
+                    responseHistory.forEach((cycleKey) =>{
+                        const entry = cycleKey;
+                        history.push(entry);
+                        if (entry.preId && entry.postId) {
+                            latest_pre = entry.preId;
+                            latest_post = entry.postId;
+                        }
+                        if (!entry.postId) {
+                            latest_pre = entry.preId;
+                            latest_post = "";
+                        }
+                        
+                    })
+                }
+                
+                const quizPair = {lastPre: latest_pre, lastPost: latest_post};
+                console.log("responseId pre", quizPair.lastPre);
+                console.log("responseId post", quizPair.lastPost);
+                return {quizObj: quizPair, historyObj: history, userId: id}
+            }
+            
+            async function ExtractQuizInfo() {
+                localStorage.removeItem('postResult');
+                const {quizObj, historyObj, userId} = ExtractUserMetadata();
+                var allRes = await fetchResponses(userId);
+                let allResponses = JSON.parse(localStorage.getItem(`${userId}:allResponses`)) || [];
+                if (quizObj.lastPost !== "" || allResponses.length > 0) {
+                    allResponses.forEach((cycleKey) => {
+                        const preQuiz = cycleKey?.preResponse ?? null;
+                        const postQuiz = cycleKey?.postResponse ?? null;
+                        //for debugging purpose
+                        console.log("Cycle Key:", cycleKey);
+                        if (preQuiz?.responseId && preQuiz?.responseId == quizObj.lastPre) {
+                            localStorage.setItem("preResult", JSON.stringify(preQuiz));
+                        }
+                        if (postQuiz?.responseId && postQuiz?.responseId == quizObj.lastPost) {
+                            localStorage.setItem("postResult", JSON.stringify(postQuiz));
+                        }
+                    });
+                    
+                } else if (quizObj.lastPre !== "" || allResponses.length > 0) {
+                    allResponses.forEach((cycleKey) => {
+                        const preQuiz = cycleKey.preResponse;
+                        if (preQuiz.responseId && preQuiz.responseId == quizObj.lastPre) {
+                            localStorage.setItem("preResult", JSON.stringify(preQuiz));
+                        }
+                    });
+                } else {
+                    //handle a potentially first-time user
+                    if(confirm("Seems like you've not done any quiz before. Are you a first-timer?") == true) {
+                        //clear unwanted existings in local storage.
+                        localStorage.removeItem('preResult');
+                        localStorage.removeItem('postResult');
+                        localStorage.removeItem(`${userId}:allResponses`);
+                        //Hide menu from a first timer.
+                        document.querySelectorAll(".home-hide").forEach(element => {
+                            element.style.display = "none";
+                        });
+                        return false;
                     }
-                });
-
-            } else if (quizObj.lastPre !== "" || allResponses.length > 0) {
-                allResponses.forEach((cycleKey) => {
-                    const preQuiz = cycleKey.preResponse;
-                    if (preQuiz.responseId && preQuiz.responseId == quizObj.lastPre) {
-                        localStorage.setItem("preResult", JSON.stringify(preQuiz));
+                }
+                return true;
+            }
+            
+            
+            function hideSignInModal() {
+                const signInModal = document.getElementById('signInModal');
+                const modalInstance = bootstrap.Modal.getInstance(signInModal); 
+                modalInstance.hide();
+                // Hide offcanvas
+                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+            }
+            
+            document.getElementById('offcanvasCloseButton').addEventListener('click', (event) => {
+                event.preventDefault();
+                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+                const offcanvasInstance = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvasInstance.hide();
+            });
+            
+            document.getElementById('logOut').addEventListener('click', async () => {
+                if(confirm("Do you really want to sign out?") == true) {
+                    showSpinner([bOverlay, spinner], condition);
+                    await logOut();
+                    hideSpinner([bOverlay, spinner], condition);
+                }
+                
+            });
+            
+            function hideSignUpModal() {
+                const signUpModal = document.getElementById('signUpModal');
+                const modalInstance = bootstrap.Modal.getInstance(signUpModal); 
+                modalInstance.hide();
+                // Hide offcanvas
+                const offcanvasNavbar = document.getElementById('offcanvasNavbar');
+                const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
+                offcanvas.hide();
+            }
+            
+            async function validate_form() {
+                let nameField = document.getElementById("name");
+                let emailField = document.getElementById("email");
+                let passwordField = document.getElementById("password");
+                let msgString = "";
+                let validateFlag = 1;
+                
+                // Check name
+                if (nameField.value === "") {
+                    validateFlag = 0;
+                    msgString += "**Name is blank.<br>";
+                }
+                
+                // Check email
+                if (emailField.value === "") {
+                    validateFlag = 0;
+                    msgString += "**Email is blank.<br>";
+                }
+                
+                // Check password
+                const passwordValue = passwordField.value;
+                if (passwordValue.length > 0) {
+                    const uppercaseRegex = /[A-Z]/g;
+                    const lowercaseRegex = /[a-z]/g;
+                    const numbersRegex = /[0-9]/g;
+                    
+                    if (!passwordValue.match(uppercaseRegex) || !passwordValue.match(lowercaseRegex) || !passwordValue.match(numbersRegex) || passwordValue.length < 8) {
+                        validateFlag = 0;
+                        msgString += "**Password does not meet the criteria.<br>";
                     }
-                });
-            } else {
-                //handle a potentially first-time user
-                if(confirm("Seems like you've not done any quiz before. Are you a first-timer?") == true) {
-                    //clear unwanted existings in local storage.
-                    localStorage.removeItem('preResult');
-                    localStorage.removeItem('postResult');
-                    localStorage.removeItem(`${userId}:allResponses`);
+                }
+                
+                // Show validation message
+                document.getElementById("form_validate_msg").innerHTML = msgString;
+                
+                if (validateFlag) {
+                    return true;
+                } else {
+                    await showNavModal("Errors", "Please correct the highlighted errors.", "fail");
                     return false;
                 }
             }
-            return true;
-        }
-        
-
-        function hideSignInModal() {
-            const signInModal = document.getElementById('signInModal');
-            const modalInstance = bootstrap.Modal.getInstance(signInModal); 
-            modalInstance.hide();
-            // Hide offcanvas
-            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-            const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-            offcanvas.hide();
-        }
-
-        document.getElementById('offcanvasCloseButton').addEventListener('click', (event) => {
-            event.preventDefault();
-            const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-            const offcanvasInstance = new bootstrap.Offcanvas(offcanvasNavbar);
-            offcanvasInstance.hide();
-        });
-
-        document.getElementById('logOut').addEventListener('click', async () => {
-            if(confirm("Do you really want to sign out?") == true) {
-                showSpinner([bOverlay, spinner], condition);
-                await logOut();
-                hideSpinner([bOverlay, spinner], condition);
-            }
             
-        });
-        
-        async function signInAndRedirect() {
-            try {
-                const emailInput2 = document.getElementById('emailInput2');
-                const passwordInput2 = document.getElementById('passwordInput');
-                
-                const loginResult = await netlifyIdentity.gotrue.login(
-                emailInput2.value,
-                passwordInput2.value,
-                true
-                );
-                
-                // Wait for Netlify to update user data
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                const user = netlifyIdentity.currentUser();
-                if (!user) throw new Error("Login failed: No user object found");
-                console.log("Successfully login!", emailInput2.value);
-                
-                hideSignInModal();
-                
-                // Wait for quiz info
-                let r = await ExtractQuizInfo();
             
-                if (r === true) {
-                    enableFirstTimers();
-                    //Need lana to test and edit the flow here if neccessary
-                    const userData = await getUserData();
-                    const { metadata, responseHistory, userId } = userData;
-                    //Once a user chose to restart the cycle and does not finish it, redirect the user to pre-quiz page
-                    if (metadata.restarting == 'yes') {
-                        await showNavModal("Successfully login!", "Let's do your restarting pre-quiz!", "succeed");
-                        window.location.href = "qualtrics.html";
-                    } else {
-                        await showNavModal("Successfully login!", "Let's see your latest result!", "succeed");
-                        window.location.href = "result_page.html";
-                    }
+            document.getElementById('signUpButton').addEventListener('click', function () {
+                const emailInput = document.getElementById('email');
+                const passwordInput = document.getElementById('password');
+                const nameField = document.getElementById("name");
+                const statusField = document.getElementById("user-type");
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                let isValid = true;
+                
+                // Email validation
+                if (!emailRegex.test(emailInput.value) || emailInput.value === 'harry@m.com') {
+                    emailInput.classList.add('is-invalid');
+                    isValid = false;
                 } else {
-                    disableFirstTimers();
-                    
-                    // Delay navigation slightly
-                    setTimeout(async () => {
-                        await showNavModal("Successfully login!", "Welcome to our website!", "succeed");
-                        window.location.href = "index.html";
-                    }, 500);
+                    emailInput.classList.remove('is-invalid');
                 }
                 
-            } catch (error) {
-                console.error("Caught error:", error);
-                document.getElementById("e-toast").textContent = error;
-                const toastEl = document.getElementById("liveToast");
-                const myToast = new bootstrap.Toast(toastEl);
-                myToast.show();
-            }
-        }
-
-        
-        document.getElementById('signInButton').addEventListener('click', () => {
-            const emailInput2 = document.getElementById('emailInput2');
-            const passwordInput2 = document.getElementById('passwordInput');
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            
-            let isValid = true;
-            
-            // Email validation
-            if (!emailRegex.test(emailInput2.value) || emailInput2.value === 'harry@m.com') {
-                emailInput2.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                emailInput2.classList.remove('is-invalid');
-            }
-            
-            // Password validation (minimum 6 characters)
-            if (passwordInput2.value.length < 6) {
-                passwordInput2.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                passwordInput2.classList.remove('is-invalid');
-            }
-            
-            if (isValid) {
-                signInAndRedirect();
-            }
-            
-        });
-        
-    })
-</script>
-
-<!--forget password script-->
-<script>
-    // document.getElementById('resetPasswordButton').addEventListener('click', function () {
-    //     const email = document.getElementById('resetEmailInput').value.trim();
-    //
-    //     if (email === '') {
-    //         alert('Please enter your email.');
-    //         return;
-    //     }
-    //     // Simulate server request to send a reset link
-    //     alert('A password reset link has been sent to: ' + emailInput);
-    //
-    //     // Close the modal after sending the reset email
-    //     const forgotPasswordModal = document.getElementById('forgotPasswordModal');
-    //     const modal = bootstrap.Modal.getInstance(forgotPasswordModal);
-    //     modal.hide();
-    // });
-</script>
-
-<script>
-    document.getElementById('resetPasswordButton').addEventListener('click', function () {
-        const resetEmailInput = document.getElementById('resetEmailInput');
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        
-        // Validate email
-        if (!emailRegex.test(resetEmailInput.value.trim())) {
-            resetEmailInput.classList.add('is-invalid');
-            return;
-        } else {
-            resetEmailInput.classList.remove('is-invalid');
-        }
-        
-        // Call Netlify Identity's password recovery API
-        const email = resetEmailInput.value.trim();
-        const opt = {};
-        opt.method = 'POST';
-        opt.body = JSON.stringify(({ email }));
-        /*
-        netlifyIdentity.gotrue
-        .requestPasswordRecovery(email)
-        */
-        fetch('/api/recovery', opt)
-        .then(async response => {
-            const msg = await response.text();
-            if (response.ok) {
-            console.log(response.status, msg);
-            console.log('Recovery email sent', { response });
-            await showNavModal("Successful recovery email!", "Recovery email sent successfully. Please check your inbox.", "send");
-            // Close the modal after success
-            const modalElement = document.getElementById('forgotPasswordModal');
-            const modalInstance = bootstrap.Modal.getInstance(modalElement);
-            modalInstance.hide();
-            } else {
-            console.error(response.status, msg);
-            await showNavModal("Failed to recovery email!", "There was an error sending the recovery email. Please try again later.", "fail");
-            }
-        })
-        .catch(async (error) => {
-            console.error('Error sending recovery email:', error);
-            await showNavModal("Error sending recovery email!", error, "fail");
-        });
-    });
-    document.querySelector("#forgotPasswordForm").addEventListener('submit', () => {
-        event.preventDefault();  // default: navigation or reload
-        document.querySelector("#resetPasswordButton").click();
-    });  // replace form submit (pressing enter) default behaviour with button click
-</script>
-
-<!--Sign Up -->
-<script>
-
-    function hideSignUpModal() {
-        const signUpModal = document.getElementById('signUpModal');
-        const modalInstance = bootstrap.Modal.getInstance(signUpModal); 
-        modalInstance.hide();
-        // Hide offcanvas
-        const offcanvasNavbar = document.getElementById('offcanvasNavbar');
-        const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
-        offcanvas.hide();
-    }
-
-    async function validate_form() {
-        let nameField = document.getElementById("name");
-        let emailField = document.getElementById("email");
-        let passwordField = document.getElementById("password");
-        let msgString = "";
-        let validateFlag = 1;
-        
-        // Check name
-        if (nameField.value === "") {
-            validateFlag = 0;
-            msgString += "**Name is blank.<br>";
-        }
-        
-        // Check email
-        if (emailField.value === "") {
-            validateFlag = 0;
-            msgString += "**Email is blank.<br>";
-        }
-        
-        // Check password
-        const passwordValue = passwordField.value;
-        if (passwordValue.length > 0) {
-            const uppercaseRegex = /[A-Z]/g;
-            const lowercaseRegex = /[a-z]/g;
-            const numbersRegex = /[0-9]/g;
-            
-            if (!passwordValue.match(uppercaseRegex) || !passwordValue.match(lowercaseRegex) || !passwordValue.match(numbersRegex) || passwordValue.length < 8) {
-                validateFlag = 0;
-                msgString += "**Password does not meet the criteria.<br>";
-            }
-        }
-        
-        // Show validation message
-        document.getElementById("form_validate_msg").innerHTML = msgString;
-        
-        if (validateFlag) {
-            return true;
-        } else {
-            await showNavModal("Errors", "Please correct the highlighted errors.", "fail");
-            return false;
-        }
-    }
-    
-    
-    document.getElementById('signUpButton').addEventListener('click', function () {
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const nameField = document.getElementById("name");
-        const genderField = document.getElementById("gender");
-        const ageField = document.getElementById("age");
-        const statusField = document.getElementById("user-type");
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        let isValid = true;
-        
-        // Email validation
-        if (!emailRegex.test(emailInput.value) || emailInput.value === 'harry@m.com') {
-            emailInput.classList.add('is-invalid');
-            isValid = false;
-        } else {
-            emailInput.classList.remove('is-invalid');
-        }
-        
-        // Password live validation
-        document.getElementById("password").addEventListener("input", function () {
-            const passwordValue = this.value;
-            const messageItems = document.getElementsByClassName("password-message-item");
-            
-            // Update validation status
-            messageItems[0].classList.toggle("valid", /[a-z]/.test(passwordValue));
-            messageItems[1].classList.toggle("valid", /[A-Z]/.test(passwordValue));
-            messageItems[2].classList.toggle("valid", /[0-9]/.test(passwordValue));
-            messageItems[3].classList.toggle("valid", passwordValue.length >= 8);
-        });
-        
-        // If valid, potentially submit form or redirect
-        if (validate_form()) {
-            // Add logic to handle successful signup (e.g., redirect to account.html)
-            netlifyIdentity.gotrue.signup(emailInput.value, passwordInput.value,
-            { full_name: nameField.value, age: ageField.value, gender: genderField.value, status: statusField.value })
-            .then(async (r) => {
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                await showNavModal("Successfully signup!", "Please check your email inbox", "send");
-                hideSignUpModal();
-            })
-            .catch((e) => {
-                console.error('Caught', e)
-                document.getElementById('e-toast').textContent = e;
-                const toastEl = document.getElementById('liveToast');
-                const myToast = new bootstrap.Toast(toastEl);
-                myToast.show();
+                // Password live validation
+                document.getElementById("password").addEventListener("input", function () {
+                    const passwordValue = this.value;
+                    const messageItems = document.getElementsByClassName("password-message-item");
+                    
+                    // Update validation status
+                    messageItems[0].classList.toggle("valid", /[a-z]/.test(passwordValue));
+                    messageItems[1].classList.toggle("valid", /[A-Z]/.test(passwordValue));
+                    messageItems[2].classList.toggle("valid", /[0-9]/.test(passwordValue));
+                    messageItems[3].classList.toggle("valid", passwordValue.length >= 8);
+                });
+                
+                // If valid, potentially submit form or redirect
+                if (validate_form()) {
+                    // Add logic to handle successful signup (e.g., redirect to account.html)
+                    netlifyIdentity.gotrue.signup(emailInput.value, passwordInput.value,
+                    { full_name: nameField.value, status: statusField.value })
+                    .then(async (r) => {
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+                        await showNavModal("Successfully signup!", "Please check your email inbox", "send");
+                        hideSignUpModal();
+                    })
+                    .catch((e) => {
+                        console.error('Caught', e)
+                        document.getElementById('e-toast').textContent = e;
+                        const toastEl = document.getElementById('liveToast');
+                        const myToast = new bootstrap.Toast(toastEl);
+                        myToast.show();
+                    });
+                    return;  
+                    
+                }
             });
-            return;  
             
-        }
-    });
-</script>
+            async function signInAndRedirect() {
+                try {
+                    const emailInput2 = document.getElementById('emailInput2');
+                    const passwordInput2 = document.getElementById('passwordInput');
+                    
+                    const loginResult = await netlifyIdentity.gotrue.login(
+                    emailInput2.value,
+                    passwordInput2.value,
+                    true
+                    );
+                    
+                    // Wait for Netlify to update user data
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    const user = netlifyIdentity.currentUser();
+                    if (!user) throw new Error("Login failed: No user object found");
+                    console.log("Successfully login!", emailInput2.value);
+                    
+                    hideSignInModal();
+                    
+                    // Wait for quiz info
+                    let r = await ExtractQuizInfo();
+                    
+                    if (r === true) {
+                        enableFirstTimers();
+                        //Need lana to test and edit the flow here if neccessary
+                        const userData = await getUserData();
+                        const { metadata, responseHistory, userId } = userData;
+                        //Once a user chose to restart the cycle and does not finish it, redirect the user to pre-quiz page
+                        if (metadata.restarting == 'yes') {
+                            await showNavModal("Successfully login!", "Let's do your restarting pre-quiz!", "succeed");
+                            window.location.href = "qualtrics.html";
+                        } else {
+                            await showNavModal("Successfully login!", "Let's see your latest result!", "succeed");
+                            window.location.href = "result_page.html";
+                        }
+                    } else {
+                        disableFirstTimers();
+                        
+                        // Delay navigation slightly
+                        setTimeout(async () => {
+                            await showNavModal("Successfully login!", "Welcome to our website!", "succeed");
+                            window.location.href = "index.html";
+                        }, 500);
+                    }
+                    
+                } catch (error) {
+                    console.error("Caught error:", error);
+                    document.getElementById("e-toast").textContent = error;
+                    const toastEl = document.getElementById("liveToast");
+                    const myToast = new bootstrap.Toast(toastEl);
+                    myToast.show();
+                }
+            }
+            
+            
+            document.getElementById('signInButton').addEventListener('click', () => {
+                const emailInput2 = document.getElementById('emailInput2');
+                const passwordInput2 = document.getElementById('passwordInput');
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                
+                let isValid = true;
+                
+                // Email validation
+                if (!emailRegex.test(emailInput2.value) || emailInput2.value === 'harry@m.com') {
+                    emailInput2.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    emailInput2.classList.remove('is-invalid');
+                }
+                
+                // Password validation (minimum 6 characters)
+                if (passwordInput2.value.length < 6) {
+                    passwordInput2.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    passwordInput2.classList.remove('is-invalid');
+                }
+                
+                if (isValid) {
+                    signInAndRedirect();
+                }
+                
+            });
+            
+            document.getElementById('resetPasswordButton').addEventListener('click', function () {
+                const resetEmailInput = document.getElementById('resetEmailInput');
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                
+                // Validate email
+                if (!emailRegex.test(resetEmailInput.value.trim())) {
+                    resetEmailInput.classList.add('is-invalid');
+                    return;
+                } else {
+                    resetEmailInput.classList.remove('is-invalid');
+                }
+                
+                // Call Netlify Identity's password recovery API
+                const email = resetEmailInput.value.trim();
+                const opt = {};
+                opt.method = 'POST';
+                opt.body = JSON.stringify(({ email }));
+                /*
+                netlifyIdentity.gotrue
+                .requestPasswordRecovery(email)
+                */
+                fetch('/api/recovery', opt)
+                .then(async response => {
+                    const msg = await response.text();
+                    if (response.ok) {
+                        console.log(response.status, msg);
+                        console.log('Recovery email sent', { response });
+                        await showNavModal("Successful recovery email!", "Recovery email sent successfully. Please check your inbox.", "send");
+                        // Close the modal after success
+                        const modalElement = document.getElementById('forgotPasswordModal');
+                        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                        modalInstance.hide();
+                    } else {
+                        console.error(response.status, msg);
+                        await showNavModal("Failed to recovery email!", "There was an error sending the recovery email. Please try again later.", "fail");
+                    }
+                })
+                .catch(async (error) => {
+                    console.error('Error sending recovery email:', error);
+                    await showNavModal("Error sending recovery email!", error, "fail");
+                });
+            });
+            document.querySelector("#forgotPasswordForm").addEventListener('submit', () => {
+                event.preventDefault();  // default: navigation or reload
+                document.querySelector("#resetPasswordButton").click();
+            });  // replace form submit (pressing enter) default behaviour with button click
+            
+        })
+    </script>
+
+
 
 <script defer type="module">  // delay loading video frame until scroll
     const vdoFrm = document.querySelector('section.do-you-know iframe');

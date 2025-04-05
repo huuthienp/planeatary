@@ -70,11 +70,11 @@
                 <p id="threetask"></p>
             </div>
             <div class="button2">
-                <button class="start shadow btn btn-success" style="width: 180px;">Start</button>
+                <button class="start shadow btn btn-success" style="width: 180px;">Start your selected Challenges!</button>
             </div>
             <div class="improvement">
-                <button id="good" class="shadow">Good scores</button>
-                <button id="notyet" class="shadow">Soon-to-be Good scores</button>
+                <button id="good" class="shadow">Areas to keep up the amazing work</button>
+                <button id="notyet" class="shadow">Opportunities for improvement</button>
             </div>
             <div class="task-content" style="background-color: #08080880;">
                 <div class="q-task">
@@ -387,7 +387,7 @@
                 const persuade = document.getElementById("threetask");
                 let task_counts = calculateSelectedTasks(tasks);
                 if (task_counts >= 3) {
-                    persuade.innerHTML = 'You’ve selected at least 3 tasks. Start challenge now';
+                    persuade.innerHTML = 'You’ve selected at least 3 tasks. You are now ready to start the challenge!!';
                     persuade.style.animation = 'fadeInAnimation ease 3s';
                     updateButton(startButton, '#00af8c', 'pointer');
 
@@ -648,7 +648,7 @@
                     cardDiv.style.borderRadius = "20px";
                     
                     const questionTitle = document.createElement('h3');
-                    questionTitle.innerHTML = `Question ${i + 1} - ${score} points `;
+                    questionTitle.innerHTML = `Question ${i + 1} - ${score} out of 5 points `;
                     questionTitle.style.borderRadius = "20px";
                     questionTitle.style.padding = '1rem';
                     // Style based on score
@@ -1035,7 +1035,7 @@
                     }
                 });
 
-                var condition = (score) => score < 3;
+                var condition = (score) => score > 3;
                 await renderQuestions(condition, preObject, userId);
                 
             } catch (err) {
