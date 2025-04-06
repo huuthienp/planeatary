@@ -165,6 +165,52 @@
                     document.getElementById('nextButt').innerHTML = 'See your result';
                 }
                 
+                async function showNavModal(title, content, type) {
+                    const navModalPic= document.getElementById('navModal-pic');
+                    const navModalHeader = document.getElementById('navModal-header');
+                    if (type == "succeed") {
+                        navModalHeader.style.backgroundColor = "#00af8c";
+                        navModalPic.src = "./images/tick.gif";
+                    } else if (type == "send") {
+                        navModalHeader.style.backgroundColor = "#00abc9";
+                        navModalPic.src = "./images/mail.gif";
+                    } else if (type == "fail") {
+                        navModalHeader.style.backgroundColor = "#ff5073";
+                        navModalPic.src = "./images/cancel.png";
+                    }
+                    return new Promise((resolve) => {
+                        const navModalContainer = document.getElementById('navModal');
+                        if (! navModalContainer) {
+                            console.error('No alert container found.');
+                            return;
+                        }
+                        const navModalTitle = document.getElementById('navModal-title');
+                        const navModalBody = document.getElementById('navModal-body');
+                        navModalTitle.innerHTML = title;
+                        navModalBody.innerHTML = content;
+                        const bsModal = new bootstrap.Modal(navModalContainer, {
+                            backdrop: 'static', // prevent closing by clicking outside
+                            keyboard: false     // prevent closing with the Esc key
+                        });
+                        
+                        if (navModalPic.complete) {
+                            // If the image is already loaded (from cache), update immediately.
+                            bsModal.show();
+                            
+                        } else {
+                            bsModal.hide();
+                        }
+                        navModalPic.addEventListener('load', () => {
+                            bsModal.show();
+                        });
+                        
+                        // When the close button is clicked, hide the modal and resolve the promise
+                        document.getElementById('navModal-close').addEventListener('click', function handler() {
+                            bsModal.hide();
+                            resolve(); // Notify that the modal was dismissed
+                        }, { once: true });
+                    });
+                }
                 
                 function checkLastTaskStatus(metadata) {
                     var responseHistory = metadata?.responseHistory ?? null;
