@@ -70,7 +70,7 @@
                 <p id="threetask"></p>
             </div>
             <div class="button2">
-                <button class="start shadow btn btn-success" style="width: 180px;">Start your selected Challenges!</button>
+                <button class="start shadow btn btn-success" style="width: 180px;">Start your Challenges!</button>
             </div>
             <div class="improvement">
                 <button id="good" class="shadow">Areas to keep up the amazing work</button>
@@ -184,9 +184,7 @@
         const startButton = document.querySelector(".start");
         const good = document.getElementById("good");
         const bad = document.getElementById("notyet");
-        good.style.backgroundColor = '#a9d1cd';
-        bad.style.backgroundColor = '#00af8c';
-        
+    
         const modal = document.querySelector(".modal");
         const overlay = document.querySelector(".overlay");
 
@@ -1002,7 +1000,7 @@
                 
                 if (!fetched_tasks && preResponseId) {
                     try {
-                        fetched_tasks = await fetchTaskStatus(preResponseId, userId);
+                        fetched_tasks = await fetchTaskStatus(preResponseId, userId, { origin: '', pathname: '/api/manage-tasks' });
                         localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
                         fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
                         task_rec = fetched_tasks?.time ?? []; 
@@ -1041,6 +1039,8 @@
             } catch (err) {
                 console.error("Caught error: ", err);
             } finally {
+                good.style.backgroundColor = '#00af8c';
+                bad.style.backgroundColor = '#a9d1cd';
                 var condition = (score) => score >= 3;
                 await renderQuestions(condition, preObject, userId);
                 hideSpinner([bOverlay, spinner], Condition);

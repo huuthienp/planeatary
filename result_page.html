@@ -98,7 +98,7 @@
                         <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
                     </div>
                     <div class="btn-next">
-                        <a class="nextB" href="manifesto_page.html"><button type="button" class="btn btn-success select-tasks shadow-sm" style="width: 180px;">Select Tasks →</button></a>
+                        <a class="nextB" href="manifesto_page.html"><button type="button" class="btn btn-success select-tasks shadow-sm" style="width: 180px;">Select Challenges →</button></a>
                     </div>
                     
                 </div>
@@ -235,6 +235,7 @@
             window.addEventListener("click", (event) => {
                 if (event.target === modalOverlay) closeModal();
             });
+            
 
             function compareScores(preResult, postResult) {
                 let preQuizTotal = preResult.totalScore;
@@ -689,7 +690,7 @@
                                 tasks = await fetchTasks(preResponseId);  
                                 sessionStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                                 tasks = JSON.parse(sessionStorage.getItem(`${preResponseId}:tasks`));
-                                var selectTasks = await fetchTaskStatus(preResponseId, userId);
+                                var selectTasks = await fetchTaskStatus(preResponseId, userId, { origin: '', pathname: '/api/manage-tasks' });
                                 sessionStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
                                 detailed = JSON.parse(sessionStorage.getItem(`${preResponseId}:fetched_tasks`));
                                 task_rec = detailed?.time ?? []; 
@@ -702,7 +703,7 @@
                         
                         if (!detailed && preResponseId) {
                             try {
-                                var com_tasks = await fetchTaskStatus(preResponseId, userId);
+                                var com_tasks = await fetchTaskStatus(preResponseId, userId, { origin: '', pathname: '/api/manage-tasks' });
                                 localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(com_tasks));
                                 detailed = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                                 task_rec = detailed?.time ?? []; 

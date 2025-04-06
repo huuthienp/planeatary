@@ -391,7 +391,7 @@
                             } else if (!postObject || Object.keys(postObject).length === 0) {
                                 try {
                                     if (!selectTasks) {
-                                        selectTasks = await fetchTaskStatus(preResponseId, userId);
+                                        selectTasks = await fetchTaskStatus(preResponseId, userId, { origin: '', pathname: '/api/manage-tasks' });
                                         localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
                                         selectTasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                                         if (!selectTasks) {throw "Failed in fetching tasks!"}
@@ -488,6 +488,7 @@
                             if (newValue && user) {await updateResponseHistory(JSON.parse(newValue), user)}
                             quizFrame.style.display = 'none';
                             emptyStateDisplay(fallbackMessage, ">Thank you for your response! Click  see your result below", "./images/in-love.gif");
+                            await showNavModal("Your post-quiz result sent!", "Please check your email inbox", "send");
                             setTimeout(() => {
                                 updateButton(nextButton, '#00af8c', 'pointer');
                             }, 2000);
