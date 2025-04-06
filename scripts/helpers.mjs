@@ -220,8 +220,17 @@ export async function fetchTaskStatus(preResponseId, userId, { origin = '', path
             url = new URL(origin);
             url.pathname = pathname;
         }  // if origin is not empty, it is used to construct url
+
+        // Retrieve the current user and token
+        const user = netlifyIdentity.gotrue.currentUser();
+        if (!user) {
+            throw new Error("No user logged in");
+        }
+        const token = await user.jwt();
+
         const opt = { method: 'GET', headers: new Headers() };
         opt.headers.set('content-type', 'application/json');
+        opt.headers.set('Authorization', `Bearer ${token}`),
         opt.headers.set('x-response-id', preResponseId);
         opt.headers.set('x-user-id', userId);
         const data = await fetchData(url, opt); // error be caught
