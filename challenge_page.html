@@ -637,7 +637,7 @@
                             post_rec = postObject?.recordedDate;
                             
                             try {
-                                Tstatus = await fetchTaskStatus(preResponseId, userId, { origin: '', pathname: '/api/manage-tasks' });
+                                Tstatus = await fetchTaskStatus(preResponseId, userId);
                                 localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
                                 Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || {};
                                 if (Object.keys(Tstatus).length === 0) {

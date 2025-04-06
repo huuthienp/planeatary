@@ -690,7 +690,7 @@
                                 tasks = await fetchTasks(preResponseId);  
                                 sessionStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                                 tasks = JSON.parse(sessionStorage.getItem(`${preResponseId}:tasks`));
-                                var selectTasks = await fetchTaskStatus(preResponseId, userId, { origin: '', pathname: '/api/manage-tasks' });
+                                var selectTasks = await fetchTaskStatus(preResponseId, userId);
                                 sessionStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(selectTasks));
                                 detailed = JSON.parse(sessionStorage.getItem(`${preResponseId}:fetched_tasks`));
                                 task_rec = detailed?.time ?? []; 
@@ -703,7 +703,7 @@
                         
                         if (!detailed && preResponseId) {
                             try {
-                                var com_tasks = await fetchTaskStatus(preResponseId, userId, { origin: '', pathname: '/api/manage-tasks' });
+                                var com_tasks = await fetchTaskStatus(preResponseId, userId);
                                 localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(com_tasks));
                                 detailed = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
                                 task_rec = detailed?.time ?? []; 

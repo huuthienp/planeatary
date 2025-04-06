@@ -1000,7 +1000,7 @@
                 
                 if (!fetched_tasks && preResponseId) {
                     try {
-                        fetched_tasks = await fetchTaskStatus(preResponseId, userId, { origin: '', pathname: '/api/manage-tasks' });
+                        fetched_tasks = await fetchTaskStatus(preResponseId, userId);
                         localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(fetched_tasks));
                         fetched_tasks = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`)) || { chosen: [], done: [], time: [] };
                         task_rec = fetched_tasks?.time ?? []; 

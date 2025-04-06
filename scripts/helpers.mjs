@@ -213,7 +213,7 @@ export function mergeTaskArrays(data, separator = '@') {
 
 
 // Function to get task status from the API
-export async function fetchTaskStatus(preResponseId, userId, { origin = '', pathname = '/api/manage-tasks' }) {
+export async function fetchTaskStatus(preResponseId, userId, { origin = '', pathname = '/api/manage-tasks' } = {}) {
     try {
         let url = pathname;
         if (!isEmpty(origin)) {  // define origin if called outside browser
@@ -221,16 +221,8 @@ export async function fetchTaskStatus(preResponseId, userId, { origin = '', path
             url.pathname = pathname;
         }  // if origin is not empty, it is used to construct url
 
-        // Retrieve the current user and token
-        const user = netlifyIdentity.gotrue.currentUser();
-        if (!user) {
-            throw new Error("No user logged in");
-        }
-        const token = await user.jwt();
-
         const opt = { method: 'GET', headers: new Headers() };
         opt.headers.set('content-type', 'application/json');
-        opt.headers.set('Authorization', `Bearer ${token}`),
         opt.headers.set('x-response-id', preResponseId);
         opt.headers.set('x-user-id', userId);
         const data = await fetchData(url, opt); // error be caught
