@@ -1,16 +1,13 @@
 [functions]
   node_bundler = 'esbuild'
 
-[functions.recovery]
-  method = ['POST', 'PUT']
-
 [[redirects]]
   from = '/api/recovery'
   to = '/.netlify/functions/recovery'
   status = 200
 
 [[redirects]]
-  from = '/archive/*/*/*/*/*'
+  from = '/archive/*'
   to = '/404.html'
   status = 301
   force = true
