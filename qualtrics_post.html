@@ -78,31 +78,46 @@
                 </ul>
             </footer>
         </div>
-            
-            
-            <!-- spinner overlay-->
-            <section class="overlay hidden" id="spinnerOverlay">
-                <div class="spinner" id="spinner">
-                </div>
-                <div>
-                    <span>Loading</span>
-                </div>
-            </section>
-            
-            <!-- Warning disabling -->
-            <div class="toast-container hidden">
-                <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <h4>You made it!</h4>
-                            <p>Unfortunately, you are not allowed to do more tasks after taking the post-quiz.</p>
-                            <hr>
-                            <p class="mb-0">Alternatively, restart this wonderful journey by restarting pre-quiz.</p>
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        
+        <!-- Nav Modal -->
+        <div class="modal fade" id="navModal" tabindex="-1" aria-labelledby="customAlertLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" id="navModal-header" style="justify-content: center; flex-direction: column;">
+                        <img id="navModal-pic" style="width: 100px;"/>
+                        <h3 class="modal-title" id="navModal-title" style="font-weight: 600; color: white;"></h3>
+                    </div>
+                    <div class="modal-body" id="navModal-body" style="align-self: center; padding: 2.5rem; font-size: 1.2rem;">
+                    </div>
+                    <div class="modal-footer" style="padding: 10px !important; justify-content: center !important;">
+                        <button type="button" id="navModal-close" class="btn btn-primary">Ok</button>
                     </div>
                 </div>
             </div>
+        </div>
+        <!-- spinner overlay-->
+        <section class="overlay hidden" id="spinnerOverlay">
+            <div class="spinner" id="spinner">
+            </div>
+            <div>
+                <span>Loading</span>
+            </div>
+        </section>
+        
+        <!-- Warning disabling -->
+        <div class="toast-container hidden">
+            <div id="alertContainer" class="toast text-white bg-warning border-0 m-3 p-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <h4>You made it!</h4>
+                        <p>Unfortunately, you are not allowed to do more tasks after taking the post-quiz.</p>
+                        <hr>
+                        <p class="mb-0">Alternatively, restart this wonderful journey by restarting pre-quiz.</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
             
             <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
             <script>
@@ -533,7 +548,7 @@
                             console.log('Found newest post-quiz result in storage!\n', newValue);
                             if (newValue && user) {await updateResponseHistory(JSON.parse(newValue), user)}
                             quizFrame.style.display = 'none';
-                            emptyStateDisplay(fallbackMessage, ">Thank you for your response! Click  see your result below", "./images/in-love.gif");
+                            emptyStateDisplay(fallbackMessage, "Thank you for your response! Click  see your result below", "./images/in-love.gif");
                             await showNavModal("Your post-quiz result sent!", "Please check your email inbox", "send");
                             setTimeout(() => {
                                 updateButton(nextButton, '#00af8c', 'pointer');
