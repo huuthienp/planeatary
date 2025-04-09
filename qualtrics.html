@@ -619,7 +619,7 @@
                                 updateAnchors(anchors, hrefs);
                                 updateButton(nextButton, '#00af8c', 'pointer');
                             }, 2000);
-                            await showNavModal("Your pre-quiz result sent!", "Please check your email inbox", "send");
+                            await showNavModal("Your pre-quiz result sent!", "Please check your inbox (the email might be in your spam folder)", "send");
                             quizFrame.style.display = 'none';
                             emptyStateDisplay(quizSpan, 'Thank you for your response! Please click see result!', "./images/thumbs-up.gif");
                             localStorage.setItem("restartFlag", "false"); //set back to false if a latest pre-quiz is done after restarting
