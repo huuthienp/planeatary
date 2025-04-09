@@ -2,6 +2,7 @@ import type { HandlerContext } from "@netlify/functions";
 import { type Store, getStore } from '@netlify/blobs';
 import { fetchData, fetchTaskStatus, fetchUserData } from './helpers.mjs';
 import type { TaskData, QuizResponseCycle } from './custom-data.ts';
+import { mapTaskNumberToName } from './custom-data.ts';
 import { isTaskData } from './custom-data.ts';
 import { userIdRegex, respIdWholeRegex } from './regex.js';
 
@@ -150,7 +151,7 @@ class ReminderSender extends ReminderSetter {
             const sendRmdrFlag: boolean = !isAllDone && diffDays >= this.offset;
             const sendCngrFlag: boolean = isAllDone && !hasPostQuizReminder;
             if (sendCngrFlag || sendRmdrFlag) {
-                await this.callEmailEndpoint(email, { userName, data });
+                await this.callEmailEndpoint(email, { userName, data: mapTaskNumberToName(data) });
             }  /* end of checking difference in days between last seen and today */
             // set task reminder if some tasks remain
             if (sendRmdrFlag) await this.setTaskReminder(userId);
