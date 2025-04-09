@@ -108,6 +108,22 @@ export async function getUserData() {
     }
 }
 
+export async function checkAndRefreshTokenExpired() {
+    const user = netlifyIdentity.gotrue.currentUser();
+    if (!user) return null;
+    else if (user) {
+        user.jwt().then(token => {
+            if (isTokenExpired(token)) {
+                console.log("Token expired. Prompting user to re-login...");
+                netlifyIdentity.logout();
+                window.location.href = "index.html";
+            } else {
+                console.log("Token is valid.");
+            }
+        });
+    }
+}
+
 export function hasPostQuizResult() {
     // Assuming 'postResult' is the key in localStorage that holds the result.
     return localStorage.getItem('postResult') !== null;

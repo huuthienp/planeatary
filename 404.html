@@ -128,12 +128,17 @@
         
         <script type="module">
             import {  isTokenExpired,
-                handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+                handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, checkAndRefreshTokenExpired, logOut } from './scripts/utility.js';
                 document.getElementById('logOut').addEventListener('click', async () => {
                     if (confirm("Do you really want to sign out?") == true) {
                         await logOut();
                     }
                 });
+
+                //Automatically check and refresh token every 50 miniutes
+                setInterval(async () => {
+                    await checkAndRefreshTokenExpired();
+                }, 3000000);
         </script>
     </body>
 </html>

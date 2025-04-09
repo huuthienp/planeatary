@@ -177,7 +177,7 @@
     <script type="module">
         import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays, updateButton } from './scripts/helpers.mjs';
         import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick,
-            handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+            handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, checkAndRefreshTokenExpired, logOut } from './scripts/utility.js';
         
         const mainContainer = document.querySelector(".m-content");
         const QContainer = document.querySelector(".q-task");
@@ -829,6 +829,11 @@
             window.location.href = "challenge_page.html";
         });
 
+        //Automatically check and refresh token every 50 miniutes
+        setInterval(async () => {
+            await checkAndRefreshTokenExpired();
+        }, 3000000);
+
         document.addEventListener("DOMContentLoaded", async function() {
 
             const user = netlifyIdentity.gotrue.currentUser();
@@ -1032,7 +1037,8 @@
                         tContent.innerHTML == '<p>None of your answers got bad score</p>';
                     }
                 });
-
+                good.style.backgroundColor = '#00af8c';
+                bad.style.backgroundColor = '#a9d1cd';
                 var condition = (score) => score >= 3;
                 await renderQuestions(condition, preObject, userId);
                 

@@ -137,7 +137,7 @@
         <script defer type="module">
             import { fetchTaskStatus, fetchResponses } from './scripts/helpers.mjs';
             import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick,
-                handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+                handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, checkAndRefreshTokenExpired, logOut } from './scripts/utility.js';
             
             let scores = [];
             
@@ -321,6 +321,11 @@
                     table.appendChild(cycleRow);
                 });
             }
+
+            //Automatically check and refresh token every 50 miniutes
+            setInterval(async () => {
+                await checkAndRefreshTokenExpired();
+            }, 3000000);
             
             document.addEventListener("DOMContentLoaded", async () => {
                 document.getElementById('logOut').addEventListener('click', async () => {

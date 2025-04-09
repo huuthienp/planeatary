@@ -163,7 +163,7 @@
         <script type="module">
             import { fetchTaskStatus, extractTaskData, updateAnchors, updateButton } from './scripts/helpers.mjs';
             import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick
-                , handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+                , handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, checkAndRefreshTokenExpired, logOut } from './scripts/utility.js';
             
             const mainContainer = document.querySelector(".m-content");
             const Qbuttoncontainer = document.querySelector(".pre-postQ");
@@ -523,13 +523,16 @@
                     }
                 }
             
-                
-            
-            document.addEventListener("DOMContentLoaded", async function() {
+            //Automatically check and refresh token every 50 miniutes
+            setInterval(async () => {
+                await checkAndRefreshTokenExpired();
+            }, 3000000);
 
+            document.addEventListener("DOMContentLoaded", async function() {
+                
                 const nav = document.querySelector('.navbar');
                 const content = document.querySelector('.m-content');
-
+                
                 // Retrieve the computed style of the top element
                 const computedNav = window.getComputedStyle(nav);
                 // Apply them 

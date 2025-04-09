@@ -662,12 +662,17 @@
     
     import { fetchResponses, fetchData, reformatResponseData, mergeTaskArrays, fetchTaskStatus } from './scripts/helpers.mjs';
     import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick,
-        handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+        handleOffcanvasClickFromElement, getUserData, hasPostQuizResult,  checkAndRefreshTokenExpired, logOut } from './scripts/utility.js';
         
         let startTime = Date.now();
         const condition = [false, startTime];
         const bOverlay = document.getElementById("spinnerOverlay");
         const spinner = document.getElementById("spinner");
+
+        //Automatically check and refresh token every 50 miniutes
+        setInterval(async () => {
+            await checkAndRefreshTokenExpired();
+        }, 3000000);
         
         document.addEventListener("DOMContentLoaded", async function() {
             const nav = document.querySelector('.navbar');

@@ -133,7 +133,7 @@
 
             import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays, updateButton } from './scripts/helpers.mjs';
             import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, 
-                handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+                handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult,  checkAndRefreshTokenExpired, logOut } from './scripts/utility.js';
 
             const modal = document.querySelector(".modal2");
             const overlay = document.querySelector(".overlay2");
@@ -519,7 +519,12 @@
                     }
                 }
             }
-            
+
+            //Automatically check and refresh token every 50 miniutes
+            setInterval(async () => {
+                await checkAndRefreshTokenExpired();
+            }, 3000000);
+
             document.addEventListener("DOMContentLoaded", async function() {
                 
                 const nav = document.querySelector('.navbar');

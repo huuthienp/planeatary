@@ -265,7 +265,12 @@
                 
                 import { initiateSurvey, fetchTaskStatus, extractTaskData, fetchResponses, updateButton } from './scripts/helpers.mjs';
                 import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick,
-                    handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, hasPostQuizCycle, emptyStateDisplay, logOut } from './scripts/utility.js';
+                    handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, hasPostQuizCycle, emptyStateDisplay,  checkAndRefreshTokenExpired, logOut } from './scripts/utility.js';
+                
+                //Automatically check and refresh token every 50 miniutes
+                setInterval(async () => {
+                    await checkAndRefreshTokenExpired();
+                }, 3000000);
                 
                 document.addEventListener("DOMContentLoaded", async () => {
                     

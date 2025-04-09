@@ -97,7 +97,13 @@
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script type="module">
     import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick,
-        handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+        handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, checkAndRefreshTokenExpired, logOut } from './scripts/utility.js';
+
+        //Automatically check and refresh token every 50 miniutes
+        setInterval(async () => {
+            await checkAndRefreshTokenExpired();
+        }, 3000000);
+
         //spinner variables
         let startTime = Date.now();
         const condition = [false, startTime];

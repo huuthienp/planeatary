@@ -233,7 +233,7 @@
     </script>
 
     <script type="module">
-        import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+        import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, checkAndRefreshTokenExpired, logOut } from './scripts/utility.js';
         
         //Dismiss the offcanvas bar after click and execute
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
@@ -304,6 +304,11 @@
                 }
             }
         });
+        
+        //Automatically check and refresh token every 50 miniutes
+        setInterval(async () => {
+            await checkAndRefreshTokenExpired();
+        }, 3000000);
         
         document.addEventListener("DOMContentLoaded", async function() {
 
