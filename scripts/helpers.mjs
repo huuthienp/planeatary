@@ -257,7 +257,8 @@ export function extractTaskData(responseBody, separator='@') {
      * @returns {Object} An object containing arrays: chosen, done, and time.
      */
     const chosen = [], done = [], pending = [], time = [];
-    for (const mergedString of responseBody.result.chosen) {
+    for (const mergedString of responseBody.result?.chosen ?? []) {
+        // if "chosen" is undefined, fall back to empty array so empty arrays are returned
         const [ taskNumber, finishTime ] = mergedString.split(separator);
         chosen.push(taskNumber);
         if (!isEmpty(finishTime)) {
