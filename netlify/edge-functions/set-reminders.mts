@@ -1,5 +1,5 @@
 import type { Config } from '@netlify/edge-functions';
-import { extractWithNames } from '../../scripts/custom-data.ts';
+import { extractTaskData } from '../../scripts/helpers.mjs';
 import { ReminderSetter } from '../../scripts/custom-reminder.ts';
 import { formulateErrorResponse } from '../../scripts/custom-http.ts';
 
@@ -49,7 +49,7 @@ export default async (request: Request) => {
         }  // continue if user has not opted out
         await helper.setLastSeen(userId);
         if (['POST', 'PUT'].includes(refMethod)) {
-            const taskData = extractWithNames({ chosen });
+            const taskData = extractTaskData({ result: chosen });  // imitate Qualtrics response
             const isAllDone = ReminderSetter.checkAllDone(taskData);
             helper.offset = isAllDone ? congratsOffset : reminderOffset;
             await helper.setTaskReminder(userId);

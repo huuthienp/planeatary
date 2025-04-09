@@ -57,8 +57,7 @@ function isImportedTaskData(data: unknown): data is ImportedTaskData {
 }  /* end of isImportedTaskData */
 
 
-function extractWithNames(mergedData: { chosen: Array<string> }): TaskData {
-    const extracted = extractTaskData({ result: mergedData });  /* imitate Qualtrics response */
+function mapTaskNumberToName(taskData: TaskData, props: Array<string> = ['done', 'pending']): TaskData {
     /** taskNumber format: txxyy (string type)
      * t is a literal and short for "task"
      * xx is question number with leading zero: 01-12 (t1213)
@@ -70,11 +69,10 @@ function extractWithNames(mergedData: { chosen: Array<string> }): TaskData {
         }  /* end of looping through tasks of related question */
         return '404';
     }  /* end of matchName */
-    extracted.done = extracted.done.map(matchName);
-    extracted.pending = extracted.pending.map(matchName);
-    return extracted;
-}  /* end of extractWithNames */
+    for (const prop of props) taskData[prop] = taskData[prop].map(matchName);
+    return taskData;
+}  /* end of mapTaskNumberToName */
 
 
 export { TaskData, ImportedTaskData, QTaskPayload, QuizResponseCycle };
-export { isTaskData, isImportedTaskData, extractWithNames };
+export { isTaskData, isImportedTaskData, mapTaskNumberToName };
