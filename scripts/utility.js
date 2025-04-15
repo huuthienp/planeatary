@@ -134,6 +134,21 @@ export function hasPostQuizCycle() {
     return sessionStorage.getItem('selectedCycle_post') !== null;
 }
 
+export function checkBackgroundLoaded(url) {
+    const img = new Image();
+    img.src = url;
+    if (img.complete) {
+      // The image has already been loaded (from cache, for instance)
+      console.log("background is complete (loaded)");
+      return true;
+    } else {
+      img.onload = () => { console.log("Image has finished loading!"); };
+      img.onerror = () => { console.log("Error loading image."); };
+      return false;
+    }
+  }
+  
+
 export function emptyStateDisplay(frame, content, img) {
     frame.innerHTML = `<div class="void">
     <p class="placeholder-glow title-placeholder">
@@ -143,20 +158,34 @@ export function emptyStateDisplay(frame, content, img) {
     <span class="placeholder w-100"></span>
     <span class="placeholder w-100"></span>
     </p>
-    <img src="" alt="..." class="myGif" style="display: none;" />
+    <img src="" alt="..." class="myGif1" style="display: none;" />
+    <img src="" alt="..." class="myGif2" style="display: none;" />
     </div>`;
     // If the image is already loaded (from cache, for example), show it immediately.
-    const gifEl = frame.querySelector('.myGif');
-    if (gifEl.complete) {
-        frame.innerHTML = "";
-        frame.innerHTML = `<div class="void">${content} <img class="myGif" src="${img}" style="display: block;"></div>`;
-    } else {
-        // Otherwise, add an event listener to detect when it finishes loading.
-        gifEl.addEventListener('load', () => {
-            frame.innerHTML= "";
-            frame.innerHTML = `<div class="void">${content} <img class="myGif" src="${img}" style="display: block;"></div>`;
-        });
+    const background = frame.querySelector('.void');
+    const gifEl1 = frame.querySelector('.myGif1');
+    const gifEl2 = frame.querySelector('.myGif2');
+    background.style.backgroundImage = "url('./images/ella-olsson-food.jpg')";
+    gifEl1.src = img;
+    gifEl2.src = "./images/PlanEATary_Logo_Badge.png";
+    //Checking loading completion of backgground image 
+    const bgImage = window.getComputedStyle(background).backgroundImage;
+    if (bgImage) {
+        checkBackgroundLoaded(bgImage);
     }
+    //Checking loading completion of image and gif image
+    if (gifEl1.complete && gifEl2.complete) {
+        frame.innerHTML = "";
+        frame.innerHTML = `<div class="void">${content} <img class="myGif1" src="${img}" style="display: block;"><img class="myGif2" src="./images/PlanEATary_Logo_Badge.png" style="display: block;"></div>`;
+    } else {
+        gifEl1.style.display = "none";
+        gifEl2.style.display = "none";
+    }
+     // Otherwise, add an event listener to detect when it finishes loading.
+     gifEl1.addEventListener('load', () => {
+        frame.innerHTML= "";
+        frame.innerHTML = `<div class="void">${content} <img class="myGif1" src="${img}" style="display: block;"><img class="myGif2" src="./images/PlanEATary_Logo_Badge.png" style="display: block;"></div>`;
+    });
 }
 
 export async function logOut() {

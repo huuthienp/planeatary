@@ -453,7 +453,7 @@
                                 //await updateResponseHistory(postObject, user);
                                 updateButton(nextButton, '#00af8c', 'pointer');
                                 quizFrame.style.display = 'none'; 
-                                emptyStateDisplay(fallbackMessage, "Excellent! You have finished everything in the cycle! Please go back to the home page or pre-quiz if wish to start over", './images/in-love.gif');
+                                emptyStateDisplay(fallbackMessage, "Great work on reaching the end of this Journey. \nHowever, the journey towards healthy and sustainable eating is an ongoing quest and we hope that you'll help to get more and more people onboard.\n Alternatively, you can start over the Journey in pre-quiz page.", './images/in-love.gif');
                             } else if (!postObject || Object.keys(postObject).length === 0) {
                                 try {
                                     if (!selectTasks) {
@@ -553,7 +553,7 @@
                             console.log('Found newest post-quiz result in storage!\n', newValue);
                             if (newValue && user) {await updateResponseHistory(JSON.parse(newValue), user)}
                             quizFrame.style.display = 'none';
-                            emptyStateDisplay(fallbackMessage, "Thank you for your response! Click  see your result below", "./images/in-love.gif");
+                            emptyStateDisplay(fallbackMessage, "Congratulations! You've just marked the end of the Journey. \nHowever, the journey towards healthy and sustainable eating doesn't end here. it's an ongoing quest and we hope that you'll help to get more and more people onboard.", "./images/in-love.gif");
                             await showNavModal("Your post-quiz result sent!", "Please check your inbox (the email might be in your spam folder)", "send");
                             setTimeout(() => {
                                 updateButton(nextButton, '#00af8c', 'pointer');
