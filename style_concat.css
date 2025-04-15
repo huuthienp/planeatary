@@ -1876,16 +1876,22 @@ body {
 }
 
 .void-header {
-  background: rgba(85, 163, 124, 0.9);
+  background: rgb(22 75 48);
   color: #f8f8f8;
   width: 100%;
   font-size: 2rem;
+  text-align: center;
+  align-content: center;
+  justify-items: center;
+  padding: 1vmax;
+  border-radius: 20px 20px 0 0;
 }
 
 .void-content {
-  color: #2ecc71;
+  color: #2356a3;
   width: 100%;
   font-size: 1rem;
+  padding: 2vmax;
 }
 
 .main-404 {

@@ -134,6 +134,7 @@ export function hasPostQuizCycle() {
     return sessionStorage.getItem('selectedCycle_post') !== null;
 }
 
+//Archive
 export function checkBackgroundLoaded(url) {
     const img = new Image();
     img.src = url;
@@ -162,22 +163,14 @@ export function emptyStateDisplay(frame, content1, content2, img) {
     <img src="" alt="..." class="myGif1" style="display: none;" />
     <img src="" alt="..." class="myGif2" style="display: none;" />
     </div>`;
-    // If the image is already loaded (from cache, for example), show it immediately.
-    const background = frame.querySelector('.void');
     const gifEl1 = frame.querySelector('.myGif1');
     const gifEl2 = frame.querySelector('.myGif2');
-    background.style.backgroundImage = "url('./images/ella-olsson-food.jpg')";
     gifEl1.src = img;
     gifEl2.src = "./images/PlanEATary_Logo_Badge.png";
-    //Checking loading completion of backgground image 
-    const bgImage = window.getComputedStyle(background).backgroundImage;
-    if (bgImage) {
-        checkBackgroundLoaded(bgImage);
-    }
     //Checking loading completion of image and gif image
     if (gifEl1.complete && gifEl2.complete) {
         frame.innerHTML = "";
-        frame.innerHTML = `<div class="void"><div class='void-header'><img class="myGif2" src="./images/PlanEATary_Logo_Badge.png" style="display: block; width: 100px;"><br /><span>${content1}<span></div><div class='void-content'>${content2}</div><img class="myGif1" src="${img}" style="display: block;"></div>`;
+        frame.innerHTML = `<div class="void" style='padding: 0;'><div class='void-header'><img class="myGif2" src="./images/PlanEATary_Logo_Badge.png" style="display: block; width: 200px;"><span>${content1}<span></div><div class='void-content'>${content2}</div><img class="myGif1" src="${img}" style="display: block;"></div>`;
     } else {
         gifEl1.style.display = "none";
         gifEl2.style.display = "none";
@@ -185,7 +178,7 @@ export function emptyStateDisplay(frame, content1, content2, img) {
      // Otherwise, add an event listener to detect when it finishes loading.
      gifEl1.addEventListener('load', () => {
         frame.innerHTML= "";
-        frame.innerHTML = `<div class="void"><div class='void-header'><img class="myGif2" src="./images/PlanEATary_Logo_Badge.png" style="display: block; width: 100px;"><br /><span>${content1}<span></div><div class='void-content'>${content2}</div><img class="myGif1" src="${img}" style="display: block;"></div>`;
+        frame.innerHTML = `<div class="void" style='padding: 0;'><div class='void-header'><img class="myGif2" src="./images/PlanEATary_Logo_Badge.png" style="display: block; width: 200px;"><span>${content1}<span></div><div class='void-content'>${content2}</div><img class="myGif1" src="${img}" style="display: block;"></div>`;
     });
 }
 
