@@ -149,12 +149,13 @@ export function checkBackgroundLoaded(url) {
   }
   
 
-export function emptyStateDisplay(frame, content, img) {
+export function emptyStateDisplay(frame, content1, content2, img) {
     frame.innerHTML = `<div class="void">
     <p class="placeholder-glow title-placeholder">
     <span class="placeholder w-100"></span>
     </p>
     <p class="placeholder-glow text-placeholder">
+    <span class="placeholder w-100"></span>
     <span class="placeholder w-100"></span>
     <span class="placeholder w-100"></span>
     </p>
@@ -176,7 +177,7 @@ export function emptyStateDisplay(frame, content, img) {
     //Checking loading completion of image and gif image
     if (gifEl1.complete && gifEl2.complete) {
         frame.innerHTML = "";
-        frame.innerHTML = `<div class="void">${content} <img class="myGif1" src="${img}" style="display: block;"><img class="myGif2" src="./images/PlanEATary_Logo_Badge.png" style="display: block;"></div>`;
+        frame.innerHTML = `<div class="void"><div class='void-header'><img class="myGif2" src="./images/PlanEATary_Logo_Badge.png" style="display: block; width: 100px;"><br /><span>${content1}<span></div><div class='void-content'>${content2}</div><img class="myGif1" src="${img}" style="display: block;"></div>`;
     } else {
         gifEl1.style.display = "none";
         gifEl2.style.display = "none";
@@ -184,7 +185,7 @@ export function emptyStateDisplay(frame, content, img) {
      // Otherwise, add an event listener to detect when it finishes loading.
      gifEl1.addEventListener('load', () => {
         frame.innerHTML= "";
-        frame.innerHTML = `<div class="void">${content} <img class="myGif1" src="${img}" style="display: block;"><img class="myGif2" src="./images/PlanEATary_Logo_Badge.png" style="display: block;"></div>`;
+        frame.innerHTML = `<div class="void"><div class='void-header'><img class="myGif2" src="./images/PlanEATary_Logo_Badge.png" style="display: block; width: 100px;"><br /><span>${content1}<span></div><div class='void-content'>${content2}</div><img class="myGif1" src="${img}" style="display: block;"></div>`;
     });
 }
 

@@ -532,7 +532,7 @@
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#00af8c', 'pointer');
                         quizFrame.style.display = 'none';
-                        emptyStateDisplay(quizSpan, "You have already taken the pre-quiz! Let's continue!", "./images/thumbs-up.gif");
+                        emptyStateDisplay(quizSpan, "", "You have already taken the pre-quiz! Let's continue!", "./images/thumbs-up.gif");
                         //await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         return;
@@ -542,7 +542,7 @@
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#00af8c', 'pointer');
                         quizFrame.style.display = 'none';
-                        emptyStateDisplay(quizSpan, 'You have pull everything off! It is time to start over this amazing journey!', "./images/thumbs-up.gif");
+                        emptyStateDisplay(quizSpan, "", 'You have pull everything off! It is time to start over this amazing journey!', "./images/thumbs-up.gif");
                         //await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         console.log('Found post-quiz result in storage!\n', postObject);
@@ -621,7 +621,7 @@
                             }, 2000);
                             await showNavModal("Your pre-quiz result sent!", "Please check your inbox (the email might be in your spam folder)", "send");
                             quizFrame.style.display = 'none';
-                            emptyStateDisplay(quizSpan, 'Thank you for your response! Please click see result!', "./images/thumbs-up.gif");
+                            emptyStateDisplay(quizSpan,'', 'Thank you for your response! Please click see result!', "./images/thumbs-up.gif");
                             localStorage.setItem("restartFlag", "false"); //set back to false if a latest pre-quiz is done after restarting
                             updateButton(restartBtn, '#4e958d52', 'not-allowed');
                             restartBtn.disabled = true;

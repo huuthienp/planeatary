@@ -1859,9 +1859,8 @@ body {
   display: flex;
   justify-content: center;
   margin: auto auto;
-  font-size: 2em;
+  font-size: 1rem;
   width: 86%;
-  color: #2ecc71;
   font-weight: 600;
   padding: 15vh 10vw;
   flex-wrap: wrap;
@@ -1874,6 +1873,19 @@ body {
   display: flex;
   width: 80px;
   height: auto;
+}
+
+.void-header {
+  background: rgba(85, 163, 124, 0.9);
+  color: #f8f8f8;
+  width: 100%;
+  font-size: 2rem;
+}
+
+.void-content {
+  color: #2ecc71;
+  width: 100%;
+  font-size: 1rem;
 }
 
 .main-404 {
