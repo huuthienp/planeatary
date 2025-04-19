@@ -15,6 +15,9 @@ body {
   animation-fill-mode: forwards;
 }
 
+body.modal-open {
+  padding-right: 0 !important;
+}
 
 @keyframes fadeInAnimation {
   0% {
