@@ -480,6 +480,13 @@
                                 taskCard.appendChild(btn_div);
                                 cardContainer.appendChild(taskCard);
                                 updateNextButton(preResponseId, userId, tasks, Tstatus); 
+
+                                skip_btn.addEventListener('click', (event) => {
+                                    
+                                    // Prevent the event from bubbling up
+                                    event.stopPropagation();
+
+                                });
                                 
                                 taskCard.addEventListener('click', async (event) => {
                                     // Toggle task status between "Done" and "Completed"
