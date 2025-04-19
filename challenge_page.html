@@ -434,7 +434,7 @@
                                 skip_btn.classList.add('btn', 'btn-warning');
                                 skip_btn.setAttribute('data-bs-toggle', 'modal');
                                 skip_btn.setAttribute('data-bs-target', '#reasonModal');
-                                skip_btn.textContent = `Can’t finish this task?`;
+                                skip_btn.textContent = `Can’t finish this?`;
 
                                 const completion = document.createElement("span");
                                 btn_div.classList.add("completion");
@@ -475,6 +475,7 @@
                                 taskName.appendChild(infoIcon);
                                 taskCard.appendChild(taskName);
                                 taskCard.appendChild(ripple); 
+                                btn_div.appendChild(skip_btn);
                                 btn_div.appendChild(completion);
                                 taskCard.appendChild(btn_div);
                                 cardContainer.appendChild(taskCard);
