@@ -264,8 +264,51 @@
                     e.preventDefault(); // handle via AJAX or whatever
                     
                     const reason = textarea.value.trim();
-                    //Send the data to BE
-                    // await function blah blah
+                    //Logic for sending reasons to BE
+
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    if (!user) {
+                        console.error("No user is logged in!");
+                        return;
+                    }
+
+                    const token = await user.jwt();
+                    if (isTokenExpired(token)) {
+                        alert("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                        return;
+                    }
+
+                    const userId = user.id;
+
+                    let preObject = JSON.parse(localStorage.getItem('preResult'));
+                    let preResponseId = preObject?.responseId ?? null; 
+                    let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+                    let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                     
+                    Object.keys(tasks).forEach(async (questionKey) => {
+                        const taskGroup = tasks?.[questionKey]?.tasks ?? [];
+                        // Filter tasks that are selected
+                        taskGroup.forEach(task => 
+                        {
+                            if(task.choice === 'chosen' && task.status === 'Done') {
+                                //Annotate it as skipped
+                                task.status = "Skipped";
+                                task.finishTime = "Skipped";
+                            }
+                            
+                            if (task.status === "Completed" && Tstatus.chosen.indexOf(String(task.taskNumber)) !== -1) {
+                                let index = Tstatus.chosen.indexOf(String(task.taskNumber));
+                                Tstatus.done[index] = String(task.taskNumber) + "@" + task.status;
+                                Tstatus.time[index] = task.finishTime;
+                            }
+                        })
+                    })
+
+                    // Send skipped status to BE
+                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                    localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
+                    await updateTaskStatus(preResponseId, userId, localStorage.getItem(`${preResponseId}:tasks`));
 
                     //hide the modal
                     const modal = bootstrap.Modal.getInstance(modalEl);
@@ -295,7 +338,6 @@
                 });
 
             }
-
 
             //hard-code updating responseHistory (incompleted)
             async function updateResponseHistory(preResponseId, lastTask) {
