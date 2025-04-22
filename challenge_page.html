@@ -247,7 +247,7 @@
                 myToast.show();
             }
 
-            (() => {
+            (async () => {
                 'use strict';
                 const modalEl  = document.getElementById('reasonModal');
                 const form     = document.getElementById('reasonForm');
@@ -264,12 +264,15 @@
                     e.preventDefault(); // handle via AJAX or whatever
                     
                     const reason = textarea.value.trim();
-                    //Add BE logic later
-                    
+                    //Send the data to BE
+                    // await function blah blah
 
                     //hide the modal
                     const modal = bootstrap.Modal.getInstance(modalEl);
                     modal.hide();
+
+                    //Redirect the user to post-quiz 
+                    window.location.href = "qualtrics_post.html";
                     
                     // Optionally reset form for next time
                     form.classList.remove('was-validated');
