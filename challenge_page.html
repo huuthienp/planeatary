@@ -299,7 +299,7 @@
                             
                             if (task.status === "Done" && Tstatus.chosen.indexOf(String(task.taskNumber)) !== -1) {
                                 let index = Tstatus.chosen.indexOf(String(task.taskNumber));
-                                Tstatus.done[index] = String(task.taskNumber) + "@" + task.status;
+                                Tstatus.done[index] = String(task.taskNumber) + "@" + String(task.status);
                                 Tstatus.time[index] = task.finishTime;
                             }
                         })

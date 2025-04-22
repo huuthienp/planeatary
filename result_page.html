@@ -500,7 +500,7 @@
 
                     var task_rec = detailed?.time ?? [];
                     
-                    var firstNullIndex = detailed?.time?.length !== 0 && detailed?.time?.length ==  detailed?.chosen?.length ? detailed?.time?.findIndex(el => el == null) : 0;
+                    var firstNullIndex = detailed?.time?.length !== 0 && detailed?.time?.length ==  detailed?.chosen?.length ? detailed?.time?.findIndex(el => el == null || "Skipped") : 0;
                     console.log("time array:", task_rec);
                     console.log("firstNullIndex:", firstNullIndex);
                     

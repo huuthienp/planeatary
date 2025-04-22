@@ -202,7 +202,7 @@ export function mergeTaskArrays(data, separator = '@') {
         for (const task of data[qNumber].tasks) {
             if ('chosen' === task.choice) {
                 const { taskNumber, finishTime } = task;
-                if (!isEmpty(finishTime)) {
+                if (!isEmpty(finishTime) && finishTime !== "Skipped") {
                     chosen.push([taskNumber, finishTime].join(separator));
                 } else { chosen.push(taskNumber); }
             }  /* end of checking if task is chosen */
