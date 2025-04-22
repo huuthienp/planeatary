@@ -73,6 +73,7 @@
                 </div>
                 <div class="Card"></div>
                 <div class="btn-next" style="padding-top: 4vmax;">
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#reasonModal">Can’t finish tasks?</button>
                     <button class="next btn btn-success shadow" style="width: 180px;">Next  &#8594;</button>
                 </div>
             </div>
@@ -133,12 +134,12 @@
             <div class="modal-dialog">
                 <form id="reasonForm" class="modal-content needs-validation" novalidate>
                     <div class="modal-header">
-                        <h5 class="modal-title" id="reasonModalLabel">Please enlight us about our reasons.</h5>
+                        <h5 class="modal-title" id="reasonModalLabel">Please enlight us about your reasons.</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="reasonInput" class="form-label">Why can’t you finish this task?</label>
+                            <label for="reasonInput" class="form-label">Why can’t you finish some tasks?</label>
                             <textarea
                             class="form-control"
                             id="reasonInput"
@@ -435,6 +436,7 @@
                                 skip_btn.setAttribute('data-bs-toggle', 'modal');
                                 skip_btn.setAttribute('data-bs-target', '#reasonModal');
                                 skip_btn.textContent = `Can’t finish this?`;
+                                skip_btn.style.display = "none";
 
                                 const completion = document.createElement("span");
                                 btn_div.classList.add("completion");
