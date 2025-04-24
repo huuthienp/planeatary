@@ -311,7 +311,7 @@
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
                     //Send skipped Tasks and Reasons to BE
-                    await updateTaskStatus(preResponseId, userId, localStorage.getItem(`${preResponseId}:tasks`), reason);
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)), reason);
 
                     //hide the modal
                     const modal = bootstrap.Modal.getInstance(modalEl);
