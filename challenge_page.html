@@ -264,6 +264,7 @@
                     e.preventDefault(); // handle via AJAX or whatever
                     
                     const reason = textarea.value.trim();
+                    console.log(reason);
                     //Logic for sending reasons to BE
 
                     const user = netlifyIdentity.gotrue.currentUser();
@@ -305,6 +306,7 @@
                         })
                     })
 
+                    Tstatus.reason = reason;
                     // Send skipped status to BE
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
