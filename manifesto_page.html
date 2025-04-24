@@ -243,7 +243,7 @@
                 });
                 // When the close button is clicked, hide the modal and resolve the promise
                 document.getElementById('navModal-ok').addEventListener('click', async function handler() {
-                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)), Tstatus?.reason ?? "");
                     bsModal.hide();
                     resolve(); // Notify that the modal was dismissed
                 }, { once: true });
@@ -825,7 +825,7 @@
             });
             const beaconSent = navigator.sendBeacon('/api/manage-tasks', payload);
             console.log("Beacon sent:", beaconSent);
-            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+            await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)), Tstatus?.reason ?? "");
             window.location.href = "challenge_page.html";
         });
 
@@ -873,7 +873,7 @@
             offcanvasLinks.forEach(li => {
                 li.addEventListener('click', async(event) => {
                     //event.preventDefault();
-                    await showNavModal();
+                    if(li.href !== "#") {await showNavModal();}
                     handleOffcanvasClick(event);
                 });
             });
@@ -1086,7 +1086,7 @@
                     }
                     const beaconSent = navigator.sendBeacon('/api/manage-tasks', payload);
                     console.log("Beacon sent:", beaconSent);
-                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)), Tstatus?.reason ?? "");
                 }
             });
         });
