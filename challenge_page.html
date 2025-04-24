@@ -417,7 +417,7 @@
                     Object.keys(tasks).forEach(questionKey => {
                         const taskGroup = tasks?.[questionKey]?.tasks ?? [];
                         taskGroup.forEach(task => {
-                            if (task.choice === "chosen" && task.status !== "Completed") {
+                            if (task.choice === "chosen" && task.status == "Done") {
                                 allCompleted = false; // If any selected task is not "Completed", set false
                             } 
                         });
@@ -488,7 +488,7 @@
 
                                 const completion = document.createElement("span");
                                 btn_div.classList.add("completion");
-                                completion.textContent = task.status === "Completed" ? "Completed" : "Done";
+                                completion.textContent = task.status;
                                 
                                 // Set card styles based on status
                                 if (task.status === "Completed") {

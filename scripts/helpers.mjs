@@ -200,7 +200,7 @@ export function mergeTaskArrays(data, separator = '@') {
  */
     const chosen = [];
     for (const qNumber of Object.keys(data)) {
-        for (const task of data[qNumber].tasks) {
+        for (const task of data?.[qNumber]?.tasks) {
             if ('chosen' === task.choice) {
                 const entry = isEmpty(task.finishTime)
                     ? task.taskNumber
