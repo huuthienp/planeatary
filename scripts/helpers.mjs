@@ -142,12 +142,13 @@ export function storeResponseData(reformattedData) {
 
 
 // Function to update task status using the API
-export async function updateTaskStatus(preResponseId, userId, taskData) {
+export async function updateTaskStatus(preResponseId, userId, taskData, reason="") {
     try {
         const mergedData = mergeTaskArrays(taskData);
         const requestBody = {
             id: preResponseId,
             chosen: mergedData.chosen,
+            reason: reason,
         };
         const fetchOpt = { method: 'PUT',
             body: JSON.stringify(requestBody),  // unchanged, while fetch options are rewritten
