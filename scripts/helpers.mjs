@@ -201,10 +201,11 @@ export function mergeTaskArrays(data, separator = '@') {
     for (const qNumber of Object.keys(data)) {
         for (const task of data[qNumber].tasks) {
             if ('chosen' === task.choice) {
-                const { taskNumber, finishTime } = task;
-                if (!isEmpty(finishTime) && finishTime !== "Skipped") {
-                    chosen.push([taskNumber, finishTime].join(separator));
-                } else { chosen.push(taskNumber); }
+                const entry = isEmpty(task.finishTime)
+                    ? task.taskNumber
+                    : [task.taskNumber, task.finishTime].join(separator);
+                // also store an entry like "txxyy@Skipped" when finishTime === "Skipped"
+                chosen.push(entry);
             }  /* end of checking if task is chosen */
         }  /* end of looping through tasks per question */
     }  /* end of looping through questions */
@@ -257,7 +258,8 @@ export function extractTaskData(responseBody, separator='@') {
      * @returns {Object} An object containing arrays: chosen, done, and time.
      */
     const chosen = [], done = [], pending = [], time = [];
-    for (const mergedString of responseBody.result?.chosen ?? []) {
+    const taskData = responseBody.result;  // for clarity
+    for (const mergedString of taskData?.chosen ?? []) {
         // if "chosen" is undefined, fall back to empty array so empty arrays are returned
         const [ taskNumber, finishTime ] = mergedString.split(separator);
         chosen.push(taskNumber);
@@ -269,7 +271,7 @@ export function extractTaskData(responseBody, separator='@') {
             pending.push(taskNumber);
         }  /* end of checking task is done or not */
     }  /* end of looping through task data fetched from Qualtrics */
-    return { chosen, done, pending, time };
+    return { ...taskData, chosen, done, pending, time };
 }
 
 export async function fetchResponses(userId) {
