@@ -56,9 +56,13 @@ export default async (request: Request) => {
             fetchOpt.headers.set('content-type', 'application/json');
             fetchOpt.method = 'PUT';
             respBody.meta = (await fetchData(endpoint, fetchOpt) as QTaskPayload).meta;
-            respBody.result.chosen = reqBody.chosen;
-        }  /* end of updating task data v3.1 */
-        requestReminder({ ...respBody.result, userId }, request.method, new URL(request.url));
+            // return requested (POST/PUT) task data in response
+            respBody.result = { ...respBody.result, ...reqBody };
+            // properties of reqBody will replace those of respBody.result
+        }  /* end of updating task data v3.2 */
+        const taskData: ImportedTaskData = respBody.result;  // for clarity
+        taskData.userId = userId;
+        requestReminder(taskData, request.method, new URL(request.url));
         console.log(request.method, respId.substring(2, 8));
         return Response.json(respBody); // default status is 200
     } catch (manaTaskErr) {  // e.g. response from Qualtrics not ok
