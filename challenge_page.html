@@ -300,8 +300,8 @@
                             
                             if (task.status === "Done" && Tstatus.chosen.indexOf(String(task.taskNumber)) !== -1) {
                                 let index = Tstatus.chosen.indexOf(String(task.taskNumber));
-                                Tstatus.done[index] = String(task.taskNumber) + "@" + String(task.status);
-                                Tstatus.time[index] = task.finishTime;
+                                Tstatus.done[index] = String(task.taskNumber) + "@" + "Skipped";
+                                Tstatus.time[index] = "Skipped";
                             }
                         })
                     })
@@ -447,7 +447,7 @@
                         return;
                     }
                     
-                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)), Tstatus?.reason ?? "");
                     
                     Object.keys(tasks).forEach(async (questionKey) => {
                         const taskGroup = tasks?.[questionKey]?.tasks ?? [];
@@ -599,7 +599,7 @@
                     
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))} 
-                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)), Tstatus?.reason ?? "");
                     setTimeout(() => {
                         updateNextButton(preResponseId, userId, tasks, Tstatus);
                     }, 1000);
@@ -632,7 +632,7 @@
                         // Update the response history with the latest finished task
                         await updateResponseHistory(preResponseId, lastTask);
                         // Update task status from localStorage 
-                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)), Tstatus?.reason ?? "");
                         console.log(`Response history updated with task: ${lastTask}`);
                         console.log("Tasks updated!");
                     } catch (err) {
@@ -643,7 +643,7 @@
                     // If not all tasks are completed, update the response history with an empty lastTask
                     try {
                         await updateResponseHistory(preResponseId, lastTask);
-                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)), Tstatus?.reason ?? "");
                         console.log(`Response history updated with empty task: ${lastTask}`);
                         console.log("Tasks updated!");
                     } catch (err) {
