@@ -12,7 +12,7 @@
   status = 200
 
 [[redirects]]
-  from = '/archive/*/*/*/*/*'
+  from = '/archive/*'
   to = '/404.html'
   status = 301
   force = true
