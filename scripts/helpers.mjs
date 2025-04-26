@@ -142,12 +142,13 @@ export function storeResponseData(reformattedData) {
 
 
 // Function to update task status using the API
-export async function updateTaskStatus(preResponseId, userId, taskData) {
+export async function updateTaskStatus(preResponseId, userId, taskData, reason="") {
     try {
         const mergedData = mergeTaskArrays(taskData);
         const requestBody = {
             id: preResponseId,
             chosen: mergedData.chosen,
+            reason: reason,
         };
         const fetchOpt = { method: 'PUT',
             body: JSON.stringify(requestBody),  // unchanged, while fetch options are rewritten
@@ -199,12 +200,13 @@ export function mergeTaskArrays(data, separator = '@') {
  */
     const chosen = [];
     for (const qNumber of Object.keys(data)) {
-        for (const task of data[qNumber].tasks) {
+        for (const task of data?.[qNumber]?.tasks) {
             if ('chosen' === task.choice) {
-                const { taskNumber, finishTime } = task;
-                if (!isEmpty(finishTime)) {
-                    chosen.push([taskNumber, finishTime].join(separator));
-                } else { chosen.push(taskNumber); }
+                const entry = isEmpty(task.finishTime)
+                    ? task.taskNumber
+                    : [task.taskNumber, task.finishTime].join(separator);
+                // also store an entry like "txxyy@Skipped" when finishTime === "Skipped"
+                chosen.push(entry);
             }  /* end of checking if task is chosen */
         }  /* end of looping through tasks per question */
     }  /* end of looping through questions */
@@ -213,13 +215,14 @@ export function mergeTaskArrays(data, separator = '@') {
 
 
 // Function to get task status from the API
-export async function fetchTaskStatus(preResponseId, userId, { origin = '', pathname = '/api/manage-tasks' }) {
+export async function fetchTaskStatus(preResponseId, userId, { origin = '', pathname = '/api/manage-tasks' } = {}) {
     try {
         let url = pathname;
         if (!isEmpty(origin)) {  // define origin if called outside browser
             url = new URL(origin);
             url.pathname = pathname;
         }  // if origin is not empty, it is used to construct url
+
         const opt = { method: 'GET', headers: new Headers() };
         opt.headers.set('content-type', 'application/json');
         opt.headers.set('x-response-id', preResponseId);
@@ -256,7 +259,9 @@ export function extractTaskData(responseBody, separator='@') {
      * @returns {Object} An object containing arrays: chosen, done, and time.
      */
     const chosen = [], done = [], pending = [], time = [];
-    for (const mergedString of responseBody.result.chosen) {
+    const taskData = responseBody.result;  // for clarity
+    for (const mergedString of taskData?.chosen ?? []) {
+        // if "chosen" is undefined, fall back to empty array so empty arrays are returned
         const [ taskNumber, finishTime ] = mergedString.split(separator);
         chosen.push(taskNumber);
         if (!isEmpty(finishTime)) {
@@ -267,7 +272,7 @@ export function extractTaskData(responseBody, separator='@') {
             pending.push(taskNumber);
         }  /* end of checking task is done or not */
     }  /* end of looping through task data fetched from Qualtrics */
-    return { chosen, done, pending, time };
+    return { ...taskData, chosen, done, pending, time };
 }
 
 export async function fetchResponses(userId) {

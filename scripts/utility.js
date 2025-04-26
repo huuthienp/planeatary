@@ -108,6 +108,22 @@ export async function getUserData() {
     }
 }
 
+export async function checkAndRefreshTokenExpired() {
+    const user = netlifyIdentity.gotrue.currentUser();
+    if (!user) return null;
+    else if (user) {
+        user.jwt().then(token => {
+            if (isTokenExpired(token)) {
+                console.log("Token expired. Prompting user to re-login...");
+                netlifyIdentity.logout();
+                window.location.href = "index.html";
+            } else {
+                console.log("Token is valid.");
+            }
+        });
+    }
+}
+
 export function hasPostQuizResult() {
     // Assuming 'postResult' is the key in localStorage that holds the result.
     return localStorage.getItem('postResult') !== null;
@@ -118,7 +134,23 @@ export function hasPostQuizCycle() {
     return sessionStorage.getItem('selectedCycle_post') !== null;
 }
 
-export function emptyStateDisplay(frame, content, img) {
+//Archive
+export function checkBackgroundLoaded(url) {
+    const img = new Image();
+    img.src = url;
+    if (img.complete) {
+      // The image has already been loaded (from cache, for instance)
+      console.log("background is complete (loaded)");
+      return true;
+    } else {
+      img.onload = () => { console.log("Image has finished loading!"); };
+      img.onerror = () => { console.log("Error loading image."); };
+      return false;
+    }
+  }
+  
+
+export function emptyStateDisplay(frame, content1, content2, img) {
     frame.innerHTML = `<div class="void">
     <p class="placeholder-glow title-placeholder">
     <span class="placeholder w-100"></span>
@@ -126,21 +158,28 @@ export function emptyStateDisplay(frame, content, img) {
     <p class="placeholder-glow text-placeholder">
     <span class="placeholder w-100"></span>
     <span class="placeholder w-100"></span>
+    <span class="placeholder w-100"></span>
     </p>
-    <img src="" alt="..." class="myGif" style="display: none;" />
+    <img src="" alt="..." class="myGif1" style="display: none;" />
+    <img src="" alt="..." class="myGif2" style="display: none;" />
     </div>`;
-    // If the image is already loaded (from cache, for example), show it immediately.
-    const gifEl = frame.querySelector('.myGif');
-    if (gifEl.complete) {
+    const gifEl1 = frame.querySelector('.myGif1');
+    const gifEl2 = frame.querySelector('.myGif2');
+    gifEl1.src = img;
+    gifEl2.src = "./images/PlanEATary_Logo_Badge.png";
+    //Checking loading completion of image and gif image
+    if (gifEl1.complete && gifEl2.complete) {
         frame.innerHTML = "";
-        frame.innerHTML = `<div class="void">${content} <img class="myGif" src="${img}" style="display: block;"></div>`;
+        frame.innerHTML = `<div class="void" style='padding: 0;'><div class='void-header'><img class="myGif2" src="./images/PlanEATary_Logo_Badge.png" style="display: block; width: 200px;"><span>${content1}<span></div><div class='void-content'>${content2}</div><img class="myGif1" src="${img}" style="display: block;"></div>`;
     } else {
-        // Otherwise, add an event listener to detect when it finishes loading.
-        gifEl.addEventListener('load', () => {
-            frame.innerHTML= "";
-            frame.innerHTML = `<div class="void">${content} <img class="myGif" src="${img}" style="display: block;"></div>`;
-        });
+        gifEl1.style.display = "none";
+        gifEl2.style.display = "none";
     }
+     // Otherwise, add an event listener to detect when it finishes loading.
+     gifEl1.addEventListener('load', () => {
+        frame.innerHTML= "";
+        frame.innerHTML = `<div class="void" style='padding: 0;'><div class='void-header'><img class="myGif2" src="./images/PlanEATary_Logo_Badge.png" style="display: block; width: 200px;"><span>${content1}<span></div><div class='void-content'>${content2}</div><img class="myGif1" src="${img}" style="display: block;"></div>`;
+    });
 }
 
 export async function logOut() {

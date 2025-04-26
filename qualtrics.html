@@ -78,6 +78,23 @@
                 </ul>
             </footer>
         </div>
+
+        <!-- Nav Modal -->
+        <div class="modal fade" id="navModal" tabindex="-1" aria-labelledby="customAlertLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" id="navModal-header" style="justify-content: center; flex-direction: column;">
+                        <img id="navModal-pic" style="width: 100px;"/>
+                        <h3 class="modal-title" id="navModal-title" style="font-weight: 600; color: white;"></h3>
+                    </div>
+                    <div class="modal-body" id="navModal-body" style="align-self: center; padding: 2.5rem; font-size: 1.2rem;">
+                    </div>
+                    <div class="modal-footer" style="padding: 10px !important; justify-content: center !important;">
+                        <button type="button" id="navModal-close" class="btn btn-primary">Ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <!-- spinner overlay-->
         <section class="overlay hidden" id="spinnerOverlay">
@@ -133,7 +150,7 @@
 
             import { initiateSurvey, updateAnchors, updateButton, fetchResponses } from './scripts/helpers.mjs';
             import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, handleOffcanvasClick,
-                handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, emptyStateDisplay, logOut } from './scripts/utility.js';
+                handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, emptyStateDisplay, checkAndRefreshTokenExpired, logOut } from './scripts/utility.js';
             
             let startTime = Date.now();
             const condition = [false, startTime];
@@ -169,6 +186,53 @@
                 }
                 const bsAlert = new bootstrap.Toast(alertContainer);
                 bsAlert.show();
+            }
+
+            async function showNavModal(title, content, type) {
+                const navModalPic= document.getElementById('navModal-pic');
+                const navModalHeader = document.getElementById('navModal-header');
+                if (type == "succeed") {
+                    navModalHeader.style.backgroundColor = "#00af8c";
+                    navModalPic.src = "./images/tick.gif";
+                } else if (type == "send") {
+                    navModalHeader.style.backgroundColor = "#00abc9";
+                    navModalPic.src = "./images/mail.gif";
+                } else if (type == "fail") {
+                    navModalHeader.style.backgroundColor = "#ff5073";
+                    navModalPic.src = "./images/cancel.png";
+                }
+                return new Promise((resolve) => {
+                    const navModalContainer = document.getElementById('navModal');
+                    if (! navModalContainer) {
+                        console.error('No alert container found.');
+                        return;
+                    }
+                    const navModalTitle = document.getElementById('navModal-title');
+                    const navModalBody = document.getElementById('navModal-body');
+                    navModalTitle.innerHTML = title;
+                    navModalBody.innerHTML = content;
+                    const bsModal = new bootstrap.Modal(navModalContainer, {
+                        backdrop: 'static', // prevent closing by clicking outside
+                        keyboard: false     // prevent closing with the Esc key
+                    });
+                    
+                    if (navModalPic.complete) {
+                        // If the image is already loaded (from cache), update immediately.
+                        bsModal.show();
+                        
+                    } else {
+                        bsModal.hide();
+                    }
+                    navModalPic.addEventListener('load', () => {
+                        bsModal.show();
+                    });
+                    
+                    // When the close button is clicked, hide the modal and resolve the promise
+                    document.getElementById('navModal-close').addEventListener('click', function handler() {
+                        bsModal.hide();
+                        resolve(); // Notify that the modal was dismissed
+                    }, { once: true });
+                });
             }
             
             //hard-code updating responseHistory
@@ -239,6 +303,11 @@
                 localStorage.setItem(`${userId}:ResponseHistory`, JSON.stringify(mockResponseHistory));
                 document.getElementById('nextButt').innerHTML = 'See your result';
             }
+
+            //Automatically check and refresh token every 50 miniutes
+            setInterval(async () => {
+                await checkAndRefreshTokenExpired();
+            }, 3000000);
             
             document.addEventListener('DOMContentLoaded', async () => {
 
@@ -463,7 +532,7 @@
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#00af8c', 'pointer');
                         quizFrame.style.display = 'none';
-                        emptyStateDisplay(quizSpan, "You have already taken the pre-quiz! Let's continue!", "./images/thumbs-up.gif");
+                        emptyStateDisplay(quizSpan, "", "You have already taken the pre-quiz! Let's continue!", "./images/thumbs-up.gif");
                         //await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         return;
@@ -473,7 +542,7 @@
                         updateAnchors(anchors, hrefs);
                         updateButton(nextButton, '#00af8c', 'pointer');
                         quizFrame.style.display = 'none';
-                        emptyStateDisplay(quizSpan, 'You have pull everything off! It is time to start over this amazing journey!', "./images/thumbs-up.gif");
+                        emptyStateDisplay(quizSpan, "", 'You have pull everything off! It is time to start over this amazing journey!', "./images/thumbs-up.gif");
                         //await updateResponseHistory(preObject, user)
                         console.log('Found pre-quiz result in storage!\n', preObject);
                         console.log('Found post-quiz result in storage!\n', postObject);
@@ -526,7 +595,7 @@
                     if (user) {
                         user.jwt().then(token => {
                             if (isTokenExpired(token)) {
-                                console.log("Token expired. Prompting user to re-login...");
+                                alert("Token expired. Prompting user to re-login...");
                                 netlifyIdentity.logout();
                                 window.location.href = "index.html";
                             } else {
@@ -550,8 +619,9 @@
                                 updateAnchors(anchors, hrefs);
                                 updateButton(nextButton, '#00af8c', 'pointer');
                             }, 2000);
+                            await showNavModal("Your pre-quiz result sent!", "Please check your inbox (the email might be in your spam folder)", "send");
                             quizFrame.style.display = 'none';
-                            emptyStateDisplay(quizSpan, 'Thank you for your response! Please click see result!', "./images/thumbs-up.gif");
+                            emptyStateDisplay(quizSpan,'', 'Thank you for your response! Please click see result!', "./images/thumbs-up.gif");
                             localStorage.setItem("restartFlag", "false"); //set back to false if a latest pre-quiz is done after restarting
                             updateButton(restartBtn, '#4e958d52', 'not-allowed');
                             restartBtn.disabled = true;
@@ -575,7 +645,7 @@
                     }
                     const token = await user.jwt();
                     if (isTokenExpired(token)) {
-                        console.log("Token expired. Prompting user to re-login...");
+                        alert("Token expired. Prompting user to re-login...");
                         netlifyIdentity.logout();
                         window.location.href = "index.html";
                         return;

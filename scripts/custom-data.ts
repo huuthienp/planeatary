@@ -14,6 +14,7 @@ interface TaskData {
 interface ImportedTaskData {
     id: string;
     chosen: Array<string>;
+    reason?: string;
     userId?: string
 }  /* end of ImportedTaskData */
 

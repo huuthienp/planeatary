@@ -82,23 +82,6 @@
                 </div>
                 
                 <div class="mb-3">
-                    <label for="age" class="form-label">Age:</label>
-                    <input type="number" class="form-control" id="age" placeholder="Enter your age" min="0" required>
-                    <div class="invalid-feedback">
-                        Please type in correct age
-                    </div>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="gender" class="form-label">Gender:</label>
-                    <select id="gender" class="form-select mb-3" aria-label="Select gender">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                
-                <div class="mb-3">
                     <label for="user-type" class="form-label">User Type:</label>
                     <select id="user-type" class="form-select mb-3" aria-label="User type" required>
                         <option value="student">Student</option>
@@ -250,7 +233,7 @@
     </script>
 
     <script type="module">
-        import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+        import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, checkAndRefreshTokenExpired, logOut } from './scripts/utility.js';
         
         //Dismiss the offcanvas bar after click and execute
         const offcanvasNavbar = document.getElementById('offcanvasNavbar');
@@ -305,7 +288,7 @@
             if (user) {
                 user.jwt().then(token => {
                     if (isTokenExpired(token)) {
-                        console.log("Token expired. Prompting user to re-login...");
+                        alert("Token expired. Prompting user to re-login...");
                         netlifyIdentity.logout();
                         window.location.href = "index.html";
                         return;
@@ -317,12 +300,15 @@
                     event.currentTarget.dataset.modified = "true";
                     console.log("Form has been modified.");
                     document.getElementById("name").value       = userData.full_name;
-                    document.getElementById("age").value        = userData.age;
-                    document.getElementById("gender").value     = userData.gender;
                     document.getElementById("user-type").value  = userData.status;
                 }
             }
         });
+        
+        //Automatically check and refresh token every 50 miniutes
+        setInterval(async () => {
+            await checkAndRefreshTokenExpired();
+        }, 3000000);
         
         document.addEventListener("DOMContentLoaded", async function() {
 
@@ -343,7 +329,7 @@
             if (user) {
                 user.jwt().then(token => {
                     if (isTokenExpired(token)) {
-                        console.log("Token expired. Prompting user to re-login...");
+                        alert("Token expired. Prompting user to re-login...");
                         netlifyIdentity.logout();
                         window.location.href = "index.html";
                     } else {
@@ -351,8 +337,6 @@
                     }
                 });
                 document.getElementById("name").value       = userData.full_name;
-                document.getElementById("age").value        = userData.age;
-                document.getElementById("gender").value     = userData.gender;
                 document.getElementById("user-type").value  = userData.status;
             }
 
@@ -458,11 +442,9 @@
                         console.log("validate form2");
                         
                         let user_full_name = document.getElementById("name").value;
-                        let user_age       = document.getElementById("age").value;
-                        let user_gender    = document.getElementById("gender").value;
                         let user_type      = document.getElementById("user-type").value;
                         let user_password  = document.getElementById("password").value;
-                        const user_datail = { full_name: user_full_name, gender: user_gender, age: user_age, status: user_type };
+                        const user_datail = { full_name: user_full_name, status: user_type };
                         
                         try {
                             // If password is provided, update it first

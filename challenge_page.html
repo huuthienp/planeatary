@@ -73,6 +73,7 @@
                 </div>
                 <div class="Card"></div>
                 <div class="btn-next" style="padding-top: 4vmax;">
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#reasonModal">Can’t finish tasks?</button>
                     <button class="next btn btn-success shadow" style="width: 180px;">Next  &#8594;</button>
                 </div>
             </div>
@@ -93,7 +94,7 @@
                         <button class="close">x</button>
                     </div>
                     <div class="modal_content">
-                        <h2 id="modalTitle" style="padding: 0 20px; width: 100%"></h2>
+                        <h2 id="modalTitle" style="padding: 0 20px; width: 100%; text-align: center;"></h2>
                         <div class="modal-section">
                             <img id="modal-pic" />
                             <p id="modalDescription" style="padding: 0 20px; width: 100%"></p>
@@ -127,13 +128,46 @@
             </div>
         </div>
         
+        
+        <!-- The Skip Modal -->
+        <div class="modal fade" id="reasonModal" tabindex="-1" aria-labelledby="reasonModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form id="reasonForm" class="modal-content needs-validation" novalidate>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reasonModalLabel">Please enlight us about your reasons.</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="reasonInput" class="form-label">Why can’t you finish some tasks?</label>
+                            <textarea
+                            class="form-control"
+                            id="reasonInput"
+                            rows="4"
+                            required
+                            minlength="2"
+                            placeholder="At least one sentence…"
+                            ></textarea>
+                            <div class="invalid-feedback">
+                                Please enter your reason (at least one word).
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit Reason</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+  
         <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
         
         <script type="module">
 
             import { fetchTaskStatus, extractTaskData, updateTaskStatus, mergeTaskArrays, updateButton } from './scripts/helpers.mjs';
             import { showElement, hideElement, isTokenExpired, detectAndParseTimestamp, showSpinner, hideSpinner, 
-                handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+                handleOffcanvasClick, handleOffcanvasClickFromElement, getUserData, hasPostQuizResult,  checkAndRefreshTokenExpired, logOut } from './scripts/utility.js';
 
             const modal = document.querySelector(".modal2");
             const overlay = document.querySelector(".overlay2");
@@ -213,6 +247,86 @@
                 myToast.show();
             }
 
+            (async () => {
+                'use strict';
+                const modalEl  = document.getElementById('reasonModal');
+                const form     = document.getElementById('reasonForm');
+                const textarea = document.getElementById('reasonInput');
+                
+                form.addEventListener('submit', async (e) => {
+                    // Prevent submission if invalid
+                    if (!form.checkValidity()) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        form.classList.add('was-validated');
+                        return;
+                    }
+                    e.preventDefault(); // handle via AJAX or whatever
+                    
+                    const reason = textarea.value.trim();
+                    console.log(reason);
+                    //Logic for sending reasons to BE
+
+                    const user = netlifyIdentity.gotrue.currentUser();
+                    if (!user) {
+                        console.error("No user is logged in!");
+                        return;
+                    }
+
+                    const token = await user.jwt();
+                    if (isTokenExpired(token)) {
+                        alert("Token expired. Prompting user to re-login...");
+                        netlifyIdentity.logout();
+                        return;
+                    }
+
+                    const userId = user.id;
+
+                    let preObject = JSON.parse(localStorage.getItem('preResult'));
+                    let preResponseId = preObject?.responseId ?? null; 
+                    let tasks = JSON.parse(localStorage.getItem(`${preResponseId}:tasks`));
+                    let Tstatus = JSON.parse(localStorage.getItem(`${preResponseId}:fetched_tasks`));
+                     
+                    Object.keys(tasks).forEach(async (questionKey) => {
+                        const taskGroup = tasks?.[questionKey]?.tasks ?? [];
+                        // Filter tasks that are selected
+                        taskGroup.forEach(task => 
+                        {
+                            if(task.choice === 'chosen' && task.status === 'Done') {
+                                //Annotate it as skipped
+                                task.status = "Skipped";
+                                task.finishTime = "Skipped";
+                            }
+                            
+                            if (task.status === "Done" && Tstatus.chosen.indexOf(String(task.taskNumber)) !== -1) {
+                                let index = Tstatus.chosen.indexOf(String(task.taskNumber));
+                                Tstatus.done[index] = String(task.taskNumber) + "@" + "Skipped";
+                                Tstatus.time[index] = "Skipped";
+                            }
+                        })
+                    })
+
+                    Tstatus.reason = reason;
+                    // Send skipped status to BE
+                    localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
+                    localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus));
+                    //Send skipped Tasks and Reasons to BE
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)), reason);
+
+                    //hide the modal
+                    const modal = bootstrap.Modal.getInstance(modalEl);
+                    modal.hide();
+
+                    //Redirect the user to post-quiz 
+                    window.location.href = "qualtrics_post.html";
+                    
+                    // Optionally reset form for next time
+                    form.classList.remove('was-validated');
+                    form.reset();
+                });
+                
+            })();
+
             // Use for task card ripple
             function animateTaskCard(card, gradientColor, TextColor) {
                 // Add the ripple class
@@ -228,7 +342,6 @@
 
             }
 
-
             //hard-code updating responseHistory (incompleted)
             async function updateResponseHistory(preResponseId, lastTask) {
                 const user = netlifyIdentity.gotrue.currentUser();
@@ -239,7 +352,7 @@
                 
                 const token = await user.jwt();
                 if (isTokenExpired(token)) {
-                    console.log("Token expired. Prompting user to re-login...");
+                    alert("Token expired. Prompting user to re-login...");
                     netlifyIdentity.logout();
                     return;
                 }
@@ -304,7 +417,7 @@
                     Object.keys(tasks).forEach(questionKey => {
                         const taskGroup = tasks?.[questionKey]?.tasks ?? [];
                         taskGroup.forEach(task => {
-                            if (task.choice === "chosen" && task.status !== "Completed") {
+                            if (task.choice === "chosen" && task.status == "Done") {
                                 allCompleted = false; // If any selected task is not "Completed", set false
                             } 
                         });
@@ -334,7 +447,7 @@
                         return;
                     }
                     
-                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)), Tstatus?.reason ?? "");
                     
                     Object.keys(tasks).forEach(async (questionKey) => {
                         const taskGroup = tasks?.[questionKey]?.tasks ?? [];
@@ -363,9 +476,19 @@
                                     showModal(task.taskName, task.taskDescription, task.taskPic, task.taskFooter);
                                 });
                                 
+                                const btn_div = document.createElement("div");
+                                //Create a skip button
+                                const skip_btn = document.createElement("button");
+                                skip_btn.type = 'button';
+                                skip_btn.classList.add('btn', 'btn-warning');
+                                skip_btn.setAttribute('data-bs-toggle', 'modal');
+                                skip_btn.setAttribute('data-bs-target', '#reasonModal');
+                                skip_btn.textContent = `Can’t finish this?`;
+                                skip_btn.style.display = "none";
+
                                 const completion = document.createElement("span");
-                                completion.classList.add("completion");
-                                completion.textContent = task.status === "Completed" ? "Completed" : "Done";
+                                btn_div.classList.add("completion");
+                                completion.textContent = task.status;
                                 
                                 // Set card styles based on status
                                 if (task.status === "Completed") {
@@ -402,9 +525,18 @@
                                 taskName.appendChild(infoIcon);
                                 taskCard.appendChild(taskName);
                                 taskCard.appendChild(ripple); 
-                                taskCard.appendChild(completion);
+                                btn_div.appendChild(skip_btn);
+                                btn_div.appendChild(completion);
+                                taskCard.appendChild(btn_div);
                                 cardContainer.appendChild(taskCard);
                                 updateNextButton(preResponseId, userId, tasks, Tstatus); 
+
+                                skip_btn.addEventListener('click', (event) => {
+                                    
+                                    // Prevent the event from bubbling up
+                                    event.stopPropagation();
+
+                                });
                                 
                                 taskCard.addEventListener('click', async (event) => {
                                     // Toggle task status between "Done" and "Completed"
@@ -467,7 +599,7 @@
                     
                     localStorage.setItem(`${preResponseId}:tasks`, JSON.stringify(tasks));
                     if (Tstatus && Object.keys(Tstatus).length !== 0) {localStorage.setItem(`${preResponseId}:fetched_tasks`, JSON.stringify(Tstatus))} 
-                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                    await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)), Tstatus?.reason ?? "");
                     setTimeout(() => {
                         updateNextButton(preResponseId, userId, tasks, Tstatus);
                     }, 1000);
@@ -500,7 +632,7 @@
                         // Update the response history with the latest finished task
                         await updateResponseHistory(preResponseId, lastTask);
                         // Update task status from localStorage 
-                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)), Tstatus?.reason ?? "");
                         console.log(`Response history updated with task: ${lastTask}`);
                         console.log("Tasks updated!");
                     } catch (err) {
@@ -511,7 +643,7 @@
                     // If not all tasks are completed, update the response history with an empty lastTask
                     try {
                         await updateResponseHistory(preResponseId, lastTask);
-                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)));
+                        await updateTaskStatus(preResponseId, userId, JSON.parse(localStorage.getItem(`${preResponseId}:tasks`)), Tstatus?.reason ?? "");
                         console.log(`Response history updated with empty task: ${lastTask}`);
                         console.log("Tasks updated!");
                     } catch (err) {
@@ -519,7 +651,12 @@
                     }
                 }
             }
-            
+
+            //Automatically check and refresh token every 50 miniutes
+            setInterval(async () => {
+                await checkAndRefreshTokenExpired();
+            }, 3000000);
+
             document.addEventListener("DOMContentLoaded", async function() {
                 
                 const nav = document.querySelector('.navbar');

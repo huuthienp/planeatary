@@ -69,7 +69,7 @@
     <div class="content" style="padding-bottom: 10vmax;">
         <div class="wrap-up"  style="background-color: white;">
             <h5><img src="./images/confetti.gif" style="width: 5rem; height: auto;" /><b>CONGRATULATIONS!</b><img src="./images/confetti.gif" style="width: 5rem; height: auto; transform: scaleX(-1);" /></h5>
-            <p><b>YOU’VE COMPLETED YOUR CHALLENGES!</b></p>
+            <p><b>YOU’VE COMPLETED YOUR PlanEATary CHALLENGE!</b></p>
             <p>Really proud of you to make it this far.</p>
             <div class="button_take_quiz">
                 <p>Now let’s complete the post-quiz to see how your scores have improved!</p>
@@ -97,7 +97,13 @@
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script type="module">
     import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick,
-        handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, logOut } from './scripts/utility.js';
+        handleOffcanvasClickFromElement, getUserData, hasPostQuizResult, checkAndRefreshTokenExpired, logOut } from './scripts/utility.js';
+
+        //Automatically check and refresh token every 50 miniutes
+        setInterval(async () => {
+            await checkAndRefreshTokenExpired();
+        }, 3000000);
+
         //spinner variables
         let startTime = Date.now();
         const condition = [false, startTime];
