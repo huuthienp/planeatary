@@ -1,0 +1,19 @@
+version: 2
+enable-beta-ecosystems: true  # for bun
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "07:00"
+    groups:
+      # group all minor/patch updates (except major)
+      all-non-major:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]  # ignore all major update
+    assignees:
+      - "huuthienp"
