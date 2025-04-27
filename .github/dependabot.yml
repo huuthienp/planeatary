@@ -1,15 +1,19 @@
 version: 2
+enable-beta-ecosystems: true  # for bun
 updates:
-  - package-ecosystem: 'npm'
-    directory: '/'
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: 'daily'
-      time: '10:05'
+      interval: "weekly"
+      day: "friday"
+      time: "07:00"
+    groups:
+      # group all development dependencies
+      dev-dependencies:
+        dependency-type: "development"
+      # group all minor/patch updates (except major)
+      all-non-major:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
     assignees:
-      - 'huuthienp'
-  - package-ecosystem: 'github-actions'
-    directory: '/'
-    schedule:
-      interval: 'weekly'
-    assignees:
-      - 'huuthienp'
+      - "huuthienp"
