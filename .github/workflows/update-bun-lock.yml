@@ -32,5 +32,5 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add bun.lock
-          git commit -m "chore(deps): update bun.lock (#${{ github.event.pull_request.number }})"
+          git commit -m "chore(deps): update bun.lock (#${{ github.event.pull_request.number }})" || true
           git push

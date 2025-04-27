@@ -1,10 +1,11 @@
 version: 2
+enable-beta-ecosystems: true
 updates:
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
       interval: 'daily'
-      time: '10:05'
+      time: '10:45'
     assignees:
       - 'huuthienp'
   - package-ecosystem: 'github-actions'
