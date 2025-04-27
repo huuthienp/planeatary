@@ -8,7 +8,7 @@
         "@netlify/functions": "^3.0.1",
         "@types/node": "^22.13.11",
         "bcryptjs": "^3.0.2",
-        "disposable-email-domains-js": "^1.9.0",
+        "disposable-email-domains-js": "^1.11.0",
       },
     },
   },
@@ -25,7 +25,7 @@
 
     "bcryptjs": ["bcryptjs@3.0.2", "", { "bin": { "bcrypt": "bin/bcrypt" } }, "sha512-k38b3XOZKv60C4E2hVsXTolJWfkGRMbILBIe2IBITXciy5bOsTKot5kDrf3ZfufQtQOUN5mXceUEpU1rTl9Uog=="],
 
-    "disposable-email-domains-js": ["disposable-email-domains-js@1.9.0", "", {}, "sha512-CJHjm00EnVoHuDEAVb9lgi5OCvag2HuGKHSFI3I1jyAiKYmH8MouZpQEpan0Uuad7bSfIuRYYQOLd5YNiw0WHA=="],
+    "disposable-email-domains-js": ["disposable-email-domains-js@1.11.0", "", {}, "sha512-uLktJxoBV1xus1cCgjx6sPLH5aS9/AVtJ4FnDHY4Cvn/BDcCZdB/uKT0EMEYdAE1kMef/fzFDR8HHTCwLaiZJA=="],
 
     "undici-types": ["undici-types@6.20.0", "", {}, "sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg=="],
   }

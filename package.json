@@ -6,6 +6,6 @@
     "@netlify/functions": "^3.0.1",
     "@types/node": "^22.13.11",
     "bcryptjs": "^3.0.2",
-    "disposable-email-domains-js": "^1.9.0"
+    "disposable-email-domains-js": "^1.11.0"
   }
 }
