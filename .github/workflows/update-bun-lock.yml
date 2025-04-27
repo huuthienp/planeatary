@@ -1,0 +1,36 @@
+name: Update bun.lock for Dependabot
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [test/backend]  # base branch (versus PR branch)
+
+jobs:
+  update_lockfile:
+    if: |
+      github.event.pull_request.user.login == 'dependabot[bot]' &&
+      github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write  # required to commit file changes
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: "1.2"
+
+      - name: Show bun version
+        run: bun --version  # show installed version in logs
+
+      - name: Update bun.lock
+        run: |
+          bun install --lockfile-only
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add bun.lock
+          git commit -m "chore(deps): update bun.lock (#${{ github.event.pull_request.number }})"
+          git push
