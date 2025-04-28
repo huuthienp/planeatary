@@ -1,0 +1,26 @@
+<html lang="en-GB">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PlanEATary Quest Wiki</title>
+        <link rel="stylesheet" href="style_concat.css">  <!-- Custom CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">  <!-- Bootstrap CSS -->
+    </head>
+    <body>
+        <div class="toast-container">
+            <div id="tip-toast" class="toast m-3 p-3 fade show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                <div class="toast-header">
+                    <strong class="me-auto">Wiki Tip</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body" id="e-toast">You can click on the hexagons and navigation buttons!</div>
+            </div>
+        </div>
+        <embed src="docs/PlanEATary-Quest-Quiz-Questions-Tasks.pdf" type="application/pdf" width="100%" height="100%" />
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  <!-- Bootstrap Javascript -->
+        <script defer type="module">
+        const toast = new bootstrap.Toast(document.getElementById('tip-toast'));
+        toast.show();
+        </script>
+    </body>
+</html>
