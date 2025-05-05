@@ -94,11 +94,11 @@
                             </div>
                         </div>
                         <p id="improvement"></p>
-                        <p class="next-step">Next step: Select 10 Tasks To Improve Your Scores!</p>
+                        <p class="next-step">Next step: Select at least 3 Tasks To Improve Your Scores!</p>
                         <p class="suggestion">We suggest focusing on the questions where you scored the lowest on the Quiz!</p>
                     </div>
                     <div class="btn-next">
-                        <a class="nextB" href="manifesto_page.html"><button type="button" class="btn btn-success select-tasks shadow-sm" style="width: 180px;">Select Challenges →</button></a>
+                        <a class="nextB" href="manifesto_page.html"><button type="button" class="btn btn-success select-tasks shadow-sm" style="width: 180px;">Go to challenges →</button></a>
                     </div>
                     
                 </div>
@@ -644,7 +644,7 @@
                     (tag) => { if(tag) {tag.classList.remove('hidden');} }
                     );    
 
-                    document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
+                    document.querySelector("button.select-tasks").innerHTML = 'Go to challenges →';
                     document.querySelector("a.nextB").href = 'manifesto_page.html';
 
                     
@@ -786,7 +786,7 @@
                             displayQuestions(preObject, 'PRE');
                             document.getElementById('preQ').style.backgroundColor = '#00af8c';   
                             document.getElementById('com-tasks').style.backgroundColor = '#a9d1cd';
-                            document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
+                            document.querySelector("button.select-tasks").innerHTML = 'Go to challenges →';
                             document.querySelector("a.nextB").href = 'manifesto_page.html';
                             document.getElementById('postQ').disabled = true;
                             updateButton(document.getElementById('postQ'), 'rgba(200, 200, 200, 0.6)', 'not-allowed');
@@ -817,7 +817,7 @@
                             (tag) => { if (tag) {tag.classList.remove('hidden');} }
                             );
                             
-                            document.querySelector("button.select-tasks").innerHTML = 'Select Tasks →';
+                            document.querySelector("button.select-tasks").innerHTML = 'Go to challenges →';
                             document.querySelector("a.nextB").href = 'manifesto_page.html';
                             document.getElementById('postQ').disabled = true;
                             updateButton(document.getElementById('postQ'), 'rgba(200, 200, 200, 0.6)', 'not-allowed');
