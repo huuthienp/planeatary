@@ -2,9 +2,9 @@
   "type": "module",
   "dependencies": {
     "@netlify/blobs": "^8.2.0",
-    "@netlify/functions": "^3.1.2",
+    "@netlify/functions": "^3.1.5",
     "@netlify/edge-functions": "^2.12.0",
-    "@types/node": "^22.15.2",
+    "@types/node": "^22.15.17",
     "bcryptjs": "^3.0.2",
     "disposable-email-domains-js": "^1.11.0"
   }
