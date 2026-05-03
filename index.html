@@ -70,7 +70,7 @@
                     </div>
                 </nav>
             </div>
-              
+
             <!--Hero section at the top-->
             <section>
                 <div class="hero-wave">
@@ -95,9 +95,9 @@
                     </path>
                 </svg>
             </section>
-            
+
             <section class="container p-3" style="position: relative;">
-                
+
                 <div class="row d-flex justify-content-center">
                     <h2 style="text-align: center; font-weight: 600;">The PlanEATary Quest involves these four steps. Use the menu in the top-right corner of this webpage to navigate your way through the steps</h2>
                     <!-- progressbar -->
@@ -109,7 +109,7 @@
                     </ul>
                     <div class="col-md-12 d-flex
                     justify-content-center">
-                    
+
                     <div class="carousel slide" id="carousel-section">
                         <!-- <div class="carousel-indicators d-lg-none">
                             <button type="button" data-bs-target="#carousel-section" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Complete the Quiz"></button>
@@ -175,7 +175,7 @@
             <div class="d-content">
                 <h2><b>DO YOU KNOW...?</b></h2>
                 <p>Our global food system is contributing approximately one third of greenhouse gas emissions (1). Experts have called for an urgent transformation to the way food is produced and consumed (2), including a population-wide shift to healthy and sustainable diets. </p>
-                    
+
                     The PlanEATary Quest is a fun, interactive intervention that aims to help you:
                     <ul>
                         <li>Identify how you can improve the way you’re interacting with our food system to promote human and planetary health.</li>
@@ -199,7 +199,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" style="margin-top: -1px;">
                 <path fill="#7cd7e7" fill-opacity="1" d="M0,64L48,58.7C96,53,192,43,288,37.3C384,32,480,32,576,48C672,64,768,96,864,138.7C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
             </svg>
-            
+
             <!--Reflect section-->
             <section class="reflect-section container-fluid p-5">
                 <div class="accordion" id="accordionExample1">
@@ -231,7 +231,7 @@
                     </div>
                 </div>
             </section>
-            
+
             <div class="b-example-divider"></div>
             <!--Monash team section-->
             <section class="container-fluid p-5">
@@ -321,11 +321,11 @@
                         </div>
                     </div>
                     <div>
-                        
+
                         <!-- <div id="carouselTeam" class="carousel slide">
-                            
+
                             <div class="carousel-inner">
-                                
+
                                 <div class="carousel-item active">
                                     <div class="row">
                                         <div class="col-sm-4 team-member">
@@ -342,7 +342,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="carousel-item">
                                     <div class="row">
                                         <div class="col-sm-4 team-member">
@@ -360,7 +360,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselTeam" data-bs-slide="prev" style="color: #445839;">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
@@ -369,7 +369,7 @@
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
-                            
+
                         </div> -->
                     </div>
                 </div>
@@ -441,7 +441,7 @@
                   </div>
             </footer>
         </section>
-    
+
     <!-- Sign In Modal-->
     <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel">
         <div class="modal-dialog">
@@ -474,9 +474,9 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="signInCloseBtn">Close</button>
                     <button type="button" class="btn btn-primary" id="signInButton">Sign In</button>
                 </div>
-                
-                
-                
+
+
+
         </div>
     </div>
 </div>
@@ -657,11 +657,11 @@
 </section>
 
 <script type="module">
-    
+
     import { fetchResponses, fetchData, reformatResponseData, mergeTaskArrays, fetchTaskStatus } from './scripts/helpers.mjs';
     import { isTokenExpired, showSpinner, hideSpinner, handleOffcanvasClick,
         handleOffcanvasClickFromElement, getUserData, hasPostQuizResult,  checkAndRefreshTokenExpired, logOut } from './scripts/utility.js';
-        
+
         let startTime = Date.now();
         const condition = [false, startTime];
         const bOverlay = document.getElementById("spinnerOverlay");
@@ -671,37 +671,37 @@
         setInterval(async () => {
             await checkAndRefreshTokenExpired();
         }, 3000000);
-        
+
         document.addEventListener("DOMContentLoaded", async function() {
             const nav = document.querySelector('.navbar');
             const heroWave = document.querySelector('.hero-wave');
             const hero = document.querySelector('.hero');
-            
+
             // Retrieve the computed style of the top element
             const computedNav = window.getComputedStyle(nav);
-            
+
             // Apply them 
             heroWave.style.paddingTop = `${nav.offsetHeight + 100}px`;
-            
+
             //ensure the data's cycle selected from history page is always removed
             sessionStorage.removeItem('selectedCycle');
-            
+
             const greetingDiv = document.querySelector('.greeting');
             const heroButton = document.querySelector('.herobtn');
-            
+
             const offcanvasNavbar = document.getElementById('offcanvasNavbar');
             const offcanvasLinks = document.querySelectorAll('#offcanvasNavbar .nav-link');
             const offcanvasDropdown = document.querySelectorAll('#offcanvasNavbar .dropdown-item');
             const offcanvasListItems = document.querySelectorAll('#offcanvasNavbar li.nav-item');
             const offcanvasDropdownItems = document.querySelectorAll('#offcanvasNavbar .dropdown-menu > li');
-            
+
             //For first-timer to see a reminder to do a very first quiz
             function showToast() {
                 const toasty = document.getElementById('first-timer-toast');
                 const myToast = new bootstrap.Toast(toasty);
                 myToast.show();
             }
-            
+
             function showAlert() {
                 const alertContainer = document.getElementById('alertContainer');
                 if (!alertContainer) {
@@ -711,7 +711,7 @@
                 const bsAlert = new bootstrap.Toast(alertContainer);
                 bsAlert.show();
             }
-            
+
             async function showNavModal(title, content, type) {
                 const navModalPic= document.getElementById('navModal-pic');
                 const navModalHeader = document.getElementById('navModal-header');
@@ -739,18 +739,18 @@
                         backdrop: 'static', // prevent closing by clicking outside
                         keyboard: false     // prevent closing with the Esc key
                     });
-                    
+
                     if (navModalPic.complete) {
                         // If the image is already loaded (from cache), update immediately.
                         bsModal.show();
-                        
+
                     } else {
                         bsModal.hide();
                     }
                     navModalPic.addEventListener('load', () => {
                         bsModal.show();
                     });
-                    
+
                     // When the close button is clicked, hide the modal and resolve the promise
                     document.getElementById('navModal-close').addEventListener('click', function handler() {
                         bsModal.hide();
@@ -758,17 +758,17 @@
                     }, { once: true });
                 });
             }
-            
+
             offcanvasLinks.forEach(li => {
                 if (li !== document.getElementById('navChallenge')) {
                     li.addEventListener('click', handleOffcanvasClick);
                 } 
             });
-            
+
             offcanvasDropdown.forEach(li => {
                 li.addEventListener('click', handleOffcanvasClick);
             });
-            
+
             // Function to handle navigation or showing toast
             offcanvasListItems.forEach(li => {
                 li.addEventListener('click', event => {
@@ -783,10 +783,10 @@
                             handleOffcanvasClickFromElement(link);
                         }
                     }
-                    
+
                 });
             });
-            
+
             // Function to handle navigation or showing toast
             offcanvasDropdownItems.forEach(li => {
                 li.addEventListener('click', event => {
@@ -812,20 +812,20 @@
                     li.classList.add('active');
                 });
             });
-            
+
             const navChallenge = document.getElementById('navChallenge');
-            
+
             if (!navChallenge) {
                 console.error("Element with id 'navChallenge' not found.");
                 return;
             }
-            
+
             navChallenge.addEventListener('click', function(event) {
                 // Debug logs to check values
                 console.log("navChallenge clicked");
                 console.log("navChallenge.href:", navChallenge.href);
                 console.log("hasPostQuizResult() returns:", hasPostQuizResult());
-                
+
                 if (hasPostQuizResult() && navChallenge.href.includes('manifesto_page')) {
                     event.preventDefault();
                     event.stopPropagation();
@@ -840,7 +840,7 @@
                 const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasNavbar) || new bootstrap.Offcanvas(offcanvasNavbar);
                 offcanvas.hide();
             })
-            
+
             const disableFirstTimers = () => {
                 document.querySelectorAll("a.first-timer").forEach(a => {
                     a.classList.add('Disabled');
@@ -851,7 +851,7 @@
                     console.log("Disabling tabs");
                 });
             };
-            
+
             const enableFirstTimers = () => {
                 const anchor = ["qualtrics_post.html", "manifesto_page.html", "result_page.html", "history_page.html"];
                 document.querySelectorAll("a.first-timer").forEach((a, index) => {
@@ -862,9 +862,9 @@
                     console.log("Enabling tabs");
                 })
             }
-            
+
             var preObject = JSON.parse(localStorage.getItem('preResult'));
-            
+
             if(netlifyIdentity.gotrue.currentUser() !== null) {
                 const user = netlifyIdentity.gotrue.currentUser();
                 if (user) {
@@ -889,7 +889,7 @@
                     disableFirstTimers();
                 }
             }
-            
+
             // Retrieve tasks from localStorage or fetch if not available
             async function fetchTasks(preResponseId) {
                 const taskData = localStorage.getItem(`${preResponseId}:tasks`);
@@ -909,12 +909,12 @@
                 }
                 return JSON.parse(taskData);
             }
-            
+
             function disableButton(button) {
                 button.disabled = true;
                 button.classList.add('disabled');
             }
-            
+
             function enableButton(button, href=null) {
                 button.disabled = false;
                 button.classList.remove('disabled');
@@ -922,20 +922,20 @@
                     button.innerHTML = `<a href="${href}">${button.textContent}</a>`;
                 }
             }
-            
+
             async function delay(ms) {
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
-            
+
             heroButton.addEventListener('click', async () => {
                 if (netlifyIdentity.gotrue.currentUser()) {
                     let preObject = localStorage.getItem('preResult');
                     const userData = await getUserData();
                     const { metadata, responseHistory, userId } = userData;
-                    
+
                     heroButton.innerHTML = "Let's go!";
                     await delay(1500);
-                    
+
                     if (metadata.restarting == 'yes') {
                         await showNavModal("Let's go!", "Let's do your restarting pre-quiz!", "succeed");
                         window.location.href = "qualtrics.html";
@@ -946,16 +946,16 @@
                         await showNavModal("Let's go!", "Let's do your pre-quiz!", "succeed");
                         window.location.href = "qualtrics.html";
                     }
-                    
+
                 } else {
                     document.getElementById('e-toast').textContent = 'Please sign in or sign up first';
                     const toastEl = document.getElementById('liveToast');
                     const myToast = new bootstrap.Toast(toastEl);
                     myToast.show();
                 }
-                
+
             });
-            
+
             function ExtractUserMetadata() {
                 const user = netlifyIdentity.gotrue.currentUser();
                 if (user) {
@@ -968,14 +968,14 @@
                         }
                     });
                 }
-                
+
                 const metadata = user.user_metadata;
                 const responseHistory = metadata?.responseHistory ?? [];
                 let latest_pre = "";
                 let latest_post = "";
                 let history = [];
                 let id = user.id;
-                
+
                 //handle first-time user
                 if (responseHistory.length === 0) {
                     console.warn("No responseHistory found for this user.");
@@ -992,16 +992,16 @@
                             latest_pre = entry.preId;
                             latest_post = "";
                         }
-                        
+
                     })
                 }
-                
+
                 const quizPair = {lastPre: latest_pre, lastPost: latest_post};
                 console.log("responseId pre", quizPair.lastPre);
                 console.log("responseId post", quizPair.lastPost);
                 return {quizObj: quizPair, historyObj: history, userId: id}
             }
-            
+
             async function ExtractQuizInfo() {
                 localStorage.removeItem('postResult');
                 const {quizObj, historyObj, userId} = ExtractUserMetadata();
@@ -1020,7 +1020,7 @@
                             localStorage.setItem("postResult", JSON.stringify(postQuiz));
                         }
                     });
-                    
+
                 } else if (quizObj.lastPre !== "" || allResponses.length > 0) {
                     allResponses.forEach((cycleKey) => {
                         const preQuiz = cycleKey.preResponse;
@@ -1044,8 +1044,8 @@
                 }
                 return true;
             }
-            
-            
+
+
             function hideSignInModal() {
                 const signInModal = document.getElementById('signInModal');
                 const modalInstance = bootstrap.Modal.getInstance(signInModal); 
@@ -1055,23 +1055,23 @@
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                 offcanvas.hide();
             }
-            
+
             document.getElementById('offcanvasCloseButton').addEventListener('click', (event) => {
                 event.preventDefault();
                 const offcanvasNavbar = document.getElementById('offcanvasNavbar');
                 const offcanvasInstance = new bootstrap.Offcanvas(offcanvasNavbar);
                 offcanvasInstance.hide();
             });
-            
+
             document.getElementById('logOut').addEventListener('click', async () => {
                 if(confirm("Do you really want to sign out?") == true) {
                     showSpinner([bOverlay, spinner], condition);
                     await logOut();
                     hideSpinner([bOverlay, spinner], condition);
                 }
-                
+
             });
-            
+
             function hideSignUpModal() {
                 const signUpModal = document.getElementById('signUpModal');
                 const modalInstance = bootstrap.Modal.getInstance(signUpModal); 
@@ -1081,42 +1081,42 @@
                 const offcanvas = new bootstrap.Offcanvas(offcanvasNavbar);
                 offcanvas.hide();
             }
-            
+
             async function validate_form() {
                 let nameField = document.getElementById("name");
                 let emailField = document.getElementById("email");
                 let passwordField = document.getElementById("password");
                 let msgString = "";
                 let validateFlag = 1;
-                
+
                 // Check name
                 if (nameField.value === "") {
                     validateFlag = 0;
                     msgString += "**Name is blank.<br>";
                 }
-                
+
                 // Check email
                 if (emailField.value === "") {
                     validateFlag = 0;
                     msgString += "**Email is blank.<br>";
                 }
-                
+
                 // Check password
                 const passwordValue = passwordField.value;
                 if (passwordValue.length > 0) {
                     const uppercaseRegex = /[A-Z]/g;
                     const lowercaseRegex = /[a-z]/g;
                     const numbersRegex = /[0-9]/g;
-                    
+
                     if (!passwordValue.match(uppercaseRegex) || !passwordValue.match(lowercaseRegex) || !passwordValue.match(numbersRegex) || passwordValue.length < 8) {
                         validateFlag = 0;
                         msgString += "**Password does not meet the criteria.<br>";
                     }
                 }
-                
+
                 // Show validation message
                 document.getElementById("form_validate_msg").innerHTML = msgString;
-                
+
                 if (validateFlag) {
                     return true;
                 } else {
@@ -1124,8 +1124,8 @@
                     return false;
                 }
             }
-            
-            
+
+
             document.getElementById('signUpButton').addEventListener('click', function () {
                 const emailInput = document.getElementById('email');
                 const passwordInput = document.getElementById('password');
@@ -1133,7 +1133,7 @@
                 const statusField = document.getElementById("user-type");
                 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
                 let isValid = true;
-                
+
                 // Email validation
                 if (!emailRegex.test(emailInput.value) || emailInput.value === 'harry@m.com') {
                     emailInput.classList.add('is-invalid');
@@ -1141,19 +1141,19 @@
                 } else {
                     emailInput.classList.remove('is-invalid');
                 }
-                
+
                 // Password live validation
                 document.getElementById("password").addEventListener("input", function () {
                     const passwordValue = this.value;
                     const messageItems = document.getElementsByClassName("password-message-item");
-                    
+
                     // Update validation status
                     messageItems[0].classList.toggle("valid", /[a-z]/.test(passwordValue));
                     messageItems[1].classList.toggle("valid", /[A-Z]/.test(passwordValue));
                     messageItems[2].classList.toggle("valid", /[0-9]/.test(passwordValue));
                     messageItems[3].classList.toggle("valid", passwordValue.length >= 8);
                 });
-                
+
                 // If valid, potentially submit form or redirect
                 if (validate_form()) {
                     // Add logic to handle successful signup (e.g., redirect to account.html)
@@ -1172,32 +1172,32 @@
                         myToast.show();
                     });
                     return;  
-                    
+
                 }
             });
-            
+
             async function signInAndRedirect() {
                 try {
                     const emailInput2 = document.getElementById('emailInput2');
                     const passwordInput2 = document.getElementById('passwordInput');
-                    
+
                     const loginResult = await netlifyIdentity.gotrue.login(
                     emailInput2.value,
                     passwordInput2.value,
                     true
                     );
-                    
+
                     // Wait for Netlify to update user data
                     await new Promise(resolve => setTimeout(resolve, 1000));
                     const user = netlifyIdentity.currentUser();
                     if (!user) throw new Error("Login failed: No user object found");
                     console.log("Successfully login!", emailInput2.value);
-                    
+
                     hideSignInModal();
-                    
+
                     // Wait for quiz info
                     let r = await ExtractQuizInfo();
-                    
+
                     if (r === true) {
                         enableFirstTimers();
                         //Need lana to test and edit the flow here if neccessary
@@ -1213,14 +1213,14 @@
                         }
                     } else {
                         disableFirstTimers();
-                        
+
                         // Delay navigation slightly
                         setTimeout(async () => {
                             await showNavModal("Successfully login!", "Welcome to our website!", "succeed");
                             window.location.href = "index.html";
                         }, 500);
                     }
-                    
+
                 } catch (error) {
                     console.error("Caught error:", error);
                     document.getElementById("e-toast").textContent = error;
@@ -1229,15 +1229,15 @@
                     myToast.show();
                 }
             }
-            
-            
+
+
             document.getElementById('signInButton').addEventListener('click', () => {
                 const emailInput2 = document.getElementById('emailInput2');
                 const passwordInput2 = document.getElementById('passwordInput');
                 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                
+
                 let isValid = true;
-                
+
                 // Email validation
                 if (!emailRegex.test(emailInput2.value) || emailInput2.value === 'harry@m.com') {
                     emailInput2.classList.add('is-invalid');
@@ -1245,7 +1245,7 @@
                 } else {
                     emailInput2.classList.remove('is-invalid');
                 }
-                
+
                 // Password validation (minimum 6 characters)
                 if (passwordInput2.value.length < 6) {
                     passwordInput2.classList.add('is-invalid');
@@ -1253,17 +1253,17 @@
                 } else {
                     passwordInput2.classList.remove('is-invalid');
                 }
-                
+
                 if (isValid) {
                     signInAndRedirect();
                 }
-                
+
             });
-            
+
             document.getElementById('resetPasswordButton').addEventListener('click', function () {
                 const resetEmailInput = document.getElementById('resetEmailInput');
                 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                
+
                 // Validate email
                 if (!emailRegex.test(resetEmailInput.value.trim())) {
                     resetEmailInput.classList.add('is-invalid');
@@ -1271,7 +1271,7 @@
                 } else {
                     resetEmailInput.classList.remove('is-invalid');
                 }
-                
+
                 // Call Netlify Identity's password recovery API
                 const email = resetEmailInput.value.trim();
                 const opt = {};
@@ -1306,7 +1306,7 @@
                 event.preventDefault();  // default: navigation or reload
                 document.querySelector("#resetPasswordButton").click();
             });  // replace form submit (pressing enter) default behaviour with button click
-            
+
         })
     </script>
 
