@@ -975,39 +975,6 @@ body.modal-open {
   display: none;
 }
 
-.acknowledgment {
-  display: flex;
-  flex-direction: column;
-  padding: 3rem;
-  justify-content: center;
-  align-items: center;
-  background-image: linear-gradient(#82fae2, #03574691), url("./images/footerVeg.jpg");
-  background-size: cover;
-}
-
-.acknowledgment div {
-  display: flex;
-  width: 100%;
-  justify-content: space-evenly;
-}
-
-.acknowledgment img {
-  width: 150px;
-}
-
-.acknowledgment p {
-  font-size: 0.9rem;
-}
-
-.acknowledgment ul {
-  list-style: none;
-}
-
-.acknowledgment li {
-  display: inline-block;
-  font-size: 0.6rem;
-}
-
 .icon {
   width: 100px;       
   height: 150px;
