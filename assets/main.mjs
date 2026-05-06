@@ -4,6 +4,7 @@ import { insertStyleLink } from 'vuethienp';
 const { url } = import.meta;
 const names = [
   'hero',
+  'steps',
 ]; // prettier-ignore
 
 const app = createApp({
