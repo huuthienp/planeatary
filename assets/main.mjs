@@ -3,6 +3,7 @@ import { insertStyleLink } from 'vuethienp';
 
 const { url } = import.meta;
 const names = [
+  'hero',
 ]; // prettier-ignore
 
 const app = createApp({
