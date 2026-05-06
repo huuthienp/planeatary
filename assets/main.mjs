@@ -5,6 +5,7 @@ const { url } = import.meta;
 const names = [
   'hero',
   'steps',
+  'do-you-know',
 ]; // prettier-ignore
 
 const app = createApp({

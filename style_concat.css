@@ -108,31 +108,6 @@ body.modal-open {
     padding: 10vh 0 !important;
   }
 
-   /*do you know section*/
-   .do-you-know {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: row !important;
-    padding: 2vmax;
-    background-image: linear-gradient(#00abc9, #7cd7e7);
-  }
-
-  .do-you-know .d-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 2vmax;
-    flex-direction: column;
-    max-width: 50% !important;
-    padding-right: 2vmax;
-  }
-  
-  .do-you-know .video {
-    width: 40% !important;
-  }
-
-
   .p-carousel {
     display: none !important;
   }
@@ -545,66 +520,6 @@ body.modal-open {
   height: 70px !important;
   border-radius: 50% !important;
   top: 50% !important;
-}
-
-/*do you know section*/
-.do-you-know {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  background-image: linear-gradient(#00abc9, #7cd7e7);
-  text-align: justify;
-}
-
-.do-you-know .d-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding-top: 5vmax !important;
-  gap: 2vmax;
-  flex-direction: column;
-  max-width: 80%;
-}
-
-.do-you-know h2 {
-  font-size: 1.5rem;
-  color: #1a1a1a;
-}
-
-.do-you-know p {
-  font-size: 1rem;
-  color: #2b2a2a;
-  margin-bottom: 1rem;
-}
-
-.do-you-know ul {
-  list-style-type: disc;
-  padding-left: 1rem;
-}
-
-.do-you-know ul li {
-  font-size: 1em;
-  color: #2b2a2a;
-  margin-bottom: 1rem;
-}
-
-.do-you-know .video {
-  flex: 1;
-  width: 90%;
-  height: auto;
-}
-
-.citation {
-  width: 100%;
-  margin: 0 auto; 
-  padding: 0 2vmax;
-  font-size: 0.8rem;
-  color: #3a3a3a;
-  background-color: #7cd7e7;
-}
-
-.citation p {
-  margin-bottom: 1rem; 
 }
 
 /*Reflect*/
