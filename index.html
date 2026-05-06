@@ -22,68 +22,12 @@
         <script type="module">
           import { mountAppByUrl } from 'vuethienp';
           mountAppByUrl(new URL('/assets/footer', import.meta.url));
+          mountAppByUrl(new URL('/assets/header', import.meta.url));
         </script>
     </head>
     <body>
         <div class="main-container">
-            <div class="Header">
-                <!-- Sidebar -->
-                <nav class="navbar navbar-dark navbar-expand-xl shadow" id="homie" style="background-color: rgba(0, 0, 0, 0.5);">
-                    <div class="container-fluid">
-                        <a class="navbar-brand d-flex align-items-center" href="index.html">
-                            <img  src="./images/transparent_logo.png" height="80px" width="auto" class="d-inline-block align-text-top"/>
-                        </a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7) 20%, #00af8c), url('./images/vegetables.png'); background-size: cover;">
-                            <div class="offcanvas-header">
-                                <h5 class="offcanvas-title d-flex align-items-center text-white" id="offcanvasNavbarLabel"><img  src="./images/transparent_logo.png" height="75px" width="auto" class="d-inline-block align-text-top"/></h5>
-                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" id='offcanvasCloseButton' autofocus></button>
-                            </div>
-                            <div class="offcanvas-body">
-                                <ul class="navbar-nav justify-content-end align-items-center flex-grow-1 pe-3 gap-3">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" style="text-decoration: underline white;" aria-current="page" data-bs-dismiss="offcanvas" href="index.html">Home</a>
-                                    </li>
-                                    <li class="nav-item dropdown home-hide">
-                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa fa-edit"></i>  <strong>Quiz</strong>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: black;">
-                                            <li><a class="dropdown-item" href="qualtrics.html" data-bs-dismiss="offcanvas">Pre-quiz</a></li>
-                                            <li><a class="dropdown-item first-timer" aria-disabled="false" data-bs-dismiss="offcanvas" href="qualtrics_post.html">Post-quiz</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item home-hide">
-                                        <a class="nav-link first-timer" id="navChallenge" aria-disabled="false" href="manifesto_page.html" data-bs-dismiss="offcanvas"><i class="fa fa-rocket"></i> Challenge</a>
-                                    </li>
-                                    <li class="nav-item home-hide">
-                                        <a class="nav-link first-timer" aria-disabled="false" data-bs-dismiss="offcanvas" href="result_page.html"><i class="fa fa-line-chart"></i> Dashboard</a>
-                                    </li>
-                                    <li class="nav-item home-hide">
-                                        <a class="nav-link first-timer" aria-disabled="false" data-bs-dismiss="offcanvas" href="history_page.html"><i class="fa fa-calendar-check-o"></i> History</a>
-                                    </li>
-                                    <li class="nav-item dropdown home-hide">
-                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle-o"></i> User</a>
-                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" style="background-color: black;">
-                                            <li><a class="dropdown-item" href="account manage.html" data-bs-dismiss="offcanvas">My account</a></li>
-                                            <li><a class="dropdown-item" id="logOut">Log out</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item button-hide">
-                                        <button type="button" class="btn btn-success" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signInModal" id="signIn">Sign in</button>
-                                    </li>
-                                    <li class="nav-item button-hide">
-                                        <button type="button" class="btn btn-primary" style="width: 150px;" data-bs-toggle="modal" data-bs-target="#signUpModal" id="signUp">Sign up</button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-
+        <section id="header">Header is not displayed yet</section>
             <!--Hero section at the top-->
             <section>
                 <div class="hero-wave">
