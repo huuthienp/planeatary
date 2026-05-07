@@ -6,6 +6,7 @@ const names = [
   'hero',
   'steps',
   'do-you-know',
+  'reflect',
 ]; // prettier-ignore
 
 const app = createApp({

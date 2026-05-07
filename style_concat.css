@@ -522,36 +522,6 @@ body.modal-open {
   top: 50% !important;
 }
 
-/*Reflect*/
-.reflect-section h2 {
-  color: #333;
-}
-
-.reflect-section p {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 1rem;
-}
-
-.reflect-section ul {
-  list-style-type: square;
-}
-
-.reflect-section ul li {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 1rem;
-}
-
-.reflect-section a {
-  color: #007bff; 
-  text-decoration: underline;
-}
-
-.reflect-section a:hover {
-  text-decoration: none; /* Remove underline on hover */
-}
-
 .person {
   display: none;
 }
