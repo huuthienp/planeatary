@@ -13,9 +13,13 @@ Object.freeze(ELEMENTS);
 
 const names = [
   'hero',
+  'wave1',
   'steps',
+  'wave2',
   'do-you-know',
+  'wave3',
   'reflect',
+  'divider',
 ]; // prettier-ignore
 
 const app = createApp({
