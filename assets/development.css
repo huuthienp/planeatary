@@ -1,0 +1,89 @@
+.carousel-caption {
+  padding-bottom: 0 !important;
+  bottom: 0 !important;
+}
+
+.carousel-control-prev, .carousel-control-next{
+  background-color: #e1e1e1 !important;
+  width: 70px !important;
+  height: 70px !important;
+  border-radius: 50% !important;
+  top: 50% !important;
+}
+
+.carousel-inner {
+  display: flex;
+}
+
+.our-team {
+  display: flex;
+  flex-wrap: wrap !important;
+  justify-content: center;
+  gap: 1vmax;
+}
+
+.people {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.person {
+  display: none;
+}
+
+.person img {
+  width: 170px;
+  height: auto;
+}
+
+.team {
+  display: flex;
+  flex-wrap: wrap !important;
+  justify-content: center;
+  gap: 1vmax;
+}
+
+.team-member {
+  text-align: center;
+}
+
+.team-member img {
+  width: 150px;
+  aspect-ratio: 1/1;
+}
+
+.team-member p {
+  margin-top: 0.1vmax;
+}
+
+#carouselTeam {
+  display: none;
+}
+
+#carouselInterval .carousel-item {
+  height: 280px;
+  justify-items: center;
+}
+
+/* styles for larger screens */
+@media (min-width: 992px) {
+  .p-carousel {
+    display: none !important;
+  }
+/*
+  .team {
+    display: none !important;
+  } */
+
+  .person {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+
+  #carouselTeam {
+    display: flex !important;
+  }
+}

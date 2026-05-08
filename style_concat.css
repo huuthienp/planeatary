@@ -47,17 +47,6 @@ body.modal-open {
   top: 50px;
 }
 
-.people {
-  display: flex !important;
-  flex-direction: row;
-  justify-content: space-evenly;
-}
-
-.person img {
-  width: 170px;
-  height: auto;
-}
-
 .home-hide {
   display: none;
 }
@@ -97,25 +86,6 @@ body.modal-open {
 
   .void-space {
     padding: 10vh 0 !important;
-  }
-
-  .p-carousel {
-    display: none !important;
-  }
-/* 
-  .team {
-    display: none !important;
-  } */
-
-  .person {
-    display: flex !important;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-  }
-
-  #carouselTeam {
-    display: flex !important;
   }
 
   .content .Card {
@@ -203,11 +173,6 @@ body.modal-open {
   padding: 3vh 2vw;
   margin: 20vmax auto;
   gap: 5vmax;
-}
-
-.carousel-caption {
-  padding-bottom: 0 !important;
-  bottom: 0 !important;
 }
 
 .greeting {
@@ -505,52 +470,9 @@ body.modal-open {
   color: white;
 }
 
-.carousel-control-prev, .carousel-control-next{
-  background-color: #e1e1e1 !important;
-  width: 70px !important;
-  height: 70px !important;
-  border-radius: 50% !important;
-  top: 50% !important;
-}
-
-.person {
-  display: none;
-}
-
-.team {
-  display: flex;
-  flex-wrap: wrap !important;
-  justify-content: center;
-  gap: 1vmax;
-}
-
 .team-section {
   margin: 0 auto;
   background-color: #e4e2e2;
-}
-
-.our-team {
-  display: flex;
-  flex-wrap: wrap !important;
-  justify-content: center;
-  gap: 1vmax;
-}
-
-.team-member {
-  text-align: center;
-}
-
-.team-member img {
-  width: 150px;
-  aspect-ratio: 1/1;
-}
-
-.team-member p {
-  margin-top: 0.1vmax;
-}
-
-#carouselTeam {
-  display: none;
 }
 
 .icon {

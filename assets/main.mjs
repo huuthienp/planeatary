@@ -20,6 +20,7 @@ const names = [
   'wave3',
   'reflect',
   'divider',
+  'development',
 ]; // prettier-ignore
 
 const app = createApp({
