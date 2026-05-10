@@ -1,3 +1,14 @@
+/**
+ * @description Provides a collection of immutable UI elements.
+ * @example ```
+ * import UI from 'index-ui.mjs';
+ * const { el } = UI;
+ * document.head.insertAdjacentHTML('beforeend', `<style>${el.style}</style>`);
+ * document.body.insertAdjacentHTML('beforeend', el.template);
+ * ```
+ * @type {Record<string, {style?: string, template: string}>}
+ */
+
 const UI = Object.create(null);
 export default UI;
 
