@@ -1,0 +1,13 @@
+.avatars ul,
+.avatars ol {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 1vmax;
+  list-style-type: none;
+  padding: initial;
+}
+
+.avatars img {
+  border-radius: 50%;
+  width: 64px;
+}
