@@ -6,7 +6,7 @@
 <!-- :::::: {.section .do-you-know} -->
 <!-- ::: d-content -->
 
-# DO YOU KNOW?
+# Do you know?
 
 Our global food system is contributing approximately one third of
 greenhouse gas emissions.&nbsp;[^1]
